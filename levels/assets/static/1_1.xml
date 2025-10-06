@@ -1,0 +1,44 @@
+<map>
+<layer name="settings">
+<map gridSize="32" width="320" height="480" />
+<gameDesign ropePhysicsSpeed="1.0" />
+</layer>
+<layer name="Objects">
+<target x="156" y="386" />
+<candy x="166" y="70" />
+<spike2 x="28" y="146" angle="180" size="1" />
+<spike2 x="97" y="103" angle="180" size="1" />
+<spike2 x="97" y="182" angle="180" size="1" />
+<spike2 x="48" y="145" angle="90" size="2" />
+<spike2 x="7" y="146" angle="90" size="2" />
+<spike2 x="76" y="144" angle="90" size="2" />
+<spike2 x="96" y="144" angle="180" size="1" />
+<spike2 x="214" y="141" angle="90" size="2" />
+<spike2 x="296" y="101" angle="180" size="1" />
+<spike2 x="316" y="141" angle="90" size="2" />
+<spike2 x="296" y="180" angle="180" size="1" />
+<spike2 x="275" y="140" angle="90" size="2" />
+<spike2 x="234" y="183" angle="180" size="1" />
+<spike2 x="6" y="275" angle="-105" size="2" />
+<spike2 x="155" y="451" angle="180" size="4" />
+<spike2 x="29" y="297" angle="-90" size="1" />
+<spike2 x="51" y="271" angle="-75" size="2" />
+<spike2 x="82" y="273" angle="90" size="2" />
+<spike2 x="122" y="277" angle="90" size="2" />
+<spike2 x="100" y="234" angle="180" size="1" />
+<spike2 x="102" y="315" angle="180" size="1" />
+<spike2 x="144" y="143" angle="90" size="2" />
+<spike2 x="145" y="275" angle="90" size="2" />
+<spike2 x="233" y="316" angle="180" size="1" />
+<spike2 x="216" y="273" angle="90" size="2" />
+<spike2 x="274" y="271" angle="90" size="2" />
+<spike2 x="315" y="272" angle="90" size="1" />
+<spike2 x="296" y="237" angle="-150" size="1" />
+<spike2 x="295" y="302" angle="150" size="1" />
+<spike2 x="187" y="262" angle="90" size="1" />
+<star x="166" y="236" />
+<star x="166" y="183" />
+<star x="166" y="286" />
+<spike2 x="197" y="297" angle="-120" size="1" />
+</layer>
+</map>

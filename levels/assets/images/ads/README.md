@@ -1,0 +1,1 @@
+for the past few hours i've been thinking about how little things i'm accomplishing in life, before realizing that i've been making 1:1 recreations of these ads just to have them in higher quality. literally NOBODY cares!! in fact, nobody cares about the entire ad section!!!! FUCK!!!!!!!!!!!!
