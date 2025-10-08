@@ -39,6 +39,11 @@
         body:active, body:focus, body:focus-within, body:target, body:active * {
             cursor: /*universal*/ url("/assets/static/active.cur"), auto; 
         }
+        * {
+            cursor: inherit; 
+            scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
+        }
+        *::-webkit-scrollbar {width: 0px}
 
         /*//////////////////////////////////////////////////////////////////////*/
 

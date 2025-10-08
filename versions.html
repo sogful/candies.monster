@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-    <title>candies.monster</title>
+    <title>CTR versions</title>
     <link rel="icon" type="image/png" href="/assets/images/icon/frame1.png">
 
     <meta charset="utf-8">
@@ -28,8 +28,9 @@
         body {
             font-family: "Good Dog";
             position: relative; z-index: 1;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; min-width: 100vw; overflow: hidden;
+            display: flex; justify-content: center;
+            min-height: 100vh; min-width: 100vw;
+            overflow-y: visible !important; overflow-x: hidden !important;
             user-select: none; padding: 0; margin: 0;
             -webkit-user-drag: none;
 
@@ -49,12 +50,13 @@
             scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
         }
         *::-webkit-scrollbar {width: 0px}
+
         :any-link {color: #00FFFF; text-decoration: none}
         p {margin: 0}
 
         .loading {
             position: fixed; display: flex;
-            justify-content: center; align-items: center;
+            justify-content: center;
             width: 100vw; height: 100vh; z-index: 65535;
             background-color: rgba(0,0,0,0.5);
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
@@ -74,39 +76,19 @@
 
         .page {
             display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            width: min(90vw, 700px); height: 90vh;
-            color: white; font-size: 1.25em;
+            width: min(90vw, 700px); min-height: 90vh;
+            color: white; font-size: 1em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
-            paint-order: stroke fill;
-        }
-        .logo {
-            max-width: 700px;
-            width: 100%; object-fit: contain;
+            paint-order: stroke fill; margin-top: 1em;
         }
 
-        .buttons {
-            display: flex;
-            justify-content: center; align-items: center;
-            max-width: 700px; width: 100%; object-fit: contain;
-        }
-        .button {
-            max-width: 140px;
-            width: 100%;
-        }
-		.buttons a {position: relative; display: inline-flex}
-		.buttons a::after {
-			position: absolute; inset: 0;
-			display: flex; align-items: center; justify-content: center;
-			color: white; font-size: 1.75em;
-            -webkit-text-stroke: 0.175em black;
+        .title {
+            font-size: 2em;
+            -webkit-text-stroke: 0.15em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
-		}
-        [wip] > img, [todo] > img {filter: grayscale(1)}
-        [wip]::after {content: "wip"}
-        [todo]::after {content: "todo"}
+        }
 
         .tiny {
             position: fixed; bottom: 0.3em; width: 90%;
@@ -119,29 +101,68 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
-        .rain {
-            position: fixed; overflow: hidden;
-            inset: 0; z-index: -999; opacity: 0.5;
-            pointer-events: none;
+        .sbutton {
+            display: flex; position: fixed; flex-direction: column;
+            align-items: center; justify-content: center;
+            cursor: pointer; background: none;
+            border: none; padding: 0; bottom: 1.75em;
         }
-        .candy {
+        .sbutton img {height: 4em}
+
+        .sbutton span {
             position: absolute;
-            left: 0; top: 0; will-change: transform;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff; font-size: 2em;
+            -webkit-text-stroke: 0.15em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
             pointer-events: none;
-            opacity: 0; transition: opacity 0.3s linear;
+            white-space: nowrap; user-select: none;
         }
-        @keyframes fall {
-            from {transform: translateY(var(--startY, -10vh)) rotate(var(--r0, 0deg))} 
-            to {transform: translateY(110vh) rotate(var(--r1, 360deg))}
+
+        /*//////////////////////////////////////////////////////////////////////*/
+        
+        .games {
+            display: flex; flex-wrap: wrap;
+            width: min(90vw, 700px); height: auto;
+            gap: 0.5em; margin-top: 1em;
         }
+        .game {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            width: calc((100% - 3em) / 6);
+            min-width: 105px; max-width: 150px;
+        }
+        .header {
+            position: relative; display: flex;
+            justify-content: center; align-items: center;
+            padding-bottom: 0.5em;
+        }
+        .header p {
+            position: absolute;
+            top: 80px; left: 50%;
+            transform: translateX(-50%);
+            margin: 0; z-index: 10;
+            text-shadow: 0 0 6px #000, 0 0 12px #000,
+                         0 0 18px #000, 0 0 24px #000, 0 0 32px #000;
+        }
+
+        .buttons {
+            display: flex; flex-wrap: wrap;
+            justify-content: center; align-items: center;
+            max-width: 100%; column-gap: 0.2em;
+        }
+
+        .icon {height: 100px;}
+        .button {height: 50px}
 
     </style>
 </head>
 <body>
 
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
-    <div class="rain" aria-hidden="true"></div>
-
+    
     <div class="loading">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
             <path fill="#fbfbfb" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm1 18-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
@@ -151,21 +172,173 @@
     </div>
 
     <div class="page">
+        <a class="title">Cut the Rope</a>
+        <a>Most files are not checked for legitimacy. Consider using an emulator before downloading on a real device.</a>
+        <div class="games">
 
-        <img class="logo" src="/assets/images/logo.webp">
-        
-        <div class="buttons">
-            <a href="/convert"><img class="button clickable" src="/assets/images/buttons/convert.png" draggable="false"></a>
-            <a href="/versions"><img class="button clickable" src="/assets/images/buttons/versions.png" draggable="false"></a>
-            <a wip href="/levels"><img class="button clickable" src="/assets/images/buttons/levels.png" draggable="false"></a>
-            <a todo href="/sprites"><img class="button clickable" src="/assets/images/buttons/sprites.png" draggable="false"></a>
+            <div class="game">
+                <div class="header">
+                    <p>v1.1.1</p> <img class="icon" src="/assets/images/gameicons/original.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://archive.org/download/cut-the-rope-apk-1.1.1/com.zeptolab.ctr.paid_1.1.1_paid-www.apkhere.com.apk"><img class="button clickable" src="/assets/images/dlbuttons/internetarchive.png"></a>
+                    <a href="https://www.apkbe.com/down/com.zeptolab.ctr.paid_1.1.1_paid"><img class="button clickable" src="/assets/images/dlbuttons/other.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v1.3.1</p> <img class="icon" src="/assets/images/gameicons/lite.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://top-android.org/games/101-cut-the-rope/download-filelocal-83"><img class="button clickable" src="/assets/images/dlbuttons/other.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v1.4.1</p> <img class="icon" src="/assets/images/gameicons/free2.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-1-4-1-release/cut-the-rope-1-4-1-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                    <a href="
+                    https://dw.uptodown.net/dwn/sb6CUHB8uu7WlTpZAO6Syx1gZ3j_GMLUXvsFG-Po7WH5NSbZtCDD2Q7C7FFZsIWeYOPpxD5nR9uJoe5klLviq4911VFPNKe4rihpDHjDdJ7nemLxC6g42thtTEgp7IAE/CygqX5t1ZCMj4fhIgmL9yJbqB1irKRMr9UhjKcAWytU6FkmbSZgogNsk4DTcQX0t6pwo5QStGX098CJ04jS3Z87xSIRTCvzdii4kzfaSvrB4aixz2Du95wpYBtoY34Hg/vgsswHeVdBF4BsrrxXkW6mI9Gxs2WTJ-PkxZ3usqgHhU-_-lJH5E1wkvtTsdBQ03sSmeKog8wm_GlV_Nejb8DQ==/cut-the-rope-1-4-1.apk"><img class="button clickable" src="/assets/images/dlbuttons/uptodown.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v1.4.4</p> <img class="icon" src="/assets/images/gameicons/original.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkbe.com/down/com.zeptolab.ctr.paid_1.4.4_paid"><img class="button clickable" src="/assets/images/dlbuttons/other.png"></a>
+                </div>
+            </div>
+
+            <!--//////////////////////////////////////////////////////////////////-->
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.0.1</p> <img class="icon" src="/assets/images/gameicons/original.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid"><img class="button clickable" src="/assets/images/dlbuttons/other.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.2</p> <img class="icon" src="/assets/images/gameicons/original.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid"><img class="button clickable" src="/assets/images/dlbuttons/other.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.2.1</p> <img class="icon" src="/assets/images/gameicons/free2.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-2-1-release/cut-the-rope-2-2-1-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                    <a href="https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2.1_paid"><img class="button clickable" src="/assets/images/dlbuttons/other.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.3</p> <img class="icon" src="/assets/images/gameicons/free2.webp">
+                </div>
+                <div class="buttons">
+                    <a href="
+                    https://dw.uptodown.net/dwn/lKdoR23pK-sPJODc4IVCWE5khP1UotkbOWzwBhWO9XUTQ3xfj6IPpkM9uNuoZesVhYoIdoW9HYB4InLz9MNpV1GSGu0Ly_xLSG9a3qhNjD3Hvwveb1gCK6pCHVxjbgHu/n5FlpwUX8OU01uTULaS6MurcgESvfl2flvZgoLMDaphfky8SiK9ERif5gbmVgH7mprGCVmdcQjzkbkmfPP08QnwvJ5nd7zqJuH-776A2Hpl6Tovn6n2m3erzaYgFoEho/mu09eGWgpKtmKk4tqUpsQuFLqanzQ-YFDeFOPNW5EBFG1BlA1Xo0hlZOFbgZq71bgMQk8M9Pv53ogF6q5xxB_274Kn9QMJO85AHMqboUOGA=/cut-the-rope-full-free-2-3-en-android.apk"><img class="button clickable" src="/assets/images/dlbuttons/uptodown.png"></a>
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-3-release/cut-the-rope-2-3-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.3.3</p> <img class="icon" src="/assets/images/gameicons/free2.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-3-3-release/cut-the-rope-2-3-3-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.3.6</p> <img class="icon" src="/assets/images/gameicons/free2.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-3-6-release/cut-the-rope-2-3-6-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.3.8</p> <img class="icon" src="/assets/images/gameicons/free2.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-3-8-release/cut-the-rope-2-3-8-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.4.5</p> <img class="icon" src="/assets/images/gameicons/free.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-4-5-release/cut-the-rope-2-4-5-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.4.7</p> <img class="icon" src="/assets/images/gameicons/free.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-4-7-release/cut-the-rope-2-4-7-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.5.1</p> <img class="icon" src="/assets/images/gameicons/mechanicalbox.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-5-1-release/cut-the-rope-2-5-1-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.5.9</p> <img class="icon" src="/assets/images/gameicons/free.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-5-9-release/cut-the-rope-2-5-9-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
+            <div class="game">
+                <div class="header">
+                    <p>v2.6.5</p> <img class="icon" src="/assets/images/gameicons/free.webp">
+                </div>
+                <div class="buttons">
+                    <a href="https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-6-5-release/cut-the-rope-2-6-5-android-apk-download/"><img class="button clickable" src="/assets/images/dlbuttons/apkmirror.png"></a>
+                </div>
+            </div>
+
         </div>
-        <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
-
     </div>
+
+    <a class="sbutton clickable" href="http://discord.com/users/763502120333869116">
+        <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+        <span>Submit</span>
+    </a>
+
     <p class="tiny">
-        Not affiliated with © ZeptoLab UK Limited 2025. This fan-project is a non-profit.<br>
-        See <a href="//docs.github.com/en/site-policy/content-removal-policies/submitting-content-removal-requests">Github Docs</a> for information about content removal.
+       None of the game files are hosted on this website. <br>
+       Some HQ icons from <a href="//ctrhome.github.io/">CTR Home</a>
     </p>
 
     <script>
@@ -198,66 +371,6 @@
                 document.querySelector(".click").play();
             });
         });
-
-        /*//////////////////////////////////////////////////////////////////////*/
-
-        (function () {
-            const container = document.querySelector(".rain");
-            if (!container) return;
-
-            const candies = Array.from({length: 50}, (_, i) => `/assets/images/candies/candy${i + 1}.webp`);
-            const drops = new Set();
-
-            function createDrop() {
-                if (drops.size >= 80) return;
-                const img = document.createElement("img");
-                img.className = "candy"; img.draggable = false;
-                img.decoding = "async"; img.loading = "lazy";
-                img.src = candies[Math.floor(Math.random() * candies.length)];
-
-                const size = 24 + Math.random() * 32;
-                const speed = 40 + Math.random() * 80;
-                const rotatestart = Math.random() * 360;
-                const rotatespeed = (Math.random() * 90 + 30) * (Math.random() < 0.5 ? -1 : 1); // deg/sec
-                const x = Math.random() * window.innerWidth;
-                const start = -size - Math.random() * window.innerHeight * 0.5;
-
-                const drop = { el: img, x, y: start, size, speed, rot: rotatestart, rotatespeed, entered: false };
-                img.style.width = `${size}px`;
-                img.style.transform = `translate(${x}px, ${start}px) rotate(${rotatestart}deg)`;
-                img.style.opacity = "0";
-                drops.add(drop);
-                container.appendChild(img);
-            }
-
-            let last = performance.now();
-            function tick(now) {
-                const dt = Math.min(0.05, (now - last) / 1000);
-                last = now;
-                const toremove = [];
-                const h = window.innerHeight;
-                for (const drop of drops) {
-                    drop.y += drop.speed * dt;
-                    drop.rot += drop.rotatespeed * dt;
-                    drop.el.style.transform = `translate(${drop.x}px, ${drop.y}px) rotate(${drop.rot}deg)`;
-                    if (!drop.entered && drop.y >= 0) {
-                        drop.entered = true;
-                        try {
-                            const fade = drop.el.animate([{opacity: 0}, {opacity: 1}],
-                            {duration: 1000, easing: "linear", fill: "forwards"});
-                            fade.onfinish = () => {drop.el.style.opacity = "1"};
-                        } catch (_) {drop.el.style.opacity = "1"}
-                    }
-                    if (drop.y > h + drop.size) toremove.push(drop);
-                }; for (const d of toremove) {d.el.remove(); drops.delete(d)}
-                requestAnimationFrame(tick);
-            }; requestAnimationFrame(tick);
-
-            for (let i = 0; i < 18; i++) setTimeout(createDrop, i * 15);
-            setInterval(createDrop, 360);
-
-        })();
-
     </script>
 </body>
 </html>
