@@ -50,10 +50,10 @@
         }
         *::-webkit-scrollbar {width: 0px}
         :any-link {color: #00FFFF; text-decoration: none}
-        p {margin: 0}
+        p {margin: 0; text-align: center}
 
         .loading {
-            position: fixed; display: flex;
+            display: flex; position: fixed; 
             justify-content: center; align-items: center;
             width: 100vw; height: 100vh; z-index: 65535;
             background-color: rgba(0,0,0,0.5);
@@ -68,6 +68,20 @@
         @keyframes rotate {
             0% {transform: rotate(0deg)}
             100% {transform: rotate(360deg)}
+        }
+
+        .github { /* "hitbox" */
+            display: flex; position: fixed;
+            top: 0; right: 0;
+            width: 52px; height: 52px;
+            align-items: flex-start; justify-content: flex-end;
+            z-index: 1000;
+        }
+        .github img { /* actual visual */
+            width: 74px; height: 130px;
+            pointer-events: none;
+            position: absolute; top: 0; right: 0;
+            user-select: none;
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -135,12 +149,34 @@
             to {transform: translateY(110vh) rotate(var(--r1, 360deg))}
         }
 
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .sbuttons {
+            display: flex; position: fixed; flex-direction: row;
+            justify-content: center; align-items: top; flex-wrap: wrap;
+            bottom: 1.5em; width: 750px; max-width: 90%; height: auto;
+        }
+        .sbutton {padding: 2px; image-rendering: pixelated; background-repeat: no-repeat}
+
+        .copied {
+            position: absolute;
+            left: 50%; top: 50%; transform: translate(-50%, -50%);
+            padding: 5px 10px; font-size: 20px; white-space: nowrap; 
+            pointer-events: none; transition: opacity 0.2s ease; 
+            color: white; font-size: 2em; z-index: 999; opacity: 0;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+
+
     </style>
 </head>
 <body>
 
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
     <div class="rain" aria-hidden="true"></div>
+    <div class="copied"><a>copied!</a></div>
 
     <div class="loading">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
@@ -149,6 +185,8 @@
             <path fill="#060606" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm4 3-16 3-16 7-11 7-11 10-8 11-8 16-3 12-1 7v17l2 12 5 14 6 11 9 11 10 9 15 9 14 5 11 2h18l13-3 14-5 14-9 12-11 9-13 7-16 2-7 1-9V90l-3-15-7-16-8-11-8-9-12-9-17-8-12-3-7-1Z"/>
           </svg>          
     </div>
+
+    <a class="github" href="//github.com/sogful/candies.monster"><img src="/assets/images/github.png"></a>
 
     <div class="page">
 
@@ -163,6 +201,52 @@
         <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
 
     </div>
+
+    <div class="sbuttons">
+        <a><img class="sbutton" src="/assets/images/buttons/88x31/default.png"></a>
+        <a><img class="sbutton" src="/assets/images/buttons/88x31/tasty.png"></a>
+
+        <!-- slide -->
+        <a class="ctrgame">
+            <img class="sbutton ctrimg" src="/assets/images/buttons/88x31/game1.gif" draggable="false">
+            <input type="range" class="ctrslider" min="0" max="100" value="50" step="10">
+            <style>
+                .ctrgame {position: relative; display: inline-block; width: 88px; height: 31px}
+                .ctrimg {width: 88px; height: 31px; pointer-events: none; user-select: none}
+                .ctrslider {position: absolute; left: 0; top: 0; width: 40px; height: 15px; opacity: 0; z-index: 999}
+            </style>
+            <script>
+                const slider = document.querySelector(".ctrslider"); let activated = false;
+                slider.addEventListener('input', function() {
+                    if (!activated && (Number(slider.value) === 100 || Number(slider.value) === 0)) {
+                        document.querySelector(".ctrimg").src = '/assets/images/buttons/88x31/game2.gif';
+                        activated = true; slider.disabled = true;
+                    }
+                });
+            </script>
+        </a>
+
+        <!-- click (no js!) -->
+        <!--a class="ctrgame">
+            <input type="radio" id="ctrtoggle" name="ctrgame" class="ctrcheckbox">
+            <label for="ctrtoggle" class="ctrlabel">
+                <img class="sbutton ctrimg ctrone" src="/assets/images/buttons/88x31/game1.gif" draggable="false">
+                <img class="sbutton ctrimg ctrtwo" src="/assets/images/buttons/88x31/game2.gif" draggable="false">
+            </label>
+            <style>
+                .ctrgame {position: relative; display: inline-block; width: 88px; height: 31px}
+                #ctrtoggle {position: absolute; opacity: 0; width: 0; height: 0}
+                .ctrlabel {display: block; width: 88px; height: 31px; cursor: pointer}
+                .ctrimg {width: 88px; height: 31px; position: absolute; left: 0; top: 0}
+                .ctrone {opacity: 1} .ctrtwo {opacity: 0}
+                #ctrtoggle:checked ~ .ctrlabel .ctrone {opacity: 0}
+                #ctrtoggle:checked ~ .ctrlabel .ctrtwo {opacity: 1}
+                #ctrtoggle:checked ~ .ctrlabel {cursor: default; pointer-events: none}
+            </style>
+        </a-->
+        
+    </div>
+
     <p class="tiny">
         Not affiliated with © ZeptoLab UK Limited 2025. This fan-project is a non-profit.<br>
         See <a href="//docs.github.com/en/site-policy/content-removal-policies/submitting-content-removal-requests">Github Docs</a> for information about content removal.
@@ -197,6 +281,51 @@
                 document.querySelector(".click").currentTime = 0;
                 document.querySelector(".click").play();
             });
+        });
+
+        // copy buttons on middle click (slightly fixed over the pawing.cv code)
+        document.addEventListener("auxclick", (e) => {
+            let el = e.target.closest(".sbutton, .ctrgame"); if (!el) return;
+            if (e.button === 1) {
+                e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+
+                let copiablebutton;
+                if (el.tagName === "IMG") {copiablebutton = el.parentElement}
+                else {copiablebutton = el}
+                let clone = copiablebutton.cloneNode(true);
+
+                function fixsrc(node) {
+                    if (node.tagName === "IMG" && node.src) {
+                        let src = node.getAttribute("src");
+                        if (src && src.includes("/assets/") && !src.includes("//candies.monster/")) {
+                            if (src.startsWith("/")) {node.setAttribute("src", "//candies.monster" + src)}
+                            else {node.setAttribute("src", "//candies.monster/" + src)}
+                        }
+                    } else if (node.tagName === "SCRIPT") {
+                        let scripttext = node.textContent;
+                        if (scripttext && scripttext.includes("/assets/") && !scripttext.includes("//candies.monster/")) {
+                            scripttext = scripttext.replace(/(['"])\/assets\//g, "$1//candies.monster/assets/");
+                            scripttext = scripttext.replace(/(['"])assets\//g, "$1//candies.monster/assets/");
+                            node.textContent = scripttext;
+                        }
+                    }
+                    for (let child of node.childNodes) {if (child.nodeType === 1) fixsrc(child)}
+                }; fixsrc(clone);
+
+                function removegarbage(node) {
+                    if (node.removeAttribute) {
+                        node.removeAttribute("style");
+                        node.removeAttribute("class");
+                    }
+                    for (let child of node.childNodes) {removegarbage(child)}
+                }; removegarbage(clone);
+
+                navigator.clipboard.writeText(clone.outerHTML);
+                document.querySelector(".copied a").textContent = "copied!";
+                document.querySelector(".copied").style.opacity = "1";
+                setTimeout(function() {document.querySelector(".copied").style.opacity = "0"}, 1000);
+                return false;
+            }
         });
 
         /*//////////////////////////////////////////////////////////////////////*/
