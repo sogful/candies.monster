@@ -46,13 +46,17 @@
         body:active, body:focus, body:focus-within, body:target, body:active * {
             cursor: url("/assets/static/active.cur"), default !important;
         }
+        :any-link {
+            color: #00FFFF;
+            text-decoration: none; 
+            cursor: url("/assets/static/link.cur"), default !important;
+        }
         * {
             cursor: inherit; 
             scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
         }
         *::-webkit-scrollbar {width: 0px}
 
-        :any-link {color: #00FFFF; text-decoration: none}
         p {margin: 0}
 
         .loading {
