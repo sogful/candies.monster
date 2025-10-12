@@ -50,11 +50,33 @@
             cursor: url("/assets/static/link.cur"), default !important;
         }
         * {
-            cursor: inherit; 
+            cursor: inherit !important; 
             scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
         }
         *::-webkit-scrollbar {width: 0px}
         a {margin: 0.3em}
+
+        .splitwarn {
+            position: fixed; display: none; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            width: 100vw; height: 100vh; z-index: 65535;
+            background-color: rgba(0,0,0,0.5); 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+            transition: opacity 0.5s;
+        }
+        .splitwarn a {
+            color: white; margin-left: 20%; margin-right: 20%;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+        .splitwarn label {
+            font-size: 2em;
+            color: white;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -144,11 +166,21 @@
     
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
 
+    <div class="splitwarn">
+        <a class="title" style="color:#f08b8b">Warning!</a>
+        <a class="subtitle">This game version is likely old and will not return correct sprites. Split files have odd colorspace data that's not implemented yet.</a>
+        <label class="button clickable" onclick="document.querySelector('.splitwarn').style.display = 'none'">
+            <span>Ok</span>
+            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+        </label>
+    </div>
+
     <div class="page">
         <a class="title">raw2png</a>
         <span style="padding-bottom: 0.5em">Sprites in many Cut the Rope games for mobile are compressed, making them difficult to extract.
         <br>
-        This tool does the <i>zstd/zlib</i> decompression in the comfort of your browser to avoid that headache.</a></span>
+        This tool does the <i>zstd/zlib</i> decompression in the comfort of your browser to avoid that headache.
+        <br></i></span>
 
         <span class="tiny">For .xnb sprites, see<a href="https://github.com/LeonBlade/xnbcli">xnbcli</a>or<a href="https://lybell-art.github.io/xnb-js/">Web XNB Converter.</a></span>
         <span class="tiny">For .xnb audio, see<a href="//candies.monster/assets/static/XNBSoundConverter.exe">XNBSoundConverter</a>(to wav) and<a href="https://github.com/JavidPack/WAVToXNBSoundConverter">WAVToXNBSoundConverter</a>(to xnb). You can also directly play and convert .xnb audio with <a href="https://vgmstream.org/">vgmstream.</a></span>
@@ -168,6 +200,7 @@
                 <span>Single file</span>
             </label>
         </div>
+        <span class="tiny"><br><br>IOS and split (.raw1 - .raw8) files do not work yet.</span>
 
         <div class="stats">
             <div class="counts"><a style="color:#6cf16c">0 success</a>//<a style="color:#fff457">0 warnings</a>//<a style="color:#f08b8b">0 failed</a></div>
@@ -218,6 +251,7 @@
              const errors = document.querySelector(".errors");
 
             let firstshown = false;
+            let splitwarnshown = false;
             let pyready = null;
 
             function showstats(){
@@ -262,7 +296,7 @@
                 });
             }
 
-            async function initPy(){
+            async function runcode(){
                 if (!pyready){
                     pyready = (async () => {
                         const py = await loadPyodide({indexURL: "https://cdn.jsdelivr.net/pyodide/v0.28.3/full/"});
@@ -277,7 +311,7 @@
                             await micropip.install("zstandard")
                         `);
 
-                        // (no indent is required)
+                        // (no indent or it'll break)
                         const thething = `
 import zlib
 import zstandard as zstd
@@ -293,6 +327,72 @@ def decryptrawpy(data):
     
     pixels = None
     width = height = 0
+    
+    non_zero_count = sum(1 for b in data[:1000] if b != 0)
+    total_non_zero = sum(1 for b in data if b != 0)
+    
+    if len(data) >= 16:
+        header_bytes = data[:16]
+        
+        possible_dims = []
+        
+        for i in range(0, 12, 2):
+            if i + 2 <= len(data):
+                val = int.from_bytes(data[i:i+2], "little")
+                if 16 <= val <= 4096:
+                    possible_dims.append(val)
+        
+        if len(possible_dims) >= 2:
+            for i in range(len(possible_dims)):
+                for j in range(i+1, len(possible_dims)):
+                    w, h = possible_dims[i], possible_dims[j]
+                    pixel_count = w * h
+                    expected_bytes = pixel_count * 4
+                    
+                    
+                    if expected_bytes <= len(data) and expected_bytes > len(data) * 0.5:
+                        pixel_data = data[:expected_bytes]
+                        pixels = pixel_data
+                        width, height = w, h
+                        
+                        rgba_pixels = bytearray(pixels)
+                        for i in range(0, len(rgba_pixels), 4):
+                            if i + 3 < len(rgba_pixels):
+                                rgba_pixels[i], rgba_pixels[i+2] = rgba_pixels[i+2], rgba_pixels[i]
+                        
+                        return {"width": width, "height": height, "pixels": bytes(rgba_pixels), "used_fallback": False}
+    
+    if non_zero_count > 100 or total_non_zero > len(data) * 0.1:
+        pixel_data = data
+        
+        if len(pixel_data) % 4 == 0:
+            pixel_count = len(pixel_data) // 4
+            
+            import math
+            factors = []
+            for i in range(1, int(math.sqrt(pixel_count)) + 1):
+                if pixel_count % i == 0:
+                    factors.append((i, pixel_count // i))
+                    if i != pixel_count // i:
+                        factors.append((pixel_count // i, i))
+            
+            factors.sort(key=lambda x: abs(x[0] - x[1]))
+            
+            for w, h in factors:
+                if 16 <= w <= 4096 and 16 <= h <= 4096 and w * h == pixel_count:
+                    aspect_ratio = max(w, h) / min(w, h)
+                    if aspect_ratio <= 8:
+                        width, height = w, h
+                        pixels = pixel_data
+                        break
+            
+            if pixels is not None:
+                rgba_pixels = bytearray(pixels)
+                for i in range(0, len(rgba_pixels), 4):
+                    if i + 3 < len(rgba_pixels):
+                        rgba_pixels[i], rgba_pixels[i+2] = rgba_pixels[i+2], rgba_pixels[i]
+                
+                return {"width": width, "height": height, "pixels": bytes(rgba_pixels), "used_fallback": False}
     
     zstd_magic = bytes((0x28, 0xB5, 0x2F, 0xFD))
     zstd_start = data.find(zstd_magic)
@@ -315,7 +415,7 @@ def decryptrawpy(data):
             dctx = zstd.ZstdDecompressor()
             decompressed_data = dctx.decompress(payload)
             compression_type = "zstd"
-        except:
+        except Exception as e:
             pass
     
     if decompressed_data is None and zlib_start != -1:
@@ -323,11 +423,63 @@ def decryptrawpy(data):
         try:
             decompressed_data = zlib.decompress(payload)
             compression_type = "zlib"
-        except:
+        except Exception as e:
             pass
     
     if decompressed_data is None:
-        raise ValueError("could not decompress data with zstd or zlib")
+        for offset in range(0, len(data) - 100, 100):
+            if offset + 100 <= len(data):
+                if data[offset:offset+4] == zstd_magic:
+                    payload = data[offset:]
+                    try:
+                        dctx = zstd.ZstdDecompressor()
+                        decompressed_data = dctx.decompress(payload)
+                        compression_type = "zstd"
+                        break
+                    except Exception as e:
+                        pass
+                
+                if offset + 1 < len(data) and data[offset] == 0x78:
+                    flg = data[offset+1]
+                    if ((data[offset] * 256) + flg) % 31 == 0:
+                        payload = data[offset:]
+                        try:
+                            decompressed_data = zlib.decompress(payload)
+                            compression_type = "zlib"
+                            break
+                        except Exception as e:
+                            print(f"zlib decompression failed at offset {offset}: {e}")
+        
+        if decompressed_data is None and len(data) >= 16:
+            header_bytes = data[:16]
+            
+            for i in range(4, 16, 2):
+                if i + 2 <= len(data):
+                    offset = int.from_bytes(data[i:i+2], "little")
+                    if 0 < offset < len(data) - 100:
+                        if offset + 4 <= len(data) and data[offset:offset+4] == zstd_magic:
+                            payload = data[offset:]
+                            try:
+                                dctx = zstd.ZstdDecompressor()
+                                decompressed_data = dctx.decompress(payload)
+                                compression_type = "zstd"
+                                break
+                            except Exception as e:
+                                print(f"zstd decompression failed at header offset {offset}: {e}")
+                        
+                        if offset + 1 < len(data) and data[offset] == 0x78:
+                            flg = data[offset+1]
+                            if ((data[offset] * 256) + flg) % 31 == 0:
+                                payload = data[offset:]
+                                try:
+                                    decompressed_data = zlib.decompress(payload)
+                                    compression_type = "zlib"
+                                    break
+                                except Exception as e:
+                                    print(f"zlib decompression failed at header offset {offset}: {e}")
+        
+        if decompressed_data is None:
+            raise ValueError("could not decompress data with zstd or zlib")
     
     pixel_count = len(decompressed_data) // 4
     if len(decompressed_data) % 4 != 0:
@@ -463,7 +615,7 @@ def decryptrawpy(data):
 
             async function decryptfile(file){
                 showstats();
-                const py = await initPy();
+                const py = await runcode();
                 const buf = new Uint8Array(await file.arrayBuffer());
                 
                 const decryptfunction = py.globals.get("decryptrawpy");
@@ -478,6 +630,125 @@ def decryptrawpy(data):
                 return { blob, used_fallback };
             }
 
+            /*//////////////////////////////////////////////////////////////////////*/
+
+            // brokey
+            async function decryptsplitfile(files){
+                showstats();
+                const py = await runcode();
+                
+                const mainfiles = files.filter(file => {
+                    const name = file.name.toLowerCase();
+                    if (name.endsWith('.raw') && !name.match(/\.raw\d+$/)) {
+                        return true;
+                    }
+                    if (name.match(/\.raw\d+$/) && file.size > 100) {
+                        return true;
+                    }
+                    return false;
+                });
+                
+                const splitfiles = files.some(file => {
+                    const name = file.name.toLowerCase();
+                    return name.match(/\.raw\d+$/);
+                });
+                
+                if (splitfiles && !splitwarnshown) {
+                    document.querySelector('.splitwarn').style.display = 'flex';
+                    splitwarnshown = true;
+                }
+                
+                if (mainfiles.length > 1) {
+                    const raw1files = mainfiles.filter(f => f.name.toLowerCase().match(/\.raw\d+$/));
+                    if (raw1files.length > 0) {
+                        const totalsize = mainfiles.reduce((sum, f) => sum + f.size, 0);
+                        if (totalsize > 500000) {
+                            const largerawfiles = raw1files.filter(f => f.size > 1000);
+                            try {
+                                const buffers = [];
+                                for (const file of largerawfiles) {
+                                    const buf = new Uint8Array(await file.arrayBuffer());
+                                    buffers.push(buf);
+                                }
+                                const totalbufsize = buffers.reduce((sum, buf) => sum + buf.length, 0);
+                                const combinedbuffer = new Uint8Array(totalbufsize);
+                                let offset = 0;
+                                for (const buf of buffers) {
+                                    combinedbuffer.set(buf, offset);
+                                    offset += buf.length;
+                                }
+                                const result = await pyodide.runPython(`
+                                    result = decryptrawpy(${combinedbuffer})
+                                    result
+                                `);
+                                
+                            if (result && result.width && result.height) {
+                                const blob = await rgbatoblob(result.width, result.height, new Uint8Array(result.pixels));
+                                return { blob, used_fallback: false, warning: "Split file conversion - may have incorrect colors/dimensions" };
+                            }
+                            } catch (e) {
+                            }
+                        }; const testfile = raw1files[0];
+                        
+                        try {
+                            const testbuf = new Uint8Array(await testfile.arrayBuffer());
+                            const result = await pyodide.runPython(`
+                                result = decryptrawpy(${testbuf})
+                                result
+                            `);
+                            
+                            if (result && result.width && result.height) {
+                                const blob = await rgbatoblob(result.width, result.height, new Uint8Array(result.pixels));
+                                return { blob, used_fallback: false, warning: "Split file conversion - may have incorrect colors/dimensions" };
+                            }
+                        } catch (e) {}
+                    }
+                    
+                    mainfiles.sort((a, b) => {
+                        const aname = a.name.toLowerCase();
+                        const bname = b.name.toLowerCase();
+                        
+                        if (aname.endsWith('.raw') && !bname.endsWith('.raw')) return -1;
+                        if (!aname.endsWith('.raw') && bname.endsWith('.raw')) return 1;
+                        if (aname.endsWith('.raw') && bname.endsWith('.raw')) return 0;
+                        
+                        const anum = parseInt(aname.match(/\.raw(\d+)$/)?.[1] || '0');
+                        const bnum = parseInt(bname.match(/\.raw(\d+)$/)?.[1] || '0');
+                        return anum - bnum;
+                    });
+                }
+            
+                const buffers = [];
+                for (const file of mainfiles) {
+                    const buf = new Uint8Array(await file.arrayBuffer());
+                    buffers.push(buf);
+                }
+
+                const totallength = buffers.reduce((sum, buf) => sum + buf.length, 0);
+                const combinedbuffer = new Uint8Array(totallength);
+                let offset = 0;
+                for (const buf of buffers) {
+                    combinedbuffer.set(buf, offset);
+                    offset += buf.length;
+                }
+                
+                const decryptfunction = py.globals.get("decryptrawpy");
+                
+                const result = await decryptfunction(py.toPy(combinedbuffer));
+                const r = result.toJs({ create_proxies: false });
+                const width = r.width;
+                const height = r.height;
+                const pixels = new Uint8Array(r.pixels);
+                const used_fallback = r.used_fallback;
+                const blob = await rgbatoblob(width, height, pixels);
+                
+                const warning = splitfiles ? "Split file conversion - likely has incorrect colors/dimensions" : null;
+                
+                return {blob, used_fallback, warning};
+            }
+
+            /*//////////////////////////////////////////////////////////////////////*/
+
             function replaceext(name, newExt){
                 const i = name.lastIndexOf(".");
                 return (i === -1 ? name : name.slice(0, i)) + newExt;
@@ -490,32 +761,81 @@ def decryptrawpy(data):
                 setcounts(success, failed, warnings);
                 progressinfo.textContent = "Preparing…";
 
-                const rawfiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith(".raw"));
+                const rawfiles = Array.from(files).filter(f => {
+                    const name = f.name.toLowerCase();
+                    return name.endsWith(".raw") || name.match(/\.raw\d+$/);
+                });
                 if (rawfiles.length === 0){
                     progressinfo.textContent = "No .raw files found... (Are you sure you selected the right folder?)";
                     return;
                 }
+                
+                const allfiles = Array.from(files);
+                const potentialsplitfiles = allfiles.filter(f => {
+                    const name = f.name.toLowerCase();
+                    return name.includes('raw') || 
+                           name.match(/\.\d+$/) /* ||
+                           // name.match(/\.part\d+$/); */
+                });
 
                 const zip = new JSZip();
+                const filegroups = new Map();
+                for (const file of rawfiles) {
+                    const name = file.name.toLowerCase();
+                    let basename;
+                    
+                    if (name.endsWith('.raw')) {
+                        basename = name.slice(0, -4);
+                    } else if (name.match(/\.raw\d+$/)) {
+                        basename = name.replace(/\.raw\d+$/, '');
+                    } else {
+                        continue;
+                    }
+                    
+                    if (!filegroups.has(basename)) {
+                        filegroups.set(basename, []);
+                    }
+                    filegroups.get(basename).push(file);
+                }
 
-                for (let idx = 0; idx < rawfiles.length; idx++){
-                    const f = rawfiles[idx];
-                    const rel = f.webkitRelativePath || f.name;
-                    progressinfo.textContent = "Decrypting (" + (idx+1) + "/" + rawfiles.length + "): " + rel;
+                let processedcount = 0;
+                const totalgroups = filegroups.size;
+
+                for (const [basename, groupfiles] of filegroups) {
+                    processedcount++;
+                    const rel = groupfiles[0].webkitRelativePath || groupfiles[0].name;
+                    progressinfo.textContent = `Processing (${processedcount}/${totalgroups}): ${basename}`;
+                    
                     try {
-                        const result = await decryptfile(f);
-                        const targetpath = "FeedwithCandy/" + rel.replace(/\\/g,"/").replace(/\.[Rr][Aa][Ww]$/, "") + ".png";
+                        groupfiles.sort((a, b) => {
+                            const aname = a.name.toLowerCase();
+                            const bname = b.name.toLowerCase();
+                            
+                            if (aname.endsWith('.raw') && !bname.endsWith('.raw')) return -1;
+                            if (!aname.endsWith('.raw') && bname.endsWith('.raw')) return 1;
+                            if (aname.endsWith('.raw') && bname.endsWith('.raw')) return 0;
+                            
+                            const anum = parseInt(aname.match(/\.raw(\d+)$/)?.[1] || '0');
+                            const bnum = parseInt(bname.match(/\.raw(\d+)$/)?.[1] || '0');
+                            return anum - bnum;
+                        });
+
+                        const result = await decryptsplitfile(groupfiles);
+                        const targetpath = "FeedwithCandy/" + rel.replace(/\\/g,"/").replace(/\.[Rr][Aa][Ww]\d*$/, "") + ".png";
                         zip.file(targetpath, result.blob);
                         
-                        if (result.used_fallback) {
+                        if (result.warning) {
                             warnings++;
-                            errorlog(`${rel} - used fallback dimensions (will likely be corrupted)`);
+                            errorlog(`${basename} - ${result.warning}`);
+                        } else if (result.used_fallback) {
+                            warnings++;
+                            errorlog(`${basename} - used fallback dimensions (will likely be corrupted)`);
                         } else {
                             success++;
                         }
                     } catch (e){
                         failed++;
-                        errorlog(rel + (e && e.message ? e.message : e));
+                        errorlog(basename + ": " + (e && e.message ? e.message : e));
                     }
                     setcounts(success, failed, warnings);
                 }
@@ -526,13 +846,13 @@ def decryptrawpy(data):
                  progressinfo.textContent = "Done! Remember to rename .pngs back to .raws after editing.";
             }
 
-            async function handleSingle(file){
+            async function handlesingle(file){
                 setcounts(0, 0, 0);
-                progressinfo.textContent = "Decrypting single file…";
+                progressinfo.textContent = "Decrypting single file...";
                  try {
                      const result = await decryptfile(file);
-                     const outName = replaceext(file.name, ".png");
-                     savefile(result.blob, outName);
+                     const outname = replaceext(file.name, ".png");
+                     savefile(result.blob, outname);
                      
                      if (result.used_fallback) {
                          setcounts(0, 0, 1);
@@ -545,7 +865,7 @@ def decryptrawpy(data):
                  } catch (e){
                     setcounts(0, 1, 0);
                     errorlog("fail: " + file.name + (e && e.message ? e.message : e));
-                    progressinfo.textContent = "Failed.";
+                    progressinfo.textContent = "Failed... If this is a split file, try selecting the folder containing all .raw files instead.";
                 }
             }
 
