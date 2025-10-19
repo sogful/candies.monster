@@ -1,0 +1,52 @@
+{"frames": [
+
+{
+	"filename": "bee0000",
+	"frame": {"x":0,"y":0,"w":90,"h":118},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":93,"y":79,"w":90,"h":118},
+	"sourceSize": {"w":275,"h":275}
+},
+{
+	"filename": "bee0001",
+	"frame": {"x":91,"y":78,"w":178,"h":39},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":49,"y":83,"w":178,"h":39},
+	"sourceSize": {"w":275,"h":275}
+},
+{
+	"filename": "bee0002",
+	"frame": {"x":91,"y":0,"w":188,"h":77},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":38,"w":188,"h":77},
+	"sourceSize": {"w":275,"h":275}
+},
+{
+	"filename": "bee0003",
+	"frame": {"x":280,"y":0,"w":87,"h":61},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":95,"y":36,"w":87,"h":61},
+	"sourceSize": {"w":275,"h":275}
+},
+{
+	"filename": "pollen",
+	"frame": {"x":270,"y":78,"w":21,"h":21},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":21,"h":21},
+	"sourceSize": {"w":21,"h":21}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sheet-2x.png",
+	"format": "RGBA8888",
+	"size": {"w":367,"h":118},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6b5c5a64e8099683f9d9ece58ac4c6e6:e4db10dc89d9ecddbb8440980e5f14d9:1cbd29238421f6664e303bb7b9164bbd$"
+}
+}

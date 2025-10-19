@@ -46,7 +46,7 @@
             cursor: url("/assets/static/active.cur"), default !important;
         }
         :any-link {
-            color: white;
+            color: #8feeff; text-decoration: none !important;
             cursor: url("/assets/static/link.cur"), default !important;
         }
         * {
@@ -177,9 +177,9 @@
 
     <div class="page">
         <a class="title">raw2png</a>
-        <span style="padding-bottom: 0.5em">Sprites in many Cut the Rope games for mobile are compressed, making them difficult to extract.
+        <span style="padding-bottom: 0.5em">Sprites in most of the Cut the Rope games for mobile are compressed, making them difficult to extract.
         <br>
-        This tool does the <i>zstd/zlib</i> decompression in the comfort of your browser to avoid that headache.
+        This tool attempts to do the <i>zstd/zlib</i> decompression in the comfort of your browser to avoid that headache.
         <br></i></span>
 
         <span class="tiny">For .xnb sprites, see<a href="https://github.com/LeonBlade/xnbcli">xnbcli</a>or<a href="https://lybell-art.github.io/xnb-js/">Web XNB Converter.</a></span>
@@ -200,7 +200,7 @@
                 <span>Single file</span>
             </label>
         </div>
-        <span class="tiny"><br><br>IOS and split (.raw1 - .raw8) files do not work yet.</span>
+        <span class="tiny"><br><br>IOS, large and split (.raw1 - .raw8) files do not work yet. Please<a href="https://github.com/sogful/candies.monster">contribute</a>if you have a solution!</span>
 
         <div class="stats">
             <div class="counts"><a style="color:#6cf16c">0 success</a>//<a style="color:#fff457">0 warnings</a>//<a style="color:#f08b8b">0 failed</a></div>
@@ -271,6 +271,14 @@
                  const now = new Date().toISOString().replace("T"," ").replace("Z","");
                  errors.textContent += "[" + now + "] " + msg + "\n";
                  errors.scrollTop = errors.scrollHeight;
+             }
+
+             function idgen() {
+                 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                 let result = '';
+                 for (let i = 0; i < 3; i++) {
+                     result += chars.charAt(Math.floor(Math.random() * chars.length));
+                 }; return result;
              }
 
              function savefile(blob, filename) {
@@ -821,7 +829,7 @@ def decryptrawpy(data):
                         });
 
                         const result = await decryptsplitfile(groupfiles);
-                        const targetpath = "FeedwithCandy/" + rel.replace(/\\/g,"/").replace(/\.[Rr][Aa][Ww]\d*$/, "") + ".png";
+                        const targetpath = rel.replace(/\\/g,"/").replace(/\.[Rr][Aa][Ww]\d*$/, "") + ".png";
                         zip.file(targetpath, result.blob);
                         
                         if (result.warning) {
@@ -842,7 +850,8 @@ def decryptrawpy(data):
 
                  progressinfo.textContent = "Zipping results…";
                  const zipblob = await zip.generateAsync({type: "blob", compression: "DEFLATE"});
-                 savefile(zipblob, "FeedwithCandy.zip");
+                 const uniqueid = idgen();
+                 savefile(zipblob, `FeedwithCandy_${uniqueid}.zip`);
                  progressinfo.textContent = "Done! Remember to rename .pngs back to .raws after editing.";
             }
 
@@ -876,7 +885,7 @@ def decryptrawpy(data):
             });
             document.querySelector(".inputsingle").addEventListener("change", async (e) => {
                 if (!e.target.files || e.target.files.length === 0) return;
-                await handleSingle(e.target.files[0]);
+                await handlesingle(e.target.files[0]);
                 document.querySelector(".inputsingle").value = "";
             });
 

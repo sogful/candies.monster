@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cut the Rope - Base64 Encoder</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        textarea { width: 100%; height: 200px; font-family: monospace; }
+        button { padding: 10px 20px; margin: 10px 0; font-size: 16px; }
+        .output { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .copy-btn { background: #007cba; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Cut the Rope - Base64 Encoder</h1>
+    
+    <h2>Step 1: Paste your XML level data</h2>
+    <textarea id="xmlInput" placeholder="Paste your XML level data here..."><map>
+<layer name="settings">
+<map gridSize="32" width="320" height="480" />
+<gameDesign ropePhysicsSpeed="1.0" special="1" twoParts="false" />
+</layer>
+<layer name="Objects">
+<candy x="158" y="147" />
+<grab x="159" y="45" length="90" wheel="false" gun="false" radius="-1" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
+<target x="161" y="427" />
+<star x="162" y="230" timeout="-1" />
+<star x="161" y="295" timeout="-1" />
+<star x="161" y="361" timeout="-1" />
+<tutorialText x="174" y="46" locale="en" text="Slide across or Click to cut the rope" width="160" />
+<tutorialText x="182" y="335" locale="en" text="Deliver candy to Om Nom" width="130" />
+<tutorial01 x="57" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial04 x="231" y="416" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial01 x="109" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial01 x="161" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial01 x="213" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial01 x="265" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial10 x="93" y="149" locale="en" moveSpeed="100" rotateSpeed="100" special="2" />
+</layer>
+<layer name="En">
+<tutorial10 x="93" y="156" locale="en" moveSpeed="100" rotateSpeed="100" special="2" />
+<tutorial01 x="109" y="126" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial01 x="57" y="126" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial01 x="161" y="126" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial01 x="213" y="126" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorial01 x="265" y="126" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorialText x="177" y="17" locale="en" text="Slide across or Click to cut the rope" width="160" />
+<tutorial04 x="231" y="421" locale="en" moveSpeed="100" rotateSpeed="100" />
+<tutorialText x="196" y="314" locale="en" text="Deliver candy to Om Nom" width="80" />
+</layer>
+</map></textarea>
+    
+    <button onclick="encodeXML()">Encode to Base64</button>
+    
+    <div id="output" style="display: none;">
+        <h2>Step 2: Copy the generated URL</h2>
+        <div class="output">
+            <strong>Base64 encoded data:</strong><br>
+            <textarea id="base64Output" readonly></textarea>
+            <button class="copy-btn" onclick="copyToClipboard('base64Output')">Copy Base64</button>
+        </div>
+        
+        <div class="output">
+            <strong>Complete game URL:</strong><br>
+            <textarea id="urlOutput" readonly></textarea>
+            <button class="copy-btn" onclick="copyToClipboard('urlOutput')">Copy URL</button>
+        </div>
+        
+        <div class="output">
+            <strong>Test the URL:</strong><br>
+            <a id="testLink" href="#" target="_blank">Open Game with Custom Level</a>
+        </div>
+        
+    </div>
+    
+    <script>
+        
+        // Proper UTF-8 base64 encoding
+        function encodeBase64UTF8(str) {
+            try {
+                // Encode string to UTF-8 bytes
+                const encoder = new TextEncoder();
+                const bytes = encoder.encode(str);
+                
+                // Convert bytes to binary string
+                let binaryString = '';
+                for (let i = 0; i < bytes.length; i++) {
+                    binaryString += String.fromCharCode(bytes[i]);
+                }
+                
+                // Encode as base64
+                return btoa(binaryString);
+            } catch (error) {
+                console.error('Error encoding UTF-8 to base64:', error);
+                // Fallback to simple btoa
+                return btoa(str);
+            }
+        }
+        
+        // Proper UTF-8 base64 decoding
+        function decodeBase64UTF8(str) {
+            try {
+                // First decode base64
+                const binaryString = atob(str);
+                
+                // Convert binary string to Uint8Array
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                
+                // Decode UTF-8
+                const decoder = new TextDecoder('utf-8');
+                return decoder.decode(bytes);
+            } catch (error) {
+                console.error('Error decoding base64 UTF-8:', error);
+                // Fallback to simple atob
+                return atob(str);
+            }
+        }
+        
+        function encodeXML() {
+            const xmlData = document.getElementById('xmlInput').value.trim();
+            
+            if (!xmlData) {
+                alert('Please enter XML data first!');
+                return;
+            }
+            
+            try {
+                // Encode the XML data as base64 with proper UTF-8 handling
+                const base64Data = encodeBase64UTF8(xmlData);
+                
+                // URL encode the base64 data
+                const urlEncoded = encodeURIComponent(base64Data);
+                
+                // Generate the full URL
+                const baseUrl = window.location.origin + window.location.pathname.replace('base64_encoder.html', 'index.html');
+                const fullUrl = baseUrl + '?data=' + urlEncoded;
+                
+                // Show outputs
+                document.getElementById('base64Output').value = base64Data;
+                document.getElementById('urlOutput').value = fullUrl;
+                document.getElementById('testLink').href = fullUrl;
+                document.getElementById('output').style.display = 'block';
+
+
+                try {
+                    const testDecoded = decodeBase64UTF8(base64Data);
+                } catch (decodeError) {
+                    console.error('Decoding test failed:', decodeError);
+                }
+                
+                
+            } catch (error) {
+                console.error('Error encoding XML:', error);
+                alert('Error encoding XML: ' + error.message);
+            }
+        }
+        
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            element.select();
+            element.setSelectionRange(0, 99999); // For mobile devices
+            
+            try {
+                document.execCommand('copy');
+                alert('Copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy to clipboard');
+            }
+        }
+    </script>
+</body>
+</html>

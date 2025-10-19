@@ -47,7 +47,7 @@
             cursor: url("/assets/static/active.cur"), default !important;
         }
         :any-link {
-            color: white;
+            color: #8feeff; text-decoration: none !important;
             cursor: url("/assets/static/link.cur"), default !important;
         }
         * {
@@ -1273,6 +1273,24 @@
                 document.querySelector(".click").play();
             });
         });
+
+        // a hopefully working fix for broken text on ancient browsers. added this because of my poor little kiwi browser 💔
+        var haspaintorder = false; var haswebkitstroke = false;
+        if (window.CSS && CSS.supports) {
+            haspaintorder = CSS.supports('paint-order', 'stroke fill');
+            haswebkitstroke = CSS.supports('-webkit-text-stroke', '1px black');
+        }
+        if (!haspaintorder || !haswebkitstroke) {
+            var style = document.createElement('style');
+            style.textContent = `h1, h2, h3, h4, h5, h6, a, span, div {
+                paint-order: unset !important;
+                -webkit-text-stroke: 0 !important;
+                text-shadow: -0.1em 0 black, 0 0.1em black, 0.1em 0 black, 0 -0.1em black,
+                -0.07em 0.07em black, 0.07em 0.07em black, -0.07em -0.07em black,
+                0.07em -0.07em black, 0 0.15em 0 black !important;
+            }`; document.head.appendChild(style);
+        }
+        
     </script>
 </body>
 </html>

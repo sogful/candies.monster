@@ -1,0 +1,29 @@
+{
+	"game_i18n": {
+		"default": {
+			"filename.png": "fg_i18n/en/images/filename.png"
+		}
+	},
+	"interstitials": {
+		"eventIds": [
+			"button:levelselection:level",
+			"button:level:pause",
+			"button:level:restart",
+			"button:results:restart",
+			"button:results:next",
+			"button:results:quit",
+			"button:results:restart",
+			"button:failed:quit",
+			"button:pause:quit",
+			"break:fail",
+			"break:result"
+		]
+	},
+	"game_info": {
+		"client_version": "1.6.2"
+	},
+	"features": {
+		"rewarded": 1,
+		"highscores": 0
+	}
+}

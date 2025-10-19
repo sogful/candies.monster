@@ -1,0 +1,60 @@
+{"frames": [
+
+{
+	"filename": "season1",
+	"frame": {"x":0,"y":166,"w":911,"h":234},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":37,"w":911,"h":234},
+	"sourceSize": {"w":1024,"h":356}
+},
+{
+	"filename": "season2",
+	"frame": {"x":0,"y":674,"w":894,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":57,"w":894,"h":215},
+	"sourceSize": {"w":1024,"h":356}
+},
+{
+	"filename": "season3",
+	"frame": {"x":0,"y":401,"w":897,"h":272},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":0,"w":897,"h":272},
+	"sourceSize": {"w":1024,"h":356}
+},
+{
+	"filename": "shelf",
+	"frame": {"x":0,"y":0,"w":1024,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":191,"w":1024,"h":165},
+	"sourceSize": {"w":1024,"h":356}
+},
+{
+	"filename": "shelf_button",
+	"frame": {"x":0,"y":890,"w":170,"h":146},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":146},
+	"sourceSize": {"w":170,"h":146}
+},
+{
+	"filename": "shelf_button_hot",
+	"frame": {"x":171,"y":890,"w":170,"h":146},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":146},
+	"sourceSize": {"w":170,"h":146}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sheet.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1036},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:26c68eff808d81908c6a54551a3e9766:67a0f2c8eb37a9092c0050c44f145c90:9c44ecd7e9a522007eaff2949095bc1d$"
+}
+}

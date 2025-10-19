@@ -1,0 +1,60 @@
+{"frames": [
+
+{
+	"filename": "center",
+	"frame": {"x":688,"y":1226,"w":38,"h":38},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":38},
+	"sourceSize": {"w":38,"h":38}
+},
+{
+	"filename": "handle",
+	"frame": {"x":688,"y":1069,"w":183,"h":154},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":183,"h":154},
+	"sourceSize": {"w":183,"h":154}
+},
+{
+	"filename": "handle_hot",
+	"frame": {"x":538,"y":1358,"w":204,"h":174},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":174},
+	"sourceSize": {"w":204,"h":174}
+},
+{
+	"filename": "highlight",
+	"frame": {"x":2,"y":1069,"w":533,"h":496},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":494,"w":533,"h":496},
+	"sourceSize": {"w":1064,"h":990}
+},
+{
+	"filename": "record",
+	"frame": {"x":2,"y":2,"w":1064,"h":1064},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1064,"h":1064},
+	"sourceSize": {"w":1064,"h":1064}
+},
+{
+	"filename": "sticker",
+	"frame": {"x":538,"y":1069,"w":147,"h":286},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":147,"h":286},
+	"sourceSize": {"w":290,"h":286}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sheet-2x.png",
+	"format": "RGBA8888",
+	"size": {"w":1068,"h":1567},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:17d552a5598ce8625f6271a506790ad7:8f3ff2f48e26bb145553c3980a82aa5e:1cbd29238421f6664e303bb7b9164bbd$"
+}
+}

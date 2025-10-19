@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<title>Cut the Rope (Famobi)</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="user-scalable=0, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, interactive-widget=resizes-content" />
+		<link rel="icon" href="assets/images/favicon.png">		
+
+		<link rel="manifest" href="manifest.json">
+		
+		<style>
+			body {
+				margin: 0px;
+				overflow: hidden; display: flex;
+				justify-content: center !important;
+				align-items: center !important;
+				background-color: black;
+			}
+			.bg {
+				position: fixed; display: flex;
+				justify-content: center !important;
+				align-items: center !important;
+				width: 100%; height: 100vh;
+				background-image: url("/assets/images/tile.webp");
+				background-repeat: repeat; background-size: auto;
+				opacity: 0.25;
+				top: 0; left: 0; right: 0; bottom: 0;
+			}
+
+			#gfx {
+				position: absolute;
+				width: 100% !important;
+				height: 100vh !important;
+				left: 0; right: 0;
+				margin-left: auto; margin-right: auto;
+				touch-action: none; user-select: none;
+				outline: none; z-index: 0;
+			}
+			@media (min-aspect-ratio: 16/9) {
+				#gfx {
+					width: calc(100vh * 16/9) !important;
+					max-width: 100%;
+				}
+			}
+			@media (max-aspect-ratio: 9/16) {
+				#gfx {
+					width: 100% !important;
+					height: calc(100vw * 16/9) !important;
+					top: 0;
+					bottom: 0;
+					margin-top: auto;
+					margin-bottom: auto;
+					transform: none;
+				}
+			}
+		</style>
+
+		<script>
+			function convertxmltojson(xmlstring) {
+				try {
+				const parser = new DOMParser();
+					const xmldoc = parser.parseFromString(xmlstring, "text/xml");
+					const mapelement = xmldoc.querySelector("map");
+				
+					if (!mapelement) {
+						throw new Error("No <map> element found in XML");
+					}
+					const level = {
+					settings: [],
+					objects: []
+				};
+				
+					const settingslayer = mapelement.querySelector('layer[name="settings"]');
+					if (settingslayer) {
+						const mapsettings = settingslayer.querySelector("map");
+						if (mapsettings) {
+							level.settings.push({
+						name: 0,
+								height: parseInt(mapsettings.getAttribute("height")) || 480,
+								gridSize: parseInt(mapsettings.getAttribute("gridSize")) || 32,
+								width: parseInt(mapsettings.getAttribute("width")) || 320
+							});
+						}
+						
+						const gamedesign = settingslayer.querySelector("gameDesign");
+						if (gamedesign) {
+						const gamedesignsettings = {
+						name: 1,
+							ropePhysicsSpeed: parseFloat(gamedesign.getAttribute("ropePhysicsSpeed")) || 1,
+							special: parseInt(gamedesign.getAttribute("special")) || 1,
+							twoParts: gamedesign.getAttribute("twoParts") === "true"
+						};
+						
+						// Force special: 1 to enable gravity switches and spikes
+						gamedesignsettings.special = 2;
+							
+							// Only add twoParts if it's explicitly set to true
+							if (gamedesign.getAttribute("twoParts") !== "true") {
+								delete gamedesignsettings.twoParts;
+							}
+							
+							if (gamedesign.getAttribute("nightLevel")) gamedesignsettings.nightLevel = gamedesign.getAttribute("nightLevel") === "true";
+							if (gamedesign.getAttribute("water")) gamedesignsettings.water = parseInt(gamedesign.getAttribute("water"));
+							if (gamedesign.getAttribute("waterSpeed")) gamedesignsettings.waterSpeed = parseInt(gamedesign.getAttribute("waterSpeed"));
+							
+							level.settings.push(gamedesignsettings);
+						}
+					}
+					
+					const objectlayer = mapelement.querySelector('layer[name="Objects"]');
+					if (objectlayer) {
+						const objects = objectlayer.querySelectorAll("*");
+						let objectcount = 0;
+						
+						objects.forEach(obj => {
+
+							const tagname = obj.tagName.toLowerCase();
+
+							const x = parseInt(obj.getAttribute("x")) || 0;
+							const y = parseInt(obj.getAttribute("y")) || 0;
+							
+							let ctrobject = { name: 0, x: x, y: y };
+							
+							// ALL OBJECTS HERE!!
+							switch (tagname) {
+								case "candy":
+									ctrobject.name = 52;
+									break;
+								case "candyL":
+									ctrobject.name = 50;
+									break;
+								case "candyR": 
+									ctrobject.name = 51;
+									break;
+								case "target":
+									ctrobject.name = 2;
+									break;
+								case "star":
+									ctrobject.name = 3;
+									ctrobject.timeout = parseInt(obj.getAttribute("timeout")) || -1;
+									break;
+								case "bubble":
+									ctrobject.name = 54;
+									break;
+								case "pump":
+									ctrobject.name = 55;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									break;
+								case "sock":
+									ctrobject.name = 56;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.group = parseInt(obj.getAttribute("group")) || 0;
+									break;
+								case "spike2":
+								case "Spike2":
+								case "SPIKE2":
+									ctrobject.name = 58;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+									break;
+								case "spike3":
+								case "Spike3":
+								case "SPIKE3":
+									ctrobject.name = 80;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+									ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
+									ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 0;
+									ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 0;
+									ctrobject.toggled = false;
+									if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
+									if (obj.getAttribute("rotateSpeed")) ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed"));
+									break;
+								case "gravityswitch":
+								case "gravitySwitch":
+								case "GravitySwitch":
+								case "GRAVITYSWITCH":
+									ctrobject.name = 53;
+									break;
+								case "spike4":
+									ctrobject.name = 60;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+									ctrobject.toggled = parseInt(obj.getAttribute("toggled")) || 0;
+									break;
+								case "electro":
+									ctrobject.size = parseInt(obj.getAttribute("size")) || 5;
+									ctrobject.name = 80;
+									ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 2;
+									ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 3;
+									break;
+								case "bouncer1":
+									ctrobject.name = 81;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+									break;
+								case "rotatedcircle":
+								case "rotatedCircle":
+									ctrobject.name = 120;
+									ctrobject.oneHandle = obj.getAttribute("oneHandle") === "true";
+									// ctrobject.size = parseInt(obj.getAttribute("size")) || 100;
+									ctrobject.handleAngle = parseInt(obj.getAttribute("handleAngle")) || 0;
+									break;
+								case "ghost":
+									ctrobject.name = 130;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.radius = parseInt(obj.getAttribute("radius")) || 100;
+									ctrobject.bouncer = obj.getAttribute("bouncer") === "true";
+									ctrobject.bubble = obj.getAttribute("bubble") === "true";
+									ctrobject.grab = obj.getAttribute("grab") === "true";
+									break;
+								case "steamtube":
+								case "steamTube":
+									ctrobject.name = 131;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									break;
+								case "lantern":
+									ctrobject.name = 132;
+									ctrobject.candyCaptured = obj.getAttribute("candyCaptured") === "true";
+									break;
+								case "gap":
+									ctrobject.name = 133;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.activeTime = parseFloat(obj.getAttribute("activeTime")) || 2;
+									ctrobject.radius = parseInt(obj.getAttribute("radius")) || 50;
+									ctrobject.index = parseInt(obj.getAttribute("index")) || 1;
+									break;
+								case "lightbulb":
+								case "lightBulb":
+									ctrobject.name = 134;
+									ctrobject.litRadius = parseInt(obj.getAttribute("litRadius")) || 10;
+									ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
+									break;
+								case "transporter":
+									ctrobject.name = 135;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.direction = obj.getAttribute("direction") || "forward";
+									ctrobject.type = obj.getAttribute("type") || "manual";
+									ctrobject.width = parseInt(obj.getAttribute("width")) || 50;
+									ctrobject.length = parseInt(obj.getAttribute("length")) || 100;
+									ctrobject.velocity = parseInt(obj.getAttribute("velocity")) || 0;
+									break;
+								case "hiddenelement":
+								case "hiddenElement":
+									ctrobject.name = 300;
+									ctrobject.radius = parseInt(obj.getAttribute("radius")) || 30;
+									break;
+								case "grab":
+									ctrobject.name = 100;
+									ctrobject.spider = obj.getAttribute("spider") === "true";
+									ctrobject.gun = obj.getAttribute("gun") === "true";
+									ctrobject.wheel = obj.getAttribute("wheel") === "true";
+									ctrobject.part = obj.getAttribute("part") || "L";
+									ctrobject.hidePath = obj.getAttribute("hidePath") !== "false";
+									ctrobject.moveOffset = parseInt(obj.getAttribute("moveOffset")) || 0;
+									ctrobject.moveVertical = obj.getAttribute("moveVertical") === "true";
+									ctrobject.length = parseInt(obj.getAttribute("length")) || 90;
+									ctrobject.moveLength = parseInt(obj.getAttribute("moveLength")) || -1;
+									ctrobject.radius = parseInt(obj.getAttribute("radius")) || -1;
+									
+									// Add all required properties with defaults
+									ctrobject.kickable = obj.getAttribute("kickable") === "true";
+									ctrobject.kicked = obj.getAttribute("kicked") === "true";
+									ctrobject.invisible = obj.getAttribute("invisible") === "true";
+									ctrobject.helicopter = obj.getAttribute("helicopter") === "true";
+									ctrobject.bindBulb = obj.getAttribute("bindBulb") === "true";
+									ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
+									
+									// Add default properties for spider ropes to prevent crashes
+									if (ctrobject.spider) {
+										ctrobject.gun = false; // Ensure gun is false for spiders
+										ctrobject.wheel = false; // Ensure wheel is false for spiders
+									}
+									break;
+								case "tutorial04":
+									ctrobject.name = 8;
+									ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+									break;
+								case "tutorialtext":
+									ctrobject.name = 4;
+									ctrobject.text = obj.getAttribute("text") || "";
+									ctrobject.width = parseInt(obj.getAttribute("width")) || 100;
+									ctrobject.height = parseInt(obj.getAttribute("height")) || 60;
+									ctrobject.locale = obj.getAttribute("locale") || "en";
+									break;
+								case "tutorial10":
+									ctrobject.name = 14;
+									ctrobject.special = parseInt(obj.getAttribute("special")) || 2;
+									ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+									break;
+								case "tutorial07":
+								case "tutorial7":
+								case "Tutorial07":
+									ctrobject.name = 7;
+									ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+									ctrobject.locale = obj.getAttribute("locale") || "en";
+									break;
+								case "spike":
+								case "Spike":
+								case "SPIKE":
+									ctrobject.name = 57;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+									break;
+								case "spike1":
+								case "Spike1":
+								case "SPIKE1":
+									ctrobject.name = 59;
+									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+									break;
+								default:
+									console.warn("undefined object type, skipping:", tagname);
+									return;
+							}; 
+							
+							// Add path and moveSpeed properties if they exist (for any object)
+							if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
+							if (obj.getAttribute("moveSpeed")) ctrobject.moveSpeed = parseInt(obj.getAttribute("moveSpeed"));
+							
+							level.objects.push(ctrobject); objectcount++;
+						}); console.log(`loaded ${objectcount} objects`);
+					}
+					
+					if (level.settings.length === 0) {
+						console.warn("no settings? adding default ones");
+						level.settings = [
+							{ name: 0, height: 480, gridSize: 32, width: 320 },
+							{ name: 1, ropePhysicsSpeed: 1, special: 1, twoParts: false }
+						];
+					}
+					
+					console.log(JSON.stringify(level, null, 2));
+					
+					try {
+						const testjson = JSON.stringify(level);
+						console.log("JSON validation successful, length:", testjson.length);
+					} catch (jsonerror) {
+						console.error("JSON validation failed:", jsonerror);
+						throw new Error("Generated level data is not valid JSON");
+					}
+					
+					return level;
+				} catch (error) {
+					console.error("Error converting XML to JSON:", error);
+					throw error;
+				}
+			}
+			
+			function getcustomleveldata() {
+				const urlparams = new URLSearchParams(window.location.search);
+				const dataparam = urlparams.get('data');
+				
+				if (dataparam) {
+					try {
+						console.log('Custom data parameter found, decoding base64...');
+						
+						const urldecoded = decodeURIComponent(dataparam);
+						console.log('URL decoded data length:', urldecoded.length);
+						console.log('URL decoded preview:', urldecoded.substring(0, 100) + '...');
+						
+						const xmldata = decodebase64utf8(urldecoded);
+						console.log('Decoded XML length:', xmldata.length);
+						console.log('Decoded XML preview:', xmldata.substring(0, 200) + '...');
+						
+						const customlevel = convertxmltojson(xmldata);
+						console.log('Custom level converted successfully:', customlevel);
+						
+						cleanupurl();
+						
+						return customlevel;
+					} catch (error) {
+						console.error('Error processing custom data:', error);
+						console.log('Falling back to default level');
+						
+						cleanupurl();
+						
+						return null;
+					}
+				}
+				
+				return null;
+			}
+			
+			function cleanupurl() {
+				try {
+					const url = new URL(window.location);
+					url.searchParams.delete('data');
+					
+					window.history.replaceState({}, '', url.toString());
+					console.log('URL cleaned up, data parameter removed');
+				} catch (error) {
+					console.warn('Could not clean up URL:', error);
+				}
+			}
+			
+			function decodebase64utf8(str) {
+				try {
+					const binarystring = atob(str);
+					
+					const bytes = new Uint8Array(binarystring.length);
+					for (let i = 0; i < binarystring.length; i++) {
+						bytes[i] = binarystring.charCodeAt(i);
+					}
+					
+					const decoder = new TextDecoder('utf-8');
+					return decoder.decode(bytes);
+				} catch (error) {
+					console.error('Error decoding base64 UTF-8:', error);
+					return atob(str);
+				}
+			}
+			
+			const customleveldata = getcustomleveldata();
+			
+			window.famobi_gameID = "cut-the-rope";
+			window.famobi_gameJS = [
+				"assets/static/ctrr.js",
+				function ()
+				{
+					if (customleveldata) {
+						window.customleveldata = customleveldata;
+						console.log('Custom level data stored globally');
+					}
+					
+					const originalconsoleerror = console.error;
+					console.error = function(...args) {
+						originalconsoleerror.apply(console, args);
+					};
+					
+					try {
+					Ctrr.main(window.famobi.getCurrentLanguage());
+					} catch (error) {
+						console.error('Game startup error:', error);
+						console.error = originalConsoleError;
+					}
+				},
+			];
+			(function (document, url, fgJS, firstJS)
+			{
+				fgJS = document.createElement("script");
+				firstJS = document.getElementsByTagName("script")[0];
+				fgJS.src = url + encodeURIComponent(document.location.href);
+				firstJS.parentNode.insertBefore(fgJS, firstJS);
+			})(document, "assets/static/v1.js?e=");
+		</script>
+	</head>
+	<body>
+		<div class="bg"></div>
+	</body>
+</html>
