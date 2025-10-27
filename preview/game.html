@@ -420,18 +420,17 @@
 				}
 			}
 			
-			function getcustomleveldata() {
-				const urlparams = new URLSearchParams(window.location.search);
-				const dataparam = urlparams.get("data");
-				
-				// debug stats
-				if (dataparam) {
-					try {
-						console.log("LEVEL FOUND!! decoding base64");
-						const urldecoded = decodeURIComponent(dataparam);
-						console.log("url data length:", urldecoded.length);
-						console.log("url data decoded:", urldecoded.substring(0, 100) + "...");
-						const xmldata = decodebase64utf8(urldecoded);
+		function getcustomleveldata() {
+			const dataparam = new URLSearchParams(window.location.search).get("data");
+			
+			// debug stats
+			if (dataparam) {
+				try {
+					console.log("LEVEL FOUND!! decoding base64url");
+					console.log("url data length:", dataparam.length);
+					console.log("url data:", dataparam.substring(0, 100) + "...");
+					
+					const xmldata = decodebase64utf8(dataparam);
 						console.log("converted data length:", xmldata.length);
 						console.log("converted data decoded", xmldata.substring(0, 200) + "...");	
 						const customlevel = convertxmltojson(xmldata);
@@ -454,19 +453,27 @@
 				window.history.replaceState({}, "", url.toString());
 			}
 			
-			function decodebase64utf8(str) {
-				try {
-					const binarystring = atob(str);
-					
-					const bytes = new Uint8Array(binarystring.length);
-					for (let i = 0; i < binarystring.length; i++) {
-						bytes[i] = binarystring.charCodeAt(i);
-					}
-					
-					const decoder = new TextDecoder("utf-8");
-					return decoder.decode(bytes);
-				} catch (error) {return atob(str)}
+		function decodebase64utf8(str) {
+			try {
+				let cleaned = str.replace(/\s/g, '');
+				cleaned = cleaned.replace(/-/g, '+').replace(/_/g, '/');
+				while (cleaned.length % 4 !== 0) {
+					cleaned += '=';
+				}
+				const binarystring = atob(cleaned);
+				
+				const bytes = new Uint8Array(binarystring.length);
+				for (let i = 0; i < binarystring.length; i++) {
+					bytes[i] = binarystring.charCodeAt(i);
+				}
+				
+				const decoder = new TextDecoder("utf-8");
+				return decoder.decode(bytes);
+			} catch (error) {
+				console.error("base64 decode error:", error);
+				throw error;
 			}
+		}
 			const customleveldata = getcustomleveldata();
 			
 			/*//////////////////////////////////////////////////////////////////////*/

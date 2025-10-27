@@ -342,12 +342,19 @@
 
         function encodeurl(str) {
             try {
-                const bytes = new TextEncoder().encode(str); let bin = "";
+                const bytes = new TextEncoder().encode(str);
+                let bin = "";
                 for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-                return btoa(bin);
+                
+                let base64 = btoa(bin);
+                base64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+                
+                return base64;
             } catch (e) {
                 console.error("base64 error:", e);
-                return btoa(str);
+                let base64 = btoa(str);
+                base64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+                return base64;
             }
         }
 
@@ -355,7 +362,7 @@
             const theotherbox = document.querySelector(".theotherbox");
             const xml = theotherbox.textContent.trim();
                 const b64 = encodeurl(xml);
-                const b64uri = encodeURIComponent(b64);
+                const b64uri = b64;
 
                 const fullurl = window.location.origin + window.location.pathname.replace("index.html", "game") + "?data=" + b64uri;
                 const urlelem = document.querySelector(".url");
