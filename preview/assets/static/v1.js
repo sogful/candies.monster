@@ -1,443 +1,4 @@
-!function(a, b) {
-
-    const SDK_INTERFACE = {
-
-        version: "1.1.1",
-
-        settings: null,
-        isSDKInterfaceDone: false,
-
-        AD_STATES: {
-            "OFF": 0,
-            "IDLE": 1,
-            "PRELOADING": 2,
-            "READY": 3,
-            "PLAYING": 4,
-            "CLOSED": 5
-        },
-
-        init: function(settings) {
-
-            this.settings = settings || {};
-
-            this.getDebugLevel() && console.log("[init] SDK_INTERFACE %s...", this.version);
-            this.getDebugLevel() && console.log(settings);
-
-            if(this.settings.isProd) {
-                this.settings.forceMockObject = false;
-            }
-
-            this.settings.interstitial.state = null; // initial state
-            this.settings.interstitial.last = null; // last ad call
-
-            this.settings.rewarded.state = null; // initial state
-            this.settings.rewarded.last = null; // last ad call
-
-            let files = [];
-            for(let i = 0; i < this.settings.externalFiles.length; i++) {
-                files.push(this.settings.externalFiles[i]);
-            }
-
-            let _this = this;
-
-            this.loadFiles(files).then(function() {}, function() {}).catch(e => {}).then(function() {
-
-                _this.setFamobiAdapters();
-
-                ["interstitial"].forEach(function(type){
-
-                    if(_this.settings[type].enabled) {
-
-                        _this.setAdState(type, _this.AD_STATES.IDLE);
-
-                        if(_this.settings[type].preload > 0) {
-                            setInterval(function() {
-                                if(_this.settings[type].enabled) {
-                                     _this.preload(type);
-                                }
-                            }, _this.settings[type].preload);
-                        }
-                    }
-                });
-
-                (_this.settings.forceMockObject ? SDK_INTERFACE_MOCK_OBJECT() : Promise.resolve()).then(
-                    function() {
-                        _this.getDebugLevel() && console.log("[SDK_INTERFACE] using mock object..." + (!_this.settings.forceMockObject ? "SKIPPED" : "OK"));
-                    },
-                    function() {
-                        _this.getDebugLevel() && console.log("[SDK_INTERFACE] using mock object... FAILED");
-                    }).catch(e => {}).then(function() {
-                        SDK_INTERFACE_INIT().then(
-                            function() {
-                                _this.getDebugLevel() && console.log("[SDK_INTERFACE] init... OK");
-                            },
-                            function() {
-                                _this.getDebugLevel() && console.log("[SDK_INTERFACE] init... FAILED");
-                            }).catch(e => {}).then(function() {
-                                _this.done();
-                            });
-                    });
-            });
-        },
-        loadFile: function(src) {
-
-            let _this = this;
-
-            return new Promise(function(resolve, reject) {
-                const s = document.createElement('script');
-                let r = false;
-                s.type = 'text/javascript';
-                s.src = src;
-                s.async = false;
-                s.onerror = function(err) {
-                    _this.getDebugLevel() && console.log("[loading] %s... FAILED", src);
-                    reject(err, s);
-                };
-                s.onload = s.onreadystatechange = function() {
-                    if (!r && (!this.readyState || this.readyState == 'complete')) {
-                        r = true;
-                        _this.getDebugLevel() && console.log("[loading] %s... OK", src);
-                        resolve();
-                    }
-                };
-                const t = document.getElementsByTagName('script')[0];
-                t.parentElement.insertBefore(s, t);
-            });
-        },
-        loadFiles: function(files) {
-
-            let _this = this;
-            files = files || [];
-            let head;
-            let link;
-
-            return new Promise((resolve, reject) => {
-
-                if(!Array.isArray(files)) {
-                    reject();
-                    return;
-                }
-
-                files.push(() => {
-                    resolve();
-                });
-
-                files.reduce((prev, pSrc) => {
-
-                    return prev.then(() => {
-                        return new Promise((resolve,reject) => {
-                            let script = document.createElement('script');
-                            if(typeof pSrc === "function") {
-                                SDK_INTERFACE_SETTINGS.debugLevel && console.debug("calling function...");
-                                pSrc();
-                                resolve();
-                            } else {
-                                SDK_INTERFACE_SETTINGS.debugLevel && console.debug("loading %s...", pSrc);
-
-                                switch(pSrc.split('.').pop()) {
-                                    case "js":
-                                        script.src = pSrc;
-                                        document.body.appendChild(script);
-                                        script.onload = () => {
-                                            resolve();
-                                        }
-                                        script.onerror = () => {
-                                            resolve();
-                                        }
-                                        break;
-                                    case "css":
-                                        head  = document.getElementsByTagName('head')[0];
-                                        link  = document.createElement('link');
-
-                                        link.rel  = 'stylesheet';
-                                        link.type = 'text/css';
-                                        link.href = pSrc;
-
-                                        head.appendChild(link);
-                                        resolve();
-                                        break;
-                                    default:
-                                        script.src = pSrc;
-                                        document.body.appendChild(script);
-                                        script.onload = () => {
-                                            resolve();
-                                        }
-                                        script.onerror = () => {
-                                            resolve();
-                                        }
-                                };
-                            }
-                        });
-                    });
-                }, Promise.resolve());
-            });
-        },
-        _showAd: function(callback, force, isInitial) {
-
-            let type = "interstitial";
-
-            this.getDebugLevel() && console.log("[famobi] showAd");
-
-            const doCallback = function() {
-                if(typeof callback == "function") {
-                    callback();
-                }
-            };
-
-            if(this.getAdState(type) !== this.AD_STATES.READY) {
-                this.getDebugLevel() && console.log("[famobi] showAd SKIPPED (state: %s)", this.getAdState(type));
-                doCallback();
-                return;
-            }
-
-            if(!this.hasCooledDown()) {
-                this.getDebugLevel() && console.log("[famobi] showAd SKIPPED");
-                doCallback();
-                return;
-            }
-
-            this.setAdState(type, this.AD_STATES.PLAYING);
-
-            if(isInitial !== true) {
-                this.pauseGame();
-            }
-
-            let _this = this;
-
-            setTimeout(function() {
-
-                _this.getDebugLevel() && console.log("SDK_INTERFACE_SHOW_AD()");
-                SDK_INTERFACE_SHOW_AD(force, isInitial).then(
-                    function() {
-                        _this.getDebugLevel() && console.log("OK");
-                        if(isInitial !== true) {
-                            _this.settings[type].last = new Date();
-                        }
-                    },
-                    function(e) {
-                        _this.getDebugLevel() && console.log("FAILED", e);
-                }).catch(e => {}).then(function() {
-                    _this.setAdState(type, _this.AD_STATES.CLOSED);
-                    setTimeout(function() {
-                        _this.setAdState(type, _this.AD_STATES.IDLE);
-                    }, 500);
-
-                    setTimeout(function() {
-                        _this.resumeGame();
-                        doCallback();
-                    }, _this.settings[type].timeout);
-                });
-            }, _this.settings[type].timeout);
-        },
-        _rewardedAd: function(callback) {
-
-            let result = {rewardGranted: this.settings.rewarded.reward, adDidLoad: true, adDidShow: true},
-                type = "rewarded";
-
-            this.getDebugLevel() && console.log("[famobi] rewardedAd");
-
-            const doCallback = function() {
-                if(typeof callback == "function") {
-                    callback(result);
-                }
-            };
-
-            if(this.getAdState(type) !== this.AD_STATES.READY) {
-                this.getDebugLevel() && console.log("[famobi] rewardedAd SKIPPED (state: %s)", this.getAdState(type));
-                doCallback();
-                return;
-            }
-
-            if(!this.hasCooledDown(type)) {
-                this.getDebugLevel() && console.log("[famobi] rewardedAd SKIPPED");
-                doCallback();
-                return;
-            }
-
-            this.setAdState(type, this.AD_STATES.PLAYING);
-            this.pauseGame();
-
-            let _this = this;
-
-            setTimeout(function() {
-
-                _this.getDebugLevel() && console.log("SDK_INTERFACE_REWARDED_AD()");
-                SDK_INTERFACE_REWARDED_AD().then(
-                    function(rewardGranted) {
-                        _this.settings[type].last = new Date();
-                        _this.getDebugLevel() && console.log("OK");
-                        result.rewardGranted = rewardGranted;
-                    },
-                    function(e) {
-                        _this.getDebugLevel() && console.log("FAILED", e);
-
-                }).catch(e => {}).then(function() {
-                    _this.setAdState(type, _this.AD_STATES.CLOSED);
-                    setTimeout(function() {
-                        _this.setAdState(type, _this.AD_STATES.IDLE);
-                    }, 500);
-
-                    setTimeout(function() {
-                        _this.resumeGame();
-                        doCallback();
-                    }, _this.settings[type].timeout);
-                });
-            }, _this.settings[type].timeout);
-
-        },
-        _hasRewardedAd: function() {
-            return this.settings.rewarded.state === this.AD_STATES.READY && this.hasCooledDown("rewarded");
-        },
-        pauseGame: function() {
-            this.getDebugLevel() && console.log("[famobi] game.pause... OK");
-            window.famobi.game.pause();
-        },
-        resumeGame: function() {
-            if(window.famobi.game.canResume()) {
-                this.getDebugLevel() && console.log("[famobi] game.resume... OK");
-                window.famobi.game.resume();
-            } else {
-                this.getDebugLevel() && console.log("[famobi] game.resume... SKIPPED");
-            }
-        },
-        preload: function(type) {
-
-            type = type || "interstitial";
-
-            if(this.settings[type].state !== this.AD_STATES.IDLE) {
-                return;
-            }
-
-            this.settings[type].fails = this.settings[type].fails || 0;
-            this.settings[type].attempts = this.settings[type].attempts || 0;
-
-            if(this.settings[type].attempts > 0 && this.settings[type].fails >= this.settings[type].attempts) {
-                return;
-            }
-
-            this.setAdState(type, this.AD_STATES.PRELOADING);
-
-            let _this = this;
-
-            SDK_INTERFACE_PRELOAD_AD(type).then(
-                function() {
-                    _this.settings[type].fails = 0;
-                    _this.getDebugLevel() && console.log("[%s] preloading... OK", type);
-                    _this.setAdState(type, _this.AD_STATES.READY);
-                },
-                function() {
-                    _this.settings[type].fails++;
-                    _this.getDebugLevel() && console.log("[%s] preloading... FAILED (attempt: %s)", type, _this.settings[type].fails);
-                    _this.setAdState(type, _this.AD_STATES.CLOSED);
-
-                    setTimeout(function() {
-                        _this.setAdState(type, _this.AD_STATES.IDLE);
-                    }, _this.settings[type].retry);
-                }
-            );
-        },
-        setFamobiAdapters: function() {
-
-            let _this = this;
-
-            window.famobi_adapters = {
-                "api": {
-                    "created": function() {
-                        _this.overwrite();
-
-                        window.famobi.adapters.add("viewport", "offsetChanged", offsets => {
-                            if(typeof window.famobi.onOffsetChangeCallback === "function") {
-                                window.famobi.onOffsetChangeCallback(offsets);
-                            }
-                        });
-
-                        if(window.famobi.hasFeature("rewarded")) {
-                            ["rewarded"].forEach(function(type){
-
-                                if(_this.settings[type].enabled) {
-
-                                    _this.setAdState(type, _this.AD_STATES.IDLE);
-
-                                    if(_this.settings[type].preload > 0) {
-                                        setInterval(function() {
-                                            _this.preload(type)
-                                        }, _this.settings[type].preload);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            };
-        },
-        getDebugLevel: function() {
-            return this.settings.debugLevel;
-        },
-        setAdState: function(type, state) {
-            this.getDebugLevel() && console.log("[%s] changed state: %s", type, Object.keys(this.AD_STATES)[state]);
-            this.settings[type].state = state;
-        },
-        getAdState: function(type) {
-            type = type || "interstitial";
-            return this.settings[type].state;
-        },
-        hasCooledDown: function(type) {
-
-            type = type || "interstitial";
-
-            if(!(this.settings[type].last && this.settings[type].cooldown >= 0)) {
-                return true;
-            }
-
-            const adTimeInterval = this.settings[type].cooldown;
-            const lastAdCalled = Math.round((Date.now() - this.settings[type].last) / 1000);
-
-            if(lastAdCalled >= adTimeInterval) {
-                return true;
-            } else {
-                this.getDebugLevel() && console.log("[%s/cooldown]: %s seconds left", type, (adTimeInterval - lastAdCalled));
-                return false;
-            }
-        },
-        overwrite: function() {
-
-            let _this = this;
-
-            // window.famobi
-            if(typeof window.famobi !== "undefined") {
-
-                Object.keys(SDK_INTERFACE_OVERRIDES.famobi).forEach(function(fnc) {
-                    if(["showAd", "rewardedAd", "hasRewardedAd"].includes(fnc)) {
-                        _this.getDebugLevel() && console.warn("[overwrite] famobi.%s... SKIPPED", fnc);
-                    } else {
-                        _this.getDebugLevel() && console.log("[overwrite] famobi.%s... OK", fnc);
-                        window.famobi[fnc] = SDK_INTERFACE_OVERRIDES.famobi[fnc];
-                    }
-                });
-
-                window.famobi.showAd = SDK_INTERFACE._showAd.bind(SDK_INTERFACE);
-                window.famobi.rewardedAd = SDK_INTERFACE._rewardedAd.bind(SDK_INTERFACE);
-                window.famobi.hasRewardedAd = SDK_INTERFACE._hasRewardedAd.bind(SDK_INTERFACE);
-            }
-
-            // window.famobi_analytics
-            let intervalAnalytics = setInterval(function() {
-                if(typeof window.famobi_analytics !== "undefined") {
-                    clearInterval(intervalAnalytics);
-
-                    Object.keys(SDK_INTERFACE_OVERRIDES.famobi_analytics).forEach(function(fnc) {
-                        _this.getDebugLevel() && console.log("[overwrite] famobi_analytics.%s... OK", fnc);
-                        window.famobi_analytics[fnc] = SDK_INTERFACE_OVERRIDES.famobi_analytics[fnc];
-                    });
-                }
-            }, 500);
-        },
-        done: function() {
-            this.isSDKInterfaceDone = true;
-        }
-    }
-    b[a] = SDK_INTERFACE;
-}('SDK_INTERFACE', window);
+// the sdk here is completely patched out, making the powerups work for FREE?? lol that's nice
 
 const loadScript = function(src) {
     return new Promise(function(resolve, reject) {
@@ -494,7 +55,6 @@ if (typeof window !== "undefined" && !window.famobi) {
 
                     return new Promise(function(resolve, reject) {
 
-                        // famobi.json
                         if(!this.config) {
                             readTextFile("famobi.json", function(text){
 
@@ -504,40 +64,13 @@ if (typeof window !== "undefined" && !window.famobi) {
                                 data.game_i18n = data.game_i18n || {};
                                 this.config = data;
 
-                                if(typeof SDK_INTERFACE_SETTINGS !== "undefined") {
 
-                                    // ads
-                                    this.config.ads = {};
-                                    if("interstitial" in SDK_INTERFACE_SETTINGS) {
-                                        this.config.ads.show_initial = !!SDK_INTERFACE_SETTINGS.interstitial.enabled && !!SDK_INTERFACE_SETTINGS.interstitial.initial;
-                                    }
-
-                                    if("features" in SDK_INTERFACE_SETTINGS) {
-                                        let features = Object.keys(SDK_INTERFACE_SETTINGS.features);
-                                        for(let i = 0; i < features.length; i++) {
-                                            this.config.features[features[i]] = SDK_INTERFACE_SETTINGS.features[features[i]];
-                                        }
-                                    }
-                                }
-
-                                if(SDK_INTERFACE_SETTINGS.disable_console) {
-                                    window.console = {
-                                        log: function() {},
-                                        warn: function() {},
-                                        info: function() {},
-                                        error: function() {},
-                                        debug: function() {},
-                                        table: function() {}
-                                    };
-                                }
 
                                 this.log("init...");
 
                                 this.game.init();
 
-                                // this.includeCSS("html5games/gameapi/v1/play.css");
 
-                                // include css files
                                 for(var i = 0; this.config.includeCSS && i < this.config.includeCSS.length; i++) {
                                     this.includeCSS(this.config.includeCSS[i]);
                                 }
@@ -548,53 +81,25 @@ if (typeof window !== "undefined" && !window.famobi) {
                                     }
                                 }
 
-                                // window.famobi_gameJS.unshift("html5games/gameapi/fenster.js");
-                                // window.famobi_gameJS.unshift("html5games/gameapi/famobi_analytics_v1.js");
-                                // window.famobi_gameJS.unshift("html5games/gameapi/detection.js");
                                 window.famobi_gameJS.unshift("assets/static/zepto.min.js");
 
-                                // js files
                                 for(var i = 0; this.config.includeJS && i < this.config.includeJS.length; i++) {
                                     window.famobi_gameJS.unshift(this.config.includeJS[i]);
                                 }
 
-                                // orientation change
                                 window.addEventListener("orientationchange", function() {
                                     if (typeof this.orientationChangeCallback == "function") {
                                         this.orientationChangeCallback();
                                     }
                                 }.bind(this), false);
 
-                                // aid
                                 var aid = this.getUrlParams()["fg_aid"];
 
                                 window.famobi_multiplayer = this.config.features.multiplayer || false;
 
                                 this.config.gameParams = this.config.gameParams || {};
 
-                                window.addEventListener("famobi_tracking_screen", function(e) {
-                                    if(this.config.autoShowMenuScreens && this.config.autoShowMenuScreens.includes(e.detail.screen)) {
 
-                                        this.reached_home = true;
-                                        setTimeout(function() {
-                                            if(this.splashComplete) {
-                                                window.famobi.menu.show();
-                                            }
-                                        }, 1000);
-                                    }
-                                });
-
-                                if(SDK_INTERFACE_SETTINGS && SDK_INTERFACE_SETTINGS.show_splash) {
-
-                                    SDK_INTERFACE_SETTINGS.splash_duration = SDK_INTERFACE_SETTINGS.splash_duration || -1;
-
-                                    this.showSplashScreen(function() {
-                                        this.splashComplete = true;
-                                        if(this.reached_home) {
-                                            window.famobi.menu.show();
-                                        }
-                                    }, SDK_INTERFACE_SETTINGS.splash_duration < 0);
-                                }
 
                                 var getGameTitle = function() {
                                     String.prototype.replaceAll = function(search, replacement) {
@@ -609,12 +114,9 @@ if (typeof window !== "undefined" && !window.famobi) {
                                     return toTitleCase(window.famobi_gameID.replaceAll("-", " "));
                                 };
 
-                                // document.title = this.config.title || getGameTitle();
 
-                                // ads
                                 this.ads.init();
 
-                                // logging tracking events
                                 this.adapters.add("analytics", "trackStats", function(key, value) {
 
                                     if(!window.famobi.config.logging) return;
@@ -774,7 +276,6 @@ if (typeof window !== "undefined" && !window.famobi) {
 
                     init: function() {
                         var self = window.famobi;
-                        // todo
                     },
                     hasCooledDown: function() {
                         return true;
@@ -835,13 +336,11 @@ if (typeof window !== "undefined" && !window.famobi) {
                     }
                 },
 
-                // Localization
                 gametranslation: {
 
                     init: function() {
                         window.famobi.gametranslation.curLangString = window.famobi.gametranslation.getUserLang();
 
-                        // Always fall back to 'en' when the user locale is not supported or translated
                         if (window.famobi.gametranslation.getSupportedLanguages().indexOf(window.famobi.gametranslation.curLangString) === -1) {
                             window.famobi.gametranslation.curLangString = "en";
                         }
@@ -946,7 +445,6 @@ if (typeof window !== "undefined" && !window.famobi) {
                         case "more_games_image":
                             return this.getBrandingButtonImage();
                         default:
-                            // do nothing
                     }
 
                     var lang = this.getCurrentLanguage();
@@ -1002,7 +500,6 @@ if (typeof window !== "undefined" && !window.famobi) {
 
                 showSplashScreen: function(pCallback, pShowTill_EVENT, pModal) {
                   if(!document.getElementById("famobi_splash")) {
-                    //Splash Screen doesn't exist yet - Creating new Splash Screen from files in html5games/splash
                     function readSplashFile(file, callback) {
                         var rawFile = new XMLHttpRequest();
                         rawFile.overrideMimeType("application/xhtml+xml");
@@ -1027,21 +524,20 @@ if (typeof window !== "undefined" && !window.famobi) {
                       if(this.config.preload_image)splashScreen.querySelector(".logo").src = "html5games/images/"+this.config.preload_image+".png";
                       document.body.appendChild(splashScreen);
                       this.splashScreen = splashScreen;
-                      if(pModal) return;      //Show Modal does not define a closing condition and will keep the splash visible untill hideSplash is called manually
+                      if(pModal) return;
                       if(!pShowTill_EVENT) {
-                        setTimeout(()=>this.hideSplashScreen(pCallback),SDK_INTERFACE_SETTINGS.splash_duration);
+                        setTimeout(()=>this.hideSplashScreen(pCallback), 2000);
                       } else {
                         window.addEventListener(pShowTill_EVENT,()=>this.hideSplashScreen(pCallback));
                       }
                     });
                   }
                   else {
-                    //Splash Screen already exists, just need to reenable it.
                     splashScreen.style.display = "block";
                     splashScreen.style.animation = splashScreen._orgAni;
-                    if(pModal) return;      //Show Modal does not define a closing condition and will keep the splash visible untill hideSplash is called manually
+                    if(pModal) return;
                     if(!pShowTill_EVENT) {
-                      setTimeout(()=>this.hideSplashScreen(pCallback),SDK_INTERFACE_SETTINGS.splash_duration);
+                      setTimeout(()=>this.hideSplashScreen(pCallback), 2000);
                     } else {
                       window.removeEventListener(pShowTill_EVENT,()=>this.hideSplashScreen(pCallback));
                       window.addEventListener(pShowTill_EVENT,()=>this.hideSplashScreen(pCallback));
@@ -1051,7 +547,7 @@ if (typeof window !== "undefined" && !window.famobi) {
 
                 hideSplashScreen: function(pCallback) {
                   this.splashScreen.style.display = "none";
-                  if(!this.splashScreen._orgAni)this.splashScreen._orgAni = this.splashScreen.style.animation;  //This saves the original animation - this is required to be able to rerun the animation the next time the splash is shown
+                  if(!this.splashScreen._orgAni)this.splashScreen._orgAni = this.splashScreen.style.animation;
                   this.splashScreen.style.animation = "none";
                   if(pCallback)pCallback(this.splashScreen);
                 },
@@ -1060,8 +556,6 @@ if (typeof window !== "undefined" && !window.famobi) {
                     var absolutePath =
                         document.location.protocol + "//" + document.location.pathname;
 
-                    // this method is only used for compatibility with Loaders in Cordova Apps,
-                    // otherwise absolute URIs with https://games.cdn.famobi.com are used
                     if (document.location.protocol !== "file:") {
                         return relativePath;
                     }
@@ -1077,328 +571,32 @@ if (typeof window !== "undefined" && !window.famobi) {
 
                 menu: {
                     create: function() {
-
-                        window.famobi.menu = this;
-
-                        window.famobi.menu.rootElement = document.getElementById("fg-root");
-                        window.famobi.menu.bodyElement = document.getElementsByTagName("body")[0];
-                        window.famobi.menu.headElement = document.getElementsByTagName("head")[0];
-
-                        if (!window.famobi.menu.rootElement) {
-                            window.famobi.menu.rootElement = document.createElement("div");
-                            window.famobi.menu.rootElement.setAttribute("id", "fg-root");
-                            window.famobi.menu.rootElement.classList.add("fg_root");
-                            window.famobi.menu.rootElement.style = "color: #999;font-weight:normal;";
-
-                            document.body.insertBefore(window.famobi.menu.rootElement, document.body.firstChild);
-                        }
-
-                        // overlay
-                        window.famobi.menu.fgOverlay = document.createElement("div");
-                        window.famobi.menu.fgOverlay.setAttribute("id","fg-overlay");
-
-                        if (window.famobi.config.overlay_position)
-                            window.famobi.menu.fgOverlay.className =
-                                "overlay-" +
-                                window.famobi.config.overlay_position +
-                                " clip-" +
-                                window.famobi.config.overlay_position;
-
-                        if (
-                            window.famobi.config.overlay_distance &&
-                            window.famobi.config.overlay_distance !== ""
-                        ) {
-                            if (
-                                window.famobi.config.overlay_position &&
-                                window.famobi.config.overlay_position == "bottom"
-                            )
-                                window.famobi.menu.fgOverlay.style.bottom = isNaN(
-                                    window.famobi.config.overlay_distance
-                                )
-                                    ? window.famobi.config.overlay_distance
-                                    : window.famobi.config.overlay_distance + "px";
-                            else
-                                window.famobi.menu.fgOverlay.style.top = isNaN(
-                                    window.famobi.config.overlay_distance
-                                )
-                                    ? window.famobi.config.overlay_distance
-                                    : window.famobi.config.overlay_distance + "px";
-                        }
-
-                        window.famobi.menu.rootElement.appendChild(window.famobi.menu.fgOverlay);
-
-                        window.famobi.menu.fgOverlay.innerHTML = '<header id="fg-header"><div class="fg-clip" id="fg-clip"><div class="fg-clip-btn"><span></span></div></div></header>';
-
-                        window.famobi.menu.fgNavigation = document.createElement("nav");
-                        window.famobi.menu.fgNavigation.style.position = "relative";
-                        window.famobi.menu.fgNavigation.setAttribute("id", "fg-navigation");
-
-                        window.famobi.menu.fgOverlay.appendChild(window.famobi.menu.fgNavigation);
-                        window.famobi.menu.fgOverlay_visible = false;
-                        window.famobi.menu.fgHeader = document.getElementById("fg-header");
-
-                        faZepto("#fg-clip, #fg-logo").each(function() {
-                            window.famobi.menu.handleClick(this, window.famobi.menu.toggleOverlay);
-                        });
-
-                        let currlang = window.famobi.getCurrentLanguage();
-                        //console.log("currlang: "+currlang);
-
-                        let langButtons = "";
-
-                        if(window.famobi.config.supportedLanguages && window.famobi.config.supportedLanguages.length > 1) {
-
-                            langButtons = '<ul class="fg-langs">';
-                            let lang = "";
-
-                            for(let i = 0; i < window.famobi.config.supportedLanguages.length; i++) {
-                                lang = window.famobi.config.supportedLanguages[i];
-                                langButtons +=
-                                `<li class="${(lang == currlang) ? 'fg-lang fg-lang-selected' : 'fg-lang'}" data-switch-lang="${lang}" style="cursor: pointer;">
-                                <a href="javascript:void(0);">
-                                  <img class="fg-flag" src="html5games/images/flags/flag_${lang}.png" alt="${lang}">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 841.9 459" xml:space="preserve">
-                                      <path d="M630.7,227.3"></path>
-                                      <path d="M21.5,17.9c-3.9,0-7.4,2.3-8.9,6c-1.6,3.7-0.6,7.8,2.1,10.5l399.7,399.7c1.9,1.9,4.5,2.9,6.8,2.9c2.3,0,5.1-1,6.8-2.9 L827.4,34.7c2.7-2.5,3.7-6.8,2.1-10.7c-1.6-3.7-5.1-6-8.9-6H21.5z"></path>
-                                    </svg>
-                                  </a>
-                                </li>`;
-                            }
-                            langButtons += '</ul>';
-                        }
-
-                        //console.log(window.famobi.config.game_i18n);
-
-                        let menuButtons = (window.famobi.hasFeature("highscores")) ?
-                        `<ul class="fa-menu-buttons">
-                          <li data-famobi-href="leaderboard">
-                            <a href="javascript:void(0);" class="fa-menu-button-leaderboard">
-                              <img src="html5games/images/leaderboard2.svg" alt="leaderboard">
-                            </a>
-                          </li>
-                         </ul>` :
-                        "";
-
-                        var menuHtml =
-                        `${menuButtons}
-                        <ul class="fg-related-games">
-                          <li>
-                            <a href="${window.famobi.config.branding_url || window.famobi.config.more_games_url}" target="_blank">
-                              <img src="#" alt="${window.famobi.config.name}">
-                            </a>
-                          </li>
-                        </ul>
-                        ${langButtons}`;
-
-                        window.famobi.menu.setHtml(menuHtml);
-
-                        if(!!SDK_INTERFACE_SETTINGS.menuless) {
-                            window.famobi.menu.fgOverlay.style.display = "none";
-                        }
+                        // Menu functionality disabled - game only mode
+                        return;
                     },
                     show: function() {
-                        if (window.famobi.menu.fgOverlay_visible) {
-                            return window.famobi.menu;
-                        }
-                        let leaderboardBtnImage = window.famobi.menu.fgNavigation.querySelector(".fa-menu-button-leaderboard img");
-                        if(leaderboardBtnImage) {
-                          window.famobi.menu.fgNavigation.querySelector(".fa-menu-button-leaderboard img").style.animation = "growAndShake 1s linear 1s 1 forwards";
-                          setTimeout(()=>window.famobi.menu.fgNavigation.querySelector(".fa-menu-button-leaderboard img").style.animation = "none",2000);
-                        }
-
-                        var $fullscreenIcon = faZepto("#fg-overlay .fa-menu-button-fullscreen");
-
-                        this.hideAll();
-
-                        window.famobi.menu.eventHandler = window.famobi.menu.handleClick(faZepto("html").get(0), this.hideAll);
-                        faZepto("html").get(0).style.cursor = "pointer";
-
-                        if (
-                            !document.fullscreenElement &&
-                            !document.mozFullScreenElement &&
-                            !document.webkitFullscreenElement &&
-                            !document.msFullscreenElement
-                        ) {
-                            $fullscreenIcon
-                                .removeClass("fa-fullscreen-enabled")
-                                .addClass("fa-fullscreen-disabled");
-                        } else {
-                            $fullscreenIcon
-                                .removeClass("fa-fullscreen-disabled")
-                                .addClass("fa-fullscreen-enabled");
-                        }
-
-                        window.famobi.menu.fgOverlay_visible = true;
-                        faZepto(window.famobi.menu.fgOverlay).addClass("navigation-view");
-
-                        window.famobi.menu.fgNavigation.style.display = "";
-
-                        return window.famobi.menu;
+                        return this;
                     },
                     hide: function() {
-                        return hideAll();
+                        return this;
                     },
                     hideAll: function() {
-                        if (!window.famobi.menu.fgOverlay_visible) {
-                            return window.famobi.menu;
-                        }
-
-                        if (window.famobi.menu.eventHandler) {
-                            window.famobi.menu.removeClick(faZepto("html").get(0), window.famobi.menu.eventHandler);
-                        }
-
-                        var $fgOverlay = faZepto(window.famobi.menu.fgOverlay);
-                        $fgOverlay.removeClass("iframe-view navigation-view fa-lang-shown");
-                        window.famobi.menu.fgOverlay_visible = false;
-
-                        return window.famobi.menu;
+                        return this;
                     },
-                    handleClick: function(element, callback) {
-                        var eventHandler = function(e) {
-                            callback.call(this, e);
-                            e.cancelBubble = true;
-                            e.stopPropagation();
-                            return false;
-                        };
-
-                        if (typeof callback === "function") {
-                            // http://stackoverflow.com/questions/13396297/windows-phone-8-touch-support
-                            //
-                            // Performing operations that require explicit user interaction on touchstart events is deprecated and will be removed in M54, around October 2016. See https://www.chromestatus.com/features/5649871251963904 for more details.
-                            if (window.navigator.msPointerEnabled) {
-                                element.addEventListener("MSPointerDown", eventHandler, false);
-                            } else if (window.PointerEvent) {
-                                element.addEventListener("pointerup", eventHandler, false);
-                                element.addEventListener("pointermove", this.eventTrap, true);
-                                element.addEventListener("pointerdown", this.eventTrap, true);
-                            } else if (detection.is.touch) {
-                                element.addEventListener("touchend", eventHandler, false);
-                                element.addEventListener("touchmove", this.eventTrap, true);
-                                element.addEventListener("touchstart", this.eventTrap, true);
-                            } else {
-                                element.addEventListener("click", eventHandler, false);
-                            }
-
-                            element.style.cursor = "pointer";
-                        }
-
-                        return eventHandler;
+                    handleClick: function() {
+                        return function() {};
                     },
-                    removeClick: function(element, eventHandler) {
-                        if (typeof eventHandler === "function") {
-                            if (window.navigator.msPointerEnabled) {
-                                element.removeEventListener("MSPointerDown", eventHandler, false);
-                            } else if (window.PointerEvent) {
-                                element.removeEventListener("pointerup", eventHandler, false);
-                                element.removeEventListener("pointermove", this.eventTrap, true);
-                                element.removeEventListener("pointerdown", this.eventTrap, true);
-                            } else if (detection.is.touch) {
-                                element.removeEventListener("touchend", eventHandler, false);
-                                element.removeEventListener("touchmove", this.eventTrap, true);
-                                element.removeEventListener("touchstart", this.eventTrap, true);
-                            } else {
-                                element.removeEventListener("click", eventHandler, false);
-                            }
-                        }
-
-                        return element;
+                    removeClick: function() {
+                        return this;
                     },
-                    eventTrap: function(e) {
-                        e.preventDefault();
-                        e.cancelBubble = true;
-                        e.stopPropagation();
-                    },
-                    toggleOverlay: function(e) {
-                        if (window.famobi.menu.fgOverlay_visible) {
-                            window.famobi.menu.hideAll();
-                        } else {
-                            window.famobi.menu.show();
-                        }
-                        e.stopPropagation();
+                    eventTrap: function() {},
+                    toggleOverlay: function() {
                         return false;
                     },
-                    setHtml: function(html) {
-                        window.famobi.menu.fgNavigation.innerHTML = html;
-                        window.famobi.menu.bindEvents();
-
-                    },
-
-                    toggleLanguages: function() {
-                        var $overlayNode = faZepto(window.famobi.menu.fgOverlay);
-                        if ($overlayNode.hasClass("fa-lang-shown")) {
-                            $overlayNode.removeClass("fa-lang-shown");
-                        } else {
-                            $overlayNode.addClass("fa-lang-shown");
-                        }
-                    },
-
-                    switchLanguage: function(lang) {
-                        var params = window.famobi.getUrlParams(),
-                            qs = "";
-
-                        window.famobi.menu.hideAll();
-                        params.locale = lang;
-                        qs = faZepto.param(params);
-                        document.location.replace(
-                            document.location.pathname +
-                                "?" +
-                                qs +
-                                (document.location.hash ? document.location.hash : "")
-                        );
-                    },
-
-                    bindEvents: function() {
-
-                        faZepto("[data-switch-lang]").each(function() {
-                          var $this = faZepto(this),
-                            lang = faZepto(this).attr("data-switch-lang");
-
-                          $this.removeClass("fg-lang-selected");
-
-                          if (lang === window.famobi.gametranslation.curLangString) {
-                            // Move selected language to first position
-                            $this.closest("ul").prepend($this);
-
-                            $this.addClass("fg-lang-selected");
-                          }
-
-                          window.famobi.menu.handleClick(this, function() {
-                            if ($this.hasClass("fg-lang-selected") === true) {
-                              window.famobi.menu.toggleLanguages();
-                            } else {
-                              if (lang.length) {
-                                window.famobi.menu.switchLanguage(lang);
-                              }
-                            }
-                          });
-                        });
-
-                        faZepto("[data-famobi-href]")
-                            .css("cursor", "pointer")
-                            .each(function() {
-                                var callback = function() {
-                                    var link = faZepto(this).attr("data-famobi-href");
-
-                                    window.famobi.menu.hideAll();
-
-                                    switch (link) {
-                                        case "moreGames":
-                                            return window.famobi.menu.moreGamesLink();
-                                        case "back":
-                                            return window.famobi.menu.backLink();
-                                        case "leaderboard":
-                                            return window.famobi.showLeaderboard();
-                                        default:
-                                            if (this.href) {
-                                                window.open(this.href, "");
-                                                return false;
-                                            }
-                                    }
-                                };
-
-                                window.famobi.menu.handleClick(this, callback.bind(this));
-                            });
-                    }
+                    setHtml: function() {},
+                    toggleLanguages: function() {},
+                    switchLanguage: function() {},
+                    bindEvents: function() {}
                 },
 
                 getMoreGamesButtonImage: function() {
@@ -1420,7 +618,7 @@ if (typeof window !== "undefined" && !window.famobi) {
                     } else {
                         return;
 
-                        confirm("redirecting to... " + url) && (window.open(url, "") || (window.top.location.href = url)); // handles the link target in production version, depends on user language
+                        confirm("redirecting to... " + url) && (window.open(url, "") || (window.top.location.href = url));
                     }
 
 
@@ -1529,7 +727,6 @@ if (typeof window !== "undefined" && !window.famobi) {
                     },
 
                     update: function(orientation) {
-                        // show rotation screen?
                         if (
                             typeof orientation != "undefined" &&
                             (window.famobi.config.rotation || (window.famobi.config.rotation !== false && !detection.is.pc && !detection.is.tablet)) &&
@@ -1589,7 +786,6 @@ if (typeof window !== "undefined" && !window.famobi) {
                     }
 
                     if (Object.keys) {
-                        // available since ECMAScript 5 and in some browser 10x faster
                         length = Object.keys(data).length;
                     } else {
                         for (prop in data) {
@@ -1619,7 +815,6 @@ if (typeof window !== "undefined" && !window.famobi) {
                     return faZepto(window).resize(callback);
                 },
 
-                // DEPRECATED FUNCTIONS
                 submitHighscore: function(level, score, isTriggered) {
 
                     !isTriggered && this.warn("famobi.submitHighscore is deprecated, please use famobi_analytics.trackEvent('EVENT_LEVELSCORE')instead: https://sites.google.com/a/famobi.com/api-docs/api-implementation/famobi-analytics");
@@ -1641,7 +836,6 @@ if (typeof window !== "undefined" && !window.famobi) {
                     head.appendChild(link);
                 },
                 sendLiveScore: function(liveScore) {
-                    // todo
                 },
                 hasRewardedAd: function() {
                     return this.hasFeature("rewarded");
@@ -1691,7 +885,6 @@ if (typeof window !== "undefined" && !window.famobi) {
                     pause: function() {
 
                         if (this.isWaiting()) {
-                            //window.famobi..log('game is already waiting, do not pause');
                             this.setWaiting(true);
                             return false;
                         }
@@ -1703,20 +896,15 @@ if (typeof window !== "undefined" && !window.famobi) {
                                 window.famobi_onPauseRequested();
                                 return true;
                             }
-                            // Phaser
                             if (window.game && typeof window.game.paused !== "undefined") {
                                 window.game.paused = true;
                                 return true;
                             }
-                            // Construct 2
                             if (typeof window.cr_setSuspended !== "undefined") {
                                 cr_setSuspended(true);
-                                //faZepto('<iframe id="fg-clickthrough-frame" src="about:blank" style="width: 100%; height: 100%; display: block; position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 999"></iframe>').appendTo(window.famobi..rootElement);
                                 return true;
                             }
-                            // CreateJS <3
                             if (typeof window.createjs !== "undefined") {
-                                //window.createjs.Sound.setMute(true);
                             }
                         } catch (e) {
                             window.famobi.log("Pausing game failed: " + e);
@@ -1725,12 +913,10 @@ if (typeof window !== "undefined" && !window.famobi) {
                     resume: function() {
 
                         if (!this.isWaiting()) {
-                            //window.famobi..log('game is not waiting, do not resume');
                             return false;
                         }
 
                         if (!this.canResume()) {
-                            //window.famobi..log('game is still waiting, do not resume');
                             this.setWaiting(false);
                             return false;
                         }
@@ -1742,20 +928,15 @@ if (typeof window !== "undefined" && !window.famobi) {
                                 window.famobi_onResumeRequested();
                                 return true;
                             }
-                            // Phaser
                             if (window.game && typeof window.game.paused !== "undefined") {
                                 window.game.paused = false;
                                 return true;
                             }
-                            // Construct 2
                             if (typeof window.cr_setSuspended !== "undefined") {
                                 cr_setSuspended(false);
-                                //faZepto('iframe#fg-clickthrough-frame').remove();
                                 return true;
                             }
-                            // CreateJS <3
                             if (typeof window.createjs !== "undefined") {
-                                //window.createjs.Sound.setMute(false);
                             }
                         } catch (e) {
                             window.famobi.log("Resuming game failed: " + e);
@@ -1774,13 +955,11 @@ if (typeof window !== "undefined" && !window.famobi) {
                 },
                 gameReady: function() {
 
-                    // Run Adapter if possible
                     this.adapters.run("game", "ready");
                     this.log("Received gameReady signal");
                 },
                 playerReady: function() {
 
-                    // Run Adapter if possible
                     this.adapters.run("player", "ready");
                     this.log("Received playerReady signal");
                 },
@@ -1803,7 +982,6 @@ if (typeof window !== "undefined" && !window.famobi) {
 
                     function module() {
 
-                        // define private vars
                         this.adapters = {
                             ads: {
                                 show: this.createAdapter(),
@@ -1865,16 +1043,12 @@ if (typeof window !== "undefined" && !window.famobi) {
                         this.adapter_templates = {
                             ads: {
                                 show: [function(callback, force) {
-                                    /* when an interstitial ad is requested */
                                 }],
                                 rewarded: [function(callback) {
-                                    /* when a rewarded ad is requested */
                                 }],
                                 callback: [function(options) {
-                                    /* fired when ad modal is closed */
                                 }],
                                 vastUrl: [function() {
-                                    /* fired when ad vast tag is retrieved */
                                 }]
                             },
                             adEvent: {
@@ -1944,37 +1118,26 @@ if (typeof window !== "undefined" && !window.famobi) {
                                 }]
                             },
                             request: {
-                                /* attention: these request adapters are only used in specific environments (e.g. Famobi apps) */
 
                                 startGame: [function() {
-                                    /* triggered once after loading all assets, indicates when the game should start */
                                 }],
                                 stopGame: [function() {
-                                    /* indicated that game should be stopped */
                                 }],
                                 restartGame: [function() {
-                                    /* indicated that game should be restarted */
                                 }],
                                 pauseGameplay: [function() {
-                                    /* indicates a pause functionality/overlay should be activated when called in gameplay state */
                                 }],
                                 resumeGameplay: [function() {
-                                    /* indicates the game should resume when in a paused gameplay state */
                                 }],
                                 enableAudio: [function() {
-                                    /* indicates that audio(sfx) should be enabled */
                                 }],
                                 disableAudio: [function() {
-                                    /* indicates that audio(sfx) should be disabled */
                                 }],
                                 enableMusic: [function() {
-                                    /* indicates that music should be enabled */
                                 }],
                                 disableMusic: [function() {
-                                    /* indicates that music should be disabled */
                                 }],
                                 changeVolume: [function(vol) {
-                                    /* indicates that the volume changed */
                                 }]
                             },
                             player: {
@@ -2250,22 +1413,7 @@ if (typeof window !== "undefined" && !window.famobi) {
        }
     });
 
-    Promise.all([loadScript("sdk_interface.js"), isPageReady]).then(function() {
-
-        if(typeof SDK_INTERFACE !== "undefined" && SDK_INTERFACE.isSDKInterfaceDone !== "undefined") {
-            return new Promise((resolve, reject) => {
-                let interval = setInterval(function() {
-                    // console.log(SDK_INTERFACE.isSDKInterfaceDone);
-                    if(SDK_INTERFACE.isSDKInterfaceDone === true) {
-                        clearInterval(interval);
-                        resolve();
-                    }
-                }, 500);
-            });
-        }
-        return Promise.resolve();
-
-    }).then(function() {
+    isPageReady.then(function() {
 
         window.famobi.adapters = window.famobi.adaptersModule.call(window.famobi);
         window.famobi.requests = window.famobi.requestsModule.call(window.famobi);
@@ -2286,7 +1434,6 @@ if (typeof window !== "undefined" && !window.famobi) {
                     if (!window.famobi_gameJS.length) {
 
                         window.famobi.gametranslation.init();
-                        window.famobi.menu.create();
                         window.famobi.orientation.init();
 
                         window.setTimeout(function() {

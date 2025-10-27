@@ -1,454 +1,646 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+<head>
 
-		<title>Cut the Rope (Famobi)</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="user-scalable=0, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, interactive-widget=resizes-content" />
-		<link rel="icon" href="assets/images/favicon.png">		
+    <title>Level Preview</title>
+    <link rel="icon" type="image/png" href="/assets/images/icon/frame1.png">
 
-		<link rel="manifest" href="manifest.json">
-		
-		<style>
-			body {
-				margin: 0px;
-				overflow: hidden; display: flex;
-				justify-content: center !important;
-				align-items: center !important;
-				background-color: black;
-			}
-			.bg {
-				position: fixed; display: flex;
-				justify-content: center !important;
-				align-items: center !important;
-				width: 100%; height: 100vh;
-				background-image: url("/assets/images/tile.webp");
-				background-repeat: repeat; background-size: auto;
-				opacity: 0.25;
-				top: 0; left: 0; right: 0; bottom: 0;
-			}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-			#gfx {
-				position: absolute;
-				width: 100% !important;
-				height: 100vh !important;
-				left: 0; right: 0;
-				margin-left: auto; margin-right: auto;
-				touch-action: none; user-select: none;
-				outline: none; z-index: 0;
-			}
-			@media (min-aspect-ratio: 16/9) {
-				#gfx {
-					width: calc(100vh * 16/9) !important;
-					max-width: 100%;
-				}
-			}
-			@media (max-aspect-ratio: 9/16) {
-				#gfx {
-					width: 100% !important;
-					height: calc(100vw * 16/9) !important;
-					top: 0;
-					bottom: 0;
-					margin-top: auto;
-					margin-bottom: auto;
-					transform: none;
-				}
-			}
-		</style>
+    <meta property="og:image" content="/assets/images/banner.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="/assets/images/banner.png">
 
-		<script>
-			function convertxmltojson(xmlstring) {
-				try {
-				const parser = new DOMParser();
-					const xmldoc = parser.parseFromString(xmlstring, "text/xml");
-					const mapelement = xmldoc.querySelector("map");
-				
-					if (!mapelement) {
-						throw new Error("No <map> element found in XML");
-					}
-					const level = {
-					settings: [],
-					objects: []
-				};
-				
-					const settingslayer = mapelement.querySelector('layer[name="settings"]');
-					if (settingslayer) {
-						const mapsettings = settingslayer.querySelector("map");
-						if (mapsettings) {
-							level.settings.push({
-						name: 0,
-								height: parseInt(mapsettings.getAttribute("height")) || 480,
-								gridSize: parseInt(mapsettings.getAttribute("gridSize")) || 32,
-								width: parseInt(mapsettings.getAttribute("width")) || 320
-							});
-						}
-						
-						const gamedesign = settingslayer.querySelector("gameDesign");
-						if (gamedesign) {
-						const gamedesignsettings = {
-						name: 1,
-							ropePhysicsSpeed: parseFloat(gamedesign.getAttribute("ropePhysicsSpeed")) || 1,
-							special: parseInt(gamedesign.getAttribute("special")) || 1,
-							twoParts: gamedesign.getAttribute("twoParts") === "true"
-						};
-						
-						// Force special: 1 to enable gravity switches and spikes
-						gamedesignsettings.special = 2;
-							
-							// Only add twoParts if it's explicitly set to true
-							if (gamedesign.getAttribute("twoParts") !== "true") {
-								delete gamedesignsettings.twoParts;
-							}
-							
-							if (gamedesign.getAttribute("nightLevel")) gamedesignsettings.nightLevel = gamedesign.getAttribute("nightLevel") === "true";
-							if (gamedesign.getAttribute("water")) gamedesignsettings.water = parseInt(gamedesign.getAttribute("water"));
-							if (gamedesign.getAttribute("waterSpeed")) gamedesignsettings.waterSpeed = parseInt(gamedesign.getAttribute("waterSpeed"));
-							
-							level.settings.push(gamedesignsettings);
-						}
-					}
-					
-					const objectlayer = mapelement.querySelector('layer[name="Objects"]');
-					if (objectlayer) {
-						const objects = objectlayer.querySelectorAll("*");
-						let objectcount = 0;
-						
-						objects.forEach(obj => {
+    <!-- search engines (practically no one is gonna find this through google but still) -->
+    <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="bingbot" content="index, follow">
+    <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
 
-							const tagname = obj.tagName.toLowerCase();
+    <style>
 
-							const x = parseInt(obj.getAttribute("x")) || 0;
-							const y = parseInt(obj.getAttribute("y")) || 0;
-							
-							let ctrobject = { name: 0, x: x, y: y };
-							
-							// ALL OBJECTS HERE!!
-							switch (tagname) {
-								case "candy":
-									ctrobject.name = 52;
-									break;
-								case "candyL":
-									ctrobject.name = 50;
-									break;
-								case "candyR": 
-									ctrobject.name = 51;
-									break;
-								case "target":
-									ctrobject.name = 2;
-									break;
-								case "star":
-									ctrobject.name = 3;
-									ctrobject.timeout = parseInt(obj.getAttribute("timeout")) || -1;
-									break;
-								case "bubble":
-									ctrobject.name = 54;
-									break;
-								case "pump":
-									ctrobject.name = 55;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									break;
-								case "sock":
-									ctrobject.name = 56;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.group = parseInt(obj.getAttribute("group")) || 0;
-									break;
-								case "spike2":
-								case "Spike2":
-								case "SPIKE2":
-									ctrobject.name = 58;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-									break;
-								case "spike3":
-								case "Spike3":
-								case "SPIKE3":
-									ctrobject.name = 80;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-									ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
-									ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 0;
-									ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 0;
-									ctrobject.toggled = false;
-									if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
-									if (obj.getAttribute("rotateSpeed")) ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed"));
-									break;
-								case "gravityswitch":
-								case "gravitySwitch":
-								case "GravitySwitch":
-								case "GRAVITYSWITCH":
-									ctrobject.name = 53;
-									break;
-								case "spike4":
-									ctrobject.name = 60;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-									ctrobject.toggled = parseInt(obj.getAttribute("toggled")) || 0;
-									break;
-								case "electro":
-									ctrobject.size = parseInt(obj.getAttribute("size")) || 5;
-									ctrobject.name = 80;
-									ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 2;
-									ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 3;
-									break;
-								case "bouncer1":
-									ctrobject.name = 81;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-									break;
-								case "rotatedcircle":
-								case "rotatedCircle":
-									ctrobject.name = 120;
-									ctrobject.oneHandle = obj.getAttribute("oneHandle") === "true";
-									// ctrobject.size = parseInt(obj.getAttribute("size")) || 100;
-									ctrobject.handleAngle = parseInt(obj.getAttribute("handleAngle")) || 0;
-									break;
-								case "ghost":
-									ctrobject.name = 130;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.radius = parseInt(obj.getAttribute("radius")) || 100;
-									ctrobject.bouncer = obj.getAttribute("bouncer") === "true";
-									ctrobject.bubble = obj.getAttribute("bubble") === "true";
-									ctrobject.grab = obj.getAttribute("grab") === "true";
-									break;
-								case "steamtube":
-								case "steamTube":
-									ctrobject.name = 131;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									break;
-								case "lantern":
-									ctrobject.name = 132;
-									ctrobject.candyCaptured = obj.getAttribute("candyCaptured") === "true";
-									break;
-								case "gap":
-									ctrobject.name = 133;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.activeTime = parseFloat(obj.getAttribute("activeTime")) || 2;
-									ctrobject.radius = parseInt(obj.getAttribute("radius")) || 50;
-									ctrobject.index = parseInt(obj.getAttribute("index")) || 1;
-									break;
-								case "lightbulb":
-								case "lightBulb":
-									ctrobject.name = 134;
-									ctrobject.litRadius = parseInt(obj.getAttribute("litRadius")) || 10;
-									ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
-									break;
-								case "transporter":
-									ctrobject.name = 135;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.direction = obj.getAttribute("direction") || "forward";
-									ctrobject.type = obj.getAttribute("type") || "manual";
-									ctrobject.width = parseInt(obj.getAttribute("width")) || 50;
-									ctrobject.length = parseInt(obj.getAttribute("length")) || 100;
-									ctrobject.velocity = parseInt(obj.getAttribute("velocity")) || 0;
-									break;
-								case "hiddenelement":
-								case "hiddenElement":
-									ctrobject.name = 300;
-									ctrobject.radius = parseInt(obj.getAttribute("radius")) || 30;
-									break;
-								case "grab":
-									ctrobject.name = 100;
-									ctrobject.spider = obj.getAttribute("spider") === "true";
-									ctrobject.gun = obj.getAttribute("gun") === "true";
-									ctrobject.wheel = obj.getAttribute("wheel") === "true";
-									ctrobject.part = obj.getAttribute("part") || "L";
-									ctrobject.hidePath = obj.getAttribute("hidePath") !== "false";
-									ctrobject.moveOffset = parseInt(obj.getAttribute("moveOffset")) || 0;
-									ctrobject.moveVertical = obj.getAttribute("moveVertical") === "true";
-									ctrobject.length = parseInt(obj.getAttribute("length")) || 90;
-									ctrobject.moveLength = parseInt(obj.getAttribute("moveLength")) || -1;
-									ctrobject.radius = parseInt(obj.getAttribute("radius")) || -1;
-									
-									// Add all required properties with defaults
-									ctrobject.kickable = obj.getAttribute("kickable") === "true";
-									ctrobject.kicked = obj.getAttribute("kicked") === "true";
-									ctrobject.invisible = obj.getAttribute("invisible") === "true";
-									ctrobject.helicopter = obj.getAttribute("helicopter") === "true";
-									ctrobject.bindBulb = obj.getAttribute("bindBulb") === "true";
-									ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
-									
-									// Add default properties for spider ropes to prevent crashes
-									if (ctrobject.spider) {
-										ctrobject.gun = false; // Ensure gun is false for spiders
-										ctrobject.wheel = false; // Ensure wheel is false for spiders
-									}
-									break;
-								case "tutorial04":
-									ctrobject.name = 8;
-									ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-									break;
-								case "tutorialtext":
-									ctrobject.name = 4;
-									ctrobject.text = obj.getAttribute("text") || "";
-									ctrobject.width = parseInt(obj.getAttribute("width")) || 100;
-									ctrobject.height = parseInt(obj.getAttribute("height")) || 60;
-									ctrobject.locale = obj.getAttribute("locale") || "en";
-									break;
-								case "tutorial10":
-									ctrobject.name = 14;
-									ctrobject.special = parseInt(obj.getAttribute("special")) || 2;
-									ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-									break;
-								case "tutorial07":
-								case "tutorial7":
-								case "Tutorial07":
-									ctrobject.name = 7;
-									ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-									ctrobject.locale = obj.getAttribute("locale") || "en";
-									break;
-								case "spike":
-								case "Spike":
-								case "SPIKE":
-									ctrobject.name = 57;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-									break;
-								case "spike1":
-								case "Spike1":
-								case "SPIKE1":
-									ctrobject.name = 59;
-									ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-									ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-									break;
-								default:
-									console.warn("undefined object type, skipping:", tagname);
-									return;
-							}; 
-							
-							// Add path and moveSpeed properties if they exist (for any object)
-							if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
-							if (obj.getAttribute("moveSpeed")) ctrobject.moveSpeed = parseInt(obj.getAttribute("moveSpeed"));
-							
-							level.objects.push(ctrobject); objectcount++;
-						}); console.log(`loaded ${objectcount} objects`);
-					}
-					
-					if (level.settings.length === 0) {
-						console.warn("no settings? adding default ones");
-						level.settings = [
-							{ name: 0, height: 480, gridSize: 32, width: 320 },
-							{ name: 1, ropePhysicsSpeed: 1, special: 1, twoParts: false }
-						];
-					}
-					
-					console.log(JSON.stringify(level, null, 2));
-					
-					try {
-						const testjson = JSON.stringify(level);
-						console.log("JSON validation successful, length:", testjson.length);
-					} catch (jsonerror) {
-						console.error("JSON validation failed:", jsonerror);
-						throw new Error("Generated level data is not valid JSON");
-					}
-					
-					return level;
-				} catch (error) {
-					console.error("Error converting XML to JSON:", error);
-					throw error;
-				}
-			}
-			
-			function getcustomleveldata() {
-				const urlparams = new URLSearchParams(window.location.search);
-				const dataparam = urlparams.get('data');
-				
-				if (dataparam) {
-					try {
-						console.log('Custom data parameter found, decoding base64...');
-						
-						const urldecoded = decodeURIComponent(dataparam);
-						console.log('URL decoded data length:', urldecoded.length);
-						console.log('URL decoded preview:', urldecoded.substring(0, 100) + '...');
-						
-						const xmldata = decodebase64utf8(urldecoded);
-						console.log('Decoded XML length:', xmldata.length);
-						console.log('Decoded XML preview:', xmldata.substring(0, 200) + '...');
-						
-						const customlevel = convertxmltojson(xmldata);
-						console.log('Custom level converted successfully:', customlevel);
-						
-						cleanupurl();
-						
-						return customlevel;
-					} catch (error) {
-						console.error('Error processing custom data:', error);
-						console.log('Falling back to default level');
-						
-						cleanupurl();
-						
-						return null;
-					}
-				}
-				
-				return null;
-			}
-			
-			function cleanupurl() {
-				try {
-					const url = new URL(window.location);
-					url.searchParams.delete('data');
-					
-					window.history.replaceState({}, '', url.toString());
-					console.log('URL cleaned up, data parameter removed');
-				} catch (error) {
-					console.warn('Could not clean up URL:', error);
-				}
-			}
-			
-			function decodebase64utf8(str) {
-				try {
-					const binarystring = atob(str);
-					
-					const bytes = new Uint8Array(binarystring.length);
-					for (let i = 0; i < binarystring.length; i++) {
-						bytes[i] = binarystring.charCodeAt(i);
-					}
-					
-					const decoder = new TextDecoder('utf-8');
-					return decoder.decode(bytes);
-				} catch (error) {
-					console.error('Error decoding base64 UTF-8:', error);
-					return atob(str);
-				}
-			}
-			
-			const customleveldata = getcustomleveldata();
-			
-			window.famobi_gameID = "cut-the-rope";
-			window.famobi_gameJS = [
-				"assets/static/ctrr.js",
-				function ()
-				{
-					if (customleveldata) {
-						window.customleveldata = customleveldata;
-						console.log('Custom level data stored globally');
-					}
-					
-					const originalconsoleerror = console.error;
-					console.error = function(...args) {
-						originalconsoleerror.apply(console, args);
-					};
-					
-					try {
-					Ctrr.main(window.famobi.getCurrentLanguage());
-					} catch (error) {
-						console.error('Game startup error:', error);
-						console.error = originalConsoleError;
-					}
-				},
-			];
-			(function (document, url, fgJS, firstJS)
-			{
-				fgJS = document.createElement("script");
-				firstJS = document.getElementsByTagName("script")[0];
-				fgJS.src = url + encodeURIComponent(document.location.href);
-				firstJS.parentNode.insertBefore(fgJS, firstJS);
-			})(document, "assets/static/v1.js?e=");
-		</script>
-	</head>
-	<body>
-		<div class="bg"></div>
-	</body>
+        @font-face {
+            font-family: "Good Dog";
+            src: /*universal*/ url("/assets/fonts/gooddog.woff");
+        }
+        @font-face {
+            font-family: "JetBrains Mono";
+            src: /*universal*/ url("/assets/fonts/jetbrainsmono.woff");
+        }
+
+        body {
+            font-family: "Good Dog";
+            position: relative; z-index: 1;
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh; min-width: 100vw; overflow-y: auto;
+            user-select: none; padding: 20px 0; margin: 0;
+            -webkit-user-drag: none;
+
+            background-color: #e9a856;
+            --bg: url("/assets/images/bg.webp"); /* (DON'T turn on word wrap) */
+            background-image: var(--bg), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' display='block' viewBox='0 0 2048 1154'%3E%3Cpath fill='%2392a902' d='M0 0h2048v1152l-508 1v1h-64v-1L0 1152Z'/%3E%3Cpath fill='%23d6924b' d='M0 0h2048v500l-3-1-27-1-5-3v-2l-14-1h-76l-7 2-3 2h-14v-2h-25l-13-4-4-2-17-1-8-2-7-3-7-2v-2h-25l-16-3-8-3-4-2h-10l-11 4h-15l-20-3-11-3-17-3v-2h-15l-33-2h-35l-9-4-16 1h-11l-8-5-16-3-2-1h-11l-6 1-26 1-12 2-5 5-5-1-1-1-23-1-3 1-30 1-8 3-34 1-32 2-18 4-8 3-16 2-19 3h-13l-16-4-9 1-7 3-12 1-6 2-25 1-6 3-7 2-7 3-5 1-16 1-17 6-25 1h-14l-3-3-3-1h-80l-13 2-7 4-24 1-10 5-30 1-21 3-6 2-20 3-27 6-14 4-11 2h-8l-12-3h-8l-4 2h-51l-1 1-20 2-40 1-10 5h-7l-10-1-5 4-37 1h-39l-12 2-13 5-7 1-12-5-7-2-11-2h-11l-19 1h-21l-23-2-3-3h-17l-7-2v-2l-45-1-1-1-18-2-53-1-2-1h-7l-8 3h-12l-16-4-19-3-19-5-20-4-5-2-19-3-35-1-6-3-19-1-10-2-4-3-8-2H0Z'/%3E%3Cpath fill='%235b65a6' d='M540 783h24l4 1 16 1 8 10 8 4 5 2 9 2 13 5 7 4 9 1 1 3 7 1 15 3 14 2 12 3 26 3 15 4 11 2 12 3 5 1v2l6 1 5 2 16 3 18 4 21 3 1 1 11 2 6 2 21 5 16 4 26 6 9 3 10 1 9 3 4 1 14 1 2 1 14 1 13 3 9 3 6 3 16 4 20 3 9 3 12 2 28 4 14 3 19 2 12 3 5 2 7 1 8 3 19 5 1 1 14 2 29 4 12 4 39 7 17 2 9 3 10 4 13 3 39 3 18 1 12 3 14 3 14 4 11 2 7 3 19 6 2 1 9 1 3 2 5 1 34 2 6 2 11-1 25-5 16-1 19-7 12-3 5-2 9-2 16-4 11-2 12-1 1-1 14-1 3-1 36-2 11-3h5v-2l12-3 7-3 24-3 5-2 24-4 12-3 16-2h10v-2l10-2 15-2 18-5 4-3 18-4 24-4 3-1 18-2 7-2 21-3 6-2 29-6 19-3 14-5 2-2 8-2 8-2h4v270l-508 1v1h-64v-1L0 1152V911l16-3 9-1 16-4 26-6 16-3 9-1 6-4 18-5 16-1 2-1 14-1 13-4 10-2 18-4 15-4 17-3 7-2 18-5 9-2 4-2 27-4 31-7 14-4 1-1h5v-2l16-3 16-2 1-2 9-2 15-1 12-3 15-2 23-5 14-5 5-3 10-4 8-2 28-10 21-6Z'/%3E%3Cpath fill='%23f1f2ea' d='M540 783h24l4 1 16 1 8 10 8 4 5 2 9 2 13 5 7 4 9 1 1 3 7 1 15 3 14 2 12 3 26 3 15 4 11 2 12 3 5 1v2l6 1 5 2 16 3 18 4 21 3 1 1 11 2 6 2 21 5 16 4 26 6 9 3 10 1 9 3 4 1 14 1 2 1 14 1 13 3 9 3 6 3 16 4 20 3 9 3 12 2 28 4 14 3 19 2 12 3 5 2 7 1 8 3 19 5 1 1 14 2 29 4 12 4 39 7 17 2 9 3 10 4 13 3 39 3 18 1 12 3 14 3 14 4 11 2 7 3 19 6 2 1 9 1 3 2 5 1 34 2 6 2 11-1 25-5 16-1 19-7 12-3 5-2 9-2 16-4 11-2 12-1 1-1 14-1 3-1 36-2 11-3h5v-2l12-3 7-3 24-3 5-2 24-4 12-3 16-2h10v-2l10-2 15-2 18-5 4-3 18-4 24-4 3-1 18-2 7-2 21-3 6-2 29-6 19-3 14-5 2-2 8-2 8-2h4v10l-1 1-12 1-18 6-14 5-14 2-19 1-25 4h-15l-8 3-17 2-15 6-19 5-17 4-11 3-3 1-19 1-7 1-1 3-5 3h-11l-12 6-7 2-20 1-18 2-13 2-17 3-25 5-23 3-2 2-10 4-10 5-4 3-12 1h-5l-8 4-24 1-15 2-10 2v2l-15 4-9 3h-5l-5-3h-11l-1 1h-16l-3 3-7-1-6-1-15 1-8-2v-2l-11-1-13-5-8-3-19-3-10-4-9-1-6 2-1 1h-12l-4-3-12-5-10-6-18-5-20-2-12-3-45-6-24-2-8-3-8-3-9-1-5-3v-2l-6-1-19-1-20-4-23-7-13-3-9-5-23-3-7-3-36-3-28-1-25-8-6-3-21-3-25-8-16-1-12-4-13-5-16-4-30-1-11-4-14-4-9-2-3-2-21-3-28-3-22-7-30-4-12-2-5-3-7-1-3-3h-14l-7-4-8-5-8-2-15-8-19-6-27-8v-2h-8l-12-3-10-3-16-1-8 2-20 6-25 5-17 5-9 4-10 4-10 5-13 3-5 5-10 2-11 4-10 2-16 4-25 3-29 8-14 2-20 1-16 3-9 3-16 5-9 3-5 1-20 1-15 4-18 5-12 3-3 1-17 1-17 6-3 1-16 2-8 3-17 4-9 3-13 2-16 1-5 2-33 2-8 5H0v-6l16-3 9-1 16-4 26-6 16-3 9-1 6-4 18-5 16-1 2-1 14-1 13-4 10-2 18-4 15-4 17-3 7-2 18-5 9-2 4-2 27-4 31-7 14-4 1-1h5v-2l16-3 16-2 1-2 9-2 15-1 12-3 15-2 23-5 14-5 5-3 10-4 8-2 28-10 21-6Z'/%3E%3Cpath fill='%23f7f4e9' d='M1481 445h66l31 5 20 3 27 2 12 2 52 2 2 1 21 1 16 2 48 3 27 3 23 3 12 2 22 4 26 5 2 1h22l4-1h24l21 4 10 1 38 1 11 2 1 1 29 3v5l-3-1-27-1-5-3v-2l-14-1h-76l-7 2-3 2h-14v-2h-25l-13-4-4-2-17-1-8-2-7-3-7-2v-2h-25l-16-3-8-3-4-2h-10l-11 4h-15l-20-3-11-3-17-3v-2h-15l-33-2h-35l-9-4-16 1h-11l-8-5-16-3-2-1h-11l-6 1-26 1-12 2-5 5-5-1-1-1-23-1-3 1-30 1-8 3-34 1-32 2-18 4-8 3-16 2-19 3h-13l-16-4-9 1-7 3-12 1-6 2-25 1-6 3-7 2-7 3-5 1-16 1-17 6-25 1h-14l-3-3-3-1h-80l-13 2-7 4-24 1-10 5-30 1-21 3-6 2-20 3-27 6-14 4-11 2h-8l-12-3h-8l-4 2h-51l-1 1-20 2-40 1-10 5h-7l-10-1-5 4-37 1h-39l-12 2-13 5-7 1-12-5-7-2-11-2h-11l-19 1h-21l-23-2-3-3h-17l-7-2v-2l-45-1-1-1-18-2-53-1-2-1h-7l-8 3h-12l-16-4-19-3-19-5-20-4-5-2-19-3-35-1-6-3-19-1-10-2-4-3-8-2H0v-9l20 1 7 3 60 1 11 3 26 3 3 1 13 1 3 1 15 1 30 4 36 5 21 3 31 3 60 6 45 2 11 1 2 1 22 1 3 1 32 1 14 2 32 1 31 3 12 2 10-1 15-4 17-4 3-2h7l9 3 5 1h18l9-1 36-1 3-1 22-1 24-4 23-2 21-1 26-4 21-2 23-1 14-2 22-1 4-1 17-1 13-3 20-2 7-1 18-1 2-1 25-2 4-2 22-2v-2l60-1 8-3h50l24-7 14-4 19-3 7-2 33-4 1-1 65-4 13-2h41l21-2 40-2 2-1 38-2 29-4Z'/%3E%3C/svg%3E");
+            background-position: center center;
+            background-repeat: no-repeat; background-size: cover;
+
+            cursor: url("/assets/static/idle.cur"), default !important;
+        }
+        body:active, body:focus, body:focus-within, body:target, body:active * {
+            cursor: url("/assets/static/active.cur"), default !important;
+        }
+        :any-link {
+            color: #8feeff; text-decoration: none !important;
+            cursor: url("/assets/static/link.cur"), default !important;
+        }
+        * {
+            cursor: inherit !important; 
+            scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
+        }
+        *::-webkit-scrollbar {width: 0px}
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .page {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            width: min(90vw, 700px); height: 90vh;
+            color: white; font-size: 1.5em;
+        }
+
+        a, .button {
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+        .title {
+            font-size: 3em; 
+            -webkit-text-stroke: 0.125em black;
+            text-shadow: 0 0.1em 0 black;
+            paint-order: stroke fill;
+        }
+        .subtitle {
+            font-size: 1.5em;
+            -webkit-text-stroke: 0.15em black;
+            text-shadow: 0 0.1em 0 black;
+            paint-order: stroke fill;
+        }
+        .tiny {
+            font-size: 0.5em !important;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .button {
+            display: flex;  position: relative;
+            flex-direction: column; align-items: center;
+            cursor: pointer; background: none;
+            border: none; margin-top: 0.5em;
+        }
+        .button img {height: 2.5em}
+        input {display: none}
+
+        .button span {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff; font-size: 1em;
+            pointer-events: none;
+            white-space: nowrap; user-select: none;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .multi {
+            display: flex; flex-direction: row;
+            width: min(90vw, 700px); 
+            gap: 1em; justify-content: center;
+        }
+        .input {
+            background: rgba(0,0,0,0.6); color: #fff;
+            font-size: 0.5em; font-family: "JetBrains Mono";
+            overflow: auto; width: 100%; max-width: 350px; height: 300px;
+            text-shadow: none; padding: 1em; margin: 0.5em 0;
+            min-height: 10vh; max-height: 30vh; text-align: left !important;
+            white-space: pre-wrap; border-radius: 1em;
+            border: none; outline: none; /* backdrop-filter: blur(10px); */
+        }
+
+        .paste {
+            display: flex; flex-direction: column;
+            justify-content: flex-start; align-items: center;
+            flex: 1; min-width: 0; margin-right: 0.5em;
+        }
+
+        .outputbox {
+            display: flex; flex-direction: row !important; 
+            height: 300px;
+            overflow-wrap: break-word; word-break: break-word; white-space: normal;
+            flex-wrap: nowrap !important; gap: 1em;
+        }
+        .outputsegment {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            width: min(45vw, 350px);
+        }
+        .url {
+            max-width: 100%;
+            white-space: nowrap; display: block; word-break: break-all;
+            font-size: 0.75em; line-height: 1.2;
+        }
+        .shorturl {
+            max-width: 100%;
+            white-space: nowrap; display: block;
+        }
+        .charcount {font-size: 0.5em; color: rgba(255,255,255,0.7)}
+        .copybutton {height: 40px; font-size: 0.75em}
+        .copybutton img {max-height: 40px; height: auto; width: auto}
+
+        .hidden {display: none}
+
+        .upload {
+            display: flex; flex-direction: column;
+            justify-content: flex-start; align-items: center;
+            flex: 1; min-width: 0; margin-left: 0.5em;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+         .xml {
+             background: rgba(0,0,0,0.6); color: #fff;
+             font-size: 0.5em; font-family: "JetBrains Mono";
+             overflow: auto; width: 100%; max-width: 350px; height: 300px;
+             text-shadow: none; padding: 1em; margin: 0.5em 0;
+             min-height: 10vh; max-height: 30vh; text-align: left !important;
+             white-space: pre-wrap; border-radius: 1em;
+             border: none; outline: none; resize: none;
+         }
+        .xml:focus {outline: none !important; box-shadow: none !important}
+        .xml::selection {background-color: #264f78 !important; color: inherit !important}
+        .xml:empty:before {
+            content: attr(placeholder);
+            color: rgba(255,255,255,0.4);
+            pointer-events: none;
+        }
+        
+        /* highlighting colors!! nabbed from a vscode theme */
+        .xmlvalue {color: #ce9178}
+        .xmlequals {color: #cccccc}
+        .xmlbrackets {color: #808080}
+        .xmlelement {color: #569cd6}
+        .xmlattribute {color: #9cdcfe}
+        
+        /* override ugly browser default selection */
+        .xmlvalue::selection {background-color: #264f78 !important; color: #ce9178 !important}
+        .xmlequals::selection {background-color: #264f78 !important; color: #cccccc !important}
+        .xmlbrackets::selection {background-color: #264f78 !important; color: #808080 !important}
+        .xmlelement::selection {background-color: #264f78 !important; color: #569cd6 !important}
+        .xmlattribute::selection {background-color: #264f78 !important; color: #9cdcfe !important}
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+         /* file upload thing */
+         .uploadinput {
+             display: flex; align-items: center; justify-content: center;
+             text-align: center !important; font-family: "Good Dog";
+         }
+         .uploadinput a {font-size: 2em; padding: 1em}
+
+         .drag {
+            position: fixed; display: none;
+            justify-content: center; align-items: center; text-align: center;
+            width: 100vw; height: 100vh; z-index: 65535;
+            background-color: rgba(0,0,0,0.5); 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+            transition: opacity 0.5s;
+
+            color: white; margin-left: 20%; margin-right: 20%;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill; font-size: 4em;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .copied {
+            position: absolute;
+            left: 50%; top: 50%; transform: translate(-50%, -50%);
+            padding: 5px 10px; font-size: 20px; white-space: nowrap; 
+            pointer-events: none; transition: opacity 0.2s ease; 
+            color: white; font-size: 2em; z-index: 999; opacity: 0;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
+
+    <div class="drag">Drop here!</div>
+    <input type="file" class="fileinput" accept=".xml" style="display:none">
+    <div class="copied"><a>copied!</a></div>
+    
+    <div class="loading">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <path fill="#fbfbfb" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm1 18-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
+            <path fill="#080808" d="M90 29h13l8 7 7 8 5 10 1 6v14l-4 11-3 5 8-6 8-9 7-12 5-16 4 1 9 10 8 15 4 13v9l-8 11-11 8-12 5-4 1h-15l-6-3-7-6-2-4 2 10 7 11 7 6 9 5 16 6 6 1-2 4-12 10-15 7-7 2h-9l-10-5-8-7-7-12-3-11v-15l4-10 4-6 3-4-10 8-9 10-9 15-8 20-4-2-9-10-8-16v-8l5-16 6-11 8-7 10-6 12-4h12l10 4 3 1-5-9-8-7-10-4-5-1H45l4-6 12-10 16-8 6-2Zm0 4-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
+            <path fill="#060606" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm4 3-16 3-16 7-11 7-11 10-8 11-8 16-3 12-1 7v17l2 12 5 14 6 11 9 11 10 9 15 9 14 5 11 2h18l13-3 14-5 14-9 12-11 9-13 7-16 2-7 1-9V90l-3-15-7-16-8-11-8-9-12-9-17-8-12-3-7-1Z"/>
+          </svg>          
+    </div>
+
+    <div class="page">
+        <img src="assets/images/stolenhat.png" width="150px" draggable="false">
+        <a class="title">Level Preview</a>
+        <div class="multi">
+
+            <div class="paste">
+                <a>Paste your level data here:</a>
+                <div class="input xml theotherbox" contenteditable="true" placeholder='<map>
+    <layer name="settings">
+        <map gridSize="32" width="320" height="480" />
+        <gameDesign ropePhysicsSpeed="1.0" special="1" twoParts="false" />
+    </layer>
+    <layer name="Objects">
+        <candy x="158" y="147" />
+        <grab x="159" y="45" length="90" wheel="false" gun="false" radius="-1" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
+        <target x="161" y="427" />
+        <star x="162" y="230" timeout="-1" />
+        <star x="161" y="295" timeout="-1" />
+        <star x="161" y="361" timeout="-1" />
+    </layer>
+</map>'></div>
+            </div>
+
+            <div class="upload">
+                <a>Or:</a>
+                <div class="input uploadinput">
+                    <a>Click to open file explorer or drag the file here...</a>
+                </div>
+            </div>
+
+        </div>
+
+        <label class="button clickable encodebutton">
+            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+            <span>Create Link</span>
+        </label>
+
+        <div class="outputbox hidden">
+            <div class="outputsegment">
+                <a class="subtitle">Shortened Link:</a>
+                <a class="shorturl" readonly>Loading...</a>
+                <label class="button clickable copybutton" copy="shorturl">
+                    <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                    <span>Copy</span>
+                </label>
+            </div>
+            <div class="outputsegment">
+                <a class="subtitle">Full Link:</a>
+                <a class="url" readonly>Loading...</a>
+                <a class="charcount">0 characters</a>
+                <label class="button clickable copybutton" copy="url">
+                    <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                    <span>Copy</span>
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const favicons = Array.from({length: 20}, (_, i) => `/assets/images/icon/frame${i+1}.png`);
+        let favicon_index = 0, favicon_delay = 300;
+        function favicongif() {
+            const link = document.querySelector("link[rel='icon']") || document.createElement("link");
+            link.rel = "icon";
+            link.href = favicons[favicon_index];
+            document.head.appendChild(link);
+            favicon_index = (favicon_index + 1) % favicons.length;
+            setTimeout(favicongif, favicon_delay);
+        }
+        favicongif();
+
+        window.addEventListener("load", function() {
+            const loading = document.querySelector(".loading");
+            if (loading) {
+                loading.style.opacity = "0";
+                setTimeout(() => {
+                    if (loading.parentNode) loading.parentNode.removeChild(loading);
+                }, 500);
+            }
+        });
+
+        document.querySelectorAll(".clickable").forEach(function(element) {
+            element.addEventListener("click", function() {
+                document.querySelector(".click").currentTime = 0;
+                document.querySelector(".click").play();
+            });
+        });
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        function encodeurl(str) {
+            try {
+                const bytes = new TextEncoder().encode(str); let bin = "";
+                for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+                return btoa(bin);
+            } catch (e) {
+                console.error("base64 error:", e);
+                return btoa(str);
+            }
+        }
+
+        function encodexml() {
+            const theotherbox = document.querySelector(".theotherbox");
+            const xml = theotherbox.textContent.trim();
+                const b64 = encodeurl(xml);
+                const b64uri = encodeURIComponent(b64);
+
+                const fullurl = window.location.origin + window.location.pathname.replace("index.html", "game") + "?data=" + b64uri;
+                const urlelem = document.querySelector(".url");
+                const shorturl = document.querySelector(".shorturl");
+                
+                // adjust this
+                const cleanurl = fullurl.replace(/^https?:\/\//, '');
+                const croppedurl = cleanurl.length > 30 ? cleanurl.substring(0,33) + '...' : cleanurl;
+                urlelem.textContent = croppedurl; 
+                urlelem.href = fullurl;
+                
+                const charCount = document.querySelector('.charcount');
+                if (charCount) {
+                    charCount.textContent = `${cleanurl.length} characters`;
+                }
+
+                document.querySelector(".outputbox").classList.remove("hidden");
+                document.querySelector(".outputbox").style.display = "flex"; // THIS FUCKING LINE DUDE.
+                // so apparently gpt thought it would be a great idea to change the display of the elements to block rather than flex, and it took me 2 hours to figure out the cause
+
+                requestshorten(b64);
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        // this runs on a cloudflare worker please spare my free tier mane
+        function requestshorten(b64data) {
+            const shorturl = document.querySelector(".shorturl");
+            shorturl.textContent = "Loading...";
+            shorturl.href = "";
+            
+            fetch(`https://play.candies.monster/?data=${b64data}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.shortened) {
+                        const displayshorturl = data.shortened.replace(/^https?:\/\//, '');
+                        shorturl.textContent = displayshorturl;
+                        shorturl.href = data.shortened;
+                    } else if (data.error) {
+                        // if >5 urls per 60s
+                        shorturl.textContent = "Rate limited :(";
+                        shorturl.href = "";
+                    } else {
+                        shorturl.textContent = "Error";
+                        shorturl.href = "";
+                    }
+                })
+                .catch(error => {
+                    shorturl.textContent = "Error";
+                    shorturl.href = "";
+                });
+        }
+
+        // two methods to copy in case something goes wrong
+        function copyurl(element) {
+            if (!element) return;
+            
+            const text = element.textContent || element.value || '';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    document.querySelector(".copied").style.opacity = "1";
+                    setTimeout(function() {document.querySelector(".copied").style.opacity = "0"}, 1000);
+                })
+            } else if (element.select) {
+                element.select(); element.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                document.querySelector(".copied").style.opacity = "1";
+                setTimeout(function() {document.querySelector(".copied").style.opacity = "0"}, 1000);
+            }
+        }
+
+        document.querySelector(".encodebutton").addEventListener("click", encodexml);
+        document.querySelectorAll(".copybutton").forEach(btn => {
+            btn.addEventListener("click", function() {
+                const target = btn.getAttribute("copy");
+                if (!target) return;
+                let el = document.querySelector("." + target);
+                copyurl(el);
+            });
+        });
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        /* xml highlighting */
+        function highlight(element) {
+            if (!element) return;
+            const text = element.textContent || element.innerText || "";
+
+            if (!text.trim()) return;
+            const selection = window.getSelection();
+            const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+            let cursoroffset = 0;
+            let cursornode = null;
+            if (range) {
+                cursornode = range.startContainer;
+                cursoroffset = range.startOffset;
+                if (cursornode === element) {
+                    cursoroffset = range.startOffset;
+                } else {
+                    const walker = document.createTreeWalker(
+                        element, NodeFilter.SHOW_TEXT,
+                        null, false
+                    );
+                    let totaloffset = 0; let node;
+                    while (node = walker.nextNode()) {
+                        if (node === cursornode) {
+                            cursoroffset = totaloffset + cursoroffset;
+                            break;
+                        }; totaloffset += node.textContent.length;
+                    }
+                }
+            }; element.innerHTML = "";
+
+            const processedcontent = processxml(text);
+            element.appendChild(processedcontent);
+            if (range && cursoroffset >= 0) {
+                try {
+                    const newrange = document.createRange();
+                    const walker = document.createTreeWalker(
+                        element, NodeFilter.SHOW_TEXT,
+                        null, false
+                    ); let currentoffset = 0; let node;
+                    while (node = walker.nextNode()) {
+                        const nodelength = node.textContent.length;
+                        if (currentoffset + nodelength >= cursoroffset) {
+                            newrange.setStart(node, cursoroffset - currentoffset);
+                            newrange.collapse(true);
+                            selection.removeAllRanges();
+                            selection.addRange(newrange);
+                            break;
+                        }
+                        currentoffset += nodelength;
+                    }
+                } catch (e) {
+                }
+            }
+        }
+
+        function processxml(text) {
+            const fragment = document.createDocumentFragment();
+            let currentpos = 0;
+            const patterns = [
+                {regex: /<\/?[^>\s]+/g, class: "xmlelement"},
+                {regex: /\b\w+(?=\s*=)/g, class: "xmlattribute"},
+                {regex: /"[^"]*"/g, class: "xmlvalue"},
+                {regex: /=/g, class: "xmlequals"},
+                {regex: /[<>/]/g, class: "xmlbrackets"}
+            ];
+            const matches = [];
+            patterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.regex.exec(text)) !== null) {
+                    matches.push({
+                        start: match.index,
+                        end: match.index + match[0].length,
+                        text: match[0],
+                        class: pattern.class
+                    });
+                }
+            });
+            matches.sort((a, b) => a.start - b.start);
+            const filteredmatches = [];
+            let lastend = 0;
+            matches.forEach(match => {
+                if (match.start >= lastend) {
+                    filteredmatches.push(match);
+                    lastend = match.end;
+                }
+            });
+            filteredmatches.forEach(match => {
+                if (match.start > currentpos) {
+                    const textbefore = text.substring(currentpos, match.start);
+                    const textnode = document.createTextNode(textbefore);
+                    fragment.appendChild(textnode);
+                }
+                const span = document.createElement("span");
+                span.className = match.class;
+                span.textContent = match.text;
+                fragment.appendChild(span);
+                currentpos = match.end;
+            });
+            if (currentpos < text.length) {
+                const remainingtext = text.substring(currentpos);
+                const textnode = document.createTextNode(remainingtext);
+                fragment.appendChild(textnode);
+            }
+            return fragment;
+        }
+
+        const xmleditor = document.querySelector(".xml");
+        if (xmleditor) {
+            highlight(xmleditor);
+            xmleditor.addEventListener("input", function() {
+                clearTimeout(this.highlighttimeout);
+                this.highlighttimeout = setTimeout(() => {
+                    highlight(this);
+                }, 100);
+            });
+            xmleditor.addEventListener("paste", function() {
+                setTimeout(() => {highlight(this)}, 10);
+            });
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        /* file uploader */
+        const dragoverlay = document.querySelector(".drag");
+        const theotherbox = document.querySelector(".theotherbox");
+        const uploadtxt = document.querySelector(".uploadinput").querySelector("a");
+
+        document.querySelector(".uploadinput").addEventListener("click", function() {
+            document.querySelector(".fileinput").click();
+        });
+        document.querySelector(".fileinput").addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
+
+        let dragcount = 0;
+        document.addEventListener("dragenter", function(e) {
+            e.preventDefault(); dragcount++;
+            if (dragcount === 1) {
+                dragoverlay.style.display = "flex";
+                dragoverlay.style.opacity = "0";
+                setTimeout(() => {dragoverlay.style.opacity = "1"}, 10);
+            }
+        });
+
+        document.addEventListener("dragleave", function(e) {
+            e.preventDefault();
+            dragcount--;
+            if (dragcount === 0) {
+                dragoverlay.style.opacity = "0";
+                setTimeout(() => {
+                    dragoverlay.style.display = "none";
+                }, 500);
+            }
+        });
+
+        document.addEventListener("dragover", function(e) {e.preventDefault()});
+        document.addEventListener("drop", function(e) {
+            e.preventDefault();
+            dragcount = 0;
+            dragoverlay.style.opacity = "0";
+            setTimeout(() => {
+                dragoverlay.style.display = "none";
+            }, 500);
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                if (!content.includes("<map>")) {uploaderror(); return}
+
+                yay(file.name);
+                theotherbox.textContent = content;
+                highlight(theotherbox);
+            };
+            reader.readAsText(file);
+        }
+
+        function uploaderror() {
+            const originalText = uploadtxt.textContent; const originalColor = uploadtxt.style.color;
+            uploadtxt.textContent = "Invalid / corrupted file!"; uploadtxt.style.color = "#f08b8b";
+            
+            setTimeout(() => {
+                uploadtxt.textContent = originalText;
+                uploadtxt.style.color = originalColor;
+            }, 2000);
+        }
+        function yay(filename) {
+            uploadtxt.textContent = filename;
+            uploadtxt.style.color = "#fff";
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+    </script>
+</body>
 </html>

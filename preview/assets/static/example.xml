@@ -1,38 +1,38 @@
 <map>
-<layer name="settings">
-<map gridSize="32" width="320" height="480" />
-<gameDesign ropePhysicsSpeed="1" twoParts="false" nightLevel="true" />
-</layer>
-<layer name="Objects">
-<target x="498" y="199" />
-<candy x="400" y="184" />
-<grab x="326" y="136" length="100" wheel="false" gun="false" radius="-1" moveLength="-1" moveVertical="false" moveOffset="0" spider="true" part="L" hidePath="false" />
-<bubble x="138" y="124" />
-<pump x="-57" y="163" angle="90" />
-<star x="70" y="188" />
-<star x="131" y="254" timeout="10" />
-<grab x="257" y="362" length="100" wheel="false" gun="false" radius="100" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
-<spike2 x="-165" y="220" angle="90" size="1" />
-<spike2 x="-96" y="273" angle="90" size="2" />
-<spike2 x="-12" y="306" angle="90" size="3" />
-<spike2 x="51" y="345" angle="90" size="4" />
-<grab x="147" y="195" length="100" wheel="false" gun="false" radius="100" moveLength="100" moveVertical="false" moveOffset="10" spider="false" part="L" hidePath="false" />
-<electro x="415" y="336" initialDelay="1" offTime="3" onTime="2" angle="90" size="5" />
-<sock x="22" y="97" group="0" angle="90" />
-<sock x="-41" y="95" group="1" angle="90" />
-<bouncer1 x="-169" y="333" angle="90" size="1" />
-<bouncer1 x="-94" y="396" angle="90" size="2" />
-<grab x="487" y="358" length="100" wheel="true" gun="false" radius="100" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
-<gravitySwitch x="108" y="321" />
-<spike4 x="-155" y="109" angle="90" size="1" toggled="1" />
-<rotatedCircle x="256" y="355" size="100" handleAngle="90" oneHandle="false"  />
-<tutorialText x="-10" y="213" locale="en" text="meow" width="100" />
-<ghost x="-154" y="368" bouncer="true" bubble="false" grab="true" radius="100" angle="90" />
-<steamTube x="-215" y="162" angle="90" />
-<lantern x="483" y="95" candyCaptured="false" />
-<gap x="189" y="65" angle="90" activeTime="2" radius="50" index="1" />
-<lightBulb x="434" y="223" litRadius="10" bulbNumber="1" />
-<transporter x="17" y="456" angle="90" direction="forward" type="manual" width="50" length="100" />
-<transporter x="94" y="451" angle="90" direction="forward" type="auto" width="50" length="100" velocity="10" />
-</layer>
+    <layer name="settings">
+        <map gridSize="32" width="320" height="480" />
+        <gameDesign ropePhysicsSpeed="1" twoParts="false" nightLevel="true" />
+    </layer>
+    <layer name="Objects">
+        <target x="498" y="199" />
+        <candy x="400" y="184" />
+        <grab x="326" y="136" length="100" wheel="false" gun="false" radius="-1" moveLength="-1" moveVertical="false" moveOffset="0" spider="true" part="L" hidePath="false" />
+        <bubble x="138" y="124" />
+        <pump x="-57" y="163" angle="90" />
+        <star x="70" y="188" />
+        <star x="131" y="254" timeout="10" />
+        <grab x="257" y="362" length="100" wheel="false" gun="false" radius="100" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
+        <spike2 x="-165" y="220" angle="90" size="1" />
+        <spike2 x="-96" y="273" angle="90" size="2" />
+        <spike2 x="-12" y="306" angle="90" size="3" />
+        <spike2 x="51" y="345" angle="90" size="4" />
+        <grab x="147" y="195" length="100" wheel="false" gun="false" radius="100" moveLength="100" moveVertical="false" moveOffset="10" spider="false" part="L" hidePath="false" />
+        <electro x="415" y="336" initialDelay="1" offTime="3" onTime="2" angle="90" size="5" />
+        <sock x="22" y="97" group="0" angle="90" />
+        <sock x="-41" y="95" group="1" angle="90" />
+        <bouncer1 x="-169" y="333" angle="90" size="1" />
+        <bouncer1 x="-94" y="396" angle="90" size="2" />
+        <grab x="487" y="358" length="100" wheel="true" gun="false" radius="100" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
+        <gravitySwitch x="108" y="321" />
+        <spike4 x="-155" y="109" angle="90" size="1" toggled="1" />
+        <rotatedCircle x="256" y="355" size="100" handleAngle="90" oneHandle="false" />
+        <tutorialText x="-10" y="213" locale="en" text="meow" width="100" />
+        <ghost x="-154" y="368" bouncer="true" bubble="false" grab="true" radius="100" angle="90" />
+        <steamTube x="-215" y="162" angle="90" />
+        <lantern x="483" y="95" candyCaptured="false" />
+        <gap x="189" y="65" angle="90" activeTime="2" radius="50" index="1" />
+        <lightBulb x="434" y="223" litRadius="10" bulbNumber="1" />
+        <transporter x="17" y="456" angle="90" direction="forward" type="manual" width="50" length="100" />
+        <transporter x="94" y="451" angle="90" direction="forward" type="auto" width="50" length="100" velocity="10" />
+    </layer>
 </map>
