@@ -74,6 +74,7 @@
 
         .songlistcontainer {
             padding: 2em; max-width: 1200px;
+            margin-bottom: 5em;
         }
 
         .songlist {
@@ -253,12 +254,29 @@
             width: 24px; height: 24px;
             filter: brightness(0) invert(1);
         }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+        
+        .visualizer {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%; height: 200px;
+            display: flex; align-items: flex-end; justify-content: center;
+            padding: 0 20px; box-sizing: border-box;
+            z-index: 0; pointer-events: none;
+        }
+        .bar {
+            width: 4%; margin: 0 0.5%;
+            background: rgba(255, 255, 255, 0.15);
+            transition: height 0.1s ease-out;
+        }
     </style>
 </head>
 <body>
     <div class="stupidbg"></div>
     <audio class="audioplayer" preload="auto"></audio>
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
+    <div class="visualizer"></div>
     
     <div class="loading">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
@@ -343,12 +361,71 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
+        // oddly pawing.cv/swatchlings-shaped visualizer 
+        (function setupSongVisualizer() {
+            try {
+                if (!window.__visCtx) {
+                    window.__visCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            } catch (e) {
+                window.__visCtx = null;
+            }
+            if (!window.__visCtx) {return}
+            window.__visAnalyser = window.__visCtx.createAnalyser();
+            window.__visAnalyser.fftSize = 64;
+            window.__visAnalyser.smoothingTimeConstant = 0.8;
+
+            const container = document.querySelector(".visualizer")
+            if (container && !container.dataset.ready) {
+                for (let i = 0; i < 20; i++) {
+                    const bar = document.createElement("div");
+                    bar.className = "bar";
+                    bar.id = `bar-${i}`;
+                    container.appendChild(bar);
+                }
+                container.dataset.ready = "1";
+            }
+
+            const dataArray = new Uint8Array(window.__visAnalyser.frequencyBinCount);
+            function animate() {
+                if (!window.__visAnalyser) {requestAnimationFrame(animate); return}
+                window.__visAnalyser.getByteFrequencyData(dataArray);
+                const maxHeight = Math.max(40, (container && container.clientHeight) ? container.clientHeight : 100);
+                for (let i = 0; i < 20; i++) {
+                    const value = dataArray[Math.floor(i * dataArray.length / 20)] || 0;
+                    const height = Math.max(4, (value / 255) * maxHeight);
+                    const el = document.getElementById(`bar-${i}`);
+                    if (el) {el.style.height = height + "px"}
+                }
+                requestAnimationFrame(animate);
+            }; animate();
+
+            document.addEventListener("click", function() {
+                if (window.__visCtx && window.__visCtx.state === "suspended") {
+                    window.__visCtx.resume();
+                }
+            }, { once: false });
+        })();
+
+        function bindvisualizer(audioElement) {
+            if (!window.__visCtx || !window.__visAnalyser || !audioElement) {return}
+            try {if (window.__visSource) {window.__visSource.disconnect()}} catch (e) {}
+            try {
+                window.__visSource = window.__visCtx.createMediaElementSource(audioElement);
+                window.__visSource.connect(window.__visAnalyser);
+                window.__visAnalyser.connect(window.__visCtx.destination);
+            } catch (e) {}
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
         // you are the most vibecoded page EVER!
         class musicplayer {
             constructor() {
                 this.audio = document.querySelector(".audioplayer");
                 this.nextAudio = document.createElement("audio");
                 this.nextAudio.preload = "auto";
+                bindvisualizer(this.audio);
                 this.songs = [
                     {
                         category: "Candy Flick",
@@ -620,6 +697,118 @@
                                       background: "timetravelmenu.webp"
                                     }
                                 ]
+                            }
+                        ]
+                    },
+                    {
+                        category: "Cut the Rope 3",
+                        icon: "ctr3.webp",
+                        tracks: [
+                            { path: "ctr3/music_Cave.ogg",
+                            formats: ["ogg"],
+                            background: "ctr3.webp"
+                            },
+                            { path: "ctr3/music_Desert.ogg",
+                            formats: ["ogg"],
+                            background: "ctr3.webp"
+                            },
+                            { path: "ctr3/music_IceCave_Final.ogg",
+                            formats: ["ogg"],
+                            background: "ctr3.webp"
+                            },
+                            { path: "ctr3/music_Jungle.ogg",
+                            formats: ["ogg"],
+                            background: "ctr3.webp"
+                            },
+                            { path: "ctr3/music_Pirate.ogg",
+                            formats: ["ogg"],
+                            background: "ctr3.webp"
+                            },
+                            { path: "ctr3/music_Title.ogg",
+                            formats: ["ogg"],
+                            background: "ctr3.webp"
+                            }
+                        ]
+                    },
+                    {
+                        category: "Cut the Rope Remastered",
+                        icon: "remastered.webp",
+                        tracks: [
+                            { path: "remastered/music_Boardgame_Birthday.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Boardgame_Christmas.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Boardgame_Circus.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Boardgame_Pirates.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Boardgame_Space.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Boardgame_WinterFun.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Chapter01.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Chapter02.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Chapter03.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Chapter04.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Chapter05.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_MiniStory_SuperHeroes.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_SpecialLevel_Adventure.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_SpecialLevel_Christmas.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_SpecialLevel_Circus.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_SpecialLevel_Pirates.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_SpecialLevel_Space.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_SpecialLevel_Winterfun.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
+                            },
+                            { path: "remastered/music_Title.ogg",
+                            formats: ["ogg"],
+                            background: "remastered.webp"
                             }
                         ]
                     }
@@ -957,6 +1146,7 @@
                 this.audio.addEventListener("timeupdate", () => this.updateprogress());
                 this.audio.addEventListener("ended", () => this.onsongend());
                 this.audio.addEventListener("loadedmetadata", () => this.updatetimedisplay());
+                bindvisualizer(this.audio);
                 
                 this.audio.play().then(() => {
                     this.isplaying = true;

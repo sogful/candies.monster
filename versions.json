@@ -1,5 +1,13 @@
 [
   {
+    "version": "v1.0",
+    "icon": "/assets/images/gameicons/original.webp",
+    "downloads": [
+      {"url": "https://archive.org/download/cuttherope_new9871t/cuttherope_new9871t.apk",
+       "button": "/assets/images/buttons/download/internetarchive.png"}
+    ]
+  },
+  {
     "version": "v1.1.1",
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
