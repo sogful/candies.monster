@@ -420,7 +420,10 @@
         function copyurl(element) {
             if (!element) return;
             
-            const text = element.textContent || element.value || '';
+            let text = "";
+            if (element.tagName && element.tagName.toLowerCase() === "a" && element.href) {text = element.href}
+            else {text = element.value || element.textContent || ""}
+            
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
                     document.querySelector(".copied").style.opacity = "1";
