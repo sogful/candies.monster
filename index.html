@@ -30,7 +30,7 @@
             position: relative; z-index: 1;
             display: flex; justify-content: center; align-items: flex-start;
             min-height: 100vh; min-width: 100vw; overflow-y: auto;
-            user-select: none; padding: 20px 0; margin: 0;
+            user-select: none; padding: 0; margin: 0;
             -webkit-user-drag: none;
 
             background-color: #e9a856;
@@ -110,6 +110,10 @@
         }
         .button {
             max-width: 140px;
+            width: 100%;
+        }
+        .small > a > .button {
+            max-width: 70px;
             width: 100%;
         }
 		.buttons a {position: relative; display: inline-flex}
@@ -203,6 +207,10 @@
             <a href="//private.candies.monster"><img class="button clickable p" src="/assets/images/buttons/private.png" draggable="false"></a>
             <a wip><img class="button clickable" src="/assets/images/buttons/levels.png" draggable="false"></a>
             <a todo><img class="button clickable" src="/assets/images/buttons/sprites.png" draggable="false"></a>
+        </div>
+        <div class="buttons small">
+            <a href="/cards"><img class="button clickable" src="/assets/images/buttons/cards.png" draggable="false"></a>
+            <a href="/comics"><img class="button clickable" src="/assets/images/buttons/comics.png" draggable="false"></a>
         </div>
         <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
 

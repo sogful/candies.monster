@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Music Player!</title>
-    <link rel="icon" type="image/png" href="/assets/images/player/favicon.png">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -210,17 +210,17 @@
         }
         .progressleft {
             width: 20px; height: 20px;
-            background: url("/assets/images/player/progress/leftbody.png") no-repeat center;
+            background: url("assets/images/progress/leftbody.png") no-repeat center;
             background-size: contain; flex-shrink: 0;
         }
         .progresscenter {
             flex: 1; height: 20px;
-            background: url("/assets/images/player/progress/body.png") repeat-x center;
+            background: url("assets/images/progress/body.png") repeat-x center;
             background-size: auto 100%;
         }
         .progressright {
             width: 20px; height: 20px;
-            background: url("/assets/images/player/progress/rightbody.png") no-repeat center;
+            background: url("assets/images/progress/rightbody.png") no-repeat center;
             background-size: contain; flex-shrink: 0;
         }
 
@@ -231,7 +231,7 @@
             padding: 2px; width: 0%;
         }
         .progressfill {
-            height: 16px; background: url("/assets/images/player/progress/fill.png") repeat-x center;
+            height: 16px; background: url("assets/images/progress/fill.png") repeat-x center;
             background-size: auto 100%; border-radius: 0.5em;
             z-index: 9999; width: 100%; min-width: 1em;
         }
@@ -292,23 +292,23 @@
 
     <div class="controlbar">
         <button class="controlbutton playpausebutton clickable">
-            <img src="/assets/images/player/icons/play.png">
+            <img src="assets/images/icons/play.png">
         </button>
         
         <button class="controlbutton prevbutton clickable">
-            <img src="/assets/images/player/icons/previous.png">
+            <img src="assets/images/icons/previous.png">
         </button>
         
         <button class="controlbutton nextbutton clickable">
-            <img src="/assets/images/player/icons/next.png">
+            <img src="assets/images/icons/next.png">
         </button>
         
         <div class="playbackmodes">
             <button class="modebutton active loopallbutton clickable">
-                <img src="/assets/images/player/icons/loop.png">
+                <img src="assets/images/icons/loop.png">
             </button>
             <button class="modebutton shufflebutton clickable">
-                <img src="/assets/images/player/icons/shuffle.png">
+                <img src="assets/images/icons/shuffle.png">
             </button>
         </div>
         <div class="timedisplay">??:??/??:??</div>
@@ -327,7 +327,7 @@
         </div>
         
         <button class="fullscreenbutton clickable">
-            <img src="/assets/images/player/icons/fullscreen.png">
+            <img src="assets/images/icons/fullscreen.png">
         </button>
     </div>
 
@@ -852,7 +852,7 @@
                     downloadbutton.className = "downloadbutton clickable";
                     downloadbutton.dataset.format = format;
                     const displayformat = format === "dspadpcm.bcstm" ? "bcstm" : format;
-                    downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/assets/images/player/icons/download.png">`;
+                    downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="assets/images/icons/download.png">`;
                     downloadbuttons.appendChild(downloadbutton);
                 });
                 
@@ -1023,7 +1023,7 @@
                 const filename = song.path;
                 if (!filename) {return}
                 
-                const audiopath = filename.startsWith("/") ? filename : `/assets/audio/player/${filename}`;
+                const audiopath = filename.startsWith("/") ? filename : `assets/audio/${filename}`;
                 
                 this.preloadtracks();
                 this.triggeredloop = false;
@@ -1163,13 +1163,13 @@
                 const loopbutton = document.querySelector(".loopallbutton");
                 if (this.isloopall) {
                     loopbutton.classList.add("active");
-                    loopbutton.querySelector("img").src = "/assets/images/player/icons/loop.png";
+                    loopbutton.querySelector("img").src = "assets/images/icons/loop.png";
                 } else if (this.isloopone) {
                     loopbutton.classList.add("active");
-                    loopbutton.querySelector("img").src = "/assets/images/player/icons/loopone.png";
+                    loopbutton.querySelector("img").src = "assets/images/icons/loopone.png";
                 } else {
                     loopbutton.classList.remove("active");
-                    loopbutton.querySelector("img").src = "/assets/images/player/icons/loop.png";
+                    loopbutton.querySelector("img").src = "assets/images/icons/loop.png";
                 }
             }
             
@@ -1247,7 +1247,7 @@
                     nextsong = this.songs[nextcategoryindex].tracks[nextsongindex];
                 }
                 if (nextsong && nextsong.path) {
-                    const nextAudioPath = nextsong.path.startsWith("/") ? nextsong.path : `/assets/audio/player/${nextsong.path}`;
+                    const nextAudioPath = nextsong.path.startsWith("/") ? nextsong.path : `assets/audio/${nextsong.path}`;
                     this.nextAudio.src = nextAudioPath;
                 }
             }
@@ -1283,7 +1283,7 @@
             updateplaybutton() {
                 const playpausebutton = document.querySelector(".playpausebutton");
                 const img = playpausebutton.querySelector("img");
-                img.src = this.isplaying ? "/assets/images/player/icons/pause.png" : "/assets/images/player/icons/play.png";
+                img.src = this.isplaying ? "assets/images/icons/pause.png" : "assets/images/icons/play.png";
             }
             
             updateprogress() {
@@ -1326,7 +1326,7 @@
             updatebackground(imageurl) {
                 const stupidbg = document.querySelector(".stupidbg");
                 if (imageurl) {
-                    const bgpath = imageurl.startsWith("/") ? imageurl : `/assets/images/player/bgs/${imageurl}`;
+                    const bgpath = imageurl.startsWith("/") ? imageurl : `assets/images/bgs/${imageurl}`;
                     const currentbg = stupidbg.style.backgroundImage;
                     if (currentbg === `url("${bgpath}")` || currentbg === `url(${bgpath})`) {return}
                     
@@ -1369,7 +1369,7 @@
                 const filename = song.path;
                 if (!filename) {return}
                 
-                const audiopath = filename.startsWith("/") ? filename : `/assets/audio/player/${filename}`;
+                const audiopath = filename.startsWith("/") ? filename : `assets/audio/${filename}`;
                 const downloadurl = audiopath.replace(/\.\w+$/, `.${format}`);
                 
                 const link = document.createElement("a");
