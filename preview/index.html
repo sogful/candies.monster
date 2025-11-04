@@ -582,7 +582,7 @@
         document.querySelector(".fileinput").addEventListener("change", function(e) {
             const file = e.target.files[0];
             if (file) {
-                handleFile(file);
+                handlefile(file);
             }
         });
 
@@ -595,7 +595,6 @@
                 setTimeout(() => {dragoverlay.style.opacity = "1"}, 10);
             }
         });
-
         document.addEventListener("dragleave", function(e) {
             e.preventDefault();
             dragcount--;
@@ -606,23 +605,16 @@
                 }, 500);
             }
         });
-
         document.addEventListener("dragover", function(e) {e.preventDefault()});
         document.addEventListener("drop", function(e) {
-            e.preventDefault();
-            dragcount = 0;
-            dragoverlay.style.opacity = "0";
-            setTimeout(() => {
-                dragoverlay.style.display = "none";
-            }, 500);
+            e.preventDefault(); dragcount = 0; dragoverlay.style.opacity = "0";
+            setTimeout(() => {dragoverlay.style.display = "none"}, 500);
 
             const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
+            if (files.length > 0) {handlefile(files[0])}
         });
 
-        function handleFile(file) {
+        function handlefile(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 const content = e.target.result;
