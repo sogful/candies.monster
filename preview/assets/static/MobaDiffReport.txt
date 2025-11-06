@@ -1,0 +1,865 @@
+MobaDiff Report
+
+Date/Time: 11/6/2025 - 14:53:32
+File 1:    C:\Users\Admin\Documents\GitHub\candies.monster\preview\assets\static\game.js
+File 2:    C:\Users\Admin\Documents\GitHub\candies.monster\preview\assets\static\gameog.js
+
+
+
+--------------------------------------------
+- Deleted line(s) at index 1
+--------------------------------------------
+/* 
+    game.js (originally ctrr.js)
+    a formatted & patched version of the core of the game.
+    to see changes, look up "// " and "/*"
+*/
+
+
+
+--------------------------------------------
+~ Modified line(s) at index 660
+--------------------------------------------
+          "meow", // game name in the console only
+          "Ctrr",
+
+
+--------------------------------------------
+~ Modified line(s) at index 1155
+--------------------------------------------
+      null != this.node && this.node.Hh(a); // many replacements below with added "null !=" check because failing with specific conditions (like losing a night lamp) causes a different trigger for the fail screen
+      this.node.Hh(a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 1159
+--------------------------------------------
+      null != this.node && (this.node.Fd(), this.node.Nm());
+      this.node.Fd();
+
+
+--------------------------------------------
++ Added line(s) at index 1160
+--------------------------------------------
+      this.node.Nm();
+
+
+--------------------------------------------
+~ Modified line(s) at index 1177
+--------------------------------------------
+          null != this.node && (this.node.Ne = 0);
+          this.node.Ne = 0;
+
+
+--------------------------------------------
+~ Modified line(s) at index 1181
+--------------------------------------------
+          null != this.node && (this.node.Ne = 1);
+          this.node.Ne = 1;
+
+
+--------------------------------------------
+~ Modified line(s) at index 1186
+--------------------------------------------
+      let b = this.li();
+      this.li().bf(a);
+
+
+--------------------------------------------
+- Deleted line(s) at index 1187
+--------------------------------------------
+      null != b && b.bf(a);
+
+
+--------------------------------------------
+- Deleted line(s) at index 1190
+--------------------------------------------
+      if (null == this.node) return null;
+
+
+--------------------------------------------
+~ Modified line(s) at index 1401
+--------------------------------------------
+      null != this.O && this.O.Ra && this.O.Ra.stop(J.xl); // more null checks below
+      this.O.Ra.stop(J.xl);
+
+
+--------------------------------------------
+~ Modified line(s) at index 1405
+--------------------------------------------
+      null != this.O && this.O.Ra && this.O.Ra.stop(J.Ff);
+      this.O.Ra.stop(J.Ff);
+
+
+--------------------------------------------
+- Deleted line(s) at index 1409
+--------------------------------------------
+      if (null != this.O && this.O.Ra) {
+
+
+--------------------------------------------
+- Deleted line(s) at index 1414
+--------------------------------------------
+    }
+
+
+--------------------------------------------
+- Deleted line(s) at index 1416
+--------------------------------------------
+      if (null != this.O && this.O.Ra) {
+
+
+--------------------------------------------
+- Deleted line(s) at index 1420
+--------------------------------------------
+      }
+
+
+--------------------------------------------
+~ Modified line(s) at index 1737
+--------------------------------------------
+        b.O && b.O.Ra && b.O.Ra.Vc(J.Ff) || b.mm(); // fixed up to prevent errors when tabbing back in??? i don't know why it throws errors??
+        b.O.Ra.Vc(J.Ff) || b.mm();
+
+
+--------------------------------------------
+~ Modified line(s) at index 1851
+--------------------------------------------
+      // attempt to remove the drawings button
+      this.hb(3) && this.mp();
+
+
+--------------------------------------------
+- Deleted line(s) at index 1925
+--------------------------------------------
+      // skip directly to level 17-1 on menu load
+      D.box = 17; D.level = 1;
+      this.ba(ad);
+
+
+--------------------------------------------
+~ Modified line(s) at index 1932
+--------------------------------------------
+        // fallback if for some reason that didn't happen??
+        if (0 == D.Kj())
+
+        D.box = 17; D.level = 1;
+          if (a.Gm()) a.ba(xc);
+
+        a.ba(ad);
+          else {
+
+
+--------------------------------------------
++ Added line(s) at index 1935
+--------------------------------------------
+            let b = ad;
+            M.dt(Ca(), function () {
+              a.ba(b);
+
+
+--------------------------------------------
++ Added line(s) at index 1940
+--------------------------------------------
+        else a.ba(jc);
+      });
+    }
+
+
+--------------------------------------------
+~ Modified line(s) at index 2115
+--------------------------------------------
+      this.ba(ad); // swap main menu for level
+      this.ba(ec);
+
+
+--------------------------------------------
+- Deleted line(s) at index 3144
+--------------------------------------------
+          // concrete box list (17 total), ref off of this
+
+
+--------------------------------------------
+~ Modified line(s) at index 3271
+--------------------------------------------
+          let d = this.li(); // additional patch for autorestart
+          this.li().bf(1 - a);
+
+
+--------------------------------------------
+- Deleted line(s) at index 3272
+--------------------------------------------
+          null != d && d.bf(1 - a);
+
+
+--------------------------------------------
+- Deleted line(s) at index 3484
+--------------------------------------------
+      this.de.M(!1); // hides the level num display
+
+
+--------------------------------------------
+~ Modified line(s) at index 3627
+--------------------------------------------
+        // skip fail screen entirely
+        if (-1 != Xa.Sv && (this.Br++, this.Br == Xa.Sv)) {
+
+
+--------------------------------------------
++ Added line(s) at index 3628
+--------------------------------------------
+          this.Br = 0;
+          let a = 1,
+            b = this.buttons.length;
+          for (; a < b; ) this.buttons[a++].Ad(!0);
+          this.$(6);
+          this.Vn();
+        }
+
+
+--------------------------------------------
+~ Modified line(s) at index 3706
+--------------------------------------------
+      // this.vb.M(a);
+      this.vb.M(a);
+
+
+--------------------------------------------
+- Deleted line(s) at index 3707
+--------------------------------------------
+
+      // LIKE NONE OF THIS ACTUALL DOES ANYTHING ARE WE FR
+
+
+--------------------------------------------
+~ Modified line(s) at index 3760
+--------------------------------------------
+          null != this.cb && 7 == this.cb.state && // undefined error fix
+          7 == this.cb.state &&
+
+
+--------------------------------------------
+~ Modified line(s) at index 3765
+--------------------------------------------
+          null != this.cb && 7 == this.cb.state && // here too
+          7 == this.cb.state &&
+
+
+--------------------------------------------
+~ Modified line(s) at index 3884
+--------------------------------------------
+      this.vb.H(c / 200);
+      this.vb.H(c / 150);
+
+      var h = 0; // top buttons padding
+      var h = 0;
+
+
+--------------------------------------------
+~ Modified line(s) at index 3887
+--------------------------------------------
+      this.vb.o(55); // wide res star ui x position
+      this.vb.o(a.w / 2);
+
+
+--------------------------------------------
+~ Modified line(s) at index 3906
+--------------------------------------------
+      J.We && ((q = (c / this.td.ec.y) * m - 0.1), this.td.o(g), this.td.j.H(q)); // magnet button size
+      J.We && ((q = (c / this.td.ec.y) * m), this.td.o(g), this.td.j.H(q));
+
+
+--------------------------------------------
+~ Modified line(s) at index 3908
+--------------------------------------------
+        (this.ne.j.H((c / this.td.ec.y) * m - 0.1),
+        (this.ne.j.H((c / this.td.ec.y) * m),
+
+
+--------------------------------------------
+~ Modified line(s) at index 3912
+--------------------------------------------
+      this.vb.m(a.J - 25); // y pos of star ui. a.J = bottom of the screen
+      this.vb.m(d.Sa() + d.ja() / 2);
+
+      0.0 > e && // setting this to 0.8 causes the star ui to move down on low page width. this is a horrendous workaround so since the star ui is now at the bottom we can just make it impossible to activate
+      0.8 > e &&
+
+
+--------------------------------------------
+~ Modified line(s) at index 3923
+--------------------------------------------
+        this.vb.o(65), // there used to be a formula to calculate the star ui x position for <1:1 but it's ASS and DOESN'T EVEN WORK!! FUCK YOU!!
+        this.vb.o(e + (g - e) / 2),
+
+
+--------------------------------------------
+~ Modified line(s) at index 4084
+--------------------------------------------
+      this.Nf();
+      let a = this;
+
+
+--------------------------------------------
++ Added line(s) at index 4085
+--------------------------------------------
+      M.PE(
+        D.Kj(),
+        "fail",
+        function () {
+          M.QE("dead", Ca(), function () {
+            M.cf("break:fail", P(a, a.Nf));
+          });
+        },
+        function () {
+          a.Nf();
+
+
+--------------------------------------------
++ Added line(s) at index 4096
+--------------------------------------------
+      );
+    }
+
+
+--------------------------------------------
+~ Modified line(s) at index 4143
+--------------------------------------------
+      this.Ke(600, 900); // size of the level complete screen
+      this.Ke(600, 900);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4155
+--------------------------------------------
+      c.Eb(0); // displacement of the level complete star message text??
+      c.Eb(0);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4187
+--------------------------------------------
+      // all other buttons removed besides restart
+      a = new Hd();
+
+
+--------------------------------------------
++ Added line(s) at index 4188
+--------------------------------------------
+      a.o(59);
+      a.m(640);
+      this.qa.appendChild(a.j);
+      this.buttons.push(a);
+      this.oa(a);
+      a = za.create(null, k.Pk, k.Qk, k.fz);
+      a.o(219);
+      a.m(640);
+      this.qa.appendChild(a.j);
+      this.buttons.push(a);
+      this.oa(a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4200
+--------------------------------------------
+      a.o(220); // restart button, kind of centered????
+      a.o(379);
+
+
+--------------------------------------------
++ Added line(s) at index 4205
+--------------------------------------------
+      a = za.create(null, k.Lt, k.Mt, k.WK);
+      a.o(188.5);
+      a.m(750);
+      this.qa.appendChild(a.j);
+      this.buttons.push(a);
+      this.oa(a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4260
+--------------------------------------------
+          // (no next level anim)
+          this.oa(new cd(this.buttons[4].j, 2));
+
+
+--------------------------------------------
+~ Modified line(s) at index 4265
+--------------------------------------------
+          let b = this.li(); null != b && b.bf(1 - a);
+          this.li().bf(1 - a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4273
+--------------------------------------------
+      let b = this.li(); null != b && b.bf(a);
+      this.li().bf(a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4276
+--------------------------------------------
+      let b = this.li(); null != b && b.bf(1 - a);
+      this.li().bf(1 - a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4281
+--------------------------------------------
+        (this.hb(1) && this.bp()); // attempt to remove other buttons
+        (this.hb(1) && this.mp(),
+
+
+--------------------------------------------
++ Added line(s) at index 4282
+--------------------------------------------
+        this.hb(2) && this.ap(),
+        this.hb(3) && this.bp(),
+        this.hb(4) &&
+          (D.cl()
+            ? D.cl()
+              ? ((this.Ta.boxComplete = !0), this.pC())
+              : (this.time = 0)
+            : (D.eS(), this.rC())));
+
+
+--------------------------------------------
+~ Modified line(s) at index 4421
+--------------------------------------------
+      // second skip
+      super.ua();
+
+      this.Nf();
+      this.Ke(600, 900);
+
+
+--------------------------------------------
++ Added line(s) at index 4423
+--------------------------------------------
+      var a = this.yb("LEVEL_FAILED"),
+        b = new na(this.qa, r.ic);
+      b.rb(600, 160);
+      b.Sf(!0);
+      b.lc(60);
+      b.Pa(a);
+      b.Eb(0);
+      b.m(140);
+      a = this.caller.Ta.count;
+      b = 0;
+      3 < a && (b = 1);
+      5 < a && (b = 2);
+      a = new y(this.qa, r.Wa, [k.PK, k.QK, k.RK][b]);
+      a.o(190);
+      a.m(320);
+      a = za.create(null, k.Pk, k.Qk, k.fz);
+      a.o(139);
+      a.m(560);
+      this.qa.appendChild(a.j);
+      this.buttons.push(a);
+      this.oa(a);
+      a = za.create(null, k.Pk, k.Qk, k.iz);
+      a.o(299);
+      a.m(560);
+      this.qa.appendChild(a.j);
+      this.buttons.push(a);
+      this.oa(a);
+      a.focus();
+      this.state = 0;
+
+
+--------------------------------------------
+~ Modified line(s) at index 4463
+--------------------------------------------
+          let b = this.li(); null != b && b.bf(1 - a);
+          this.li().bf(1 - a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4471
+--------------------------------------------
+      let b = this.li();
+      this.li().bf(a);
+
+
+--------------------------------------------
+- Deleted line(s) at index 4472
+--------------------------------------------
+      null != b && b.bf(a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4475
+--------------------------------------------
+      let b = this.li(); null != b && b.bf(1 - a);
+      this.li().bf(1 - a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 4643
+--------------------------------------------
+      this.ba(Jd); // swap menu for settings
+      this.ba(Wb);
+
+
+--------------------------------------------
+- Deleted line(s) at index 5074
+--------------------------------------------
+      // NOT responsible for the in-game level display
+
+
+--------------------------------------------
+- Deleted line(s) at index 12587
+--------------------------------------------
+      // OBJECT ID BINDINGS!!
+
+
+--------------------------------------------
+- Deleted line(s) at index 14594
+--------------------------------------------
+      
+      // HERE
+      if (this.Gc) {
+        this.Gc.update(a);
+      } else {
+        // Initialize Gc if it's missing (fallback for custom levels)
+        if (!this.Gc) {
+          this.Gc = new vf(this);
+          this.Gc.x = 0;
+          this.Gc.y = 0;
+        }
+
+
+--------------------------------------------
+- Deleted line(s) at index 14606
+--------------------------------------------
+      }
+
+
+--------------------------------------------
+- Deleted line(s) at index 14824
+--------------------------------------------
+      
+      // AND HERE
+      if (this.Gc) {
+
+
+--------------------------------------------
+- Deleted line(s) at index 14828
+--------------------------------------------
+      } else {
+        // Gc fallback
+        if (!this.Gc) {
+          this.Gc = new vf(this);
+          this.Gc.x = 0;
+          this.Gc.y = 0;
+        }
+        this.Gc.L();
+      }
+      
+
+
+--------------------------------------------
+~ Modified line(s) at index 16412
+--------------------------------------------
+        let c = (a && a.size) ? a.size.x : 0,
+        let c = a.size.x,
+
+          d = (a && a.size) ? a.size.y : 0; // null check
+          d = a.size.y;
+
+
+--------------------------------------------
+~ Modified line(s) at index 16420
+--------------------------------------------
+      this.ab = (a && a.id) ? a.id : null; // null check
+      this.ab = a.id;
+
+
+--------------------------------------------
+- Deleted line(s) at index 16423
+--------------------------------------------
+      // null checks
+      if (this.Hb && this.Hb.hc) {
+
+
+--------------------------------------------
+~ Modified line(s) at index 16426
+--------------------------------------------
+        if (null == this.frame || (a && a.id != this.frame.id)) {
+      if (null == this.frame || a.id != this.frame.id) {
+
+
+--------------------------------------------
+~ Modified line(s) at index 16429
+--------------------------------------------
+          let b = this.frame ? this.frame.Nd : null;
+        let b = this.frame.Nd;
+
+
+--------------------------------------------
+- Deleted line(s) at index 16430
+--------------------------------------------
+          if (b) {
+
+
+--------------------------------------------
+- Deleted line(s) at index 16435
+--------------------------------------------
+          }
+        }
+
+
+--------------------------------------------
+- Deleted line(s) at index 16442
+--------------------------------------------
+        if (this.Hb && this.Hb.hc) {
+
+
+--------------------------------------------
+~ Modified line(s) at index 16445
+--------------------------------------------
+          let b = this.frame ? this.frame.Nd : null;
+        let b = this.frame.Nd;
+
+
+--------------------------------------------
+- Deleted line(s) at index 16446
+--------------------------------------------
+          if (b) {
+
+
+--------------------------------------------
+- Deleted line(s) at index 16451
+--------------------------------------------
+          }
+
+
+--------------------------------------------
+- Deleted line(s) at index 16454
+--------------------------------------------
+    }
+
+
+--------------------------------------------
+~ Modified line(s) at index 16456
+--------------------------------------------
+      if (this.Hb && this.Hb.Sd > this.Sd) {
+      if (this.Hb.Sd > this.Sd) {
+
+
+--------------------------------------------
+~ Modified line(s) at index 16904
+--------------------------------------------
+          (this.canvas.tabIndex = 1)/*,
+          (this.canvas.tabIndex = 1),
+
+          this.canvas.focus()*/);
+          this.canvas.focus());
+
+
+--------------------------------------------
+~ Modified line(s) at index 19817
+--------------------------------------------
+      if (e && e.Zq()) {
+      if (e.Zq()) {
+
+
+--------------------------------------------
+- Deleted line(s) at index 22664
+--------------------------------------------
+      if (a && a.size) { // if check
+
+
+--------------------------------------------
+- Deleted line(s) at index 22667
+--------------------------------------------
+      } else {
+        b.x = 0;
+        b.y = 0;
+      }
+
+
+--------------------------------------------
+~ Modified line(s) at index 22679
+--------------------------------------------
+          c = b.effect;
+          c = b.effect,
+
+        if (null == c) return; // ROPE'S Y CRASHES THE GAME!! this is apparently an issue in the real game rather than the import / conversion patches. if it's not set yet then safely skip
+          d = c.Sw(a);
+
+
+--------------------------------------------
+- Deleted line(s) at index 22681
+--------------------------------------------
+        var d = c.Sw(a);
+
+
+--------------------------------------------
+~ Modified line(s) at index 22706
+--------------------------------------------
+          c = b.effect;
+          c = b.effect,
+
+        if (null == c) return; // also skipped here
+          d = c.Sw(a);
+
+        var d = c.Sw(a);
+        c = c.Hb.$e;
+
+
+--------------------------------------------
+- Deleted line(s) at index 22709
+--------------------------------------------
+        c = (c.Hb && c.Hb.$e) ? c.Hb.$e : 1;
+
+
+--------------------------------------------
+- Deleted line(s) at index 22712
+--------------------------------------------
+        if (d && d.ec) { // if check
+
+
+--------------------------------------------
+~ Modified line(s) at index 22715
+--------------------------------------------
+        } else {
+        if (d.Bp) {
+
+
+--------------------------------------------
+- Deleted line(s) at index 22716
+--------------------------------------------
+          e.x = 0;
+          e.y = 0;
+        }
+        if (d && d.Bp) {
+
+
+--------------------------------------------
+- Deleted line(s) at index 26092
+--------------------------------------------
+      // super duper important
+      if (a === 114) {
+        document.querySelector(".warning").style.opacity = "0"
+        if (window.customleveldata) {
+          console.log('level data:', window.customleveldata);
+          console.log(JSON.stringify(window.customleveldata, null, 2));
+          
+          const jsonString = JSON.stringify([window.customleveldata]);
+          console.log('string length:', jsonString.length);
+          console.log('preview:', jsonString.substring(0, 200) + '...');
+
+          try {
+            return jsonString;
+          } catch (error) {
+            console.log('falling back to default level');
+            const defaultData = {"settings":[{"name":0,"height":480,"gridSize":32,"width":320},{"name":1,"ropePhysicsSpeed":1,"special":1,"twoParts":false}],"nl":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":179,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":109,"y":119,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":57,"y":119,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":161,"y":119,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":213,"y":119,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":265,"y":119,"locale":"nl"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"nl","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"nl"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"nl","width":100}],"br":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":179,"locale":"br"},{"name":5,"rotateSpeed":100,"x":109,"y":119,"locale":"br"},{"name":5,"rotateSpeed":100,"x":57,"y":119,"locale":"br"},{"name":5,"rotateSpeed":100,"x":161,"y":119,"locale":"br"},{"name":5,"rotateSpeed":100,"x":213,"y":119,"locale":"br"},{"name":5,"rotateSpeed":100,"x":265,"y":119,"locale":"br"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":30,"height":60,"locale":"br","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"br"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":310,"height":60,"locale":"br","width":100}],"it":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":179,"locale":"it"},{"name":5,"rotateSpeed":100,"x":109,"y":119,"locale":"it"},{"name":5,"rotateSpeed":100,"x":57,"y":119,"locale":"it"},{"name":5,"rotateSpeed":100,"x":161,"y":119,"locale":"it"},{"name":5,"rotateSpeed":100,"x":213,"y":119,"locale":"it"},{"name":5,"rotateSpeed":100,"x":265,"y":119,"locale":"it"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":30,"height":60,"locale":"it","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"it"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"it","width":100}],"ja":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"ja"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":20,"height":60,"locale":"ja","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"ja"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":193,"y":312,"height":60,"locale":"ja","width":110}],"de":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"de"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"de"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"de"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"de"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"de"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"de"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"de","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"de"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":330,"height":60,"locale":"de","width":100}],"es":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":179,"locale":"es"},{"name":5,"rotateSpeed":100,"x":109,"y":119,"locale":"es"},{"name":5,"rotateSpeed":100,"x":57,"y":119,"locale":"es"},{"name":5,"rotateSpeed":100,"x":161,"y":119,"locale":"es"},{"name":5,"rotateSpeed":100,"x":213,"y":119,"locale":"es"},{"name":5,"rotateSpeed":100,"x":265,"y":119,"locale":"es"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":30,"height":60,"locale":"es","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"es"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"es","width":100}],"en":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"en"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"en"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"en"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"en"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"en"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"en"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"en","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"en"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"en","width":100}],"ko":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"ko"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":20,"height":60,"locale":"ko","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"ko"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"ko","width":100}],"fr":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"fr"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"fr","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"fr"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"fr","width":100}],"tr":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"tr"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"tr","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"tr"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"tr","width":100}],"ru":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"ru"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"ru","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"ru"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"ru","width":100}],"objects":[{"name":52,"x":156,"y":139},{"name":100,"spider":false,"gun":false,"wheel":false,"part":"L","hidePath":false,"moveOffset":0,"moveVertical":false,"length":90,"x":159,"y":51,"moveLength":-1,"radius":-1},{"name":2,"x":161,"y":433},{"name":3,"x":162,"y":236,"timeout":-1},{"name":3,"x":161,"y":301,"timeout":-1},{"name":3,"x":161,"y":367,"timeout":-1},{"name":300,"x":237,"y":176}],"zh":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"zh"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":50,"height":60,"locale":"zh","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"zh"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":320,"height":60,"locale":"zh","width":100}]};
+            return JSON.stringify([defaultData]);
+          }
+        }
+        
+        const defaultData = {"settings":[{"name":0,"height":480,"gridSize":32,"width":320},{"name":1,"ropePhysicsSpeed":1,"special":1,"twoParts":false}],"nl":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":179,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":109,"y":119,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":57,"y":119,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":161,"y":119,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":213,"y":119,"locale":"nl"},{"name":5,"rotateSpeed":100,"x":265,"y":119,"locale":"nl"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"nl","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"nl"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"nl","width":100}],"br":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":179,"locale":"br"},{"name":5,"rotateSpeed":100,"x":109,"y":119,"locale":"br"},{"name":5,"rotateSpeed":100,"x":57,"y":119,"locale":"br"},{"name":5,"rotateSpeed":100,"x":161,"y":119,"locale":"br"},{"name":5,"rotateSpeed":100,"x":213,"y":119,"locale":"br"},{"name":5,"rotateSpeed":100,"x":265,"y":119,"locale":"br"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":30,"height":60,"locale":"br","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"br"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":310,"height":60,"locale":"br","width":100}],"it":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":179,"locale":"it"},{"name":5,"rotateSpeed":100,"x":109,"y":119,"locale":"it"},{"name":5,"rotateSpeed":100,"x":57,"y":119,"locale":"it"},{"name":5,"rotateSpeed":100,"x":161,"y":119,"locale":"it"},{"name":5,"rotateSpeed":100,"x":213,"y":119,"locale":"it"},{"name":5,"rotateSpeed":100,"x":265,"y":119,"locale":"it"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":30,"height":60,"locale":"it","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"it"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"it","width":100}],"ja":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"ja"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"ja"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":20,"height":60,"locale":"ja","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"ja"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":193,"y":312,"height":60,"locale":"ja","width":110}],"de":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"de"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"de"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"de"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"de"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"de"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"de"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"de","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"de"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":330,"height":60,"locale":"de","width":100}],"es":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":179,"locale":"es"},{"name":5,"rotateSpeed":100,"x":109,"y":119,"locale":"es"},{"name":5,"rotateSpeed":100,"x":57,"y":119,"locale":"es"},{"name":5,"rotateSpeed":100,"x":161,"y":119,"locale":"es"},{"name":5,"rotateSpeed":100,"x":213,"y":119,"locale":"es"},{"name":5,"rotateSpeed":100,"x":265,"y":119,"locale":"es"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":30,"height":60,"locale":"es","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"es"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"es","width":100}],"en":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"en"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"en"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"en"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"en"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"en"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"en"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"en","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"en"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"en","width":100}],"ko":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"ko"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"ko"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":20,"height":60,"locale":"ko","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"ko"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"ko","width":100}],"fr":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"fr"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"fr"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"fr","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"fr"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"fr","width":100}],"tr":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"tr"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"tr"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"tr","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"tr"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"tr","width":100}],"ru":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"ru"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"ru"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":10,"height":60,"locale":"ru","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"ru"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":300,"height":60,"locale":"ru","width":100}],"objects":[{"name":52,"x":156,"y":139},{"name":100,"spider":false,"gun":false,"wheel":false,"part":"L","hidePath":false,"moveOffset":0,"moveVertical":false,"length":90,"x":159,"y":51,"moveLength":-1,"radius":-1},{"name":2,"x":161,"y":433},{"name":3,"x":162,"y":236,"timeout":-1},{"name":3,"x":161,"y":301,"timeout":-1},{"name":3,"x":161,"y":367,"timeout":-1},{"name":300,"x":237,"y":176}],"zh":[{"name":14,"special":2,"rotateSpeed":100,"x":60,"y":180,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":108,"y":120,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":56,"y":120,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":160,"y":120,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":212,"y":120,"locale":"zh"},{"name":5,"rotateSpeed":100,"x":264,"y":120,"locale":"zh"},{"name":4,"text":"TUTORIAL_LVL_1_1","x":180,"y":50,"height":60,"locale":"zh","width":130},{"name":8,"rotateSpeed":100,"x":231,"y":416,"locale":"zh"},{"name":4,"text":"TUTORIAL_LVL_1_2","x":195,"y":320,"height":60,"locale":"zh","width":100}]};
+        const jsonString = JSON.stringify([defaultData]);
+        console.log('Default JSON string length:', jsonString.length);
+        return jsonString;
+      }
+      
+
+
+--------------------------------------------
+~ Modified line(s) at index 27528
+--------------------------------------------
+            this.re.o(120); // lowkey the two lines above made it pretty obvious
+            this.re.o(120);
+
+            this.re.m(120); // (xy of the broken ads button that i replaced with a checkmark)
+            this.re.m(120);
+
+
+--------------------------------------------
+~ Modified line(s) at index 27540
+--------------------------------------------
+            this.badge.o(105); // x pos of powerup amount
+            this.badge.o(105);
+
+            this.badge.m(70); // y pos of powerup amount
+            this.badge.m(70);
+
+
+--------------------------------------------
+~ Modified line(s) at index 27544
+--------------------------------------------
+            this.badge.Uf(!1); // setting to 1 sizes down the powerup amount text
+            this.badge.Uf(!1);
+
+
+--------------------------------------------
+~ Modified line(s) at index 27547
+--------------------------------------------
+            this.j.W(0.5), // button opacity
+            this.j.W(0.5),
+
+
+--------------------------------------------
+~ Modified line(s) at index 27673
+--------------------------------------------
+      this.wc.o(40); // x displacement of all text in the game
+      this.wc.o(40);
+
+      this.wc.m(25); // y displacement
+      this.wc.m(25);
+
+
+--------------------------------------------
+~ Modified line(s) at index 27764
+--------------------------------------------
+      1117095, 1117095, 1117095, 1117095, 1117095, 1117095, 1117095, 1117095, 1117095, 1117095, 1117095, 1117095, 1117095,
+      3, 31, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 19351, 64407, 123823,
+
+      1117095, 1117095, 1117095, 1117095,
+      260791, 375463, 633511, 1117095,
+
+
+--------------------------------------------
+~ Modified line(s) at index 28305
+--------------------------------------------
+    "videos/outro_portrait.mp4:606240 videos/outro_landscape.mp4:707037 videos/intro_portrait.mp4:254354 videos/intro_landscape.mp4:364300 static/strings.json:47035 images/pics/thumbs.png:83668 images/pics/thumbs.json:4819 images/pics/thumbs.avif:30351 images/pics/thumbs-2x.png:280525 images/pics/thumbs-2x.json:4868 images/pics/thumbs-2x.avif:70263 images/pics/pic_21.jpg:151191 images/pics/pic_20.jpg:149085 images/pics/pic_19.jpg:87608 images/pics/pic_18.jpg:91082 images/pics/pic_17.jpg:106541 images/pics/pic_16.jpg:80658 images/pics/pic_15.jpg:64604 images/pics/pic_14.jpg:88490 images/pics/pic_13.jpg:119028 images/pics/pic_12.jpg:95377 images/pics/pic_11.jpg:95431 images/pics/pic_10.jpg:107394 images/pics/pic_09.jpg:94226 images/pics/pic_08.jpg:94333 images/pics/pic_07.jpg:111936 images/pics/pic_06.jpg:79570 images/pics/pic_05.jpg:85850 images/pics/pic_04.jpg:84859 images/pics/pic_03.jpg:81184 images/pics/pic_02.jpg:113893 images/pics/pic_01.jpg:119921 images/pics/missing.png:154822 images/pics/missing.avif:5712 images/pics/bg_xmas.jpg:259306 images/pics/bg.jpg:152419 images/menu/ui.png:396375 images/menu/ui.json:24561 images/menu/ui.avif:137885 images/menu/shadow.png:15280 images/menu/shadow.avif:2633 images/menu/seasons.png:153688 images/menu/seasons.json:1527 images/menu/seasons.avif:34025 images/menu/season3.png:231313 images/menu/season3.json:3097 images/menu/season3.avif:39252 images/menu/season2.png:231231 images/menu/season2.json:2700 images/menu/season2.avif:35274 images/menu/season1.png:250245 images/menu/season1.json:2699 images/menu/season1.avif:35761 images/menu/salute.png:32002 images/menu/salute.json:10858 images/menu/salute.avif:42068 images/menu/salute-2x.png:92937 images/menu/salute-2x.json:11193 images/menu/salute-2x.avif:78609 images/menu/cut.png:18928 images/menu/cut.json:1097 images/menu/cut.avif:6615 images/menu/cut-2x.png:60604 images/menu/cut-2x.json:1107 images/menu/cut-2x.avif:14906 images/menu/bg_xmas.jpg:126904 images/menu/bg2_xmas.png:155196 images/menu/bg2_xmas.avif:68280 images/menu/bg2.png:247796 images/menu/bg2.avif:83887 images/menu/bg.jpg:90340 images/loader_bg.jpg:22263 images/loader.png:16984 images/loader.dat:440 images/loader.avif:13186 fonts/font-ru.png:68946 fonts/font-ru.dat:6169 fonts/font-ru.avif:52817 fonts/font-nl.png:48288 fonts/font-nl.dat:5609 fonts/font-nl.avif:36366 fonts/font-ko.png:163320 fonts/font-ko.dat:14969 fonts/font-ko.avif:121158 fonts/font-ja.png:211458 fonts/font-ja.dat:21469 fonts/font-ja.avif:168476 fonts/font-it.png:48936 fonts/font-it.dat:5549 fonts/font-it.avif:36585 fonts/font-fr.png:50257 fonts/font-fr.dat:5729 fonts/font-fr.avif:37979 fonts/font-es.png:50586 fonts/font-es.dat:5709 fonts/font-es.avif:38190 fonts/font-en.png:48296 fonts/font-en.dat:5589 fonts/font-en.avif:36148 fonts/font-de.png:51771 fonts/font-de.dat:5729 fonts/font-de.avif:38951 fonts/font-br.png:53145 fonts/font-br.dat:5849 fonts/font-br.avif:40468 images/game/tut.png:27759 images/game/tut.json:2291 images/game/tut.avif:8244 images/game/obj_vinyl.png:34111 images/game/obj_vinyl.json:1497 images/game/obj_vinyl.avif:7320 images/game/obj_vinyl-2x.png:62064 images/game/obj_vinyl-2x.json:1523 images/game/obj_vinyl-2x.avif:14661 images/game/obj_transporter.png:1535 images/game/obj_transporter.json:1844 images/game/obj_transporter.avif:1159 images/game/obj_steam.png:9200 images/game/obj_steam.json:7334 images/game/obj_steam.avif:7957 images/game/obj_steam-2x.png:21885 images/game/obj_steam-2x.json:7380 images/game/obj_steam-2x.avif:13073 images/game/obj_star.png:116319 images/game/obj_star.json:24293 images/game/obj_star.avif:89923 images/game/obj_star-2x.png:354592 images/game/obj_star-2x.json:24689 images/game/obj_star-2x.avif:153837 images/game/obj_spikes.png:5674 images/game/obj_spikes.json:1081 images/game/obj_spikes.avif:6243 images/game/obj_spikes-2x.png:17960 images/game/obj_spikes-2x.json:1083 images/game/obj_spikes-2x.avif:10490 images/game/obj_spider.png:8232 images/game/obj_spider.json:2813 images/game/obj_spider.avif:7159 images/game/obj_spider-2x.png:24082 images/game/obj_spider-2x.json:2868 images/game/obj_spider-2x.avif:12205 images/game/obj_sp.png:24382 images/game/obj_sp.json:2637 images/game/obj_sp.avif:4498 images/game/obj_sp-2x.png:82882 images/game/obj_sp-2x.json:2661 images/game/obj_sp-2x.avif:8676 images/game/obj_sock.png:12333 images/game/obj_sock.json:1287 images/game/obj_sock.avif:4106 images/game/obj_sock-2x.png:35190 images/game/obj_sock-2x.json:1299 images/game/obj_sock-2x.avif:7669 images/game/obj_pump.png:10250 images/game/obj_pump.json:2081 images/game/obj_pump.avif:5534 images/game/obj_pump-2x.png:29141 images/game/obj_pump-2x.json:2085 images/game/obj_pump-2x.avif:9587 images/game/obj_lighter.png:17490 images/game/obj_lighter.json:8776 images/game/obj_lighter.avif:9038 images/game/obj_lighter-2x.png:56932 images/game/obj_lighter-2x.json:8867 images/game/obj_lighter-2x.avif:17301 images/game/obj_lantern.png:15236 images/game/obj_lantern.json:1912 images/game/obj_lantern.avif:7878 images/game/obj_lantern-2x.png:42472 images/game/obj_lantern-2x.json:1943 images/game/obj_lantern-2x.avif:12887 images/game/obj_hook.png:12919 images/game/obj_hook.json:3405 images/game/obj_hook.avif:7600 images/game/obj_hook-2x.png:37297 images/game/obj_hook-2x.json:3473 images/game/obj_hook-2x.avif:15050 images/game/obj_gravity.png:5221 images/game/obj_gravity.json:726 images/game/obj_gravity.avif:2706 images/game/obj_gravity-2x.png:14510 images/game/obj_gravity-2x.json:731 images/game/obj_gravity-2x.avif:4457 images/game/obj_ghost.png:5670 images/game/obj_ghost.json:1697 images/game/obj_ghost.avif:3868 images/game/obj_ghost-2x.png:12807 images/game/obj_ghost-2x.json:1711 images/game/obj_ghost-2x.avif:5544 images/game/obj_gap.png:16814 images/game/obj_gap.json:4839 images/game/obj_gap.avif:6761 images/game/obj_gap-2x.png:47790 images/game/obj_gap-2x.json:4898 images/game/obj_gap-2x.avif:11868 images/game/obj_electro.png:8545 images/game/obj_electro.json:1288 images/game/obj_electro.avif:10446 images/game/obj_electro-2x.png:30475 images/game/obj_electro-2x.json:1299 images/game/obj_electro-2x.avif:19955 images/game/obj_candy4.png:71722 images/game/obj_candy4.json:5300 images/game/obj_candy4.avif:19466 images/game/obj_candy4-2x.png:206179 images/game/obj_candy4-2x.json:5405 images/game/obj_candy4-2x.avif:37315 images/game/obj_candy3.png:72274 images/game/obj_candy3.json:5298 images/game/obj_candy3.avif:20168 images/game/obj_candy3-2x.png:208381 images/game/obj_candy3-2x.json:5405 images/game/obj_candy3-2x.avif:37953 images/game/obj_candy2.png:75319 images/game/obj_candy2.json:5308 images/game/obj_candy2.avif:20918 images/game/obj_candy2-2x.png:222774 images/game/obj_candy2-2x.json:5417 images/game/obj_candy2-2x.avif:38860 images/game/obj_candy1.png:81126 images/game/obj_candy1.json:5309 images/game/obj_candy1.avif:24470 images/game/obj_candy1-2x.png:234543 images/game/obj_candy1-2x.json:5431 images/game/obj_candy1-2x.avif:43647 images/game/obj_candy0.png:74349 images/game/obj_candy0.json:5308 images/game/obj_candy0.avif:21638 images/game/obj_candy0-2x.png:212961 images/game/obj_candy0-2x.json:5416 images/game/obj_candy0-2x.avif:40347 images/game/obj_bubble.png:37007 images/game/obj_bubble.json:6254 images/game/obj_bubble.avif:19815 images/game/obj_bubble-2x.png:107943 images/game/obj_bubble-2x.json:6344 images/game/obj_bubble-2x.avif:40808 images/game/obj_bouncer.png:15871 images/game/obj_bouncer.json:2285 images/game/obj_bouncer.avif:6517 images/game/obj_bouncer-2x.png:42679 images/game/obj_bouncer-2x.json:2311 images/game/obj_bouncer-2x.avif:11241 images/game/obj_blades.png:11087 images/game/obj_blades.json:1849 images/game/obj_blades.avif:8324 images/game/obj_blades-2x.png:26077 images/game/obj_blades-2x.json:1874 images/game/obj_blades-2x.avif:14498 images/game/obj_bee.png:3255 images/game/obj_bee.json:1289 images/game/obj_bee.avif:2463 images/game/obj_bee-2x.png:8439 images/game/obj_bee-2x.json:1297 images/game/obj_bee-2x.avif:4060 images/game/char3.png:125467 images/game/char3.json:16103 images/game/char3.avif:120310 images/game/char3-2x.png:370734 images/game/char3-2x.json:16192 images/game/char3-2x.avif:206896 images/game/char2.png:156278 images/game/char2.json:18737 images/game/char2.avif:136313 images/game/char2-2x.png:339748 images/game/char2-2x.json:18905 images/game/char2-2x.avif:239616 images/game/char1.png:145178 images/game/char1.json:17289 images/game/char1.avif:127645 images/game/char1-2x.png:306027 images/game/char1-2x.json:17381 images/game/char1-2x.avif:224163 images/boxes/box17/support.png:20935 images/boxes/box17/support.avif:3584 images/boxes/box17/maps.json:32447 images/boxes/box17/cover.png:94067 images/boxes/box17/cover.json:721 images/boxes/box17/cover.avif:11863 images/boxes/box17/bg.jpg:192584 images/boxes/box16/support.png:20889 images/boxes/box16/support.avif:4603 images/boxes/box16/maps.json:34665 images/boxes/box16/cover.png:111821 images/boxes/box16/cover.json:721 images/boxes/box16/cover.avif:8733 images/boxes/box16/bg.jpg:166366 images/boxes/box15/support.png:19248 images/boxes/box15/support.avif:2873 images/boxes/box15/maps.json:27278 images/boxes/box15/cover.png:121680 images/boxes/box15/cover.json:721 images/boxes/box15/cover.avif:3647 images/boxes/box15/bg.jpg:80627 images/boxes/box14/support.png:22796 images/boxes/box14/support.avif:4530 images/boxes/box14/maps.json:22757 images/boxes/box14/cover.png:117995 images/boxes/box14/cover.json:721 images/boxes/box14/cover.avif:17531 images/boxes/box14/bg.jpg:193042 images/boxes/box13/support.png:14277 images/boxes/box13/support.avif:3572 images/boxes/box13/maps.json:22768 images/boxes/box13/cover.png:102039 images/boxes/box13/cover.json:721 images/boxes/box13/cover.avif:10244 images/boxes/box13/bg.jpg:130490 images/boxes/box12/support.png:27855 images/boxes/box12/support.avif:3644 images/boxes/box12/maps.json:27095 images/boxes/box12/cover.png:163397 images/boxes/box12/cover.json:721 images/boxes/box12/cover.avif:12415 images/boxes/box12/bg.jpg:161968 images/boxes/box11/support.png:20124 images/boxes/box11/support.avif:5281 images/boxes/box11/maps.json:28386 images/boxes/box11/cover.png:147733 images/boxes/box11/cover.json:721 images/boxes/box11/cover.avif:35474 images/boxes/box11/bg.jpg:318137 images/boxes/box10/support.png:10900 images/boxes/box10/support.avif:3824 images/boxes/box10/maps.json:28775 images/boxes/box10/cover.png:142967 images/boxes/box10/cover.json:721 images/boxes/box10/cover.avif:33681 images/boxes/box10/bg.jpg:291192 images/boxes/box09/support.png:18151 images/boxes/box09/support.avif:4523 images/boxes/box09/maps.json:27367 images/boxes/box09/cover.png:127769 images/boxes/box09/cover.json:721 images/boxes/box09/cover.avif:28967 images/boxes/box09/bg.jpg:290591 images/boxes/box08/support.png:17382 images/boxes/box08/support.avif:4089 images/boxes/box08/maps.json:30526 images/boxes/box08/earth.png:37193 images/boxes/box08/earth.avif:4882 images/boxes/box08/cover.png:154083 images/boxes/box08/cover.json:721 images/boxes/box08/cover.avif:31701 images/boxes/box08/bg.jpg:261876 images/boxes/box07/support.png:17646 images/boxes/box07/support.avif:4297 images/boxes/box07/maps.json:28759 images/boxes/box07/cover.png:176165 images/boxes/box07/cover.json:721 images/boxes/box07/cover.avif:39919 images/boxes/box07/bg.jpg:276708 images/boxes/box06/support.png:24856 images/boxes/box06/support.avif:3389 images/boxes/box06/maps.json:23787 images/boxes/box06/cover.png:191492 images/boxes/box06/cover.json:721 images/boxes/box06/cover.avif:45432 images/boxes/box06/bg.jpg:302842 images/boxes/box05/support.png:19451 images/boxes/box05/support.avif:5872 images/boxes/box05/maps.json:28121 images/boxes/box05/cover.png:112297 images/boxes/box05/cover.json:721 images/boxes/box05/cover.avif:57943 images/boxes/box05/bg.jpg:327075 images/boxes/box04/support.png:23898 images/boxes/box04/support.avif:5691 images/boxes/box04/maps.json:28874 images/boxes/box04/cover.png:174462 images/boxes/box04/cover.json:721 images/boxes/box04/cover.avif:37968 images/boxes/box04/bg.jpg:297536 images/boxes/box03/support.png:21077 images/boxes/box03/support.avif:4881 images/boxes/box03/maps.json:28624 images/boxes/box03/cover.png:144475 images/boxes/box03/cover.json:721 images/boxes/box03/cover.avif:32034 images/boxes/box03/bg.jpg:271789 images/boxes/box02/support.png:23502 images/boxes/box02/support.avif:5663 images/boxes/box02/maps.json:28645 images/boxes/box02/cover.png:141431 images/boxes/box02/cover.json:721 images/boxes/box02/cover.avif:26487 images/boxes/box02/bg.jpg:292429 images/boxes/box01/support.png:12953 images/boxes/box01/support.avif:4676 images/boxes/box01/maps.json:53856 images/boxes/box01/cover.png:178457 images/boxes/box01/cover.json:721 images/boxes/box01/cover.avif:40419 images/boxes/box01/bg.jpg:224627 audio/ogg/sound.ogg:250686 audio/ogg/menu_music_xmas.ogg:435372 audio/ogg/menu_music.ogg:431450 audio/ogg/game_music_xmas.ogg:872474 audio/ogg/game_music.ogg:509573 audio/aac/sound.aac:334758 audio/aac/menu_music_xmas.aac:269307 audio/aac/menu_music.aac:264168 audio/aac/game_music_xmas.aac:476705 audio/aac/game_music.aac:286076".split(
+    "video/outro_portrait.mp4:606240 video/outro_landscape.mp4:707037 video/intro_portrait.mp4:254354 video/intro_landscape.mp4:364300 strings.json:47035 pics/thumbs.png:83668 pics/thumbs.json:4819 pics/thumbs.avif:30351 pics/thumbs-2x.png:280525 pics/thumbs-2x.json:4868 pics/thumbs-2x.avif:70263 pics/pic_21.jpg:151191 pics/pic_20.jpg:149085 pics/pic_19.jpg:87608 pics/pic_18.jpg:91082 pics/pic_17.jpg:106541 pics/pic_16.jpg:80658 pics/pic_15.jpg:64604 pics/pic_14.jpg:88490 pics/pic_13.jpg:119028 pics/pic_12.jpg:95377 pics/pic_11.jpg:95431 pics/pic_10.jpg:107394 pics/pic_09.jpg:94226 pics/pic_08.jpg:94333 pics/pic_07.jpg:111936 pics/pic_06.jpg:79570 pics/pic_05.jpg:85850 pics/pic_04.jpg:84859 pics/pic_03.jpg:81184 pics/pic_02.jpg:113893 pics/pic_01.jpg:119921 pics/missing.png:154822 pics/missing.avif:5712 pics/bg_xmas.jpg:259306 pics/bg.jpg:152419 menu/ui.png:396375 menu/ui.json:24561 menu/ui.avif:137885 menu/shadow.png:15280 menu/shadow.avif:2633 menu/seasons.png:153688 menu/seasons.json:1527 menu/seasons.avif:34025 menu/season3.png:231313 menu/season3.json:3097 menu/season3.avif:39252 menu/season2.png:231231 menu/season2.json:2700 menu/season2.avif:35274 menu/season1.png:250245 menu/season1.json:2699 menu/season1.avif:35761 menu/salute.png:32002 menu/salute.json:10858 menu/salute.avif:42068 menu/salute-2x.png:92937 menu/salute-2x.json:11193 menu/salute-2x.avif:78609 menu/cut.png:18928 menu/cut.json:1097 menu/cut.avif:6615 menu/cut-2x.png:60604 menu/cut-2x.json:1107 menu/cut-2x.avif:14906 menu/bg_xmas.jpg:126904 menu/bg2_xmas.png:155196 menu/bg2_xmas.avif:68280 menu/bg2.png:247796 menu/bg2.avif:83887 menu/bg.jpg:90340 loader_bg.jpg:22263 loader.png:16984 loader.dat:440 loader.avif:13186 lang/font-ru.png:68946 lang/font-ru.dat:6169 lang/font-ru.avif:52817 lang/font-nl.png:48288 lang/font-nl.dat:5609 lang/font-nl.avif:36366 lang/font-ko.png:163320 lang/font-ko.dat:14969 lang/font-ko.avif:121158 lang/font-ja.png:211458 lang/font-ja.dat:21469 lang/font-ja.avif:168476 lang/font-it.png:48936 lang/font-it.dat:5549 lang/font-it.avif:36585 lang/font-fr.png:50257 lang/font-fr.dat:5729 lang/font-fr.avif:37979 lang/font-es.png:50586 lang/font-es.dat:5709 lang/font-es.avif:38190 lang/font-en.png:48296 lang/font-en.dat:5589 lang/font-en.avif:36148 lang/font-de.png:51771 lang/font-de.dat:5729 lang/font-de.avif:38951 lang/font-br.png:53145 lang/font-br.dat:5849 lang/font-br.avif:40468 game/tut.png:27759 game/tut.json:2291 game/tut.avif:8244 game/obj_vinyl.png:34111 game/obj_vinyl.json:1497 game/obj_vinyl.avif:7320 game/obj_vinyl-2x.png:62064 game/obj_vinyl-2x.json:1523 game/obj_vinyl-2x.avif:14661 game/obj_transporter.png:1535 game/obj_transporter.json:1844 game/obj_transporter.avif:1159 game/obj_steam.png:9200 game/obj_steam.json:7334 game/obj_steam.avif:7957 game/obj_steam-2x.png:21885 game/obj_steam-2x.json:7380 game/obj_steam-2x.avif:13073 game/obj_star.png:116319 game/obj_star.json:24293 game/obj_star.avif:89923 game/obj_star-2x.png:354592 game/obj_star-2x.json:24689 game/obj_star-2x.avif:153837 game/obj_spikes.png:5674 game/obj_spikes.json:1081 game/obj_spikes.avif:6243 game/obj_spikes-2x.png:17960 game/obj_spikes-2x.json:1083 game/obj_spikes-2x.avif:10490 game/obj_spider.png:8232 game/obj_spider.json:2813 game/obj_spider.avif:7159 game/obj_spider-2x.png:24082 game/obj_spider-2x.json:2868 game/obj_spider-2x.avif:12205 game/obj_sp.png:24382 game/obj_sp.json:2637 game/obj_sp.avif:4498 game/obj_sp-2x.png:82882 game/obj_sp-2x.json:2661 game/obj_sp-2x.avif:8676 game/obj_sock.png:12333 game/obj_sock.json:1287 game/obj_sock.avif:4106 game/obj_sock-2x.png:35190 game/obj_sock-2x.json:1299 game/obj_sock-2x.avif:7669 game/obj_pump.png:10250 game/obj_pump.json:2081 game/obj_pump.avif:5534 game/obj_pump-2x.png:29141 game/obj_pump-2x.json:2085 game/obj_pump-2x.avif:9587 game/obj_lighter.png:17490 game/obj_lighter.json:8776 game/obj_lighter.avif:9038 game/obj_lighter-2x.png:56932 game/obj_lighter-2x.json:8867 game/obj_lighter-2x.avif:17301 game/obj_lantern.png:15236 game/obj_lantern.json:1912 game/obj_lantern.avif:7878 game/obj_lantern-2x.png:42472 game/obj_lantern-2x.json:1943 game/obj_lantern-2x.avif:12887 game/obj_hook.png:12919 game/obj_hook.json:3405 game/obj_hook.avif:7600 game/obj_hook-2x.png:37297 game/obj_hook-2x.json:3473 game/obj_hook-2x.avif:15050 game/obj_gravity.png:5221 game/obj_gravity.json:726 game/obj_gravity.avif:2706 game/obj_gravity-2x.png:14510 game/obj_gravity-2x.json:731 game/obj_gravity-2x.avif:4457 game/obj_ghost.png:5670 game/obj_ghost.json:1697 game/obj_ghost.avif:3868 game/obj_ghost-2x.png:12807 game/obj_ghost-2x.json:1711 game/obj_ghost-2x.avif:5544 game/obj_gap.png:16814 game/obj_gap.json:4839 game/obj_gap.avif:6761 game/obj_gap-2x.png:47790 game/obj_gap-2x.json:4898 game/obj_gap-2x.avif:11868 game/obj_electro.png:8545 game/obj_electro.json:1288 game/obj_electro.avif:10446 game/obj_electro-2x.png:30475 game/obj_electro-2x.json:1299 game/obj_electro-2x.avif:19955 game/obj_candy4.png:71722 game/obj_candy4.json:5300 game/obj_candy4.avif:19466 game/obj_candy4-2x.png:206179 game/obj_candy4-2x.json:5405 game/obj_candy4-2x.avif:37315 game/obj_candy3.png:72274 game/obj_candy3.json:5298 game/obj_candy3.avif:20168 game/obj_candy3-2x.png:208381 game/obj_candy3-2x.json:5405 game/obj_candy3-2x.avif:37953 game/obj_candy2.png:75319 game/obj_candy2.json:5308 game/obj_candy2.avif:20918 game/obj_candy2-2x.png:222774 game/obj_candy2-2x.json:5417 game/obj_candy2-2x.avif:38860 game/obj_candy1.png:81126 game/obj_candy1.json:5309 game/obj_candy1.avif:24470 game/obj_candy1-2x.png:234543 game/obj_candy1-2x.json:5431 game/obj_candy1-2x.avif:43647 game/obj_candy0.png:74349 game/obj_candy0.json:5308 game/obj_candy0.avif:21638 game/obj_candy0-2x.png:212961 game/obj_candy0-2x.json:5416 game/obj_candy0-2x.avif:40347 game/obj_bubble.png:37007 game/obj_bubble.json:6254 game/obj_bubble.avif:19815 game/obj_bubble-2x.png:107943 game/obj_bubble-2x.json:6344 game/obj_bubble-2x.avif:40808 game/obj_bouncer.png:15871 game/obj_bouncer.json:2285 game/obj_bouncer.avif:6517 game/obj_bouncer-2x.png:42679 game/obj_bouncer-2x.json:2311 game/obj_bouncer-2x.avif:11241 game/obj_blades.png:11087 game/obj_blades.json:1849 game/obj_blades.avif:8324 game/obj_blades-2x.png:26077 game/obj_blades-2x.json:1874 game/obj_blades-2x.avif:14498 game/obj_bee.png:3255 game/obj_bee.json:1289 game/obj_bee.avif:2463 game/obj_bee-2x.png:8439 game/obj_bee-2x.json:1297 game/obj_bee-2x.avif:4060 game/char3.png:125467 game/char3.json:16103 game/char3.avif:120310 game/char3-2x.png:370734 game/char3-2x.json:16192 game/char3-2x.avif:206896 game/char2.png:156278 game/char2.json:18737 game/char2.avif:136313 game/char2-2x.png:339748 game/char2-2x.json:18905 game/char2-2x.avif:239616 game/char1.png:145178 game/char1.json:17289 game/char1.avif:127645 game/char1-2x.png:306027 game/char1-2x.json:17381 game/char1-2x.avif:224163 box17/support.png:20935 box17/support.avif:3584 box17/maps.json:32447 box17/cover.png:94067 box17/cover.json:721 box17/cover.avif:11863 box17/bg.jpg:192584 box16/support.png:20889 box16/support.avif:4603 box16/maps.json:34665 box16/cover.png:111821 box16/cover.json:721 box16/cover.avif:8733 box16/bg.jpg:166366 box15/support.png:19248 box15/support.avif:2873 box15/maps.json:27278 box15/cover.png:121680 box15/cover.json:721 box15/cover.avif:3647 box15/bg.jpg:80627 box14/support.png:22796 box14/support.avif:4530 box14/maps.json:22757 box14/cover.png:117995 box14/cover.json:721 box14/cover.avif:17531 box14/bg.jpg:193042 box13/support.png:14277 box13/support.avif:3572 box13/maps.json:22768 box13/cover.png:102039 box13/cover.json:721 box13/cover.avif:10244 box13/bg.jpg:130490 box12/support.png:27855 box12/support.avif:3644 box12/maps.json:27095 box12/cover.png:163397 box12/cover.json:721 box12/cover.avif:12415 box12/bg.jpg:161968 box11/support.png:20124 box11/support.avif:5281 box11/maps.json:28386 box11/cover.png:147733 box11/cover.json:721 box11/cover.avif:35474 box11/bg.jpg:318137 box10/support.png:10900 box10/support.avif:3824 box10/maps.json:28775 box10/cover.png:142967 box10/cover.json:721 box10/cover.avif:33681 box10/bg.jpg:291192 box09/support.png:18151 box09/support.avif:4523 box09/maps.json:27367 box09/cover.png:127769 box09/cover.json:721 box09/cover.avif:28967 box09/bg.jpg:290591 box08/support.png:17382 box08/support.avif:4089 box08/maps.json:30526 box08/earth.png:37193 box08/earth.avif:4882 box08/cover.png:154083 box08/cover.json:721 box08/cover.avif:31701 box08/bg.jpg:261876 box07/support.png:17646 box07/support.avif:4297 box07/maps.json:28759 box07/cover.png:176165 box07/cover.json:721 box07/cover.avif:39919 box07/bg.jpg:276708 box06/support.png:24856 box06/support.avif:3389 box06/maps.json:23787 box06/cover.png:191492 box06/cover.json:721 box06/cover.avif:45432 box06/bg.jpg:302842 box05/support.png:19451 box05/support.avif:5872 box05/maps.json:28121 box05/cover.png:112297 box05/cover.json:721 box05/cover.avif:57943 box05/bg.jpg:327075 box04/support.png:23898 box04/support.avif:5691 box04/maps.json:28874 box04/cover.png:174462 box04/cover.json:721 box04/cover.avif:37968 box04/bg.jpg:297536 box03/support.png:21077 box03/support.avif:4881 box03/maps.json:28624 box03/cover.png:144475 box03/cover.json:721 box03/cover.avif:32034 box03/bg.jpg:271789 box02/support.png:23502 box02/support.avif:5663 box02/maps.json:28645 box02/cover.png:141431 box02/cover.json:721 box02/cover.avif:26487 box02/bg.jpg:292429 box01/support.png:12953 box01/support.avif:4676 box01/maps.json:53856 box01/cover.png:178457 box01/cover.json:721 box01/cover.avif:40419 box01/bg.jpg:224627 audio/ogg/sound.ogg:250686 audio/ogg/menu_music_xmas.ogg:435372 audio/ogg/menu_music.ogg:431450 audio/ogg/game_music_xmas.ogg:872474 audio/ogg/game_music.ogg:509573 audio/aac/sound.aac:334758 audio/aac/menu_music_xmas.aac:269307 audio/aac/menu_music.aac:264168 audio/aac/game_music_xmas.aac:476705 audio/aac/game_music.aac:286076".split(
+
+
+--------------------------------------------
+~ Modified line(s) at index 28308
+--------------------------------------------
+  l.Kp = "/preview/assets";
+  l.Kp = "res";
+
+
+--------------------------------------------
+~ Modified line(s) at index 28312
+--------------------------------------------
+    "videos/outro_portrait.mp4 videos/outro_landscape.mp4 videos/intro_portrait.mp4 videos/intro_landscape.mp4 static/strings.json images/pics/thumbs{resolution}.{image} images/pics/thumbs{resolution}.json images/pics/pic_21.jpg images/pics/pic_20.jpg images/pics/pic_19.jpg images/pics/pic_18.jpg images/pics/pic_17.jpg images/pics/pic_16.jpg images/pics/pic_15.jpg images/pics/pic_14.jpg images/pics/pic_13.jpg images/pics/pic_12.jpg images/pics/pic_11.jpg images/pics/pic_10.jpg images/pics/pic_09.jpg images/pics/pic_08.jpg images/pics/pic_07.jpg images/pics/pic_06.jpg images/pics/pic_05.jpg images/pics/pic_04.jpg images/pics/pic_03.jpg images/pics/pic_02.jpg images/pics/pic_01.jpg images/pics/missing.{image} images/pics/bg_xmas.jpg images/pics/bg.jpg images/menu/ui.{image} images/menu/ui.json images/menu/shadow.{image} images/menu/seasons.{image} images/menu/seasons.json images/menu/season3.{image} images/menu/season3.json images/menu/season2.{image} images/menu/season2.json images/menu/season1.{image} images/menu/season1.json images/menu/salute{resolution}.{image} images/menu/salute{resolution}.json images/menu/cut{resolution}.{image} images/menu/cut{resolution}.json images/menu/bg_xmas.jpg images/menu/bg2_xmas.{image} images/menu/bg2.{image} images/menu/bg.jpg images/loader_bg.jpg images/loader.{image} images/loader.dat fonts/font{language}.{image} fonts/font{language}.dat images/game/tut.{image} images/game/tut.json images/game/obj_vinyl{resolution}.{image} images/game/obj_vinyl{resolution}.json images/game/obj_transporter.{image} images/game/obj_transporter.json images/game/obj_steam{resolution}.{image} images/game/obj_steam{resolution}.json images/game/obj_star{resolution}.{image} images/game/obj_star{resolution}.json images/game/obj_spikes{resolution}.{image} images/game/obj_spikes{resolution}.json images/game/obj_spider{resolution}.{image} images/game/obj_spider{resolution}.json images/game/obj_sp{resolution}.{image} images/game/obj_sp{resolution}.json images/game/obj_sock{resolution}.{image} images/game/obj_sock{resolution}.json images/game/obj_pump{resolution}.{image} images/game/obj_pump{resolution}.json images/game/obj_lighter{resolution}.{image} images/game/obj_lighter{resolution}.json images/game/obj_lantern{resolution}.{image} images/game/obj_lantern{resolution}.json images/game/obj_hook{resolution}.{image} images/game/obj_hook{resolution}.json images/game/obj_gravity{resolution}.{image} images/game/obj_gravity{resolution}.json images/game/obj_ghost{resolution}.{image} images/game/obj_ghost{resolution}.json images/game/obj_gap{resolution}.{image} images/game/obj_gap{resolution}.json images/game/obj_electro{resolution}.{image} images/game/obj_electro{resolution}.json images/game/obj_candy4{resolution}.{image} images/game/obj_candy4{resolution}.json images/game/obj_candy3{resolution}.{image} images/game/obj_candy3{resolution}.json images/game/obj_candy2{resolution}.{image} images/game/obj_candy2{resolution}.json images/game/obj_candy1{resolution}.{image} images/game/obj_candy1{resolution}.json images/game/obj_candy0{resolution}.{image} images/game/obj_candy0{resolution}.json images/game/obj_bubble{resolution}.{image} images/game/obj_bubble{resolution}.json images/game/obj_bouncer{resolution}.{image} images/game/obj_bouncer{resolution}.json images/game/obj_blades{resolution}.{image} images/game/obj_blades{resolution}.json images/game/obj_bee{resolution}.{image} images/game/obj_bee{resolution}.json images/game/char3{resolution}.{image} images/game/char3{resolution}.json images/game/char2{resolution}.{image} images/game/char2{resolution}.json images/game/char1{resolution}.{image} images/game/char1{resolution}.json images/boxes/box17/support.{image} images/boxes/box17/maps.json images/boxes/box17/cover.{image} images/boxes/box17/cover.json images/boxes/box17/bg.jpg images/boxes/box16/support.{image} images/boxes/box16/maps.json images/boxes/box16/cover.{image} images/boxes/box16/cover.json images/boxes/box16/bg.jpg images/boxes/box15/support.{image} images/boxes/box15/maps.json images/boxes/box15/cover.{image} images/boxes/box15/cover.json images/boxes/box15/bg.jpg images/boxes/box14/support.{image} images/boxes/box14/maps.json images/boxes/box14/cover.{image} images/boxes/box14/cover.json images/boxes/box14/bg.jpg images/boxes/box13/support.{image} images/boxes/box13/maps.json images/boxes/box13/cover.{image} images/boxes/box13/cover.json images/boxes/box13/bg.jpg images/boxes/box12/support.{image} images/boxes/box12/maps.json images/boxes/box12/cover.{image} images/boxes/box12/cover.json images/boxes/box12/bg.jpg images/boxes/box11/support.{image} images/boxes/box11/maps.json images/boxes/box11/cover.{image} images/boxes/box11/cover.json images/boxes/box11/bg.jpg images/boxes/box10/support.{image} images/boxes/box10/maps.json images/boxes/box10/cover.{image} images/boxes/box10/cover.json images/boxes/box10/bg.jpg images/boxes/box09/support.{image} images/boxes/box09/maps.json images/boxes/box09/cover.{image} images/boxes/box09/cover.json images/boxes/box09/bg.jpg images/boxes/box08/support.{image} images/boxes/box08/maps.json images/boxes/box08/earth.{image} images/boxes/box08/cover.{image} images/boxes/box08/cover.json images/boxes/box08/bg.jpg images/boxes/box07/support.{image} images/boxes/box07/maps.json images/boxes/box07/cover.{image} images/boxes/box07/cover.json images/boxes/box07/bg.jpg images/boxes/box06/support.{image} images/boxes/box06/maps.json images/boxes/box06/cover.{image} images/boxes/box06/cover.json images/boxes/box06/bg.jpg images/boxes/box05/support.{image} images/boxes/box05/maps.json images/boxes/box05/cover.{image} images/boxes/box05/cover.json images/boxes/box05/bg.jpg images/boxes/box04/support.{image} images/boxes/box04/maps.json images/boxes/box04/cover.{image} images/boxes/box04/cover.json images/boxes/box04/bg.jpg images/boxes/box03/support.{image} images/boxes/box03/maps.json images/boxes/box03/cover.{image} images/boxes/box03/cover.json images/boxes/box03/bg.jpg images/boxes/box02/support.{image} images/boxes/box02/maps.json images/boxes/box02/cover.{image} images/boxes/box02/cover.json images/boxes/box02/bg.jpg images/boxes/box01/support.{image} images/boxes/box01/maps.json images/boxes/box01/cover.{image} images/boxes/box01/cover.json images/boxes/box01/bg.jpg audio/{audio}/sound.{audio} audio/{audio}/menu_music_xmas.{audio} audio/{audio}/menu_music.{audio} audio/{audio}/game_music_xmas.{audio} audio/{audio}/game_music.{audio}".split(
+    "video/outro_portrait.mp4 video/outro_landscape.mp4 video/intro_portrait.mp4 video/intro_landscape.mp4 strings.json pics/thumbs{resolution}.{image} pics/thumbs{resolution}.json pics/pic_21.jpg pics/pic_20.jpg pics/pic_19.jpg pics/pic_18.jpg pics/pic_17.jpg pics/pic_16.jpg pics/pic_15.jpg pics/pic_14.jpg pics/pic_13.jpg pics/pic_12.jpg pics/pic_11.jpg pics/pic_10.jpg pics/pic_09.jpg pics/pic_08.jpg pics/pic_07.jpg pics/pic_06.jpg pics/pic_05.jpg pics/pic_04.jpg pics/pic_03.jpg pics/pic_02.jpg pics/pic_01.jpg pics/missing.{image} pics/bg_xmas.jpg pics/bg.jpg menu/ui.{image} menu/ui.json menu/shadow.{image} menu/seasons.{image} menu/seasons.json menu/season3.{image} menu/season3.json menu/season2.{image} menu/season2.json menu/season1.{image} menu/season1.json menu/salute{resolution}.{image} menu/salute{resolution}.json menu/cut{resolution}.{image} menu/cut{resolution}.json menu/bg_xmas.jpg menu/bg2_xmas.{image} menu/bg2.{image} menu/bg.jpg loader_bg.jpg loader.{image} loader.dat lang/font{language}.{image} lang/font{language}.dat game/tut.{image} game/tut.json game/obj_vinyl{resolution}.{image} game/obj_vinyl{resolution}.json game/obj_transporter.{image} game/obj_transporter.json game/obj_steam{resolution}.{image} game/obj_steam{resolution}.json game/obj_star{resolution}.{image} game/obj_star{resolution}.json game/obj_spikes{resolution}.{image} game/obj_spikes{resolution}.json game/obj_spider{resolution}.{image} game/obj_spider{resolution}.json game/obj_sp{resolution}.{image} game/obj_sp{resolution}.json game/obj_sock{resolution}.{image} game/obj_sock{resolution}.json game/obj_pump{resolution}.{image} game/obj_pump{resolution}.json game/obj_lighter{resolution}.{image} game/obj_lighter{resolution}.json game/obj_lantern{resolution}.{image} game/obj_lantern{resolution}.json game/obj_hook{resolution}.{image} game/obj_hook{resolution}.json game/obj_gravity{resolution}.{image} game/obj_gravity{resolution}.json game/obj_ghost{resolution}.{image} game/obj_ghost{resolution}.json game/obj_gap{resolution}.{image} game/obj_gap{resolution}.json game/obj_electro{resolution}.{image} game/obj_electro{resolution}.json game/obj_candy4{resolution}.{image} game/obj_candy4{resolution}.json game/obj_candy3{resolution}.{image} game/obj_candy3{resolution}.json game/obj_candy2{resolution}.{image} game/obj_candy2{resolution}.json game/obj_candy1{resolution}.{image} game/obj_candy1{resolution}.json game/obj_candy0{resolution}.{image} game/obj_candy0{resolution}.json game/obj_bubble{resolution}.{image} game/obj_bubble{resolution}.json game/obj_bouncer{resolution}.{image} game/obj_bouncer{resolution}.json game/obj_blades{resolution}.{image} game/obj_blades{resolution}.json game/obj_bee{resolution}.{image} game/obj_bee{resolution}.json game/char3{resolution}.{image} game/char3{resolution}.json game/char2{resolution}.{image} game/char2{resolution}.json game/char1{resolution}.{image} game/char1{resolution}.json box17/support.{image} box17/maps.json box17/cover.{image} box17/cover.json box17/bg.jpg box16/support.{image} box16/maps.json box16/cover.{image} box16/cover.json box16/bg.jpg box15/support.{image} box15/maps.json box15/cover.{image} box15/cover.json box15/bg.jpg box14/support.{image} box14/maps.json box14/cover.{image} box14/cover.json box14/bg.jpg box13/support.{image} box13/maps.json box13/cover.{image} box13/cover.json box13/bg.jpg box12/support.{image} box12/maps.json box12/cover.{image} box12/cover.json box12/bg.jpg box11/support.{image} box11/maps.json box11/cover.{image} box11/cover.json box11/bg.jpg box10/support.{image} box10/maps.json box10/cover.{image} box10/cover.json box10/bg.jpg box09/support.{image} box09/maps.json box09/cover.{image} box09/cover.json box09/bg.jpg box08/support.{image} box08/maps.json box08/earth.{image} box08/cover.{image} box08/cover.json box08/bg.jpg box07/support.{image} box07/maps.json box07/cover.{image} box07/cover.json box07/bg.jpg box06/support.{image} box06/maps.json box06/cover.{image} box06/cover.json box06/bg.jpg box05/support.{image} box05/maps.json box05/cover.{image} box05/cover.json box05/bg.jpg box04/support.{image} box04/maps.json box04/cover.{image} box04/cover.json box04/bg.jpg box03/support.{image} box03/maps.json box03/cover.{image} box03/cover.json box03/bg.jpg box02/support.{image} box02/maps.json box02/cover.{image} box02/cover.json box02/bg.jpg box01/support.{image} box01/maps.json box01/cover.{image} box01/cover.json box01/bg.jpg audio/{audio}/sound.{audio} audio/{audio}/menu_music_xmas.{audio} audio/{audio}/menu_music.{audio} audio/{audio}/game_music_xmas.{audio} audio/{audio}/game_music.{audio}".split(
+
+
+--------------------------------------------
+~ Modified line(s) at index 28316
+--------------------------------------------
+    "images/pics/thumbs.avif images/pics/thumbs.png images/pics/thumbs.json images/menu/salute.avif images/menu/salute.png images/menu/salute.json images/menu/cut.avif images/menu/cut.png images/menu/cut.json images/game/obj_vinyl.avif images/game/obj_vinyl.png images/game/obj_vinyl.json images/game/obj_steam.avif images/game/obj_steam.png images/game/obj_steam.json images/game/obj_star.avif images/game/obj_star.png images/game/obj_star.json images/game/obj_spikes.avif images/game/obj_spikes.png images/game/obj_spikes.json images/game/obj_spider.avif images/game/obj_spider.png images/game/obj_spider.json images/game/obj_sp.avif images/game/obj_sp.png images/game/obj_sp.json images/game/obj_sock.avif images/game/obj_sock.png images/game/obj_sock.json images/game/obj_pump.avif images/game/obj_pump.png images/game/obj_pump.json images/game/obj_lighter.avif images/game/obj_lighter.png images/game/obj_lighter.json images/game/obj_lantern.avif images/game/obj_lantern.png images/game/obj_lantern.json images/game/obj_hook.avif images/game/obj_hook.png images/game/obj_hook.json images/game/obj_gravity.avif images/game/obj_gravity.png images/game/obj_gravity.json images/game/obj_ghost.avif images/game/obj_ghost.png images/game/obj_ghost.json images/game/obj_gap.avif images/game/obj_gap.png images/game/obj_gap.json images/game/obj_electro.avif images/game/obj_electro.png images/game/obj_electro.json images/game/obj_candy4.avif images/game/obj_candy4.png images/game/obj_candy4.json images/game/obj_candy3.avif images/game/obj_candy3.png images/game/obj_candy3.json images/game/obj_candy2.avif images/game/obj_candy2.png images/game/obj_candy2.json images/game/obj_candy1.avif images/game/obj_candy1.png images/game/obj_candy1.json images/game/obj_candy0.avif images/game/obj_candy0.png images/game/obj_candy0.json images/game/obj_bubble.avif images/game/obj_bubble.png images/game/obj_bubble.json images/game/obj_bouncer.avif images/game/obj_bouncer.png images/game/obj_bouncer.json images/game/obj_blades.avif images/game/obj_blades.png images/game/obj_blades.json images/game/obj_bee.avif images/game/obj_bee.png images/game/obj_bee.json images/game/char3.avif images/game/char3.png images/game/char3.json images/game/char2.avif images/game/char2.png images/game/char2.json images/game/char1.avif images/game/char1.png images/game/char1.json".split(
+    "pics/thumbs.avif pics/thumbs.png pics/thumbs.json menu/salute.avif menu/salute.png menu/salute.json menu/cut.avif menu/cut.png menu/cut.json game/obj_vinyl.avif game/obj_vinyl.png game/obj_vinyl.json game/obj_steam.avif game/obj_steam.png game/obj_steam.json game/obj_star.avif game/obj_star.png game/obj_star.json game/obj_spikes.avif game/obj_spikes.png game/obj_spikes.json game/obj_spider.avif game/obj_spider.png game/obj_spider.json game/obj_sp.avif game/obj_sp.png game/obj_sp.json game/obj_sock.avif game/obj_sock.png game/obj_sock.json game/obj_pump.avif game/obj_pump.png game/obj_pump.json game/obj_lighter.avif game/obj_lighter.png game/obj_lighter.json game/obj_lantern.avif game/obj_lantern.png game/obj_lantern.json game/obj_hook.avif game/obj_hook.png game/obj_hook.json game/obj_gravity.avif game/obj_gravity.png game/obj_gravity.json game/obj_ghost.avif game/obj_ghost.png game/obj_ghost.json game/obj_gap.avif game/obj_gap.png game/obj_gap.json game/obj_electro.avif game/obj_electro.png game/obj_electro.json game/obj_candy4.avif game/obj_candy4.png game/obj_candy4.json game/obj_candy3.avif game/obj_candy3.png game/obj_candy3.json game/obj_candy2.avif game/obj_candy2.png game/obj_candy2.json game/obj_candy1.avif game/obj_candy1.png game/obj_candy1.json game/obj_candy0.avif game/obj_candy0.png game/obj_candy0.json game/obj_bubble.avif game/obj_bubble.png game/obj_bubble.json game/obj_bouncer.avif game/obj_bouncer.png game/obj_bouncer.json game/obj_blades.avif game/obj_blades.png game/obj_blades.json game/obj_bee.avif game/obj_bee.png game/obj_bee.json game/char3.avif game/char3.png game/char3.json game/char2.avif game/char2.png game/char2.json game/char1.avif game/char1.png game/char1.json".split(
+
+
+--------------------------------------------
++ Added line(s) at index 28444
+--------------------------------------------
+//# sourceMappingURL=ctrr.js.map
+
+
+--------------------------------------------
+- Deleted line(s) at index 28446
+--------------------------------------------
+console.error(`super duper wip, the following objects are:
+invisible: lanterns, mice, ghosts, saws, discs, bees, spiders
+unavailable: electric sparks`)
