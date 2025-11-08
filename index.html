@@ -100,7 +100,9 @@
         }
         .logo {
             max-width: 700px;
-            width: 100%; object-fit: contain;
+            width: 90%; object-fit: contain;
+            margin: 1em;
+            filter: drop-shadow(0 0 12px rgba(0,0,0,0.25));
         }
 
         .buttons {
@@ -133,7 +135,7 @@
         .tiny {
             position: fixed; bottom: 0.3em; width: 90%;
             text-align: center;
-            color: rgb(223, 223, 223); font-size: 0.5em;
+            color: rgb(223, 223, 223); font-size: 0.67em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
@@ -162,7 +164,7 @@
         .sbuttons {
             display: flex; position: fixed; flex-direction: row;
             justify-content: center; align-items: top; flex-wrap: wrap;
-            bottom: 0.7em; width: 750px; max-width: 90%; height: auto;
+            bottom: 1em; width: 750px; max-width: 90%; height: auto;
         }
         .sbutton {padding: 2px; image-rendering: pixelated; background-repeat: no-repeat}
 
@@ -197,20 +199,19 @@
 
     <div class="page">
 
-        <img class="logo" src="/assets/images/logo.webp">
+        <img class="logo" src="/assets/images/logo.svg" draggable="false" title="candies dot monster">
         
         <div class="buttons">
-            <a href="/convert"><img class="button clickable" src="/assets/images/buttons/convert.png" draggable="false"></a>
-            <a href="/versions"><img class="button clickable" src="/assets/images/buttons/versions.png" draggable="false"></a>
-            <a href="/music"><img class="button clickable" src="/assets/images/buttons/music.png" draggable="false"></a>
-            <a href="/preview"><img class="button clickable" src="/assets/images/buttons/preview.png" draggable="false"></a>
-            <a href="/split"><img class="button clickable" src="/assets/images/buttons/split.png" draggable="false"></a>
-            <a wip><img class="button clickable" src="/assets/images/buttons/levels.png" draggable="false"></a>
-            <a todo><img class="button clickable" src="/assets/images/buttons/sprites.png" draggable="false"></a>
+            <a href="/convert"><img class="button clickable" src="/assets/images/buttons/convert.png" draggable="false" title=".raw to .png converter"></a>
+            <a href="/versions"><img class="button clickable" src="/assets/images/buttons/versions.png" draggable="false" title="cut the rope (free) versions"></a>
+            <a href="/music"><img class="button clickable" src="/assets/images/buttons/music.png" draggable="false" title="music player!"></a>
+            <a href="/preview"><img class="button clickable" src="/assets/images/buttons/preview.png" draggable="false" title="preview custom levels online"></a>
+            <a href="/split"><img class="button clickable" src="/assets/images/buttons/split.png" draggable="false" title="split spritesheets with xml"></a>
+            <a wip><img class="button clickable" src="/assets/images/buttons/levels.png" draggable="false" title="level browser (not done yet!)"></a>
         </div>
         <div class="buttons small">
-            <a href="/cards"><img class="button clickable" src="/assets/images/buttons/cards.png" draggable="false"></a>
-            <a href="/comics"><img class="button clickable" src="/assets/images/buttons/comics.png" draggable="false"></a>
+            <a href="/cards"><img class="button clickable" src="/assets/images/buttons/cards.png" draggable="false" title="winnable cards in newer cut the rope versions"></a>
+            <a href="/comics"><img class="button clickable" src="/assets/images/buttons/comics.png" draggable="false" title="removed comics from cut the rope origins"></a>
         </div>
         <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
 
@@ -262,7 +263,7 @@
     </div>
 
     <p class="tiny">
-        Not affiliated with © ZeptoLab UK Limited 2025, this is a fan-project.
+        Not affiliated with © ZeptoLab UK Limited 2025. This is a fan-project.
     </p>
 
     <script>
