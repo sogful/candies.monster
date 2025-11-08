@@ -1922,7 +1922,7 @@ dj("Array.prototype.values", function (ja) {
       super.fb();
       xi || ((xi = !0), M.kN());
       // skip directly to level 17-1 on menu load
-      D.box = 15; D.level = 1;
+      D.box = 17; D.level = 1;
       this.ba(ad);
     }
     play() {
