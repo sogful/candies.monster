@@ -18,6 +18,30 @@
     ]
   },
   {
+    "version": "v1.3",
+    "icon": "/assets/images/gameicons/original.webp",
+    "downloads": [
+      {"url": "https://www.mediafire.com/file/kxk40qhudcgqwd2/Cut+the+Rope+1.3.zip/file",
+       "button": "/assets/images/buttons/download/other.png"}
+    ]
+  },
+  {
+    "version": "v1.3.1",
+    "icon": "/assets/images/gameicons/original.webp",
+    "downloads": [
+      {"url": "https://www.mediafire.com/file/7uan5ze5k15ge1m/Cut+the+Rope+v1.3.1+Final+Android.apk",
+       "button": "/assets/images/buttons/download/other.png"}
+    ]
+  },
+  {
+    "version": "v1.3.2",
+    "icon": "/assets/images/gameicons/original.webp",
+    "downloads": [
+      {"url": "https://www.mediafire.com/file/gp8gu3ze01cstx2/Cut_the_Rope_1.3.2.apk",
+       "button": "/assets/images/buttons/download/other.png"}
+    ]
+  },
+  {
     "version": "v1.4.1",
     "icon": "/assets/images/gameicons/free2.webp",
     "downloads": [

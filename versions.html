@@ -94,7 +94,10 @@
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
         }
-
+        .small {
+            font-size: smaller;
+            color: lightgrey
+        }
         .tiny {
             position: fixed; bottom: 0.3em; width: 90%;
             text-align: center;
@@ -102,6 +105,11 @@
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
+        }
+
+        .inner {
+            vertical-align: middle; display: inline-block; 
+            margin: 0 0.2em; width: 20px;
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -131,35 +139,35 @@
         .games {
             display: flex; flex-wrap: wrap;
             width: min(90vw, 700px); height: auto;
-            gap: 0.5em; margin-top: 1em;
+            gap: 0.3em; margin-top: 0.5em;
         }
         .game {
             display: flex; flex-direction: column;
-            width: calc((100% - 3em) / 6);
-            min-width: 105px; max-width: 150px;
+            width: calc((100% - 2em) / 9);
+            min-width: 72px; max-width: 110px;
         }
         .header {
             position: relative; display: flex;
             justify-content: center; align-items: center;
-            padding-bottom: 0.5em;
+            padding-bottom: 0.25em;
         }
         .header p {
             position: absolute;
-            top: 80px; left: 50%;
+            top: 55px; left: 50%;
             transform: translateX(-50%);
             margin: 0; z-index: 10;
-            text-shadow: 0 0 6px #000, 0 0 12px #000,
-                         0 0 18px #000, 0 0 24px #000, 0 0 32px #000;
+            text-shadow: 0 0 4px #000, 0 0 8px #000,
+                         0 0 12px #000, 0 0 16px #000, 0 0 20px #000;
         }
 
         .buttons {
             display: flex; flex-wrap: wrap;
             justify-content: center; align-items: center;
-            max-width: 100%; column-gap: 0.2em;
+            max-width: 100%; column-gap: 0.12em;
         }
 
-        .icon {height: 100px;}
-        .button {height: 50px}
+        .icon {height: 75px}
+        .button {height: 35px}
 
     </style>
 </head>
@@ -177,7 +185,12 @@
 
     <div class="page">
         <a class="title">Cut the Rope</a>
-        <a>Most files are not checked for legitimacy. Consider using an emulator before downloading on a real device.</a>
+        <a class="small">com.zeptolab.ctr.ads</a>
+        <a style="display: flex; align-items: center;">
+            Most of the apk files are checked for legitimacy. Be careful with 
+            <img class="inner" src="/assets/images/buttons/download/other.png"> 
+            unlabeled ones!
+        </a>
 
         <div class="games">
 
