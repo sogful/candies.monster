@@ -45,7 +45,7 @@
         body:active, body:focus, body:focus-within, body:target, body:active * {
             cursor: url("/assets/static/active.cur"), default !important;
         }
-        :any-link {
+        :any-link, :any-link:focus, :any-link:hover {
             color: #8feeff; text-decoration: none !important;
             cursor: url("/assets/static/link.cur"), default !important;
         }
@@ -156,6 +156,18 @@
             min-height: 10vh; max-height: 30vh;
             overflow: auto; white-space: pre-wrap; border-radius: 1em;
         }
+        .drag {
+            position: fixed; display: none;
+            justify-content: center; align-items: center; text-align: center;
+            width: 100vw; height: 100vh; z-index: 65535;
+            background-color: rgba(0,0,0,0.5);
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+            transition: opacity 0.5s; color: white;
+            margin-left: 20%; margin-right: 20%;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill; font-size: 3em;
+        }
     </style>
     
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
@@ -174,6 +186,8 @@
             <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
         </label>
     </div>
+
+    <div class="drag">Drop file here!</div>
 
     <div class="page">
         <a class="title">raw2png</a>
@@ -294,13 +308,14 @@
                 const canvas = document.createElement("canvas");
                 canvas.width = width;
                 canvas.height = height;
-                const ctx = canvas.getContext("2d");
+                const ctx = canvas.getContext("2d", {alpha: true});
+                ctx.clearRect(0, 0, width, height);
                 const imageData = new ImageData(new Uint8ClampedArray(pixels.buffer), width, height);
                 ctx.putImageData(imageData, 0, 0);
                 return new Promise((resolve, reject) => {
                     canvas.toBlob((blob) => {
                         if (blob) resolve(blob); else reject(new Error("PNG encoding failed"));
-                    }, "image/png");
+                    }, "image/png", 1.0);
                 });
             }
 
@@ -889,7 +904,50 @@ def decryptrawpy(data):
                 document.querySelector(".inputsingle").value = "";
             });
 
+            /*//////////////////////////////////////////////////////////////////////*/
+
+            // drag overlay
+            let dragcount = 0;
+            const dragoverlay = document.querySelector(".drag");
+            document.addEventListener("dragenter", function(e) {
+                e.preventDefault();
+                dragcount++;
+                if (dragcount === 1) {
+                    dragoverlay.style.display = "flex";
+                    dragoverlay.style.opacity = "0";
+                    setTimeout(() => {dragoverlay.style.opacity = "1"}, 10);
+                }
+            });
+            document.addEventListener("dragleave", function(e) {
+                e.preventDefault();
+                dragcount--;
+                if (dragcount === 0) {
+                    dragoverlay.style.opacity = "0";
+                    setTimeout(() => {dragoverlay.style.display = "none"}, 500);
+                }
+            });
+            document.addEventListener("dragover", function(e) {e.preventDefault()});
+            document.addEventListener("drop", function(e) {
+                e.preventDefault();
+                dragcount = 0;
+                dragoverlay.style.opacity = "0";
+                setTimeout(() => {dragoverlay.style.display = "none"}, 500);
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const rawfiles = Array.from(files).filter(f => {
+                        const name = f.name.toLowerCase();
+                        return name.endsWith(".raw") || name.match(/\.raw\d+$/);
+                    });
+                    if (rawfiles.length === 0) {
+                        errorlog("No .raw files found in dropped files...");
+                        return;
+                    }
+                    if (rawfiles.length === 1) {handlesingle(rawfiles[0])}
+                    else {handlefolder(files)}
+                }
+            });
         })();
+        
     </script>
 
 </body>
