@@ -7,6 +7,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="/assets/static/slash.js"></script>
 
     <meta property="og:image" content="/assets/images/banner.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -102,7 +103,7 @@
             max-width: 700px;
             width: 90%; object-fit: contain;
             margin: 1em;
-            filter: drop-shadow(0 0 12px rgba(0,0,0,0.25));
+            filter: drop-shadow(0 0 12px rgba(0,0,0,0.33));
         }
 
         .buttons {
@@ -111,8 +112,9 @@
             max-width: 700px; width: 100%; object-fit: contain;
         }
         .button {
-            max-width: 140px;
-            width: 100%;
+            max-width: 140px; width: 100%;
+            background-image: url("/assets/images/buttons/button.svg");
+            filter: drop-shadow(0 0 12px rgba(0,0,0,0.33));
         }
         .small > a > .button {
             max-width: 70px;
@@ -153,6 +155,8 @@
             left: 0; top: 0; will-change: transform;
             pointer-events: none;
             opacity: 0; transition: opacity 0.3s linear;
+            background-image: url("/assets/images/candies/candies.webp");
+            background-repeat: no-repeat; background-size: auto;
         }
         @keyframes fall {
             from {transform: translateY(var(--startY, -10vh)) rotate(var(--r0, 0deg))} 
@@ -179,11 +183,18 @@
             paint-order: stroke fill;
         }
 
+        .music {
+            position: fixed; bottom: 0.5em; left: 0.5em;
+            width: 2em; height: 2em; z-index: 1000;
+        }
+
     </style>
 </head>
 <body>
 
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
+    <audio class="theme" src="/assets/audio/theme.opus" preload="auto" loop></audio>
+
     <div class="rain" aria-hidden="true"></div>
     <div class="copied"><a>copied!</a></div>
 
@@ -202,28 +213,29 @@
         <img class="logo" src="/assets/images/logo.svg" draggable="false" title="candies dot monster">
         
         <div class="buttons">
-            <a href="/convert"><img class="button clickable" src="/assets/images/buttons/convert.png" draggable="false" title=".raw to .png converter"></a>
-            <a href="/versions"><img class="button clickable" src="/assets/images/buttons/versions.png" draggable="false" title="cut the rope (free) versions"></a>
-            <a href="/music"><img class="button clickable" src="/assets/images/buttons/music.png" draggable="false" title="music player!"></a>
-            <a href="/preview"><img class="button clickable" src="/assets/images/buttons/preview.png" draggable="false" title="preview custom levels online"></a>
-            <a href="/split"><img class="button clickable" src="/assets/images/buttons/split.png" draggable="false" title="split spritesheets with xml"></a>
-            <a wip><img class="button clickable" src="/assets/images/buttons/levels.png" draggable="false" title="level browser (not done yet!)"></a>
+            <a href="/convert"><img class="button clickable" src="/assets/images/buttons/convert.webp" draggable="false" title=".raw to .png converter"></a>
+            <a href="/versions"><img class="button clickable" src="/assets/images/buttons/versions.webp" draggable="false" title="cut the rope (free) versions"></a>
+            <a href="/music"><img class="button clickable" src="/assets/images/buttons/music.webp" draggable="false" title="music player!"></a>
+            <a href="/preview"><img class="button clickable" src="/assets/images/buttons/preview.webp" draggable="false" title="preview custom levels online"></a>
+            <a href="/split"><img class="button clickable" src="/assets/images/buttons/split.webp" draggable="false" title="split spritesheets with xml"></a>
+            <a wip><img class="button clickable" src="/assets/images/buttons/levels.webp" draggable="false" title="level browser (not done yet!)"></a>
         </div>
         <div class="buttons small">
-            <a href="/cards"><img class="button clickable" src="/assets/images/buttons/cards.png" draggable="false" title="winnable cards in newer cut the rope versions"></a>
-            <a href="/comics"><img class="button clickable" src="/assets/images/buttons/comics.png" draggable="false" title="removed comics from cut the rope origins"></a>
+            <a href="/cards"><img class="button clickable" src="/assets/images/buttons/cards.webp" draggable="false" title="winnable cards in newer cut the rope versions"></a>
+            <a href="/comics"><img class="button clickable" src="/assets/images/buttons/comics.webp" draggable="false" title="removed comics from cut the rope origins"></a>
         </div>
         <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
 
     </div>
+    <img class="music clickable" src="/assets/images/nomusic.png">
 
     <div class="sbuttons">
-        <a><img class="sbutton" src="/assets/images/buttons/88x31/default.png"></a>
-        <a><img class="sbutton" src="/assets/images/buttons/88x31/tasty.png"></a>
+        <a><img class="sbutton" src="/assets/images/88x31/default.png"></a>
+        <a><img class="sbutton" src="/assets/images/88x31/tasty.png"></a>
 
         <!-- slide -->
         <a class="ctrgame">
-            <img class="sbutton ctrimg" src="/assets/images/buttons/88x31/game1.gif" draggable="false">
+            <img class="sbutton ctrimg" src="/assets/images/88x31/game1.gif" draggable="false">
             <input type="range" class="ctrslider" min="0" max="100" value="50" step="10">
             <style>
                 .ctrgame {position: relative; display: inline-block; width: 88px; height: 31px}
@@ -234,7 +246,7 @@
                 const slider = document.querySelector(".ctrslider"); let activated = false;
                 slider.addEventListener('input', function() {
                     if (!activated && (Number(slider.value) === 100 || Number(slider.value) === 0)) {
-                        document.querySelector(".ctrimg").src = '/assets/images/buttons/88x31/game2.gif';
+                        document.querySelector(".ctrimg").src = '/assets/images/88x31/game2.gif';
                         activated = true; slider.disabled = true;
                     }
                 });
@@ -245,8 +257,8 @@
         <!--a class="ctrgame">
             <input type="radio" id="ctrtoggle" name="ctrgame" class="ctrcheckbox">
             <label for="ctrtoggle" class="ctrlabel">
-                <img class="sbutton ctrimg ctrone" src="/assets/images/buttons/88x31/game1.gif" draggable="false">
-                <img class="sbutton ctrimg ctrtwo" src="/assets/images/buttons/88x31/game2.gif" draggable="false">
+                <img class="sbutton ctrimg ctrone" src="/assets/images/88x31/game1.gif" draggable="false">
+                <img class="sbutton ctrimg ctrtwo" src="/assets/images/88x31/game2.gif" draggable="false">
             </label>
             <style>
                 .ctrgame {position: relative; display: inline-block; width: 88px; height: 31px}
@@ -261,22 +273,44 @@
         </a-->
         
     </div>
-
-    <p class="tiny">
-        Not affiliated with © ZeptoLab UK Limited 2025. This is a fan-project.
-    </p>
+    <p class="tiny">Not affiliated with © ZeptoLab UK Limited 2025. This is a fan-project.</p>
 
     <script>
-        const favicons = Array.from({length: 20}, (_, i) => `/assets/images/icon/frame${i + 1}.png`);
-        let index = 0; const delay = 300;
-        function favicongif() {
-            const link = document.querySelector("link[rel='icon']") || document.createElement("link");
-            link.rel = "icon";
-            link.href = favicons[index];
-            document.head.appendChild(link);
-            index = (index + 1) % favicons.length;
-            setTimeout(favicongif, delay);
-        }; favicongif();
+
+        // animated favicon
+        (function() {
+            let spritejson = null; let sheetloaded = false;
+            let favicons = []; let index = 0; const delay = 300;
+            let sheetimg = null;
+
+            fetch("/assets/images/icon.json")
+                .then(response => response.json()).then(data => {
+                    spritejson = data.frames; sheetimg = new Image();
+                    sheetimg.onload = () => {
+                        sheetloaded = true;
+                        const canvas = document.createElement("canvas");
+                        const ctx = canvas.getContext("2d");
+                        favicons = spritejson.map(frame => {
+                            canvas.width = frame.frame.w;
+                            canvas.height = frame.frame.h;
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(
+                                sheetimg,
+                                frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h,
+                                0, 0, frame.frame.w, frame.frame.h
+                            ); return canvas.toDataURL("image/png");
+                        }); favicongif();
+                    }; sheetimg.src = "/assets/images/icon.webp";
+                });
+            function favicongif() {
+                if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
+                const link = document.querySelector("link[rel='icon']") || document.createElement("link");
+                link.rel = "icon"; link.href = favicons[index];
+                document.head.appendChild(link);
+                index = (index + 1) % favicons.length;
+                setTimeout(favicongif, delay);
+            }
+        })();
 
         // loading
         window.addEventListener("load", function() {
@@ -297,24 +331,67 @@
             });
         });
 
-        /*
-        // a hopefully working fix for broken text on ancient browsers. added this because of my poor little kiwi browser 💔
-        var haspaintorder = false; var haswebkitstroke = false;
-        if (window.CSS && CSS.supports) {
-            haspaintorder = CSS.supports('paint-order', 'stroke fill');
-            haswebkitstroke = CSS.supports('-webkit-text-stroke', '1px black');
-        }
-        if (!haspaintorder || !haswebkitstroke) {
-            var style = document.createElement('style');
-            style.textContent = `h1, h2, h3, h4, h5, h6, a, span, div {
-                paint-order: unset !important;
-                -webkit-text-stroke: 0 !important;
-                text-shadow: -0.1em 0 black, 0 0.1em black, 0.1em 0 black, 0 -0.1em black,
-                -0.07em 0.07em black, 0.07em 0.07em black, -0.07em -0.07em black,
-                0.07em -0.07em black, 0 0.15em 0 black !important;
-            }`; document.head.appendChild(style);
-        }
-            */
+        /*//////////////////////////////////////////////////////////////////////*/
+        
+        // music toggle
+        (function() {
+            const musicbutton = document.querySelector(".music");
+            const music = document.querySelector(".theme");
+            let isplaying = false; let audioctx = null;
+            let gainnode = null; let source = null;
+
+            function musicstop(callback) {
+                if (!audioctx) {if (callback) callback(); return}
+                const time = audioctx.currentTime;
+                gainnode.gain.cancelScheduledValues(time);
+                gainnode.gain.setValueAtTime(gainnode.gain.value, time);
+                gainnode.gain.linearRampToValueAtTime(0, time + 0.1);
+                setTimeout(() => {
+                    music.pause(); music.currentTime = 0;
+                    gainnode.gain.setValueAtTime(1, audioctx.currentTime);
+                    if (callback) callback();
+                }, 100);
+            }
+            function setupmusic() {
+                if (!audioctx) {
+                    audioctx = new (window.AudioContext || window.webkitAudioContext)();
+                    gainnode = audioctx.createGain(); gainnode.gain.value = 1;
+                    source = audioctx.createMediaElementSource(music);
+                    source.connect(gainnode).connect(audioctx.destination);
+                }
+            }
+            function savemusicstate() {localStorage.setItem("musicon", isplaying ? "true" : "false")}
+            function loadmusicstate() {
+                const saved = localStorage.getItem("musicon");
+                if (saved === "true") {
+                    musicbutton.src = "/assets/images/music.png";
+                    isplaying = true; setupmusic();
+                    function playmusic() {
+                        if (audioctx && audioctx.state === "suspended") audioctx.resume();
+                        gainnode.gain.setValueAtTime(1, audioctx.currentTime);
+                        music.volume = 1; music.play()
+                    }
+                    if (music.readyState >= 3) {playmusic()}
+                    else {music.addEventListener("canplaythrough", playmusic, {once: true})}
+                }
+            }
+            musicbutton.addEventListener("click", function() {
+                setupmusic();
+                if (isplaying) {
+                    musicstop(); musicbutton.src = "/assets/images/nomusic.png";
+                    isplaying = false;
+                    savemusicstate();
+                } else {
+                    if (audioctx && audioctx.state === "suspended") audioctx.resume();
+                    gainnode.gain.setValueAtTime(1, audioctx.currentTime);
+                    music.volume = 1; music.play()
+                    musicbutton.src = "/assets/images/music.png"; isplaying = true;
+                    savemusicstate();
+                }
+            }); loadmusicstate();
+        })();
+
+        /*//////////////////////////////////////////////////////////////////////*/
         
         // copy buttons on middle click (slightly fixed over the pawing.cv code)
         document.addEventListener("auxclick", (e) => {
@@ -365,18 +442,32 @@
 
         (function () {
             const container = document.querySelector(".rain");
-            if (!container) return;
 
-            const candies = Array.from({length: 50}, (_, i) => `/assets/images/candies/candy${i + 1}.webp`);
+            let spritejson = null; let sheetloaded = false;
+            let sheetwidth = 0; let sheetheight = 0;
+
+            fetch("/assets/images/candies/candies.json")
+                .then(response => response.json())
+                .then(data => {
+                    spritejson = data.frames;
+                    sheetwidth = Math.max(...data.frames.map(f => f.frame.x + f.frame.w));
+                    sheetheight = Math.max(...data.frames.map(f => f.frame.y + f.frame.h));
+                    const img = new Image();
+                    img.onload = () => { sheetloaded = true; };
+                    img.src = "/assets/images/candies/candies.webp";
+                })
+
             const drops = new Set();
 
-            function createDrop() {
-                if (drops.size >= 80) return;
-                const img = document.createElement("img");
-                img.className = "candy"; img.draggable = false;
-                img.decoding = "async"; img.loading = "lazy";
-                img.src = candies[Math.floor(Math.random() * candies.length)];
-
+            function throwcandies() {
+                if (drops.size >= 80 || !spritejson || !sheetloaded) return;
+                
+                const candyindex = Math.floor(Math.random() * spritejson.length);
+                const sprite = spritejson[candyindex];
+                const frame = sprite.frame;
+                
+                const div = document.createElement("div");
+                div.className = "candy";
                 const size = 24 + Math.random() * 32;
                 const speed = 40 + Math.random() * 80;
                 const rotatestart = Math.random() * 360;
@@ -384,12 +475,17 @@
                 const x = Math.random() * window.innerWidth;
                 const start = -size - Math.random() * window.innerHeight * 0.5;
 
-                const drop = { el: img, x, y: start, size, speed, rot: rotatestart, rotatespeed, entered: false };
-                img.style.width = `${size}px`;
-                img.style.transform = `translate(${x}px, ${start}px) rotate(${rotatestart}deg)`;
-                img.style.opacity = "0";
-                drops.add(drop);
-                container.appendChild(img);
+                const scale = size / Math.max(frame.w, frame.h);
+                const scaledwidth = frame.w * scale; const scaledheight = frame.h * scale;
+                
+                div.style.width = `${scaledwidth}px`; div.style.height = `${scaledheight}px`;
+                div.style.backgroundPosition = `-${frame.x * scale}px -${frame.y * scale}px`;
+                div.style.backgroundSize = `${sheetwidth * scale}px ${sheetheight * scale}px`;
+                div.style.transform = `translate(${x}px, ${start}px) rotate(${rotatestart}deg)`;
+                div.style.opacity = "0";
+
+                const drop = { el: div, x, y: start, size, speed, rot: rotatestart, rotatespeed, entered: false };
+                drops.add(drop); container.appendChild(div);
             }
 
             let last = performance.now();
@@ -414,10 +510,8 @@
                 }; for (const d of toremove) {d.el.remove(); drops.delete(d)}
                 requestAnimationFrame(tick);
             }; requestAnimationFrame(tick);
-
-            for (let i = 0; i < 18; i++) setTimeout(createDrop, i * 15);
-            setInterval(createDrop, 360);
-
+            for (let i = 0; i < 18; i++) setTimeout(throwcandies, i * 15);
+            setInterval(throwcandies, 360);
         })();
 
     </script>

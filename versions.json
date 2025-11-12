@@ -4,7 +4,7 @@
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
       {"url": "https://archive.org/download/cuttherope_new9871t/cuttherope_new9871t.apk",
-       "button": "/assets/images/buttons/download/internetarchive.png"}
+       "button": "internetarchive.png"}
     ]
   },
   {
@@ -12,9 +12,9 @@
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
       {"url": "https://archive.org/download/cut-the-rope-apk-1.1.1/com.zeptolab.ctr.paid_1.1.1_paid-www.apkhere.com.apk",
-       "button": "/assets/images/buttons/download/internetarchive.png"},
+       "button": "internetarchive.png"},
       {"url": "https://www.apkbe.com/down/com.zeptolab.ctr.paid_1.1.1_paid",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -22,7 +22,7 @@
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
       {"url": "https://www.mediafire.com/file/kxk40qhudcgqwd2/Cut+the+Rope+1.3.zip/file",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -30,7 +30,7 @@
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
       {"url": "https://www.mediafire.com/file/7uan5ze5k15ge1m/Cut+the+Rope+v1.3.1+Final+Android.apk",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -38,7 +38,7 @@
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
       {"url": "https://www.mediafire.com/file/gp8gu3ze01cstx2/Cut_the_Rope_1.3.2.apk",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -46,9 +46,9 @@
     "icon": "/assets/images/gameicons/free2.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-1-4-1-release/cut-the-rope-1-4-1-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1026518209",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -56,7 +56,7 @@
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
       {"url": "https://www.apkbe.com/down/com.zeptolab.ctr.paid_1.4.4_paid",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -64,7 +64,7 @@
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
       {"url": "https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -72,7 +72,7 @@
     "icon": "/assets/images/gameicons/original.webp",
     "downloads": [
       {"url": "https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -80,9 +80,9 @@
     "icon": "/assets/images/gameicons/free2.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-2-1-release/cut-the-rope-2-2-1-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2.1_paid",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -90,9 +90,9 @@
     "icon": "/assets/images/gameicons/free2.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-3-release/cut-the-rope-2-3-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/48414",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -100,9 +100,9 @@
     "icon": "/assets/images/gameicons/free2.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-3-3-release/cut-the-rope-2-3-3-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/72909",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -110,9 +110,9 @@
     "icon": "/assets/images/gameicons/free2.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-3-6-release/cut-the-rope-2-3-6-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/58098",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -120,7 +120,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/59773",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -128,9 +128,9 @@
     "icon": "/assets/images/gameicons/free2.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-3-8-release/cut-the-rope-2-3-8-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/79161",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -138,7 +138,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/84721",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -146,9 +146,9 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-4-5-release/cut-the-rope-2-4-5-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/93895",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -156,7 +156,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/95757",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -164,9 +164,9 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-4-7-release/cut-the-rope-2-4-7-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/105693",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -174,9 +174,9 @@
     "icon": "/assets/images/gameicons/mechanicalbox.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-5-1-release/cut-the-rope-2-5-1-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/122639",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -184,7 +184,7 @@
     "icon": "/assets/images/gameicons/mechanicalbox.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/123925",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -192,7 +192,7 @@
     "icon": "/assets/images/gameicons/mechanicalbox.webp",
     "downloads": [
       {"url": "https://apk.cafe/download?file_id=10382/cut-the-rope-full-free",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -200,7 +200,7 @@
     "icon": "/assets/images/gameicons/mechanicalbox.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/278345",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -208,7 +208,7 @@
     "icon": "/assets/images/gameicons/mechanicalbox.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/287551",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -216,7 +216,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/320233",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -224,7 +224,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://apk.cafe/download?file_id=13827/cut-the-rope-full-free",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -232,9 +232,9 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-5-9-release/cut-the-rope-2-5-9-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/450285",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -242,9 +242,9 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-2-6-5-release/cut-the-rope-2-6-5-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/528413",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -252,7 +252,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1232593",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -260,7 +260,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1485311",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -268,7 +268,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1657356",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -276,7 +276,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1659510",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -284,11 +284,11 @@
     "icon": "/assets/images/gameicons/halloween.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-3-0-release/cut-the-rope-3-3-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1673274",
-       "button": "/assets/images/buttons/download/uptodown.png"},
+       "button": "uptodown.png"},
       {"url": "https://theawesomeblue.github.io/ctrfiles/download/ctr/event/ctr3.3.0_halloween.apk",
-       "button": "/assets/images/buttons/download/other.png"}
+       "button": "other.png"}
     ]
   },
   {
@@ -296,7 +296,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1693188",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -304,9 +304,9 @@
     "icon": "/assets/images/gameicons/christmas2017.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-4-0-release/cut-the-rope-3-4-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1030274210",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -314,9 +314,9 @@
     "icon": "/assets/images/gameicons/christmas2017.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-5-1-release/cut-the-rope-3-5-1-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1700310",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -324,9 +324,9 @@
     "icon": "/assets/images/gameicons/valentinesmodern.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-6-0-release/cut-the-rope-3-6-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1708392",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -334,7 +334,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/104843665",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -342,9 +342,9 @@
     "icon": "/assets/images/gameicons/strawberry.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-7-0-release/cut-the-rope-3-7-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1740600",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -352,7 +352,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1743381",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -360,7 +360,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1021870984",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -368,7 +368,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1763651",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -376,7 +376,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1785490",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -384,7 +384,7 @@
     "icon": "/assets/images/gameicons/free.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1789215",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -392,9 +392,9 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-10-0-release/cut-the-rope-3-10-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1026743476",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -402,7 +402,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/120794809",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -410,7 +410,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1907417",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -418,7 +418,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1069076364",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -426,9 +426,9 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-11-0-release/cut-the-rope-3-11-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/2861037",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -436,9 +436,9 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-11-1-release/cut-the-rope-3-11-1-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1924025",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -446,7 +446,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1941303",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -454,7 +454,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1947781",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -462,7 +462,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1954671",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -470,7 +470,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1050487658",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -478,7 +478,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/2113553",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -486,7 +486,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1053320847",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -494,7 +494,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/119400124",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -502,7 +502,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1008190944",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -510,7 +510,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/2140906",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -518,7 +518,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/3403845",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -526,7 +526,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1101042098",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -534,7 +534,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/65100575",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -542,7 +542,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/121656857",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -550,7 +550,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/2283131",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -558,7 +558,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1096699195",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -566,7 +566,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1096549515",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -574,7 +574,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1014590134",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -582,9 +582,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-24-0-release/cut-the-rope-3-24-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/2740684",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -592,7 +592,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/2899742",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -600,7 +600,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1048126112",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -608,7 +608,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1039875072",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -616,7 +616,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/3866010",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -624,7 +624,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/4018667",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -632,7 +632,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1025436454",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -640,7 +640,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/4547980",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -648,7 +648,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1095052189",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -656,7 +656,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/64839976",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -664,7 +664,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/75679957",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -672,7 +672,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/77192788",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -680,7 +680,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/81079900",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -688,7 +688,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/83146816",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -696,7 +696,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/86885257",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -704,7 +704,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/93785201",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -712,7 +712,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/87969937",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -720,7 +720,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/89831860",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -728,7 +728,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/88656422",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -736,7 +736,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/122032143",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -744,7 +744,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1060325511",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -752,7 +752,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/102569459",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -760,7 +760,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/103319252",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -768,7 +768,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/104087960",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -776,7 +776,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/103750458",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -784,7 +784,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1074699394",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -792,7 +792,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1100539131",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -800,7 +800,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1077794010",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -808,7 +808,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/120783877",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -816,7 +816,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/107091897",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -824,7 +824,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1095863979",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -832,7 +832,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/122193348",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -840,7 +840,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/110398752",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -848,7 +848,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/113410057",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -856,7 +856,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1093975927",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -864,9 +864,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-57-0-release/cut-the-rope-3-57-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/120798462",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -874,9 +874,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-58-0-release/cut-the-rope-3-58-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/123814697",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -884,7 +884,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/122964810",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -892,9 +892,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-59-1-release/cut-the-rope-3-59-1-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/124418783",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -902,9 +902,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-60-0-release/cut-the-rope-3-60-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/124137215",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -912,9 +912,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-60-1-release/cut-the-rope-3-60-1-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1010425997",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -922,9 +922,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-61-0-release/cut-the-rope-3-61-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1002545598",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -932,9 +932,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-62-0-release/cut-the-rope-3-62-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1046319428",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -942,9 +942,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-63-0-release/cut-the-rope-3-63-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1036912834",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -952,9 +952,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-64-0-release/cut-the-rope-3-64-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1013795272",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -962,9 +962,9 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-65-0-release/cut-the-rope-3-65-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1015971232",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -972,7 +972,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1018027496",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -980,7 +980,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1085457797",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -988,7 +988,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1067425054",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -996,7 +996,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1047621528",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1004,7 +1004,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1085545427",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1012,7 +1012,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1071217464",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1020,7 +1020,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1099694726",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1028,7 +1028,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1075961736",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1036,7 +1036,7 @@
     "icon": "/assets/images/gameicons/idk.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1076407046",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1044,9 +1044,9 @@
     "icon": "/assets/images/gameicons/aislop.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-72-0-release/cut-the-rope-3-72-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1076382636",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1054,9 +1054,9 @@
     "icon": "/assets/images/gameicons/aislop.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-73-0-release/cut-the-rope-3-73-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1104255890",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1064,9 +1064,9 @@
     "icon": "/assets/images/gameicons/aislop.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-74-0-release/cut-the-rope-3-74-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1089467402",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1074,9 +1074,9 @@
     "icon": "/assets/images/gameicons/aislop.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-75-0-release/cut-the-rope-3-75-0-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1100275158",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1084,7 +1084,7 @@
     "icon": "/assets/images/gameicons/aislop.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1105791080",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1092,9 +1092,9 @@
     "icon": "/assets/images/gameicons/aislop.webp",
     "downloads": [
       {"url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope/cut-the-rope-3-76-2-release/cut-the-rope-3-76-2-android-apk-download/",
-       "button": "/assets/images/buttons/download/apkmirror.png"},
+       "button": "apkmirror.png"},
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1113080146",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1102,7 +1102,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1115859820",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   },
   {
@@ -1110,7 +1110,7 @@
     "icon": "/assets/images/gameicons/fabric.webp",
     "downloads": [
       {"url": "https://cut-the-rope.en.uptodown.com/android/download/1116032158",
-       "button": "/assets/images/buttons/download/uptodown.png"}
+       "button": "uptodown.png"}
     ]
   }
 ]

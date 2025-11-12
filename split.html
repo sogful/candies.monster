@@ -7,6 +7,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="/assets/static/slash.js"></script>
 
     <meta property="og:image" content="/assets/images/banner.png">
     <meta name="twitter:card" content="summary_largeimage">
@@ -226,6 +227,13 @@
             paint-order: stroke fill;
         }
 
+        .backbutton {
+            position: absolute; bottom: 16px; left: 16px;
+            display: none; cursor: pointer; z-index: 1000;
+            transition: opacity 0.2s;
+        }
+        .backbutton img {height: 3em}
+
         /*//////////////////////////////////////////////////////////////////////*/
         
 		.icon {height: 100px;}
@@ -260,6 +268,9 @@
 						<img class="sheet" alt="spritesheet" />
 					</div>
 					<div class="overlay"></div>
+					<div class="backbutton clickable">
+						<img src="/comics/assets/images/back.png" alt="Back" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -270,16 +281,41 @@
 	<input type="file" class="fileinput imgfile" accept="image/*" style="display:none">
 
     <script>
-        const favicons = Array.from({length: 20}, (_, i) => `/assets/images/icon/frame${i + 1}.png`);
-        let index = 0; const delay = 300;
-        function favicongif() {
-            const link = document.querySelector("link[rel='icon']") || document.createElement("link");
-            link.rel = "icon";
-            link.href = favicons[index];
-            document.head.appendChild(link);
-            index = (index + 1) % favicons.length;
-            setTimeout(favicongif, delay);
-        }; favicongif();
+        
+        // animated favicon
+        (function() {
+            let spritejson = null; let sheetloaded = false;
+            let favicons = []; let index = 0; const delay = 300;
+            let sheetimg = null;
+
+            fetch("/assets/images/icon.json")
+                .then(response => response.json()).then(data => {
+                    spritejson = data.frames; sheetimg = new Image();
+                    sheetimg.onload = () => {
+                        sheetloaded = true;
+                        const canvas = document.createElement("canvas");
+                        const ctx = canvas.getContext("2d");
+                        favicons = spritejson.map(frame => {
+                            canvas.width = frame.frame.w;
+                            canvas.height = frame.frame.h;
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(
+                                sheetimg,
+                                frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h,
+                                0, 0, frame.frame.w, frame.frame.h
+                            ); return canvas.toDataURL("image/png");
+                        }); favicongif();
+                    }; sheetimg.src = "/assets/images/icon.webp";
+                });
+            function favicongif() {
+                if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
+                const link = document.querySelector("link[rel='icon']") || document.createElement("link");
+                link.rel = "icon"; link.href = favicons[index];
+                document.head.appendChild(link);
+                index = (index + 1) % favicons.length;
+                setTimeout(favicongif, delay);
+            }
+        })();
 
         // loading
         window.addEventListener("load", function() {
@@ -560,10 +596,13 @@
          function loadimagefile(file) {
             const url = URL.createObjectURL(file); const img = document.querySelector(".sheet");
             const upload = document.querySelector(".uploadinput");
+            const backbutton = document.querySelector(".backbutton");
             img.onload = () => {
                 URL.revokeObjectURL(url);
                 if (upload) upload.style.display = "none";
-                 if (img) {img.style.display = "block"; layoutimage()} parserender()
+                 if (img) {img.style.display = "block"; layoutimage()}
+                 if (backbutton) backbutton.style.display = "block";
+                 parserender()
             }; img.src = url
             if (file && file.name) {
                 const base = file.name.replace(/\.[^/.]+$/, "");
@@ -678,6 +717,22 @@
         }
         const imageuploadtextinit = imageuploadtext.textContent;
         imageuploadtext.textContent = imageuploadtextinit;
+
+        // back button
+        const backbutton = document.querySelector(".backbutton");
+        if (backbutton) {
+            backbutton.addEventListener("click", function() {
+                const img = document.querySelector(".sheet");
+                const upload = document.querySelector(".uploadinput");
+                const xmleditor = document.querySelector(".thexml");
+                
+                if (img) {img.style.display = "none"; img.src = ""}
+                if (upload) upload.style.display = "flex";
+                if (backbutton) backbutton.style.display = "none";
+                if (xmleditor) {xmleditor.textContent = ""; highlight(xmleditor)}
+                cleanoverlay();
+            });
+        }
 
     </script>
 </body>

@@ -1,0 +1,300 @@
+{"frames": [{
+	"filename": "candy1.png",
+	"frame": {"x":0,"y":0,"w":40,"h":39.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":39.5},
+	"sourceSize": {"w":40,"h":39.5}
+},
+{
+	"filename": "candy2.png",
+	"frame": {"x":40,"y":0,"w":39.5,"h":38.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":39.5,"h":38.5},
+	"sourceSize": {"w":39.5,"h":38.5}
+},
+{
+	"filename": "candy3.png",
+	"frame": {"x":79.5,"y":0,"w":38.75,"h":38},
+	"spriteSourceSize": {"x":0,"y":0,"w":38.75,"h":38},
+	"sourceSize": {"w":38.75,"h":38}
+},
+{
+	"filename": "candy4.png",
+	"frame": {"x":118.25,"y":0,"w":34.5,"h":37.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":34.5,"h":37.75},
+	"sourceSize": {"w":34.5,"h":37.75}
+},
+{
+	"filename": "candy5.png",
+	"frame": {"x":152.75,"y":0,"w":35,"h":38.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":38.75},
+	"sourceSize": {"w":35,"h":38.75}
+},
+{
+	"filename": "candy6.png",
+	"frame": {"x":187.75,"y":0,"w":35.5,"h":36.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":35.5,"h":36.75},
+	"sourceSize": {"w":35.5,"h":36.75}
+},
+{
+	"filename": "candy7.png",
+	"frame": {"x":0,"y":39.5,"w":34,"h":39.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":39.5},
+	"sourceSize": {"w":34,"h":39.5}
+},
+{
+	"filename": "candy8.png",
+	"frame": {"x":34,"y":39.5,"w":39.5,"h":38.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":39.5,"h":38.75},
+	"sourceSize": {"w":39.5,"h":38.75}
+},
+{
+	"filename": "candy9.png",
+	"frame": {"x":73.5,"y":39.5,"w":39.25,"h":39},
+	"spriteSourceSize": {"x":0,"y":0,"w":39.25,"h":39},
+	"sourceSize": {"w":39.25,"h":39}
+},
+{
+	"filename": "candy10.png",
+	"frame": {"x":112.75,"y":39.5,"w":35.75,"h":37.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":35.75,"h":37.75},
+	"sourceSize": {"w":35.75,"h":37.75}
+},
+{
+	"filename": "candy11.png",
+	"frame": {"x":148.5,"y":39.5,"w":33.5,"h":37.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":33.5,"h":37.5},
+	"sourceSize": {"w":33.5,"h":37.5}
+},
+{
+	"filename": "candy12.png",
+	"frame": {"x":182,"y":39.5,"w":34.75,"h":36},
+	"spriteSourceSize": {"x":0,"y":0,"w":34.75,"h":36},
+	"sourceSize": {"w":34.75,"h":36}
+},
+{
+	"filename": "candy13.png",
+	"frame": {"x":0,"y":79,"w":35.5,"h":37.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":35.5,"h":37.25},
+	"sourceSize": {"w":35.5,"h":37.25}
+},
+{
+	"filename": "candy14.png",
+	"frame": {"x":35.5,"y":79,"w":35,"h":39.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":39.5},
+	"sourceSize": {"w":35,"h":39.5}
+},
+{
+	"filename": "candy15.png",
+	"frame": {"x":70.5,"y":79,"w":36,"h":39.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":39.25},
+	"sourceSize": {"w":36,"h":39.25}
+},
+{
+	"filename": "candy16.png",
+	"frame": {"x":106.5,"y":79,"w":37.75,"h":37.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.75,"h":37.75},
+	"sourceSize": {"w":37.75,"h":37.75}
+},
+{
+	"filename": "candy17.png",
+	"frame": {"x":144.25,"y":79,"w":36.25,"h":40},
+	"spriteSourceSize": {"x":0,"y":0,"w":36.25,"h":40},
+	"sourceSize": {"w":36.25,"h":40}
+},
+{
+	"filename": "candy18.png",
+	"frame": {"x":180.5,"y":79,"w":34.75,"h":37.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":34.75,"h":37.5},
+	"sourceSize": {"w":34.75,"h":37.5}
+},
+{
+	"filename": "candy19.png",
+	"frame": {"x":215.25,"y":79,"w":36.75,"h":37.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":36.75,"h":37.75},
+	"sourceSize": {"w":36.75,"h":37.75}
+},
+{
+	"filename": "candy20.png",
+	"frame": {"x":0,"y":119,"w":35.5,"h":35.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":35.5,"h":35.25},
+	"sourceSize": {"w":35.5,"h":35.25}
+},
+{
+	"filename": "candy21.png",
+	"frame": {"x":35.5,"y":119,"w":34.5,"h":39.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":34.5,"h":39.25},
+	"sourceSize": {"w":34.5,"h":39.25}
+},
+{
+	"filename": "candy22.png",
+	"frame": {"x":70,"y":119,"w":37.75,"h":39.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.75,"h":39.25},
+	"sourceSize": {"w":37.75,"h":39.25}
+},
+{
+	"filename": "candy23.png",
+	"frame": {"x":107.75,"y":119,"w":37.75,"h":38.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.75,"h":38.25},
+	"sourceSize": {"w":37.75,"h":38.25}
+},
+{
+	"filename": "candy24.png",
+	"frame": {"x":145.5,"y":119,"w":37.75,"h":36},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.75,"h":36},
+	"sourceSize": {"w":37.75,"h":36}
+},
+{
+	"filename": "candy25.png",
+	"frame": {"x":183.25,"y":119,"w":30.25,"h":37.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":30.25,"h":37.25},
+	"sourceSize": {"w":30.25,"h":37.25}
+},
+{
+	"filename": "candy26.png",
+	"frame": {"x":213.5,"y":119,"w":34.25,"h":35.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":34.25,"h":35.25},
+	"sourceSize": {"w":34.25,"h":35.25}
+},
+{
+	"filename": "candy27.png",
+	"frame": {"x":0,"y":158.25,"w":42.5,"h":38},
+	"spriteSourceSize": {"x":0,"y":0,"w":42.5,"h":38},
+	"sourceSize": {"w":42.5,"h":38}
+},
+{
+	"filename": "candy28.png",
+	"frame": {"x":42.5,"y":158.25,"w":36.25,"h":37},
+	"spriteSourceSize": {"x":0,"y":0,"w":36.25,"h":37},
+	"sourceSize": {"w":36.25,"h":37}
+},
+{
+	"filename": "candy29.png",
+	"frame": {"x":78.75,"y":158.25,"w":37,"h":36.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":37,"h":36.75},
+	"sourceSize": {"w":37,"h":36.75}
+},
+{
+	"filename": "candy30.png",
+	"frame": {"x":115.75,"y":158.25,"w":39.25,"h":35.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":39.25,"h":35.5},
+	"sourceSize": {"w":39.25,"h":35.5}
+},
+{
+	"filename": "candy31.png",
+	"frame": {"x":155,"y":158.25,"w":38.25,"h":38.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":38.25,"h":38.25},
+	"sourceSize": {"w":38.25,"h":38.25}
+},
+{
+	"filename": "candy32.png",
+	"frame": {"x":193.25,"y":158.25,"w":37.5,"h":38.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.5,"h":38.25},
+	"sourceSize": {"w":37.5,"h":38.25}
+},
+{
+	"filename": "candy33.png",
+	"frame": {"x":0,"y":196.5,"w":37.25,"h":37.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.25,"h":37.5},
+	"sourceSize": {"w":37.25,"h":37.5}
+},
+{
+	"filename": "candy34.png",
+	"frame": {"x":37.25,"y":196.5,"w":36.75,"h":41},
+	"spriteSourceSize": {"x":0,"y":0,"w":36.75,"h":41},
+	"sourceSize": {"w":36.75,"h":41}
+},
+{
+	"filename": "candy35.png",
+	"frame": {"x":74,"y":196.5,"w":39.5,"h":40.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":39.5,"h":40.5},
+	"sourceSize": {"w":39.5,"h":40.5}
+},
+{
+	"filename": "candy36.png",
+	"frame": {"x":113.5,"y":196.5,"w":35,"h":38},
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":38},
+	"sourceSize": {"w":35,"h":38}
+},
+{
+	"filename": "candy37.png",
+	"frame": {"x":148.5,"y":196.5,"w":36.5,"h":37},
+	"spriteSourceSize": {"x":0,"y":0,"w":36.5,"h":37},
+	"sourceSize": {"w":36.5,"h":37}
+},
+{
+	"filename": "candy38.png",
+	"frame": {"x":185,"y":196.5,"w":37,"h":36.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":37,"h":36.25},
+	"sourceSize": {"w":37,"h":36.25}
+},
+{
+	"filename": "candy39.png",
+	"frame": {"x":0,"y":237.5,"w":37.5,"h":38.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.5,"h":38.5},
+	"sourceSize": {"w":37.5,"h":38.5}
+},
+{
+	"filename": "candy40.png",
+	"frame": {"x":37.5,"y":237.5,"w":38,"h":38.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":38.25},
+	"sourceSize": {"w":38,"h":38.25}
+},
+{
+	"filename": "candy41.png",
+	"frame": {"x":75.5,"y":237.5,"w":36,"h":41},
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":41},
+	"sourceSize": {"w":36,"h":41}
+},
+{
+	"filename": "candy42.png",
+	"frame": {"x":111.5,"y":237.5,"w":34.5,"h":40.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":34.5,"h":40.5},
+	"sourceSize": {"w":34.5,"h":40.5}
+},
+{
+	"filename": "candy43.png",
+	"frame": {"x":146,"y":237.5,"w":37.25,"h":41.75},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.25,"h":41.75},
+	"sourceSize": {"w":37.25,"h":41.75}
+},
+{
+	"filename": "candy44.png",
+	"frame": {"x":183.25,"y":237.5,"w":36.25,"h":40.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":36.25,"h":40.5},
+	"sourceSize": {"w":36.25,"h":40.5}
+},
+{
+	"filename": "candy45.png",
+	"frame": {"x":0,"y":279.25,"w":35.25,"h":34.25},
+	"spriteSourceSize": {"x":0,"y":0,"w":35.25,"h":34.25},
+	"sourceSize": {"w":35.25,"h":34.25}
+},
+{
+	"filename": "candy46.png",
+	"frame": {"x":35.25,"y":279.25,"w":37.25,"h":36.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.25,"h":36.5},
+	"sourceSize": {"w":37.25,"h":36.5}
+},
+{
+	"filename": "candy47.png",
+	"frame": {"x":72.5,"y":279.25,"w":37.25,"h":37},
+	"spriteSourceSize": {"x":0,"y":0,"w":37.25,"h":37},
+	"sourceSize": {"w":37.25,"h":37}
+},
+{
+	"filename": "candy48.png",
+	"frame": {"x":109.75,"y":279.25,"w":32.25,"h":37},
+	"spriteSourceSize": {"x":0,"y":0,"w":32.25,"h":37},
+	"sourceSize": {"w":32.25,"h":37}
+},
+{
+	"filename": "candy49.png",
+	"frame": {"x":142,"y":279.25,"w":32,"h":37},
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":37},
+	"sourceSize": {"w":32,"h":37}
+},
+{
+	"filename": "candy50.png",
+	"frame": {"x":174,"y":279.25,"w":42.5,"h":42.5},
+	"spriteSourceSize": {"x":0,"y":0,"w":42.5,"h":42.5},
+	"sourceSize": {"w":42.5,"h":42.5}
+}]}

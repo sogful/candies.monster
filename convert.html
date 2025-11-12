@@ -7,6 +7,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="/assets/static/slash.js"></script>
 
     <meta property="og:image" content="/assets/images/banner.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -145,6 +146,10 @@
             width: min(90vw, 700px);
             max-width: 90vw;
         }
+        .loadingtext {
+            font-size: 0.9em;
+            color: #fff;
+        }
         .errortitle {
             font-size: 0.9em;
             margin-bottom: 0.25em;
@@ -197,7 +202,7 @@
         <br></i></span>
 
         <span class="tiny">For .xnb sprites, see<a href="https://github.com/LeonBlade/xnbcli">xnbcli</a>or<a href="https://lybell-art.github.io/xnb-js/">Web XNB Converter.</a></span>
-        <span class="tiny">For .xnb audio, see<a href="//candies.monster/assets/static/XNBSoundConverter.exe">XNBSoundConverter</a>(to wav) and<a href="https://github.com/JavidPack/WAVToXNBSoundConverter">WAVToXNBSoundConverter</a>(to xnb). You can also directly play and convert .xnb audio with <a href="https://vgmstream.org/">vgmstream.</a></span>
+        <span class="tiny">For .xnb audio, see<a href="//candies.monster/assets/static/XNBSoundConverter.exe">XNBSoundConverter</a>(to wav) and<a href="https://github.com/JavidPack/WAVToXNBSoundConverter">WAVToXNBSoundConverter</a>(to xnb). You can also directly play and convert .xnb audio with<a href="https://vgmstream.org/">vgmstream.</a></span>
 
         <a class="subtitle">Select:</a>
          <div class="buttons">
@@ -222,22 +227,48 @@
         </div>
 
         <div class="errorconsole">
-            <div class="errortitle">Errors</div>
-            <div class="errors"></div>
+            <div class="loadingtext">Loading...</div>
+            <div class="errortitle" style="display: none;">Errors</div>
+            <div class="errors" style="display: none;"></div>
         </div>
     </div>
     <script>
 
-        const favicons = Array.from({length: 20}, (_, i) => `/assets/images/icon/frame${i + 1}.png`);
-        let index = 0; const delay = 300;
-        function favicongif() {
-            const link = document.querySelector("link[rel='icon']") || document.createElement("link");
-            link.rel = "icon";
-            link.href = favicons[index];
-            document.head.appendChild(link);
-            index = (index + 1) % favicons.length;
-            setTimeout(favicongif, delay);
-        }; favicongif();
+        
+        // animated favicon
+        (function() {
+            let spritejson = null; let sheetloaded = false;
+            let favicons = []; let index = 0; const delay = 300;
+            let sheetimg = null;
+
+            fetch("/assets/images/icon.json")
+                .then(response => response.json()).then(data => {
+                    spritejson = data.frames; sheetimg = new Image();
+                    sheetimg.onload = () => {
+                        sheetloaded = true;
+                        const canvas = document.createElement("canvas");
+                        const ctx = canvas.getContext("2d");
+                        favicons = spritejson.map(frame => {
+                            canvas.width = frame.frame.w;
+                            canvas.height = frame.frame.h;
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(
+                                sheetimg,
+                                frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h,
+                                0, 0, frame.frame.w, frame.frame.h
+                            ); return canvas.toDataURL("image/png");
+                        }); favicongif();
+                    }; sheetimg.src = "/assets/images/icon.webp";
+                });
+            function favicongif() {
+                if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
+                const link = document.querySelector("link[rel='icon']") || document.createElement("link");
+                link.rel = "icon"; link.href = favicons[index];
+                document.head.appendChild(link);
+                index = (index + 1) % favicons.length;
+                setTimeout(favicongif, delay);
+            }
+        })();
 
         // click sfx
         document.querySelectorAll(".clickable").forEach(function(element) {
@@ -263,6 +294,8 @@
              
              const progressinfo = document.querySelector(".progressinfo");
              const errors = document.querySelector(".errors");
+             const loadingtext = document.querySelector(".loadingtext");
+             const errortitle = document.querySelector(".errortitle");
 
             let firstshown = false;
             let splitwarnshown = false;
@@ -279,6 +312,20 @@
              function setcounts(success, failed, warnings = 0){
                  const counts = document.querySelector(".counts");
                  counts.innerHTML = `<a style="color:#6cf16c">${success} success</a>//<a style="color:#fff457">${warnings} warnings</a>//<a style="color:#f08b8b">${failed} failed</a>`;
+                 
+                 if (success === 0) {
+                     loadingtext.style.display = "block"; errortitle.style.display = "none";
+                     errors.style.display = "none";
+                 } else {
+                     loadingtext.style.display = "none";
+                     if (failed > 0 || warnings > 0) {
+                         errortitle.style.display = "block";
+                         errors.style.display = "block";
+                     } else {
+                         errortitle.style.display = "none";
+                         errors.style.display = "none";
+                     }
+                 }
              }
 
              function errorlog(msg){
