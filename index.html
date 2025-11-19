@@ -168,7 +168,7 @@
         .sbuttons {
             display: flex; position: fixed; flex-direction: row;
             justify-content: center; align-items: top; flex-wrap: wrap;
-            bottom: 1em; width: 750px; max-width: 90%; height: auto;
+            bottom: 0.25em; width: 750px; max-width: 90%; height: auto;
         }
         .sbutton {padding: 2px; image-rendering: pixelated; background-repeat: no-repeat}
 
@@ -223,6 +223,7 @@
         <div class="buttons small">
             <a href="/cards"><img class="button clickable" src="/assets/images/buttons/cards.webp" draggable="false" title="winnable cards in newer cut the rope versions"></a>
             <a href="/comics"><img class="button clickable" src="/assets/images/buttons/comics.webp" draggable="false" title="removed comics from cut the rope origins"></a>
+            <a href="/snow"><img class="button clickable" src="/assets/images/buttons/snow.webp" draggable="false" title="a simple ctr holiday gift snow effect!"></a>
         </div>
         <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
 
@@ -273,7 +274,6 @@
         </a-->
         
     </div>
-    <p class="tiny">Not affiliated with © ZeptoLab UK Limited 2025. This is a fan-project.</p>
 
     <script>
 
@@ -360,35 +360,18 @@
                     source.connect(gainnode).connect(audioctx.destination);
                 }
             }
-            function savemusicstate() {localStorage.setItem("musicon", isplaying ? "true" : "false")}
-            function loadmusicstate() {
-                const saved = localStorage.getItem("musicon");
-                if (saved === "true") {
-                    musicbutton.src = "/assets/images/music.png";
-                    isplaying = true; setupmusic();
-                    function playmusic() {
-                        if (audioctx && audioctx.state === "suspended") audioctx.resume();
-                        gainnode.gain.setValueAtTime(1, audioctx.currentTime);
-                        music.volume = 1; music.play()
-                    }
-                    if (music.readyState >= 3) {playmusic()}
-                    else {music.addEventListener("canplaythrough", playmusic, {once: true})}
-                }
-            }
             musicbutton.addEventListener("click", function() {
                 setupmusic();
                 if (isplaying) {
                     musicstop(); musicbutton.src = "/assets/images/nomusic.png";
                     isplaying = false;
-                    savemusicstate();
                 } else {
                     if (audioctx && audioctx.state === "suspended") audioctx.resume();
                     gainnode.gain.setValueAtTime(1, audioctx.currentTime);
                     music.volume = 1; music.play()
                     musicbutton.src = "/assets/images/music.png"; isplaying = true;
-                    savemusicstate();
                 }
-            }); loadmusicstate();
+            });
         })();
 
         /*//////////////////////////////////////////////////////////////////////*/

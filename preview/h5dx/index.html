@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Cut the Rope</title>
+        <meta
+            name="description"
+            content="Play Cut the Rope! A mysterious package has arrived, and the little monster inside has only one request… CANDY!"
+        />
+
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+        <meta property="og:title" content="Cut the Rope" />
+        <meta property="og:type" content="game" />
+        <meta property="og:site_name" content="Cut the Rope" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link href="css/ctr.css" rel="stylesheet" type="text/css" />
+
+        <noscript>
+            <link href="css/nojavascript.css" rel="stylesheet" type="text/css" />
+        </noscript>
+
+        <style>
+            html,
+            body,
+            #lang,
+            #gameContainer {
+                background: transparent !important;
+            }
+        </style>
+
+        <script>
+            (function () {
+                function convertxmltojson(xmlstring) {
+                    try {
+                        const parser = new DOMParser();
+                        const xmldoc = parser.parseFromString(xmlstring, "text/xml");
+                        const mapelement = xmldoc.querySelector("map");
+                    
+                        if (!mapelement) {
+                            throw new Error("No <map> element found in XML");
+                        }
+                        const level = {
+                        settings: [],
+                        objects: []
+                    };
+
+                        const parseIntAttr = (value, fallback) => {
+                            if (value == null || value === "") {
+                                return fallback;
+                            }
+                            const parsed = parseInt(value, 10);
+                            return Number.isNaN(parsed) ? fallback : parsed;
+                        };
+                    
+                        const settingslayer = mapelement.querySelector("layer[name='settings']");
+                        if (settingslayer) {
+                            const mapsettings = settingslayer.querySelector("map");
+                            if (mapsettings) {
+                                level.settings.push({
+                            name: 0,
+                                    height: parseInt(mapsettings.getAttribute("height")) || 480,
+                                    gridSize: parseInt(mapsettings.getAttribute("gridSize")) || 32,
+                                    width: parseInt(mapsettings.getAttribute("width")) || 320
+                                });
+                            }
+                            
+                            const gamedesign = settingslayer.querySelector("gameDesign");
+                            if (gamedesign) {
+                            const gamedesignsettings = {
+                            name: 1,
+                                ropePhysicsSpeed: parseFloat(gamedesign.getAttribute("ropePhysicsSpeed")) || 1,
+                                special: parseInt(gamedesign.getAttribute("special")) || 1,
+                                twoParts: gamedesign.getAttribute("twoParts") === "true"
+                            };
+                            
+                            // still no idea what this does btw. take a gamble buddy
+                            gamedesignsettings.special = 2;
+                                
+                                if (gamedesign.getAttribute("twoParts") !== "true") {
+                                    delete gamedesignsettings.twoParts;
+                                }
+                                
+                                if (gamedesign.getAttribute("nightLevel")) gamedesignsettings.nightLevel = gamedesign.getAttribute("nightLevel") === "true";
+                                if (gamedesign.getAttribute("water")) gamedesignsettings.water = parseInt(gamedesign.getAttribute("water"));
+                                if (gamedesign.getAttribute("waterSpeed")) gamedesignsettings.waterSpeed = parseInt(gamedesign.getAttribute("waterSpeed"));
+                                
+                                level.settings.push(gamedesignsettings);
+                            }
+                        }
+                        
+                        const objectlayer = mapelement.querySelector("layer[name='Objects']");
+                        if (objectlayer) {
+                            const objects = objectlayer.querySelectorAll("*");
+                            let objectcount = 0;
+                            
+                            objects.forEach(obj => {
+                    
+                                const tagname = obj.tagName.toLowerCase();
+                    
+                                const x = parseInt(obj.getAttribute("x")) || 0;
+                                const y = parseInt(obj.getAttribute("y")) || 0;
+                                
+                                let ctrobject = { name: 0, x: x, y: y };
+                                
+                                // ALL OBJECTS HERE!!
+                                switch (tagname) {
+                                    case "candy":
+                                        ctrobject.name = 52;
+                                        break;
+                                    case "candyL":
+                                        ctrobject.name = 50;
+                                        break;
+                                    case "candyR": 
+                                        ctrobject.name = 51;
+                                        break;
+                                    case "target":
+                                        ctrobject.name = 2;
+                                        break;
+                                    case "star":
+                                        ctrobject.name = 3;
+                                        ctrobject.timeout = parseInt(obj.getAttribute("timeout")) || -1;
+                                        break;
+                                    case "bubble":
+                                        ctrobject.name = 54;
+                                        break;
+                                    case "pump":
+                                        ctrobject.name = 55;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        break;
+                                    case "sock":
+                                        ctrobject.name = 56;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.group = parseInt(obj.getAttribute("group")) || 0;
+                                        break;
+                                    case "spike2":
+                                    case "Spike2":
+                                    case "SPIKE2":
+                                        ctrobject.name = 58;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                        break;
+                                    case "spike3":
+                                    case "Spike3":
+                                    case "SPIKE3":
+                                        ctrobject.name = 80;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                        ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
+                                        ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 0;
+                                        ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 0;
+                                        ctrobject.toggled = false;
+                                        if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
+                                        if (obj.getAttribute("rotateSpeed")) ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed"));
+                                        break;
+                                    case "gravityswitch":
+                                    case "gravitySwitch":
+                                    case "GravitySwitch":
+                                    case "GRAVITYSWITCH":
+                                        ctrobject.name = 53;
+                                        break;
+                                    case "spike4":
+                                        ctrobject.name = 60;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                        ctrobject.toggled = parseInt(obj.getAttribute("toggled")) || 0;
+                                        break;
+                                    case "electro":
+                                        ctrobject.size = parseInt(obj.getAttribute("size")) || 5;
+                                        ctrobject.name = 80;
+                                        ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 2;
+                                        ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 3;
+                                        break;
+                                    case "bouncer1":
+                                        ctrobject.name = 81;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                        break;
+                                    case "rotatedcircle":
+                                    case "rotatedCircle":
+                                        ctrobject.name = 120;
+                                        ctrobject.oneHandle = obj.getAttribute("oneHandle") === "true";
+                                        const rotatedCircleSize = parseIntAttr(obj.getAttribute("size"), 100);
+                                        ctrobject.size = rotatedCircleSize;
+                                        ctrobject.handleAngle = parseIntAttr(
+                                            obj.getAttribute("handleAngle"),
+                                            0
+                                        );
+                                        break;
+                                    case "ghost":
+                                        ctrobject.name = 130;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.radius = parseInt(obj.getAttribute("radius")) || 100;
+                                        ctrobject.bouncer = obj.getAttribute("bouncer") === "true";
+                                        ctrobject.bubble = obj.getAttribute("bubble") === "true";
+                                        ctrobject.grab = obj.getAttribute("grab") === "true";
+                                        break;
+                                    case "steamtube":
+                                    case "steamTube":
+                                        ctrobject.name = 131;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        break;
+                                    case "lantern":
+                                        ctrobject.name = 132;
+                                        ctrobject.candyCaptured = obj.getAttribute("candyCaptured") === "true";
+                                        break;
+                                    case "gap":
+                                        ctrobject.name = 133;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.activeTime = parseFloat(obj.getAttribute("activeTime")) || 2;
+                                        ctrobject.radius = parseInt(obj.getAttribute("radius")) || 50;
+                                        ctrobject.index = parseInt(obj.getAttribute("index")) || 1;
+                                        break;
+                                    case "lightbulb":
+                                    case "lightBulb":
+                                        ctrobject.name = 134;
+                                        ctrobject.litRadius = parseInt(obj.getAttribute("litRadius")) || 10;
+                                        ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
+                                        break;
+                                    case "transporter":
+                                        ctrobject.name = 135;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.direction = obj.getAttribute("direction") || "forward";
+                                        ctrobject.type = obj.getAttribute("type") || "manual";
+                                        ctrobject.width = parseInt(obj.getAttribute("width")) || 50;
+                                        ctrobject.length = parseInt(obj.getAttribute("length")) || 100;
+                                        ctrobject.velocity = parseInt(obj.getAttribute("velocity")) || 0;
+                                        break;
+                                    case "hiddenelement":
+                                    case "hiddenElement":
+                                        ctrobject.name = 300;
+                                        ctrobject.radius = parseInt(obj.getAttribute("radius")) || 30;
+                                        break;
+                                    case "grab":
+                                        ctrobject.name = 100;
+                                        ctrobject.spider = obj.getAttribute("spider") === "true";
+                                        ctrobject.gun = obj.getAttribute("gun") === "true";
+                                        ctrobject.wheel = obj.getAttribute("wheel") === "true";
+                                        ctrobject.part = obj.getAttribute("part") || "L";
+                                        ctrobject.hidePath = obj.getAttribute("hidePath") !== "false";
+                                        ctrobject.moveOffset = parseInt(obj.getAttribute("moveOffset")) || 0;
+                                        ctrobject.moveVertical = obj.getAttribute("moveVertical") === "true";
+                                        ctrobject.length = parseInt(obj.getAttribute("length")) || 90;
+                                        ctrobject.moveLength = parseInt(obj.getAttribute("moveLength")) || -1;
+                                        const grabRadiusAttr = obj.getAttribute("radius");
+                                        let grabRadius = parseIntAttr(grabRadiusAttr, Number.NaN);
+                                        if (Number.isNaN(grabRadius)) {
+                                            grabRadius = parseIntAttr(obj.getAttribute("size"), Number.NaN);
+                                        }
+                                        ctrobject.radius = Number.isNaN(grabRadius) ? -1 : grabRadius;
+                                        
+                                        ctrobject.kickable = obj.getAttribute("kickable") === "true";
+                                        ctrobject.kicked = obj.getAttribute("kicked") === "true";
+                                        ctrobject.invisible = obj.getAttribute("invisible") === "true";
+                                        ctrobject.helicopter = obj.getAttribute("helicopter") === "true";
+                                        ctrobject.bindBulb = obj.getAttribute("bindBulb") === "true";
+                                        ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
+                                        
+                                        if (ctrobject.spider) { // idk if these are ever used? i"m a fake fan
+                                            ctrobject.gun = false; 
+                                            ctrobject.wheel = false;
+                                        }
+                                        break;
+                                    case "tutorial04":
+                                        ctrobject.name = 8;
+                                        ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+                                        break;
+                                    case "tutorialtext":
+                                        ctrobject.name = 4;
+                                        ctrobject.text = obj.getAttribute("text") || "";
+                                        ctrobject.width = parseInt(obj.getAttribute("width")) || 100;
+                                        ctrobject.height = parseInt(obj.getAttribute("height")) || 60;
+                                        ctrobject.locale = obj.getAttribute("locale") || "en";
+                                        break;
+                                    case "tutorial10":
+                                        ctrobject.name = 14;
+                                        ctrobject.special = parseInt(obj.getAttribute("special")) || 2;
+                                        ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+                                        break;
+                                    case "tutorial07":
+                                    case "tutorial7":
+                                    case "Tutorial07":
+                                        ctrobject.name = 7;
+                                        ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+                                        ctrobject.locale = obj.getAttribute("locale") || "en";
+                                        break;
+                                    case "spike":
+                                    case "Spike":
+                                    case "SPIKE":
+                                        ctrobject.name = 57;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                        break;
+                                    case "spike1":
+                                    case "Spike1":
+                                    case "SPIKE1":
+                                        ctrobject.name = 59;
+                                        ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                        ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                        break;
+                                    default:
+                                        console.warn("undefined object type, skipping:", tagname);
+                                        return;
+                                };
+
+                                const rawSizeAttr = obj.getAttribute("size");
+                                if (
+                                    rawSizeAttr != null &&
+                                    rawSizeAttr !== "" &&
+                                    (ctrobject.size === undefined || ctrobject.size === null)
+                                ) {
+                                    const parsedSize = parseIntAttr(rawSizeAttr, Number.NaN);
+                                    if (!Number.isNaN(parsedSize)) {
+                                        ctrobject.size = parsedSize;
+                                    }
+                                }
+                                
+                                if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
+                                if (obj.getAttribute("moveSpeed")) ctrobject.moveSpeed = parseInt(obj.getAttribute("moveSpeed"));
+                                
+                                level.objects.push(ctrobject); objectcount++;
+                            }); console.log(`loaded ${objectcount} objects`);
+                        }
+                        
+                        if (level.settings.length === 0) {
+                            console.warn("no settings? adding default ones");
+                            level.settings = [
+                                { name: 0, height: 480, gridSize: 32, width: 320 },
+                                { name: 1, ropePhysicsSpeed: 1, special: 1, twoParts: false }
+                            ];
+                        }
+                        
+                        console.log(JSON.stringify(level, null, 2));
+                        
+                        try {const testjson = JSON.stringify(level)}
+                        catch (jsonerror) {console.error("json validation failed:", jsonerror)}
+                        
+                        return level;
+                    } catch (error) {
+                        console.error("error while converting:", error); throw error;
+                    }
+                }
+
+                function decodebase64utf8(str) {
+                    let cleaned = str.replace(/\s/g, "");
+                    cleaned = cleaned.replace(/-/g, "+").replace(/_/g, "/");
+                    while (cleaned.length % 4 !== 0) {
+                        cleaned += "=";
+                    }
+                    const binarystring = atob(cleaned);
+
+                    const bytes = new Uint8Array(binarystring.length);
+                    for (let i = 0; i < binarystring.length; i++) {
+                        bytes[i] = binarystring.charCodeAt(i);
+                    }
+
+                    const decoder = new TextDecoder("utf-8");
+                    return decoder.decode(bytes);
+                }
+
+                function cleanurl() {
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete("data");
+                    window.history.replaceState({}, "", url.toString());
+                }
+
+                function tryloadcustomlevel() {
+                    const dataparam = new URLSearchParams(window.location.search).get("data");
+                    if (!dataparam) {
+                        return;
+                    }
+
+                    try {
+                        const xmldata = decodebase64utf8(dataparam);
+                        const customlevel = convertxmltojson(xmldata);
+                        if (customlevel) {
+                            window.__CTR_CUSTOM_LEVEL__ = customlevel;
+                        }
+                    } catch (error) {
+                        console.error("failed to load custom level:", error);
+                    } finally {
+                        cleanurl();
+                    }
+                }
+
+                function postPreviewMessage(kind, message) {
+                    try {
+                        if (window.parent && window.parent !== window) {
+                            window.parent.postMessage(
+                                {
+                                    source: "preview-game",
+                                    kind,
+                                    game: "h5dx",
+                                    message,
+                                },
+                                "*"
+                            );
+                        }
+                    } catch (error) {
+                        console.warn("preview message error:", error);
+                    }
+                }
+
+                function formatErrorArgs(args) {
+                    return args
+                        .map((arg) => {
+                            if (typeof arg === "string") return arg;
+                            try {
+                                return JSON.stringify(arg);
+                            } catch (_) {
+                                return String(arg);
+                            }
+                        })
+                        .join(" ");
+                }
+
+                tryloadcustomlevel();
+
+                const ogerror = console.error;
+                console.error = function (...args) {
+                    ogerror.apply(console, args);
+                    postPreviewMessage("console-error", formatErrorArgs(args));
+                };
+
+                window.addEventListener("error", function (event) {
+                    const shownerror = `${event.error?.name || "Error"}: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`;
+                    postPreviewMessage("window-error", shownerror);
+                });
+
+                window.addEventListener("unhandledrejection", function (event) {
+                    const shownerror = `Unhandled Promise Rejection: ${event.reason}`;
+                    postPreviewMessage("unhandled-rejection", shownerror);
+                });
+            })();
+        </script>
+        <script src="src/ctr.ts" type="module"></script>
+    </head>
+
+    <body class="ctrCursor">
+        <div id="lang">
+            <div id="fb-root"></div>
+
+            <style type="text/css">
+                .hideBeforeLoad,
+                #loaderWindow,
+                #popupWindow {
+                    display: none;
+                }
+            </style>
+            <div id="gameContainer">
+                <div id="betterLoader">
+                    <div id="track">
+                        <div id="progress"></div>
+                    </div>
+                </div>
+                <div id="gameArea" class="hideBeforeLoad">
+                    <div id="canvasBackground" class="panel"></div>
+                    <canvas id="c"></canvas>
+
+                    <div id="loadingPanel" class="panel"></div>
+
+                    <div id="startBackground" class="panel"></div>
+                    <div id="menuBackground" class="panel"></div>
+                    <div id="levelBackground" class="panel">
+                        <canvas id="levelCanvasLeft"></canvas>
+                        <canvas id="levelCanvasRight"></canvas>
+                        <div id="levelTape" class="levelTape"></div>
+                    </div>
+                    <div id="shadowPanel" class="panel">
+                        <canvas id="shadowCanvas"></canvas>
+                    </div>
+                    <div id="menuPanel" class="panel seethrough">
+                        <div class="panelContent">
+                            <div id="menuLogo"></div>
+                            <div id="menuBtnVbox" class="fBtnVBox">
+                                <div id="playBtn" class="fBtn"><img src="" /></div>
+                                <div id="optionsBtn" class="fBtn"><img src="" /></div>
+                            </div>
+                        </div>
+                        <div id="miniOptionsMenu">
+                            <div id="optionSd" style="display: none"></div>
+                            <div id="optionHd" style="display: none"></div>
+                            <div id="optionSound" class="ctrPointer"></div>
+                            <div id="optionMsg"></div>
+                        </div>
+                    </div>
+
+                    <div id="boxPanel" class="panel seethrough">
+                        <canvas id="boxCanvas"></canvas>
+
+                        <div id="boxScore" class="hideFromMouse floatTop"><img src="" /></div>
+
+                        <div id="boxNavBack">
+                            <div class="boxNavDisabled"></div>
+                        </div>
+                        <div id="boxNavForward">
+                            <div></div>
+                        </div>
+                        <div id="boxBack" class="bBtn floatBottom"></div>
+                    </div>
+                    <div id="levelPanel" class="panel">
+                        <div id="levelScore" class="floatTop">
+                            <img src="" />
+                        </div>
+                        <div id="levelBack" class="bBtn floatBottom"></div>
+                        <div id="levelNavBack">
+                            <div class="boxNavDisabled"></div>
+                        </div>
+                        <div id="levelNavForward">
+                            <div></div>
+                        </div>
+                        <div id="levelOptions"></div>
+                        <div id="levelResults">
+                            <div id="resultStatus" class=""><canvas></canvas></div>
+                            <div class="starCase">
+                                <div id="resultStar1" class=""></div>
+                                <div id="resultStar2" class=""></div>
+                                <div id="resultStar3" class=""></div>
+                            </div>
+                            <div id="resultTicker" class="">
+                                <canvas id="resultTickerLabel"></canvas>
+                                <canvas id="resultTickerValue"></canvas>
+                                <canvas id="resultTickerMessage"></canvas>
+                            </div>
+                            <div class="line"></div>
+                            <div id="resultScore" class=""></div>
+                            <div class="btnCase">
+                                <div id="replayBtn" class="sBtn"><img src="" /></div>
+                                <div id="lrMenuBtn" class="sBtn"><img src="" /></div>
+                                <div id="nextBtn" class="sBtn"><img src="" /></div>
+                            </div>
+                            <div id="resultImproved"></div>
+                        </div>
+                    </div>
+
+                    <div id="gameCompletePanel" class="panel">
+                        <div id="congrats"></div>
+                        <div id="finalScore"><img src="" /></div>
+                        <!--<a
+                            href="http://www.cuttherope.net/"
+                            id="finalFunBtn"
+                            class="lBtn"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="" />
+                            <div id="funOmNom"></div>
+                        </a>-->
+                        <div id="gameCompleteBack" class="bBtn"></div>
+                    </div>
+
+                    <div id="optionsPanel" class="panel">
+                        <div class="fBtnVBox">
+                            <div id="optionsTitle"><img src="" /></div>
+                            <div id="soundBtn" class="mini-button ctrCursor">
+                                <div id="options-speaker"></div>
+                                <div class="options-x"></div>
+                            </div>
+                            <div id="musicBtn" class="mini-button ctrCursor">
+                                <div id="options-note"></div>
+                                <div class="options-x"></div>
+                            </div>
+                            <div id="langBtn" class="fBtn">
+                                <img src="" />
+                                <div id="flag"></div>
+                            </div>
+                            <div id="resetBtn" class="fBtn"><img src="" /></div>
+                            <div id="creditsBtn" class="fBtn"><img src="" /></div>
+                            <div id="dragBtn">
+                                <img id="dragText" />
+                                <div class="options-check-disabled"></div>
+                            </div>
+                            <div id="cutBtn" class="ctrCursor">
+                                <img id="cutText" />
+                                <div class="options-check"></div>
+                            </div>
+                        </div>
+                        <div id="optionsBack" class="bBtn"></div>
+                    </div>
+
+                    <div id="d" class="panel ctrPointer">
+                        <img id="dmsg" />
+                        <div id="dframe">
+                            <div id="dpic"></div>
+                        </div>
+                        <div id="dshareBtn" class="fBtn">
+                            <img src="" />
+                            <div id="dfb"></div>
+                        </div>
+                    </div>
+                    <div id="gameBtnTray" class="floatTop">
+                        <div id="gameMsg" class="allSound"></div>
+                        <div id="gameSound" class="ctrPointer allSound"></div>
+                        <div id="gameRestartBtn" class="ctrPointer"></div>
+                        <div id="gameMenuBtn" class="ctrPointer"></div>
+                    </div>
+                    <div id="levelMenu">
+                        <div class="fBtnVBox">
+                            <div id="continueBtn" class="fBtn"><img src="" /></div>
+                            <div id="settingsBtn" class="fBtn"><img src="" /></div>
+                        </div>
+                    </div>
+
+                    <div id="boxCutter"></div>
+                    <div id="tapeRoll"></div>
+                    <div id="video"></div>
+                    <div id="fadeToBlack" class="panel"></div>
+                </div>
+                <canvas id="e"></canvas>
+
+                <div id="loaderWindow">
+                    <div id="loaderBubbles">
+                        <img id="loaderLogo" src="/images/page/loader-logo.png" />
+                        <div id="loaderCanvasHost">
+                            <canvas id="loaderCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="popupWindow">
+                    <div class="popupOuterFrame">
+                        <div class="popupInnerFrame" id="resetGame">
+                            <div id="resetText"></div>
+                            <div class="mBtn" id="resetYesBtn"><img src="" /></div>
+                            <div class="mBtn" id="resetNoBtn"><img src="" /></div>
+                            <div id="resetHoldYes"></div>
+                        </div>
+                        <div class="popupInnerFrame" id="missingStars">
+                            <div id="missingLine1"></div>
+                            <div id="missingCount">
+                                <div id="missingStar"></div>
+                            </div>
+                            <div id="missingLine2"></div>
+                            <div id="missingLine3"></div>
+                            <div class="mBtn" id="missingOkBtn"></div>
+                        </div>
+                        <div class="popupInnerFrame" id="holidayUnavailable">
+                            <div id="holidayLine1"></div>
+                            <div id="holidayLine2"></div>
+                            <div class="mBtn" id="holidayOkBtn"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="upgrade">
+                    <div id="upgrade-header"></div>
+                    <a id="upgrade-button" href="http://windows.microsoft.com/ie"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

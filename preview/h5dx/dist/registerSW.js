@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview/h5dx/dist/sw.js', { scope: '/preview/h5dx/dist/' })})}

@@ -55,13 +55,15 @@
         .shadow {
             position: fixed; display: flex;
             justify-content: center; align-items: center;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
             animation: rotate 60s linear infinite; z-index: -10;
             box-shadow: 0 0 0 9999px rgba(0,0,0,0.275); /* put this site on a damn fremont street experience i dare you */
             pointer-events: none; height: 230vh;
         }
         @keyframes rotate {
-            0% {transform: rotate(0deg)}
-            100% {transform: rotate(360deg)}
+            0% {transform: translate(-50%, -50%) rotate(0deg)}
+            100% {transform: translate(-50%, -50%) rotate(360deg)}
         }
 
         .nom {
@@ -258,7 +260,7 @@
             flex-direction: column; box-sizing: border-box;
             width: 400px; height: 200px;
             padding-top: 20px; padding-left: 30px;
-            flex-shrink: 0;
+            flex-shrink: 0; user-select: none !important;
 
             background-image: url("assets/images/coolbox.webp");
             background-size: cover; background-position: center;
@@ -366,15 +368,15 @@
         
         .features.expanded {
             position: absolute; flex-wrap: wrap;
-            justify-content: flex-start;
-            border-radius: 1em; padding: 10px; 
-            max-height: none; min-width: 300px;
+            justify-content: center;
+            border-radius: 1em; padding: 0.25em; 
+            max-height: none;
             z-index: 1000; overflow: visible;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
         
-        .features.expanded img {margin: 5px}
+        .features.expanded img {margin: 2px}
         .features.expanded .morefeatures {display: none !important}
         
         /*//////////////////////////////////////////////////////////////////////*/
@@ -415,9 +417,39 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
+        .side {
+            position: absolute; display: flex;
+            flex-direction: column; align-items: flex-end;
+            right: 3.25em; bottom: 1.25em;
+            height: 200%; width: 4em;
+        }
+        .objectcount {
+            color: white; font-size: 1em;
+            margin: 0.5em;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 3px 0 black;
+            paint-order: stroke fill;
+        }
+
+        .sidebuttons {
+            position: absolute; display: flex;
+            flex-direction: column; align-items: flex-end;
+            bottom: 0; right: 0;
+            width: 4em;
+        }
+        .play {
+            width: 2em; margin-bottom: 0.25em;
+            z-index: 999; display: none;
+        }
+        .download {
+            width: 3.5em;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
         .sound {
             position: fixed; display: flex;
-            bottom: 1em; right: 1em;
+            bottom: 1em;
             justify-content: center; align-items: center;
             flex-direction: row; gap: 5px; z-index: 127;
         }
@@ -438,12 +470,19 @@
 			object-fit: contain;
         }
 
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .sideui {
+            position: fixed; display: flex;
+            right: 1em; top: 50%; bottom: 50%;
+        }
+
     </style>
 
 </head>
 <body>
 
-    <audio class="click" src="assets/audio/tap.mp3" preload="auto"></audio>
+    <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
     <audio class="menu" src="assets/audio/menu.mp3" preload="auto"></audio>
 
     <img class="shadow" src="assets/images/shadowfixed.png">
@@ -469,6 +508,10 @@
     </div>
     <div class="autoplay">
         <a>(click to unmute)</a>
+    </div>
+
+    <div class="sideui">
+        <img src="assets/images/uploadplain.png">
     </div>
 
     <div class="adoverlay">
@@ -525,6 +568,7 @@
             </div>
             <div class="levels">
 
+
                 <div class="level">
                     <img class="levelbg" src="assets/images/example.webp">
                     <div class="header">
@@ -566,84 +610,16 @@
 
                             <a class="morefeatures">Show more...</a>
                         </div>
-                    </div>
-                </div>
-
-                <div class="level">
-                    <img class="levelbg" src="assets/images/example.webp">
-                    <div class="header">
-                        <p class="title">thingamajig factory</p>
-                        <p class="creator">by cv</p>
-                    </div>
-                    <div class="desc">
-                        <a>MY LEVEL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</a>
-                    </div>
-                    <div class="footer">
-                        <div class="rating">
-                            <p>million</p>
-                            <img src="assets/images/rating/star2.png">
-                        </div>
-                        <div class="features">
-                            <img class="gravity" src="assets/images/features/gravity.png">
-                            <img class="bubble" src="assets/images/features/bubble.png">
-                            <img class="timed" src="assets/images/features/timed.png">
-                            <img class="aircushion" src="assets/images/features/aircushion.png">
-                            <img class="bee" src="assets/images/features/bee.png">
-                            <img class="blade" src="assets/images/features/blade.png">
-                            
-                            <a class="morefeatures">Show more...</a>
+                        <div class="side">
+                            <a class="objectcount">10 obj</a>
+                            <div class="sidebuttons">
+                                <img class="play" src="assets/images/play.png">
+                                <img class="download" src="assets/images/downloadsmall.png">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="level">
-                    <img class="levelbg" src="assets/images/example.webp">
-                    <div class="header">
-                        <p class="title">Super Duper Muper Epic Challenge</p>
-                        <p class="creator">by master of the gods of the idk</p>
-                    </div>
-                    <div class="desc">
-                        <a>Test your skills with this blah blah blah bleah bleah bleah</a>
-                    </div>
-                    <div class="footer">
-                        <div class="rating">
-                            <p>3.0</p>
-                            <img src="assets/images/rating/star3.png">
-                        </div>
-                        <div class="features">
-                            <img class="electricspark" src="assets/images/features/electricspark.png">
-                            <img class="spider" src="assets/images/features/spider.png">
-                            <img class="blade" src="assets/images/features/blade.png">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="level">
-                    <img class="levelbg" src="assets/images/example.webp">
-                    <div class="header">
-                        <p class="title">thingamajig factory</p>
-                        <p class="creator">by cv</p>
-                    </div>
-                    <div class="desc">
-                        <a>MY LEVEL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</a>
-                    </div>
-                    <div class="footer">
-                        <div class="rating">
-                            <p>2.5</p>
-                            <img src="assets/images/rating/star2.png">
-                        </div>
-                        <div class="features">
-                            <img class="gravity" src="assets/images/features/gravity.png">
-                            <img class="bubble" src="assets/images/features/bubble.png">
-                            <img class="timed" src="assets/images/features/timed.png">
-                            <img class="aircushion" src="assets/images/features/aircushion.png">
-                            <img class="bee" src="assets/images/features/bee.png">
-                            <img class="blade" src="assets/images/features/blade.png">
-                            
-                            <a class="morefeatures">Show more...</a>
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>
@@ -724,7 +700,7 @@
             var nom = document.querySelector(".nom");
             if (nom) {
                 var n = Math.floor(Math.random() * 3) + 1;
-                nom.src = "assets/images/nom" + n + ".png";
+                nom.src = "assets/svgs/nom" + n + ".svg";
             }
         });
 
