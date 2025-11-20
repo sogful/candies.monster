@@ -3,7 +3,7 @@
 <head>
 
     <title>Level Preview</title>
-    <link rel="icon" type="image/png" href="/assets/images/icon/frame1.png">
+    <link rel="icon" type="image/png" href="/assets/images/icon.png">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -201,17 +201,6 @@
 
         .datapanel {margin-bottom: 2em}
         .choicepanel {gap: 0.5em}
-
-        .uploadonly {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
-        .uploadonly .uploadinput {
-            min-height: 200px;
-        }
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -495,7 +484,7 @@
         <img src="assets/svgs/oops.svg">
     </div>
 
-    <div class="yetanothernotice">
+    <div class="yetanothernotice hidden">
         <div class="noticestuff">
             <a>Please note that testing on web is <i>very</i> unreliable! Every release of the game for any platform has different physics, so this will never be 100% accurate.</a> <br>
             <a>Check out the</a>
@@ -512,13 +501,7 @@
         <div class="panel datapanel">
             <img src="assets/images/boughthat.png" width="150px" draggable="false">
             <a class="title">Level Preview</a>
-            <div class="uploadonly">
-                <a>Upload your level here:</a>
-                <div class="input uploadinput">
-                    <a>Click to open file explorer or drag the file here...</a>
-                </div>
-            </div>
-            <div class="multi hidden fulleditor">
+            <div class="multi fulleditor">
                 <div class="paste">
                     <div class="input xml theotherbox" contenteditable="true" placeholder='<map>
     <layer name="settings">
@@ -542,7 +525,7 @@
                     </div>
                 </div>
             </div>
-            <label class="button clickable loadbutton hidden">
+            <label class="button clickable loadbutton">
                 <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
                 <span>Load Level</span>
             </label>
@@ -610,8 +593,8 @@
 
     <script>
         (function () {
-            const storage_key = "preview.customLevelData";
-            const game_version_key = "preview.selectedGameVersion";
+            const storage_key = "leveldata";
+            const game_version_key = "gameselected";
 
             const datapanel = document.querySelector(".datapanel");
             const choicepanel = document.querySelector(".choicepanel");
@@ -648,24 +631,32 @@
 
             /*//////////////////////////////////////////////////////////////////////*/
 
-            const notice_key = "preview-notice-dismissed";
+            const notice_key = "dismissed";
+            const notice_seen_key = "seen";
 
             const yetanothernotice = document.querySelector(".yetanothernotice");
             const noticeclose = document.querySelector(".noticeclose");
 
+            let shouldshownotice = false;
             try {
-                const dismissed = localStorage.getItem(notice_key);
-                if (dismissed === "true" && yetanothernotice) {
-                    yetanothernotice.style.display = "none";
+                const dismissed = localStorage.getItem(notice_key) === "true";
+                const seen = dismissed || localStorage.getItem(notice_seen_key) === "true";
+                if (!seen && yetanothernotice) {
+                    shouldshownotice = true;
+                    localStorage.setItem(notice_seen_key, "true");
                 }
             } catch (e) {}
+
+            if (shouldshownotice && yetanothernotice) {
+                yetanothernotice.classList.remove("hidden");
+            }
 
             noticeclose?.addEventListener("click", () => {
                 try {
                     localStorage.setItem(notice_key, "true");
                 } catch (e) {}
                 if (yetanothernotice) {
-                    yetanothernotice.style.display = "none";
+                    yetanothernotice.classList.add("hidden");
                 }
             });
 
@@ -849,17 +840,9 @@
             /*//////////////////////////////////////////////////////////////////////*/
 
             function toggleeditor(hasdata) {
-                const uploadonly = document.querySelector(".uploadonly");
                 const fulleditor = document.querySelector(".fulleditor");
-                if (hasdata) {
-                    uploadonly?.classList.add("hidden");
-                    fulleditor?.classList.remove("hidden");
-                    loadbutton?.classList.remove("hidden");
-                } else {
-                    uploadonly?.classList.remove("hidden");
-                    fulleditor?.classList.add("hidden");
-                    loadbutton?.classList.add("hidden");
-                }
+                fulleditor?.classList.remove("hidden");
+                loadbutton?.classList.remove("hidden");
             }
 
             function updatedetails() {
