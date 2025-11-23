@@ -250,14 +250,14 @@
         <a class="subtitle">Select:</a>
          <div class="buttons">
             <label class="button clickable">
-                <input class="inputfolder" type="file" webkitdirectory directory multiple accept=".raw" class="hiddeninput">
+                <input class="inputfolder" type="file" webkitdirectory directory multiple class="hiddeninput">
                 <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
                 <span>Folder</span>
                 <span class="tiny" style="padding-top: 6.5em">+ subfolders</span>
             </label>
             <a>or</a>
             <label class="button clickable">
-                <input class="inputsingle" type="file" accept=".raw" class="hiddeninput">
+                <input class="inputsingle" type="file" class="hiddeninput">
                 <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
                 <span>Single file</span>
             </label>
@@ -512,10 +512,10 @@
                 
                 const mainfiles = files.filter(file => {
                     const name = file.name.toLowerCase();
-                    if (name.endsWith('.raw') && !name.match(/\.raw\d+$/)) {
+                    if (name.match(/\.raw(\.\w+)?$/) && !name.match(/\.raw\d+(\.\w+)?$/)) {
                         return true;
                     }
-                    if (name.match(/\.raw\d+$/) && file.size > 100) {
+                    if (name.match(/\.raw\d+(\.\w+)?$/) && file.size > 100) {
                         return true;
                     }
                     return false;
@@ -523,7 +523,7 @@
                 
                 const splitfiles = files.some(file => {
                     const name = file.name.toLowerCase();
-                    return name.match(/\.raw\d+$/);
+                    return name.match(/\.raw\d+(\.\w+)?$/);
                 });
                 
                 if (splitfiles && !splitwarnshown) {
@@ -532,7 +532,7 @@
                 }
                 
                 if (mainfiles.length > 1) {
-                    const raw1files = mainfiles.filter(f => f.name.toLowerCase().match(/\.raw\d+$/));
+                    const raw1files = mainfiles.filter(f => f.name.toLowerCase().match(/\.raw\d+(\.\w+)?$/));
                     if (raw1files.length > 0) {
                         const totalsize = mainfiles.reduce((sum, f) => sum + f.size, 0);
                         if (totalsize > 500000) {
@@ -581,12 +581,15 @@
                         const aname = a.name.toLowerCase();
                         const bname = b.name.toLowerCase();
                         
-                        if (aname.endsWith('.raw') && !bname.endsWith('.raw')) return -1;
-                        if (!aname.endsWith('.raw') && bname.endsWith('.raw')) return 1;
-                        if (aname.endsWith('.raw') && bname.endsWith('.raw')) return 0;
+                        const aIsRaw = aname.match(/\.raw(\.\w+)?$/) && !aname.match(/\.raw\d+(\.\w+)?$/);
+                        const bIsRaw = bname.match(/\.raw(\.\w+)?$/) && !bname.match(/\.raw\d+(\.\w+)?$/);
                         
-                        const anum = parseInt(aname.match(/\.raw(\d+)$/)?.[1] || '0');
-                        const bnum = parseInt(bname.match(/\.raw(\d+)$/)?.[1] || '0');
+                        if (aIsRaw && !bIsRaw) return -1;
+                        if (!aIsRaw && bIsRaw) return 1;
+                        if (aIsRaw && bIsRaw) return 0;
+                        
+                        const anum = parseInt(aname.match(/\.raw(\d+)(\.\w+)?$/)?.[1] || '0');
+                        const bnum = parseInt(bname.match(/\.raw(\d+)(\.\w+)?$/)?.[1] || '0');
                         return anum - bnum;
                     });
                 }
@@ -636,7 +639,7 @@
 
                 const rawfiles = Array.from(files).filter(f => {
                     const name = f.name.toLowerCase();
-                    return name.endsWith(".raw") || name.match(/\.raw\d+$/);
+                    return name.match(/\.raw(\.\w+)?$/) || name.match(/\.raw\d+(\.\w+)?$/);
                 });
                 if (rawfiles.length === 0){
                     progressinfo.textContent = "No .raw files found... (Are you sure you selected the right folder?)";
@@ -657,10 +660,10 @@
                     const name = file.name.toLowerCase();
                     let basename;
                     
-                    if (name.endsWith('.raw')) {
-                        basename = name.slice(0, -4);
-                    } else if (name.match(/\.raw\d+$/)) {
-                        basename = name.replace(/\.raw\d+$/, '');
+                    if (name.match(/\.raw(\.\w+)?$/) && !name.match(/\.raw\d+(\.\w+)?$/)) {
+                        basename = name.replace(/\.raw(\.\w+)?$/, '');
+                    } else if (name.match(/\.raw\d+(\.\w+)?$/)) {
+                        basename = name.replace(/\.raw\d+(\.\w+)?$/, '');
                     } else {
                         continue;
                     }
@@ -684,17 +687,20 @@
                             const aname = a.name.toLowerCase();
                             const bname = b.name.toLowerCase();
                             
-                            if (aname.endsWith('.raw') && !bname.endsWith('.raw')) return -1;
-                            if (!aname.endsWith('.raw') && bname.endsWith('.raw')) return 1;
-                            if (aname.endsWith('.raw') && bname.endsWith('.raw')) return 0;
+                            const aIsRaw = aname.match(/\.raw(\.\w+)?$/) && !aname.match(/\.raw\d+(\.\w+)?$/);
+                            const bIsRaw = bname.match(/\.raw(\.\w+)?$/) && !bname.match(/\.raw\d+(\.\w+)?$/);
                             
-                            const anum = parseInt(aname.match(/\.raw(\d+)$/)?.[1] || '0');
-                            const bnum = parseInt(bname.match(/\.raw(\d+)$/)?.[1] || '0');
+                            if (aIsRaw && !bIsRaw) return -1;
+                            if (!aIsRaw && bIsRaw) return 1;
+                            if (aIsRaw && bIsRaw) return 0;
+                            
+                            const anum = parseInt(aname.match(/\.raw(\d+)(\.\w+)?$/)?.[1] || '0');
+                            const bnum = parseInt(bname.match(/\.raw(\d+)(\.\w+)?$/)?.[1] || '0');
                             return anum - bnum;
                         });
 
                         const result = await decryptsplitfile(groupfiles);
-                        const targetpath = rel.replace(/\\/g,"/").replace(/\.[Rr][Aa][Ww]\d*$/, "") + ".png";
+                        const targetpath = rel.replace(/\\/g,"/").replace(/\.[Rr][Aa][Ww](\d+)?(\.[\w]+)?$/i, "") + ".png";
                         zip.file(targetpath, result.blob);
                         
                         if (result.warning) {
@@ -796,7 +802,7 @@
                 if (files.length > 0) {
                     const rawfiles = Array.from(files).filter(f => {
                         const name = f.name.toLowerCase();
-                        return name.endsWith(".raw") || name.match(/\.raw\d+$/);
+                        return name.match(/\.raw(\.\w+)?$/) || name.match(/\.raw\d+(\.\w+)?$/);
                     });
                     if (rawfiles.length === 0) {
                         errorlog("No .raw files found in dropped files...");
