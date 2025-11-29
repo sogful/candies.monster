@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="/assets/static/slash.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
     <meta property="og:image" content="/assets/images/banner.png">
     <meta name="twitter:card" content="summary_largeimage">
@@ -234,6 +235,26 @@
         }
         .backbutton img {height: 3em}
 
+        .exportbutton {
+            display: flex; position: absolute; bottom: 16px; right: 16px;
+            flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; background: none; z-index: 1000;
+            border: none; padding: 0; display: none;
+            transition: opacity 0.2s;
+        }
+        .exportbutton img {height: 3em}
+        .exportbutton span {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff; font-size: 1.2em;
+            -webkit-text-stroke: 0.15em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+            pointer-events: none;
+            white-space: nowrap; user-select: none;
+        }
+
         /*//////////////////////////////////////////////////////////////////////*/
         
 		.icon {height: 100px;}
@@ -270,6 +291,10 @@
 					<div class="overlay"></div>
 					<div class="backbutton clickable">
 						<img src="/comics/assets/images/back.png" alt="Back" />
+					</div>
+					<div class="exportbutton clickable">
+						<img src="/levels/assets/images/buttons/sbutton.webp" draggable="false" alt="Export All" />
+						<span>Export All</span>
 					</div>
 				</div>
 			</div>
@@ -602,6 +627,8 @@
                 if (upload) upload.style.display = "none";
                  if (img) {img.style.display = "block"; layoutimage()}
                  if (backbutton) backbutton.style.display = "block";
+                 const exportbutton = document.querySelector(".exportbutton");
+                 if (exportbutton) exportbutton.style.display = "flex";
                  parserender()
             }; img.src = url
             if (file && file.name) {
@@ -725,13 +752,71 @@
                 const img = document.querySelector(".sheet");
                 const upload = document.querySelector(".uploadinput");
                 const xmleditor = document.querySelector(".thexml");
+                const exportbutton = document.querySelector(".exportbutton");
                 
                 if (img) {img.style.display = "none"; img.src = ""}
                 if (upload) upload.style.display = "flex";
                 if (backbutton) backbutton.style.display = "none";
+                if (exportbutton) exportbutton.style.display = "none";
                 if (xmleditor) {xmleditor.textContent = ""; highlight(xmleditor)}
                 cleanoverlay();
             });
+        }
+
+        // export button
+        function idgen() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let result = '';
+            for (let i = 0; i < 3; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            } return result;
+        }
+        async function exportall() {
+            const img = document.querySelector(".sheet");
+            if (!img || !img.naturalWidth) return;
+            
+            const xml = xmleditor.textContent.trim();
+            const rects = quadparse(xml);
+            if (rects.length === 0) return;
+
+            const zip = new JSZip();
+            let processed = 0;
+            
+            for (const rect of rects) {
+                const canvas = document.createElement("canvas");
+                canvas.width = Math.max(1, rect.w);
+                canvas.height = Math.max(1, rect.h);
+                const ctx = canvas.getContext("2d");
+                ctx.imageSmoothingEnabled = false;
+                
+                try {
+                    ctx.drawImage(img, rect.x, rect.y, rect.w, rect.h, 0, 0, rect.w, rect.h);
+                    const blob = await new Promise((resolve, reject) => {
+                        canvas.toBlob((blob) => {
+                            if (blob) resolve(blob);
+                            else reject(new Error("png encoding failed?!"));
+                        }, "image/png");
+                    });
+                    
+                    const filename = `${sheetfilename} - #${rect.idx} x${rect.x}y${rect.y} ${rect.w}x${rect.h}.png`;
+                    zip.file(filename, blob);
+                    processed++;
+                } catch (e) {} // you will never EVER know if it failed. sorry bud
+            }
+            
+            if (processed === 0) return;
+            const zipblob = await zip.generateAsync({type: "blob", compression: "DEFLATE"});
+            const uniqueid = idgen();
+            const url = URL.createObjectURL(zipblob);
+            const a = document.createElement("a");
+            a.href = url; a.download = `${sheetfilename}_${uniqueid}.zip`; // filename won't work if it's a dragged in file, but will export anyways
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        const exportbutton = document.querySelector(".exportbutton");
+        if (exportbutton) {
+            exportbutton.addEventListener("click", function() {exportall()});
         }
 
     </script>
