@@ -27,12 +27,16 @@
             src: url("assets/fonts/gooddog.otf");
         }
         @font-face {
+            font-family: "Good Dog Cool";
+            src: url("assets/fonts/gooddogcool.otf");
+        }
+        @font-face {
             font-family: "Good Dog Bones";
             src: url("assets/fonts/gooddogbones.otf");
         }
         @font-face {
-            font-family: "Good Dog Cool";
-            src: url("assets/fonts/gooddogcool.otf");
+            font-family: "Good Dog New";
+            src: url("assets/fonts/gooddognew.ttf");
         }
 
         body {
@@ -152,15 +156,15 @@
             overflow: visible;
         }
 
-        .text-display {
+        .textdisplay {
             position: relative; display: flex; 
             justify-content: center; align-items: center;
             width: 100%; height: 100%;
             padding: 4em 4em 8em 4em; box-sizing: border-box; overflow: visible;
         }
         
-        .text-display > .textshadow,
-        .text-display > .textpreview {
+        .textdisplay > .textshadow,
+        .textdisplay > .textpreview {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -186,41 +190,27 @@
 
         .textinput {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90vw;
-            height: 90vh;
-            background: transparent;
-            border: none;
-            outline: none;
-            box-shadow: none;
-            color: transparent;
-            caret-color: transparent;
-            font-family: inherit;
-            font-size: inherit;
-            text-align: center;
-            resize: none;
-            overflow: hidden;
-            z-index: 10;
-            padding: 0;
-            margin: 0;
-            letter-spacing: inherit;
-            opacity: 0;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90vw; height: 90vh;
+            background: transparent; border: none;
+            outline: none; box-shadow: none;
+            color: transparent; caret-color: transparent;
+            font-family: inherit; font-size: inherit; text-align: center;
+            resize: none; overflow: hidden;
+            z-index: 10; padding: 0; margin: 0;
+            letter-spacing: inherit; opacity: 0;
         }
-
         .textinput::placeholder {
             opacity: 0;
             color: transparent;
         }
-        
         .textinput:focus {
             outline: none;
             border: none;
             box-shadow: none;
         }
 
-        .cursor-overlay {
+        .cursoroverlay {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -229,7 +219,7 @@
             z-index: 3;
         }
         
-        .cursor-overlay .cursor-line {
+        .cursoroverlay .cursorline {
             position: absolute;
             width: 2px;
             background-color: white;
@@ -261,14 +251,12 @@
 
         .configs {
             display: flex; flex-direction: column;
-            height: 35vh; padding: 1em;
+            padding: 1em; border-radius: 16px; 
             background: rgba(0,0,0,0.5);
-            border-radius: 16px; bottom: 1em;
             overflow-y: auto; position: fixed;
-            left: 50%; transform: translateX(-50%);
-            min-width: 400px; max-width: 90vw;
-            z-index: 1000;
-            pointer-events: auto;
+            left: 1em; bottom: 1em;
+            max-width: 90vw;
+            z-index: 10000; pointer-events: auto;
         }
         .configs .draghandle {
             position: absolute;
@@ -319,12 +307,12 @@
             padding: 0;
         }
         .fontbutton img, .preset img {
-            height: 4em;
+            height: 3em;
         }
         .fontbutton span, .preset span {
             position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #fff; font-size: 2em; font-family: "Good Dog";
+            color: #fff; font-size: 1.5em; font-family: "Good Dog";
             -webkit-text-stroke: 0.15em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
@@ -333,25 +321,28 @@
         .fontbutton[data-font="Good Dog"] span {
             font-family: "Good Dog";
         }
+        .fontbutton[data-font="Good Dog Cool"] span {
+            font-family: "Good Dog Cool";
+        }
         .fontbutton[data-font="Good Dog Bones"] span {
             font-family: "Good Dog Bones";
         }
-        .fontbutton[data-font="Good Dog Cool"] span {
-            font-family: "Good Dog Cool";
+        .fontbutton[data-font="Good Dog New"] span {
+            font-family: "Good Dog New";
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
 
-        .number-line {
+        .numberline {
             display: flex;
             gap: 0.5em;
             justify-content: center;
             flex-wrap: wrap;
         }
         
-        .color-line {
+        .colorline {
             display: flex;
-            gap: 0.5em;
+            gap: 0em;
             justify-content: center;
             flex-wrap: wrap;
         }
@@ -359,6 +350,9 @@
         .settinggroup {
             display: flex; flex-direction: column;
             gap: 0.2em;
+        }
+        .colorline .settinggroup {
+            width: max-content;
         }
 
         .settinglabel {
@@ -372,8 +366,7 @@
         .settinginput {
             padding: 0.4em 0.5em;
             background: rgba(0,0,0,0.5);
-            border: none;
-            border-radius: 1em;
+            border: none; border-radius: 1em;
             color: white;
             font-family: "Good Dog";
             font-size: 0.9em;
@@ -398,43 +391,138 @@
         }
         .settinginput.colorinput {
             width: 60px;
-            padding-left: 32px;
+            padding: 0.4em 0.3em 0.4em 32px;
         }
-        .color-group {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        .settinginput.color-picker {
-            position: absolute;
-            left: 5px;
-            width: 22px;
-            height: 22px;
-            padding: 0;
-            border-radius: 1em;
-            cursor: pointer;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        .settinginput.color-picker::-webkit-color-swatch-wrapper {padding: 0}
-        .settinginput.color-picker::-webkit-color-swatch {
-            border: none;
-            border-radius: 1em;
-        }
-        .combined-group {
+
+        .combinedgroup {
             display: flex;
             gap: 0.3em;
             align-items: flex-end;
         }
-        .combined-group .settinggroup {
+        .combinedgroup .settinggroup {
             flex: 1;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .colorgroup {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: max-content;
+        }
+        .settinginput.colorpicker {
+            position: absolute;
+            left: 5px; width: 22px; height: 22px;
+            padding: 0;
+            border-radius: 50%;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            overflow: hidden;
+        }
+        .settinginput.colorpicker::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .settinginput.colorpicker::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+            padding: 0;
+        }
+        .settinginput.colorpicker::-moz-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        .settinginput[type="range"] {
+            -webkit-appearance: none; appearance: none;
+            height: 6px; width: 100%;
+            background: rgba(0,0,0,0.5);
+            border-radius: 3px;
+            outline: none
+        }
+        .settinginput[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 3px;
+            border: none;
+        }
+        .settinginput[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 16px; height: 16px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: -5px;
+        }
+        .settinginput[type="range"]::-moz-range-track {
+            width: 100%; height: 6px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 3px;
+            border: none;
+        }
+        .settinginput[type="range"]::-moz-range-thumb {
+            width: 16px; height: 16px;
+            background: white;
+            border-radius: 50%; 
+            cursor: pointer; border: none;
+        }
+        .opacitycontrol {
+            display: flex; align-items: center;
+            gap: 0.3em; margin-top: 0.2em;
+            width: max-content;
+        }
+        .opacityslider {
+            flex: 0.45; height: 4px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 2px;
+            outline: none; margin: 0;
+            -webkit-appearance: none; appearance: none;
+            max-width: 45%;
+        }
+        .opacityslider::-webkit-slider-runnable-track {
+            width: 100%; height: 4px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 2px;
+            border: none;
+        }
+        .opacityslider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 12px; height: 12px;
+            background: white; border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+            margin-top: -4px;
+        }
+        .opacityslider::-moz-range-track {
+            width: 100%; height: 4px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 2px;
+            border: none;
+        }
+        .opacityslider::-moz-range-thumb {
+            width: 12px; height: 12px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer; border: none;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+        }
+        .opacityvalue {
+            width: 15px !important;
+            padding: 0.2em 0.1em !important;
+            font-size: 0.8em !important;
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
 
         .downloadsection {
             position: absolute;
-            bottom: 1em; right: 1em; gap: 0.5em; z-index: 10;
+            top: 1em; right: 1em; gap: 0.5em; z-index: 10;
             display: flex; flex-direction: row; align-items: center;
         }
         
@@ -444,11 +532,8 @@
             gap: 0.3em;
         }
         
-        .downloadsection .settinglabel {font-size: 1em}
-        .downloadsection .settinginput {width: 80px}
-
-        /*//////////////////////////////////////////////////////////////////////*/
-
+        .downloadsection .settinglabel {font-size: 1.1em}
+        .downloadsection .settinginput {width: 40px}
 
     </style>
 </head>
@@ -467,10 +552,10 @@
     <div class="page">
         <div class="container">
             <div class="previewsection">
-                <div class="text-display">
+                <div class="textdisplay">
                     <div class="textshadow" id="textShadow"></div>
                     <div class="textpreview" id="textPreview"></div>
-                    <div class="cursor-overlay" id="cursorOverlay"></div>
+                    <div class="cursoroverlay" id="cursorOverlay"></div>
                     <div class="selection-overlay" id="selectionOverlay"></div>
                     <textarea class="textinput" id="textInput" placeholder="Input here..."></textarea>
                 </div>
@@ -484,13 +569,17 @@
                             <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>GoodDog</span>
                         </button>
+                        <button class="fontbutton clickable" data-font="Good Dog Cool">
+                            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                            <span>Cool</span>
+                        </button>
                         <button class="fontbutton clickable" data-font="Good Dog Bones">
                             <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>Bones</span>
                         </button>
-                        <button class="fontbutton clickable" data-font="Good Dog Cool">
+                        <button class="fontbutton clickable" data-font="Good Dog New">
                             <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
-                            <span>Cool</span>
+                            <span>New</span>
                         </button>
                     </div>
                     
@@ -509,7 +598,7 @@
                         </button>
                     </div>
                     
-                    <div class="configline number-line">
+                    <div class="configline numberline">
                         <div class="settinggroup">
                             <label class="settinglabel">Kerning</label>
                             <input type="number" class="settinginput numberinput" id="kerning" value="0" step="0.1">
@@ -528,41 +617,52 @@
                         </div>
                     </div>
                     
-                    <div class="configline color-line">
+                    <div class="configline colorline">
                         <div class="settinggroup">
                             <label class="settinglabel">Font Color</label>
-                            <div class="color-group">
-                                <input type="color" class="settinginput color-picker" id="fontColorPicker" value="#ffffff">
+                            <div class="colorgroup">
+                                <input type="color" class="settinginput colorpicker" id="fontcolorpicker" value="#ffffff">
                                 <input type="text" class="settinginput colorinput" id="fontColor" value="#ffffff" placeholder="#ffffff">
+                            </div>
+                            <div class="opacitycontrol">
+                                <input type="range" class="opacityslider" id="fontcoloropacity" min="0" max="100" value="100" step="1">
+                                <input type="number" class="settinginput numberinput opacityvalue" id="fontcoloropacityvalue" value="100" min="0" max="100" step="1">
                             </div>
                         </div>
                         <div class="settinggroup">
                             <label class="settinglabel">Outline Color</label>
-                            <div class="color-group">
-                                <input type="color" class="settinginput color-picker" id="outlineColorPicker" value="#000000">
-                                <input type="text" class="settinginput colorinput" id="outlineColor" value="#000000cc" placeholder="#000000cc">
+                            <div class="colorgroup">
+                                <input type="color" class="settinginput colorpicker" id="outlinecolorpicker" value="#000000">
+                                <input type="text" class="settinginput colorinput" id="outlinecolor" value="#000000cc" placeholder="#000000cc">
+                            </div>
+                            <div class="opacitycontrol">
+                                <input type="range" class="opacityslider" id="outlinecoloropacity" min="0" max="100" value="80" step="1">
+                                <input type="number" class="settinginput numberinput opacityvalue" id="outlinecoloropacityvalue" value="80" min="0" max="100" step="1">
                             </div>
                         </div>
                         <div class="settinggroup">
                             <label class="settinglabel">Shadow Color</label>
-                            <div class="color-group">
-                                <input type="color" class="settinginput color-picker" id="shadowColorPicker" value="#2b0f00">
+                            <div class="colorgroup">
+                                <input type="color" class="settinginput colorpicker" id="shadowColorPicker" value="#2b0f00">
                                 <input type="text" class="settinginput colorinput" id="shadowColor" value="#2b0f00cc" placeholder="#2b0f00cc">
+                            </div>
+                            <div class="opacitycontrol">
+                                <input type="range" class="opacityslider" id="shadowcoloropacity" min="0" max="100" value="80" step="1">
+                                <input type="number" class="settinginput numberinput opacityvalue" id="shadowcoloropacityvalue" value="80" min="0" max="100" step="1">
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="downloadsection">
-                    <div class="settinggroup">
-                        <label class="settinglabel">Output Width</label>
-                        <input type="number" class="settinginput" id="imageSize" value="1000" min="100" max="5000" step="100">
-                    </div>
-                    <a class="sbutton clickable" id="downloadButton">
-                        <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
-                        <span>Download</span>
-                    </a>
+            </div>
+            <div class="downloadsection">
+                <div class="settinggroup">
+                    <label class="settinglabel">Output Width</label>
+                    <input type="number" class="settinginput" id="imageSize" value="1000" min="100" max="5000" step="100">
                 </div>
+                <a class="sbutton clickable" id="downloadButton">
+                    <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                    <span>Download</span>
+                </a>
             </div>
         </div>
     </div>
@@ -641,14 +741,36 @@
             kerning: document.getElementById("kerning"),
             imagesize: document.getElementById("imageSize"),
             fontcolor: document.getElementById("fontColor"),
-            fontcolorpicker: document.getElementById("fontColorPicker"),
-            outlinecolor: document.getElementById("outlineColor"),
-            outlinecolorpicker: document.getElementById("outlineColorPicker"),
+            fontcolorpicker: document.getElementById("fontcolorpicker"),
+            fontcoloropacity: document.getElementById("fontcoloropacity"),
+            fontcoloropacityvalue: document.getElementById("fontcoloropacityvalue"),
+            outlinecolor: document.getElementById("outlinecolor"),
+            outlinecolorpicker: document.getElementById("outlinecolorpicker"),
+            outlinecoloropacity: document.getElementById("outlinecoloropacity"),
+            outlinecoloropacityvalue: document.getElementById("outlinecoloropacityvalue"),
             outlinesize: document.getElementById("outlineSize"),
             shadowcolor: document.getElementById("shadowColor"),
             shadowcolorpicker: document.getElementById("shadowColorPicker"),
+            shadowcoloropacity: document.getElementById("shadowcoloropacity"),
+            shadowcoloropacityvalue: document.getElementById("shadowcoloropacityvalue"),
             shadowx: document.getElementById("shadowX"),
             shadowy: document.getElementById("shadowY")
+        }
+        
+        function hextoopacity(hex) {
+            if (!hex || typeof hex !== "string" || hex.length < 7) return 100
+            if (hex.length === 9) {
+                return Math.round((parseInt(hex.slice(7, 9), 16) || 255) / 255 * 100)
+            }
+            return 100
+        }
+        function opacitytohexalpha(opacity) {
+            const alpha = Math.round((opacity / 100) * 255)
+            return alpha.toString(16).padStart(2, "0")
+        }
+        function updatecolorwithopacity(colorhex, opacity) {
+            const rgbhex = hexrgbatohexrgb(colorhex)
+            return rgbhex + opacitytohexalpha(opacity)
         }
 
         fontbuttons.forEach(btn => {
@@ -674,41 +796,70 @@
        
         Object.keys(settinginputs).forEach(k => {
             if (!settinginputs[k]) return
-            settinginputs[k].addEventListener("input", function() {
-                if (k === "fontcolor" || k === "outlinecolor" || k === "shadowcolor") {
+            
+            if (k === "fontcolor" || k === "outlinecolor" || k === "shadowcolor" || k === "fontcolorpicker" || k === "outlinecolorpicker" || k === "shadowcolorpicker") {
+                const basekey = k.replace("picker", "")
+                const ispicker = k.endsWith("picker")
+                settinginputs[k].addEventListener("input", function() {
                     let v = this.value.trim()
                     if (v.startsWith("#")) {
                         v = v.slice(1)
                     }
                     v = v.slice(0, 8)
                     v = "#" + v
-                    const basekey = k.replace("picker", "")
-
-                    if (k.endsWith("picker")) {
+                    
+                    if (ispicker) {
                         const rgbhex = v
-                        const origv = state[basekey]
-                        if (origv && origv.length === 9) {
-                            const newv = rgbhex + origv.slice(7, 9)
-                            state[basekey] = newv
-                            settinginputs[basekey].value = newv
-                        } else {
-                            state[basekey] = rgbhex
-                            settinginputs[basekey].value = rgbhex
+                        const opacityinput = settinginputs[basekey + "opacity"]
+                        const opacity = opacityinput ? parseFloat(opacityinput.value) : 100
+                        const newv = updatecolorwithopacity(rgbhex, opacity)
+                        state[basekey] = newv
+                        settinginputs[basekey].value = newv
+                        if (opacityinput) {
+                            settinginputs[basekey + "opacityvalue"].value = opacity
                         }
                     } else {
-                        state[basekey] = v
-                        if (/^#[0-9a-fA-F]{6}$/.test(v) || /^#[0-9a-fA-F]{8}$/.test(v)) {
-                            settinginputs[k + "picker"].value = hexrgbatohexrgb(v)
-                        }
+                        if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+                            const opacityinput = settinginputs[basekey + "opacity"]
+                            const opacity = opacityinput ? parseFloat(opacityinput.value) : 100
+                            v = updatecolorwithopacity(v, opacity)
+                            state[basekey] = v
+                            settinginputs[basekey + "picker"].value = hexrgbatohexrgb(v)
+                        } else if (/^#[0-9a-fA-F]{8}$/.test(v)) {
+                            state[basekey] = v
+                            settinginputs[basekey + "picker"].value = hexrgbatohexrgb(v)
+                            const opacity = hextoopacity(v)
+                            if (settinginputs[basekey + "opacity"]) {
+                                settinginputs[basekey + "opacity"].value = opacity
+                                settinginputs[basekey + "opacityvalue"].value = opacity
+                            }
+                        } else {state[basekey] = v}
+                    } updatepreview()
+                })
+            } else if (k.endsWith("opacity") || k.endsWith("opacityvalue")) {
+                const basekey = k.replace("opacity", "").replace("value", "")
+                const isvalue = k.endsWith("value")
+                const otherkey = isvalue ? basekey + "opacity" : basekey + "opacityvalue"
+                
+                settinginputs[k].addEventListener("input", function() {
+                    let opacity = parseFloat(this.value)
+                    if (isNaN(opacity)) opacity = 100
+                    opacity = Math.max(0, Math.min(100, opacity))
+                    if (settinginputs[otherkey]) {
+                        settinginputs[otherkey].value = opacity
                     }
-                } else {
+                    const currentcolor = state[basekey] || "#000000"
+                    const newcolor = updatecolorwithopacity(currentcolor, opacity)
+                    state[basekey] = newcolor
+                    settinginputs[basekey].value = newcolor
+                    updatepreview()
+                })
+            } else {
+                settinginputs[k].addEventListener("input", function() {
                     state[k] = parseFloat(this.value) || 0
-                    if (k === "outlinesize") {
-                        updatepreview()
-                    }
-                }
-                updatepreview()
-            })
+                    updatepreview()
+                })
+            }
         })
         
         textinput.addEventListener("input", function() {
@@ -775,15 +926,28 @@
                     Object.assign(state, p)
                     settinginputs.fontcolor.value = state.fontcolor
                     settinginputs.fontcolorpicker.value = hexrgbatohexrgb(state.fontcolor)
+                    const fontopacity = hextoopacity(state.fontcolor)
+                    if (settinginputs.fontcoloropacity) {
+                        settinginputs.fontcoloropacity.value = fontopacity
+                        settinginputs.fontcoloropacityvalue.value = fontopacity
+                    }
                     settinginputs.outlinecolor.value = state.outlinecolor
                     settinginputs.outlinecolorpicker.value = hexrgbatohexrgb(state.outlinecolor)
+                    const outlineopacity = hextoopacity(state.outlinecolor)
+                    if (settinginputs.outlinecoloropacity) {
+                        settinginputs.outlinecoloropacity.value = outlineopacity
+                        settinginputs.outlinecoloropacityvalue.value = outlineopacity
+                    }
                     settinginputs.outlinesize.value = state.outlinesize
                     settinginputs.shadowcolor.value = state.shadowcolor
                     settinginputs.shadowcolorpicker.value = hexrgbatohexrgb(state.shadowcolor)
+                    const shadowopacity = hextoopacity(state.shadowcolor)
+                    if (settinginputs.shadowcoloropacity) {
+                        settinginputs.shadowcoloropacity.value = shadowopacity
+                        settinginputs.shadowcoloropacityvalue.value = shadowopacity
+                    }
                     settinginputs.shadowx.value = state.shadowx
                     settinginputs.shadowy.value = state.shadowy
-                    settinginputs.outlinesize.dispatchEvent(new Event('input', { bubbles: true }))
-                    settinginputs.outlinecolor.dispatchEvent(new Event('input', { bubbles: true }))
                     updatepreview()
                 }
             })
@@ -817,7 +981,7 @@
             textpreview.textContent = displaytext || "Input here..."
 
             textpreview.style.fontFamily = state.font
-            textpreview.style.color = isplaceholder ? "rgba(255,255,255,0.5)" : state.fontcolor
+            textpreview.style.color = isplaceholder ? "rgba(255,255,255,0.5)" : hextorgba(state.fontcolor)
             textpreview.style.letterSpacing = state.kerning + "px"
             textpreview.style.whiteSpace = "pre"
             textpreview.style.textAlign = "center"
@@ -838,10 +1002,21 @@
                 textpreview.style.webkitTextStroke = `${scaledoutlinesize}px ${outrgba}`
                 textpreview.style.textStroke = `${scaledoutlinesize}px ${outrgba}`
                 textpreview.style.paintOrder = "stroke fill"
+                // Fill the outline if font color is transparent
+                const fontopacity = hextoopacity(state.fontcolor)
+                if (fontopacity === 0 || fontopacity < 10) {
+                    textpreview.style.webkitTextFillColor = outrgba
+                    textpreview.style.textFillColor = outrgba
+                } else {
+                    textpreview.style.webkitTextFillColor = hextorgba(state.fontcolor)
+                    textpreview.style.textFillColor = hextorgba(state.fontcolor)
+                }
             } else {
                 textpreview.style.webkitTextStroke = "0px transparent"
                 textpreview.style.textStroke = "0px transparent"
                 textpreview.style.paintOrder = "normal"
+                textpreview.style.webkitTextFillColor = ""
+                textpreview.style.textFillColor = ""
             }
             textpreview.style.textShadow = "none"
             updatecursoroverlay(cursorpos, isfocused, isplaceholder, computedfontsize)
@@ -931,7 +1106,7 @@
             const totalheight = alllines.length * lineheight
             const cursory = currlineidx * lineheight - (totalheight / 2)
             const cursorline = document.createElement("div")
-            cursorline.className = "cursor-line"
+            cursorline.className = "cursorline"
             cursorline.style.left = cursorx + "px"
             cursorline.style.top = cursory + "px"
             cursorline.style.height = fontsize + "px"
@@ -1039,7 +1214,7 @@
             displayclone.style.padding = "1000px"
             const clonedshadow = displayclone.querySelector(".textshadow")
             const clonedpreview = displayclone.querySelector(".textpreview")
-            const cursoroverlay = displayclone.querySelector(".cursor-overlay")
+            const cursoroverlay = displayclone.querySelector(".cursoroverlay")
             const selectionoverlay = displayclone.querySelector(".selection-overlay")
             const textinput = displayclone.querySelector(".textinput")
             if (cursoroverlay) cursoroverlay.remove()
@@ -1173,8 +1348,9 @@
                     const deltay = e.clientY - dragstarty
                     configs.style.left = (configstartx + deltax) + "px"
                     configs.style.top = (configstarty + deltay) + "px"
-                    configs.style.transform = "none"
+                    configs.style.right = "auto"
                     configs.style.bottom = "auto"
+                    configs.style.transform = "none"
                 }
             })
             document.addEventListener("mouseup", function() {
@@ -1185,6 +1361,22 @@
         settinginputs.fontcolorpicker.value = hexrgbatohexrgb(state.fontcolor)
         settinginputs.outlinecolorpicker.value = hexrgbatohexrgb(state.outlinecolor)
         settinginputs.shadowcolorpicker.value = hexrgbatohexrgb(state.shadowcolor)
+        
+        if (settinginputs.fontcoloropacity) {
+            const fontopacity = hextoopacity(state.fontcolor)
+            settinginputs.fontcoloropacity.value = fontopacity
+            settinginputs.fontcoloropacityvalue.value = fontopacity
+        }
+        if (settinginputs.outlinecoloropacity) {
+            const outlineopacity = hextoopacity(state.outlinecolor)
+            settinginputs.outlinecoloropacity.value = outlineopacity
+            settinginputs.outlinecoloropacityvalue.value = outlineopacity
+        }
+        if (settinginputs.shadowcoloropacity) {
+            const shadowopacity = hextoopacity(state.shadowcolor)
+            settinginputs.shadowcoloropacity.value = shadowopacity
+            settinginputs.shadowcoloropacityvalue.value = shadowopacity
+        }
 
         updatepreview()
         window.addEventListener("resize", function() {
