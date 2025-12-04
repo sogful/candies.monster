@@ -19,7 +19,7 @@
     "id": "origins",
     "name": "Cut the Rope: Origins",
     "package": "com.zeptolab.ctrorigins",
-    "icon": "/assets/images/gameicons/original.webp",
+    "icon": "/assets/images/gameicons/modern.webp",
     "importance": 5,
     "description": "this game had a lot of different iterations besides these versions, and ALL of them are miserable."
   },
@@ -37,7 +37,7 @@
     "package": "com.zeptolab.ctrm.free.google",
     "icon": "/assets/images/gameicons/magic.webp",
     "importance": 6,
-    "description": ""
+    "description": "witchcraft"
   },
   {
     "id": "experiments",
@@ -165,7 +165,7 @@
     "package": "com.zeptolab.toonplayer.google",
     "icon": "/assets/images/gameicons/toons.webp",
     "importance": 3,
-    "description": "it's NEVER too late to stop watching cartoons. go for it"
+    "description": "you're NEVER too old to watch cartoons for children. go for it"
   },
   {
     "id": "virtualpet",

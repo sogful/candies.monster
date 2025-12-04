@@ -87,8 +87,8 @@
             paint-order: stroke fill;
         }
         .oldstuff {
-            pointer-events: none; text-align: left;
-            left: 0.3em !important;
+            pointer-events: none; text-align: right; opacity: 0.5;
+            top: 0.3em !important; right: 0.3em !important;
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -115,11 +115,18 @@
 
         .backbutton {
             position: fixed;
-            top: 0.5em; left: 0.5em; z-index: 1000;
+            top: 0.5em; left: 0.5em; z-index: 99999999;
             display: none;
         }
         .backbutton.active {display: block}
         .backbutton img {height: 3em}
+
+        @media (max-width: 600px) {
+            .backbutton {
+                top: auto;
+                bottom: 0.5em !important;
+            }
+        }
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -140,6 +147,12 @@
         .gamescreen.slideleft {
             transform: translateX(-25vw);
         }
+        
+        @media (max-width: 600px) {
+            .gamescreen.slideleft {
+                transform: translateX(-100vw);
+            }
+        }
 
         .gamecircle {
             position: relative;
@@ -151,6 +164,26 @@
             align-items: center;
             margin: 0 auto;
             overflow: visible;
+            transform-origin: center center;
+            transition: opacity 0.2s ease;
+        }
+        
+        .gamecircle.rendering {
+            opacity: 0;
+        }
+
+        @media (max-width: 600px) {
+            .gamecircle {
+                width: 100vw; top: 1em;
+                height: auto;
+                min-height: auto;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(clamp(50px, calc(50px + 30 * ((100vw - 220px) / 380)), 80px), 1fr));
+                gap: 0.25em; padding: 0.5em;
+                box-sizing: border-box;
+                justify-content: start;
+                align-items: flex-start;
+            }
         }
 
         .gameicon {
@@ -158,6 +191,18 @@
             cursor: pointer;
             transition: transform 0.3s ease, filter 0.3s ease;
         }
+        
+        @media (max-width: 600px) {
+            .gameicon {
+                position: relative;
+                width: clamp(50px, calc(50px + 30 * ((100vw - 220px) / 380)), 80px) !important;
+                height: clamp(50px, calc(50px + 30 * ((100vw - 220px) / 380)), 80px) !important;
+                left: auto !important;
+                top: auto !important;
+                margin: 0 auto;
+            }
+        }
+        
         .gameicon img {
             width: 100%; height: 100%;
             object-fit: contain;
@@ -175,6 +220,12 @@
             pointer-events: none; box-sizing: border-box;
             background-color: rgba(0,0,0,0); opacity: 0;
             transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;
+        }
+        
+        @media (max-width: 600px) {
+            .versionscreen {
+                left: 0; width: 100vw;
+            }
         }
         .versionscreen.active {
             pointer-events: auto;
@@ -300,7 +351,6 @@
     </a>
 
     <p class="tiny">
-        <a style="font-size:1.3em">(no friend request needed)</a><br><br>
         None of the game files are hosted on this domain. Whether the developers shown actually have rights to Om Nom or not is purely speculative.<br>
         Icons from <a href="//ctrhome.github.io/">CTR Home</a> and Play Store archivals (downloadable <a href="https://github.com/sogful/candies.monster/tree/main/assets/images/gameicons">here!</a>)
     </p>
@@ -400,115 +450,149 @@
 
         function rendergamecircle() {
             const circle = document.getElementById("gamecircle");
+            circle.classList.add("rendering");
             circle.innerHTML = "";
             const sorted = [...games].sort((a, b) => b.importance - a.importance);
-            const circlerect = circle.getBoundingClientRect();
-            const w = circlerect.width > 0 ? circlerect.width : Math.min(window.innerWidth * 0.9, 800);
-            const h = circlerect.height > 0 ? circlerect.height : Math.max(Math.min(window.innerHeight * 0.9, 800), 600);
-            const cx = w / 2, cy = h / 2;
-            const placed = [];
-            sorted.forEach((g, i) => {
-                const ic = document.createElement("div");
-                ic.className = "gameicon clickable";
-                ic.dataset.gameid = g.id;
-                const sz = 50 + (g.importance - 3) * 5.7;
-                ic.style.width = `${sz}px`;
-                ic.style.height = `${sz}px`;
-                let x, y;
-                if (i === 0) {
-                    x = cx - sz / 2;
-                    y = cy - sz / 2;
-                } else {
-                    const maximp = sorted[0].importance;
-                    const minimp = sorted[sorted.length - 1].importance;
-                    const imgrange = maximp - minimp;
-                    let normimp;
-                    if (imgrange <= 0) {
-                        const denom = Math.max(1, sorted.length - 1);
-                        normimp = 1 - (i / denom);
+            const tinyscreen = window.innerWidth < 600;
+            
+            if (tinyscreen) {
+                sorted.forEach((g) => {
+                    const ic = document.createElement("div");
+                    ic.className = "gameicon clickable";
+                    ic.dataset.gameid = g.id;
+                    const im = document.createElement("img");
+                    im.src = g.icon;
+                    im.draggable = false;
+                    im.onerror = function() {this.src = '/assets/images/gameicons/idk.webp'};
+                    ic.appendChild(im);
+                    ic.addEventListener("click", () => {
+                        const s = document.querySelector(".click");
+                        if (s) {
+                            s.currentTime = 0;
+                            s.play().catch(() => {});
+                        } selectgame(g);
+                    });
+                    circle.appendChild(ic);
+                });
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        circle.classList.remove("rendering");
+                    });
+                });
+            } else {
+                const circlerect = circle.getBoundingClientRect();
+                const w = circlerect.width > 0 ? circlerect.width : Math.min(window.innerWidth * 0.9, 800);
+                const h = circlerect.height > 0 ? circlerect.height : Math.max(Math.min(window.innerHeight * 0.9, 800), 600);
+                const cx = w / 2, cy = h / 2;
+                const placed = [];
+                sorted.forEach((g, i) => {
+                    const ic = document.createElement("div");
+                    ic.className = "gameicon clickable";
+                    ic.dataset.gameid = g.id;
+                    const sz = 50 + (g.importance - 3) * 5.7;
+                    ic.style.width = `${sz}px`;
+                    ic.style.height = `${sz}px`;
+                    let x, y;
+                    if (i === 0) {
+                        x = cx - sz / 2;
+                        y = cy - sz / 2;
                     } else {
-                        normimp = (g.importance - minimp) / imgrange;
-                    }
-                    const saferad = Math.min(w, h) * 0.4;
-                    const minrad = sz * 0.65;
-                    const maxrad = Math.min(sz * 2, saferad);
-                    const rad = minrad + (1 - normimp) * (maxrad - minrad);
-                    const gold = Math.PI * (3 - Math.sqrt(5));
-                    const ang = (i - 1) * gold;
-                    let tx = cx + Math.cos(ang) * rad;
-                    let ty = cy + Math.sin(ang) * rad;
-                    let ov = true, att = 0, maxatt = 50, pad = 12;
-                    while (ov && att < maxatt) {
-                        ov = false;
-                        for (const pl of placed) {
-                            const dx = tx - pl.x, dy = ty - pl.y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-                            const mindist = (sz + pl.size) / 2 + pad;
-                            if (dist < mindist) {
-                                ov = true;
-                                if (dist > 0) {
-                                    const pdist = (mindist - dist) + 1;
-                                    const pang = Math.atan2(dy, dx);
-                                    tx += Math.cos(pang) * pdist;
-                                    ty += Math.sin(pang) * pdist;
-                                } else {
-                                    const ran = Math.random() * Math.PI * 2;
-                                    tx += Math.cos(ran) * (mindist + 1);
-                                    ty += Math.sin(ran) * (mindist + 1);
-                                }
-                                const half = sz / 2;
-                                tx = Math.max(half, Math.min(w - half, tx));
-                                ty = Math.max(half, Math.min(h - half, ty));
-                                break;
-                            }
-                        } att++;
-                    }
-                    if (ov) {
-                        const pad = 12;
-                        const maxsr = Math.min(w, h) * 0.5;
-                        const rstep = sz * 0.4;
-                        const astep = Math.PI / 12;
-                        outer:
-                        for (let r = minrad; r <= maxsr; r += rstep) {
-                            for (let a = 0; a < Math.PI * 2; a += astep) {
-                                const cx2 = cx + Math.cos(a) * r;
-                                const cy2 = cy + Math.sin(a) * r;
-                                let cov = false;
-                                for (const pl of placed) {
-                                    const dx = cx2 - pl.x, dy = cy2 - pl.y;
-                                    const dist = Math.sqrt(dx * dx + dy * dy);
-                                    const mindist = (sz + pl.size) / 2 + pad;
-                                    if (dist < mindist) {cov = true; break}
-                                }
-                                if (!cov) {
-                                    tx = cx2;
-                                    ty = cy2;
-                                    ov = false;
-                                    break outer;
-                                }
-                            }
+                        const maximp = sorted[0].importance;
+                        const minimp = sorted[sorted.length - 1].importance;
+                        const imgrange = maximp - minimp;
+                        let normimp;
+                        if (imgrange <= 0) {
+                            const denom = Math.max(1, sorted.length - 1);
+                            normimp = 1 - (i / denom);
+                        } else {
+                            normimp = (g.importance - minimp) / imgrange;
                         }
-                    } x = tx - sz / 2; y = ty - sz / 2;
-                }
-                x = Math.max(0, Math.min(w - sz, x));
-                y = Math.max(0, Math.min(h - sz, y));
-                ic.style.left = `${x}px`;
-                ic.style.top = `${y}px`;
-                ic.style.position = 'absolute';
-                placed.push({ x: x + sz / 2, y: y + sz / 2, size: sz });
-                const im = document.createElement("img");
-                im.src = g.icon;
-                im.draggable = false;
-                im.onerror = function() {this.src = '/assets/images/gameicons/idk.webp'};
-                ic.appendChild(im);
-                ic.addEventListener("click", () => {
-                    const s = document.querySelector(".click");
-                    if (s) {
-                        s.currentTime = 0;
-                        s.play().catch(() => {});
-                    } selectgame(g);
-                }); circle.appendChild(ic);
-            });
+                        const saferad = Math.min(w, h) * 0.4;
+                        const minrad = sz * 0.65;
+                        const maxrad = Math.min(sz * 2, saferad);
+                        const rad = minrad + (1 - normimp) * (maxrad - minrad);
+                        const gold = Math.PI * (3 - Math.sqrt(5));
+                        const ang = (i - 1) * gold;
+                        let tx = cx + Math.cos(ang) * rad;
+                        let ty = cy + Math.sin(ang) * rad;
+                        let ov = true, att = 0, maxatt = 50, pad = 12;
+                        while (ov && att < maxatt) {
+                            ov = false;
+                            for (const pl of placed) {
+                                const dx = tx - pl.x, dy = ty - pl.y;
+                                const dist = Math.sqrt(dx * dx + dy * dy);
+                                const mindist = (sz + pl.size) / 2 + pad;
+                                if (dist < mindist) {
+                                    ov = true;
+                                    if (dist > 0) {
+                                        const pdist = (mindist - dist) + 1;
+                                        const pang = Math.atan2(dy, dx);
+                                        tx += Math.cos(pang) * pdist;
+                                        ty += Math.sin(pang) * pdist;
+                                    } else {
+                                        const ran = Math.random() * Math.PI * 2;
+                                        tx += Math.cos(ran) * (mindist + 1);
+                                        ty += Math.sin(ran) * (mindist + 1);
+                                    }
+                                    const half = sz / 2;
+                                    tx = Math.max(half, Math.min(w - half, tx));
+                                    ty = Math.max(half, Math.min(h - half, ty));
+                                    break;
+                                }
+                            } att++;
+                        }
+                        if (ov) {
+                            const pad = 12;
+                            const maxsr = Math.min(w, h) * 0.5;
+                            const rstep = sz * 0.4;
+                            const astep = Math.PI / 12;
+                            outer:
+                            for (let r = minrad; r <= maxsr; r += rstep) {
+                                for (let a = 0; a < Math.PI * 2; a += astep) {
+                                    const cx2 = cx + Math.cos(a) * r;
+                                    const cy2 = cy + Math.sin(a) * r;
+                                    let cov = false;
+                                    for (const pl of placed) {
+                                        const dx = cx2 - pl.x, dy = cy2 - pl.y;
+                                        const dist = Math.sqrt(dx * dx + dy * dy);
+                                        const mindist = (sz + pl.size) / 2 + pad;
+                                        if (dist < mindist) {cov = true; break}
+                                    }
+                                    if (!cov) {
+                                        tx = cx2;
+                                        ty = cy2;
+                                        ov = false;
+                                        break outer;
+                                    }
+                                }
+                            }
+                        } x = tx - sz / 2; y = ty - sz / 2;
+                    }
+                    x = Math.max(0, Math.min(w - sz, x));
+                    y = Math.max(0, Math.min(h - sz, y));
+                    ic.style.left = `${x}px`;
+                    ic.style.top = `${y}px`;
+                    ic.style.position = 'absolute';
+                    placed.push({ x: x + sz / 2, y: y + sz / 2, size: sz });
+                    const im = document.createElement("img");
+                    im.src = g.icon;
+                    im.draggable = false;
+                    im.onerror = function() {this.src = '/assets/images/gameicons/idk.webp'};
+                    ic.appendChild(im);
+                    ic.addEventListener("click", () => {
+                        const s = document.querySelector(".click");
+                        if (s) {
+                            s.currentTime = 0;
+                            s.play().catch(() => {});
+                        } selectgame(g);
+                    }); circle.appendChild(ic);
+                });
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        circle.classList.remove("rendering");
+                    });
+                });
+            }
         }
 
         async function selectgame(g) {
