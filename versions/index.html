@@ -79,14 +79,15 @@
 
         .tiny {
             position: fixed; bottom: 0.3em; width: 90%;
-            text-align: center;
-            color: rgb(223, 223, 223); font-size: 0.5em;
+            text-align: center; line-height: 0.9;
+            color: rgb(223, 223, 223); font-size: 0.61em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
+            pointer-events: none;
             paint-order: stroke fill;
         }
         .oldstuff {
-            text-align: left;
+            pointer-events: none; text-align: left;
             left: 0.3em !important;
         }
 
@@ -95,16 +96,16 @@
         .sbutton {
             display: flex; position: fixed; flex-direction: column;
             align-items: center; justify-content: center;
-            cursor: pointer; background: none; z-index: 999;
-            border: none; padding: 0; bottom: 2.25em;
+            background: none; z-index: 999;
+            border: none; padding: 0; bottom: 2.6em;
         }
-        .sbutton img {height: 2em}
+        .sbutton img {height: 3em}
 
         .sbutton span {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            color: #fff; font-size: 1em;
+            color: #fff; font-size: 1.5em;
             -webkit-text-stroke: 0.15em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
@@ -115,7 +116,7 @@
         .backbutton {
             position: fixed;
             top: 0.5em; left: 0.5em; z-index: 1000;
-            cursor: pointer; display: none;
+            display: none;
         }
         .backbutton.active {display: block}
         .backbutton img {height: 3em}
@@ -299,7 +300,7 @@
     </a>
 
     <p class="tiny">
-        (no friend request needed)<br>
+        <a style="font-size:1.3em">(no friend request needed)</a><br><br>
         None of the game files are hosted on this domain. Whether the developers shown actually have rights to Om Nom or not is purely speculative.<br>
         Icons from <a href="//ctrhome.github.io/">CTR Home</a> and Play Store archivals (downloadable <a href="https://github.com/sogful/candies.monster/tree/main/assets/images/gameicons">here!</a>)
     </p>
