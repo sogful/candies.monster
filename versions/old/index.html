@@ -188,7 +188,7 @@
         <a class="title">Cut the Rope</a>
         <a class="small">com.zeptolab.ctr.ads</a>
         <a style="display: flex; align-items: center;">
-            Most of the apk files are checked for legitimacy. Be careful with 
+            Most of the apk files are not checked for legitimacy. Be careful with 
             <img class="inner" src="/assets/images/dlbuttons/other.png"> 
             unlabeled ones!
         </a>
@@ -260,7 +260,7 @@
 
         // load from versions.json
         async function loadjson() {
-            const response = await fetch("/versions.json"); const games = await response.json();
+            const response = await fetch("versions.json"); const games = await response.json();
             const container = document.querySelector(".games")
             
             games.forEach(game => {
