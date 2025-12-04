@@ -3,7 +3,7 @@
 <head>
 
     <title>What a peculiar beast...</title>
-    <link rel="icon" type="image/png" href="/assets/images/icon.png">
+    <link rel="icon" type="image/png" href="/assets/images/candy.png">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -393,9 +393,7 @@
             try {
                 const res = await fetch("games.json");
                 games = await res.json();
-                requestAnimationFrame(() => {
-                    setTimeout(() => {rendergamecircle()}, 50);
-                });
+                requestAnimationFrame(() => {setTimeout(() => {rendergamecircle()}, 50)});
             } catch (e) {}
         }
 

@@ -3,7 +3,7 @@
 <head>
 
     <title>Level Preview</title>
-    <link rel="icon" type="image/png" href="/assets/images/icon.png">
+    <link rel="icon" type="image/png" href="/assets/images/candy.png">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -317,17 +317,41 @@
     </div>
 
     <script>
-        const favicons = Array.from({length: 20}, (_, i) => `/assets/images/icon/frame${i+1}.png`);
-        let favicon_index = 0, favicon_delay = 300;
-        function favicongif() {
-            const link = document.querySelector("link[rel='icon']") || document.createElement("link");
-            link.rel = "icon";
-            link.href = favicons[favicon_index];
-            document.head.appendChild(link);
-            favicon_index = (favicon_index + 1) % favicons.length;
-            setTimeout(favicongif, favicon_delay);
-        }
-        favicongif();
+
+        // animated favicon
+        (function() {
+            let spritejson = null; let sheetloaded = false;
+            let favicons = []; let index = 0; const delay = 300;
+            let sheetimg = null;
+
+            fetch("/assets/images/icon.json")
+                .then(response => response.json()).then(data => {
+                    spritejson = data.frames; sheetimg = new Image();
+                    sheetimg.onload = () => {
+                        sheetloaded = true;
+                        const canvas = document.createElement("canvas");
+                        const ctx = canvas.getContext("2d");
+                        favicons = spritejson.map(frame => {
+                            canvas.width = frame.frame.w;
+                            canvas.height = frame.frame.h;
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(
+                                sheetimg,
+                                frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h,
+                                0, 0, frame.frame.w, frame.frame.h
+                            ); return canvas.toDataURL("image/png");
+                        }); favicongif();
+                    }; sheetimg.src = "/assets/images/icon.webp";
+                });
+            function favicongif() {
+                if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
+                const link = document.querySelector("link[rel='icon']") || document.createElement("link");
+                link.rel = "icon"; link.href = favicons[index];
+                document.head.appendChild(link);
+                index = (index + 1) % favicons.length;
+                setTimeout(favicongif, delay);
+            }
+        })();
 
         window.addEventListener("load", function() {
             const loading = document.querySelector(".loading");
