@@ -633,6 +633,30 @@
             try {
                 const res = await fetch(`jsons/${gid}.json`);
                 let vlist = await res.json();
+                
+                const versionmap = new Map();
+                vlist.forEach(ver => {
+                    const versionkey = ver.version;
+                    if (versionmap.has(versionkey)) {
+                        const existing = versionmap.get(versionkey);
+                        const alldownloads = [...(existing.downloads || []), ...(ver.downloads || [])];
+                        const seenurls = new Set();
+                        const uniquedownloads = [];
+                        alldownloads.forEach(d => {
+                            if (d && d.url && !seenurls.has(d.url)) {
+                                seenurls.add(d.url);
+                                uniquedownloads.push(d);
+                            }
+                        });
+                        existing.downloads = uniquedownloads;
+                        if (!existing.icon && ver.icon) existing.icon = ver.icon;
+                        if (!existing.details && ver.details) existing.details = ver.details;
+                    } else {
+                        versionmap.set(versionkey, {...ver});
+                    }
+                });
+                vlist = Array.from(versionmap.values());
+                
                 vlist.sort((a, b) => {
                     const av = parseversion(a.version);
                     const bv = parseversion(b.version);
