@@ -1,24 +1,25 @@
 ![candies dot monster](https://github.com/sogful/candies.monster/blob/main/assets/images/logodark.webp)
-<h1 align="center">a cut the rope modding website</h1>
-<p align="center">always in the process of updating! i mean, not always, at some point it'll get abandoned, but i try to bring in new stuff at least once a week for now.</p>
-<p align="center">all existing tools are available on the <a href="https://candies.monster">frontpage</a>, like:</p>
+<h1 align="center">a cut the rope resource website</h1>
+<p align="center">updates every week with new fixes or pages! everything available is listed on the <a href="https://candies.monster">frontpage</a>, like:</p>
 
-<table>
+<table align="center">
   <tr>
     <td>
       <b>raw to png converter</b><br>
-      <sup><a href="//candies.monster/convert">/convert</a></sup><br>
-      ⤷ fix ctr's awful compressed files
+      <sup><a href="//candies.monster/convert"><tt>/convert</tt></a></sup><br>
+      ⤷ attempt to fix ctr's awful compressed files
     </td>
     <td>
       <b>apk archive</b><br>
-      <sup><a href="//candies.monster/versions">/versions</a></sup><br>
-      ⤷ a bunch of the main android game's versions
+      <sup><a href="//candies.monster/versions"><tt>/versions</tt></a></sup><br>
+      ⤷ all om nom games
     </td>
     <td>
       <b>level preview</b><br>
-      <sup><a href="//candies.monster/preview">/versions</a></sup><br>
-      ⤷ play custom levels online using a modded famobi copy
+      <sup><a href="//candies.monster/preview"><tt>/preview</tt></a></sup><br>
+      ⤷ play custom levels online
     </td>
   </tr>
 </table>
+
+<h6 align="center"><sub><sub><sub>Cut the Rope and Om Nom trademarks belong to ZeptoLab UK Limited, and are in no way intended to be used maliciously. Feed With Candy, however, is not and anyone can do anything with it HA</sub></sub></sub></h6>
