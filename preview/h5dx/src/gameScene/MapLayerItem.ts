@@ -179,6 +179,23 @@ interface TargetItem extends MapLayerItem {
     y: number;
 }
 
+interface GhostItem extends MapLayerItem {
+    x: number;
+    y: number;
+    angle?: number;
+    radius?: number;
+    bouncer?: boolean;
+    bubble?: boolean;
+    grab?: boolean;
+}
+
+interface SteamTubeItem extends MapLayerItem {
+    x: number;
+    y: number;
+    angle?: number;
+    scale?: number;
+}
+
 export type { MapLayerItem as default };
 export type {
     MapSettingsItem,
@@ -197,4 +214,6 @@ export type {
     RotatedCircleItem,
     BouncerItem,
     TargetItem,
+    GhostItem,
+    SteamTubeItem,
 };

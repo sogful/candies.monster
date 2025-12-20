@@ -1,23 +1,9 @@
 [
-  {
-    "version": "v10.1.205",
-    "icon": "/assets/images/gameicons/merge.webp",
-    "downloads": [
-      {"url": "https://apkcombo.com/merge-nommies/com.momzikov.mergenommie.google/download/phone-10.1.205-apk"}
-    ]
-  },
-  {
-    "version": "v9.1.184",
-    "icon": "/assets/images/gameicons/merge.webp",
-    "downloads": [
-      {"url": "https://apkcombo.com/merge-nommies/com.momzikov.mergenommie.google/download/phone-9.1.184-apk"}
-    ]
-  },
-  {
-    "version": "v7.1.162",
-    "icon": "/assets/images/gameicons/merge.webp",
-    "downloads": [
-      {"url": "https://apkcombo.com/merge-nommies/com.momzikov.mergenommie.google/download/phone-7.1.162-apk"}
-    ]
-  }
+    {
+      "version": "v2.1.58",
+      "icon": "/assets/images/gameicons/mergenommies.webp",
+      "downloads": [
+        {"url": "https://apkpure.com/merge-nommies/com.momzikov.mergenommies.google/download/2.1.58"}
+      ]
+    }
 ]

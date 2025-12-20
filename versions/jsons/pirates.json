@@ -1,37 +1,9 @@
 [
-  {
-    "version": "v1.0",
-    "icon": "/assets/images/gameicons/piratesclans.webp",
-    "downloads": [
-      {"url": "https://apkcombo.com/om-nom-pirates-clans/com.omnom.piratesclans/download/phone-1.0-apk"}
-    ]
-  },
-  {
-    "version": "v0.3.1",
-    "icon": "/assets/images/gameicons/piratesclans.webp",
-    "downloads": [
-      {"url": "https://apkcombo.com/om-nom-pirates-clans/com.omnom.piratesclans/download/phone-0.3.1-apk"}
-    ]
-  },
-  {
-    "version": "v0.3.0",
-    "icon": "/assets/images/gameicons/piratesclans.webp",
-    "downloads": [
-      {"url": "https://apkcombo.com/om-nom-pirates-clans/com.omnom.piratesclans/download/phone-0.3.0-apk"}
-    ]
-  },
-  {
-    "version": "v0.1.28",
-    "icon": "/assets/images/gameicons/piratesclans.webp",
-    "downloads": [
-      {"url": "https://apkcombo.com/om-nom-pirates-clans/com.omnom.piratesclans/download/phone-0.1.28-apk"}
-    ]
-  },
-  {
-    "version": "v0.1.25",
-    "icon": "/assets/images/gameicons/piratesclans.webp",
-    "downloads": [
-      {"url": "https://apkcombo.com/om-nom-pirates-clans/com.omnom.piratesclans/download/phone-0.1.25-apk"}
-    ]
-  }
+    {
+      "version": "v1.0",
+      "icon": "/assets/images/gameicons/pirates.webp",
+      "downloads": [
+        {"url": "https://apkpure.com/om-nom-pirates/com.omnom.pirates/download/1.0"}
+      ]
+    }
 ]

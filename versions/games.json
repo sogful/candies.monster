@@ -13,14 +13,14 @@
     "package": "com.zeptolab.ctr2.f2p.google",
     "icon": "/assets/images/gameicons/ctr2.webp",
     "importance": 9,
-    "description": "rope tuah!"
+    "description": "rope tuah"
   },
   {
     "id": "origins",
     "name": "Cut the Rope: Origins",
     "package": "com.zeptolab.ctrorigins",
     "icon": "/assets/images/gameicons/modern.webp",
-    "importance": 5,
+    "importance": 4,
     "description": "this game had a lot of different iterations besides these versions, and ALL of them are miserable."
   },
   {
@@ -329,18 +329,138 @@
   },
   {
     "id": "pirates",
+    "name": "Om Nom Pirates",
+    "package": "com.omnom.pirates",
+    "icon": "/assets/images/gameicons/pirates.webp",
+    "importance": 1,
+    "description": ""
+  },
+  {
+    "id": "piratesclans",
     "name": "Om Nom Pirates Clans",
     "package": "com.omnom.piratesclans",
-    "icon": "/assets/images/gameicons/piratesclans.webp",
+    "icon": "/assets/images/gameicons/pirates.webp",
     "importance": 1,
+    "description": ""
+  },
+  {
+    "id": "seabrawl",
+    "name": "Om Nom Sea Brawl",
+    "package": "com.omnom.seabrawl",
+    "icon": "/assets/images/gameicons/pirates.webp",
+    "importance": 1,
+    "description": ""
+  },
+  {
+    "id": "battlepirates",
+    "name": "Om Nom Battle Pirates",
+    "package": "com.omnom.battlepirates",
+    "icon": "/assets/images/gameicons/battlepirates.webp",
+    "importance": 1,
+    "description": ""
+  },
+  {
+    "id": "piratestactics",
+    "name": "Om Nom Pirates Tactics",
+    "package": "com.omnom.piratestactics",
+    "icon": "/assets/images/gameicons/piratestactics.webp",
+    "importance": 1,
+    "description": ""
+  },
+  {
+    "id": "mergenommie",
+    "name": "Merge Nommies",
+    "package": "com.momzikov.mergenommie.google",
+    "icon": "/assets/images/gameicons/mergenommies.webp",
+    "importance": 2,
     "description": ""
   },
   {
     "id": "mergenommies",
     "name": "Merge Nommies",
-    "package": "com.momzikov.mergenommie.google",
-    "icon": "/assets/images/gameicons/merge.webp",
+    "package": "com.momzikov.mergenommies.google",
+    "icon": "/assets/images/gameicons/mergenommies.webp",
+    "importance": 0,
+    "description": "the merge nommies of lies and deceit?? why are there two of them"
+  },
+  {
+    "id": "wildlifepop",
+    "name": "Wildlife POP!",
+    "package": "com.vasilyandev.wildlifepop",
+    "icon": "/assets/images/gameicons/wildlifepop.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "id": "fruitblast",
+    "name": "Fruit Blast",
+    "package": "com.vasilyandev.fruitblast",
+    "icon": "/assets/images/gameicons/fruitblast.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "id": "pinpuzzle",
+    "name": "Om Nom Pin Puzzle",
+    "package": "com.bigcodegames.om.nom.pin.puzzle",
+    "icon": "/assets/images/gameicons/pinpuzzle.webp",
+    "importance": 2,
+    "description": "is this endorsed??"
+  },
+  {
+    "id": "superrun",
+    "name": "Monster Super Run",
+    "package": "com.momzikov.superrun",
+    "icon": "/assets/images/gameicons/run3.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "id": "superrun",
+    "name": "Om Nom: Crazy Run",
+    "package": "com.momzikov.crazyrun",
+    "icon": "/assets/images/gameicons/crazyrun.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "id": "sports",
+    "name": "Om Nom Sports",
+    "package": "com.momzikov.omnomsports",
+    "icon": "/assets/images/gameicons/sports.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "id": "cookinggame",
+    "name": "Om Nom : Cooking Game",
+    "package": "com.appon.cookinggame.omnom",
+    "icon": "/assets/images/gameicons/cookinggame.webp",
     "importance": 2,
     "description": ""
+  },
+  {
+    "id": "tower3d",
+    "name": "Om Nom Tower 3D",
+    "package": "com.famobi.omnomtower3d",
+    "icon": "/assets/images/gameicons/tower3d.webp",
+    "importance": 3,
+    "description": "pretty new!"
+  },
+  {
+    "id": "candybeat",
+    "name": "Candy Beat",
+    "package": "com.amanotes.pamabeatcandy",
+    "icon": "/assets/images/gameicons/candybeat.webp",
+    "importance": 1,
+    "description": ""
+  },
+  {
+    "id": "marbleshooter",
+    "name": "Om Nom Marble Shooter",
+    "package": "com.renderedideas.omnommarblematch",
+    "icon": "/assets/images/gameicons/marbleshooter.webp",
+    "importance": 0,
+    "description": "lost media"
   }
 ]
