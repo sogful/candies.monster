@@ -149,6 +149,11 @@
         }
         
         @media (max-width: 600px) {
+            .gamescreen {
+                overflow-y: auto;
+                overflow-x: hidden;
+                align-items: flex-start;
+            }
             .gamescreen.slideleft {
                 transform: translateX(-100vw);
             }
@@ -179,7 +184,7 @@
                 min-height: auto;
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(clamp(50px, calc(50px + 30 * ((100vw - 220px) / 380)), 80px), 1fr));
-                gap: 0.25em; padding: 0.5em;
+                gap: 0.25em; padding: 0.5em; padding-bottom: 10em;
                 box-sizing: border-box;
                 justify-content: start;
                 align-items: flex-start;

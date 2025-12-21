@@ -88,6 +88,14 @@
     "description": ""
   },
   {
+    "id": "parkour",
+    "name": "Om Nom: Run 2",
+    "package": "com.zeptolab.omnomparkour.google",
+    "icon": "/assets/images/gameicons/run2.webp",
+    "importance": 1,
+    "description": "another odd one with a separate release under a different package name.."
+  },
+  {
     "id": "myomnom",
     "name": "My Om Nom",
     "package": "com.zeptolab.myomnom.free.google",
