@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <title>ont Maker!</title>
@@ -65,7 +66,7 @@
             cursor: url("/assets/static/link.cur"), default !important;
         }
         * {
-            cursor: inherit !important;  
+            cursor: inherit !important;
             scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
         }
         *::-webkit-scrollbar {width: 0px}
@@ -142,7 +143,7 @@
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
-        
+
         .container {
             display: flex; flex-direction: column;
             width: 100%; height: 100vh;
@@ -162,12 +163,11 @@
             width: 100%; height: 100%;
             padding: 4em 4em 8em 4em; box-sizing: border-box; overflow: visible;
         }
-        
+
         .textdisplay > .textshadow,
         .textdisplay > .textpreview {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
 
@@ -178,7 +178,7 @@
             line-height: 1.2;
             z-index: 2;
         }
-        
+
         .textshadow {
             text-align: center;
             white-space: pre;
@@ -212,13 +212,11 @@
 
         .cursoroverlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
             z-index: 3;
         }
-        
         .cursoroverlay .cursorline {
             position: absolute;
             width: 2px;
@@ -226,22 +224,20 @@
             animation: blink 1s infinite;
             pointer-events: none;
         }
-        
-        .selection-overlay {
+        .selectionoverlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
             z-index: 2.5;
         }
-        
-        .selection-overlay .selection-box {
+
+        .selectionoverlay .selectionbox {
             position: absolute;
             background-color: rgba(255, 255, 255, 0.3);
             pointer-events: none;
         }
-        
+
         @keyframes blink {
             0%, 50% {opacity: 1}
             51%, 100% {opacity: 0}
@@ -273,7 +269,7 @@
             display: flex; flex-direction: column;
             gap: 0.5em; flex: 1;
         }
-        
+
         .configline {
             display: flex;
             gap: 0.5em;
@@ -339,7 +335,7 @@
             justify-content: center;
             flex-wrap: wrap;
         }
-        
+
         .colorline {
             display: flex;
             gap: 0em;
@@ -469,7 +465,7 @@
         .settinginput[type="range"]::-moz-range-thumb {
             width: 16px; height: 16px;
             background: white;
-            border-radius: 50%; 
+            border-radius: 50%;
             cursor: pointer; border: none;
         }
         .opacitycontrol {
@@ -525,13 +521,13 @@
             top: 1em; right: 1em; gap: 0.5em; z-index: 10;
             display: flex; flex-direction: row; align-items: center;
         }
-        
+
         .downloadsection .settinggroup {
             align-items: center;
             flex-direction: row;
             gap: 0.3em;
         }
-        
+
         .downloadsection .settinglabel {font-size: 1.1em}
         .downloadsection .settinginput {width: 40px}
 
@@ -540,24 +536,24 @@
 <body>
 
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
-    
+
     <div class="loading">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
             <path fill="#fbfbfb" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm1 18-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
             <path fill="#080808" d="M90 29h13l8 7 7 8 5 10 1 6v14l-4 11-3 5 8-6 8-9 7-12 5-16 4 1 9 10 8 15 4 13v9l-8 11-11 8-12 5-4 1h-15l-6-3-7-6-2-4 2 10 7 11 7 6 9 5 16 6 6 1-2 4-12 10-15 7-7 2h-9l-10-5-8-7-7-12-3-11v-15l4-10 4-6 3-4-10 8-9 10-9 15-8 20-4-2-9-10-8-16v-8l5-16 6-11 8-7 10-6 12-4h12l10 4 3 1-5-9-8-7-10-4-5-1H45l4-6 12-10 16-8 6-2Zm0 4-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
             <path fill="#060606" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm4 3-16 3-16 7-11 7-11 10-8 11-8 16-3 12-1 7v17l2 12 5 14 6 11 9 11 10 9 15 9 14 5 11 2h18l13-3 14-5 14-9 12-11 9-13 7-16 2-7 1-9V90l-3-15-7-16-8-11-8-9-12-9-17-8-12-3-7-1Z"/>
-          </svg>          
+        </svg>
     </div>
 
     <div class="page">
         <div class="container">
             <div class="previewsection">
                 <div class="textdisplay">
-                    <div class="textshadow" id="textShadow"></div>
-                    <div class="textpreview" id="textPreview"></div>
-                    <div class="cursoroverlay" id="cursorOverlay"></div>
-                    <div class="selection-overlay" id="selectionOverlay"></div>
-                    <textarea class="textinput" id="textInput" placeholder="Input here..."></textarea>
+                    <div class="textshadow"></div>
+                    <div class="textpreview"></div>
+                    <div class="cursoroverlay"></div>
+                    <div class="selectionoverlay"></div>
+                    <textarea class="textinput" placeholder="Input here..."></textarea>
                 </div>
             </div>
 
@@ -582,7 +578,7 @@
                             <span>New</span>
                         </button>
                     </div>
-                    
+
                     <div class="configline">
                         <button class="preset clickable" data-preset="default">
                             <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
@@ -597,58 +593,58 @@
                             <span>Cyan</span>
                         </button>
                     </div>
-                    
+
                     <div class="configline numberline">
                         <div class="settinggroup">
                             <label class="settinglabel">Kerning</label>
-                            <input type="number" class="settinginput numberinput" id="kerning" value="0" step="0.1">
+                            <input type="number" class="settinginput numberinput kerning" value="0" step="0.1">
                         </div>
                         <div class="settinggroup">
                             <label class="settinglabel">Outline Size</label>
-                            <input type="number" class="settinginput numberinput" id="outlineSize" value="4" min="0" max="20" step="0.5">
+                            <input type="number" class="settinginput numberinput outlinesize" value="4" min="0" max="20" step="0.5">
                         </div>
                         <div class="settinggroup">
                             <label class="settinglabel">Shadow X</label>
-                            <input type="number" class="settinginput numberinput" id="shadowX" value="0" step="0.5">
+                            <input type="number" class="settinginput numberinput shadowx" value="0" step="0.5">
                         </div>
                         <div class="settinggroup">
                             <label class="settinglabel">Shadow Y</label>
-                            <input type="number" class="settinginput numberinput" id="shadowY" value="4" step="0.5">
+                            <input type="number" class="settinginput numberinput shadowy" value="4" step="0.5">
                         </div>
                     </div>
-                    
+
                     <div class="configline colorline">
                         <div class="settinggroup">
                             <label class="settinglabel">Font Color</label>
                             <div class="colorgroup">
-                                <input type="color" class="settinginput colorpicker" id="fontcolorpicker" value="#ffffff">
-                                <input type="text" class="settinginput colorinput" id="fontColor" value="#ffffff" placeholder="#ffffff">
+                                <input type="color" class="settinginput colorpicker fontcolorpicker" value="#ffffff">
+                                <input type="text" class="settinginput colorinput fontcolor" value="#ffffff" placeholder="#ffffff">
                             </div>
                             <div class="opacitycontrol">
-                                <input type="range" class="opacityslider" id="fontcoloropacity" min="0" max="100" value="100" step="1">
-                                <input type="number" class="settinginput numberinput opacityvalue" id="fontcoloropacityvalue" value="100" min="0" max="100" step="1">
+                                <input type="range" class="opacityslider fontcoloropacity" min="0" max="100" value="100" step="1">
+                                <input type="number" class="settinginput numberinput opacityvalue fontcoloropacityvalue" value="100" min="0" max="100" step="1">
                             </div>
                         </div>
                         <div class="settinggroup">
                             <label class="settinglabel">Outline Color</label>
                             <div class="colorgroup">
-                                <input type="color" class="settinginput colorpicker" id="outlinecolorpicker" value="#000000">
-                                <input type="text" class="settinginput colorinput" id="outlinecolor" value="#000000cc" placeholder="#000000cc">
+                                <input type="color" class="settinginput colorpicker outlinecolorpicker" value="#000000">
+                                <input type="text" class="settinginput colorinput outlinecolor" value="#000000cc" placeholder="#000000cc">
                             </div>
                             <div class="opacitycontrol">
-                                <input type="range" class="opacityslider" id="outlinecoloropacity" min="0" max="100" value="80" step="1">
-                                <input type="number" class="settinginput numberinput opacityvalue" id="outlinecoloropacityvalue" value="80" min="0" max="100" step="1">
+                                <input type="range" class="opacityslider outlinecoloropacity" min="0" max="100" value="80" step="1">
+                                <input type="number" class="settinginput numberinput opacityvalue outlinecoloropacityvalue" value="80" min="0" max="100" step="1">
                             </div>
                         </div>
                         <div class="settinggroup">
                             <label class="settinglabel">Shadow Color</label>
                             <div class="colorgroup">
-                                <input type="color" class="settinginput colorpicker" id="shadowColorPicker" value="#2b0f00">
-                                <input type="text" class="settinginput colorinput" id="shadowColor" value="#2b0f00cc" placeholder="#2b0f00cc">
+                                <input type="color" class="settinginput colorpicker shadowcolorpicker" value="#2b0f00">
+                                <input type="text" class="settinginput colorinput shadowcolor" value="#2b0f00cc" placeholder="#2b0f00cc">
                             </div>
                             <div class="opacitycontrol">
-                                <input type="range" class="opacityslider" id="shadowcoloropacity" min="0" max="100" value="80" step="1">
-                                <input type="number" class="settinginput numberinput opacityvalue" id="shadowcoloropacityvalue" value="80" min="0" max="100" step="1">
+                                <input type="range" class="opacityslider shadowcoloropacity" min="0" max="100" value="80" step="1">
+                                <input type="number" class="settinginput numberinput opacityvalue shadowcoloropacityvalue" value="80" min="0" max="100" step="1">
                             </div>
                         </div>
                     </div>
@@ -657,9 +653,9 @@
             <div class="downloadsection">
                 <div class="settinggroup">
                     <label class="settinglabel">Output Width</label>
-                    <input type="number" class="settinginput" id="imageSize" value="1000" min="100" max="5000" step="100">
+                    <input type="number" class="settinginput imagesize" value="1000" min="100" max="5000" step="100">
                 </div>
-                <a class="sbutton clickable" id="downloadButton">
+                <a class="sbutton clickable downloadbutton">
                     <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
                     <span>Download</span>
                 </a>
@@ -689,7 +685,7 @@
         });
 
         /*//////////////////////////////////////////////////////////////////////*/
-        
+
         // presets
         const presets = {
             default: {
@@ -717,7 +713,7 @@
                 shadowy: 0
             }
         }
-        
+
         // state
         const state = {
             text: "",
@@ -733,30 +729,30 @@
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
-        
-        const textinput = document.getElementById("textInput")
-        const textpreview = document.getElementById("textPreview")
+
+        const textinput = document.querySelector(".textinput")
+        const textpreview = document.querySelector(".textpreview")
         const fontbuttons = document.querySelectorAll(".fontbutton")
         const settinginputs = {
-            kerning: document.getElementById("kerning"),
-            imagesize: document.getElementById("imageSize"),
-            fontcolor: document.getElementById("fontColor"),
-            fontcolorpicker: document.getElementById("fontcolorpicker"),
-            fontcoloropacity: document.getElementById("fontcoloropacity"),
-            fontcoloropacityvalue: document.getElementById("fontcoloropacityvalue"),
-            outlinecolor: document.getElementById("outlinecolor"),
-            outlinecolorpicker: document.getElementById("outlinecolorpicker"),
-            outlinecoloropacity: document.getElementById("outlinecoloropacity"),
-            outlinecoloropacityvalue: document.getElementById("outlinecoloropacityvalue"),
-            outlinesize: document.getElementById("outlineSize"),
-            shadowcolor: document.getElementById("shadowColor"),
-            shadowcolorpicker: document.getElementById("shadowColorPicker"),
-            shadowcoloropacity: document.getElementById("shadowcoloropacity"),
-            shadowcoloropacityvalue: document.getElementById("shadowcoloropacityvalue"),
-            shadowx: document.getElementById("shadowX"),
-            shadowy: document.getElementById("shadowY")
+            kerning: document.querySelector(".kerning"),
+            imagesize: document.querySelector(".imagesize"),
+            fontcolor: document.querySelector(".fontcolor"),
+            fontcolorpicker: document.querySelector(".fontcolorpicker"),
+            fontcoloropacity: document.querySelector(".fontcoloropacity"),
+            fontcoloropacityvalue: document.querySelector(".fontcoloropacityvalue"),
+            outlinecolor: document.querySelector(".outlinecolor"),
+            outlinecolorpicker: document.querySelector(".outlinecolorpicker"),
+            outlinecoloropacity: document.querySelector(".outlinecoloropacity"),
+            outlinecoloropacityvalue: document.querySelector(".outlinecoloropacityvalue"),
+            outlinesize: document.querySelector(".outlinesize"),
+            shadowcolor: document.querySelector(".shadowcolor"),
+            shadowcolorpicker: document.querySelector(".shadowcolorpicker"),
+            shadowcoloropacity: document.querySelector(".shadowcoloropacity"),
+            shadowcoloropacityvalue: document.querySelector(".shadowcoloropacityvalue"),
+            shadowx: document.querySelector(".shadowx"),
+            shadowy: document.querySelector(".shadowy")
         }
-        
+
         function hextoopacity(hex) {
             if (!hex || typeof hex !== "string" || hex.length < 7) return 100
             if (hex.length === 9) {
@@ -793,10 +789,10 @@
                 btn.textContent = ""
             }
         })
-       
+
         Object.keys(settinginputs).forEach(k => {
             if (!settinginputs[k]) return
-            
+
             if (k === "fontcolor" || k === "outlinecolor" || k === "shadowcolor" || k === "fontcolorpicker" || k === "outlinecolorpicker" || k === "shadowcolorpicker") {
                 const basekey = k.replace("picker", "")
                 const ispicker = k.endsWith("picker")
@@ -807,7 +803,7 @@
                     }
                     v = v.slice(0, 8)
                     v = "#" + v
-                    
+
                     if (ispicker) {
                         const rgbhex = v
                         const opacityinput = settinginputs[basekey + "opacity"]
@@ -840,7 +836,7 @@
                 const basekey = k.replace("opacity", "").replace("value", "")
                 const isvalue = k.endsWith("value")
                 const otherkey = isvalue ? basekey + "opacity" : basekey + "opacityvalue"
-                
+
                 settinginputs[k].addEventListener("input", function() {
                     let opacity = parseFloat(this.value)
                     if (isNaN(opacity)) opacity = 100
@@ -861,16 +857,16 @@
                 })
             }
         })
-        
+
         textinput.addEventListener("input", function() {
             state.text = this.value
             updatepreview()
         })
         textinput.addEventListener("focus", function() { updatepreview() })
         textinput.addEventListener("blur", function() { updatepreview() })
-        
+
         /*//////////////////////////////////////////////////////////////////////*/
-        
+
         // cursor stufff
         let cursorupdateinterval = null
         function startcursorupdate() {
@@ -897,7 +893,7 @@
                 updatepreview()
             }
         })
-        
+
         /*//////////////////////////////////////////////////////////////////////*/
 
         function applypresetstyling(e, p) {
@@ -952,7 +948,7 @@
                 }
             })
         })
-       
+
         function hextorgba(h) {
             if (!h || typeof h !== "string" || h.length < 7) return "rgba(0,0,0,1)"
             const r = parseInt(h.slice(1, 3), 16) || 0
@@ -965,7 +961,7 @@
             if (!h || typeof h !== "string" || h.length < 7) return "#000000"
             return h.slice(0, 7)
         }
-       
+
         function updatepreview() {
             const displaytext = state.text || ""
             const isplaceholder = !state.text
@@ -993,7 +989,7 @@
 
             const computedfontsize = parseFloat(getComputedStyle(textpreview).fontSize)
             const scalefactor = computedfontsize / 68
-            
+
             textinput.style.fontSize = computedfontsize + "px"
 
             if (state.outlinesize > 0 && !isplaceholder) {
@@ -1002,7 +998,6 @@
                 textpreview.style.webkitTextStroke = `${scaledoutlinesize}px ${outrgba}`
                 textpreview.style.textStroke = `${scaledoutlinesize}px ${outrgba}`
                 textpreview.style.paintOrder = "stroke fill"
-                // Fill the outline if font color is transparent
                 const fontopacity = hextoopacity(state.fontcolor)
                 if (fontopacity === 0 || fontopacity < 10) {
                     textpreview.style.webkitTextFillColor = outrgba
@@ -1023,10 +1018,10 @@
             if (isfocused && !isplaceholder && selectionstart !== selectionend) {
                 updateselectionoverlay(selectionstart, selectionend, computedfontsize)
             } else {
-                const selectionoverlay = document.getElementById("selectionOverlay")
+                const selectionoverlay = document.querySelector(".selectionoverlay")
                 selectionoverlay.innerHTML = ""
             }
-            const textshadow = document.getElementById("textShadow")
+            const textshadow = document.querySelector(".textshadow")
             if ((state.shadowx !== 0 || state.shadowy !== 0) && !isplaceholder) {
                 textshadow.style.display = "block"
                 textshadow.textContent = displaytext
@@ -1074,10 +1069,10 @@
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
-        
+
         // cursor + selection overlay
         function updatecursoroverlay(cpos, isfoc, isph, fontsize) {
-            const cursoroverlay = document.getElementById("cursorOverlay")
+            const cursoroverlay = document.querySelector(".cursoroverlay")
             cursoroverlay.innerHTML = ""
             if (!isfoc) return
             const displaytext = state.text || ""
@@ -1114,7 +1109,7 @@
         }
 
         function updateselectionoverlay(selectionstart, selectionend, fontsize) {
-            const selectionoverlay = document.getElementById("selectionOverlay")
+            const selectionoverlay = document.querySelector(".selectionoverlay")
             selectionoverlay.innerHTML = ""
             const displaytext = state.text || ""
             if (!displaytext || selectionstart === selectionend) return
@@ -1151,7 +1146,7 @@
                     const selectiony = lineidx * lineheight - (totalheight / 2)
                     const selectionwidth = selectedwidth
                     const selectionbox = document.createElement("div")
-                    selectionbox.className = "selection-box"
+                    selectionbox.className = "selectionbox"
                     selectionbox.style.left = selectionx + "px"
                     selectionbox.style.top = selectiony + "px"
                     selectionbox.style.width = selectionwidth + "px"
@@ -1188,138 +1183,103 @@
             textpreview.style.whiteSpace = "pre"
             void textpreview.offsetHeight
         }
-        
-        document.getElementById("downloadButton").addEventListener("click", async function() {
+
+        document.querySelector(".downloadbutton").addEventListener("click", async function() {
             if (!state.text) return
-            const textpreview = document.getElementById("textPreview")
-            const textshadow = document.getElementById("textShadow")
-            const textdisplay = textpreview.parentElement
-            const capturecontainer = document.createElement("div")
-            capturecontainer.style.position = "absolute"
-            capturecontainer.style.left = "-9999px"
-            capturecontainer.style.top = "0"
-            capturecontainer.style.width = "5000px"
-            capturecontainer.style.height = "5000px"
-            capturecontainer.style.overflow = "visible"
-            capturecontainer.style.backgroundColor = "transparent"
-            document.body.appendChild(capturecontainer)
-            const displayclone = textdisplay.cloneNode(true)
-            displayclone.style.position = "relative"
-            displayclone.style.width = "5000px"
-            displayclone.style.height = "5000px"
-            displayclone.style.transform = "none"
-            displayclone.style.left = "0"
-            displayclone.style.top = "0"
-            displayclone.style.overflow = "visible"
-            displayclone.style.padding = "1000px"
-            const clonedshadow = displayclone.querySelector(".textshadow")
-            const clonedpreview = displayclone.querySelector(".textpreview")
-            const cursoroverlay = displayclone.querySelector(".cursoroverlay")
-            const selectionoverlay = displayclone.querySelector(".selection-overlay")
-            const textinput = displayclone.querySelector(".textinput")
-            if (cursoroverlay) cursoroverlay.remove()
-            if (selectionoverlay) selectionoverlay.remove()
-            if (textinput) textinput.remove()
-            if (clonedshadow) {
-                clonedshadow.style.zIndex = "1"
-                clonedshadow.style.position = "absolute"
-                if (state.outlinesize > 0) {
-                    clonedshadow.style.paintOrder = "stroke fill"
-                }
+            const p_el = document.querySelector(".textpreview")
+            const s_el = document.querySelector(".textshadow")
+            const getActualBounds = (el) => {
+                const range = document.createRange()
+                range.selectNodeContents(el)
+                return range.getBoundingClientRect()
             }
-            if (clonedpreview) {
-                clonedpreview.style.zIndex = "2"
-                clonedpreview.style.position = "absolute"
-                const previewstyles = getComputedStyle(textpreview)
-                clonedpreview.style.paintOrder = previewstyles.paintOrder || "stroke fill"
-                clonedpreview.style.webkitTextStroke = previewstyles.webkitTextStroke
-                clonedpreview.style.textStroke = previewstyles.textStroke
-                clonedpreview.style.webkitTextFillColor = previewstyles.webkitTextFillColor || previewstyles.color
-                clonedpreview.style.textFillColor = previewstyles.textFillColor || previewstyles.color
+            const p_rect = getActualBounds(p_el)
+            const s_rect = s_el.style.display !== "none" ? getActualBounds(s_el) : p_rect
+            const minx = Math.min(p_rect.left, s_rect.left)
+            const miny = Math.min(p_rect.top, s_rect.top)
+            const maxx = Math.max(p_rect.right, s_rect.right)
+            const maxy = Math.max(p_rect.bottom, s_rect.bottom)
+            const f_sz = parseFloat(getComputedStyle(p_el).fontSize)
+            const scale = f_sz / 68
+            const pad = Math.max(60, (state.outlinesize * scale) + 20)
+            const w = (maxx - minx) + (pad * 2)
+            const h = (maxy - miny) + (pad * 2)
+            const container = document.createElement("div")
+            container.style.cssText = `position:fixed;left:-9999px;top:0;width:${w}px;height:${h}px;background:transparent;z-index:-1;`
+            document.body.appendChild(container)
+            const clone = document.createElement("div")
+            clone.style.cssText = `position:relative;width:${w}px;height:${h}px;display:flex;justify-content:center;align-items:center;`
+            const copyStyle = (src, dest, extra = {}) => {
+                const s = getComputedStyle(src); dest.style.fontFamily = s.fontFamily;
+                dest.style.fontSize = s.fontSize; dest.style.color = s.color;
+                dest.style.letterSpacing = s.letterSpacing; dest.style.lineHeight = s.lineHeight;
+                dest.style.whiteSpace = "pre"; dest.style.textAlign = "center";
+                dest.style.webkitTextStroke = s.webkitTextStroke; dest.style.textStroke = s.textStroke;
+                dest.style.webkitTextFillColor = s.webkitTextFillColor; dest.style.paintOrder = s.paintOrder;
+                dest.style.textShadow = s.textShadow; Object.assign(dest.style, extra);
             }
-            if (clonedshadow && clonedpreview) {
-                displayclone.removeChild(clonedshadow)
-                displayclone.removeChild(clonedpreview)
-                displayclone.appendChild(clonedshadow)
-                displayclone.appendChild(clonedpreview)
-            }
-            capturecontainer.appendChild(displayclone)
-            await new Promise(r => setTimeout(r, 100))
-            try {
-                const canvas = await html2canvas(displayclone, {
-                    backgroundColor: null,
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    allowTaint: true,
-                    width: 5000,
-                    height: 5000,
-                    windowWidth: 5000,
-                    windowHeight: 5000,
-                    ignoreElements: function(el) {
-                        return false
-                    }
+            const c_p = document.createElement("div")
+            c_p.textContent = state.text
+            copyStyle(p_el, c_p, { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", zIndex: "2" })
+            clone.appendChild(c_p)
+            if (s_el.style.display !== "none") {
+                const c_s = document.createElement("div")
+                c_s.textContent = state.text
+                const ox = state.shadowx * scale, oy = state.shadowy * scale;
+                copyStyle(s_el, c_s, {
+                    position: "absolute", left: "50%", top: "50%",
+                    transform: `translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`,
+                    zIndex: "1"
                 })
-                const ctx = canvas.getContext("2d")
-                const imagedata = ctx.getImageData(0, 0, canvas.width, canvas.height)
-                const data = imagedata.data
-                let minx = canvas.width
-                let maxx = 0
-                let miny = canvas.height
-                let maxy = 0
-                for (let y = 0; y < canvas.height; y++) {
-                    for (let x = 0; x < canvas.width; x++) {
-                        const idx = (y * canvas.width + x) * 4
-                        const alpha = data[idx + 3]
-                        if (alpha > 0) {
-                            minx = Math.min(minx, x)
-                            maxx = Math.max(maxx, x)
-                            miny = Math.min(miny, y)
-                            maxy = Math.max(maxy, y)
-                        }
-                    }
+                const shadowhex = state.shadowcolor
+                let shadowopacity = 1
+                if (shadowhex.length === 9) {
+                    shadowopacity = parseInt(shadowhex.slice(7, 9), 16) / 255
                 }
-                const computedfontsize = parseFloat(getComputedStyle(textpreview).fontSize)
-                const scalefactor = computedfontsize / 68
-                const maxshadowoffset = Math.max(
-                    Math.abs(state.shadowx * scalefactor),
-                    Math.abs(state.shadowy * scalefactor)
-                )
-                const outlinepadding = (state.outlinesize * scalefactor) || 0
-                const padding = Math.max(20, maxshadowoffset + outlinepadding + 10)
-                minx = Math.max(0, minx - padding)
-                maxx = Math.min(canvas.width, maxx + padding)
-                miny = Math.max(0, miny - padding)
-                maxy = Math.min(canvas.height, maxy + padding)
-                const contentwidth = maxx - minx
-                const contentheight = maxy - miny
-                const trimmedcanvas = document.createElement("canvas")
-                trimmedcanvas.width = contentwidth
-                trimmedcanvas.height = contentheight
-                const trimmedctx = trimmedcanvas.getContext("2d")
-                trimmedctx.drawImage(canvas, minx, miny, contentwidth, contentheight, 0, 0, contentwidth, contentheight)
-                let finalcanvas = trimmedcanvas
-                if (contentwidth !== state.imagesize) {
-                    const scaledcanvas = document.createElement("canvas")
-                    scaledcanvas.width = state.imagesize
-                    const scaleratio = state.imagesize / contentwidth
-                    scaledcanvas.height = Math.round(contentheight * scaleratio)
-                    const scaledctx = scaledcanvas.getContext("2d")
-                    scaledctx.drawImage(trimmedcanvas, 0, 0, contentwidth, contentheight, 0, 0, scaledcanvas.width, scaledcanvas.height)
-                    finalcanvas = scaledcanvas
+                const shadowrgb = hexrgbatohexrgb(shadowhex)
+                const rgbmatch = shadowrgb.match(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i)
+                const shadowrgbonly = rgbmatch
+                    ? `rgb(${parseInt(rgbmatch[1], 16)}, ${parseInt(rgbmatch[2], 16)}, ${parseInt(rgbmatch[3], 16)})`
+                    : hextorgba(shadowhex)
+                c_s.style.opacity = shadowopacity.toString()
+                c_s.style.color = shadowrgbonly
+                if (state.outlinesize > 0) {
+                    const scaledoutlinesize = state.outlinesize * scale
+                    c_s.style.webkitTextStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
+                    c_s.style.textStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
+                    c_s.style.webkitTextFillColor = shadowrgbonly
+                    c_s.style.textFillColor = shadowrgbonly
+                    c_s.style.paintOrder = "stroke fill"
+                } else {
+                    c_s.style.webkitTextStroke = "0px transparent"
+                    c_s.style.textStroke = "0px transparent"
                 }
-                finalcanvas.toBlob(function(blob) {
-                    const url = URL.createObjectURL(blob)
-                    const a = document.createElement("a")
-                    a.href = url
-                    a.download = "font-text.png"
-                    a.click()
-                    URL.revokeObjectURL(url)
-                    document.body.removeChild(capturecontainer)
+                clone.appendChild(c_s)
+            }
+            container.appendChild(clone); await document.fonts.ready
+            try {
+                const canvas = await html2canvas(clone, {
+                    backgroundColor: null, scale: 2, useCORS: true, logging: false, width: w, height: h
+                })
+                let final = canvas
+                if (state.imagesize && state.imagesize !== canvas.width) {
+                    const scaled = document.createElement("canvas")
+                    scaled.width = state.imagesize; scaled.height = canvas.height * (state.imagesize / canvas.width)
+                    const ctx = scaled.getContext("2d"); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+                    ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaled.width, scaled.height)
+                    final = scaled
+                }
+                final.toBlob(blob => {
+                    const url = URL.createObjectURL(blob); const a = document.createElement("a");
+                    const words = state.text.trim().split(/\s+/).filter(w => w.length > 0)
+                    const firstfive = words.slice(0, 5)
+                    const filename = (words.length > 5 ? firstfive.join(" ") + "..." : firstfive.join(" ")) || "text"
+                    const sanitized = filename.replace(/[<>:"/\\|?*]/g, "").trim() || "text"
+                    a.href = url; a.download = `${sanitized}.png`; a.click();
+                    URL.revokeObjectURL(url); container.remove()
                 }, "image/png")
-            } catch (error) {
-                console.error("error capturing image:", error)
-                document.body.removeChild(capturecontainer)
+            } catch (e) {
+                console.error(e); container.remove()
             }
         })
 
@@ -1328,8 +1288,7 @@
         const configs = document.querySelector(".configs")
         const draghandle = document.querySelector(".configs .draghandle")
         let isdragging = false
-        let dragstartx = 0
-        let dragstarty = 0
+        let dragstartx = 0; let dragstarty = 0
         let configstartx = 0
         let configstarty = 0
         if (draghandle && configs) {
@@ -1361,7 +1320,7 @@
         settinginputs.fontcolorpicker.value = hexrgbatohexrgb(state.fontcolor)
         settinginputs.outlinecolorpicker.value = hexrgbatohexrgb(state.outlinecolor)
         settinginputs.shadowcolorpicker.value = hexrgbatohexrgb(state.shadowcolor)
-        
+
         if (settinginputs.fontcoloropacity) {
             const fontopacity = hextoopacity(state.fontcolor)
             settinginputs.fontcoloropacity.value = fontopacity
@@ -1382,8 +1341,7 @@
         window.addEventListener("resize", function() {
             setTimeout(updatepreview, 100)
         })
-      
+
     </script>
 </body>
 </html>
-

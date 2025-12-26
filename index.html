@@ -121,14 +121,14 @@
             width: 100%;
         }
 		.buttons a {position: relative; display: inline-flex}
-		.buttons a::after {
-			position: absolute; inset: 0;
-			display: flex; align-items: center; justify-content: center;
-			color: white; font-size: 1.75em;
+        .buttons a::after {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.75em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
-		}
+        }
         [wip] > img, [todo] > img {filter: grayscale(1)}
         [wip]::after {content: "wip"}
         [todo]::after {content: "todo"}
@@ -210,7 +210,7 @@
 
     <div class="page">
 
-        <img class="logo" src="/assets/images/logo.svg" draggable="false" title="candies dot monster">
+        <img class="logo" src="/assets/images/logo.svg" draggable="false" title="candies dot monster" fetchpriority="high">
         
         <div class="buttons">
             <a href="/convert"><img class="button clickable" src="/assets/images/buttons/convert.webp" draggable="false" title="decompress pesky .raw files"></a>
@@ -219,6 +219,7 @@
             <a href="/preview"><img class="button clickable" src="/assets/images/buttons/preview.webp" draggable="false" title="preview custom levels online"></a>
             <a href="/split"><img class="button clickable" src="/assets/images/buttons/split.webp" draggable="false" title="split spritesheets with xml"></a>
             <a href="/font"><img class="button clickable" src="/assets/images/buttons/font.webp" draggable="false" title="generate the gooddog font with questionable accuracy"></a>
+            <a href="//public.candies.monster/site#:~:text=apps"><img class="button clickable" src="/assets/images/buttons/public.webp" draggable="false" title="a zeptoapp archive, including om nom-related releases"></a>
             <a wip><img class="button clickable" src="/assets/images/buttons/levels.webp" draggable="false" title="view and download custom levels"></a>
         </div>
         <div class="buttons small">
@@ -232,12 +233,12 @@
     <img class="music clickable" src="/assets/images/nomusic.png">
 
     <div class="sbuttons">
-        <a><img class="sbutton" src="/assets/images/88x31/default.png"></a>
-        <a><img class="sbutton" src="/assets/images/88x31/tasty.png"></a>
+        <a><img class="sbutton" src="/assets/images/88x31/default.png" title="an 88x31 button with om nom in front of the gift box background."></a>
+        <a><img class="sbutton" src="/assets/images/88x31/tasty.png" title="an 88x31 button with the text: ''this page is TASTY!''"></a>
 
         <!-- slide -->
         <a class="ctrgame">
-            <img class="sbutton ctrimg" src="/assets/images/88x31/game1.gif" draggable="false">
+            <img class="sbutton ctrimg" src="/assets/images/88x31/game1.gif" draggable="false" title="a gif with a small cut the rope level. to the top left there is a rope that can be dragged over to be cut.">
             <input type="range" class="ctrslider" min="0" max="100" value="50" step="10">
             <style>
                 .ctrgame {position: relative; display: inline-block; width: 88px; height: 31px}
