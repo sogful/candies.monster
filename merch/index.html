@@ -47,8 +47,8 @@
         body:active, body:focus, body:focus-within, body:target, body:active * {
             cursor: url("/assets/static/active.cur"), default !important;
         }
-        :any-link {
-            color: #8feeff; text-decoration: none !important;
+        :any-link, .scalelink, .productmore, .productless {
+            color: #8feeff !important; text-decoration: none !important;
             cursor: url("/assets/static/link.cur"), default !important;
         }
         * {
@@ -156,7 +156,25 @@
             flex-direction: column;
             width: 150px; min-width: 0;
             padding-top: 10px; padding-bottom: 10px;
+            container-type: inline-size;
         }
+
+        .productdesc {width: 100%; word-wrap: break-word; line-height: 0.75}
+        .productdesc .tiny {line-height: 0.75}
+        .productdesc.collapsed {
+            display: -webkit-box;
+            -webkit-line-clamp: 6; line-clamp: 6;
+            -webkit-box-orient: vertical;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+        .productdesc:not(.collapsed) {display: block}
+        .productmore, .productless {
+            display: inline-block; white-space: nowrap;
+            margin-left: 0.2em;
+        }
+        .productdescwrapper {width: 100%}
+        .productdescwrapper .productmore, .productdescwrapper .productless {display: inline}
+
         .product img {
             width: 100%; max-width: 100%;
             height: auto; display: block;
@@ -168,7 +186,7 @@
         .imageoverlay {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.75);
             display: flex; align-items: center;
             justify-content: center;
             z-index: 10000; opacity: 0;
@@ -177,21 +195,18 @@
         }
         .imageoverlay.active {opacity: 1; pointer-events: all}
         .imageoverlay img {
-            max-width: min(400px, 90vw);
-            max-height: min(400px, 90vh);
+            max-width: 90vw; max-height: 90vh;
             width: auto; height: auto;
             object-fit: contain;
-            border-radius: 1em;
-            pointer-events: none;
+            border-radius: 1em; pointer-events: none;
         }
 
-        .search, div[search] {
-            display: flex; flex-direction: row;
-            padding-top: 5px;
-        }
+        .search, div[search] {display: flex; flex-direction: row}
+        .product > .search, .product > div[search] {padding-top: 5px}
+        .product > .search ~ .search, .product > .search ~ div[search],
+        .product > div[search] ~ .search, .product > div[search] ~ div[search] {padding-top: 0}
         .searchbutton {
-            display: flex;
-            align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             width: 50px; height: 50px; margin: 2px;
             background-image: url("assets/images/tinybutton.webp");
             background-size: contain;
@@ -200,6 +215,23 @@
             width: 25px;
             padding: 0 !important; margin: 0;
             height: auto; object-fit: contain;
+        }
+
+        @container (max-width: 90px) {
+            .product .searchbutton {width: 37.5px; height: 37.5px}
+            .product .search img, .product div[search] img {width: 18.75px}
+            .product a:not(.tiny), .product span:not(.tiny), .product p:not(.tiny) {
+                font-size: 0.75em;
+                -webkit-text-stroke: 0.15em black;
+                text-shadow: 0 0.15em 0 black;
+                paint-order: stroke fill;
+            }
+            .product .tiny {
+                font-size: 0.5em;
+                -webkit-text-stroke: 0.215em black;
+                text-shadow: 0 0.215em 0 black;
+                paint-order: stroke fill;
+            }
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -230,85 +262,132 @@
 
         <br>
 
-        <span>as seen by <a href="//cuttherope.net/shop">cuttherope.net</a>, most om nom merch was manufactured for russian companies, and not much of it escaped that asylum. a good portion of these companies also don't exist anymore, or they just quietly dropped partnerships. <br>
-        this is simply merch of a green monster, but if it hasn't seen the US you should really be careful with what you purchase <img class="emoji" src="assets/images/goingthroughit.webp">
+        <span>as seen by <a href="//cuttherope.net/shop">cuttherope.net</a>, a lot of the om nom merch was targeted for russia and not much of it escaped that asylum. a good portion of these companies also don't exist anymore, or they just quietly dropped partnerships. <br>
+        if it hasn't seen the US you should really be careful with what you purchase <img class="emoji" src="assets/images/goingthroughit.webp">
         </span>
-        <span class="tiny">most images are sourced from pinterest uploads, specifically the <a href="https://www.pinterest.com/cuttherope/">official cut the rope account there</a> or ebay listings</span>
+        <span class="tiny">some images are sourced from pinterest uploads, specifically the <a href="https://www.pinterest.com/cuttherope/">official cut the rope account there</a> or ebay listings.</span>
+        <span class="tiny">none of the links below are affiliates.</span>
         <br>
+
+        <div>
+            <span>Size:</span>
+            <a class="scalelink clickable" data-size="75">75px</a> |
+            <a class="scalelink clickable" data-size="100">100px</a> |
+            <a class="scalelink clickable" data-size="150">150px</a> |
+            <a class="scalelink clickable" data-size="200">200px</a> |
+            <a class="scalelink clickable" data-size="250">250px</a>
+        </div>
 
         <!-- the search queries are weird as hell because sometimes picclick includes other unwanted results for other combinations. 
              this tries to ensure both the picclick and google results are fine -->
         <a class="title">Plushies</a>
+        <a class="tiny" href="https://www.iloveplushies.co.uk/Collection/cut-the-rope">iloveplushies collection</a>
         <div class="products">
             <div class="product">
-                <img src="assets/images/products/fucker.jpg">
+                <img src="assets/images/products/compressed/fucker.webp">
                 <a>Om Nom Brand Plush</a>
                 <a class="tiny">one of the only remaining officially sold merchandise!</a>
                 <div class="search"><a class="searchbutton" href="https://a.co/d/dVonQac"><img src="assets/svgs/amazon.svg"></a></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/openmouth.webp">
+                <img src="assets/images/products/compressed/openmouth.webp">
                 <a>Open Mouth Plush (2011 Commonwealth Collection)</a>
                 <div search="cut the rope cwt open mouth"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/closedmouth.webp">
+                <img src="assets/images/products/compressed/closedmouth.webp">
                 <a>Closed Mouth Plush (2011 Commonwealth Collection)</a>
                 <div search="cut the rope cwt closed mouth"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/3d.webp">
+                <img src="assets/images/products/compressed/3d.webp">
                 <a>3D Glasses Plush (Kellytoy Collection)</a>
                 <div search="cut the rope 3d glasses plush"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/hat.webp">
+                <img src="assets/images/products/compressed/hat.webp">
                 <a>Polka Dot Hat Plush (Kellytoy Collection)</a>
                 <div search="cut the rope plush hat -santa"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/antlers.webp">
+                <img src="assets/images/products/compressed/bunny.webp">
+                <a>Bunny Plush</a>
+                <a class="tiny">rare</a>
+                <div search="cut the rope bunny plush"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/antlers.webp">
                 <a>Reindeer Antlers Plush (Kellytoy Collection)</a>
                 <div search="cut the rope antlers plush"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/santa.webp">
+                <img src="assets/images/products/compressed/santa.webp">
                 <a>Santa Hat Plush (Kellytoy Collection)</a>
                 <div search="cut the rope plush santa hat"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/star3.jpg">
+                <img src="assets/images/products/compressed/pirate.webp">
+                <a>Time Travel - Pirate Plush</a>
+                <a class="tiny">gone</a>
+                <div search="cut the rope pirate plush" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/sheriff.webp">
+                <a>Time Travel - Sheriff Plush</a>
+                <a class="tiny">gone? there used to be an ebay listing for one</a>
+                <div search="cut the rope sheriff plush" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/star3.webp">
                 <a>Reversible Star Plush (Kellytoy Collection)</a>
                 <div search="cut the rope reversible star plush"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/candy.png">
+                <img src="assets/images/products/compressed/candy.webp">
                 <a>Reversible Candy Plush (Kellytoy Collection)</a>
                 <div search="cut the rope reversible candy plush"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/box.jpg">
+                <img src="assets/images/products/compressed/box.webp">
                 <a>Reversible Box Plush (Kellytoy Collection)</a>
                 <div search="cut the rope reversible plush"></div>
             </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/dj.webp">
+                <a>DJ Box Plush (Round 5)</a>
+                <a class="tiny">plays actual music</a>
+                <div search="cut the rope reversible plush" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/redheadphones.webp">
+                <a>Red Headphones Plush (Round 5)</a>
+                <a class="tiny">apparently talks?</a>
+                <div search="cut the rope red headphones plush"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/strawberry.webp">
+                <a>Fruit Plush (2015 McDonalds)</a>
+                <a class="tiny">surprisingly rare. results are provided for spanish listings since i couldn't find any in other regions</a>
+                <div search='cut the rope "rara antiga coleção" or "louco por frutas"' noebay></div>
+            </div>
         </div>
 
-        <a class="title">Figurines</a>
+        <a class="title">Figures</a>
         <div class="products">
             <div class="product">
-                <img src="assets/images/products/nommies.jpg">
+                <img src="assets/images/products/compressed/nommies.webp">
                 <a>NOMMIES Micro Figures</a>
                 <a class="tiny">come either in small packs of 3 or large packs of 12. see picclick for singular listings!</a>
                 <div search="nommies figures"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/exclusivenommies.webp">
+                <img src="assets/images/products/compressed/exclusivenommies.webp">
                 <a>NOMMIES Micro Figures Exclusive Candy Colours</a>
                 <a class="tiny">..are these edible?</a>
                 <div search="nommies figures exclusive candy colors"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/prostotoys.jpg">
+                <img src="assets/images/products/compressed/prostotoys.webp">
                 <a>PROSTO Toys Figures</a>
                 <span class="tiny">amazing designs for both ctr2 and ctr magic!! they come in 4 variations of: <br>
                 - packs of 5 <br>
@@ -320,41 +399,241 @@
                 <div search="cut the rope prosto toys" noebay></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/kinderpencil.png">
+                <img src="assets/images/products/compressed/kinderpencil.webp">
                 <a>Time Travel - Pencil Toppers (Kinder Surprise Collection)</a>
-                <div search="киндер сюрприз ам ням"></div>
+                <div search="киндер сюрприз ам ням" noebay></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/apptivity.jpg">
-                <a>Apptivity</a> (Mattel)</a>
+                <img src="assets/images/products/compressed/putrid.webp">
+                <a>Customizable Hats Figurine (Vkusno i Tochka Collection)</a>
+                <div search="ам ням вкусно и точка 2025" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/bktoys.webp">
+                <a>Time Travel - Rocking Figures (Burger King Collection)</a>
+                <span class="tiny">
+                    figures with a lenticular print that makes their face animated when rocked back and forth. came with attachable hats and sticker sheets, however you won't be able to get them anymore.. <br>
+                    the ebay listings below also have the physical version of the bk crown that has some puzzles on it. <br>
+                    <a href="https://drive.google.com/drive/folders/1MGg87NBRNpea3fHLxAovSfCFB0OVYxtt">🔗 print the stuff yourself! (scans by HeHe169 / Cut The Rope Media 🐐🐐)</a> <br>
+                    <a href="https://x.com/search?q=from%3A%40cut_the_rope%20BURGER%20KING&src=typed_query&f=live">🔗 official tweets</a>
+                </span>
+                <div search="cut the rope burger king toys"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/apptivity.webp">
+                <a>Apptivity (Mattel)</a>
                 <span class="tiny">allows you to play a secret minigame on ios! you can also play the <a href="https://theawesomeblue.github.io/CutTheRopeCandyFeast/multi/">multiplayer turbowarp remake</a> to save a couple hundred dollars</span>
                 <div search="cut the rope apptivity"></div>
+            </div>
+        </div>
+
+        <a class="title">Books</a>
+        <a>this excludes om nom stories books and audiobooks.</a>
+        <div class="products">
+            <div class="product">
+                <img src="assets/images/products/compressed/stickeractivity.webp">
+                <a>Sticker Activity Book</a>
+                <a class="tiny">polish translation exists</a> <br>
+                <a class="tiny" href="https://web.archive.org/web/20251130190917/https://www-cms.zeptolab.com/uploads/Activity_Books_Cut_the_Rope_Sticker_Activity_Book_c9862fbf6c.pdf">🔗 official archive</a>
+                <div search="cut the rope sticker activity book" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/rocket.webp">
+                <a>Rocket Science Activity Book</a>
+                <div search="cut the rope rocket science activity book" noebay></div>
+            </div>
+            <div class="product">
+                <a>Bubble Experiments Sticker Activity Book</a>
+                <span class="tiny">no cover. the paperback is not available. rip..</span>
+                <div search="cut the rope bubble experiments sticker activity book" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/doodleandsticker.jpg">
+                <a>PENCIL POWER Doodle and Sticker Book</a>
+                <div search="cut the rope doodle and sticker book" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/stickerandposter.webp">
+                <a>STICKER & POSTER Activity Annual</a>
+                <a class="tiny" href="https://web.archive.org/web/20251113013520/https://www-cms.zeptolab.com/uploads/PEDIGREE_Cut_the_Rope_Sticker_and_Poster_Annual_2013_ad3210521a.pdf">🔗 official archive</a>
+                <div search="cut the rope sticker & poster book"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/gamesandcoloring.webp">
+                <a>Time Travel - Games and Coloring</a>
+                <a class="tiny" href="https://web.archive.org/web/20251129232058/https://www-cms.zeptolab.com/uploads/Activity_Books_Games_and_colouring_Cut_The_Rope_Time_Travel_a955a77f8b.pdf">🔗 official archive</a>
+                <div search="cut the rope games and coloring book" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/multicolor.webp">
+                <a>Time Travel - MULTICOLOR</a>
+                <a class="tiny" href="https://web.archive.org/web/20251204141916/https://www-cms.zeptolab.com/uploads/Activity_Books_Multicolor_3d0e9c4af0.pdf">🔗 official archive</a>
+                <div search="cut the rope multicolor book" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/searchandfind.webp">
+                <a>Search and Find Book</a>
+                <a class="tiny">polish translation exists</a>
+                <div search="cut the rope search and find book" noebay></div>
+            </div>
+            <div class="product">
+                <a>Search and Find Book 2</a>
+                <span class="tiny">unknown author and no cover. the paperback is available, so if somebody gets their hands on this please <a href="https://discord.com/users/763502120333869116">reach out</a></span>
+                <div class="search"><a class="searchbutton" href="https://a.co/d/bAbL8vD"><img src="assets/svgs/amazon.svg"></a></div>
+                <div search="cut the rope search and find book 2" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/giantcoloring2.webp">
+                <a>GIANT Coloring & Activity Book</a>
+                <div search="cut the rope coloring & activity book"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/giantcoloring.webp">
+                <a>Time Travel - Game On! GIANT Coloring & Activity Book</a>
+                <div search="cut the rope giant coloring book game on"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/joke.webp">
+                <a>Joke Book</a>
+                <!--a class="tiny">it CANNOT be that good to have the most listings out of every single product on this page</a-->
+                <div class="search"><a class="searchbutton" href="https://a.co/d/fnmCZNB"><img src="assets/svgs/amazon.svg"></a></div>
+                <div search="cut the rope joke book"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/puzzle.webp">
+                <a>Puzzle Book</a>
+                <div search="cut the rope puzzle book"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/superdoodle.webp">
+                <a>SUPER DOODLE</a>
+                <div search="cut the rope super doodle"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/superinteractive.webp">
+                <a>Super Interactive Annual 2014</a>
+                <div search="cut the rope super interactive"></div>
+            </div>
+        </div>
+
+        <a>Spanish Exclusives</a>
+        <a class="tiny">very interesting, but they're much lower quality :(</a>
+        <div class="products">
+            <div class="product">
+                <img src="assets/images/products/compressed/history.webp">
+                <a>Historias de Om Nom - Om Nom y el robot</a>
+                <div class="search"><a class="searchbutton" href="https://a.co/d/byRp3fz"><img src="assets/svgs/amazon.svg"></a></div>
+                <div search="historias de om nom om nom y el robot"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/history2.webp">
+                <a>Historias de Om Nom - Om Nom y la espada mágica</a>
+                <div class="search"><a class="searchbutton" href="https://a.co/d/4YniXlN"><img src="assets/svgs/amazon.svg"></a></div>
+                <div search="historias de om nom om nom y la espada mágica"></div>
+            </div>
+
+            <div class="product">
+                <img src="assets/images/products/compressed/bookofactivities.webp">
+                <a>Libro De Actividades</a>
+                <div class="search"><a class="searchbutton" href="https://a.co/d/f4jRyr6"><img src="assets/svgs/amazon.svg"></a></div>
+                <div search="cut the rope libro de actividades"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/bookofcoloring.webp">
+                <a>Libro De Colorear</a>
+                <div class="search"><a class="searchbutton" href="https://a.co/d/iploSOW"><img src="assets/svgs/amazon.svg"></a></div>
+                <div search="cut the rope libro de colorear" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/bookofcoloring2.jpg">
+                <a>Libro De Colorear</a>
+                <div search="cut the rope libro de colorear MYRIAM SAYALERO" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/bookofstickers.webp">
+                <a>Libro De Pegatinas</a>
+                <div class="search"><a class="searchbutton" href="https://a.co/d/hqE15pp"><img src="assets/svgs/amazon.svg"></a></div>
+                <div search="cut the rope libro de pegatinas"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/thegreatbook.webp">
+                <a>EL GRAN LIBRO</a>
+                <div class="search"><a class="searchbutton" href="https://a.co/d/5yqhSC9"><img src="assets/svgs/amazon.svg"></a></div>
+                <div search="historias de om nom el gran libro"></div>
+            </div>
+        </div>
+
+        <a class="title">Board Games</a>
+        <div class="products">
+            <div class="product">
+                <img src="assets/images/products/compressed/launch.webp">
+                <a>Cut the Rope Game (Mattel)</a>
+                <div search="cut the rope mattel"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/connect4.webp">
+                <a>Connect 4 (Hasbro)</a>
+                <div search="cut the rope connect 4"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/cardgame.webp">
+                <a>The Card Game (Hobby Games)</a>
+                <a class="tiny">primarily sold in russia, czechia and poland</a>
+                <div search="cut the rope the card game" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/magic.webp">
+                <a>Magic Card Game (Hobby Games)</a>
+                <div search="cut the rope magic cards" noebay></div>
             </div>
         </div>
 
         <a class="title">Other</a>
         <div class="products">
             <div class="product">
-                <img src="assets/images/products/headphones.jpg">
+                <img src="assets/images/products/compressed/headphones.webp">
                 <a>DJ Style Headphones (Maxwell)</a>
                 <div search="maxell cut the rope headphones"></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/keychain.jpg">
+                <img src="assets/images/products/compressed/keychain.webp">
                 <a>Keychain (GoodFair)</a>
                 <a class="tiny">basically gone, but that shouldn"t stop you from trying to find it!</a>
                 <div search="om nom metal keychain" noebay></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/lanyard.avif">
+                <img src="assets/images/products/compressed/lanyard.webp">
                 <a>Lanyard</a> (GoodFair)</a>
                 <a class="tiny">also gone</a>
                 <div search="om nom metal keychain" noebay></div>
             </div>
             <div class="product">
-                <img src="assets/images/products/magnet.webp">
+                <img src="assets/images/products/compressed/magnet.webp">
                 <a>Magnet</a> (Commonwealth)</a>
                 <div search="cut the rope om nom magnet"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/sticker.webp">
+                <a>Vending Machine Stickers (ICE / All Star Vending)</a>
+                <span class="tiny">not to be confused with the <a href="https://ctrhome.github.io/games/cut-the-rope-arcade/">2016 arcade</a>. they're only available on ebay, so see them there!</span>
+                <div search="cut the rope vending sticker" nogoogle></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/mcdonalds.webp">
+                <a>2015 McDonalds Toys</a>
+                <a class="tiny">you can see the strawberry plushie from above here, but also a fruit scoop, a fork and a popsicle form existed in most other locations.</a>
+                <div search="cut the rope mcdonalds toys"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/calendarslim.jpg">
+                <a>Slim Calendar 2014 (Carousel Calendars)</a>
+                <div search="cut the rope carousel calendars" noebay></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/calendar.jpg">
+                <a>Calendar 2014 (Dateworks)</a>
+                <a class="tiny">likely gone</a>
+                <div search="cut the rope calendar 2014" noebay></div>
             </div>
         </div>
         
@@ -408,6 +687,8 @@
             }
         });
 
+        document.querySelectorAll(".product img, .searchbutton").forEach(function(el) {el.classList.add("clickable")});
+
         // click sfx
         document.querySelectorAll(".clickable").forEach(function(element) {
             element.addEventListener("click", function() {
@@ -418,13 +699,36 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
+        // scale
+        function listingsize(px) {
+            document.querySelectorAll('.product').forEach(el =>
+                ["width","minWidth","maxWidth"].forEach(prop => el.style[prop] = px + "px")
+            );
+        }
+        function initsize() {
+            let size = localStorage.getItem('productsize')||"150";
+            listingsize(size);
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.scalelink').forEach(link =>
+                link.addEventListener('click', function(e){
+                    e.preventDefault(); let size = link.dataset.size;
+                    localStorage.setItem('productsize', size);
+                    listingsize(size);
+                })
+            ); initsize();
+        });
+
         // image expand
         const overlay = document.createElement("div");
         overlay.className = "imageoverlay";
+        const overlayLink = document.createElement("a");
+        overlayLink.target = "_blank";
+        overlayLink.style.display = "flex";
         const overlayimage = document.createElement("img");
-        overlay.appendChild(overlayimage);
+        overlayLink.appendChild(overlayimage);
+        overlay.appendChild(overlayLink);
         document.body.appendChild(overlay);
-
         overlay.addEventListener("click", function(e) {
             if (e.target === overlay) {
                 overlay.classList.remove("active");
@@ -433,6 +737,7 @@
         document.querySelectorAll(".products img").forEach(function(img) {
             img.addEventListener("click", function() {
                 overlayimage.src = img.src;
+                overlayLink.href = img.src;
                 overlay.classList.add("active");
             });
         });
@@ -446,15 +751,17 @@
             const googlequery = encodeURIComponent(query + " -site:youtube.* -site:fandom.*");
             const picclickquery = encodedquery;
 
-            const googlebutton = document.createElement("a");
-            googlebutton.className = "searchbutton";
-            googlebutton.href = `https://www.google.com/search?q=${googlequery}&nfpr=1`;
-            googlebutton.target = "_blank";
-            const googleimg = document.createElement("img");
-            googleimg.src = "assets/svgs/google.svg";
-            googlebutton.appendChild(googleimg);
-            
-            searchdiv.appendChild(googlebutton);
+            if (!searchdiv.hasAttribute("nogoogle")) {
+                const googlebutton = document.createElement("a");
+                googlebutton.className = "searchbutton";
+                googlebutton.href = `https://www.google.com/search?q=${googlequery}&nfpr=1`;
+                googlebutton.target = "_blank";
+                const googleimg = document.createElement("img");
+                googleimg.src = "assets/svgs/google.svg";
+                googlebutton.appendChild(googleimg);
+                
+                searchdiv.appendChild(googlebutton);
+            }
 
             if (!searchdiv.hasAttribute("noebay")) {
                 const picclickbutton = document.createElement("a");
@@ -468,7 +775,78 @@
                 searchdiv.appendChild(picclickbutton);
             }
         });
+
+        // expand and unexpand the description because they can get too annoying
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.product').forEach(function(product) {
+                const img = product.querySelector('img');
+                if (!img) return;
                 
+                const allelements = Array.from(product.children);
+                const imgindex = allelements.indexOf(img);
+                const nameelement = allelements[imgindex + 1];
+                
+                const textelements = [];
+                let currentindex = imgindex + 2;
+                while (currentindex < allelements.length) {
+                    const el = allelements[currentindex];
+                    if (el.tagName === 'DIV') break;
+                    if (el.tagName === 'A' || el.tagName === 'SPAN') {
+                        textelements.push(el);
+                    }
+                    currentindex++;
+                }
+                
+                if (textelements.length === 0) return;
+
+                const outer = document.createElement('div');
+                outer.className = 'productdescwrapper';
+                const desc = document.createElement('div');
+                desc.className = 'productdesc collapsed';
+
+                textelements.forEach(function(el) {desc.appendChild(el)});
+                outer.appendChild(desc);
+                nameelement.parentNode.insertBefore(outer, nameelement.nextSibling);
+                
+                requestAnimationFrame(function() {
+                    void desc.offsetHeight;
+                    const collapsedheight = desc.clientHeight;
+                    
+                    desc.classList.remove('collapsed');
+                    void desc.offsetHeight;
+                    const fullheight = desc.scrollHeight;
+                    desc.classList.add('collapsed');
+                    
+                    const needstruncation = fullheight > collapsedheight + 2;
+                    
+                    if (needstruncation) {
+                        const morebtn = document.createElement('span');
+                        morebtn.className = 'productmore';
+                        morebtn.textContent = ' (more)';
+                        outer.appendChild(morebtn);
+                        const lessbtn = document.createElement('span');
+                        lessbtn.className = 'productless';
+                        lessbtn.textContent = ' (less)';
+                        lessbtn.style.display = 'none';
+                        
+                        morebtn.addEventListener('click', function() {
+                            desc.classList.remove('collapsed');
+                            morebtn.style.display = 'none';
+                            outer.appendChild(lessbtn);
+                            lessbtn.style.display = 'inline';
+                        });
+                        lessbtn.addEventListener('click', function() {
+                            desc.classList.add('collapsed');
+                            lessbtn.style.display = 'none';
+                            morebtn.style.display = 'inline';
+                        });
+                    } else {
+                        desc.classList.remove('collapsed');
+                    }
+                });
+            });
+        });
+        
     </script>
 </body>
 </html>
