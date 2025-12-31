@@ -704,6 +704,7 @@
             document.querySelectorAll('.product').forEach(el =>
                 ["width","minWidth","maxWidth"].forEach(prop => el.style[prop] = px + "px")
             );
+            setTimeout(function() {initdesc()}, 200);
         }
         function initsize() {
             let size = localStorage.getItem('productsize')||"150";
@@ -777,75 +778,79 @@
         });
 
         // expand and unexpand the description because they can get too annoying
-        document.addEventListener('DOMContentLoaded', function() {
+        function initdesc() {
             document.querySelectorAll('.product').forEach(function(product) {
                 const img = product.querySelector('img');
                 if (!img) return;
-                
-                const allelements = Array.from(product.children);
-                const imgindex = allelements.indexOf(img);
-                const nameelement = allelements[imgindex + 1];
-                
-                const textelements = [];
-                let currentindex = imgindex + 2;
-                while (currentindex < allelements.length) {
-                    const el = allelements[currentindex];
-                    if (el.tagName === 'DIV') break;
-                    if (el.tagName === 'A' || el.tagName === 'SPAN') {
-                        textelements.push(el);
+
+                const children = Array.from(product.children);
+                const imgIdx = children.indexOf(img);
+                const name = children[imgIdx + 1];
+                if (!name) return;
+
+                let outer = product.querySelector('.productdescwrapper');
+                let desc = outer && outer.querySelector('.productdesc');
+                if (!desc) {
+                    const extras = [];
+                    for (let i = imgIdx + 2; i < children.length; i++) {
+                        const el = children[i];
+                        if (el.tagName === 'DIV') break;
+                        if (el.tagName === 'A' || el.tagName === 'SPAN') extras.push(el);
                     }
-                    currentindex++;
+                    if (!extras.length) return;
+                    outer = document.createElement('div');
+                    outer.className = 'productdescwrapper';
+                    desc = document.createElement('div');
+                    desc.className = 'productdesc collapsed';
+                    extras.forEach(el => desc.appendChild(el));
+                    outer.appendChild(desc);
+                    name.parentNode.insertBefore(outer, name.nextSibling);
                 }
-                
-                if (textelements.length === 0) return;
 
-                const outer = document.createElement('div');
-                outer.className = 'productdescwrapper';
-                const desc = document.createElement('div');
-                desc.className = 'productdesc collapsed';
+                ['.productmore', '.productless'].forEach(sel => {
+                    const el = outer.querySelector(sel);
+                    if (el) el.remove();
+                });
 
-                textelements.forEach(function(el) {desc.appendChild(el)});
-                outer.appendChild(desc);
-                nameelement.parentNode.insertBefore(outer, nameelement.nextSibling);
-                
-                requestAnimationFrame(function() {
-                    void desc.offsetHeight;
-                    const collapsedheight = desc.clientHeight;
-                    
-                    desc.classList.remove('collapsed');
-                    void desc.offsetHeight;
-                    const fullheight = desc.scrollHeight;
-                    desc.classList.add('collapsed');
-                    
-                    const needstruncation = fullheight > collapsedheight + 2;
-                    
-                    if (needstruncation) {
-                        const morebtn = document.createElement('span');
-                        morebtn.className = 'productmore';
-                        morebtn.textContent = ' (more)';
-                        outer.appendChild(morebtn);
-                        const lessbtn = document.createElement('span');
-                        lessbtn.className = 'productless';
-                        lessbtn.textContent = ' (less)';
-                        lessbtn.style.display = 'none';
-                        
-                        morebtn.addEventListener('click', function() {
-                            desc.classList.remove('collapsed');
-                            morebtn.style.display = 'none';
-                            outer.appendChild(lessbtn);
-                            lessbtn.style.display = 'inline';
-                        });
-                        lessbtn.addEventListener('click', function() {
-                            desc.classList.add('collapsed');
-                            lessbtn.style.display = 'none';
-                            morebtn.style.display = 'inline';
-                        });
-                    } else {
+                desc.classList.add('collapsed');
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        desc.classList.add('collapsed');
+                        void desc.offsetHeight;
+                        const ch = desc.clientHeight;
                         desc.classList.remove('collapsed');
-                    }
+                        void desc.offsetHeight;
+                        const fh = desc.scrollHeight;
+                        desc.classList.add('collapsed');
+                        const needs = ch > 0 && fh > ch + 10 && fh > 20;
+                        if (needs) {
+                            const more = document.createElement('span');
+                            more.className = 'productmore';
+                            more.textContent = ' (more)';
+                            outer.appendChild(more);
+                            const less = document.createElement('span');
+                            less.className = 'productless';
+                            less.textContent = ' (less)';
+                            less.style.display = 'none';
+                            more.onclick = () => {
+                                desc.classList.remove('collapsed');
+                                more.style.display = 'none';
+                                outer.appendChild(less);
+                                less.style.display = 'inline';
+                            };
+                            less.onclick = () => {
+                                desc.classList.add('collapsed');
+                                less.style.display = 'none';
+                                more.style.display = 'inline';
+                            };
+                        } else {
+                            desc.classList.remove('collapsed');
+                        }
+                    });
                 });
             });
-        });
+        }
+        document.addEventListener('DOMContentLoaded', initdesc);
         
     </script>
 </body>
