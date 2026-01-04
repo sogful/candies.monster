@@ -121,7 +121,7 @@
         .backbutton.active {display: block}
         .backbutton img {height: 3em}
 
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .backbutton {
                 top: auto;
                 bottom: 0.5em !important;
@@ -144,14 +144,11 @@
             transition: transform 0.5s ease-in-out;
             overflow: visible;
         }
-        .gamescreen.slideleft {
-            transform: translateX(-25vw);
-        }
+        .gamescreen.slideleft {transform: translateX(-25vw)}
         
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .gamescreen {
-                overflow-y: auto;
-                overflow-x: hidden;
+                overflow-y: auto; overflow-x: hidden;
                 align-items: flex-start;
             }
             .gamescreen.slideleft {
@@ -161,23 +158,16 @@
 
         .gamecircle {
             position: relative;
-            width: min(90vw, 800px);
-            height: min(90vh, 800px);
-            min-height: 600px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-            overflow: visible;
+            width: min(90vw, 800px); height: min(90vh, 800px);
+            min-height: 600px; display: flex;
+            justify-content: center; align-items: center;
+            margin: 0 auto; overflow: visible;
             transform-origin: center center;
             transition: opacity 0.2s ease;
         }
+        .gamecircle.rendering {opacity: 0}
         
-        .gamecircle.rendering {
-            opacity: 0;
-        }
-
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .gamecircle {
                 width: 100vw; top: 1em;
                 height: auto;
@@ -197,7 +187,7 @@
             transition: transform 0.3s ease, filter 0.3s ease;
         }
         
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .gameicon {
                 position: relative;
                 width: clamp(50px, calc(50px + 30 * ((100vw - 220px) / 380)), 80px) !important;
@@ -227,7 +217,7 @@
             transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;
         }
         
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .versionscreen {
                 left: 0; width: 100vw;
             }
@@ -335,7 +325,7 @@
           </svg>          
     </div>
 
-    <div class="container">
+        <div class="container">
         <div class="backbutton clickable">
             <img src="/preview/assets/images/back.png" draggable="false">
         </div>
@@ -357,7 +347,7 @@
 
     <p class="tiny">
         None of the game files are hosted on this domain. Whether the developers shown actually have rights to Om Nom or not is purely speculative.<br>
-        Icons from <a href="//ctrhome.github.io/">CTR Home</a> and Play Store archivals, viewable <a href="https://github.com/sogful/candies.monster/tree/main/assets/images/gameicons">here!</a> (<a href="https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fsogful%2Fcandies.monster%2Ftree%2Fmain%2Fassets%2Fimages%2Fgameicons">zip</a>)
+        Icons from <a href="//ctrhome.github.io/">CTR Home</a> and download links themselves. Viewable <a href="https://github.com/sogful/candies.monster/tree/main/assets/images/gameicons">here!</a> (<a href="https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fsogful%2Fcandies.monster%2Ftree%2Fmain%2Fassets%2Fimages%2Fgameicons">zip</a>)
     </p>
     <p class="tiny oldstuff"><a href="old" im old!>Old version (CTR only)</a></p>
 
@@ -403,9 +393,7 @@
             var loading = document.querySelector(".loading");
             if (loading) {
                 loading.style.opacity = "0";
-                setTimeout(function() {
-                    if (loading.parentNode) {loading.parentNode.removeChild(loading)}
-                }, 500);
+                loading.style.pointerEvents = "none";
             }
         });
 
@@ -458,7 +446,7 @@
             circle.classList.add("rendering");
             circle.innerHTML = "";
             const sorted = [...games].sort((a, b) => b.importance - a.importance);
-            const tinyscreen = window.innerWidth < 600;
+            const tinyscreen = window.innerWidth < 650;
             
             if (tinyscreen) {
                 sorted.forEach((g) => {
@@ -756,20 +744,42 @@
         loadgames();
 
         let resizet;
+        let currentlaymode = window.innerWidth < 650 ? 'mobile' : 'desktop';
+        
         window.addEventListener("resize", () => {
             clearTimeout(resizet);
+            const laymode = window.innerWidth < 650 ? 'mobile' : 'desktop';
+            const loading = document.querySelector(".loading");
+            const gamecircle = document.getElementById("gamecircle");
+            
+            if (laymode !== currentlaymode && !currentgame && loading && gamecircle) {
+                loading.style.opacity = "1";
+                loading.style.pointerEvents = "auto";
+                gamecircle.style.visibility = "hidden";
+            }
+            
             resizet = setTimeout(() => {
                 if (!currentgame) {
                     rendergamecircle();
+                    currentlaymode = laymode;
+                    if (loading && gamecircle) {
+                        setTimeout(() => {
+                            loading.style.opacity = "0";
+                            loading.style.pointerEvents = "none";
+                            gamecircle.style.visibility = "";
+                        }, 750);
+                    }
+                } else if (loading && gamecircle) {
+                    loading.style.opacity = "0";
+                    loading.style.pointerEvents = "none";
+                    gamecircle.style.visibility = "";
                 }
             }, 250);
         });
         window.addEventListener("load", () => {
             requestAnimationFrame(() => {
                 setTimeout(() => {
-                    if (!currentgame && games.length > 0) {
-                        rendergamecircle();
-                    }
+                    if (!currentgame && games.length > 0) {rendergamecircle()}
                 }, 150);
             });
         });
