@@ -357,6 +357,13 @@
     "description": ""
   },
   {
+    "name": "Om Nom Run",
+    "package": "com.momzikov.omnomrun.google",
+    "icon": "/assets/images/gameicons/omnomrun.webp",
+    "importance": 2,
+    "description": ""
+  },
+  {
     "name": "Om Nom: Crazy Run",
     "package": "com.momzikov.crazyrun",
     "icon": "/assets/images/gameicons/crazyrun.webp",

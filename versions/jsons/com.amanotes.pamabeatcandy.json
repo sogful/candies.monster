@@ -1,37 +1,48 @@
 [
   {
-    "version": "1.13",
+    "version": "v1.13",
     "icon": "/assets/images/gameicons/candybeat.webp",
     "downloads": [
       {"url": "https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.13"}
     ]
   },
   {
-    "version": "1.12",
+    "version": "v1.12",
     "icon": "/assets/images/gameicons/candybeat.webp",
     "downloads": [
       {"url": "https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.12"}
     ]
   },
   {
-    "version": "1.11",
+    "version": "v1.11",
     "icon": "/assets/images/gameicons/candybeat.webp",
     "downloads": [
-      {"url": "https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.11"}
+      {"url": "https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.11"},
+      {"url": "https://candy-beat.en.uptodown.com/android/download/2171328"}
     ]
   },
   {
-    "version": "1.10",
+    "version": "v1.10",
     "icon": "/assets/images/gameicons/candybeat.webp",
     "downloads": [
-      {"url": "https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.10"}
+      {"url": "https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.10"},
+      {"url": "https://candy-beat.en.uptodown.com/android/download/2168963"}
     ]
   },
   {
-    "version": "1.5",
+    "version": "v1.8",
     "icon": "/assets/images/gameicons/candybeat.webp",
     "downloads": [
-      {"url": "https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.5"}
+      {"url": "https://candy-beat.en.uptodown.com/android/download/2165456"}
+    ]
+  },
+  {
+    "version": "v1.5",
+    "icon": "/assets/images/gameicons/candybeat.webp",
+    "downloads": [
+      {"url": "https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.5"},
+      {"url": "https://candy-beat.en.uptodown.com/android/download/1097387371"},
+      {"url": "https://candy-beat.en.uptodown.com/android/download/1126345242"}
     ]
   }
 ]

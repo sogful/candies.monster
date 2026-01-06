@@ -3,7 +3,42 @@
     "version": "v0.0.7",
     "icon": "/assets/images/gameicons/yeet.webp",
     "downloads": [
-      {"url": "https://apkcombo.com/om-nom-yeet/com.aeonsparx.omnom"}
+      {"url": "https://apkpure.com/om-nom-yeet/com.aeonsparx.omnom/download/0.0.7"}
+    ]
+  },
+  {
+    "version": "v0.0.6d",
+    "icon": "/assets/images/gameicons/yeet.webp",
+    "downloads": [
+      {"url": "https://apkpure.com/om-nom-yeet/com.aeonsparx.omnom/download/0.0.6d"}
+    ]
+  },
+  {
+    "version": "v0.0.6",
+    "icon": "/assets/images/gameicons/yeet.webp",
+    "downloads": [
+      {"url": "https://apkpure.com/om-nom-yeet/com.aeonsparx.omnom/download/0.0.6"}
+    ]
+  },
+  {
+    "version": "v0.0.4",
+    "icon": "/assets/images/gameicons/yeet.webp",
+    "downloads": [
+      {"url": "https://apkpure.com/om-nom-yeet/com.aeonsparx.omnom/download/0.0.4"}
+    ]
+  },
+  {
+    "version": "v0.0.2",
+    "icon": "/assets/images/gameicons/yeet.webp",
+    "downloads": [
+      {"url": "https://pdalife.com/om-nom-yeet-android-a42873.html"}
+    ]
+  },
+  {
+    "version": "v0.0.1",
+    "icon": "/assets/images/gameicons/yeet.webp",
+    "downloads": [
+      {"url": "https://apkpure.com/om-nom-yeet/com.aeonsparx.omnom/download/0.0.1"}
     ]
   }
 ]
