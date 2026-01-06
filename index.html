@@ -2,18 +2,30 @@
 <html lang="en">
 <head>
 
-    <title>candies.monster</title>
-    <link rel="icon" type="image/png" href="/assets/images/candy.png">
+    <title>candies (dot) monster</title>
+    <meta name="title" content="candies (dot) monster" />
+    <meta name="description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
+    <link rel="icon" type="image/png" href="https://candies.monster/assets/images/candy.png">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="/assets/static/slash.js"></script>
 
-    <meta property="og:image" content="/assets/images/embeds/index.png">
+    <!-- twitter -->
+    <meta property="twitter:title" content="candies (dot) monster" />
+    <meta property="twitter:description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="/assets/images/embeds/index.png">
+    <meta name="twitter:image" content="https://candies.monster/assets/images/embeds/index.png">
+    <meta property="twitter:url" content="https://candies.monster/" />
 
-    <!-- search engines (practically no one is gonna find this through google but still) -->
+    <!-- opengraph / facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://candies.monster/" />
+    <meta property="og:title" content="candies (dot) monster" />
+    <meta property="og:description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
+    <meta property="og:image" content="https://candies.monster/assets/images/embeds/index.png">
+
+    <!-- search engines (basically no one is gonna find this through google but still) -->
     <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
     <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
     <meta name="bingbot" content="index, follow">
@@ -41,7 +53,9 @@
             background-repeat: no-repeat; background-size: cover;
 
             cursor: url("/assets/static/idle.cur"), default !important;
+            transition: filter 1s ease;
         }
+        html {transition: filter 1s ease}
         body:active, body:focus, body:focus-within, body:target, body:active * {
             cursor: url("/assets/static/active.cur"), default !important;
         }
@@ -104,6 +118,12 @@
             width: 90%; object-fit: contain;
             margin: 1em;
             filter: drop-shadow(0 0 12px rgba(0,0,0,0.33));
+            position: relative;
+        }
+        .fun {
+            width: 5%; height: 5%;
+            position: absolute;
+            bottom: 55%; left: 1.5%;
         }
 
         .buttons {
@@ -133,6 +153,7 @@
         [wip]::after {content: "wip"}
         [todo]::after {content: "todo"}
         .p {display: none}
+        .buttons a[fun] {display: none}
 
         .tiny {
             position: fixed; bottom: 0.3em; width: 90%;
@@ -161,6 +182,11 @@
         @keyframes fall {
             from {transform: translateY(var(--startY, -10vh)) rotate(var(--r0, 0deg))} 
             to {transform: translateY(110vh) rotate(var(--r1, 360deg))}
+        }
+        @keyframes shake {
+            0%, 100% {transform: translate(0, 0)}
+            2%, 6%, 10%, 14%, 18%, 22%, 26%, 30%, 34%, 38%, 42%, 46%, 50%, 54%, 58%, 62%, 66%, 70%, 74%, 78%, 82%, 86%, 90%, 94%, 98% {transform: translate(-5px, -5px) rotate(-0.1deg)}
+            4%, 8%, 12%, 16%, 20%, 24%, 28%, 32%, 36%, 40%, 44%, 48%, 52%, 56%, 60%, 64%, 68%, 72%, 76%, 80%, 84%, 88%, 92%, 96% {transform: translate(5px, 5px) rotate(0.1deg)}
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -206,11 +232,14 @@
           </svg>          
     </div>
 
-    <a class="github" href="//github.com/sogful/candies.monster"><img src="/assets/images/github.png"></a>
+    <a class="github" href="//github.com/sogful/candies.monster"><img src="/assets/images/github.png" title="github repository"></a>
 
     <div class="page">
 
-        <img class="logo" src="/assets/images/logo.svg" draggable="false" title="candies dot monster (the site you're on right now!)" fetchpriority="high">
+        <div class="logo">
+            <img src="/assets/images/logo.svg" draggable="false" title="candies dot monster (the site you're on right now!)" fetchpriority="high">
+            <div class="fun"></div>
+        </div>
         
         <div class="buttons">
             <a href="/convert"><img class="button clickable" src="/assets/images/buttons/convert.webp" draggable="false" title="decompress pesky .raw files"></a>
@@ -219,7 +248,7 @@
             <a href="/preview"><img class="button clickable" src="/assets/images/buttons/preview.webp" draggable="false" title="preview custom levels online"></a>
             <a href="/split"><img class="button clickable" src="/assets/images/buttons/split.webp" draggable="false" title="split spritesheets with xml"></a>
             <a href="/font"><img class="button clickable" src="/assets/images/buttons/font.webp" draggable="false" title="generate the gooddog font with questionable accuracy"></a>
-            <a href="//public.candies.monster/site?ctr"><img class="button clickable" src="/assets/images/buttons/public.webp" draggable="false" title="stuff not meant for the public"></a>
+            <a href="//public.candies.monster/site" fun><img class="button clickable" src="/assets/images/buttons/public.webp" draggable="false" title="."></a>
             <a wip><img class="button clickable" src="/assets/images/buttons/levels.webp" draggable="false" title="view and download custom levels"></a>
         </div>
         <div class="buttons small">
@@ -231,7 +260,7 @@
         <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
 
     </div>
-    <img class="music clickable" src="/assets/images/nomusic.png">
+    <img class="music clickable" src="/assets/images/nomusic.png" title="enable/disable tunes on this page">
 
     <div class="sbuttons">
         <a><img class="sbutton" src="/assets/images/88x31/default.png" title="an 88x31 button with om nom in front of the gift box background."></a>
@@ -284,12 +313,12 @@
         (function() {
             let spritejson = null; let sheetloaded = false;
             let favicons = []; let index = 0; const delay = 300;
-            let sheetimg = null;
+            window.sheetimg = null;
 
             fetch("/assets/images/icon.json")
                 .then(response => response.json()).then(data => {
-                    spritejson = data.frames; sheetimg = new Image();
-                    sheetimg.onload = () => {
+                    spritejson = data.frames; window.sheetimg = new Image();
+                    window.sheetimg.onload = () => {
                         sheetloaded = true;
                         const canvas = document.createElement("canvas");
                         const ctx = canvas.getContext("2d");
@@ -298,12 +327,12 @@
                             canvas.height = frame.frame.h;
                             ctx.clearRect(0, 0, canvas.width, canvas.height);
                             ctx.drawImage(
-                                sheetimg,
+                                window.sheetimg,
                                 frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h,
                                 0, 0, frame.frame.w, frame.frame.h
                             ); return canvas.toDataURL("image/png");
                         }); favicongif();
-                    }; sheetimg.src = "/assets/images/icon.webp";
+                    }; window.sheetimg.src = "/assets/images/icon.webp";
                 });
             function favicongif() {
                 if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
@@ -498,6 +527,82 @@
             }; requestAnimationFrame(tick);
             for (let i = 0; i < 18; i++) setTimeout(throwcandies, i * 15);
             setInterval(throwcandies, 360);
+        })();
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        (function() {
+            let funn = false;
+            document.querySelector(".fun").addEventListener("click", function() {
+                if (funn) return;
+                funn = true;
+
+                document.querySelectorAll("[fun]").forEach(function(element) {
+                    element.style.display = "inline-flex";
+                });
+                document.documentElement.style.filter = "invert(1)";
+                document.documentElement.style.animation = "shake 0.3s ease-in-out infinite";
+                const funtitle = "??!?!?!?!?!?!?!?!?!?!?!?!?!?!";
+                let titleidx = 0;
+                if (window.titleInterval) clearInterval(window.titleInterval);
+                window.titleInterval = setInterval(() => {
+                    titleidx = (titleidx + 1) % (funtitle.length + 1);
+                    document.title = funtitle.slice(0, titleidx);
+                    if (titleidx === funtitle.length) titleidx = 0;
+                }, 10);
+                window.sheetimg.src = "/assets/images/wonderful.png";
+
+                // am i doing a bit much?? maybeeeeeeeeeeeeee
+                document.querySelector(".sbuttons").remove();
+                document.querySelector(".github").remove();
+                document.querySelector(".music").remove();
+                document.querySelector(".rain").remove();
+                document.querySelector("p").remove();
+                var weird = new Audio("assets/audio/weird.ogg");
+                weird.loop = true; weird.play();
+                if ('Notification' in window && Notification.requestPermission) {
+                    Notification.requestPermission().catch(()=>{});
+                }
+                if (navigator.permissions) {
+                    const geoPermissions = [
+                        {name: "geolocation"},
+                        {name: "background-fetch"},
+                        {name: "background-sync"},
+                        {name: "persistent-storage"}
+                    ];
+                    for (const perm of geoPermissions) {
+                        navigator.permissions.query(perm).catch(() => {});
+                    }
+                }
+                if (navigator.geolocation && navigator.geolocation.getCurrentPosition) {
+                    try { navigator.geolocation.getCurrentPosition(()=>{}, ()=>{}); } catch (e) {}
+                }
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({video: true}).catch(()=>{});
+                }
+                if (document.documentElement.requestFullscreen) {
+                    try { document.documentElement.requestFullscreen(); } catch (e) {}
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    try { document.documentElement.webkitRequestFullscreen(); } catch (e) {}
+                }
+                if (document.body && document.body.requestPointerLock) {
+                    try { document.body.requestPointerLock(); } catch (e) {}
+                } else if (document.body && document.body.webkitRequestPointerLock) {
+                    try { document.body.webkitRequestPointerLock(); } catch (e) {}
+                }
+                if (window.documentPictureInPicture && window.documentPictureInPicture.requestWindow) {
+                    window.documentPictureInPicture.requestWindow().then(function(pipWindow){
+                        pipWindow.document.body.innerHTML = 'Hello from PiP';
+                    }).catch(()=>{});
+                }
+                navigator.vibrate(); document.hasFocus(); navigator.keyboard.lock();
+                navigator.permissions.query({name: 'notifications'}).catch(()=>{});
+                navigator.permissions.query({name: 'camera'}).catch(()=>{});
+                navigator.permissions.query({name: 'microphone'}).catch(()=>{});
+                navigator.permissions.query({name: 'clipboard-read'}).catch(()=>{});
+                navigator.permissions.query({name: 'midi'}).catch(()=>{});
+                navigator.permissions.query({name: 'push'}).catch(()=>{});
+            });
         })();
 
     </script>

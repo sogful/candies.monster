@@ -1,6 +1,5 @@
 [
   {
-    "id": "ctr",
     "name": "Cut the Rope",
     "package": "com.zeptolab.ctr.ads",
     "icon": "/assets/images/gameicons/free.webp",
@@ -8,7 +7,6 @@
     "description": "the original one! (don't download the newer versions..)"
   },
   {
-    "id": "ctr2",
     "name": "Cut the Rope 2",
     "package": "com.zeptolab.ctr2.f2p.google",
     "icon": "/assets/images/gameicons/ctr2.webp",
@@ -16,7 +14,6 @@
     "description": "rope tuah"
   },
   {
-    "id": "origins",
     "name": "Cut the Rope: Origins",
     "package": "com.zeptolab.ctrorigins",
     "icon": "/assets/images/gameicons/modern.webp",
@@ -24,7 +21,6 @@
     "description": "this game had a lot of different iterations besides these versions, and ALL of them are miserable."
   },
   {
-    "id": "timetravel",
     "name": "Cut the Rope: Time Travel",
     "package": "com.zeptolab.timetravel",
     "icon": "/assets/images/gameicons/timetravel.webp",
@@ -32,7 +28,6 @@
     "description": "8 second rocket's beloved"
   },
   {
-    "id": "magic",
     "name": "Cut the Rope: Magic",
     "package": "com.zeptolab.ctrm.free.google",
     "icon": "/assets/images/gameicons/magic.webp",
@@ -40,7 +35,6 @@
     "description": "witchcraft"
   },
   {
-    "id": "experiments",
     "name": "Cut the Rope: Experiments",
     "package": "com.zeptolab.ctrexperiments.ads",
     "icon": "/assets/images/gameicons/experiments.webp",
@@ -48,7 +42,6 @@
     "description": ""
   },
   {
-    "id": "daily",
     "name": "Cut the Rope: Daily",
     "package": "com.netflix.cuttheropedaily",
     "icon": "/assets/images/gameicons/daily.webp",
@@ -56,7 +49,6 @@
     "description": ""
   },
   {
-    "id": "holidaygift",
     "name": "Cut the Rope: Holiday Gift",
     "package": "com.zeptolab.cuttheropexmas.google",
     "icon": "/assets/images/gameicons/holidaygift.webp",
@@ -64,7 +56,6 @@
     "description": ""
   },
   {
-    "id": "blast",
     "name": "Cut the Rope: BLAST",
     "package": "com.skywalkgames.blastctr",
     "icon": "/assets/images/gameicons/blast.webp",
@@ -72,7 +63,6 @@
     "description": ""
   },
   {
-    "id": "run",
     "name": "Om Nom Run",
     "package": "com.zeptolab.omnomrun.google",
     "icon": "/assets/images/gameicons/run.webp",
@@ -80,23 +70,13 @@
     "description": ""
   },
   {
-    "id": "run2",
     "name": "Om Nom Run 2",
-    "package": "com.zeptolab.OmNomRun2.parkour",
+    "package": ["com.zeptolab.OmNomRun2.parkour", "com.zeptolab.omnomparkour.google"],
     "icon": "/assets/images/gameicons/run2.webp",
     "importance": 4,
-    "description": ""
+    "description": ["", "another odd one with an additional separate package"]
   },
   {
-    "id": "parkour",
-    "name": "Om Nom: Run 2",
-    "package": "com.zeptolab.omnomparkour.google",
-    "icon": "/assets/images/gameicons/run2.webp",
-    "importance": 1,
-    "description": "another odd one with a separate release under a different package name.."
-  },
-  {
-    "id": "myomnom",
     "name": "My Om Nom",
     "package": "com.zeptolab.myomnom.free.google",
     "icon": "/assets/images/gameicons/myomnom.webp",
@@ -104,7 +84,6 @@
     "description": ""
   },
   {
-    "id": "run3",
     "name": "Om Nom Run 3: Speedrun",
     "package": "com.zeptolab.omnomrun3",
     "icon": "/assets/images/gameicons/run3.webp",
@@ -112,7 +91,6 @@
     "description": ""
   },
   {
-    "id": "merge",
     "name": "Om Nom Merge",
     "package": "com.zeptolab.omnommerge.google",
     "icon": "/assets/images/gameicons/merge.webp",
@@ -120,7 +98,6 @@
     "description": ""
   },
   {
-    "id": "swing",
     "name": "Om Nom Swing",
     "package": "com.momzikov.omnomswing.google",
     "icon": "/assets/images/gameicons/swing.webp",
@@ -128,7 +105,6 @@
     "description": ""
   },
   {
-    "id": "knockout",
     "name": "Om Nom Knockout",
     "package": "com.zeptolab.omnomknockout",
     "icon": "/assets/images/gameicons/knockout.webp",
@@ -136,7 +112,6 @@
     "description": ""
   },
   {
-    "id": "idlecandy",
     "name": "Om Nom: Idle Candy",
     "package": "com.zeptolab.candyfactory",
     "icon": "/assets/images/gameicons/idlecandy.webp",
@@ -144,7 +119,6 @@
     "description": ""
   },
   {
-    "id": "theme",
     "name": "Cut the Rope: Theme",
     "package": "com.airthemes.ctrairtheme",
     "icon": "/assets/images/gameicons/theme.webp",
@@ -152,7 +126,6 @@
     "description": ""
   },
   {
-    "id": "themett",
     "name": "Cut the Rope: Time Travel Theme",
     "package": "com.airthemes.ctrairtheme",
     "icon": "/assets/images/gameicons/themett.webp",
@@ -160,7 +133,6 @@
     "description": ""
   },
   {
-    "id": "doodle",
     "name": "Cut the Rope: Doodle",
     "package": "com.zeptolab.crazyrun",
     "icon": "/assets/images/gameicons/doodle.webp",
@@ -168,7 +140,6 @@
     "description": "what the hell is going on here?"
   },
   {
-    "id": "toons",
     "name": "Om Nom Toons",
     "package": "com.zeptolab.toonplayer.google",
     "icon": "/assets/images/gameicons/toons.webp",
@@ -176,7 +147,6 @@
     "description": "you're NEVER too old to watch cartoons for children. go for it"
   },
   {
-    "id": "virtualpet",
     "name": "My Om Nom: Virtual Pet",
     "package": "com.myvirtualpet.omnomgame",
     "icon": "/assets/images/gameicons/virtualpet.webp",
@@ -184,7 +154,6 @@
     "description": ""
   },
   {
-    "id": "bubbles",
     "name": "Om Nom Bubbles",
     "package": "com.zeptolab.bubbles.f2p.google",
     "icon": "/assets/images/gameicons/bubbles.webp",
@@ -192,7 +161,6 @@
     "description": "Buble"
   },
   {
-    "id": "bubble",
     "name": "Om Nom Bubble",
     "package": "com.SugoooiStudio.OmNomBubble",
     "icon": "/assets/images/gameicons/bubble.webp",
@@ -200,7 +168,6 @@
     "description": "this doesn't feel real.."
   },
   {
-    "id": "karts",
     "name": "Om Nom Karts",
     "package": "com.zeptolab.om.nom.karts",
     "icon": "/assets/images/gameicons/karts.webp",
@@ -208,7 +175,6 @@
     "description": ""
   },
   {
-    "id": "quiz",
     "name": "Om Nom Brain Teaser",
     "package": "com.gd.omnomquiz",
     "icon": "/assets/images/gameicons/brainteaser.webp",
@@ -216,7 +182,6 @@
     "description": ""
   },
   {
-    "id": "catch",
     "name": "Om Nom Catch",
     "package": "com.redeye.OmNomCatch",
     "icon": "/assets/images/gameicons/catch.webp",
@@ -224,7 +189,6 @@
     "description": ""
   },
   {
-    "id": "candyball",
     "name": "Om Nom Candy Ball",
     "package": "com.sugoooi.omnomcandyball",
     "icon": "/assets/images/gameicons/candyball.webp",
@@ -232,7 +196,6 @@
     "description": ""
   },
   {
-    "id": "drop",
     "name": "Om Nom Drop & Match",
     "package": "com.zeptolab.dropandmatch",
     "icon": "/assets/images/gameicons/dam.webp",
@@ -240,7 +203,6 @@
     "description": "this game never came out.."
   },
   {
-    "id": "tycoon",
     "name": "Om Nom Tycoon",
     "package": "com.zeptolab.omnomfarm",
     "icon": "/assets/images/gameicons/tycoon.webp",
@@ -248,7 +210,6 @@
     "description": "as seen by the package name, it was named om nom farm in its early stages."
   },
   {
-    "id": "golf",
     "name": "Om Nom Golf",
     "package": "com.vividgames.om.nom.mini.golf",
     "icon": "/assets/images/gameicons/golf.webp",
@@ -256,7 +217,6 @@
     "description": ""
   },
   {
-    "id": "cybernom",
     "name": "CyberNom",
     "package": "com.zeptolab.cybernom",
     "icon": "/assets/images/gameicons/cybernom.webp",
@@ -264,7 +224,6 @@
     "description": ""
   },
   {
-    "id": "amazing",
     "name": "Om Nom: A-Mazing Candy",
     "package": "com.zeptolab.amazingcandy",
     "icon": "/assets/images/gameicons/amazingcandy.webp",
@@ -272,7 +231,6 @@
     "description": ""
   },
   {
-    "id": "triple",
     "name": "Om Nom Triple Match",
     "package": "com.zeptolab.triplematch",
     "icon": "/assets/images/gameicons/triplematch.webp",
@@ -280,7 +238,6 @@
     "description": ""
   },
   {
-    "id": "crafters",
     "name": "Om Nom Crafters",
     "package": "com.vividgames.om.nom.craft",
     "icon": "/assets/images/gameicons/crafters.webp",
@@ -288,7 +245,6 @@
     "description": ""
   },
   {
-    "id": "roll",
     "name": "Om Nom Roll Race",
     "package": "com.zeptolab.om.nom.roll",
     "icon": "/assets/images/gameicons/rollrace.webp",
@@ -296,7 +252,6 @@
     "description": ""
   },
   {
-    "id": "racing",
     "name": "Om Nom Racing",
     "package": "com.zeptolab.om.nom.racing.mayhem",
     "icon": "/assets/images/gameicons/racing.webp",
@@ -304,7 +259,6 @@
     "description": ""
   },
   {
-    "id": "wheresomnom",
     "name": "Where's Om Nom?",
     "package": "com.zeptolab.wheresomnom",
     "icon": "/assets/images/gameicons/wheresomnom.webp",
@@ -312,7 +266,6 @@
     "description": "used to be 4.99$ on play store, however it's no longer legally obtainable."
   },
   {
-    "id": "yeet",
     "name": "Om Nom Yeet",
     "package": "com.aeonsparx.omnom",
     "icon": "/assets/images/gameicons/yeet.webp",
@@ -320,7 +273,6 @@
     "description": ""
   },
   {
-    "id": "blastbutnot",
     "name": "Om Nom Blast",
     "package": "com.stelar.omnomblast",
     "icon": "/assets/images/gameicons/blastbutnot.webp",
@@ -328,7 +280,6 @@
     "description": ""
   },
   {
-    "id": "solitaire",
     "name": "Om Nom Solitaire",
     "package": "com.popside.solitaire.omnom",
     "icon": "/assets/images/gameicons/solitaire.webp",
@@ -336,7 +287,6 @@
     "description": ""
   },
   {
-    "id": "pirates",
     "name": "Om Nom Pirates",
     "package": "com.omnom.pirates",
     "icon": "/assets/images/gameicons/pirates.webp",
@@ -344,7 +294,6 @@
     "description": ""
   },
   {
-    "id": "piratesclans",
     "name": "Om Nom Pirates Clans",
     "package": "com.omnom.piratesclans",
     "icon": "/assets/images/gameicons/pirates.webp",
@@ -352,7 +301,6 @@
     "description": ""
   },
   {
-    "id": "seabrawl",
     "name": "Om Nom Sea Brawl",
     "package": "com.omnom.seabrawl",
     "icon": "/assets/images/gameicons/pirates.webp",
@@ -360,7 +308,6 @@
     "description": ""
   },
   {
-    "id": "battlepirates",
     "name": "Om Nom Battle Pirates",
     "package": "com.omnom.battlepirates",
     "icon": "/assets/images/gameicons/battlepirates.webp",
@@ -368,7 +315,6 @@
     "description": ""
   },
   {
-    "id": "piratestactics",
     "name": "Om Nom Pirates Tactics",
     "package": "com.omnom.piratestactics",
     "icon": "/assets/images/gameicons/piratestactics.webp",
@@ -376,23 +322,13 @@
     "description": ""
   },
   {
-    "id": "mergenommie",
-    "name": "Merge Nommies",
-    "package": "com.momzikov.mergenommie.google",
-    "icon": "/assets/images/gameicons/mergenommies.webp",
+    "name": ["Merge Nommies", "Merge Nommies"],
+    "package": ["com.momzikov.mergenommie.google", "com.momzikov.mergenommies.google"],
+    "icon": ["/assets/images/gameicons/mergenommies.webp", "/assets/images/gameicons/mergenommies.webp"],
     "importance": 2,
-    "description": ""
+    "description": ["", "the merge nommies of lies and deceit?? why are there two of them"]
   },
   {
-    "id": "mergenommies",
-    "name": "Merge Nommies",
-    "package": "com.momzikov.mergenommies.google",
-    "icon": "/assets/images/gameicons/mergenommies.webp",
-    "importance": 0,
-    "description": "the merge nommies of lies and deceit?? why are there two of them"
-  },
-  {
-    "id": "wildlifepop",
     "name": "Wildlife POP!",
     "package": "com.vasilyandev.wildlifepop",
     "icon": "/assets/images/gameicons/wildlifepop.webp",
@@ -400,7 +336,6 @@
     "description": ""
   },
   {
-    "id": "fruitblast",
     "name": "Fruit Blast",
     "package": "com.vasilyandev.fruitblast",
     "icon": "/assets/images/gameicons/fruitblast.webp",
@@ -408,7 +343,6 @@
     "description": ""
   },
   {
-    "id": "pinpuzzle",
     "name": "Om Nom Pin Puzzle",
     "package": "com.bigcodegames.om.nom.pin.puzzle",
     "icon": "/assets/images/gameicons/pinpuzzle.webp",
@@ -416,7 +350,6 @@
     "description": "is this endorsed??"
   },
   {
-    "id": "superrun",
     "name": "Monster Super Run",
     "package": "com.momzikov.superrun",
     "icon": "/assets/images/gameicons/run3.webp",
@@ -424,7 +357,6 @@
     "description": ""
   },
   {
-    "id": "superrun",
     "name": "Om Nom: Crazy Run",
     "package": "com.momzikov.crazyrun",
     "icon": "/assets/images/gameicons/crazyrun.webp",
@@ -432,7 +364,6 @@
     "description": ""
   },
   {
-    "id": "sports",
     "name": "Om Nom Sports",
     "package": "com.momzikov.omnomsports",
     "icon": "/assets/images/gameicons/sports.webp",
@@ -440,7 +371,6 @@
     "description": ""
   },
   {
-    "id": "cookinggame",
     "name": "Om Nom : Cooking Game",
     "package": "com.appon.cookinggame.omnom",
     "icon": "/assets/images/gameicons/cookinggame.webp",
@@ -448,7 +378,6 @@
     "description": ""
   },
   {
-    "id": "tower3d",
     "name": "Om Nom Tower 3D",
     "package": "com.famobi.omnomtower3d",
     "icon": "/assets/images/gameicons/tower3d.webp",
@@ -456,7 +385,6 @@
     "description": "pretty new!"
   },
   {
-    "id": "candybeat",
     "name": "Candy Beat",
     "package": "com.amanotes.pamabeatcandy",
     "icon": "/assets/images/gameicons/candybeat.webp",
@@ -464,7 +392,6 @@
     "description": ""
   },
   {
-    "id": "marbleshooter",
     "name": "Om Nom Marble Shooter",
     "package": "com.renderedideas.omnommarblematch",
     "icon": "/assets/images/gameicons/marbleshooter.webp",
