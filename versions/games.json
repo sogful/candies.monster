@@ -2,17 +2,19 @@
   {
     "name": [
       "Cut the Rope Free",
+      "Cut the Rope GOLD",
       "Cut the Rope"
     ],
     "package": [
       "com.zeptolab.ctr.ads",
+      "com.zeptolab.ctr.paid",
       "com.zeptolab.ctr.tryandbuy.svyaznoy"
     ],
     "icon": "/assets/images/gameicons/free.webp",
     "importance": 10,
     "description": [
       "the original one! (don't download the newer versions..)",
-      ""
+      "", ""
     ]
   },
   {
