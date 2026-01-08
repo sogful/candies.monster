@@ -1,7 +1,7 @@
 [
   {
     "name": [
-      "Cut the Rope",
+      "Cut the Rope Free",
       "Cut the Rope"
     ],
     "package": [
@@ -44,7 +44,7 @@
     "description": "witchcraft"
   },
   {
-    "name": "Cut the Rope: Experiments",
+    "name": "Cut the Rope Experiments Free",
     "package": "com.zeptolab.ctrexperiments.ads",
     "icon": "/assets/images/gameicons/experiments.webp",
     "importance": 6,
@@ -134,7 +134,7 @@
     "description": ""
   },
   {
-    "name": "Cut the Rope: Theme",
+    "name": "Cut the Rope Theme",
     "package": "com.airthemes.ctrairtheme",
     "icon": "/assets/images/gameicons/theme.webp",
     "importance": 3,
@@ -162,7 +162,7 @@
     "description": "you're NEVER too old to watch cartoons for children. go for it"
   },
   {
-    "name": "My Om Nom: Virtual Pet",
+    "name": "My Om Nom Virtual Pet",
     "package": "com.myvirtualpet.omnomgame",
     "icon": "/assets/images/gameicons/virtualpet.webp",
     "importance": 3,
@@ -190,7 +190,7 @@
     "description": ""
   },
   {
-    "name": "Om Nom Brain Teaser",
+    "name": "OnNomPuzzle",
     "package": "com.gd.omnomquiz",
     "icon": "/assets/images/gameicons/brainteaser.webp",
     "importance": 2,
@@ -281,14 +281,14 @@
     "description": "used to be 4.99$ on play store, however it's no longer legally obtainable."
   },
   {
-    "name": "Om Nom Yeet",
+    "name": "Om Nom Yeet!",
     "package": "com.aeonsparx.omnom",
     "icon": "/assets/images/gameicons/yeet.webp",
     "importance": 1,
     "description": ""
   },
   {
-    "name": "Om Nom Blast",
+    "name": "Om Nom Blast!",
     "package": "com.stelar.omnomblast",
     "icon": "/assets/images/gameicons/blastbutnot.webp",
     "importance": 0,
@@ -356,7 +356,7 @@
     ]
   },
   {
-    "name": "Wildlife POP!",
+    "name": "Wildlife Pop",
     "package": "com.vasilyandev.wildlifepop",
     "icon": "/assets/images/gameicons/wildlifepop.webp",
     "importance": 0,
@@ -405,7 +405,7 @@
     "description": ""
   },
   {
-    "name": "Om Nom : Cooking Game",
+    "name": "Om Nom - Cooking Game",
     "package": "com.appon.cookinggame.omnom",
     "icon": "/assets/images/gameicons/cookinggame.webp",
     "importance": 2,
@@ -419,7 +419,7 @@
     "description": "pretty new!"
   },
   {
-    "name": "Candy Beat",
+    "name": "Beat Candy",
     "package": "com.amanotes.pamabeatcandy",
     "icon": "/assets/images/gameicons/candybeat.webp",
     "importance": 1,
