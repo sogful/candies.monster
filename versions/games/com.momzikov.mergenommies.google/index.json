@@ -1,0 +1,19 @@
+[
+  {
+    "version": "v2.1.58",
+    "icon": [
+      "/assets/images/gameicons/mergenommies.webp",
+      "/assets/images/gameicons/mergenommies.webp"
+    ],
+    "downloads": [
+      {
+        "url": "https://apkpure.com/merge-nommies/com.momzikov.mergenommies.google/download/2.1.58"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.momzikov.mergenommies.google/Merge Nommies_2.1.58_APKPure.apk",
+        "arch": "arm32, x86",
+        "size": "44.29MB"
+      }
+    ]
+  }
+]

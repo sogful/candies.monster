@@ -1,0 +1,884 @@
+[
+  {
+    "version": "v1.25.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-25-0-release/"
+      }
+    ]
+  },
+  {
+    "version": "v1.24.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-24-1-release/"
+      }
+    ]
+  },
+  {
+    "version": "v1.24.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-24-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.24.0-2144784_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "54.03MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2166784_minAPI19_.com_1.24.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "70.68MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.24.0-2144784_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "54.03MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.24.0-2144784_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "53.10MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.24.0-2144784_minAPI19(x86)(nodpi)_apkmirror.com.apk",
+        "arch": "x86",
+        "size": "54.29MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.24.0-2144784_minAPI19(x86_64)(nodpi)_apkmirror.com.apk",
+        "arch": "x86_64",
+        "size": "54.45MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.24.0-2166784_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "70.68MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.24.0-2166784_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "69.64MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.23.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-23-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.23.0-2138302_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "55.10MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2160302_minAPI19_.com_1.23.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "71.84MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.23.0-2138302_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "55.10MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.23.0-2138302_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "54.26MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.23.0-2138302_minAPI19(x86)(nodpi)_apkmirror.com.apk",
+        "arch": "x86",
+        "size": "55.45MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.23.0-2138302_minAPI19(x86_64)(nodpi)_apkmirror.com.apk",
+        "arch": "x86_64",
+        "size": "55.62MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.23.0-2160302_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "71.84MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.23.0-2160302_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "70.79MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.22.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-22-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.22.0-2128175_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "53.66MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2150175_minAPI19_.com_1.22.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "70.36MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.22.0-2128175_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "53.66MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.22.0-2128175_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "52.78MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.22.0-2128175_minAPI19(x86)(nodpi)_apkmirror.com.apk",
+        "arch": "x86",
+        "size": "53.93MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.22.0-2128175_minAPI19(x86_64)(nodpi)_apkmirror.com.apk",
+        "arch": "x86_64",
+        "size": "54.09MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.22.0-2150175_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "70.36MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.22.0-2150175_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "69.37MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.21.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-21-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.21.0-2126598_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "53.22MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2148598_minAPI19_.com_1.21.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "69.91MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.21.0-2126598_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "53.22MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.21.0-2126598_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "51.50MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.21.0-2126598_minAPI19(x86)(nodpi)_apkmirror.com.apk",
+        "arch": "x86",
+        "size": "53.48MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.21.0-2126598_minAPI19(x86_64)(nodpi)_apkmirror.com.apk",
+        "arch": "x86_64",
+        "size": "53.58MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.21.0-2148598_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "69.91MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.21.0-2148598_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "68.09MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.17.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-17-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.17.0-2121401_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "51.62MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2143401_minAPI19_.com_1.17.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "68.32MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.17.0-2121401_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "51.62MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.17.0-2121401_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "49.91MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.17.0-2121401_minAPI19(x86)(nodpi)_apkmirror.com.apk",
+        "arch": "x86",
+        "size": "51.89MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.17.0-2121401_minAPI19(x86_64)(nodpi)_apkmirror.com.apk",
+        "arch": "x86_64",
+        "size": "52.05MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.17.0-2143401_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "68.32MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.17.0-2143401_minAPI19(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "66.51MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.16.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-16-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.16.0-1919445_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "51.49MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1941445_minAPI17_.com_1.16.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "68.19MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.16.0-1919445_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "51.49MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.16.0-1919445_minAPI17(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "49.79MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.16.0-1919445_minAPI17(x86)(nodpi)_apkmirror.com.apk",
+        "arch": "x86",
+        "size": "51.77MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.16.0-1919445_minAPI17(x86_64)(nodpi)_apkmirror.com.apk",
+        "arch": "x86_64",
+        "size": "51.94MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.16.0-1941445_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "68.19MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.16.0-1941445_minAPI17(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "66.38MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.15.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-15-1-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.15.1-1918946_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "51.40MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1940946_minAPI17_.com_1.15.1_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "68.19MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.15.1-1918946_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "51.40MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.15.1-1918946_minAPI17(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "49.78MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.15.1-1918946_minAPI17(x86)(nodpi)_apkmirror.com.apk",
+        "arch": "x86",
+        "size": "51.77MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.15.1-1918946_minAPI17(x86_64)(nodpi)_apkmirror.com.apk",
+        "arch": "x86_64",
+        "size": "51.94MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.15.1-1940946_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "68.19MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.15.1-1940946_minAPI17(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "66.38MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.14.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-14-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.14.0-1917618_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "52.13MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.14.0-1917618_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "52.13MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.14.0-1917618_minAPI17(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "50.34MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.13.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-13-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.13.0-1916893_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "49.39MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.13.0-1916893_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "49.39MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.13.0-1916893_minAPI17(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "47.71MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.12.3",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-12-3-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.12.3-1915253_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm64",
+        "size": "47.95MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.12.3-1915253_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm64",
+        "size": "47.95MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.12.3-1915253_minAPI17(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "46.24MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.11.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-11-1-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.11.1-1801035_minAPI16(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "48.83MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1823035_minAPI16_.com_1.11.1_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "67.63MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.11.1-1801035_minAPI16(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "48.83MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.11.1-1823035_minAPI16(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "67.63MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.25.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.25.0"
+      }
+    ]
+  },
+  {
+    "version": "v1.24.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.24.1"
+      }
+    ]
+  },
+  {
+    "version": "v1.24.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.24.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.24.0-2144784_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "53.10MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2166784_minAPI19_.com_1.24.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "69.64MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.23.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.23.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.23.0-2138302_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "54.26MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2160302_minAPI19_.com_1.23.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "70.79MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.22.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.22.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.22.0-2128175_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "52.78MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2150175_minAPI19_.com_1.22.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "69.37MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.21.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.21.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.21.0-2126598_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "51.50MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2148598_minAPI19_.com_1.21.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "68.09MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.17.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.17.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.17.0-2121401_minAPI19(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "49.91MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/2143401_minAPI19_.com_1.17.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "66.51MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.16.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.16.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.16.0-1919445_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "49.79MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1941445_minAPI17_.com_1.16.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "66.38MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.15.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.15.1"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.15.1-1918946_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "49.78MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1940946_minAPI17_.com_1.15.1_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "66.38MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.14.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.14.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.14.0-1917618_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "50.34MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.13.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.13.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.13.0-1916893_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "47.71MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.12.3",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.12.3"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.12.3-1915253_minAPI17(arm64-v8a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "46.24MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.12.2",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.12.2"
+      }
+    ]
+  },
+  {
+    "version": "v1.12.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.12.1"
+      }
+    ]
+  },
+  {
+    "version": "v1.11.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.11.1"
+      }
+    ]
+  },
+  {
+    "version": "v1.11.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.11.0"
+      }
+    ]
+  },
+  {
+    "version": "v1.10.2",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-10-2-release/"
+      },
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.10.2"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.10.2-1791872_minAPI16(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "49.17MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1813872_minAPI16_.com_1.10.2_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32",
+        "size": "67.95MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.10.2-1791872_minAPI16(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "49.17MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.10.2-1813872_minAPI16(armeabi-v7a)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32",
+        "size": "67.95MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.10.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.10.1"
+      }
+    ]
+  },
+  {
+    "version": "v1.10.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-10-0-release/"
+      },
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.10.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.10.0-1786027_minAPI16(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32, x86",
+        "size": "55.96MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1808027_minAPI16_.com_1.10.0_APKMirror.apk",
+        "button": "cdn.png",
+        "arch": "arm32, x86",
+        "size": "74.76MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.10.0-1786027_minAPI16(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32, x86",
+        "size": "55.96MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.10.0-1808027_minAPI16(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32, x86",
+        "size": "74.76MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.9.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.9.0"
+      }
+    ]
+  },
+  {
+    "version": "v1.8.1",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.8.1"
+      }
+    ]
+  },
+  {
+    "version": "v1.8.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-8-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.8.0-1776340_minAPI16(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32, x86",
+        "size": "55.14MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.8.0-1776340_minAPI16(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32, x86",
+        "size": "55.14MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.4.2",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-4-2-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.4.2-1524028_minAPI14(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk",
+        "button": "cdn.png",
+        "arch": "arm32, x86",
+        "size": "41.49MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.4.2-1524028_minAPI14(armeabi-v7a,x86)(nodpi)_apkmirror.com.apk",
+        "arch": "arm32, x86",
+        "size": "41.49MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.0.0",
+    "icon": "/assets/images/gameicons/magic.webp",
+    "downloads": [
+      {
+        "url": "https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-0-0-release/"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.0.0-1498955_minAPI14(armeabi-v7a,x86)(nodpi).apk",
+        "button": "cdn.png",
+        "arch": "arm32, x86",
+        "size": "39.76MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.0.0-1498955_minAPI14(armeabi-v7a,x86)(nodpi).apk",
+        "arch": "arm32, x86",
+        "size": "39.76MB"
+      }
+    ]
+  }
+]

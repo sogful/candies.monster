@@ -1,0 +1,23 @@
+[
+  {
+    "version": "v1.1.0",
+    "icon": "/assets/images/gameicons/toons.webp",
+    "downloads": [
+      {
+        "url": "https://om-nom-toons.en.uptodown.com/android/download/74988259@1.1.0"
+      },
+      {
+        "url": "https://apkcombo.com/om-nom-toons/com.zeptolab.toonplayer.google"
+      }
+    ]
+  },
+  {
+    "version": "v1.0.1",
+    "icon": "/assets/images/gameicons/toons.webp",
+    "downloads": [
+      {
+        "url": "https://om-nom-toons.en.uptodown.com/android/download/1077733"
+      }
+    ]
+  }
+]

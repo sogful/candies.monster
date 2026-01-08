@@ -1,0 +1,52 @@
+[
+  {
+    "version": "v1.20",
+    "icon": "/assets/images/gameicons/solitaire.webp",
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/om-nom-solitaire/com.popside.solitaire.omnom/download/phone-1.20-apk"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.popside.solitaire.omnom/Om Nom Solitaire_1.20_APKPure.apk",
+        "arch": "arm64, arm32",
+        "size": "108.71MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.10",
+    "icon": "/assets/images/gameicons/solitaire.webp",
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/om-nom-solitaire/com.popside.solitaire.omnom/download/phone-1.10-apk"
+      }
+    ]
+  },
+  {
+    "version": "v1.04",
+    "icon": "/assets/images/gameicons/solitaire.webp",
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/om-nom-solitaire/com.popside.solitaire.omnom/download/phone-1.04-apk"
+      }
+    ]
+  },
+  {
+    "version": "v1.02",
+    "icon": "/assets/images/gameicons/solitaire.webp",
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/om-nom-solitaire/com.popside.solitaire.omnom/download/phone-1.02-apk"
+      }
+    ]
+  },
+  {
+    "version": "v1.00",
+    "icon": "/assets/images/gameicons/solitaire.webp",
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/om-nom-solitaire/com.popside.solitaire.omnom/download/phone-1.00-apk"
+      }
+    ]
+  }
+]

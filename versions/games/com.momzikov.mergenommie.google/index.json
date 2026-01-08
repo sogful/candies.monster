@@ -1,0 +1,53 @@
+[
+  {
+    "version": "v10.1.205",
+    "icon": [
+      "/assets/images/gameicons/mergenommies.webp",
+      "/assets/images/gameicons/mergenommies.webp"
+    ],
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/merge-nommies/com.momzikov.mergenommie.google/download/phone-10.1.205-apk"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.momzikov.mergenommie.google/Merge Nommies_10.1.205_APKPure.apk",
+        "arch": "arm32, x86",
+        "size": "51.85MB"
+      }
+    ]
+  },
+  {
+    "version": "v9.1.184",
+    "icon": [
+      "/assets/images/gameicons/mergenommies.webp",
+      "/assets/images/gameicons/mergenommies.webp"
+    ],
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/merge-nommies/com.momzikov.mergenommie.google/download/phone-9.1.184-apk"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.momzikov.mergenommie.google/Merge Nommies_9.1.184_APKPure.apk",
+        "arch": "arm32, x86",
+        "size": "51.11MB"
+      }
+    ]
+  },
+  {
+    "version": "v7.1.162",
+    "icon": [
+      "/assets/images/gameicons/mergenommies.webp",
+      "/assets/images/gameicons/mergenommies.webp"
+    ],
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/merge-nommies/com.momzikov.mergenommie.google/download/phone-7.1.162-apk"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.momzikov.mergenommie.google/Merge Nommies_7.1.162_APKPure.apk",
+        "arch": "arm32, x86",
+        "size": "50.18MB"
+      }
+    ]
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "version": "v0.2.2",
+    "icon": "/assets/images/gameicons/run3.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/monster-super-run/com.momzikov.superrun/download/0.2.2"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.momzikov.superrun/Monster Super Run_0.2.2_APKPure.xapk",
+        "arch": "arm64",
+        "size": "56.82MB"
+      }
+    ]
+  },
+  {
+    "version": "v0.2.3",
+    "icon": "/assets/images/gameicons/run3.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/monster-super-run/com.momzikov.superrun/download/0.2.3"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.momzikov.superrun/Monster Super Run_0.2.3_APKPure.xapk",
+        "arch": "arm64",
+        "size": "56.80MB"
+      }
+    ]
+  }
+]

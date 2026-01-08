@@ -1,0 +1,16 @@
+[
+  {
+    "version": "v1.0",
+    "icon": "/assets/images/gameicons/piratestactics.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-pirates-tactics/com.omnom.piratestactics/download/1.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.omnom.piratestactics/Om Nom Pirates Tactics_1.0_APKPure.apk",
+        "arch": "arm64, arm32",
+        "size": "92.18MB"
+      }
+    ]
+  }
+]

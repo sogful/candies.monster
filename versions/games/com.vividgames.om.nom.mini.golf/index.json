@@ -1,0 +1,16 @@
+[
+  {
+    "version": "v1.1",
+    "icon": "/assets/images/gameicons/golf.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-golf/com.vividgames.om.nom.mini.golf/download/1.1"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.vividgames.om.nom.mini.golf/Om Nom Golf_1.1_APKPure.xapk",
+        "arch": "arm64",
+        "size": "51.95MB"
+      }
+    ]
+  }
+]

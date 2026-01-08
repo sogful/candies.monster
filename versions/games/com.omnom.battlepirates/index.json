@@ -1,0 +1,16 @@
+[
+  {
+    "version": "v1.0",
+    "icon": "/assets/images/gameicons/battlepirates.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-battle-pirates/com.omnom.battlepirates/download/1.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.omnom.battlepirates/Om Nom Battle Pirates_1.0_APKPure.apk",
+        "arch": "arm64, arm32",
+        "size": "89.91MB"
+      }
+    ]
+  }
+]

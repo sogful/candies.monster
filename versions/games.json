@@ -1,10 +1,19 @@
 [
   {
-    "name": "Cut the Rope",
-    "package": "com.zeptolab.ctr.ads",
+    "name": [
+      "Cut the Rope",
+      "Cut the Rope"
+    ],
+    "package": [
+      "com.zeptolab.ctr.ads",
+      "com.zeptolab.ctr.tryandbuy.svyaznoy"
+    ],
     "icon": "/assets/images/gameicons/free.webp",
     "importance": 10,
-    "description": "the original one! (don't download the newer versions..)"
+    "description": [
+      "the original one! (don't download the newer versions..)",
+      ""
+    ]
   },
   {
     "name": "Cut the Rope 2",
@@ -71,10 +80,16 @@
   },
   {
     "name": "Om Nom Run 2",
-    "package": ["com.zeptolab.OmNomRun2.parkour", "com.zeptolab.omnomparkour.google"],
+    "package": [
+      "com.zeptolab.OmNomRun2.parkour",
+      "com.zeptolab.omnomparkour.google"
+    ],
     "icon": "/assets/images/gameicons/run2.webp",
     "importance": 4,
-    "description": ["", "another odd one with an additional separate package"]
+    "description": [
+      "",
+      "another odd one with an additional separate package"
+    ]
   },
   {
     "name": "My Om Nom",
@@ -165,7 +180,7 @@
     "package": "com.SugoooiStudio.OmNomBubble",
     "icon": "/assets/images/gameicons/bubble.webp",
     "importance": 2,
-    "description": "this doesn't feel real.."
+    "description": ""
   },
   {
     "name": "Om Nom Karts",
@@ -322,11 +337,23 @@
     "description": ""
   },
   {
-    "name": ["Merge Nommies", "Merge Nommies"],
-    "package": ["com.momzikov.mergenommie.google", "com.momzikov.mergenommies.google"],
-    "icon": ["/assets/images/gameicons/mergenommies.webp", "/assets/images/gameicons/mergenommies.webp"],
+    "name": [
+      "Merge Nommies",
+      "Merge Nommies"
+    ],
+    "package": [
+      "com.momzikov.mergenommie.google",
+      "com.momzikov.mergenommies.google"
+    ],
+    "icon": [
+      "/assets/images/gameicons/mergenommies.webp",
+      "/assets/images/gameicons/mergenommies.webp"
+    ],
     "importance": 2,
-    "description": ["", "the merge nommies of lies and deceit?? why are there two of them"]
+    "description": [
+      "",
+      "the merge nommies of lies and deceit?? why are there two of them"
+    ]
   },
   {
     "name": "Wildlife POP!",
@@ -347,7 +374,7 @@
     "package": "com.bigcodegames.om.nom.pin.puzzle",
     "icon": "/assets/images/gameicons/pinpuzzle.webp",
     "importance": 2,
-    "description": "is this endorsed??"
+    "description": ""
   },
   {
     "name": "Monster Super Run",
@@ -404,5 +431,54 @@
     "icon": "/assets/images/gameicons/marbleshooter.webp",
     "importance": 0,
     "description": "lost media"
+  },
+  {
+    "name": "Om Nom Farm",
+    "package": "com.DefaultCompany.OmNomFarm",
+    "icon": "/assets/images/gameicons/omnomfarm.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "name": "Draw the Rope",
+    "package": "com.zeptolab.drawtherope",
+    "icon": "/assets/images/gameicons/drawtherope.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "name": "Om Nom Big Adventure",
+    "package": "com.zeptodev.nibblenombigadventure",
+    "icon": "/assets/images/gameicons/bigadventure.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "name": "Om Nom Sweet Dreams",
+    "package": "com.zeptodev.onsweetdreams",
+    "icon": "/assets/images/gameicons/onsweetdreams.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "name": "Cut the Rope: Nibble Adventure",
+    "package": "com.zeptolab.CTRNibbleAdventure",
+    "icon": "/assets/images/gameicons/ctrnibbleadventure.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "name": "Om Nom Magic Candies",
+    "package": "com.zeptolab.OmNomMagicCandies",
+    "icon": "/assets/images/gameicons/magiccandies.webp",
+    "importance": 0,
+    "description": ""
+  },
+  {
+    "name": "Cut The Rope Daily",
+    "package": "com.zeptolab.ctrdaily",
+    "icon": "/assets/images/gameicons/daily.webp",
+    "importance": 0,
+    "description": ""
   }
 ]

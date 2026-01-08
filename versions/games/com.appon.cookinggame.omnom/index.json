@@ -1,0 +1,24 @@
+[
+  {
+    "version": "v0.3",
+    "icon": "/assets/images/gameicons/cookinggame.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-cooking-game/com.appon.cookinggame.omnom/download/0.3"
+      },
+      {
+        "url": "https://om-nom-cooking-game.en.uptodown.com/android/download"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.appon.cookinggame.omnom/Om Nom _ Cooking Game_0.3_APKPure.xapk",
+        "arch": "arm64",
+        "size": "66.80MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.appon.cookinggame.omnom/om-nom-cooking-game-0-3.apk",
+        "arch": "arm32",
+        "size": "65.30MB"
+      }
+    ]
+  }
+]

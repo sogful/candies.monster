@@ -351,6 +351,30 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
+        .versionbuttons .cdnbutton {
+            display: flex; align-items: center;
+            gap: 0.15em; height: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%; min-width: 100%;
+            flex-basis: 100%; order: -1;
+        }
+        .versionbuttons .cdnbutton img {
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .versionbuttons .cdnbutton .cdntext {
+            display: flex; flex-direction: column;
+            justify-content: center;  line-height: 1.2;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.65em; white-space: nowrap;
+            flex: 1; min-width: 0;
+        }
+        .versionbuttons .cdnbutton .cdntext > div {
+            -webkit-text-stroke: 0.1em black;
+            text-shadow: 0 0.1em 0 black;
+            paint-order: stroke fill;
+        }
 
     </style>
 </head>
@@ -452,6 +476,9 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
+        const DEBUGshowleaks = true;
+        const DEBUGshowapks = false;
+
         // these mappings are handy
         const buttonmap = [
             {domain: "apkmirror.com", icon: "apkmirror.png"},
@@ -467,6 +494,28 @@
                 if (url.includes(buttonmap[i].domain))
                     return buttonmap[i].icon;
             } return "other.png";
+        }
+
+        function renderdownloadbutton(d) {
+            const iscdn = (d.arch && d.size) || (d.url && d.url.includes("cdn.candies.monster"));
+            if (iscdn && d.arch && d.size) {
+                const isleaks = d.url && d.url.includes("cdn.candies.monster/leaks/");
+                const isapks = d.url && d.url.includes("cdn.candies.monster/apks/");
+                if (isleaks && !DEBUGshowleaks) {return ""}
+                if (isapks && !DEBUGshowapks) {return ""}
+                
+                return `<a href="${d.url}" target="_blank" class="clickable cdnbutton">
+                    <img src="/assets/images/dlbuttons/cdn.png" draggable="false">
+                    <div class="cdntext">
+                        <div>${d.arch}</div>
+                        <div>${d.size}</div>
+                    </div>
+                </a>`;
+            }
+            const button = d.button || autobutton(d.url);
+            return `<a href="${d.url}" target="_blank" class="clickable">
+                <img src="/assets/images/dlbuttons/${button}" draggable="false">
+            </a>`;
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -689,8 +738,13 @@
                 
                 for (const pkg of packageList) {
                     try {
-                        const res = await fetch(`jsons/${pkg}.json`);
+                        const res = await fetch(`games/${pkg}/index.json`);
                         const vlist = await res.json();
+                        vlist.forEach(ver => {
+                            if (ver.version && !ver.version.startsWith('v') && !ver.version.startsWith('V')) {
+                                ver.version = 'v' + ver.version;
+                            }
+                        });
                         versionsByPackage.set(pkg, vlist);
                     } catch (e) {
                         console.warn(`Failed to load ${pkg}.json:`, e);
@@ -764,8 +818,11 @@
                             const unq = []; const seen = new Set();
                             (ver.downloads || []).forEach(d => {
                                 if (!d || !d.url) return;
-                                if (seen.has(d.url)) return;
-                                seen.add(d.url);
+                                const iscdn = (d.arch && d.size) || (d.url && d.url.includes("cdn.candies.monster"));
+                                let key = d.url;
+                                if (iscdn) {key = `${d.url}|${d.arch || ''}|${d.size || ''}`}
+                                if (seen.has(key)) return;
+                                seen.add(key);
                                 unq.push(d);
                             });
                             pn.innerHTML = `
@@ -776,11 +833,7 @@
                                     <div class="version">${ver.version}</div>
                                     ${ver.details ? `<div class="details">${ver.details}</div>` : ''}
                                     <div class="versionbuttons">
-                                        ${unq.map(d => 
-                                            `<a href="${d.url}" target="_blank" class="clickable">
-                                                <img src="/assets/images/dlbuttons/${d.button || autobutton(d.url)}" draggable="false">
-                                            </a>`
-                                        ).join("")}
+                                        ${unq.map(d => renderdownloadbutton(d)).join("")}
                                     </div>
                                 </div>
                             `;
@@ -805,8 +858,11 @@
                         const unq = []; const seen = new Set();
                         (ver.downloads || []).forEach(d => {
                             if (!d || !d.url) return;
-                            if (seen.has(d.url)) return;
-                            seen.add(d.url);
+                            const iscdn = (d.arch && d.size) || (d.url && d.url.includes("cdn.candies.monster"));
+                            let key = d.url;
+                            if (iscdn) {key = `${d.url}|${d.arch || ''}|${d.size || ''}`}
+                            if (seen.has(key)) return;
+                            seen.add(key);
                             unq.push(d);
                         });
                         pn.innerHTML = `
@@ -817,11 +873,7 @@
                                 <div class="version">${ver.version}</div>
                                 ${ver.details ? `<div class="details">${ver.details}</div>` : ''}
                                 <div class="versionbuttons">
-                                    ${unq.map(d => 
-                                        `<a href="${d.url}" target="_blank" class="clickable">
-                                            <img src="/assets/images/dlbuttons/${d.button || autobutton(d.url)}" draggable="false">
-                                        </a>`
-                                    ).join("")}
+                                    ${unq.map(d => renderdownloadbutton(d)).join("")}
                                 </div>
                             </div>
                         `;

@@ -1,0 +1,132 @@
+[
+  {
+    "version": "v2.0.1",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-theme/com.airthemes.ctrairtheme/download/2.0.1"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.airthemes.ctrairtheme/Cut the Rope Theme_2.0.1_APKPure.apk",
+        "arch": "arm64, arm, arm32, mips, mips64, x86, x86_64",
+        "size": "31.57MB"
+      }
+    ]
+  },
+  {
+    "version": "v2.0.0",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-theme/com.airthemes.ctrairtheme/download/2.0.0"
+      },
+      {
+        "url": "https://cut-the-rope-theme.en.uptodown.com/android/download/1020054868"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.airthemes.ctrairtheme/Cut the Rope Theme_2.0.0_APKPure.apk",
+        "arch": "arm, arm32, x86",
+        "size": "28.91MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.5.0",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-theme/com.airthemes.ctrairtheme/download/1.5.0"
+      },
+      {
+        "url": "https://cut-the-rope-theme.en.uptodown.com/android/download/62154985"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.airthemes.ctrairtheme/Cut the Rope Theme_1.5.0_APKPure.apk",
+        "arch": "arm, arm32, x86",
+        "size": "32.47MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.4.0",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-theme/com.airthemes.ctrairtheme/download/1.4.0"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.airthemes.ctrairtheme/Cut the Rope Theme_1.4.0_APKPure.apk",
+        "arch": "arm, arm32, x86",
+        "size": "32.21MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.3.12",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-theme/com.airthemes.ctrairtheme/download/1.3.12"
+      },
+      {
+        "url": "https://cut-the-rope-theme.en.uptodown.com/android/download/285515"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.airthemes.ctrairtheme/Cut the Rope Theme_1.3.12_APKPure.apk",
+        "arch": "arm32",
+        "size": "20.72MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.3.11",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://cut-the-rope-theme.en.uptodown.com/android/download/1048369734"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.airthemes.ctrairtheme/cut-the-rope-theme-1-3-11.apk",
+        "arch": "arm32",
+        "size": "20.65MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.3.8",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://cut-the-rope-theme.en.uptodown.com/android/download/259385"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.airthemes.ctrairtheme/cut-the-rope-theme-1-3-8-multi-android.apk",
+        "arch": "arm32",
+        "size": "19.60MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.2.7",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://cut-the-rope-theme.en.uptodown.com/android/download/2776006"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.airthemes.ctrairtheme/cut-the-rope-theme-1-2-7.apk",
+        "arch": "arm, arm32",
+        "size": "22.60MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.0.11",
+    "icon": "/assets/images/gameicons/themett.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/cut-the-rope-time-travel-theme/com.airthemes.timetravelzeptolab/download/1.0.11"
+      }
+    ]
+  }
+]

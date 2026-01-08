@@ -1,0 +1,38 @@
+[
+  {
+    "version": "v1.1.61",
+    "icon": "/assets/images/gameicons/tycoon.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-tycoon/com.zeptolab.omnomfarm/download/1.1.61"
+      }
+    ]
+  },
+  {
+    "version": "v0.2.5",
+    "icon": "/assets/images/gameicons/tycoon.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-tycoon/com.zeptolab.omnomfarm/download/0.2.5"
+      }
+    ]
+  },
+  {
+    "version": "v0.2.3",
+    "icon": "/assets/images/gameicons/tycoon.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-tycoon/com.zeptolab.omnomfarm/download/0.2.3"
+      }
+    ]
+  },
+  {
+    "version": "v0.1",
+    "icon": "/assets/images/gameicons/tycoon.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-tycoon/com.zeptolab.omnomfarm/download/0.1"
+      }
+    ]
+  }
+]

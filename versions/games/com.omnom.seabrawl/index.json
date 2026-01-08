@@ -1,0 +1,58 @@
+[
+  {
+    "version": "v0.3.22",
+    "icon": "/assets/images/gameicons/pirates.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-sea-brawl/com.omnom.seabrawl/download/0.3.22"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.omnom.seabrawl/Om Nom Sea Brawl_0.3.22_APKPure.apk",
+        "arch": "arm64, arm32",
+        "size": "155.56MB"
+      }
+    ]
+  },
+  {
+    "version": "v0.3.24",
+    "icon": "/assets/images/gameicons/pirates.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-sea-brawl/com.omnom.seabrawl/download/0.3.24"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.omnom.seabrawl/Om Nom Sea Brawl_0.3.24_APKPure.apk",
+        "arch": "arm64, arm32",
+        "size": "156.12MB"
+      }
+    ]
+  },
+  {
+    "version": "v0.3.25",
+    "icon": "/assets/images/gameicons/pirates.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-sea-brawl/com.omnom.seabrawl/download/0.3.25"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.omnom.seabrawl/Om Nom Sea Brawl_0.3.25_APKPure.apk",
+        "arch": "arm64, arm32",
+        "size": "156.12MB"
+      }
+    ]
+  },
+  {
+    "version": "v0.3.26",
+    "icon": "/assets/images/gameicons/pirates.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-sea-brawl/com.omnom.seabrawl/download/0.3.26"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.omnom.seabrawl/Om Nom Sea Brawl_0.3.26_APKPure.apk",
+        "arch": "arm64, arm32",
+        "size": "156.12MB"
+      }
+    ]
+  }
+]

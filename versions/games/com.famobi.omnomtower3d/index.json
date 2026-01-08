@@ -1,0 +1,62 @@
+[
+  {
+    "version": "20251105",
+    "icon": "/assets/images/gameicons/tower3d.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-tower-3d/com.famobi.omnomtower3d/download/20251105"
+      }
+    ]
+  },
+  {
+    "version": "20251112",
+    "icon": "/assets/images/gameicons/tower3d.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-tower-3d/com.famobi.omnomtower3d/download/20251112"
+      }
+    ]
+  },
+  {
+    "version": "20251208",
+    "icon": "/assets/images/gameicons/tower3d.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-tower-3d/com.famobi.omnomtower3d/download/20251208"
+      }
+    ]
+  },
+  {
+    "version": "v20251105",
+    "downloads": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.famobi.omnomtower3d/Om Nom Tower 3D_20251105_APKPure.xapk",
+        "arch": "arm64",
+        "size": "35.82MB"
+      }
+    ],
+    "icon": "/assets/images/gameicons/tower3d.webp"
+  },
+  {
+    "version": "v20251112",
+    "downloads": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.famobi.omnomtower3d/Om Nom Tower 3D_20251112_APKPure.xapk",
+        "arch": "arm64",
+        "size": "35.44MB"
+      }
+    ],
+    "icon": "/assets/images/gameicons/tower3d.webp"
+  },
+  {
+    "version": "v20251208",
+    "downloads": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.famobi.omnomtower3d/Om Nom Tower 3D_20251208_APKPure.xapk",
+        "arch": "arm64",
+        "size": "35.78MB"
+      }
+    ],
+    "icon": "/assets/images/gameicons/tower3d.webp"
+  }
+]

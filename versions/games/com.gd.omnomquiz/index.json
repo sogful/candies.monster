@@ -1,0 +1,30 @@
+[
+  {
+    "version": "v1.4",
+    "icon": "/assets/images/gameicons/brainteaser.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-brain-teaser/com.gd.omnomquiz/download/1.4"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.gd.omnomquiz/OM Nom_ Brain Teaser_1.4_APKPure.apk",
+        "arch": "arm32",
+        "size": "24.57MB"
+      }
+    ]
+  },
+  {
+    "version": "v1.3",
+    "icon": "/assets/images/gameicons/brainteaser.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-brain-teaser/com.gd.omnomquiz/download/1.3"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.gd.omnomquiz/OM Nom_ Brain Teaser_1.3_APKPure.xapk",
+        "arch": "arm64",
+        "size": "24.84MB"
+      }
+    ]
+  }
+]

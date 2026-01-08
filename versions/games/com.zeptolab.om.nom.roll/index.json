@@ -1,0 +1,23 @@
+[
+  {
+    "version": "v0.6",
+    "icon": "/assets/images/gameicons/rollrace.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-roll-race/com.zeptolab.om.nom.roll/download/0.6"
+      }
+    ]
+  },
+  {
+    "version": "v0.2.5",
+    "icon": "/assets/images/gameicons/rollrace.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-roll-race/com.zeptolab.om.nom.roll/download/0.2.5"
+      },
+      {
+        "url": "https://apkcombo.com/om-nom-roll-race/com.zeptolab.om.nom.roll"
+      }
+    ]
+  }
+]

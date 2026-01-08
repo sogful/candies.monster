@@ -1,0 +1,46 @@
+[
+  {
+    "version": "v0.9.7",
+    "icon": "/assets/images/gameicons/blastbutnot.webp",
+    "downloads": [
+      {
+        "url": "https://apkcombo.com/om-nom-om-nom-blast/com.stelar.omnomblast/"
+      },
+      {
+        "url": "https://om-nom-blast.en.uptodown.com/android/download"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.stelar.omnomblast/Om Nom_ Om Nom Blast_0.9.7_APKPure.apk",
+        "arch": "arm64, arm32",
+        "size": "139.12MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.stelar.omnomblast/om-nom-blast-0-9-7.apk",
+        "arch": "arm64, arm32",
+        "size": "139.12MB"
+      }
+    ]
+  },
+  {
+    "version": "v0.9.5",
+    "icon": "/assets/images/gameicons/blastbutnot.webp",
+    "downloads": [
+      {
+        "url": "https://apkpure.com/om-nom-om-nom-blast/com.stelar.omnomblast/download/0.9.5"
+      },
+      {
+        "url": "https://om-nom-blast.en.uptodown.com/android/download/4544291"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.stelar.omnomblast/Om Nom_ Om Nom Blast_0.9.5_APKPure.xapk",
+        "arch": "arm64",
+        "size": "101.23MB"
+      },
+      {
+        "url": "https://cdn.candies.monster/apks/com.stelar.omnomblast/om-nom-blast-0-9-5.apk",
+        "arch": "arm64, arm32",
+        "size": "139.12MB"
+      }
+    ]
+  }
+]
