@@ -286,7 +286,7 @@
             color: rgba(255,255,255,0.8);
             margin-bottom: 0.5em;
         }
-        .packagecolumn .packagedescription {
+        .packagecolumn .packagedesc {
             font-size: 1em;
             color: white;
             margin-top: 0.5em;
@@ -496,6 +496,17 @@
             } return "other.png";
         }
 
+        function isdownloadbuttonvisible(d) {
+            const iscdn = (d.arch && d.size) || (d.url && d.url.includes("cdn.candies.monster"));
+            if (iscdn && d.arch && d.size) {
+                const isleaks = d.url && d.url.includes("cdn.candies.monster/leaks/");
+                const isapks = d.url && d.url.includes("cdn.candies.monster/apks/");
+                if (isleaks && !DEBUGshowleaks) {return false}
+                if (isapks && !DEBUGshowapks) {return false}
+            }
+            return true;
+        }
+
         function renderdownloadbutton(d) {
             const iscdn = (d.arch && d.size) || (d.url && d.url.includes("cdn.candies.monster"));
             if (iscdn && d.arch && d.size) {
@@ -522,6 +533,7 @@
 
         let games = [];
         let currentgame = null;
+        let currentloadid = 0;
 
         async function loadgames() {
             try {
@@ -531,6 +543,8 @@
             } catch (e) {}
         }
 
+        // this whole ordeal might be a little resource intensive,
+        // but if you're on mobile this will be skipped for a simpler layout instead!
         function rendergamecircle() {
             const circle = document.getElementById("gamecircle");
             circle.classList.add("rendering");
@@ -679,15 +693,24 @@
         }
 
         async function selectgame(g) {
+            currentloadid++;
+            const thisloadid = currentloadid;
+            
             currentgame = g;
             const gs = document.getElementById("gamescreen");
             const vs = document.getElementById("versionscreen");
+            const vl = document.getElementById("versionslist");
             const bb = document.querySelector(".backbutton");
-            gs.classList.add("slideleft");
+            
+            const alreadyshown = vs.classList.contains("active");
+            
+            if (alreadyshown) {gs.classList.add("slideleft")}
+            
             vs.classList.add("active");
             bb.classList.add("active");
+            
             const packages = Array.isArray(g.package) ? g.package : [g.package];
-            await loadversions(packages, g);
+            await loadversions(packages, g, thisloadid, alreadyshown);
         }
 
         let legacyctriconmap = null;
@@ -713,7 +736,10 @@
             return v.split('.').map(n => parseInt(n) || 0);
         }
 
-        async function loadversions(packages, game) {
+        async function loadversions(packages, game, loadid, alreadyshown) {
+            if (loadid !== currentloadid) {return}
+            const vs = document.getElementById("versionscreen");
+            
             try {
                 const gi = document.getElementById("gameinfo");
                 const packageStr = Array.isArray(packages) ? packages.join(", ") : packages;
@@ -729,14 +755,12 @@
                         ${game.description ? `<div class="description">${game.description}</div>` : ''}
                     `;
                 }
-                
                 const vl = document.getElementById("versionslist");
-                vl.innerHTML = "";
 
-                const packageList = Array.isArray(packages) ? packages : [packages];
-                const versionsByPackage = new Map();
+                const packagelist = Array.isArray(packages) ? packages : [packages];
+                const versionsbypackage = new Map();
                 
-                for (const pkg of packageList) {
+                for (const pkg of packagelist) {
                     try {
                         const res = await fetch(`games/${pkg}/index.json`);
                         const vlist = await res.json();
@@ -745,20 +769,51 @@
                                 ver.version = 'v' + ver.version;
                             }
                         });
-                        versionsByPackage.set(pkg, vlist);
+                        versionsbypackage.set(pkg, vlist);
                     } catch (e) {
                         console.warn(`Failed to load ${pkg}.json:`, e);
-                        versionsByPackage.set(pkg, []);
+                        versionsbypackage.set(pkg, []);
                     }
                 }
-                const hasVersions = Array.from(versionsByPackage.values()).some(vlist => vlist.length > 0);
-                if (!hasVersions) {
+                if (loadid !== currentloadid) {return}
+                
+                const hasversions = Array.from(versionsbypackage.values()).some(vlist => vlist.length > 0);
+                if (!hasversions) {
                     vl.innerHTML = `<div style="color: white; -webkit-text-stroke: 0.125em black; text-shadow: 0 0.1em 0 black;">No versions found for this game.</div>`;
+                    vs.style.visibility = 'visible';
                     return;
                 }
                 
-                versionsByPackage.forEach((vlist, pkg) => {
-                    vlist.sort((a, b) => {
+                // merge dupe versions
+                versionsbypackage.forEach((vlist, pkg) => {
+                    const versionMap = new Map();
+                    vlist.forEach(ver => {
+                        const versionkey = (ver.version || '').toLowerCase();
+                        if (versionMap.has(versionkey)) {
+                            const existing = versionMap.get(versionkey);
+                            const alldownloads = [...(existing.downloads || []), ...(ver.downloads || [])];
+                            const unq = [];
+                            const seen = new Set();
+                            alldownloads.forEach(d => {
+                                if (!d || !d.url) return;
+                                const iscdn = (d.arch && d.size) || (d.url && d.url.includes("cdn.candies.monster"));
+                                let key = d.url;
+                                if (iscdn) {key = `${d.url}|${d.arch || ''}|${d.size || ''}`}
+                                if (seen.has(key)) return;
+                                seen.add(key);
+                                unq.push(d);
+                            });
+                            const existingcount = (existing.downloads || []).length;
+                            const newcount = (ver.downloads || []).length;
+                            existing.downloads = unq;
+                            if (newcount > existingcount) {
+                                if (ver.icon) existing.icon = ver.icon;
+                                if (ver.details) existing.details = ver.details;
+                            }
+                        } else {versionMap.set(versionkey, {...ver})}
+                    });
+                    const merged = Array.from(versionMap.values());
+                    merged.sort((a, b) => {
                         const av = parseversion(a.version);
                         const bv = parseversion(b.version);
                         for (let i = 0; i < Math.max(av.length, bv.length); i++) {
@@ -767,54 +822,49 @@
                             if (bn !== an) return bn - an;
                         }
                         return 0;
-                    });
+                    }); versionsbypackage.set(pkg, merged);
                 });
                 let ctmap = null;
-                if (packageList.includes("com.zeptolab.ctr.ads")) {
+                if (packagelist.includes("com.zeptolab.ctr.ads")) {
                     ctmap = await loadlegacyctricons();
                 }
+                if (loadid !== currentloadid) {return}
+                vl.innerHTML = "";
+                if (loadid !== currentloadid) {return}
                 
-                if (packageList.length > 1) {
+                if (packagelist.length > 1) {
                     vl.classList.add("multipackage");
                     
-                    packageList.forEach((pkg, index) => {
-                        const vlist = versionsByPackage.get(pkg) || [];
+                    packagelist.forEach((pkg, index) => {
+                        const vlist = versionsbypackage.get(pkg) || [];
                         const column = document.createElement("div");
                         column.className = "packagecolumn";
                         
-                        const packageName = Array.isArray(game.name) ? game.name[index] : game.name;
-                        const packageIcon = Array.isArray(game.icon) ? game.icon[index] : game.icon;
-                        const packageDescription = Array.isArray(game.description) ? game.description[index] : game.description;
+                        const packagename = Array.isArray(game.name) ? game.name[index] : game.name;
+                        const packageicon = Array.isArray(game.icon) ? game.icon[index] : game.icon;
+                        const packagedesc = Array.isArray(game.description) ? game.description[index] : game.description;
 
                         const title = document.createElement("div");
                         title.className = "packagetitle";
-                        title.textContent = packageName;
+                        title.textContent = packagename;
                         column.appendChild(title);
                         
-                        const packageNameEl = document.createElement("div");
-                        packageNameEl.className = "packagename";
-                        packageNameEl.textContent = pkg;
-                        column.appendChild(packageNameEl);
+                        const packageelement = document.createElement("div");
+                        packageelement.className = "packagename";
+                        packageelement.textContent = pkg;
+                        column.appendChild(packageelement);
                         
-                        if (packageDescription) {
+                        if (packagedesc) {
                             const description = document.createElement("div");
-                            description.className = "packagedescription";
-                            description.textContent = packageDescription;
+                            description.className = "packagedesc";
+                            description.textContent = packagedesc;
                             column.appendChild(description);
                         }
 
-                        const versionsContainer = document.createElement("div");
-                        versionsContainer.className = "packageversions";
+                        const versioncontainer = document.createElement("div");
+                        versioncontainer.className = "packageversions";
                         
                         vlist.forEach(ver => {
-                            const pn = document.createElement("div");
-                            pn.className = "versionpanel";
-                            let iconp = null;
-                            if (ctmap && ctmap[ver.version]) {iconp = ctmap[ver.version]}
-                            else if (ver.icon) {iconp = ver.icon}
-                            else if (packageIcon) {iconp = packageIcon}
-                            else if (game && game.icon) {iconp = Array.isArray(game.icon) ? game.icon[0] : game.icon}
-                            else {iconp = "/assets/images/gameicons/free.webp"}
                             const unq = []; const seen = new Set();
                             (ver.downloads || []).forEach(d => {
                                 if (!d || !d.url) return;
@@ -825,6 +875,18 @@
                                 seen.add(key);
                                 unq.push(d);
                             });
+                            
+                            const visibledownloads = unq.filter(d => isdownloadbuttonvisible(d));
+                            if (visibledownloads.length === 0) return;
+                            
+                            const pn = document.createElement("div");
+                            pn.className = "versionpanel";
+                            let iconp = null;
+                            if (ctmap && ctmap[ver.version]) {iconp = ctmap[ver.version]}
+                            else if (ver.icon) {iconp = ver.icon}
+                            else if (packageicon) {iconp = packageicon}
+                            else if (game && game.icon) {iconp = Array.isArray(game.icon) ? game.icon[0] : game.icon}
+                            else {iconp = "/assets/images/gameicons/free.webp"}
                             pn.innerHTML = `
                                 <div class="versionicon">
                                     <img src="${iconp}" draggable="false">
@@ -833,28 +895,21 @@
                                     <div class="version">${ver.version}</div>
                                     ${ver.details ? `<div class="details">${ver.details}</div>` : ''}
                                     <div class="versionbuttons">
-                                        ${unq.map(d => renderdownloadbutton(d)).join("")}
+                                        ${visibledownloads.map(d => renderdownloadbutton(d)).join("")}
                                     </div>
                                 </div>
                             `;
-                            versionsContainer.appendChild(pn);
+                            versioncontainer.appendChild(pn);
                         });
                         
-                        column.appendChild(versionsContainer);
+                        column.appendChild(versioncontainer);
                         vl.appendChild(column);
                     });
                 } else {
                     vl.classList.remove("multipackage");
-                    const vlist = versionsByPackage.get(packageList[0]) || [];
+                    const vlist = versionsbypackage.get(packagelist[0]) || [];
                     
                     vlist.forEach(ver => {
-                        const pn = document.createElement("div");
-                        pn.className = "versionpanel";
-                        let iconp = null;
-                        if (ctmap && ctmap[ver.version]) {iconp = ctmap[ver.version]}
-                        else if (ver.icon) {iconp = ver.icon}
-                        else if (game && game.icon) {iconp = game.icon}
-                        else {iconp = "/assets/images/gameicons/free.webp"}
                         const unq = []; const seen = new Set();
                         (ver.downloads || []).forEach(d => {
                             if (!d || !d.url) return;
@@ -865,6 +920,17 @@
                             seen.add(key);
                             unq.push(d);
                         });
+
+                        const visibledownloads = unq.filter(d => isdownloadbuttonvisible(d));
+                        if (visibledownloads.length === 0) return;
+                        
+                        const pn = document.createElement("div");
+                        pn.className = "versionpanel";
+                        let iconp = null;
+                        if (ctmap && ctmap[ver.version]) {iconp = ctmap[ver.version]}
+                        else if (ver.icon) {iconp = ver.icon}
+                        else if (game && game.icon) {iconp = game.icon}
+                        else {iconp = "/assets/images/gameicons/free.webp"}
                         pn.innerHTML = `
                             <div class="versionicon">
                                 <img src="${iconp}" draggable="false">
@@ -873,11 +939,21 @@
                                 <div class="version">${ver.version}</div>
                                 ${ver.details ? `<div class="details">${ver.details}</div>` : ''}
                                 <div class="versionbuttons">
-                                    ${unq.map(d => renderdownloadbutton(d)).join("")}
+                                    ${visibledownloads.map(d => renderdownloadbutton(d)).join("")}
                                 </div>
                             </div>
                         `;
                         vl.appendChild(pn);
+                    });
+                }
+                if (loadid !== currentloadid) {return}
+                if (!alreadyshown) {
+                    const gs = document.getElementById("gamescreen");
+                    gs.classList.add("slideleft");
+                    requestAnimationFrame(() => {
+                        if (loadid === currentloadid) {
+                            vs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                     });
                 }
                 
@@ -888,8 +964,11 @@
                     });
                 });
             } catch (e) {
+                if (loadid !== currentloadid) {return}
                 const vl = document.getElementById("versionslist");
+                const vs = document.getElementById("versionscreen");
                 vl.innerHTML = `<div style="color: white; -webkit-text-stroke: 0.125em black; text-shadow: 0 0.1em 0 black;">No versions found for this game.</div>`;
+                vs.style.visibility = 'visible';
             }
         }
 

@@ -96,7 +96,7 @@
     "package": "com.zeptolab.myomnom.free.google",
     "icon": "/assets/images/gameicons/myomnom.webp",
     "importance": 4,
-    "description": ""
+    "description": "check pdalife and apkpure's xapks for proper obb data! not sure if mixing it with other versions will work, however you will not be able to launch the game on its own since the servers are long gone.."
   },
   {
     "name": "Om Nom Run 3: Speedrun",
@@ -430,7 +430,7 @@
     "package": "com.renderedideas.omnommarblematch",
     "icon": "/assets/images/gameicons/marbleshooter.webp",
     "importance": 0,
-    "description": "lost media"
+    "description": "lost :("
   },
   {
     "name": "Om Nom Farm",
