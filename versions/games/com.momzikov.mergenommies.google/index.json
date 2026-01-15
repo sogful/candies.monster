@@ -1,10 +1,7 @@
 [
   {
     "version": "v2.1.58",
-    "icon": [
-      "/assets/images/gameicons/mergenommies.webp",
-      "/assets/images/gameicons/mergenommies.webp"
-    ],
+    "icon": "/assets/images/gameicons/mergenommies.webp",
     "downloads": [
       {
         "url": "https://apkpure.com/merge-nommies/com.momzikov.mergenommies.google/download/2.1.58"
