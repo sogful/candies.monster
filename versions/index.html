@@ -704,11 +704,6 @@
             
             const alreadyshown = vs.classList.contains("active");
             
-            if (alreadyshown) {gs.classList.add("slideleft")}
-            
-            vs.classList.add("active");
-            bb.classList.add("active");
-            
             const packages = Array.isArray(g.package) ? g.package : [g.package];
             await loadversions(packages, g, thisloadid, alreadyshown);
         }
@@ -780,7 +775,13 @@
                 const hasversions = Array.from(versionsbypackage.values()).some(vlist => vlist.length > 0);
                 if (!hasversions) {
                     vl.innerHTML = `<div style="color: white; -webkit-text-stroke: 0.125em black; text-shadow: 0 0.1em 0 black;">No versions found for this game.</div>`;
-                    vs.style.visibility = 'visible';
+                    if (loadid === currentloadid) {
+                        const gs = document.getElementById("gamescreen");
+                        const bb = document.querySelector(".backbutton");
+                        vs.classList.add("active");
+                        bb.classList.add("active");
+                        gs.classList.add("slideleft");
+                    }
                     return;
                 }
                 
@@ -947,9 +948,14 @@
                     });
                 }
                 if (loadid !== currentloadid) {return}
+                
+                // Show versions screen and slide game circle only after versions are loaded
+                const gs = document.getElementById("gamescreen");
+                const bb = document.querySelector(".backbutton");
+                vs.classList.add("active");
+                bb.classList.add("active");
+                gs.classList.add("slideleft");
                 if (!alreadyshown) {
-                    const gs = document.getElementById("gamescreen");
-                    gs.classList.add("slideleft");
                     requestAnimationFrame(() => {
                         if (loadid === currentloadid) {
                             vs.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -967,8 +973,12 @@
                 if (loadid !== currentloadid) {return}
                 const vl = document.getElementById("versionslist");
                 const vs = document.getElementById("versionscreen");
+                const gs = document.getElementById("gamescreen");
+                const bb = document.querySelector(".backbutton");
                 vl.innerHTML = `<div style="color: white; -webkit-text-stroke: 0.125em black; text-shadow: 0 0.1em 0 black;">No versions found for this game.</div>`;
-                vs.style.visibility = 'visible';
+                vs.classList.add("active");
+                bb.classList.add("active");
+                gs.classList.add("slideleft");
             }
         }
 
