@@ -164,6 +164,17 @@
             padding: 4em 4em 8em 4em; box-sizing: border-box; overflow: visible;
         }
 
+        .textdisplay > .buttonbackground {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
         .textdisplay > .textshadow,
         .textdisplay > .textpreview {
             position: absolute;
@@ -191,7 +202,7 @@
         .textinput {
             position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90vw; height: 90vh;
+            width: 90vw; min-width: 200px; max-width: 950px; height: 90vh;
             background: transparent; border: none;
             outline: none; box-shadow: none;
             color: transparent; caret-color: transparent;
@@ -251,7 +262,7 @@
             background: rgba(0,0,0,0.5);
             overflow-y: auto; position: fixed;
             left: 1em; bottom: 1em;
-            max-width: 90vw;
+            width: max-content; min-width: fit-content;
             z-index: 10000; pointer-events: auto;
         }
         .configs .draghandle {
@@ -421,23 +432,17 @@
         .settinginput.colorpicker {
             position: absolute;
             left: 5px; width: 22px; height: 22px;
-            padding: 0;
-            border-radius: 50%;
-            cursor: pointer;
-            -webkit-appearance: none;
-            appearance: none;
-            border: none;
+            padding: 0; border-radius: 50%;
+            cursor: pointer; -webkit-appearance: none;
+            appearance: none; border: none;
             overflow: hidden;
         }
         .settinginput.colorpicker::-webkit-color-swatch-wrapper {
-            padding: 0;
-            border: none;
-            border-radius: 50%;
-            overflow: hidden;
+            padding: 0; border: none;
+            border-radius: 50%; overflow: hidden;
         }
         .settinginput.colorpicker::-webkit-color-swatch {
-            border: none;
-            border-radius: 50%;
+            border: none; border-radius: 50%;
             padding: 0;
         }
         .settinginput.colorpicker::-moz-color-swatch {
@@ -532,15 +537,61 @@
             top: 1em; right: 1em; gap: 0.5em; z-index: 10;
             display: flex; flex-direction: row; align-items: center;
         }
-
         .downloadsection .settinggroup {
             align-items: center;
             flex-direction: row;
             gap: 0.3em;
         }
+        .downloadsection .downloadbutton span {
+            font-size: 2em;
+        }
 
-        .downloadsection .settinglabel {font-size: 0.95em}
+        .downloadsection .settinglabel {font-size: 0.95em; line-height: 0.8}
         .downloadsection .settinginput {width: 40px}
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .checkboxline {
+            display: flex;
+            gap: 0.5em;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .checkboxgroup {
+            display: flex;
+            align-items: center;
+            gap: 0.3em;
+        }
+
+        .checkboxlabel {
+            color: white;
+            font-size: 1.2em;
+            -webkit-text-stroke: 0.15em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+
+        .checkboxinput {
+            width: 32px;
+            height: 32px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("/assets/images/unchecked.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .checkboxinput:checked {
+            background-image: url("/assets/images/checked.png");
+        }
 
     </style>
 </head>
@@ -560,6 +611,7 @@
         <div class="container">
             <div class="previewsection">
                 <div class="textdisplay">
+                    <img class="buttonbackground" style="display: none;" draggable="false">
                     <div class="textshadow"></div>
                     <div class="textpreview"></div>
                     <div class="cursoroverlay"></div>
@@ -573,36 +625,53 @@
                 <div class="configlines">
                     <div class="configline">
                         <button class="fontbutton active clickable" data-font="Good Dog">
-                            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
                             <span>GoodDog</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog Cool">
-                            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
                             <span>Cool</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog Bones">
-                            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
                             <span>Bones</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog New">
-                            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
                             <span>New</span>
                         </button>
                     </div>
 
                     <div class="configline">
                         <button class="preset clickable" data-preset="default">
-                            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
                             <span>Default</span>
                         </button>
                         <button class="preset clickable" data-preset="plain">
-                            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
                             <span>Plain</span>
                         </button>
                         <button class="preset clickable" data-preset="cyan">
-                            <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
                             <span>Cyan</span>
                         </button>
+                    </div>
+
+                    <div class="configline checkboxline">
+                        <div class="checkboxgroup">
+                            <input type="checkbox" class="clickable checkboxinput addtexttobutton" id="addtexttobutton">
+                            <label class="checkboxlabel" for="addtexttobutton">Button</label>
+                        </div>
+                        <div class="checkboxgroup" id="activebuttoncontainer" style="display: none;">
+                            <input type="checkbox" class="clickable checkboxinput useactivebutton" id="useactivebutton">
+                            <label class="checkboxlabel" for="useactivebutton">Active</label>
+                        </div>
+                        <div class="settinggroup" id="buttoncolorcontainer" style="display: none;">
+                            <div class="colorgroup">
+                                <input type="color" class="settinginput colorpicker buttoncolorpicker" value="#ff0000">
+                                <input type="text" class="settinginput colorinput buttoncolor" value="#ff0000" placeholder="#ff0000">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="configline numberline">
@@ -667,7 +736,7 @@
                     <input type="number" class="settinginput imagesize" value="1000" min="100" max="5000" step="100">
                 </div>
                 <a class="sbutton clickable downloadbutton">
-                    <img src="/levels/assets/images/buttons/sbutton.webp" draggable="false">
+                    <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
                     <span>Download</span>
                 </a>
             </div>
@@ -704,24 +773,21 @@
                 outlinecolor: "#000000cc",
                 outlinesize: 6,
                 shadowcolor: "#2b0f00cc",
-                shadowx: 0,
-                shadowy: 4
+                shadowx: 0, shadowy: 4
             },
             plain: {
                 fontcolor: "#000000cc",
                 outlinecolor: "#00000000",
                 outlinesize: 0,
                 shadowcolor: "#00000000",
-                shadowx: 0,
-                shadowy: 0
+                shadowx: 0, shadowy: 0
             },
             cyan: {
                 fontcolor: "#9faef1ff",
                 outlinecolor: "#00000000",
                 outlinesize: 0,
                 shadowcolor: "#00000000",
-                shadowx: 0,
-                shadowy: 0
+                shadowx: 0, shadowy: 0
             }
         }
 
@@ -736,7 +802,10 @@
             outlinesize: presets.default.outlinesize,
             shadowcolor: presets.default.shadowcolor,
             shadowx: presets.default.shadowx,
-            shadowy: presets.default.shadowy
+            shadowy: presets.default.shadowy,
+            addtexttobutton: false,
+            useactivebutton: false,
+            buttoncolor: null
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -761,7 +830,9 @@
             shadowcoloropacity: document.querySelector(".shadowcoloropacity"),
             shadowcoloropacityvalue: document.querySelector(".shadowcoloropacityvalue"),
             shadowx: document.querySelector(".shadowx"),
-            shadowy: document.querySelector(".shadowy")
+            shadowy: document.querySelector(".shadowy"),
+            buttoncolor: document.querySelector(".buttoncolor"),
+            buttoncolorpicker: document.querySelector(".buttoncolorpicker")
         }
 
         function hextoopacity(hex) {
@@ -793,7 +864,7 @@
         fontbuttons.forEach(btn => {
             if (!btn.querySelector("img")) {
                 const img = document.createElement("img")
-                img.src = "/levels/assets/images/buttons/sbutton.webp"
+                img.src = "/assets/images/longbuttons/sbutton.webp"
                 img.draggable = false
                 btn.insertBefore(img, btn.firstChild)
                 const span = document.createElement("span")
@@ -806,7 +877,7 @@
         Object.keys(settinginputs).forEach(k => {
             if (!settinginputs[k]) return
 
-            if (k === "fontcolor" || k === "outlinecolor" || k === "shadowcolor" || k === "fontcolorpicker" || k === "outlinecolorpicker" || k === "shadowcolorpicker") {
+            if (k === "fontcolor" || k === "outlinecolor" || k === "shadowcolor" || k === "buttoncolor" || k === "fontcolorpicker" || k === "outlinecolorpicker" || k === "shadowcolorpicker" || k === "buttoncolorpicker") {
                 const basekey = k.replace("picker", "")
                 const ispicker = k.endsWith("picker")
                 settinginputs[k].addEventListener("input", function() {
@@ -817,7 +888,22 @@
                     v = v.slice(0, 8)
                     v = "#" + v
 
-                    if (ispicker) {
+                    if (basekey === "buttoncolor") {
+                        if (/^#[0-9a-fA-F]{6}$/i.test(v)) {
+                            state[basekey] = v.toLowerCase()
+                            if (ispicker) {
+                                if (settinginputs[basekey]) {
+                                    settinginputs[basekey].value = v.toLowerCase()
+                                }
+                            } else {
+                                if (settinginputs[basekey + "picker"]) {
+                                    settinginputs[basekey + "picker"].value = v.toLowerCase()
+                                }
+                            }
+                        } else if (v === "#" || v === "") {
+                            state[basekey] = null
+                        }
+                    } else if (ispicker) {
                         const rgbhex = v
                         const opacityinput = settinginputs[basekey + "opacity"]
                         let opacity = opacityinput ? parseFloat(opacityinput.value) : 100
@@ -871,6 +957,20 @@
                     const newcolor = updatecolorwithopacity(currentcolor, opacity)
                     state[basekey] = newcolor
                     settinginputs[basekey].value = newcolor
+    
+                    if (basekey === "outlinecolor" && opacity > 0 && state.outlinesize === 0) {
+                        state.outlinesize = presets.default.outlinesize
+                        if (settinginputs.outlinesize) {
+                            settinginputs.outlinesize.value = state.outlinesize
+                        }
+                    }
+                    if (basekey === "shadowcolor" && opacity > 0 && state.shadowx === 0 && state.shadowy === 0) {
+                        state.shadowy = presets.default.shadowy
+                        if (settinginputs.shadowy) {
+                            settinginputs.shadowy.value = state.shadowy
+                        }
+                    }
+                    
                     updatepreview()
                 })
             } else {
@@ -884,19 +984,96 @@
         textinput.addEventListener("input", function() {
             state.text = this.value
             updatepreview()
+            if (state.addtexttobutton) {
+                clearTimeout(window.buttpreviewtimeout)
+                window.buttpreviewtimeout = setTimeout(updatebuttonpreview, 50)
+            }
         })
         textinput.addEventListener("focus", function() { updatepreview() })
         textinput.addEventListener("blur", function() { updatepreview() })
 
+        // checkboxes!
+        const addtexttobuttoncheckbox = document.querySelector(".addtexttobutton")
+        const useactivebuttoncheckbox = document.querySelector(".useactivebutton")
+        const activebuttoncontainer = document.getElementById("activebuttoncontainer")
+        const buttoncolorpicker = document.querySelector(".buttoncolorpicker")
+
+        if (addtexttobuttoncheckbox) {
+            addtexttobuttoncheckbox.addEventListener("change", function() {
+                state.addtexttobutton = this.checked
+                if (activebuttoncontainer) {
+                    activebuttoncontainer.style.display = this.checked ? "flex" : "none"
+                }
+                if (!this.checked && useactivebuttoncheckbox) {
+                    useactivebuttoncheckbox.checked = false
+                    state.useactivebutton = false
+                }
+                if (!this.checked) {
+                    state.buttoncolor = null
+                    if (settinginputs.buttoncolor) {
+                        settinginputs.buttoncolor.value = "#ff0000"
+                    }
+                    if (settinginputs.buttoncolorpicker) {
+                        settinginputs.buttoncolorpicker.value = "#ff0000"
+                    }
+                }
+                updatebuttoncolorchecks()
+            
+                const buttonbg = document.querySelector(".buttonbackground")
+                const textpreview = document.querySelector(".textpreview")
+                const textshadow = document.querySelector(".textshadow")
+                if (!this.checked) {
+                    if (buttonbg) {
+                        buttonbg.style.display = "none"
+                        buttonbg.src = ""
+                    }
+                    if (textpreview) {
+                        textpreview.style.transform = "translate(-50%, -50%)"
+                    }
+                    if (textshadow) {
+                        const shadowtransform = textshadow.style.transform || ""
+                        textshadow.style.transform = shadowtransform.replace(/scale\([^)]+\)/g, "").trim()
+                    }
+                    currenttextscale = 1
+                }
+                updatepreview()
+                if (this.checked) {
+                    setTimeout(() => {
+                        if (state.addtexttobutton && currenttextscale !== 1) {
+                            updateshadowtransform(currenttextscale)
+                        }
+                    }, 100)
+                }
+            })
+        }
+        if (useactivebuttoncheckbox) {
+            useactivebuttoncheckbox.addEventListener("change", function() {
+                state.useactivebutton = this.checked
+                updatepreview()
+            })
+        }
+       
+        function updatebuttoncolorchecks() {
+            const showcolorstuff = state.addtexttobutton
+            const buttoncolorcontainer = document.getElementById("buttoncolorcontainer")
+            if (buttoncolorcontainer) {
+                buttoncolorcontainer.style.display = showcolorstuff ? "flex" : "none"
+            }
+        }
+
         /*//////////////////////////////////////////////////////////////////////*/
 
-        // cursor stufff
+        // cursor stuff
         let cursorupdateinterval = null
         function startcursorupdate() {
             if (cursorupdateinterval) return
             cursorupdateinterval = setInterval(function() {
                 if (document.activeElement === textinput) {
                     updatepreview()
+                    if (state.addtexttobutton) {
+                        clearTimeout(window.buttpreviewtimeout)
+                        window.buttpreviewtimeout = setTimeout(updatebuttonpreview, 50)
+                    }
                 } else {
                     clearInterval(cursorupdateinterval)
                     cursorupdateinterval = null
@@ -914,6 +1091,10 @@
         document.addEventListener("selectionchange", function() {
             if (document.activeElement === textinput) {
                 updatepreview()
+                if (state.addtexttobutton) {
+                    clearTimeout(window.buttpreviewtimeout)
+                    window.buttpreviewtimeout = setTimeout(updatebuttonpreview, 50)
+                }
             }
         })
 
@@ -989,6 +1170,251 @@
             return h.slice(0, 7)
         }
 
+        // Convert RGB to HSL
+        function rgbtohsl(r, g, b) {
+            r /= 255
+            g /= 255
+            b /= 255
+            const max = Math.max(r, g, b)
+            const min = Math.min(r, g, b)
+            let h, s, l = (max + min) / 2
+            
+            if (max === min) {
+                h = s = 0
+            } else {
+                const d = max - min
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
+                    case g: h = ((b - r) / d + 2) / 6; break
+                    case b: h = ((r - g) / d + 4) / 6; break
+                }
+            }
+            return [h * 360, s, l]
+        }
+
+        // Convert HSL to RGB
+        function hsltorgb(h, s, l) {
+            h /= 360
+            let r, g, b
+            
+            if (s === 0) {
+                r = g = b = l
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1
+                    if (t > 1) t -= 1
+                    if (t < 1/6) return p + (q - p) * 6 * t
+                    if (t < 1/2) return q
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6
+                    return p
+                }
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+                const p = 2 * l - q
+                r = hue2rgb(p, q, h + 1/3)
+                g = hue2rgb(p, q, h)
+                b = hue2rgb(p, q, h - 1/3)
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]
+        }
+
+        // Apply hue shift to an image
+        function applyHueShift(img, targetColorHex) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas')
+                const ctx = canvas.getContext('2d')
+                canvas.width = img.width
+                canvas.height = img.height
+                
+                ctx.drawImage(img, 0, 0)
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+                const data = imageData.data
+                
+                // Get target hue from hex color
+                const targetR = parseInt(targetColorHex.slice(1, 3), 16)
+                const targetG = parseInt(targetColorHex.slice(3, 5), 16)
+                const targetB = parseInt(targetColorHex.slice(5, 7), 16)
+                const [targetH] = rgbtohsl(targetR, targetG, targetB)
+                
+                // Use the average button color (#e3533e) as reference
+                // This is the dominant red-orange color in the button images
+                const refR = 0xe3
+                const refG = 0x53
+                const refB = 0x3e
+                const [refH] = rgbtohsl(refR, refG, refB)
+                const hueShift = targetH - refH
+                
+                // Apply hue shift to each pixel
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i]
+                    const g = data[i + 1]
+                    const b = data[i + 2]
+                    const a = data[i + 3]
+                    
+                    // Skip transparent pixels
+                    if (a === 0) continue
+                    
+                    // Convert to HSL
+                    const [h, s, l] = rgbtohsl(r, g, b)
+                    
+                    // Apply hue shift (preserve saturation and lightness)
+                    let newH = (h + hueShift + 360) % 360
+                    
+                    // Convert back to RGB
+                    const [newR, newG, newB] = hsltorgb(newH, s, l)
+                    
+                    data[i] = newR
+                    data[i + 1] = newG
+                    data[i + 2] = newB
+                }
+                
+                ctx.putImageData(imageData, 0, 0)
+                
+                // Create new image from canvas
+                const shiftedImg = new Image()
+                shiftedImg.onload = () => resolve(shiftedImg)
+                shiftedImg.src = canvas.toDataURL()
+            })
+        }
+
+        let buttonimagecache = {}
+        let currentbuttonvariant = null
+        let currenttextscale = 1
+
+        function updateshadowtransform(textscale) {
+            const textshadow = document.querySelector(".textshadow")
+            if (!textshadow || !state.addtexttobutton) return
+            
+            const computedfontsize = parseFloat(getComputedStyle(document.querySelector(".textpreview")).fontSize) || 68
+            const scalefactor = computedfontsize / 68
+            const shadowoffsetscale = textscale !== 1 ? textscale : 1
+            const scaledshadowx = state.shadowx * scalefactor * shadowoffsetscale
+            const scaledshadowy = state.shadowy * scalefactor * shadowoffsetscale
+            
+            if (textscale !== 1) {
+                textshadow.style.transform = `translate(calc(-50% + ${scaledshadowx}px), calc(-50% + ${scaledshadowy}px)) scale(${textscale})`
+            } else {
+                textshadow.style.transform = `translate(calc(-50% + ${scaledshadowx}px), calc(-50% + ${scaledshadowy}px))`
+            }
+
+            if (state.outlinesize > 0) {
+                const outlinescale = textscale !== 1 ? textscale : 1
+                const scaledoutlinesize = state.outlinesize * scalefactor * outlinescale
+                const shadowhex = state.shadowcolor
+                const shadowrgb = hexrgbatohexrgb(shadowhex)
+                const rgbmatch = shadowrgb.match(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i)
+                const shadowrgbonly = rgbmatch
+                    ? `rgb(${parseInt(rgbmatch[1], 16)}, ${parseInt(rgbmatch[2], 16)}, ${parseInt(rgbmatch[3], 16)})`
+                    : hextorgba(shadowhex)
+                textshadow.style.webkitTextStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
+                textshadow.style.textStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
+            }
+        }
+
+        async function updatebuttonpreview() {
+            const buttonbg = document.querySelector(".buttonbackground")
+            const textpreview = document.querySelector(".textpreview")
+            const textshadow = document.querySelector(".textshadow")
+            if (!buttonbg || !textpreview) return
+
+            if (!state.addtexttobutton) {
+                buttonbg.style.display = "none"
+                buttonbg.src = ""
+                textpreview.style.transform = "translate(-50%, -50%)"
+                if (textshadow) {
+                    const shadowtransform = textshadow.style.transform || ""
+                    textshadow.style.transform = shadowtransform.replace(/scale\([^)]+\)/g, "").trim()
+                }
+                currenttextscale = 1
+                return
+            }
+            const p_el = document.querySelector(".textpreview")
+            const originaltransform = p_el.style.transform
+            p_el.style.transform = "translate(-50%, -50%)"
+            void p_el.offsetHeight
+            
+            const getactualbounds = (el) => {
+                const range = document.createRange()
+                if (el.textContent && el.textContent.trim() && el.textContent !== "Input here...") {
+                    range.selectNodeContents(el)
+                } else {
+                    const placeholder = document.createTextNode("Input here...")
+                    range.selectNodeContents(placeholder)
+                }
+                return range.getBoundingClientRect()
+            }
+            const p_rect = getactualbounds(p_el)
+            let textwidth = p_rect.width
+            let textheight = p_rect.height
+
+            if (textwidth === 0 || textheight === 0) {
+                const computedfontsize = parseFloat(getComputedStyle(p_el).fontSize) || 68
+                textwidth = 200 
+                textheight = computedfontsize * 1.2
+            }
+           
+            p_el.style.transform = originaltransform
+            const variant = await determinebuttonvariant(textwidth, textheight)
+            currentbuttonvariant = variant
+            updatebuttoncolorchecks()
+            
+            try {
+                const img = await loadbuttonimage(variant, state.useactivebutton)
+
+                if (state.buttoncolor) {
+                    const canvas = document.createElement('canvas')
+                    const ctx = canvas.getContext('2d')
+                    canvas.width = img.width
+                    canvas.height = img.height
+                    ctx.drawImage(img, 0, 0)
+                    buttonbg.src = canvas.toDataURL()
+                } else {
+                    const activesuffix = state.useactivebutton ? "active" : ""
+                    const filename = `${variant}button${activesuffix}.png`
+                    buttonbg.src = `/assets/images/longbuttons/${filename}`
+                }
+                
+                buttonbg.style.display = "block"
+        
+                const paddingpch = 0.05
+                const paddingpcv = 0.15
+                const constrainedtextwidth = Math.min(950, Math.max(200, textwidth))
+                const requiredbuttonwidth = constrainedtextwidth / (1 - paddingpch * 2)
+                const maxbuttonwidth = Math.min(950, requiredbuttonwidth)
+                const maxbuttonheight = window.innerHeight * 0.8
+                const buttonaspectratio = img.width / img.height
+                
+                let buttonwidth, buttonheight
+                if (maxbuttonwidth / maxbuttonheight > buttonaspectratio) {
+                    buttonheight = maxbuttonheight
+                    buttonwidth = buttonheight * buttonaspectratio
+                    if (buttonwidth > 950) {
+                        buttonwidth = 950
+                        buttonheight = buttonwidth / buttonaspectratio
+                    }
+                } else {
+                    buttonwidth = Math.min(maxbuttonwidth, 950)
+                    buttonheight = buttonwidth / buttonaspectratio
+                }
+                
+                buttonbg.style.width = buttonwidth + "px"
+                buttonbg.style.height = buttonheight + "px"
+                const availablewidth = buttonwidth * (1 - paddingpch * 2)
+                const availableheight = buttonheight * (1 - paddingpcv * 2)
+                const scalex = availablewidth / textwidth
+                const scaley = availableheight / textheight
+                const textscale = Math.min(scalex, scaley, 1)
+                currenttextscale = textscale
+                textpreview.style.transform = `translate(-50%, -50%) scale(${textscale})`
+                
+                if (textshadow) {
+                    updateshadowtransform(textscale)
+                }
+            } catch (e) {
+                buttonbg.style.display = "none"
+            }
+        }
+
         function updatepreview() {
             const displaytext = state.text || ""
             const isplaceholder = !state.text
@@ -1001,7 +1427,7 @@
                 selectionstart = textinput.selectionStart || 0
                 selectionend = textinput.selectionEnd || 0
             }
-            textpreview.textContent = displaytext || "Input here..."
+            textpreview.textContent = displaytext || "Input here!"
 
             textpreview.style.fontFamily = state.font
             textpreview.style.color = isplaceholder ? "rgba(255,255,255,0.5)" : hextorgba(state.fontcolor)
@@ -1018,7 +1444,7 @@
             const scalefactor = computedfontsize / 68
 
             textinput.style.fontSize = computedfontsize + "px"
-
+            
             if (state.outlinesize > 0 && !isplaceholder) {
                 const outrgba = hextorgba(state.outlinecolor)
                 const scaledoutlinesize = state.outlinesize * scalefactor
@@ -1041,9 +1467,12 @@
                 textpreview.style.textFillColor = ""
             }
             textpreview.style.textShadow = "none"
-            updatecursoroverlay(cursorpos, isfocused, isplaceholder, computedfontsize)
+            const effectivefontsize = state.addtexttobutton && currenttextscale !== 1 
+                ? computedfontsize * currenttextscale 
+                : computedfontsize
+            updatecursoroverlay(cursorpos, isfocused, isplaceholder, effectivefontsize, currenttextscale)
             if (isfocused && !isplaceholder && selectionstart !== selectionend) {
-                updateselectionoverlay(selectionstart, selectionend, computedfontsize)
+                updateselectionoverlay(selectionstart, selectionend, effectivefontsize, currenttextscale)
             } else {
                 const selectionoverlay = document.querySelector(".selectionoverlay")
                 selectionoverlay.innerHTML = ""
@@ -1073,7 +1502,8 @@
                 textshadow.style.color = shadowrgbonly
                 textshadow.style.textShadow = "none"
                 if (state.outlinesize > 0) {
-                    const scaledoutlinesize = state.outlinesize * scalefactor
+                    const outlinescale = state.addtexttobutton && currenttextscale !== 1 ? currenttextscale : 1
+                    const scaledoutlinesize = state.outlinesize * scalefactor * outlinescale
                     textshadow.style.webkitTextStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
                     textshadow.style.textStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
                     textshadow.style.webkitTextFillColor = shadowrgbonly
@@ -1082,11 +1512,31 @@
                     textshadow.style.webkitTextStroke = "0px transparent"
                     textshadow.style.textStroke = "0px transparent"
                 }
-                const scaledshadowx = state.shadowx * scalefactor
-                const scaledshadowy = state.shadowy * scalefactor
-                textshadow.style.transform = `translate(calc(-50% + ${scaledshadowx}px), calc(-50% + ${scaledshadowy}px))`
+                const shadowoffsetscale = state.addtexttobutton && currenttextscale !== 1 ? currenttextscale : 1
+                const scaledshadowx = state.shadowx * scalefactor * shadowoffsetscale
+                const scaledshadowy = state.shadowy * scalefactor * shadowoffsetscale
+                if (state.addtexttobutton && currenttextscale !== 1) {
+                    textshadow.style.transform = `translate(calc(-50% + ${scaledshadowx}px), calc(-50% + ${scaledshadowy}px)) scale(${currenttextscale})`
+                } else {
+                    textshadow.style.transform = `translate(calc(-50% + ${scaledshadowx}px), calc(-50% + ${scaledshadowy}px))`
+                }
+            } else {textshadow.style.display = "none"}
+        
+            if (state.addtexttobutton) {
+                clearTimeout(window.buttpreviewtimeout)
+                window.buttpreviewtimeout = setTimeout(updatebuttonpreview, 50)
+                if (textshadow && currenttextscale !== 1) {
+                    requestAnimationFrame(() => updateshadowtransform(currenttextscale))
+                }
             } else {
-                textshadow.style.display = "none"
+                if (currenttextscale !== 1) {
+                    textpreview.style.transform = "translate(-50%, -50%)"
+                    if (textshadow) {
+                        const shadowtransform = textshadow.style.transform || ""
+                        textshadow.style.transform = shadowtransform.replace(/scale\([^)]+\)/g, "").trim()
+                    }
+                    currenttextscale = 1
+                }
             }
         }
         function escapehtml(t) {
@@ -1097,8 +1547,8 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
-        // cursor + selection overlay
-        function updatecursoroverlay(cpos, isfoc, isph, fontsize) {
+        // cursor + selection overlay (VERY BROKEN STILLL HNLJJHGLHJGFD)
+        function updatecursoroverlay(cpos, isfoc, isph, fontsize, scale = 1) {
             const cursoroverlay = document.querySelector(".cursoroverlay")
             cursoroverlay.innerHTML = ""
             if (!isfoc) return
@@ -1108,15 +1558,18 @@
             const lines = textbeforecursor.split('\n')
             const currlineidx = lines.length - 1
             const lastline = lines[currlineidx]
-            const lineheight = fontsize * 1.2
+        
+            const originalfontsize = fontsize / scale
+            const lineheight = originalfontsize * 1.2
             const measurespan = document.createElement("span")
             measurespan.style.position = "absolute"
             measurespan.style.visibility = "hidden"
             measurespan.style.whiteSpace = "pre"
             measurespan.style.fontFamily = state.font
-            measurespan.style.fontSize = fontsize + "px"
+            measurespan.style.fontSize = originalfontsize + "px"
             measurespan.style.letterSpacing = state.kerning + "px"
             measurespan.style.lineHeight = "1.2"
+
             const fullcurrline = alllines[currlineidx]
             measurespan.textContent = fullcurrline
             document.body.appendChild(measurespan)
@@ -1124,9 +1577,9 @@
             measurespan.textContent = lastline
             const textbeforecursorwidth = measurespan.offsetWidth
             measurespan.remove()
-            const cursorx = textbeforecursorwidth - (currlinewidth / 2)
-            const totalheight = alllines.length * lineheight
-            const cursory = currlineidx * lineheight - (totalheight / 2)
+            const cursorx = (textbeforecursorwidth - (currlinewidth / 2)) * scale
+            const totalheight = alllines.length * lineheight * scale
+            const cursory = (currlineidx * lineheight - (totalheight / scale / 2)) * scale
             const cursorline = document.createElement("div")
             cursorline.className = "cursorline"
             cursorline.style.left = cursorx + "px"
@@ -1135,22 +1588,24 @@
             cursoroverlay.appendChild(cursorline)
         }
 
-        function updateselectionoverlay(selectionstart, selectionend, fontsize) {
+        function updateselectionoverlay(selectionstart, selectionend, fontsize, scale = 1) {
             const selectionoverlay = document.querySelector(".selectionoverlay")
             selectionoverlay.innerHTML = ""
             const displaytext = state.text || ""
             if (!displaytext || selectionstart === selectionend) return
             const lines = displaytext.split('\n')
-            const lineheight = fontsize * 1.2
-            const totalheight = lines.length * lineheight
+            const originalfontsize = fontsize / scale
+            const lineheight = originalfontsize * 1.2
+            const totalheight = lines.length * lineheight * scale
             const measurespan = document.createElement("span")
             measurespan.style.position = "absolute"
             measurespan.style.visibility = "hidden"
             measurespan.style.whiteSpace = "pre"
             measurespan.style.fontFamily = state.font
-            measurespan.style.fontSize = fontsize + "px"
+            measurespan.style.fontSize = originalfontsize + "px"
             measurespan.style.letterSpacing = state.kerning + "px"
             measurespan.style.lineHeight = "1.2"
+
             let charidx = 0
             for (let lineidx = 0; lineidx < lines.length; lineidx++) {
                 const line = lines[lineidx]
@@ -1169,9 +1624,9 @@
                     measurespan.textContent = selectedinline
                     const selectedwidth = measurespan.offsetWidth
                     measurespan.remove()
-                    const selectionx = beforewidth - (currlinewidth / 2)
-                    const selectiony = lineidx * lineheight - (totalheight / 2)
-                    const selectionwidth = selectedwidth
+                    const selectionx = (beforewidth - (currlinewidth / 2)) * scale
+                    const selectiony = (lineidx * lineheight - (totalheight / scale / 2)) * scale
+                    const selectionwidth = selectedwidth * scale
                     const selectionbox = document.createElement("div")
                     selectionbox.className = "selectionbox"
                     selectionbox.style.left = selectionx + "px"
@@ -1187,7 +1642,7 @@
         /*//////////////////////////////////////////////////////////////////////*/
 
         function autoresize() {
-            const maxwidth = window.innerWidth * 0.9
+            const maxwidth = Math.min(950, Math.max(200, window.innerWidth * 0.9))
             const maxheight = window.innerHeight * 0.9
             let min = 8
             let max = 200
@@ -1211,17 +1666,318 @@
             void textpreview.offsetHeight
         }
 
+        // button helper
+        async function determinebuttonvariant(textwidth, textheight) {
+            const textaspectratio = textwidth / textheight
+            const variants = ['s', 'm', 'l']
+            const buttonaspectratios = {}
+            
+            for (const variant of variants) {
+                const buttonpath = `/assets/images/longbuttons/${variant}button.png`
+                try {
+                    const img = new Image()
+                    await new Promise((resolve, reject) => {
+                        img.onload = resolve
+                        img.onerror = reject
+                        img.src = buttonpath
+                    })
+                    buttonaspectratios[variant] = img.width / img.height
+                } catch (e) {
+                    buttonaspectratios[variant] = variant === 's' ? 1.5 : variant === 'm' ? 2.0 : 2.5
+                }
+            }
+
+            let bestvariant = 'm'
+            let mindiff = Infinity
+            
+            for (const variant of variants) {
+                const diff = Math.abs(buttonaspectratios[variant] - textaspectratio)
+                if (diff < mindiff) {
+                    mindiff = diff
+                    bestvariant = variant
+                }
+            }
+            
+            return bestvariant
+        }
+        async function loadbuttonimage(variant, active) {
+            const activesuffix = active ? "active" : ""
+            const filename = `${variant}button${activesuffix}.png`
+            const img = new Image()
+            await new Promise((resolve, reject) => {
+                img.onload = resolve
+                img.onerror = reject
+                img.src = `/assets/images/longbuttons/${filename}`
+            })
+            if (state.buttoncolor) {
+                return await applyHueShift(img, state.buttoncolor)
+            }
+            return img
+        }
+
         document.querySelector(".downloadbutton").addEventListener("click", async function() {
             if (!state.text) return
+            if (state.addtexttobutton) {
+                const p_el = document.querySelector(".textpreview")
+                const s_el = document.querySelector(".textshadow")
+                const originaltransform = p_el.style.transform
+                p_el.style.transform = "translate(-50%, -50%)"
+                void p_el.offsetHeight
+                
+                const getactualbounds = (el) => {
+                    const range = document.createRange()
+                    range.selectNodeContents(el)
+                    return range.getBoundingClientRect()
+                }
+                const p_rect = getactualbounds(p_el)
+                const s_rect = s_el.style.display !== "none" ? getactualbounds(s_el) : p_rect
+                const minx = Math.min(p_rect.left, s_rect.left)
+                const miny = Math.min(p_rect.top, s_rect.top)
+                const maxx = Math.max(p_rect.right, s_rect.right)
+                const maxy = Math.max(p_rect.bottom, s_rect.bottom)
+                const textwidth = maxx - minx
+                const textheight = maxy - miny
+                
+                p_el.style.transform = originaltransform
+                const variant = await determinebuttonvariant(textwidth, textheight)
+                let buttonimg
+                try {
+                    buttonimg = await loadbuttonimage(variant, state.useactivebutton)
+                } catch (e) {
+                    console.error("failed to load button image:", e)
+                    return
+                }
+                
+                const paddingpch = 0.05
+                const paddingpcv = 0.15
+                const constrainedtextwidth = Math.min(950, Math.max(200, textwidth))
+                const requiredbuttonwidth = constrainedtextwidth / (1 - paddingpch * 2)
+                const previewmaxwidth = Math.min(950, requiredbuttonwidth)
+                const previewmaxheight = window.innerHeight * 0.8
+                const buttonaspectratio = buttonimg.width / buttonimg.height
+                
+                let previewbuttonwidth, previewbuttonheight
+                if (previewmaxwidth / previewmaxheight > buttonaspectratio) {
+                    previewbuttonheight = previewmaxheight
+                    previewbuttonwidth = previewbuttonheight * buttonaspectratio
+                    if (previewbuttonwidth > 950) {
+                        previewbuttonwidth = 950
+                        previewbuttonheight = previewbuttonwidth / buttonaspectratio
+                    }
+                } else {
+                    previewbuttonwidth = Math.min(previewmaxwidth, 950)
+                    previewbuttonheight = previewbuttonwidth / buttonaspectratio
+                }
+    
+                const previewavailablewidth = previewbuttonwidth * (1 - paddingpch * 2)
+                const previewavailableheight = previewbuttonheight * (1 - paddingpcv * 2)
+                const scalex = previewavailablewidth / textwidth
+                const scaley = previewavailableheight / textheight
+                const textscale = Math.min(scalex, scaley, 1)
+    
+                const exportbuttonwidth = state.imagesize || 1000
+                const buttonwidth = exportbuttonwidth
+                const buttonheight = buttonwidth / buttonaspectratio
+                
+                const f_sz = parseFloat(getComputedStyle(p_el).fontSize)
+                const scale = f_sz / 68
+                
+                const html2canvasscale = 2
+                const scaledtextwidth = textwidth * textscale
+                const scaledtextheight = textheight * textscale
+                const containerpadding = 50
+                const containerwidth = scaledtextwidth + containerpadding * 2
+                const containerheight = scaledtextheight + containerpadding * 2
+                const container = document.createElement("div")
+                container.style.cssText = `position:fixed;left:-9999px;top:0;width:${containerwidth}px;height:${containerheight}px;background:transparent;z-index:-1;overflow:visible;display:flex;justify-content:center;align-items:center;`
+                document.body.appendChild(container)
+                const clone = document.createElement("div")
+                clone.style.cssText = `position:relative;width:${scaledtextwidth}px;height:${scaledtextheight}px;display:flex;justify-content:center;align-items:center;`
+                
+                const copystyle = (src, dest, extra = {}) => {
+                    const s = getComputedStyle(src)
+                    const originalfontsize = parseFloat(s.fontSize) || 68
+                    const scaledfontsize = originalfontsize * textscale
+                    const originalletterspacing = parseFloat(s.letterSpacing) || 0
+                    const scaledletterspacing = originalletterspacing * textscale
+
+                    let lineheightpx
+                    const lineheightvalue = s.lineHeight
+                    if (lineheightvalue.includes("px")) {
+                        lineheightpx = parseFloat(lineheightvalue) * textscale
+                    } else {
+                        const lineheightratio = parseFloat(lineheightvalue) || 1.2
+                        lineheightpx = scaledfontsize * lineheightratio
+                    }
+                    
+                    dest.style.fontFamily = s.fontFamily
+                    dest.style.fontSize = scaledfontsize + "px"
+                    dest.style.color = s.color
+                    dest.style.letterSpacing = scaledletterspacing + "px"
+                    dest.style.lineHeight = lineheightpx + "px"
+                    dest.style.whiteSpace = "pre"
+                    dest.style.textAlign = "center"
+                    dest.style.webkitTextStroke = s.webkitTextStroke
+                    dest.style.textStroke = s.textStroke
+                    dest.style.webkitTextFillColor = s.webkitTextFillColor
+                    dest.style.paintOrder = s.paintOrder
+                    dest.style.textShadow = s.textShadow
+                    Object.assign(dest.style, extra)
+                }
+                
+                if (s_el.style.display !== "none") {
+                    const c_s = document.createElement("div")
+                    c_s.textContent = state.text
+                    const ox = state.shadowx * scale * textscale, oy = state.shadowy * scale * textscale;
+                    copystyle(s_el, c_s, {
+                        position: "absolute", left: "50%", top: "50%",
+                        transform: `translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`,
+                        zIndex: "1"
+                    })
+                    const shadowhex = state.shadowcolor
+                    let shadowopacity = 1
+                    if (shadowhex.length === 9) {
+                        shadowopacity = parseInt(shadowhex.slice(7, 9), 16) / 255
+                    }
+                    const shadowrgb = hexrgbatohexrgb(shadowhex)
+                    const rgbmatch = shadowrgb.match(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i)
+                    const shadowrgbonly = rgbmatch
+                        ? `rgb(${parseInt(rgbmatch[1], 16)}, ${parseInt(rgbmatch[2], 16)}, ${parseInt(rgbmatch[3], 16)})`
+                        : hextorgba(shadowhex)
+                    c_s.style.opacity = shadowopacity.toString()
+                    c_s.style.color = shadowrgbonly
+                    if (state.outlinesize > 0) {
+                        const scaledoutlinesize = state.outlinesize * scale * textscale
+                        c_s.style.webkitTextStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
+                        c_s.style.textStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
+                        c_s.style.webkitTextFillColor = shadowrgbonly
+                        c_s.style.textFillColor = shadowrgbonly
+                        c_s.style.paintOrder = "stroke fill"
+                    } else {
+                        c_s.style.webkitTextStroke = "0px transparent"
+                        c_s.style.textStroke = "0px transparent"
+                    }
+                    clone.appendChild(c_s)
+                }
+                
+                const c_p = document.createElement("div")
+                c_p.textContent = state.text
+                copystyle(p_el, c_p, { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", zIndex: "2" })
+                if (state.outlinesize > 0) {
+                    const scaledoutlinesize = state.outlinesize * scale * textscale
+                    const outrgba = hextorgba(state.outlinecolor)
+                    c_p.style.webkitTextStroke = `${scaledoutlinesize}px ${outrgba}`
+                    c_p.style.textStroke = `${scaledoutlinesize}px ${outrgba}`
+                }
+                clone.appendChild(c_p)
+                container.appendChild(clone)
+                
+                await document.fonts.ready
+                
+                try {
+                    const textcanvas = await html2canvas(container, {
+                        backgroundColor: null, scale: 2, useCORS: true, logging: false
+                    })
+                    const canvas = document.createElement("canvas")
+                    canvas.width = buttonwidth
+                    canvas.height = buttonheight
+                    const ctx = canvas.getContext("2d")
+                    ctx.imageSmoothingEnabled = true
+                    ctx.imageSmoothingQuality = "high"
+                    ctx.drawImage(buttonimg, 0, 0, buttonwidth, buttonheight)
+
+                    const tempcanvas = document.createElement("canvas")
+                    tempcanvas.width = textcanvas.width
+                    tempcanvas.height = textcanvas.height
+                    const tempctx = tempcanvas.getContext("2d")
+                    tempctx.drawImage(textcanvas, 0, 0)
+
+                    const imagedata = tempctx.getImageData(0, 0, tempcanvas.width, tempcanvas.height)
+                    const data = imagedata.data
+                    let minx = tempcanvas.width, miny = tempcanvas.height, maxx = 0, maxy = 0
+                    let found = false
+                    
+                    for (let y = 0; y < tempcanvas.height; y++) {
+                        for (let x = 0; x < tempcanvas.width; x++) {
+                            const idx = (y * tempcanvas.width + x) * 4
+                            if (data[idx + 3] > 0) {
+                                found = true
+                                minx = Math.min(minx, x)
+                                miny = Math.min(miny, y)
+                                maxx = Math.max(maxx, x)
+                                maxy = Math.max(maxy, y)
+                            }
+                        }
+                    }
+                    let croppedcanvas = textcanvas
+                    if (found && (minx < maxx && miny < maxy)) {
+                        const cropwidth = maxx - minx + 1
+                        const cropheight = maxy - miny + 1
+                        croppedcanvas = document.createElement("canvas")
+                        croppedcanvas.width = cropwidth
+                        croppedcanvas.height = cropheight
+                        const cropctx = croppedcanvas.getContext("2d")
+                        cropctx.drawImage(textcanvas, minx, miny, cropwidth, cropheight, 0, 0, cropwidth, cropheight)
+                    }
+                    
+                    const html2canvasscale = 2
+                    // IMPORTANT - this rescales the text so that it roughly matches the preview of it in the button
+                    // perhaps fixable but this should do for now
+                    const sizecorrection = 7/4
+                    const finaltextcanvas = document.createElement("canvas")
+                    finaltextcanvas.width = Math.round((croppedcanvas.width / html2canvasscale) * sizecorrection)
+                    finaltextcanvas.height = Math.round((croppedcanvas.height / html2canvasscale) * sizecorrection)
+                    const finalctx = finaltextcanvas.getContext("2d")
+                    finalctx.imageSmoothingEnabled = true
+                    finalctx.imageSmoothingQuality = "high"
+                    finalctx.drawImage(croppedcanvas, 0, 0, croppedcanvas.width, croppedcanvas.height, 0, 0, finaltextcanvas.width, finaltextcanvas.height)
+                    
+                    const textx = (buttonwidth - finaltextcanvas.width) / 2
+                    const texty = (buttonheight - finaltextcanvas.height) / 2
+
+                    ctx.drawImage(finaltextcanvas, textx, texty)
+                    
+                    let final = canvas
+                    if (state.imagesize && state.imagesize !== canvas.width) {
+                        const scaled = document.createElement("canvas")
+                        scaled.width = state.imagesize
+                        scaled.height = canvas.height * (state.imagesize / canvas.width)
+                        const scaledctx = scaled.getContext("2d")
+                        scaledctx.imageSmoothingEnabled = true
+                        scaledctx.imageSmoothingQuality = "high"
+                        scaledctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, scaled.width, scaled.height)
+                        final = scaled
+                    }
+                    
+                    final.toBlob(blob => {
+                        const url = URL.createObjectURL(blob)
+                        const a = document.createElement("a")
+                        const words = state.text.trim().split(/\s+/).filter(w => w.length > 0)
+                        const firstfive = words.slice(0, 5)
+                        const filename = (words.length > 5 ? firstfive.join(" ") + "..." : firstfive.join(" ")) || "text"
+                        const sanitized = filename.replace(/[<>:"/\\|?*]/g, "").trim() || "text"
+                        a.href = url
+                        a.download = `${sanitized}.png`
+                        a.click()
+                        URL.revokeObjectURL(url)
+                        container.remove()
+                    }, "image/png")
+                } catch (e) {
+                    console.error(e)
+                    container.remove()
+                }
+                return
+            }
+  
             const p_el = document.querySelector(".textpreview")
             const s_el = document.querySelector(".textshadow")
-            const getActualBounds = (el) => {
+            const getactualbounds = (el) => {
                 const range = document.createRange()
                 range.selectNodeContents(el)
                 return range.getBoundingClientRect()
             }
-            const p_rect = getActualBounds(p_el)
-            const s_rect = s_el.style.display !== "none" ? getActualBounds(s_el) : p_rect
+            const p_rect = getactualbounds(p_el)
+            const s_rect = s_el.style.display !== "none" ? getactualbounds(s_el) : p_rect
             const minx = Math.min(p_rect.left, s_rect.left)
             const miny = Math.min(p_rect.top, s_rect.top)
             const maxx = Math.max(p_rect.right, s_rect.right)
@@ -1236,7 +1992,7 @@
             document.body.appendChild(container)
             const clone = document.createElement("div")
             clone.style.cssText = `position:relative;width:${w}px;height:${h}px;display:flex;justify-content:center;align-items:center;`
-            const copyStyle = (src, dest, extra = {}) => {
+            const copystyle = (src, dest, extra = {}) => {
                 const s = getComputedStyle(src); dest.style.fontFamily = s.fontFamily;
                 dest.style.fontSize = s.fontSize; dest.style.color = s.color;
                 dest.style.letterSpacing = s.letterSpacing; dest.style.lineHeight = s.lineHeight;
@@ -1247,13 +2003,13 @@
             }
             const c_p = document.createElement("div")
             c_p.textContent = state.text
-            copyStyle(p_el, c_p, { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", zIndex: "2" })
+            copystyle(p_el, c_p, { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", zIndex: "2" })
             clone.appendChild(c_p)
             if (s_el.style.display !== "none") {
                 const c_s = document.createElement("div")
                 c_s.textContent = state.text
                 const ox = state.shadowx * scale, oy = state.shadowy * scale;
-                copyStyle(s_el, c_s, {
+                copystyle(s_el, c_s, {
                     position: "absolute", left: "50%", top: "50%",
                     transform: `translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`,
                     zIndex: "1"
