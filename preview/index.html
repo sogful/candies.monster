@@ -633,6 +633,7 @@
         (async function () {
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
+            const shortcode_cache_key = "yourlevels";
 
             const datapanel = document.querySelector(".datapanel");
             const choicepanel = document.querySelector(".choicepanel");
@@ -657,14 +658,18 @@
             const errorentries = new Map();
             let fataltimeout = null;
             let fatalactive = false;
-
-            window.addEventListener("load", () => {
-                if (loading) {
+            let keeploadingbuddy = false;
+            
+            function hideloading() {
+                if (loading && !keeploadingbuddy) {
                     loading.style.opacity = "0";
                     setTimeout(() => {
                         loading.remove();
                     }, 500);
                 }
+            }
+            window.addEventListener("load", () => {
+                hideloading();
             });
 
             /*//////////////////////////////////////////////////////////////////////*/
@@ -715,6 +720,32 @@
                 let base64 = btoa(bin);
                 base64 = base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
                 return base64;
+            }
+            
+            function getcachedshortcode(b64data) {
+                try {
+                    const cache = localStorage.getItem(shortcode_cache_key);
+                    if (!cache) return null;
+                    const cacheobj = JSON.parse(cache);
+                    const entry = cacheobj[b64data];
+                    if (entry && entry.code) {
+                        return entry.code;
+                    }
+                } catch (_) {}
+                return null;
+            }
+            function setcachedshortcode(b64data, code) {
+                try {
+                    let cacheobj = {};
+                    const cache = localStorage.getItem(shortcode_cache_key);
+                    if (cache) {
+                        try {
+                            cacheobj = JSON.parse(cache);
+                        } catch (_) {}
+                    }
+                    cacheobj[b64data] = { code, timestamp: Date.now(), data: b64data };
+                    localStorage.setItem(shortcode_cache_key, JSON.stringify(cacheobj));
+                } catch (_) {}
             }
 
             function decodebase64utf8(str) {
@@ -966,7 +997,9 @@
             async function restorestoredlevel() {
                 const urlcode = new URLSearchParams(window.location.search).get("code");
                 if (urlcode) {
+                    keeploadingbuddy = true;
                     const data = await fetchlevelbycode(urlcode);
+                    keeploadingbuddy = false;
                     if (data) {
                         setleveldata(data, true);
                         cleanurl();
@@ -976,8 +1009,10 @@
                                 opengame(savedgame);
                             }
                         } catch (_) {}
+                        hideloading();
                         return;
                     }
+                    hideloading();
                 }
                 const urldata = new URLSearchParams(window.location.search).get("data");
                 if (urldata) {
@@ -989,6 +1024,7 @@
                             opengame(savedgame);
                         }
                     } catch (_) {}
+                    hideloading();
                     return;
                 }
                 const stored = localStorage.getItem(storage_key);
@@ -1005,6 +1041,7 @@
                     toggleeditor(false);
                     showdatapanel();
                 }
+                hideloading();
             }
 
             /*//////////////////////////////////////////////////////////////////////*/
@@ -1049,6 +1086,16 @@
                 const shorturl = document.querySelector(".shorturl");
                 if (!shorturl) return;
                 
+                const cachedcode = getcachedshortcode(b64data);
+                
+                if (cachedcode) {
+                    const shortened = `https://play.candies.monster/${cachedcode}`;
+                    const displayshorturl = shortened.replace(/^https?:\/\//, '');
+                    shorturl.textContent = displayshorturl;
+                    shorturl.href = shortened;
+                    return;
+                }
+                
                 fetch(`https://play.candies.monster/?data=${b64data}`)
                     .then(response => response.json())
                     .then(data => {
@@ -1056,6 +1103,10 @@
                             const displayshorturl = data.shortened.replace(/^https?:\/\//, '');
                             shorturl.textContent = displayshorturl;
                             shorturl.href = data.shortened;
+                            const code = data.shortened.split("/").pop();
+                            if (code) {
+                                setcachedshortcode(b64data, code);
+                            }
                         } else if (data.error) {
                             shorturl.textContent = "Rate limited :(";
                             shorturl.href = "";
