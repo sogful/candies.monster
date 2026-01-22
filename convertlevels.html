@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>xml2json</title>
+    <link rel="icon" type="image/png" href="/assets/images/candy.png">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="/assets/static/slash.js"></script>
+
+    <meta property="og:image" content="/assets/images/embeds/convertlevels.png">
+    <meta name="twitter:card" content="summary_largeimage">
+    <meta name="twitter:image" content="/assets/images/embeds/convertlevels.png">
+
+    <!-- search engines (practically no one is gonna find this through google but still) -->
+    <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="bingbot" content="index, follow">
+    <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
+
+    <style>
+
+        @font-face {
+            font-family: "Good Dog";
+            src: /*universal*/ url("/assets/fonts/gooddog.woff");
+        }
+
+        body {
+            font-family: "Good Dog";
+            position: relative; z-index: 1;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; width: 100vw;
+            overflow: hidden !important;
+            user-select: none; padding: 0; margin: 0;
+            -webkit-user-drag: none;
+
+            background-color: #e9a856;
+            --bg: url("/assets/images/bg.webp"); /* (DON'T turn on word wrap) */
+            background-image: var(--bg), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' display='block' viewBox='0 0 2048 1154'%3E%3Cpath fill='%2392a902' d='M0 0h2048v1152l-508 1v1h-64v-1L0 1152Z'/%3E%3Cpath fill='%23d6924b' d='M0 0h2048v500l-3-1-27-1-5-3v-2l-14-1h-76l-7 2-3 2h-14v-2h-25l-13-4-4-2-17-1-8-2-7-3-7-2v-2h-25l-16-3-8-3-4-2h-10l-11 4h-15l-20-3-11-3-17-3v-2h-15l-33-2h-35l-9-4-16 1h-11l-8-5-16-3-2-1h-11l-6 1-26 1-12 2-5 5-5-1-1-1-23-1-3 1-30 1-8 3-34 1-32 2-18 4-8 3-16 2-19 3h-13l-16-4-9 1-7 3-12 1-6 2-25 1-6 3-7 2-7 3-5 1-16 1-17 6-25 1h-14l-3-3-3-1h-80l-13 2-7 4-24 1-10 5-30 1-21 3-6 2-20 3-27 6-14 4-11 2h-8l-12-3h-8l-4 2h-51l-1 1-20 2-40 1-10 5h-7l-10-1-5 4-37 1h-39l-12 2-13 5-7 1-12-5-7-2-11-2h-11l-19 1h-21l-23-2-3-3h-17l-7-2v-2l-45-1-1-1-18-2-53-1-2-1h-7l-8 3h-12l-16-4-19-3-19-5-20-4-5-2-19-3-35-1-6-3-19-1-10-2-4-3-8-2H0Z'/%3E%3Cpath fill='%235b65a6' d='M540 783h24l4 1 16 1 8 10 8 4 5 2 9 2 13 5 7 4 9 1 1 3 7 1 15 3 14 2 12 3 26 3 15 4 11 2 12 3 5 1v2l6 1 5 2 16 3 18 4 21 3 1 1 11 2 6 2 21 5 16 4 26 6 9 3 10 1 9 3 4 1 14 1 2 1 14 1 13 3 9 3 6 3 16 4 20 3 9 3 12 2 28 4 14 3 19 2 12 3 5 2 7 1 8 3 19 5 1 1 14 2 29 4 12 4 39 7 17 2 9 3 10 4 13 3 39 3 18 1 12 3 14 3 14 4 11 2 7 3 19 6 2 1 9 1 3 2 5 1 34 2 6 2 11-1 25-5 16-1 19-7 12-3 5-2 9-2 16-4 11-2 12-1 1-1 14-1 3-1 36-2 11-3h5v-2l12-3 7-3 24-3 5-2 24-4 12-3 16-2h10v-2l10-2 15-2 18-5 4-3 18-4 24-4 3-1 18-2 7-2 21-3 6-2 29-6 19-3 14-5 2-2 8-2 8-2h4v270l-508 1v1h-64v-1L0 1152V911l16-3 9-1 16-4 26-6 16-3 9-1 6-4 18-5 16-1 2-1 14-1 13-4 10-2 18-4 15-4 17-3 7-2 18-5 9-2 4-2 27-4 31-7 14-4 1-1h5v-2l16-3 16-2 1-2 9-2 15-1 12-3 15-2 23-5 14-5 5-3 10-4 8-2 28-10 21-6Z'/%3E%3Cpath fill='%23f1f2ea' d='M540 783h24l4 1 16 1 8 10 8 4 5 2 9 2 13 5 7 4 9 1 1 3 7 1 15 3 14 2 12 3 26 3 15 4 11 2 12 3 5 1v2l6 1 5 2 16 3 18 4 21 3 1 1 11 2 6 2 21 5 16 4 26 6 9 3 10 1 9 3 4 1 14 1 2 1 14 1 13 3 9 3 6 3 16 4 20 3 9 3 12 2 28 4 14 3 19 2 12 3 5 2 7 1 8 3 19 5 1 1 14 2 29 4 12 4 39 7 17 2 9 3 10 4 13 3 39 3 18 1 12 3 14 3 14 4 11 2 7 3 19 6 2 1 9 1 3 2 5 1 34 2 6 2 11-1 25-5 16-1 19-7 12-3 5-2 9-2 16-4 11-2 12-1 1-1 14-1 3-1 36-2 11-3h5v-2l12-3 7-3 24-3 5-2 24-4 12-3 16-2h10v-2l10-2 15-2 18-5 4-3 18-4 24-4 3-1 18-2 7-2 21-3 6-2 29-6 19-3 14-5 2-2 8-2 8-2h4v10l-1 1-12 1-18 6-14 5-14 2-19 1-25 4h-15l-8 3-17 2-15 6-19 5-17 4-11 3-3 1-19 1-7 1-1 3-5 3h-11l-12 6-7 2-20 1-18 2-13 2-17 3-25 5-23 3-2 2-10 4-10 5-4 3-12 1h-5l-8 4-24 1-15 2-10 2v2l-15 4-9 3h-5l-5-3h-11l-1 1h-16l-3 3-7-1-6-1-15 1-8-2v-2l-11-1-13-5-8-3-19-3-10-4-9-1-6 2-1 1h-12l-4-3-12-5-10-6-18-5-20-2-12-3-45-6-24-2-8-3-8-3-9-1-5-3v-2l-6-1-19-1-20-4-23-7-13-3-9-5-23-3-7-3-36-3-28-1-25-8-6-3-21-3-25-8-16-1-12-4-13-5-16-4-30-1-11-4-14-4-9-2-3-2-21-3-28-3-22-7-30-4-12-2-5-3-7-1-3-3h-14l-7-4-8-5-8-2-15-8-19-6-27-8v-2h-8l-12-3-10-3-16-1-8 2-20 6-25 5-17 5-9 4-10 4-10 5-13 3-5 5-10 2-11 4-10 2-16 4-25 3-29 8-14 2-20 1-16 3-9 3-16 5-9 3-5 1-20 1-15 4-18 5-12 3-3 1-17 1-17 6-3 1-16 2-8 3-17 4-9 3-13 2-16 1-5 2-33 2-8 5H0v-6l16-3 9-1 16-4 26-6 16-3 9-1 6-4 18-5 16-1 2-1 14-1 13-4 10-2 18-4 15-4 17-3 7-2 18-5 9-2 4-2 27-4 31-7 14-4 1-1h5v-2l16-3 16-2 1-2 9-2 15-1 12-3 15-2 23-5 14-5 5-3 10-4 8-2 28-10 21-6Z'/%3E%3Cpath fill='%23f7f4e9' d='M1481 445h66l31 5 20 3 27 2 12 2 52 2 2 1 21 1 16 2 48 3 27 3 23 3 12 2 22 4 26 5 2 1h22l4-1h24l21 4 10 1 38 1 11 2 1 1 29 3v5l-3-1-27-1-5-3v-2l-14-1h-76l-7 2-3 2h-14v-2h-25l-13-4-4-2-17-1-8-2-7-3-7-2v-2h-25l-16-3-8-3-4-2h-10l-11 4h-15l-20-3-11-3-17-3v-2h-15l-33-2h-35l-9-4-16 1h-11l-8-5-16-3-2-1h-11l-6 1-26 1-12 2-5 5-5-1-1-1-23-1-3 1-30 1-8 3-34 1-32 2-18 4-8 3-16 2-19 3h-13l-16-4-9 1-7 3-12 1-6 2-25 1-6 3-7 2-7 3-5 1-16 1-17 6-25 1h-14l-3-3-3-1h-80l-13 2-7 4-24 1-10 5-30 1-21 3-6 2-20 3-27 6-14 4-11 2h-8l-12-3h-8l-4 2h-51l-1 1-20 2-40 1-10 5h-7l-10-1-5 4-37 1h-39l-12 2-13 5-7 1-12-5-7-2-11-2h-11l-19 1h-21l-23-2-3-3h-17l-7-2v-2l-45-1-1-1-18-2-53-1-2-1h-7l-8 3h-12l-16-4-19-3-19-5-20-4-5-2-19-3-35-1-6-3-19-1-10-2-4-3-8-2H0v-9l20 1 7 3 60 1 11 3 26 3 3 1 13 1 3 1 15 1 30 4 36 5 21 3 31 3 60 6 45 2 11 1 2 1 22 1 3 1 32 1 14 2 32 1 31 3 12 2 10-1 15-4 17-4 3-2h7l9 3 5 1h18l9-1 36-1 3-1 22-1 24-4 23-2 21-1 26-4 21-2 23-1 14-2 22-1 4-1 17-1 13-3 20-2 7-1 18-1 2-1 25-2 4-2 22-2v-2l60-1 8-3h50l24-7 14-4 19-3 7-2 33-4 1-1 65-4 13-2h41l21-2 40-2 2-1 38-2 29-4Z'/%3E%3C/svg%3E");
+            background-position: center center;
+            background-repeat: no-repeat; background-size: cover;
+            background-attachment: fixed;
+
+            cursor: url("/assets/static/idle.cur"), default !important;
+        }
+        body:active, body:focus, body:focus-within, body:target, body:active * {
+            cursor: url("/assets/static/active.cur"), default !important;
+        }
+        :any-link {
+            color: #8feeff; text-decoration: none !important;
+            cursor: url("/assets/static/link.cur"), default !important;
+        }
+        * {
+            cursor: inherit !important;  
+            scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
+        }
+        *::-webkit-scrollbar {width: 0px}
+
+        p {margin: 0}
+
+        .loading {
+            position: fixed; display: flex;
+            justify-content: center; align-items: center;
+            width: 100vw; height: 100vh; z-index: 65535;
+            background-color: rgba(0,0,0,0.5);
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+            transition: opacity 0.5s;
+        }
+        .loading svg {
+            width: 100px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,/*0.55*/0.33));
+            animation: rotate 2s linear infinite;
+        }
+        @keyframes rotate {
+            0% {transform: rotate(0deg)}
+            100% {transform: rotate(360deg)}
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .page {
+            display: flex; flex-direction: column;
+            width: min(95vw, 1100px); height: 90vh;
+            color: white; font-size: 1em; margin: 0 auto;
+        }
+
+        .title {
+            font-size: 2em; padding-bottom: 0.2em;
+            -webkit-text-stroke: 0.15em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+
+        .tiny {
+            position: fixed; bottom: 0.3em; width: 90%;
+            text-align: center;
+            color: rgb(223, 223, 223); font-size: 0.5em;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        a, .button {
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+        .button {
+            display: flex; position: relative;
+            flex-direction: column; align-items: center;
+            cursor: pointer; background: none;
+            border: none; margin-bottom: 0.5em;
+        }
+        .button img {height: 2.5em}
+        .button span {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff; font-size: 1em;
+            pointer-events: none;
+            white-space: nowrap; user-select: none;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+        
+        .multi {
+            display: flex; flex-direction: column;
+            gap: 0.75em; width: 100%;
+            align-items: stretch; height: calc(100% - 3em);
+        }
+
+        /* xml and file upload that is DEFINITELY not nabbed from /preview/. mhm. definitely. */
+        .input {
+            background: rgba(0,0,0,0.6); color: #fff;
+            font-size: 1em; font-family: "Good Dog";
+            overflow: auto; width: 100%;
+            max-width: none; min-height: 0;
+            text-shadow: none; padding: 1em;
+            margin: 0; text-align: left !important;
+            white-space: pre-wrap; border-radius: 1em;
+            border: none; outline: none; box-sizing: border-box;
+        }
+        .xml {
+            background: rgba(0,0,0,0.6); color: #fff;
+            font-size: 0.75em; font-family: "JetBrains Mono";
+            overflow: auto; width: 100%;
+            max-width: none; height: 100%;
+            text-shadow: none; padding: 1em;
+            margin: 0; min-height: 0; max-height: none;
+            text-align: left !important; white-space: pre-wrap;
+            border-radius: 1em; border: none;
+            outline: none; resize: none; box-sizing: border-box;
+        }
+        .xml:empty:before {
+            content: attr(placeholder);
+            color: rgba(255,255,255,0.4); pointer-events: none;
+        }
+        .thejson:empty:before {
+            content: attr(placeholder);
+            color: rgba(255,255,255,0.4); pointer-events: none;
+        }
+        .xmlvalue {color: #ce9178;}
+        .xmlequals {color: #cccccc;}
+        .xmlbrackets {color: #808080;}
+        .xmlelement {color: #569cd6;}
+        .xmlattribute {color: #9cdcfe;}
+
+        .paste {
+            display: flex; flex-direction: column;
+            min-width: 0; height: 50%;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
+    
+    <div class="loading">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <path fill="#fbfbfb" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm1 18-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
+            <path fill="#080808" d="M90 29h13l8 7 7 8 5 10 1 6v14l-4 11-3 5 8-6 8-9 7-12 5-16 4 1 9 10 8 15 4 13v9l-8 11-11 8-12 5-4 1h-15l-6-3-7-6-2-4 2 10 7 11 7 6 9 5 16 6 6 1-2 4-12 10-15 7-7 2h-9l-10-5-8-7-7-12-3-11v-15l4-10 4-6 3-4-10 8-9 10-9 15-8 20-4-2-9-10-8-16v-8l5-16 6-11 8-7 10-6 12-4h12l10 4 3 1-5-9-8-7-10-4-5-1H45l4-6 12-10 16-8 6-2Zm0 4-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
+            <path fill="#060606" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm4 3-16 3-16 7-11 7-11 10-8 11-8 16-3 12-1 7v17l2 12 5 14 6 11 9 11 10 9 15 9 14 5 11 2h18l13-3 14-5 14-9 12-11 9-13 7-16 2-7 1-9V90l-3-15-7-16-8-11-8-9-12-9-17-8-12-3-7-1Z"/>
+          </svg>          
+    </div>
+
+	<div class="page">
+
+		<div class="multi">
+			<div class="paste">
+
+                <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.25em;">
+                    <a class="title">XML</a>
+                    <label class="button clickable loadxmllink">
+                        <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                        <span>Load XML</span>
+                    </label>
+                </div>
+				<div class="xml thexml" contenteditable="true" placeholder="<map>
+<layer name=&quot;settings&quot;>
+<map gridSize=&quot;32&quot; width=&quot;320&quot; height=&quot;480&quot; />
+<gameDesign ropePhysicsSpeed=&quot;1.0&quot; special=&quot;1&quot; twoParts=&quot;false&quot; />
+</layer>
+<layer name=&quot;Objects&quot;>
+<candy x=&quot;158&quot; y=&quot;147&quot; />
+<target x=&quot;161&quot; y=&quot;427&quot; />
+<star x=&quot;162&quot; y=&quot;230&quot; timeout=&quot;-1&quot; />
+<star x=&quot;161&quot; y=&quot;295&quot; timeout=&quot;-1&quot; />
+<star x=&quot;161&quot; y=&quot;361&quot; timeout=&quot;-1&quot; />
+</layer>
+</map>"></div>
+			</div>
+
+			<div class="paste">
+                <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.25em;">
+                    <a class="title">JSON</a>
+                    <label class="button clickable loadjsonlink">
+                        <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                        <span>Load JSON</span>
+                    </label>
+                </div>
+				<div class="xml thejson" contenteditable="true" placeholder='{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 2
+    }
+  ],
+  "objects": [
+    {
+      "name": 52,
+      "x": 158,
+      "y": 147
+    },
+    {
+      "name": 2,
+      "x": 161,
+      "y": 427
+    },
+    {
+      "name": 3,
+      "x": 162,
+      "y": 230,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 161,
+      "y": 295,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 161,
+      "y": 361,
+      "timeout": -1
+    }
+  ]
+}'></div>
+			</div>
+		</div>
+	</div>
+
+	<input type="file" class="fileinput xmlfile" accept=".xml" style="display:none">
+	<input type="file" class="fileinput jsonfile" accept=".json" style="display:none">
+
+    <script>
+        
+        // animated favicon
+        (function() {
+            let spritejson = null; let sheetloaded = false;
+            let favicons = []; let index = 0; const delay = 300;
+            let sheetimg = null;
+
+            fetch("/assets/images/icon.json")
+                .then(response => response.json()).then(data => {
+                    spritejson = data.frames; sheetimg = new Image();
+                    sheetimg.onload = () => {
+                        sheetloaded = true;
+                        const canvas = document.createElement("canvas");
+                        const ctx = canvas.getContext("2d");
+                        favicons = spritejson.map(frame => {
+                            canvas.width = frame.frame.w;
+                            canvas.height = frame.frame.h;
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(
+                                sheetimg,
+                                frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h,
+                                0, 0, frame.frame.w, frame.frame.h
+                            ); return canvas.toDataURL("image/png");
+                        }); favicongif();
+                    }; sheetimg.src = "/assets/images/icon.webp";
+                });
+            function favicongif() {
+                if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
+                const link = document.querySelector("link[rel='icon']") || document.createElement("link");
+                link.rel = "icon"; link.href = favicons[index];
+                document.head.appendChild(link);
+                index = (index + 1) % favicons.length;
+                setTimeout(favicongif, delay);
+            }
+        })();
+
+        // loading
+        window.addEventListener("load", function() {
+            var loading = document.querySelector(".loading");
+            if (loading) {
+                loading.style.opacity = "0";
+                setTimeout(function() {
+                    if (loading.parentNode) {loading.parentNode.removeChild(loading)}
+                }, 500);
+            }
+        });
+
+        // click sfx
+        document.querySelectorAll(".clickable").forEach(function(element) {
+            element.addEventListener("click", function() {
+                document.querySelector(".click").currentTime = 0;
+                document.querySelector(".click").play();
+            });
+        });
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        // xml highlighting
+        function highlight(element) {
+            if (!element) return;
+            const text = element.textContent || element.innerText || "";
+            if (!text.trim()) return;
+            const selection = window.getSelection();
+            const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+            let cursoroffset = 0; let cursornode = null;
+            if (range) {
+                cursornode = range.startContainer; cursoroffset = range.startOffset;
+                if (cursornode !== element) {
+                    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                    let total = 0; let node;
+                    while (node = walker.nextNode()) {
+                        if (node === cursornode) {cursoroffset = total + cursoroffset; break}
+                        total += node.textContent.length
+                    }
+                }
+            }
+            element.innerHTML = "";
+            const frag = document.createDocumentFragment();
+            const patterns = [
+                {regex: /<\/?[^>\s]+/g, class: "xmlelement"},
+                {regex: /\b\w+(?=\s*=)/g, class: "xmlattribute"},
+                {regex: /"[^"]*"/g, class: "xmlvalue"},
+                {regex: /'[^']*'/g, class: "xmlvalue"},
+                {regex: /=/g, class: "xmlequals"},
+                {regex: /[<>/]/g, class: "xmlbrackets"}
+            ];
+            let matches = [];
+            patterns.forEach(p => { let m; while ((m = p.regex.exec(text)) !== null) {
+                matches.push({start: m.index, end: m.index + m[0].length, text: m[0], class: p.class})}
+            });
+            matches.sort((a,b) => a.start - b.start);
+            let filtered = []; let last = 0; matches.forEach(m => {
+                if (m.start >= last) {filtered.push(m); last = m.end}
+            });
+
+            let pos = 0; filtered.forEach(m => {
+                if (m.start > pos) {
+                    frag.appendChild(document.createTextNode(text.substring(pos, m.start)))
+                } const s = document.createElement("span");
+                s.className = m.class; s.textContent = m.text; frag.appendChild(s); pos = m.end
+            });
+            if (pos < text.length) frag.appendChild(document.createTextNode(text.substring(pos)));
+            element.appendChild(frag);
+
+            if (range) {
+                try {
+                    const newrange = document.createRange();
+                    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                    let cur = 0; let node; while (node = walker.nextNode()) {
+                        const len = node.textContent.length;
+                        if (cur + len >= cursoroffset) {
+                            newrange.setStart(node, Math.max(0, cursoroffset - cur));
+                            newrange.collapse(true); selection.removeAllRanges();
+                            selection.addRange(newrange); break
+                        } cur += len
+                    }
+                } catch (e) {}
+            }
+        }
+
+        // json highlighting
+        function highlightjson(element) {
+            if (!element) return;
+            const text = element.textContent || element.innerText || "";
+            if (!text.trim()) return;
+            const selection = window.getSelection();
+            const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+            let cursoroffset = 0; let cursornode = null;
+            if (range) {
+                cursornode = range.startContainer; cursoroffset = range.startOffset;
+                if (cursornode !== element) {
+                    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                    let total = 0; let node;
+                    while (node = walker.nextNode()) {
+                        if (node === cursornode) {cursoroffset = total + cursoroffset; break}
+                        total += node.textContent.length
+                    }
+                }
+            }
+            element.innerHTML = "";
+            const frag = document.createDocumentFragment();
+            const patterns = [
+                {regex: /"[^"]*"\s*:/g, class: "xmlattribute"},
+                {regex: /:\s*"[^"]*"/g, class: "xmlvalue"},
+                {regex: /:\s*-?\d+(\.\d+)?/g, class: "xmlvalue"},
+                {regex: /:\s*(true|false|null)/g, class: "xmlvalue"},
+                {regex: /[{}\[\]]/g, class: "xmlbrackets"},
+                {regex: /[,]/g, class: "xmlequals"}
+            ];
+            let matches = [];
+            patterns.forEach(p => { let m; while ((m = p.regex.exec(text)) !== null) {
+                matches.push({start: m.index, end: m.index + m[0].length, text: m[0], class: p.class})}
+            });
+            matches.sort((a,b) => a.start - b.start);
+            let filtered = []; let last = 0; matches.forEach(m => {
+                if (m.start >= last) {filtered.push(m); last = m.end}
+            });
+
+            let pos = 0; filtered.forEach(m => {
+                if (m.start > pos) {
+                    frag.appendChild(document.createTextNode(text.substring(pos, m.start)))
+                } const s = document.createElement("span");
+                s.className = m.class; s.textContent = m.text; frag.appendChild(s); pos = m.end
+            });
+            if (pos < text.length) frag.appendChild(document.createTextNode(text.substring(pos)));
+            element.appendChild(frag);
+
+            if (range) {
+                try {
+                    const newrange = document.createRange();
+                    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                    let cur = 0; let node; while (node = walker.nextNode()) {
+                        const len = node.textContent.length;
+                        if (cur + len >= cursoroffset) {
+                            newrange.setStart(node, Math.max(0, cursoroffset - cur));
+                            newrange.collapse(true); selection.removeAllRanges();
+                            selection.addRange(newrange); break
+                        } cur += len
+                    }
+                } catch (e) {}
+            }
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        // conversion functions
+        function convertxmltojson(xmlstring) {
+            try {
+                const parser = new DOMParser();
+                const xmldoc = parser.parseFromString(xmlstring, "text/xml");
+                const mapelement = xmldoc.querySelector("map");
+                
+                if (!mapelement) {
+                    throw new Error("No <map> element found in XML");
+                }
+                const level = {
+                    settings: [],
+                    objects: []
+                };
+                
+                const settingslayer = mapelement.querySelector("layer[name='settings']");
+                if (settingslayer) {
+                    const mapsettings = settingslayer.querySelector("map");
+                    if (mapsettings) {
+                        level.settings.push({
+                            name: 0,
+                            height: parseInt(mapsettings.getAttribute("height")) || 480,
+                            gridSize: parseInt(mapsettings.getAttribute("gridSize")) || 32,
+                            width: parseInt(mapsettings.getAttribute("width")) || 320
+                        });
+                    }
+                    
+                    const gamedesign = settingslayer.querySelector("gameDesign");
+                    if (gamedesign) {
+                        const gamedesignsettings = {
+                            name: 1,
+                            ropePhysicsSpeed: parseFloat(gamedesign.getAttribute("ropePhysicsSpeed")) || 1,
+                            special: parseInt(gamedesign.getAttribute("special")) || 1,
+                            twoParts: gamedesign.getAttribute("twoParts") === "true"
+                        };
+                        
+                        gamedesignsettings.special = 2;
+                            
+                        if (gamedesign.getAttribute("twoParts") !== "true") {
+                            delete gamedesignsettings.twoParts;
+                        }
+                        
+                        if (gamedesign.getAttribute("nightLevel")) gamedesignsettings.nightLevel = gamedesign.getAttribute("nightLevel") === "true";
+                        if (gamedesign.getAttribute("water")) gamedesignsettings.water = parseInt(gamedesign.getAttribute("water"));
+                        if (gamedesign.getAttribute("waterSpeed")) gamedesignsettings.waterSpeed = parseInt(gamedesign.getAttribute("waterSpeed"));
+                        
+                        level.settings.push(gamedesignsettings);
+                    }
+                }
+                
+                const objectlayer = mapelement.querySelector("layer[name='Objects']");
+                if (objectlayer) {
+                    const objects = objectlayer.querySelectorAll("*");
+                    let objectcount = 0;
+                    
+                    objects.forEach(obj => {
+                        const tagname = obj.tagName.toLowerCase();
+                        const x = parseInt(obj.getAttribute("x")) || 0;
+                        const y = parseInt(obj.getAttribute("y")) || 0;
+                        
+                        let ctrobject = { name: 0, x: x, y: y };
+                        
+                        switch (tagname) {
+                            case "candy":
+                                ctrobject.name = 52;
+                                break;
+                            case "candyl":
+                                ctrobject.name = 50;
+                                break;
+                            case "candyr": 
+                                ctrobject.name = 51;
+                                break;
+                            case "target":
+                                ctrobject.name = 2;
+                                break;
+                            case "star":
+                                ctrobject.name = 3;
+                                ctrobject.timeout = parseInt(obj.getAttribute("timeout")) || -1;
+                                break;
+                            case "bubble":
+                                ctrobject.name = 54;
+                                break;
+                            case "pump":
+                                ctrobject.name = 55;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                break;
+                            case "sock":
+                                ctrobject.name = 56;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.group = parseInt(obj.getAttribute("group")) || 0;
+                                break;
+                            case "spike2":
+                                ctrobject.name = 58;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                break;
+                            case "spike3":
+                                ctrobject.name = 80;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
+                                ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 0;
+                                ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 0;
+                                ctrobject.toggled = false;
+                                if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
+                                if (obj.getAttribute("rotateSpeed")) ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed"));
+                                break;
+                            case "gravityswitch":
+                                ctrobject.name = 53;
+                                break;
+                            case "spike4":
+                                ctrobject.name = 60;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                ctrobject.toggled = parseInt(obj.getAttribute("toggled")) || 0;
+                                break;
+                            case "electro":
+                                ctrobject.size = parseInt(obj.getAttribute("size")) || 5;
+                                ctrobject.name = 80;
+                                ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 2;
+                                ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 3;
+                                break;
+                            case "bouncer1":
+                                ctrobject.name = 81;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                break;
+                            case "rotatedcircle":
+                                ctrobject.name = 120;
+                                ctrobject.oneHandle = obj.getAttribute("oneHandle") === "true";
+                                ctrobject.handleAngle = parseInt(obj.getAttribute("handleAngle")) || 0;
+                                break;
+                            case "ghost":
+                                ctrobject.name = 130;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.radius = parseInt(obj.getAttribute("radius")) || 100;
+                                ctrobject.bouncer = obj.getAttribute("bouncer") === "true";
+                                ctrobject.bubble = obj.getAttribute("bubble") === "true";
+                                ctrobject.grab = obj.getAttribute("grab") === "true";
+                                break;
+                            case "steamtube":
+                                ctrobject.name = 131;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                break;
+                            case "lantern":
+                                ctrobject.name = 132;
+                                ctrobject.candyCaptured = obj.getAttribute("candyCaptured") === "true";
+                                break;
+                            case "gap":
+                                ctrobject.name = 133;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.activeTime = parseFloat(obj.getAttribute("activeTime")) || 2;
+                                ctrobject.radius = parseInt(obj.getAttribute("radius")) || 50;
+                                ctrobject.index = parseInt(obj.getAttribute("index")) || 1;
+                                break;
+                            case "lightbulb":
+                                ctrobject.name = 134;
+                                ctrobject.litRadius = parseInt(obj.getAttribute("litRadius")) || 10;
+                                ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
+                                break;
+                            case "transporter":
+                                ctrobject.name = 135;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.direction = obj.getAttribute("direction") || "forward";
+                                ctrobject.type = obj.getAttribute("type") || "manual";
+                                ctrobject.width = parseInt(obj.getAttribute("width")) || 50;
+                                ctrobject.length = parseInt(obj.getAttribute("length")) || 100;
+                                ctrobject.velocity = parseInt(obj.getAttribute("velocity")) || 0;
+                                break;
+                            case "hiddenelement":
+                                ctrobject.name = 300;
+                                ctrobject.radius = parseInt(obj.getAttribute("radius")) || 30;
+                                break;
+                            case "grab":
+                                ctrobject.name = 100;
+                                ctrobject.spider = obj.getAttribute("spider") === "true";
+                                ctrobject.gun = obj.getAttribute("gun") === "true";
+                                ctrobject.wheel = obj.getAttribute("wheel") === "true";
+                                ctrobject.part = obj.getAttribute("part") || "L";
+                                ctrobject.hidePath = obj.getAttribute("hidePath") !== "false";
+                                ctrobject.moveOffset = parseInt(obj.getAttribute("moveOffset")) || 0;
+                                ctrobject.moveVertical = obj.getAttribute("moveVertical") === "true";
+                                ctrobject.length = parseInt(obj.getAttribute("length")) || 90;
+                                ctrobject.moveLength = parseInt(obj.getAttribute("moveLength")) || -1;
+                                ctrobject.radius = parseInt(obj.getAttribute("radius")) || -1;
+                                ctrobject.kickable = obj.getAttribute("kickable") === "true";
+                                ctrobject.kicked = obj.getAttribute("kicked") === "true";
+                                ctrobject.invisible = obj.getAttribute("invisible") === "true";
+                                ctrobject.helicopter = obj.getAttribute("helicopter") === "true";
+                                ctrobject.bindBulb = obj.getAttribute("bindBulb") === "true";
+                                ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
+                                if (ctrobject.spider) {
+                                    ctrobject.gun = false; 
+                                    ctrobject.wheel = false;
+                                }
+                                break;
+                            case "tutorial04":
+                                ctrobject.name = 8;
+                                ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+                                break;
+                            case "tutorialtext":
+                                ctrobject.name = 4;
+                                ctrobject.text = obj.getAttribute("text") || "";
+                                ctrobject.width = parseInt(obj.getAttribute("width")) || 100;
+                                ctrobject.height = parseInt(obj.getAttribute("height")) || 60;
+                                ctrobject.locale = obj.getAttribute("locale") || "en";
+                                break;
+                            case "tutorial10":
+                                ctrobject.name = 14;
+                                ctrobject.special = parseInt(obj.getAttribute("special")) || 2;
+                                ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+                                break;
+                            case "tutorial07":
+                                ctrobject.name = 7;
+                                ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+                                ctrobject.locale = obj.getAttribute("locale") || "en";
+                                break;
+                            case "spike":
+                                ctrobject.name = 57;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                break;
+                            case "spike1":
+                                ctrobject.name = 59;
+                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
+                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
+                                break;
+                            default:
+                                return;
+                        }; 
+                        
+                        if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
+                        if (obj.getAttribute("moveSpeed")) ctrobject.moveSpeed = parseInt(obj.getAttribute("moveSpeed"));
+                        
+                        level.objects.push(ctrobject); objectcount++;
+                    });
+                }
+                
+                if (level.settings.length === 0) {
+                    level.settings = [
+                        { name: 0, height: 480, gridSize: 32, width: 320 },
+                        { name: 1, ropePhysicsSpeed: 1, special: 2 }
+                    ];
+                }
+                
+                return level;
+            } catch (error) {
+                console.error("error while converting:", error);
+                throw error;
+            }
+        }
+
+        function convertjsontoxml(jsonobj) {
+            try {
+                let xml = "<map>\n";
+                
+                // settings layer
+                xml += "<layer name=\"settings\">\n";
+                const mapsettings = jsonobj.settings?.find(s => s.name === 0);
+                if (mapsettings) {
+                    xml += `<map gridSize="${mapsettings.gridSize || 32}" width="${mapsettings.width || 320}" height="${mapsettings.height || 480}" />\n`;
+                } else {
+                    xml += "<map gridSize=\"32\" width=\"320\" height=\"480\" />\n";
+                }
+                
+                const gamedesign = jsonobj.settings?.find(s => s.name === 1);
+                if (gamedesign) {
+                    let gdattrs = `ropePhysicsSpeed="${gamedesign.ropePhysicsSpeed || 1.0}" special="${gamedesign.special || 1}"`;
+                    if (gamedesign.twoParts !== undefined) gdattrs += ` twoParts="${gamedesign.twoParts}"`;
+                    if (gamedesign.nightLevel !== undefined) gdattrs += ` nightLevel="${gamedesign.nightLevel}"`;
+                    if (gamedesign.water !== undefined) gdattrs += ` water="${gamedesign.water}"`;
+                    if (gamedesign.waterSpeed !== undefined) gdattrs += ` waterSpeed="${gamedesign.waterSpeed}"`;
+                    xml += `<gameDesign ${gdattrs} />\n`;
+                } else {
+                    xml += "<gameDesign ropePhysicsSpeed=\"1.0\" special=\"1\" twoParts=\"false\" />\n";
+                }
+                xml += "</layer>\n";
+                
+                // objects layer
+                xml += "<layer name=\"Objects\">\n";
+                if (jsonobj.objects) {
+                    jsonobj.objects.forEach(obj => {
+                        let tagname = "";
+                        switch (obj.name) {
+                            case 52: tagname = "candy"; break;
+                            case 50: tagname = "candyL"; break;
+                            case 51: tagname = "candyR"; break;
+                            case 2: tagname = "target"; break;
+                            case 3: tagname = "star"; break;
+                            case 54: tagname = "bubble"; break;
+                            case 55: tagname = "pump"; break;
+                            case 56: tagname = "sock"; break;
+                            case 58: tagname = "spike2"; break;
+                            case 80: tagname = "spike3"; break;
+                            case 53: tagname = "gravityswitch"; break;
+                            case 60: tagname = "spike4"; break;
+                            case 81: tagname = "bouncer1"; break;
+                            case 120: tagname = "rotatedcircle"; break;
+                            case 130: tagname = "ghost"; break;
+                            case 131: tagname = "steamtube"; break;
+                            case 132: tagname = "lantern"; break;
+                            case 133: tagname = "gap"; break;
+                            case 134: tagname = "lightbulb"; break;
+                            case 135: tagname = "transporter"; break;
+                            case 300: tagname = "hiddenelement"; break;
+                            case 100: tagname = "grab"; break;
+                            case 8: tagname = "tutorial04"; break;
+                            case 4: tagname = "tutorialtext"; break;
+                            case 14: tagname = "tutorial10"; break;
+                            case 7: tagname = "tutorial07"; break;
+                            case 57: tagname = "spike"; break;
+                            case 59: tagname = "spike1"; break;
+                            default: return;
+                        }
+                        if (!tagname) return;
+                        
+                        let attrs = `x="${obj.x || 0}" y="${obj.y || 0}"`;
+                        if (obj.timeout !== undefined) attrs += ` timeout="${obj.timeout}"`;
+                        if (obj.angle !== undefined) attrs += ` angle="${obj.angle}"`;
+                        if (obj.size !== undefined) attrs += ` size="${obj.size}"`;
+                        if (obj.group !== undefined) attrs += ` group="${obj.group}"`;
+                        if (obj.radius !== undefined) attrs += ` radius="${obj.radius}"`;
+                        if (obj.path !== undefined) attrs += ` path="${obj.path}"`;
+                        if (obj.moveSpeed !== undefined) attrs += ` moveSpeed="${obj.moveSpeed}"`;
+                        if (obj.initialDelay !== undefined) attrs += ` initialDelay="${obj.initialDelay}"`;
+                        if (obj.offTime !== undefined) attrs += ` offTime="${obj.offTime}"`;
+                        if (obj.onTime !== undefined) attrs += ` onTime="${obj.onTime}"`;
+                        if (obj.toggled !== undefined) attrs += ` toggled="${obj.toggled}"`;
+                        if (obj.rotateSpeed !== undefined) attrs += ` rotateSpeed="${obj.rotateSpeed}"`;
+                        if (obj.oneHandle !== undefined) attrs += ` oneHandle="${obj.oneHandle}"`;
+                        if (obj.handleAngle !== undefined) attrs += ` handleAngle="${obj.handleAngle}"`;
+                        if (obj.bouncer !== undefined) attrs += ` bouncer="${obj.bouncer}"`;
+                        if (obj.bubble !== undefined) attrs += ` bubble="${obj.bubble}"`;
+                        if (obj.grab !== undefined) attrs += ` grab="${obj.grab}"`;
+                        if (obj.candyCaptured !== undefined) attrs += ` candyCaptured="${obj.candyCaptured}"`;
+                        if (obj.activeTime !== undefined) attrs += ` activeTime="${obj.activeTime}"`;
+                        if (obj.index !== undefined) attrs += ` index="${obj.index}"`;
+                        if (obj.litRadius !== undefined) attrs += ` litRadius="${obj.litRadius}"`;
+                        if (obj.bulbNumber !== undefined) attrs += ` bulbNumber="${obj.bulbNumber}"`;
+                        if (obj.direction !== undefined) attrs += ` direction="${obj.direction}"`;
+                        if (obj.type !== undefined) attrs += ` type="${obj.type}"`;
+                        if (obj.width !== undefined) attrs += ` width="${obj.width}"`;
+                        if (obj.length !== undefined) attrs += ` length="${obj.length}"`;
+                        if (obj.velocity !== undefined) attrs += ` velocity="${obj.velocity}"`;
+                        if (obj.spider !== undefined) attrs += ` spider="${obj.spider}"`;
+                        if (obj.gun !== undefined) attrs += ` gun="${obj.gun}"`;
+                        if (obj.wheel !== undefined) attrs += ` wheel="${obj.wheel}"`;
+                        if (obj.part !== undefined) attrs += ` part="${obj.part}"`;
+                        if (obj.hidePath !== undefined) attrs += ` hidePath="${obj.hidePath}"`;
+                        if (obj.moveOffset !== undefined) attrs += ` moveOffset="${obj.moveOffset}"`;
+                        if (obj.moveVertical !== undefined) attrs += ` moveVertical="${obj.moveVertical}"`;
+                        if (obj.moveLength !== undefined) attrs += ` moveLength="${obj.moveLength}"`;
+                        if (obj.kickable !== undefined) attrs += ` kickable="${obj.kickable}"`;
+                        if (obj.kicked !== undefined) attrs += ` kicked="${obj.kicked}"`;
+                        if (obj.invisible !== undefined) attrs += ` invisible="${obj.invisible}"`;
+                        if (obj.helicopter !== undefined) attrs += ` helicopter="${obj.helicopter}"`;
+                        if (obj.bindBulb !== undefined) attrs += ` bindBulb="${obj.bindBulb}"`;
+                        if (obj.text !== undefined) attrs += ` text="${obj.text}"`;
+                        if (obj.height !== undefined) attrs += ` height="${obj.height}"`;
+                        if (obj.locale !== undefined) attrs += ` locale="${obj.locale}"`;
+                        if (obj.special !== undefined) attrs += ` special="${obj.special}"`;
+                        
+                        xml += `<${tagname} ${attrs} />\n`;
+                    });
+                }
+                xml += "</layer>\n";
+                xml += "</map>";
+                
+                return xml;
+            } catch (error) {
+                console.error("error while converting JSON to XML:", error);
+                throw error;
+            }
+        }
+
+        let converting = false;
+        
+        const xmleditor = document.querySelector(".thexml");
+        const jsoneditor = document.querySelector(".thejson");
+        
+        if (xmleditor) {
+            highlight(xmleditor);
+            xmleditor.addEventListener("input", function() {
+                clearTimeout(this._t); this._t = setTimeout(() => {
+                    highlight(this);
+                    if (!converting) {
+                        converting = true;
+                        try {
+                            const xmltext = this.textContent.trim();
+                            if (xmltext) {
+                                const jsonobj = convertxmltojson(xmltext);
+                                const jsonstr = JSON.stringify(jsonobj, null, 2);
+                                jsoneditor.textContent = jsonstr;
+                                highlightjson(jsoneditor);
+                            }
+                        } catch (e) {
+                            console.error("XML to JSON conversion error:", e);
+                        }
+                        converting = false;
+                    }
+                }, 300);
+            });
+            xmleditor.addEventListener("paste", function() {
+                setTimeout(() => {
+                    highlight(this);
+                    if (!converting) {
+                        converting = true;
+                        try {
+                            const xmltext = this.textContent.trim();
+                            if (xmltext) {
+                                const jsonobj = convertxmltojson(xmltext);
+                                const jsonstr = JSON.stringify(jsonobj, null, 2);
+                                jsoneditor.textContent = jsonstr;
+                                highlightjson(jsoneditor);
+                            }
+                        } catch (e) {
+                            console.error("XML to JSON conversion error:", e);
+                        }
+                        converting = false;
+                    }
+                }, 10);
+            });
+        }
+
+        if (jsoneditor) {
+            highlightjson(jsoneditor);
+            jsoneditor.addEventListener("input", function() {
+                clearTimeout(this._t); this._t = setTimeout(() => {
+                    highlightjson(this);
+                    if (!converting) {
+                        converting = true;
+                        try {
+                            const jsontext = this.textContent.trim();
+                            if (jsontext) {
+                                const jsonobj = JSON.parse(jsontext);
+                                const xmlstr = convertjsontoxml(jsonobj);
+                                xmleditor.textContent = xmlstr;
+                                highlight(xmleditor);
+                            }
+                        } catch (e) {
+                            console.error("JSON to XML conversion error:", e);
+                        }
+                        converting = false;
+                    }
+                }, 300);
+            });
+            jsoneditor.addEventListener("paste", function() {
+                setTimeout(() => {
+                    highlightjson(this);
+                    if (!converting) {
+                        converting = true;
+                        try {
+                            const jsontext = this.textContent.trim();
+                            if (jsontext) {
+                                const jsonobj = JSON.parse(jsontext);
+                                const xmlstr = convertjsontoxml(jsonobj);
+                                xmleditor.textContent = xmlstr;
+                                highlight(xmleditor);
+                            }
+                        } catch (e) {
+                            console.error("Conversion error?! ", e);
+                        }
+                        converting = false;
+                    }
+                }, 10);
+            });
+        }
+
+        // file loading
+        const xmlpicker = document.querySelector(".xmlfile");
+        const loadxmllink = document.querySelector(".loadxmllink");
+        const jsonpicker = document.querySelector(".jsonfile");
+        const loadjsonlink = document.querySelector(".loadjsonlink");
+        if (xmlpicker && loadxmllink) {
+            loadxmllink.addEventListener("click", function(e) {
+                e.preventDefault();
+                xmlpicker.click();
+            });
+            xmlpicker.addEventListener("change", e => {
+                const f = e.target.files[0];
+                if (f) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const content = e.target.result || "";
+                        xmleditor.textContent = content;
+                        highlight(xmleditor);
+                        if (!converting) {
+                            converting = true;
+                            try {
+                                const jsonobj = convertxmltojson(content);
+                                const jsonstr = JSON.stringify(jsonobj, null, 2);
+                                jsoneditor.textContent = jsonstr;
+                                highlightjson(jsoneditor);
+                            } catch (err) {
+                                console.error("XML to JSON conversion error:", err);
+                            }
+                            converting = false;
+                        }
+                    };
+                    reader.readAsText(f);
+                }
+                e.target.value = "";
+            });
+        }
+        if (jsonpicker && loadjsonlink) {
+            loadjsonlink.addEventListener("click", function(e) {
+                e.preventDefault();
+                jsonpicker.click();
+            });
+            jsonpicker.addEventListener("change", e => {
+                const f = e.target.files[0];
+                if (f) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const content = e.target.result || "";
+                        if (!converting) {
+                            converting = true;
+                            try {
+                                const jsonobj = JSON.parse(content);
+                                const jsonstr = JSON.stringify(jsonobj, null, 2);
+                                const xmlstr = convertjsontoxml(jsonobj);
+                                jsoneditor.textContent = jsonstr;
+                                xmleditor.textContent = xmlstr;
+                                highlightjson(jsoneditor);
+                                highlight(xmleditor);
+                            } catch (err) {
+                                console.error("Load/conversion error?!", err);
+                            }
+                            converting = false;
+                        }
+                    };
+                    reader.readAsText(f);
+                }
+                e.target.value = "";
+            });
+        }
+
+    </script>
+</body>
+</html>
