@@ -374,6 +374,11 @@
             z-index: 1000; overflow: visible;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .features.expanded.show {
+            opacity: 1;
         }
         
         .features.expanded img {margin: 2px}
@@ -449,7 +454,7 @@
 
         .sound {
             position: fixed; display: flex;
-            bottom: 1em;
+            bottom: 1em; opacity: 0.5;
             justify-content: center; align-items: center;
             flex-direction: row; gap: 5px; z-index: 127;
         }
@@ -460,7 +465,7 @@
 
             width: 120px; height: 50px;
 
-            background-image: url("assets/images/buttons/sbutton.webp");
+            background-image: url("/assets/images/longbuttons/sbutton.webp");
             background-size: cover; background-position: center;
             background-repeat: no-repeat;
         }
@@ -485,7 +490,7 @@
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
     <audio class="menu" src="assets/audio/menu.mp3" preload="auto"></audio>
 
-    <img class="shadow" src="assets/images/shadowfixed.png">
+    <!--img class="shadow" src="assets/images/shadowfixed.png"-->
 
     <!-- this is NOT a good solution lol -->
     <img class="nom" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=">
@@ -662,8 +667,8 @@
         updatemusic();
 
         function swapper(el) {
-            function activate() {el.style.backgroundImage = "url('assets/images/buttons/sbuttonactive.webp')"}
-            function deactivate() {el.style.backgroundImage = "url('assets/images/buttons/sbutton.webp')"}
+            function activate() {el.style.backgroundImage = "url('/assets/images/longbuttons/sbuttonactive.webp')"}
+            function deactivate() {el.style.backgroundImage = "url('/assets/images/longbuttons/sbutton.webp')"}
             el.addEventListener("mousedown", activate); el.addEventListener("mouseup", deactivate);
             el.addEventListener("mouseleave", deactivate);
             el.addEventListener("touchstart", function(e){ activate(); e.preventDefault(); }, {passive: false});
@@ -1001,18 +1006,59 @@
                     const newMorefeatures = morefeatures.cloneNode(true);
                     morefeatures.parentNode.replaceChild(newMorefeatures, morefeatures);
 
-                    newMorefeatures.addEventListener("mouseenter", function() {
+                    let isExpanded = false;
+
+                    function expandFeatures() {
+                        if (isExpanded) return;
+                        isExpanded = true;
+                        features.classList.remove("show");
                         features.classList.add("expanded");
                         creatures.forEach(img => {
                             img.style.display = "flex";
                         });
+                        void features.offsetHeight;
+                        setTimeout(() => {
+                            features.classList.add("show");
+                        }, 10);
+                    }
+
+                    function collapseFeatures() {
+                        if (!isExpanded) return;
+                        isExpanded = false;
+                        // Ensure first 4 images stay visible during fade-out
+                        creatures.forEach((img, index) => {
+                            if (index < 4) {
+                                img.style.display = "flex";
+                            }
+                        });
+                        // Start fade-out
+                        features.classList.remove("show");
+                        // Wait for fade out transition before removing expanded class and hiding extra images
+                        setTimeout(() => {
+                            if (!isExpanded) {
+                                features.classList.remove("expanded");
+                                creatures.forEach((img, index) => {
+                                    img.style.display = (index >= 4) ? "none" : "flex";
+                                });
+                            }
+                        }, 300);
+                    }
+
+                    // Click to toggle expanded features list
+                    newMorefeatures.addEventListener("click", function(e) {
+                        e.stopPropagation();
+                        if (isExpanded) {
+                            collapseFeatures();
+                        } else {
+                            expandFeatures();
+                        }
                     });
 
-                    features.addEventListener("mouseleave", function() {
-                        features.classList.remove("expanded");
-                        creatures.forEach((img, index) => {
-                            img.style.display = (index >= 4) ? "none" : "flex";
-                        });
+                    // Click outside to close
+                    document.addEventListener("click", function(e) {
+                        if (isExpanded && !features.contains(e.target)) {
+                            collapseFeatures();
+                        }
                     });
                 }
             });
@@ -1197,12 +1243,14 @@
                 "Boobie"
             ];
 
-            document.addEventListener("mouseenter", function(e) {
-                const element = e.target.closest(".tooltiphover");
-                if (!element) return;
+            let activeTooltipElement = null;
+            let tooltipTimeout = null;
 
+            function showTooltip(element) {
                 const data = getpopuplist(element);
                 if (!data) return;
+
+                activeTooltipElement = element;
 
                 // preset for the content of those popups; footer is optional
                 let html = `
@@ -1219,8 +1267,10 @@
                     el.textContent = randomtxt;
                 });
                 
-                tooltip.style.opacity = "1";
-
+                // Force reflow to ensure transition works
+                tooltip.style.opacity = "0";
+                tooltip.offsetHeight; // trigger reflow
+                
                 const rect = element.getBoundingClientRect();
                 const tooltiprect = tooltip.getBoundingClientRect();
                 const left = rect.left + (rect.width / 2) - (tooltiprect.width / 2);
@@ -1228,28 +1278,47 @@
 
                 tooltip.style.left = Math.max(10, Math.min(window.innerWidth - tooltiprect.width - 10, left)) + "px";
                 tooltip.style.top = Math.max(10, top) + "px";
-            }, true);
+                
+                // Fade in
+                requestAnimationFrame(() => {
+                    tooltip.style.opacity = "1";
+                });
+            }
 
-            document.addEventListener("mouseleave", function(e) {
+            function hideTooltip() {
+                if (tooltipTimeout) {
+                    clearTimeout(tooltipTimeout);
+                    tooltipTimeout = null;
+                }
+                tooltip.style.opacity = "0";
+                activeTooltipElement = null;
+            }
+
+            // Click events only (hover removed)
+            document.addEventListener("click", function(e) {
                 const element = e.target.closest(".tooltiphover");
-                if (element) {
-                    tooltip.style.opacity = "0";
+                const isTooltip = e.target.closest(".tooltip");
+                
+                if (element && !isTooltip) {
+                    e.stopPropagation();
+                    if (activeTooltipElement === element) {
+                        // Clicking again closes it
+                        hideTooltip();
+                    } else {
+                        // Clicking opens it
+                        if (activeTooltipElement) {
+                            hideTooltip();
+                        }
+                        // Small delay to ensure previous tooltip is hidden
+                        tooltipTimeout = setTimeout(() => {
+                            showTooltip(element);
+                        }, 50);
+                    }
+                } else if (!isTooltip && activeTooltipElement) {
+                    // Click outside closes tooltip
+                    hideTooltip();
                 }
             }, true);
-
-            document.addEventListener("mousemove", function(e) {
-                const element = e.target.closest(".tooltiphover");
-                if (element && tooltip.style.opacity === "1") {
-                    const rect = element.getBoundingClientRect();
-                    const tooltiprect = tooltip.getBoundingClientRect();
-                    
-                    const left = rect.left + (rect.width / 2) - (tooltiprect.width / 2);
-                    const top = rect.top - tooltiprect.height - 10;
-
-                    tooltip.style.left = Math.max(10, Math.min(window.innerWidth - tooltiprect.width - 10, left)) + "px";
-                    tooltip.style.top = Math.max(10, top) + "px";
-                }
-            });
         });
 
 </script>
