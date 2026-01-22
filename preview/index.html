@@ -9,6 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="/assets/static/slash.js"></script>
 
+    <script src="/assets/static/prism.js"></script>
+    <link href="/assets/static/prism.css" rel="stylesheet" />
+    <link href="/assets/static/vscdarkplus.css" rel="stylesheet" />
+
     <meta property="og:image" content="/assets/images/embeds/preview.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="/assets/images/embeds/preview.png">
@@ -390,7 +394,7 @@
             gap: 1em; justify-content: center;
         }
         .input {
-            background: rgba(0,0,0,0.5); color: #fff;
+            background: rgba(0,0,0,0.75); color: #fff;
             font-size: 0.5em; font-family: "JetBrains Mono";
             overflow: auto; width: 100%; max-width: 350px; height: 300px;
             text-shadow: none; padding: 1em; margin: 0.5em 0;
@@ -413,7 +417,7 @@
         .uploadinput a {font-size: 2em; padding: 1em}
 
         .xml {
-            background: rgba(0,0,0,0.5); color: #fff;
+            background: rgba(0,0,0,0.75); color: #fff;
             font-size: 0.5em; font-family: "JetBrains Mono";
             overflow: auto; width: 100%; max-width: 350px; height: 300px;
             text-shadow: none; padding: 1em; margin: 0.5em 0;
@@ -429,19 +433,6 @@
             pointer-events: none;
         }
 
-        /* highlighting colors!! nabbed from a vscode theme */
-        .xmlvalue {color: #ce9178}
-        .xmlequals {color: #cccccc}
-        .xmlbrackets {color: #808080}
-        .xmlelement {color: #569cd6}
-        .xmlattribute {color: #9cdcfe}
-        
-        /* override ugly browser default selection */
-        .xmlvalue::selection {background-color: #264f78 !important; color: #ce9178 !important}
-        .xmlequals::selection {background-color: #264f78 !important; color: #cccccc !important}
-        .xmlbrackets::selection {background-color: #264f78 !important; color: #808080 !important}
-        .xmlelement::selection {background-color: #264f78 !important; color: #569cd6 !important}
-        .xmlattribute::selection {background-color: #264f78 !important; color: #9cdcfe !important}
 
         .drag {
             position: fixed; display: none;
@@ -503,7 +494,7 @@
             <a class="title">Level Preview</a>
             <div class="multi fulleditor">
                 <div class="paste">
-                    <div class="input xml theotherbox" contenteditable="true" placeholder='<map>
+                    <div class="input xml theotherbox language-xml" contenteditable="true" placeholder='<map>
     <layer name="settings">
         <map gridSize="32" width="320" height="480" />
         <gameDesign ropePhysicsSpeed="1.0" special="1" twoParts="false" />
@@ -778,110 +769,59 @@
 
             /*//////////////////////////////////////////////////////////////////////*/
 
-            /* xml highlighting */
-            function highlight(element) {
-                if (!element) return;
-                const text = element.textContent || element.innerText || "";
-
-                if (!text.trim()) return;
+            function savecursorpos(element) {
                 const selection = window.getSelection();
-                const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
-                let cursoroffset = 0;
-                let cursornode = null;
-                if (range) {
-                    cursornode = range.startContainer;
-                    cursoroffset = range.startOffset;
-                    if (cursornode === element) {
-                        cursoroffset = range.startOffset;
-                    } else {
-                        const walker = document.createTreeWalker(
-                            element, NodeFilter.SHOW_TEXT,
-                            null, false
-                        );
-                        let totaloffset = 0; let node;
-                        while (node = walker.nextNode()) {
-                            if (node === cursornode) {
-                                cursoroffset = totaloffset + cursoroffset;
-                                break;
-                            }; totaloffset += node.textContent.length;
-                        }
-                    }
-                }; element.innerHTML = "";
+                if (selection.rangeCount === 0) return null;
+                const range = selection.getRangeAt(0);
+                const precaretrange = range.cloneRange();
+                precaretrange.selectNodeContents(element);
+                precaretrange.setEnd(range.endContainer, range.endOffset);
+                return precaretrange.toString().length;
+            }
 
-                const processedcontent = processxml(text);
-                element.appendChild(processedcontent);
-                if (range && cursoroffset >= 0) {
-                    try {
-                        const newrange = document.createRange();
-                        const walker = document.createTreeWalker(
-                            element, NodeFilter.SHOW_TEXT,
-                            null, false
-                        ); let currentoffset = 0; let node;
-                        while (node = walker.nextNode()) {
-                            const nodelength = node.textContent.length;
-                            if (currentoffset + nodelength >= cursoroffset) {
-                                newrange.setStart(node, cursoroffset - currentoffset);
-                                newrange.collapse(true);
-                                selection.removeAllRanges();
-                                selection.addRange(newrange);
-                                break;
-                            }
-                            currentoffset += nodelength;
+            function restorecursorpos(element, offset) {
+                if (offset === null || offset === undefined) return;
+                try {
+                    const selection = window.getSelection();
+                    const range = document.createRange();
+                    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                    let cur = 0;
+                    let node;
+                    while (node = walker.nextNode()) {
+                        const len = node.textContent.length;
+                        if (cur + len >= offset) {
+                            range.setStart(node, Math.max(0, offset - cur));
+                            range.collapse(true);
+                            selection.removeAllRanges();
+                            selection.addRange(range);
+                            break;
                         }
-                    } catch (e) {
+                        cur += len;
                     }
+                } catch (e) {
+                    // Ignore errors
                 }
             }
 
-            function processxml(text) {
-                const fragment = document.createDocumentFragment();
-                let currentpos = 0;
-                const patterns = [
-                    {regex: /<\/?[^>\s]+/g, class: "xmlelement"},
-                    {regex: /\b\w+(?=\s*=)/g, class: "xmlattribute"},
-                    {regex: /"[^"]*"/g, class: "xmlvalue"},
-                    {regex: /=/g, class: "xmlequals"},
-                    {regex: /[<>/]/g, class: "xmlbrackets"}
-                ];
-                const matches = [];
-                patterns.forEach(pattern => {
-                    let match;
-                    while ((match = pattern.regex.exec(text)) !== null) {
-                        matches.push({
-                            start: match.index,
-                            end: match.index + match[0].length,
-                            text: match[0],
-                            class: pattern.class
-                        });
-                    }
-                });
-                matches.sort((a, b) => a.start - b.start);
-                const filteredmatches = [];
-                let lastend = 0;
-                matches.forEach(match => {
-                    if (match.start >= lastend) {
-                        filteredmatches.push(match);
-                        lastend = match.end;
-                    }
-                });
-                filteredmatches.forEach(match => {
-                    if (match.start > currentpos) {
-                        const textbefore = text.substring(currentpos, match.start);
-                        const textnode = document.createTextNode(textbefore);
-                        fragment.appendChild(textnode);
-                    }
-                    const span = document.createElement("span");
-                    span.className = match.class;
-                    span.textContent = match.text;
-                    fragment.appendChild(span);
-                    currentpos = match.end;
-                });
-                if (currentpos < text.length) {
-                    const remainingtext = text.substring(currentpos);
-                    const textnode = document.createTextNode(remainingtext);
-                    fragment.appendChild(textnode);
+            /* xml highlighting */
+            function highlight(element) {
+                if (!element || !Prism) return;
+                const text = element.textContent || element.innerText || "";
+                if (!text.trim()) {
+                    element.innerHTML = "";
+                    return;
                 }
-                return fragment;
+                const cursorpos = savecursorpos(element);
+                try {
+                    const highlighted = Prism.highlight(text, Prism.languages.xml, 'xml');
+                    element.innerHTML = highlighted;
+                    if (cursorpos !== null) {
+                        restorecursorpos(element, cursorpos);
+                    }
+                } catch (e) {
+                    console.error("Prism.js error?!", e);
+                    element.textContent = text;
+                }
             }
 
             /*//////////////////////////////////////////////////////////////////////*/

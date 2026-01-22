@@ -9,6 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="/assets/static/slash.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    
+    <script src="/assets/static/prism.js"></script>
+    <link href="/assets/static/prism.css" rel="stylesheet" />
+    <link href="/assets/static/vscdarkplus.css" rel="stylesheet" />
 
     <meta property="og:image" content="/assets/images/embeds/split.png">
     <meta name="twitter:card" content="summary_largeimage">
@@ -134,7 +138,7 @@
 
         /* xml and file upload that is DEFINITELY not nabbed from /preview/. mhm. definitely. */
         .input {
-            background: rgba(0,0,0,0.6); color: #fff;
+            background: rgba(0,0,0,0.75); color: #fff;
             font-size: 1em; font-family: "Good Dog";
             overflow: auto; width: 100%;
             max-width: none; min-height: 0;
@@ -144,7 +148,7 @@
             border: none; outline: none; box-sizing: border-box;
         }
         .xml {
-            background: rgba(0,0,0,0.6); color: #fff;
+            background: rgba(0,0,0,0.75); color: #fff;
             font-size: 0.75em; font-family: "JetBrains Mono";
             overflow: auto; width: 100%;
             max-width: none; height: 100%;
@@ -158,11 +162,6 @@
             content: attr(placeholder);
             color: rgba(255,255,255,0.4); pointer-events: none;
         }
-        .xmlvalue {color: #ce9178;}
-        .xmlequals {color: #cccccc;}
-        .xmlbrackets {color: #808080;}
-        .xmlelement {color: #569cd6;}
-        .xmlattribute {color: #9cdcfe;}
 
         .upload, .paste {
             display: flex; flex-direction: column;
@@ -199,7 +198,7 @@
         .sheetwrap {
             position: relative; width: 100%; height: 100%;
             border-radius: 1em; overflow: hidden;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.75);
         }
         .sheetinner {
             position: absolute; left: 16px; top: 16px;
@@ -280,7 +279,7 @@
 		<div class="multi">
 			<div class="paste">
 
-				<div class="xml thexml" contenteditable="true" placeholder="<info><quads>0,0,64,64,64,0,64,64,0,64,64,64</quads></info>"></div>
+				<div class="xml thexml language-xml" contenteditable="true" placeholder="<info><quads>0,0,64,64,64,0,64,64,0,64,64,64</quads></info>"></div>
 			</div>
 			<div class="upload">
 				<div class="sheetwrap">
@@ -293,7 +292,7 @@
 						<img src="/comics/assets/images/back.png" alt="Back" />
 					</div>
 					<div class="exportbutton clickable">
-						<img src="/levels/assets/images/buttons/sbutton.webp" draggable="false" alt="Export All" />
+						<img src="/assets/images/longbuttons/sbutton.webp" draggable="false" alt="Export All" />
 						<span>Export All</span>
 					</div>
 				</div>
@@ -475,66 +474,58 @@
             "menu_extra_buttons_en": "<info format='0' fileFormat='0' filter='1'><quads>0,0,291,49,</quads><offsets>143,106,</offsets><preCutWidth>679</preCutWidth><preCutHeight>206</preCutHeight></info>"
 		};
 
+        function savecursorpos(element) {
+            const selection = window.getSelection();
+            if (selection.rangeCount === 0) return null;
+            const range = selection.getRangeAt(0);
+            const precaretrange = range.cloneRange();
+            precaretrange.selectNodeContents(element);
+            precaretrange.setEnd(range.endContainer, range.endOffset);
+            return precaretrange.toString().length;
+        }
+
+        function restorecursorpos(element, offset) {
+            if (offset === null || offset === undefined) return;
+            try {
+                const selection = window.getSelection();
+                const range = document.createRange();
+                const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                let cur = 0;
+                let node;
+                while (node = walker.nextNode()) {
+                    const len = node.textContent.length;
+                    if (cur + len >= offset) {
+                        range.setStart(node, Math.max(0, offset - cur));
+                        range.collapse(true);
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                        break;
+                    }
+                    cur += len;
+                }
+            } catch (e) {
+                // Ignore errors
+            }
+        }
+
         // xml highlighting
         function highlight(element) {
-            if (!element) return;
+            if (!element || !Prism) return;
             const text = element.textContent || element.innerText || "";
-            if (!text.trim()) return;
-            const selection = window.getSelection();
-            const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
-            let cursoroffset = 0; let cursornode = null;
-            if (range) {
-                cursornode = range.startContainer; cursoroffset = range.startOffset;
-                if (cursornode !== element) {
-                    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
-                    let total = 0; let node;
-                    while (node = walker.nextNode()) {
-                        if (node === cursornode) {cursoroffset = total + cursoroffset; break}
-                        total += node.textContent.length
-                    }
-                }
+            if (!text.trim()) {
+                element.innerHTML = "";
+                return;
             }
-            element.innerHTML = "";
-            const frag = document.createDocumentFragment();
-            const patterns = [
-                {regex: /<\/?[^>\s]+/g, class: "xmlelement"},
-                {regex: /\b\w+(?=\s*=)/g, class: "xmlattribute"},
-                {regex: /"[^"]*"/g, class: "xmlvalue"},
-                {regex: /'[^']*'/g, class: "xmlvalue"},
-                {regex: /=/g, class: "xmlequals"},
-                {regex: /[<>/]/g, class: "xmlbrackets"}
-            ];
-            let matches = [];
-            patterns.forEach(p => { let m; while ((m = p.regex.exec(text)) !== null) {
-                matches.push({start: m.index, end: m.index + m[0].length, text: m[0], class: p.class})}
-            });
-            matches.sort((a,b) => a.start - b.start);
-            let filtered = []; let last = 0; matches.forEach(m => {
-                if (m.start >= last) {filtered.push(m); last = m.end}
-            });
-
-            let pos = 0; filtered.forEach(m => {
-                if (m.start > pos) {
-                    frag.appendChild(document.createTextNode(text.substring(pos, m.start)))
-                } const s = document.createElement("span");
-                s.className = m.class; s.textContent = m.text; frag.appendChild(s); pos = m.end
-            });
-            if (pos < text.length) frag.appendChild(document.createTextNode(text.substring(pos)));
-            element.appendChild(frag);
-
-            if (range) {
-                try {
-                    const newrange = document.createRange();
-                    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
-                    let cur = 0; let node; while (node = walker.nextNode()) {
-                        const len = node.textContent.length;
-                        if (cur + len >= cursoroffset) {
-                            newrange.setStart(node, Math.max(0, cursoroffset - cur));
-                            newrange.collapse(true); selection.removeAllRanges();
-                            selection.addRange(newrange); break
-                        } cur += len
-                    }
-                } catch (e) {}
+            const cursorpos = savecursorpos(element);
+            try {
+                const highlighted = Prism.highlight(text, Prism.languages.xml, 'xml');
+                element.innerHTML = highlighted;
+                if (cursorpos !== null) {
+                    restorecursorpos(element, cursorpos);
+                }
+            } catch (e) {
+                console.error("Prism.js error?!", e);
+                element.textContent = text;
             }
         }
 
