@@ -1,9 +1,10 @@
 import ResEntry from "@/resources/ResEntry";
 import ResourceType from "@/resources/ResourceType";
 import ResourceId from "@/resources/ResourceId";
+import { getIsXmas } from "@/utils/SpecialEvents";
 
+export const IS_XMAS = getIsXmas();
 const currentMonth = new Date().getMonth();
-export const IS_XMAS = currentMonth === 11 || currentMonth === 0;
 export const IS_JANUARY = currentMonth === 0;
 
 const RES_DATA: ResEntry[] = [];
@@ -401,6 +402,37 @@ RES_DATA[ResourceId.IMG_CHAR_ANIMATION_PADDINGTON] = new ResEntry(
         atlasPath: "char_animation_paddington.json",
         atlasFormat: "texture-packer",
     }
+);
+
+RES_DATA[ResourceId.IMG_OBJ_GHOST] = new ResEntry("obj_ghost.webp", ResourceType.IMAGE, {
+    atlasPath: "obj_ghost.json",
+    atlasFormat: "texture-packer",
+});
+
+RES_DATA[ResourceId.SND_GHOST_PUFF] = new ResEntry("ghost_puff", ResourceType.SOUND);
+
+RES_DATA[ResourceId.IMG_OBJ_PIPE] = new ResEntry("obj_pipe.webp", ResourceType.IMAGE, {
+    atlasPath: "obj_pipe.json",
+    atlasFormat: "texture-packer",
+});
+
+RES_DATA[ResourceId.SND_STEAM_START] = new ResEntry("steam_start", ResourceType.SOUND);
+
+RES_DATA[ResourceId.SND_STEAM_START2] = new ResEntry("steam_start2", ResourceType.SOUND);
+
+RES_DATA[ResourceId.SND_STEAM_END] = new ResEntry("steam_end", ResourceType.SOUND);
+
+RES_DATA[ResourceId.IMG_OBJ_LANTERN] = new ResEntry("obj_lantern.webp", ResourceType.IMAGE, {
+    atlasPath: "obj_lantern.json",
+    atlasFormat: "texture-packer",
+});
+RES_DATA[ResourceId.SND_LANTERN_TELEPORT_IN] = new ResEntry(
+    "lantern_teleport_in",
+    ResourceType.SOUND
+);
+RES_DATA[ResourceId.SND_LANTERN_TELEPORT_OUT] = new ResEntry(
+    "lantern_teleport_out",
+    ResourceType.SOUND
 );
 
 export default RES_DATA;

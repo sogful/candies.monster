@@ -4,6 +4,7 @@ import SoundMgr from "@/game/CTRSoundMgr";
 import ConstrainedPoint from "@/physics/ConstrainedPoint";
 import * as GameSceneConstants from "@/gameScene/constants";
 import type GameSceneInit from "../init";
+import Lantern from "@/game/Lantern";
 
 export function resetGameState(this: GameSceneInit): void {
     this.gravityButton = null;
@@ -16,14 +17,21 @@ export function resetGameState(this: GameSceneInit): void {
 
     SoundMgr.stopSound(ResourceId.SND_ELECTRIC);
 
+    for (const ghost of this.ghosts) {
+        ghost?.destroy();
+    }
+
     this.bungees = [];
     this.razors = [];
     this.spikes = [];
     this.stars = [];
     this.bubbles = [];
+    this.tubes = [];
     this.pumps = [];
+    this.lanterns = [];
     this.rockets = [];
     this.socks = [];
+    this.ghosts = [];
     this.tutorialImages = [];
     this.tutorials = [];
     this.drawings = [];
@@ -37,4 +45,6 @@ export function resetGameState(this: GameSceneInit): void {
     this.starL.setWeight(1);
     this.starR = new ConstrainedPoint();
     this.starR.setWeight(1);
+    this.isCandyInLantern = false;
+    Lantern.removeAllLanterns();
 }

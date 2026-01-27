@@ -88,6 +88,7 @@ const mapItemDefinitions = {
 
     GHOST: createMapItem({ id: 130, key: "ghost", loader: "loadGhost" }),
     STEAM_TUBE: createMapItem({ id: 131, key: "steamTube", loader: "loadSteamTube" }),
+    LANTERN: createMapItem({ id: 132, key: "lantern", loader: "loadLantern", priority: 2 }),
 };
 
 const mapItems = Object.values(mapItemDefinitions);

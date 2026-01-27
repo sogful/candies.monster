@@ -644,6 +644,9 @@
             const clickaudio = document.querySelector(".click");
             const loading = document.querySelector(".loading");
 
+            // autoselects h5dx, enabling this only when it's the only working choice
+            const nopicker = true;
+
             let levelbase64 = null;
             let lateststats = null;
             const errorentries = new Map();
@@ -867,7 +870,7 @@
                 detailstext.textContent = `${lateststats.objectcount} obj // ${lateststats.charcount} chars`;
             }
 
-            function setleveldata(base64, showChoice = false) {
+            function setleveldata(base64, showchoice = false) {
                 if (!base64) return;
                 levelbase64 = base64.trim();
                 try {
@@ -884,9 +887,8 @@
                 }
                 toggleeditor(true);
                 updatedetails();
-                if (showChoice) {
-                    showchoicepanel();
-                }
+                if (nopicker) {opengame("h5dx")}
+                else if (showchoice) {showchoicepanel()}
                 resetbutton.disabled = false;
                 updatelink();
             }
@@ -903,14 +905,14 @@
             
             /*//////////////////////////////////////////////////////////////////////*/
 
-            function setlevelfromxml(xml, showChoice = false) {
+            function setlevelfromxml(xml, showchoice = false) {
                 if (!xml) {
                     showerror("No XML data provided");
                     return;
                 }
                 try {
                     const base64 = encodeurl(xml);
-                    setleveldata(base64, showChoice);
+                    setleveldata(base64, showchoice);
                 } catch (error) {
                     showerror(`Failed to encode level: ${error}`);
                 }
@@ -941,14 +943,16 @@
                     const data = await fetchlevelbycode(urlcode);
                     keeploadingbuddy = false;
                     if (data) {
-                        setleveldata(data, true);
+                        setleveldata(data, !nopicker);
                         cleanurl();
-                        try {
-                            const savedgame = localStorage.getItem(game_version_key);
-                            if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
-                                opengame(savedgame);
-                            }
-                        } catch (_) {}
+                        if (!nopicker) {
+                            try {
+                                const savedgame = localStorage.getItem(game_version_key);
+                                if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
+                                    opengame(savedgame);
+                                }
+                            } catch (_) {}
+                        }
                         hideloading();
                         return;
                     }
@@ -956,26 +960,30 @@
                 }
                 const urldata = new URLSearchParams(window.location.search).get("data");
                 if (urldata) {
-                    setleveldata(urldata, true);
+                    setleveldata(urldata, !nopicker);
                     cleanurl();
-                    try {
-                        const savedgame = localStorage.getItem(game_version_key);
-                        if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
-                            opengame(savedgame);
-                        }
-                    } catch (_) {}
+                    if (!nopicker) {
+                        try {
+                            const savedgame = localStorage.getItem(game_version_key);
+                            if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
+                                opengame(savedgame);
+                            }
+                        } catch (_) {}
+                    }
                     hideloading();
                     return;
                 }
                 const stored = localStorage.getItem(storage_key);
                 if (stored) {
-                    setleveldata(stored, true);
-                    try {
-                        const savedgame = localStorage.getItem(game_version_key);
-                        if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
-                            opengame(savedgame);
-                        }
-                    } catch (_) {}
+                    setleveldata(stored, !nopicker);
+                    if (!nopicker) {
+                        try {
+                            const savedgame = localStorage.getItem(game_version_key);
+                            if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
+                                opengame(savedgame);
+                            }
+                        } catch (_) {}
+                    }
                 } else {
                     resetbutton.disabled = true;
                     toggleeditor(false);
@@ -1162,6 +1170,7 @@
                 closebtn.classList.add("active");
                 document.body.classList.add("playing");
                 choicepanel?.classList.add("hidden");
+                datapanel?.classList.add("hidden");
             }
 
             function closegame() {
@@ -1169,7 +1178,12 @@
                 closebtn.classList.remove("active");
                 document.body.classList.remove("playing");
                 if (levelbase64) {
-                    choicepanel?.classList.remove("hidden");
+                    if (nopicker) {
+                        datapanel?.classList.remove("hidden");
+                        choicepanel?.classList.add("hidden");
+                    } else {
+                        choicepanel?.classList.remove("hidden");
+                    }
                 }
                 if (frame.src !== "about:blank") {
                     frame.src = "about:blank";
@@ -1374,7 +1388,8 @@
             updatelink();
             if (levelbase64) {
                 if (!frame.classList.contains("active")) {
-                    showchoicepanel();
+                    if (nopicker) {opengame("h5dx")}
+                    else {showchoicepanel()}
                 }
                 resetbutton.disabled = false;
             }

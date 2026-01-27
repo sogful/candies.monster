@@ -84,6 +84,8 @@ const MenuId = {
     PRIVACY: 201,
     HOLIDAY_LEVELS_UNAVAILABLE_TITLE: 202,
     HOLIDAY_LEVELS_UNAVAILABLE_TEXT: 203,
+    XMAS_MODE_ON: 204,
+    XMAS_MODE_OFF: 205,
 } as const;
 
 export default MenuId;

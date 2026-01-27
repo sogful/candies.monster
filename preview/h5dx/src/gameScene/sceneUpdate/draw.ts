@@ -90,6 +90,10 @@ const drawImpl = function drawImpl(scene: GameScene): void {
         scene.rotatedCircles[i]?.draw();
     }
 
+    for (let i = 0, len = scene.ghosts.length; i < len; i++) {
+        scene.ghosts[i]?.draw();
+    }
+
     for (let i = 0, len = scene.bubbles.length; i < len; i++) {
         scene.bubbles[i]?.draw();
     }
@@ -116,6 +120,14 @@ const drawImpl = function drawImpl(scene: GameScene): void {
         sock.y += GameSceneConstants.SOCK_COLLISION_Y_OFFSET;
     }
 
+    for (let i = 0, len = scene.tubes.length; i < len; i++) {
+        scene.tubes[i]?.drawBack();
+    }
+
+    for (let i = 0, len = scene.lanterns.length; i < len; i++) {
+        scene.lanterns[i]?.draw();
+    }
+
     const bungees = scene.bungees;
     for (let i = 0, len = bungees.length; i < len; i++) {
         const bungee = bungees[i];
@@ -136,7 +148,7 @@ const drawImpl = function drawImpl(scene: GameScene): void {
         scene.candy.y = scene.star.pos.y;
         scene.candy.draw();
 
-        if (scene.candyBlink.currentTimeline != null) {
+        if (!scene.isCandyInLantern && scene.candyBlink.currentTimeline != null) {
             scene.candyBlink.draw();
         }
     }
@@ -160,6 +172,10 @@ const drawImpl = function drawImpl(scene: GameScene): void {
         if (g?.hasSpider) {
             g.drawSpider();
         }
+    }
+
+    for (let i = 0, len = scene.tubes.length; i < len; i++) {
+        scene.tubes[i]?.drawFront();
     }
 
     scene.aniPool.draw();

@@ -49,6 +49,9 @@ class ResourcePacks {
         ResourceId.IMG_OBJ_CANDY_PADDINGTON,
         ResourceId.IMG_SNOWFLAKES,
         ResourceId.IMG_CONFETTI_PARTICLES,
+        ResourceId.IMG_OBJ_GHOST,
+        ResourceId.IMG_OBJ_PIPE,
+        ResourceId.IMG_OBJ_LANTERN,
     ];
 
     // -- Game resources for Round 5 promo --
@@ -151,6 +154,12 @@ class ResourcePacks {
         ResourceId.SND_STAR_2,
         ResourceId.SND_STAR_3,
         ResourceId.SND_WIN,
+        ResourceId.SND_GHOST_PUFF,
+        ResourceId.SND_STEAM_START,
+        ResourceId.SND_STEAM_START2,
+        ResourceId.SND_STEAM_END,
+        ResourceId.SND_LANTERN_TELEPORT_IN,
+        ResourceId.SND_LANTERN_TELEPORT_OUT,
     ];
 
     // -- Sound resources for full version --

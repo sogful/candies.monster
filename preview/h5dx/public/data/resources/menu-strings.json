@@ -1153,5 +1153,35 @@
     "zh": "这些节日关卡将在节日期间回归。请稍后再来！",
     "ja": "これらの祝祭レベルは 休日シーズンに戻ってきます。後でまた来てください！",
     "ko": "이 축제 레벨은 휴가철에 돌아옵니다. 나중에 다시 오세요!"
+  },
+  {
+    "id": 204,
+    "en": "Christmas Mode: ON",
+    "zh": "圣诞模式：开启",
+    "ja": "クリスマスモード：ON",
+    "ko": "크리스마스 모드：켜짐",
+    "nl": "Kerstmodus: AAN",
+    "it": "Modalità Natale: ON",
+    "fr": "Mode Noël: ON",
+    "de": "Weihnachtsmodus: AN",
+    "ru": "Рождественский режим: ВКЛ",
+    "es": "Modo Navidad: ON",
+    "br": "Modo Natal: LIGADO",
+    "ca": "Mode Nadal: ON"
+  },
+  {
+    "id": 205,
+    "en": "Christmas Mode: OFF",
+    "zh": "圣诞模式：关闭",
+    "ja": "クリスマスモード：OFF",
+    "ko": "크리스마스 모드：꺼짐",
+    "nl": "Kerstmodus: UIT",
+    "it": "Modalità Natale: OFF",
+    "fr": "Mode Noël: OFF",
+    "de": "Weihnachtsmodus: AUS",
+    "ru": "Рождественский режим: ВЫКЛ",
+    "es": "Modo Navidad: OFF",
+    "br": "Modo Natal: DESLIGADO",
+    "ca": "Mode Nadal: OFF"
   }
 ]

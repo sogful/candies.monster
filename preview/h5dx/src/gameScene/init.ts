@@ -13,7 +13,7 @@ import DelayedDispatcher from "@/utils/DelayedDispatcher";
 import settings from "@/game/CTRSettings";
 import edition from "@/config/editions/net-edition";
 import BoxType from "@/ui/BoxType";
-import { IS_XMAS, IS_JANUARY } from "@/resources/ResData";
+import { IS_XMAS, IS_JANUARY } from "@/utils/SpecialEvents";
 import resolution from "@/resolution";
 import LangId from "@/resources/LangId";
 import type Texture2D from "@/core/Texture2D";
@@ -33,6 +33,9 @@ import type GravityButton from "@/game/GravityButton";
 import type ImageElement from "@/visual/ImageElement";
 import type Star from "@/game/Star";
 import type Spikes from "@/game/Spikes";
+import type Ghost from "@/game/Ghost";
+import type Lantern from "@/game/Lantern";
+import type SteamTube from "@/game/SteamTube";
 import { initAnimations } from "./initGameScene/initAnimations";
 import { initBackground } from "./initGameScene/initBackground";
 import { resetGameState } from "./initGameScene/resetGameState";
@@ -117,6 +120,9 @@ abstract class GameSceneInit extends BaseElement {
     bouncers: Bouncer[];
     rotatedCircles: RotatedCircle[];
     pollenDrawer: PollenDrawer | null;
+    ghosts: Ghost[];
+    lanterns: Lantern[];
+    tubes: SteamTube[];
     star: ConstrainedPoint;
     starL: ConstrainedPoint;
     starR: ConstrainedPoint;
@@ -128,6 +134,9 @@ abstract class GameSceneInit extends BaseElement {
     candyBubbleAnimation: Animation;
     candyBubbleAnimationL?: Animation;
     candyBubbleAnimationR?: Animation;
+    candyGhostBubbleAnimation?: Animation;
+    candyGhostBubbleAnimationL?: Animation;
+    candyGhostBubbleAnimationR?: Animation;
     candyBubble: Bubble | null;
     candyBubbleL: Bubble | null;
     candyBubbleR: Bubble | null;
@@ -138,6 +147,7 @@ abstract class GameSceneInit extends BaseElement {
     noCandy: boolean;
     noCandyL: boolean;
     noCandyR: boolean;
+    isCandyInLantern: boolean;
     spiderTookCandy: boolean;
     time: number;
     score: number;
@@ -258,6 +268,9 @@ abstract class GameSceneInit extends BaseElement {
         this.bouncers = [];
         this.rotatedCircles = [];
         this.pollenDrawer = null;
+        this.ghosts = [];
+        this.lanterns = [];
+        this.tubes = [];
 
         this.star = new ConstrainedPoint();
         this.star.setWeight(1);
@@ -360,6 +373,7 @@ abstract class GameSceneInit extends BaseElement {
         this.noCandy = false;
         this.noCandyL = false;
         this.noCandyR = false;
+        this.isCandyInLantern = false;
         this.spiderTookCandy = false;
         this.time = 0;
         this.score = 0;

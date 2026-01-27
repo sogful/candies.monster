@@ -27,3 +27,27 @@ export function updateSpecial(this: GameScene, _delta: number): boolean {
 
     return true;
 }
+
+export function triggerSpecialTutorial(scene: GameScene, tutorialId: number): void {
+    if (scene.special !== tutorialId) {
+        return;
+    }
+
+    scene.special = 0;
+
+    for (const tutorial of scene.tutorials) {
+        if (tutorial.special === tutorialId) {
+            tutorial.playTimeline(0);
+        } else {
+            tutorial.currentTimeline?.jumpToTrack(3, 2);
+        }
+    }
+
+    for (const tutorialImage of scene.tutorialImages) {
+        if (tutorialImage.special === tutorialId) {
+            tutorialImage.playTimeline(0);
+        } else {
+            tutorialImage.currentTimeline?.jumpToTrack(3, 2);
+        }
+    }
+}

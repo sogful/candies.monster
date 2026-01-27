@@ -252,6 +252,10 @@ export function updateCollectibles(this: CollectiblesScene, delta: number): bool
         }
     }
 
+    for (const ghost of this.ghosts) {
+        ghost.updateGhost(delta);
+    }
+
     // tutorial text
     for (let i = 0, len = this.tutorials.length; i < len; i++) {
         const t = this.tutorials[i]!;

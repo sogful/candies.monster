@@ -1,5 +1,5 @@
 import PreLoader from "@/resources/PreLoader";
-import { IS_XMAS } from "@/resources/ResData";
+import { getIsXmas } from "@/utils/SpecialEvents";
 import resolution from "@/resolution";
 import im from "@/ui/InterfaceManager";
 import Canvas from "@/utils/Canvas";
@@ -50,7 +50,7 @@ class App {
         });
 
         document.body.classList.add(`ui-${resolution.UI_WIDTH}`);
-        if (IS_XMAS) {
+        if (getIsXmas()) {
             document.body.classList.add("is-xmas");
         }
 

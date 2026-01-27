@@ -9,15 +9,23 @@ import SoundMgr from "@/game/CTRSoundMgr";
 import Vector from "@/core/Vector";
 import resolution from "@/resolution";
 import * as GameSceneConstants from "@/gameScene/constants";
-import { IS_XMAS } from "@/resources/ResData";
+import { IS_XMAS } from "@/utils/SpecialEvents";
+import Lantern from "@/game/Lantern";
+import KeyFrame from "@/visual/KeyFrame";
+import Timeline from "@/visual/Timeline";
+import RGBAColor from "@/core/RGBAColor";
 import { applyStarImpulse, isCandyHit } from "./collisionHelpers";
+import { triggerSpecialTutorial } from "./special";
 import type BaseElement from "@/visual/BaseElement";
 import type Bubble from "@/game/Bubble";
 import type Bouncer from "@/game/Bouncer";
 import type Grab from "@/game/Grab";
 import type Pump from "@/game/Pump";
 import type RotatedCircle from "@/game/RotatedCircle";
+import type SteamTube from "@/game/SteamTube";
 import type Spikes from "@/game/Spikes";
+import type LanternType from "@/game/Lantern";
+import type GameObject from "@/visual/GameObject";
 import type { GameScene, SceneStar } from "@/types/game-scene";
 
 type SockState = (typeof Sock.StateType)[keyof typeof Sock.StateType];
@@ -31,17 +39,119 @@ type RotatedCircleWithContents = RotatedCircle & {
     removeOnNextUpdate?: boolean;
 };
 
+function operateSteamTube(scene: HazardScene, tube: SteamTube, delta: number): void {
+    const tubeScale = tube.getHeightScale();
+    let damping = 5;
+    const angle = Radians.fromDegrees(tube.rotation);
+    const tubeWidth = 10 * tubeScale;
+    const currentHeight = tube.getCurrentHeightModulated();
+    const verticalOffset = 1 * tubeScale;
+    const collisionRadius = 17.5 * tubeScale;
+
+    const rectLeft = tube.x - tubeWidth / 2;
+    const rectTop = tube.y - currentHeight - verticalOffset;
+    const rectRight = tube.x + tubeWidth / 2;
+    const rectBottom = tube.y - collisionRadius;
+
+    const applyImpulse = (star: SceneStar): boolean => {
+        const position = star.pos.copy();
+        const velocity = star.v.copy();
+
+        position.rotateAround(-angle, tube.x, tube.y);
+        velocity.rotate(-angle);
+
+        const insideTube = Rectangle.rectInRect(
+            position.x - collisionRadius,
+            position.y - collisionRadius / 2,
+            position.x + collisionRadius,
+            position.y + collisionRadius,
+            rectLeft,
+            rectTop,
+            rectRight,
+            rectBottom
+        );
+
+        if (!insideTube) {
+            return false;
+        }
+
+        for (const bouncer of scene.bouncers) {
+            if (bouncer) {
+                bouncer.skip = 0;
+            }
+        }
+
+        let horizontalImpulse = 0;
+        if (tube.rotation === 0) {
+            const deltaX = tube.x - position.x;
+            horizontalImpulse =
+                Math.abs(deltaX) > tubeWidth / 4
+                    ? -velocity.x / damping + 0.25 * deltaX
+                    : Math.abs(velocity.x) < 1
+                      ? -velocity.x
+                      : -velocity.x / damping;
+        }
+
+        let gravityCompensation = (-32 / star.weight) * Math.sqrt(tubeScale);
+        if (tube.rotation !== 0) {
+            damping *= 15;
+            if (tube.rotation === 180) {
+                gravityCompensation /= 2;
+            } else {
+                gravityCompensation /= 4;
+            }
+        }
+
+        const impulse = new Vector(horizontalImpulse, -velocity.y / damping + gravityCompensation);
+
+        const distanceBelowValve = tube.y - position.y;
+        if (distanceBelowValve > currentHeight + collisionRadius) {
+            const attenuation = Math.exp(
+                -2 * (distanceBelowValve - (currentHeight + collisionRadius))
+            );
+            impulse.multiply(attenuation);
+        }
+
+        impulse.rotate(angle);
+        star.applyImpulse(impulse, delta);
+        return true;
+    };
+
+    if (scene.twoParts === GameSceneConstants.PartsType.NONE) {
+        if (!scene.noCandy) {
+            applyImpulse(scene.star);
+        }
+        return;
+    }
+
+    if (!scene.noCandyL) {
+        applyImpulse(scene.starL);
+    }
+    if (!scene.noCandyR) {
+        applyImpulse(scene.starR);
+    }
+}
+
 type HazardScene = GameScene & {
     PM: number;
     rockets: Rocket[];
     teleport(): void;
     operatePump(pump: Pump, delta: number): void;
+    lanterns: LanternType[];
+    releaseAllRopes(left: boolean): void;
+    popCandyBubble(isLeft: boolean): void;
+    candy: GameObject;
+    candyMain: GameObject;
+    candyTop: GameObject;
+    candyBubble: Bubble | null;
+    isCandyInLantern: boolean;
     handleBounce(bouncer: Bouncer, star: SceneStar, delta: number): void;
     cut(razor: BaseElement | null, v1: Vector, v2: Vector, immediate: boolean): number;
     candyResourceId: (typeof ResourceId)[keyof typeof ResourceId];
     socks: SceneSock[];
     rotatedCircles: RotatedCircleWithContents[];
     spikes: Spikes[];
+    tubes: SteamTube[];
 };
 
 export function updateHazards(this: HazardScene, delta: number, numGrabs: number): boolean {
@@ -175,6 +285,67 @@ export function updateHazards(this: HazardScene, delta: number, numGrabs: number
         }
     }
 
+    // steam tubes
+    for (const tube of this.tubes) {
+        if (!tube) {
+            continue;
+        }
+        tube.update(delta);
+        if (tube.steamState !== 3) {
+            operateSteamTube(this, tube, delta);
+        }
+    }
+
+    const lanternCaptureRadius = resolution.LANTERN_CAPTURE_RADIUS ?? resolution.STAR_RADIUS;
+    for (const lantern of this.lanterns) {
+        lantern.update(delta);
+        const activeLantern =
+            lantern.lanternState === Lantern.STATE.INACTIVE &&
+            Vector.distance(this.star.pos.x, this.star.pos.y, lantern.x, lantern.y) <
+                lanternCaptureRadius;
+        if (!this.noCandy && !this.isCandyInLantern && activeLantern) {
+            this.isCandyInLantern = true;
+            this.candy.passTransformationsToChilds = true;
+            this.candyMain.scaleX = this.candyMain.scaleY = 1;
+            this.candyTop.scaleX = this.candyTop.scaleY = 1;
+            const candyTimeline = new Timeline();
+            candyTimeline.addKeyFrame(
+                KeyFrame.makePos(this.candy.x, this.candy.y, KeyFrame.TransitionType.LINEAR, 0)
+            );
+            candyTimeline.addKeyFrame(
+                KeyFrame.makePos(lantern.x, lantern.y, KeyFrame.TransitionType.LINEAR, 0.1)
+            );
+            candyTimeline.addKeyFrame(
+                KeyFrame.makeScale(0.71, 0.71, KeyFrame.TransitionType.LINEAR, 0)
+            );
+            candyTimeline.addKeyFrame(
+                KeyFrame.makeScale(0.3, 0.3, KeyFrame.TransitionType.LINEAR, 0.1)
+            );
+            candyTimeline.addKeyFrame(
+                KeyFrame.makeColor(RGBAColor.solidOpaque.copy(), KeyFrame.TransitionType.LINEAR, 0)
+            );
+            candyTimeline.addKeyFrame(
+                KeyFrame.makeColor(
+                    RGBAColor.transparent.copy(),
+                    KeyFrame.TransitionType.LINEAR,
+                    0.1
+                )
+            );
+            this.candy.removeTimeline(0);
+            this.candy.addTimelineWithID(candyTimeline, 0);
+            this.candy.playTimeline(0);
+            this.releaseAllRopes(false);
+            if (this.candyBubble) {
+                this.popCandyBubble(false);
+            }
+            this.dd.callObject(lantern, lantern.captureCandyFromDispatcher, [this.star], 0.05);
+
+            // Tutorial special flag 3: triggers when candy is captured by lantern
+            // This shows lantern-specific tutorial elements and hides others
+            triggerSpecialTutorial(this, 3);
+        }
+    }
+
     // razors
     for (let i = 0, len = this.razors.length; i < len; i++) {
         const r = this.razors[i]!;
@@ -191,6 +362,10 @@ export function updateHazards(this: HazardScene, delta: number, numGrabs: number
         // only update if something happens
         if (s.mover || s.shouldUpdateRotation || s.electro) {
             s.update(delta);
+        }
+
+        if (this.isCandyInLantern) {
+            continue;
         }
 
         if (!s.electro || s.electroOn) {

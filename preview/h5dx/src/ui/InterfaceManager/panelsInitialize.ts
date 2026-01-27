@@ -20,7 +20,8 @@ import Alignment from "@/core/Alignment";
 import GameBorder from "@/ui/GameBorder";
 import Doors from "@/Doors";
 import Dialogs from "@/ui/Dialogs";
-import { getDefaultBoxIndex } from "@/ui/InterfaceManager/constants";
+import { getDefaultBoxIndex, startSnow, stopSnow } from "@/ui/InterfaceManager/constants";
+import { getIsXmas, setXmasOverride } from "@/utils/SpecialEvents";
 import {
     addClass,
     append,
@@ -33,6 +34,7 @@ import {
     stopAnimations,
 } from "@/utils/domHelpers";
 import type { PanelIdType, PanelWithLifecycle } from "@/ui/types/panelTypes";
+import skinSelectionView from "@/ui/InterfaceManager/skinSelection";
 
 interface GameFlowForPanelInit {
     noMenuStartLevel: (boxIndex: number, levelIndex: number) => void;
@@ -81,15 +83,28 @@ export default class PanelInitializer {
         const panel = panelManager.getPanelById(panelId) as PanelWithLifecycle | null;
         const soundBtn = document.getElementById("soundBtn");
         const musicBtn = document.getElementById("musicBtn");
-        const resetBtn = document.getElementById("resetBtn");
+                const resetBtn = document.getElementById("resetBtn");
+                const xmasToggleBtn = document.getElementById("xmasToggleBtn");
         const backBtn = document.getElementById("optionsBack");
         const optionMsg = document.getElementById("optionMsg");
         const resetTextContainer = document.getElementById("resetText");
         const resetHoldYesContainer = document.getElementById("resetHoldYes");
         const langElement = document.getElementById("lang");
+        const menuCandySkin = document.getElementById("menuCandySkin");
 
         switch (panelId) {
             case PanelId.MENU: {
+                skinSelectionView.updateMenuCandySkin();
+
+                if (menuCandySkin) {
+                    menuCandySkin.classList.add("ctrPointer");
+                    menuCandySkin.addEventListener("click", () => {
+                        SoundMgr.playSound(ResourceId.SND_TAP);
+                        skinSelectionView.markCandyAsChanged();
+                        panelManager.showPanel(PanelId.SKIN_SELECT);
+                    });
+                }
+
                 // initialize the MENU panel
                 on("#playBtn", "click", () => {
                     SoundMgr.playSound(ResourceId.SND_TAP);
@@ -498,6 +513,31 @@ export default class PanelInitializer {
                     Dialogs.showPopup("resetGame");
                 });
 
+                // XMAS toggle button
+                const updateXmasButtonText = () => {
+                    if (!xmasToggleBtn) return;
+                    const isXmas = getIsXmas();
+                    const textId = isXmas ? MenuStringId.XMAS_MODE_ON : MenuStringId.XMAS_MODE_OFF;
+                    manager._setImageBigText("#xmasToggleBtn img", textId);
+                };
+
+                xmasToggleBtn?.addEventListener("click", () => {
+                    SoundMgr.playSound(ResourceId.SND_TAP);
+                    const currentState = getIsXmas();
+                    setXmasOverride(!currentState);
+                    updateXmasButtonText();
+                    // Update snowfall in real-time
+                    if (!currentState) {
+                        startSnow();
+                        document.body.classList.add("is-xmas");
+                    } else {
+                        stopSnow();
+                        document.body.classList.remove("is-xmas");
+                    }
+                });
+
+                updateXmasButtonText();
+
                 backBtn?.addEventListener("click", () => {
                     SoundMgr.playSound(ResourceId.SND_TAP);
                     const returnPanelId = manager.optionsReturnPanelId ?? PanelId.MENU;
@@ -544,6 +584,11 @@ export default class PanelInitializer {
                 PubSub.subscribe(PubSub.ChannelId.LanguageChanged, refreshOptionsButtons);
                 PubSub.subscribe(PubSub.ChannelId.ShowOptionsPage, refreshOptionsButtons);
 
+                break;
+            }
+
+            case PanelId.SKIN_SELECT: {
+                skinSelectionView.init();
                 break;
             }
 

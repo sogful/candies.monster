@@ -18,7 +18,10 @@ import { loadSock } from "./loadObjects/loadSock";
 import { loadSpike } from "./loadObjects/loadSpike";
 import { loadRotatedCircle } from "./loadObjects/loadRotatedCircle";
 import { loadBouncer } from "./loadObjects/loadBouncer";
+import { loadSteamTube } from "./loadObjects/loadSteamTube";
 import { loadTarget } from "./loadObjects/loadTarget";
+import { loadGhost } from "./loadObjects/loadGhost";
+import { loadLantern } from "./loadObjects/loadLantern";
 
 type MapData = Record<string, MapLayerItem[]>;
 
@@ -49,7 +52,10 @@ abstract class GameSceneLoaders extends GameSceneInit {
     loadSpike = loadSpike;
     loadRotatedCircle = loadRotatedCircle;
     loadBouncer = loadBouncer;
+    loadSteamTube = loadSteamTube;
     loadTarget = loadTarget;
+    loadGhost = loadGhost;
+    loadLantern = loadLantern;
 
     protected override loadMap(map: MapData | null | undefined): void {
         if (!map) {

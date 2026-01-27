@@ -178,6 +178,31 @@ export const IMG_CHAR_ANIMATIONS_idle2_end = 67;
 export const IMG_CHAR_ANIMATIONS_idle3_start = 68;
 export const IMG_CHAR_ANIMATIONS_idle3_end = 83;
 
+export const LANTERN_CANDY_REVEAL_TIME = 0.1;
+
+export const IMG_OBJ_LANTERN_fire = 0;
+export const IMG_OBJ_LANTERN_lantern_end = 1;
+export const IMG_OBJ_LANTERN_lantern_start = 2;
+export const IMG_OBJ_LANTERN_inner_candy_start = 3;
+export const IMG_OBJ_LANTERN_CANDY_QUAD = 10;
+
+export const IMG_OBJ_GHOST_body = 0;
+export const IMG_OBJ_GHOST_face = 1;
+export const IMG_OBJ_GHOST_bubble_1 = 2;
+export const IMG_OBJ_GHOST_bubble_2 = 3;
+export const IMG_OBJ_GHOST_bubble_3 = 4;
+export const IMG_OBJ_GHOST_bubble_4 = 5;
+export const IMG_OBJ_GHOST_bubble_5 = 6;
+
+export const IMG_OBJ_PIPE_pipe = 0;
+export const IMG_OBJ_PIPE_valve = 1;
+export const IMG_OBJ_PIPE_particle_1_start = 2;
+export const IMG_OBJ_PIPE_particle_1_end = 12;
+export const IMG_OBJ_PIPE_particle_2_start = 13;
+export const IMG_OBJ_PIPE_particle_2_end = 23;
+export const IMG_OBJ_PIPE_particle_3_start = 24;
+export const IMG_OBJ_PIPE_particle_3_end = 34;
+
 export const IMG_CHAR_ANIMATIONS2_excited_start = 0;
 export const IMG_CHAR_ANIMATIONS2_excited_end = 19;
 export const IMG_CHAR_ANIMATIONS2_puzzled_start = 20;
