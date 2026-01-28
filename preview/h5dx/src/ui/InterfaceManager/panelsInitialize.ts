@@ -86,6 +86,7 @@ export default class PanelInitializer {
                 const resetBtn = document.getElementById("resetBtn");
                 const xmasToggleBtn = document.getElementById("xmasToggleBtn");
         const backBtn = document.getElementById("optionsBack");
+        const optionsTitle = document.getElementById("optionsTitle");
         const optionMsg = document.getElementById("optionMsg");
         const resetTextContainer = document.getElementById("resetText");
         const resetHoldYesContainer = document.getElementById("resetHoldYes");
@@ -416,6 +417,11 @@ export default class PanelInitializer {
             }
 
             case PanelId.OPTIONS: {
+                // hide it to save space
+                if (optionsTitle) {
+                    optionsTitle.style.display = "none";
+                }
+                
                 // sound effects
                 const updateSoundOption = platform.updateSoundOption;
 
@@ -513,7 +519,6 @@ export default class PanelInitializer {
                     Dialogs.showPopup("resetGame");
                 });
 
-                // XMAS toggle button
                 const updateXmasButtonText = () => {
                     if (!xmasToggleBtn) return;
                     const isXmas = getIsXmas();
@@ -526,14 +531,16 @@ export default class PanelInitializer {
                     const currentState = getIsXmas();
                     setXmasOverride(!currentState);
                     updateXmasButtonText();
-                    // Update snowfall in real-time
-                    if (!currentState) {
+                    
+                    const newState = getIsXmas();
+                    if (newState) {
                         startSnow();
                         document.body.classList.add("is-xmas");
                     } else {
                         stopSnow();
                         document.body.classList.remove("is-xmas");
                     }
+                    PubSub.publish(PubSub.ChannelId.XmasChanged, newState);
                 });
 
                 updateXmasButtonText();
@@ -559,7 +566,6 @@ export default class PanelInitializer {
 
                 // update options menu when the language changes
                 const refreshOptionsButtons = () => {
-                    manager._setImageBigText("#optionsTitle img", MenuStringId.OPTIONS);
                     updateSoundOption(soundBtn, settings.getSoundEnabled());
                     updateMusicOption(musicBtn, settings.getMusicEnabled());
                     updateLangOption();

@@ -23,9 +23,7 @@ export const MENU_MUSIC_ID = getMenuMusicId();
 export const IS_MSIE_BROWSER = /MSIE|Trident/.test(window.navigator.userAgent);
 
 export const startSnow = () => {
-    if (getIsXmas()) {
-        SnowfallOverlay.start();
-    }
+    SnowfallOverlay.start();
 };
 
 export const stopSnow = () => {

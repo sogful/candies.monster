@@ -8,7 +8,7 @@ import Canvas from "@/utils/Canvas";
 import RGBAColor from "@/core/RGBAColor";
 import Mover from "@/utils/Mover";
 import satisfyConstraintArray from "@/physics/satisfyConstraintArray";
-import { IS_XMAS } from "@/resources/ResData";
+import { getIsXmas } from "@/utils/SpecialEvents";
 import ResourceId from "@/resources/ResourceId";
 import ResourceMgr from "@/resources/ResourceMgr";
 
@@ -570,7 +570,7 @@ class Bungee extends ConstraintSystem {
         alpha: number,
         segmentStartIndex: number
     ) {
-        if (!IS_XMAS) return;
+        if (!getIsXmas()) return;
         if (!drawPts || count < 2) return;
         if (alpha <= 0) return;
 

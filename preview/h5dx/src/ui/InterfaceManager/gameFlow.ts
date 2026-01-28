@@ -14,7 +14,7 @@ import PubSub from "@/utils/PubSub";
 import EasterEggManager from "@/ui/EasterEggManager";
 import settings from "@/game/CTRSettings";
 import SnowfallOverlay from "@/ui/SnowfallOverlay";
-import { IS_XMAS } from "@/resources/ResData";
+import { getIsXmas } from "@/utils/SpecialEvents";
 import { MENU_MUSIC_ID, startSnow, stopSnow } from "@/ui/InterfaceManager/constants";
 import { fadeIn, fadeOut, delay, show, hide, text, width } from "@/utils/domHelpers";
 import LevelPanel from "@/ui/LevelPanel";
@@ -194,7 +194,9 @@ export default class GameFlow {
                 Doors.renderDoors(true, 0);
                 panelManager.showPanel(PanelId.LEVELS, true);
             }
-            startSnow();
+            if (getIsXmas()) {
+                startSnow();
+            }
         });
     }
 
@@ -205,7 +207,9 @@ export default class GameFlow {
             show("#bg");
         }
         fadeIn("#gameBtnTray");
-        startSnow();
+        if (getIsXmas()) {
+            startSnow();
+        }
     }
 
     /** Closes the game UI */
@@ -282,7 +286,9 @@ export default class GameFlow {
                     Doors.showGradient();
                     window.setTimeout(() => {
                         this._runScoreTicker();
-                        startSnow();
+                        if (getIsXmas()) {
+                            startSnow();
+                        }
                     }, 250);
                 }
             });
@@ -375,7 +381,7 @@ export default class GameFlow {
             this.manager.panels.onInitializePanel(panelId);
         });
         BoxManager.appReady();
-        if (IS_XMAS) {
+        if (getIsXmas()) {
             startSnow();
         } else {
             SnowfallOverlay.stop();

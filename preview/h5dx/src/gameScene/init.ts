@@ -13,7 +13,8 @@ import DelayedDispatcher from "@/utils/DelayedDispatcher";
 import settings from "@/game/CTRSettings";
 import edition from "@/config/editions/net-edition";
 import BoxType from "@/ui/BoxType";
-import { IS_XMAS, IS_JANUARY } from "@/utils/SpecialEvents";
+import { getIsXmas, IS_JANUARY } from "@/utils/SpecialEvents";
+import PubSub from "@/utils/PubSub";
 import resolution from "@/resolution";
 import LangId from "@/resources/LangId";
 import type Texture2D from "@/core/Texture2D";
@@ -22,7 +23,7 @@ import type EarthImage from "@/game/EarthImage";
 import type Grab from "@/game/Grab";
 import type Bubble from "@/game/Bubble";
 import type Pump from "@/game/Pump";
-import type Sock from "@/game/Sock";
+import Sock from "@/game/Sock";
 import type CTRGameObject from "@/game/CTRGameObject";
 import type TutorialText from "@/game/TutorialText";
 import type Drawing from "@/game/Drawing";
@@ -272,6 +273,13 @@ abstract class GameSceneInit extends BaseElement {
         this.lanterns = [];
         this.tubes = [];
 
+        PubSub.subscribe(PubSub.ChannelId.XmasChanged, (...args: unknown[]) => {
+            const [isXmas] = args;
+            if (typeof isXmas === "boolean") {
+                this._updateXmasTextures(isXmas);
+            }
+        });
+
         this.star = new ConstrainedPoint();
         this.star.setWeight(1);
         this.starL = new ConstrainedPoint();
@@ -419,6 +427,31 @@ abstract class GameSceneInit extends BaseElement {
         this.hide();
         this.show();
     }
+    
+    private _updateXmasTextures(isXmas: boolean): void {
+        const newSockResourceId = isXmas ? ResourceId.IMG_OBJ_SOCKS_XMAS : ResourceId.IMG_OBJ_SOCKS;
+        for (let i = 0, len = this.socks.length; i < len; i++) {
+            const sock = this.socks[i];
+            if (sock) {
+                sock.initTextureWithId(newSockResourceId);
+                sock.createAnimations();
+                sock.doRestoreCutTransparency();
+                const currentQuad = sock.group === 0 
+                    ? Sock.Quads.IMG_OBJ_SOCKS_hat_01 
+                    : Sock.Quads.IMG_OBJ_SOCKS_hat_02;
+                sock.setTextureQuad(currentQuad);
+            }
+        }
+
+        if (this.target) {
+            if (isXmas) {
+                this.target.initTextureWithId(ResourceId.IMG_CHAR_GREETINGS_XMAS);
+                this.target.initTextureWithId(ResourceId.IMG_CHAR_IDLE_XMAS);
+            }
+            this.target.playTimeline(GameSceneConstants.CharAnimation.IDLE);
+        }
+    }
+    
     showGreeting(): void {
         const boxType = edition.boxTypes?.[LevelState.pack];
         const isHolidayBox = boxType === BoxType.HOLIDAY;
@@ -428,7 +461,7 @@ abstract class GameSceneInit extends BaseElement {
             return;
         }
 
-        if (IS_XMAS) {
+        if (getIsXmas()) {
             this.target.playTimeline(GameSceneConstants.CharAnimation.GREETINGXMAS);
             SoundMgr.playSound(ResourceId.SND_XMAS_BELL);
         } else {

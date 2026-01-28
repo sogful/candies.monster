@@ -1,6 +1,7 @@
 import MathHelper from "@/utils/MathHelper";
 import * as GameSceneConstants from "@/gameScene/constants";
-import { IS_XMAS, IS_JANUARY } from "@/resources/ResData";
+import { getIsXmas } from "@/utils/SpecialEvents";
+import { IS_JANUARY } from "@/resources/ResData";
 import type Timeline from "@/visual/Timeline";
 import GameSceneLoaders from "./loaders";
 
@@ -21,10 +22,11 @@ class GameSceneCharacter extends GameSceneLoaders {
 
             // om-nom idle action
             this.idlesTimer--;
-            const animIdle2 = IS_XMAS
+            const isXmas = getIsXmas();
+            const animIdle2 = isXmas
                 ? GameSceneConstants.CharAnimation.IDLEXMAS
                 : GameSceneConstants.CharAnimation.IDLE2;
-            const animIdle3 = IS_XMAS
+            const animIdle3 = isXmas
                 ? GameSceneConstants.CharAnimation.IDLEXMAS
                 : GameSceneConstants.CharAnimation.IDLE3;
             if (this.idlesTimer === 0) {

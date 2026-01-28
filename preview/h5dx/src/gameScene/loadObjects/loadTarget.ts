@@ -9,7 +9,8 @@ import Alignment from "@/core/Alignment";
 import Timeline from "@/visual/Timeline";
 import LevelState from "@/game/LevelState";
 import edition from "@/config/editions/net-edition";
-import { IS_XMAS, IS_JANUARY } from "@/resources/ResData";
+import { getIsXmas } from "@/utils/SpecialEvents";
+import { IS_JANUARY } from "@/resources/ResData";
 import MathHelper from "@/utils/MathHelper";
 import settings from "@/game/CTRSettings";
 import ActionType from "@/visual/ActionType";
@@ -42,7 +43,7 @@ export function loadTarget(this: GameSceneLoaders, item: TargetItem): void {
         target.initTextureWithId(ResourceId.IMG_CHAR_ANIMATION_PADDINGTON);
     }
 
-    if (IS_XMAS) {
+    if (getIsXmas()) {
         target.initTextureWithId(ResourceId.IMG_CHAR_GREETINGS_XMAS);
         target.initTextureWithId(ResourceId.IMG_CHAR_IDLE_XMAS);
     }

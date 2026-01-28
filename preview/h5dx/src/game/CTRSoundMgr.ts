@@ -1,7 +1,8 @@
 import settings from "@/game/CTRSettings";
 import Sounds from "@/resources/Sounds";
 import ResourceId from "@/resources/ResourceId";
-import { IS_XMAS } from "@/resources/ResData";
+import { getIsXmas } from "@/utils/SpecialEvents";
+import PubSub from "@/utils/PubSub";
 
 class SoundManager {
     audioPaused: boolean;
@@ -27,7 +28,24 @@ class SoundManager {
         this.musicEnabled = settings.getMusicEnabled();
         this.musicId = null;
         this.musicResumeOffset = 0;
-        this.gameMusicLibrary = IS_XMAS
+        this._updateGameMusicLibrary();
+
+        this.currentGameMusicId = ResourceId.SND_GAME_MUSIC;
+        this.loopingSounds = new Map(); // Track looping sound state by instance
+        
+        // Subscribe to XMAS changes to update music library
+        PubSub.subscribe(PubSub.ChannelId.XmasChanged, (isXmas: boolean) => {
+            this._updateGameMusicLibrary();
+            // If game music is currently playing, switch to appropriate track
+            if (this.musicId && this._isGameMusic(this.musicId)) {
+                this.playGameMusic();
+            }
+        });
+    }
+    
+    private _updateGameMusicLibrary(): void {
+        const isXmas = getIsXmas();
+        this.gameMusicLibrary = isXmas
             ? [ResourceId.SND_GAME_MUSIC_XMAS]
             : [
                   ResourceId.SND_GAME_MUSIC,
@@ -35,9 +53,16 @@ class SoundManager {
                   ResourceId.SND_GAME_MUSIC3,
                   ResourceId.SND_GAME_MUSIC4,
               ];
-
-        this.currentGameMusicId = ResourceId.SND_GAME_MUSIC;
-        this.loopingSounds = new Map(); // Track looping sound state by instance
+    }
+    
+    private _isGameMusic(soundId: number): boolean {
+        return (
+            soundId === ResourceId.SND_GAME_MUSIC ||
+            soundId === ResourceId.SND_GAME_MUSIC2 ||
+            soundId === ResourceId.SND_GAME_MUSIC3 ||
+            soundId === ResourceId.SND_GAME_MUSIC4 ||
+            soundId === ResourceId.SND_GAME_MUSIC_XMAS
+        );
     }
 
     _getActiveLoopSoundIds(): Set<number> {

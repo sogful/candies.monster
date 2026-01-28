@@ -1,13 +1,13 @@
 import Sock from "@/game/Sock";
 import ResourceId from "@/resources/ResourceId";
 import Alignment from "@/core/Alignment";
-import { IS_XMAS } from "@/resources/ResData";
+import { getIsXmas } from "@/utils/SpecialEvents";
 import * as GameSceneConstants from "@/gameScene/constants";
 import type GameSceneLoaders from "../loaders";
 import type { SockItem } from "../MapLayerItem";
 
 export function loadSock(this: GameSceneLoaders, item: SockItem): void {
-    const hatOrSock = IS_XMAS ? ResourceId.IMG_OBJ_SOCKS_XMAS : ResourceId.IMG_OBJ_SOCKS;
+    const hatOrSock = getIsXmas() ? ResourceId.IMG_OBJ_SOCKS_XMAS : ResourceId.IMG_OBJ_SOCKS;
     const s = new Sock() as Sock & { state: number };
     s.initTextureWithId(hatOrSock);
     s.scaleX = s.scaleY = 0.7;
