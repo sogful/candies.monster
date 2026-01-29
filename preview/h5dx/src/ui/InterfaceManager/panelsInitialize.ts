@@ -83,13 +83,10 @@ export default class PanelInitializer {
         const panel = panelManager.getPanelById(panelId) as PanelWithLifecycle | null;
         const soundBtn = document.getElementById("soundBtn");
         const musicBtn = document.getElementById("musicBtn");
-                const resetBtn = document.getElementById("resetBtn");
                 const xmasToggleBtn = document.getElementById("xmasToggleBtn");
         const backBtn = document.getElementById("optionsBack");
         const optionsTitle = document.getElementById("optionsTitle");
         const optionMsg = document.getElementById("optionMsg");
-        const resetTextContainer = document.getElementById("resetText");
-        const resetHoldYesContainer = document.getElementById("resetHoldYes");
         const langElement = document.getElementById("lang");
         const menuCandySkin = document.getElementById("menuCandySkin");
 
@@ -158,31 +155,6 @@ export default class PanelInitializer {
                 });
                 manager._updateSignInControls();
 
-                // reset popup buttons
-                let resetTimer: ReturnType<typeof setTimeout> | null = null;
-                on("#resetYesBtn", PointerCapture.startEventName, () => {
-                    SoundMgr.playSound(ResourceId.SND_TAP);
-                    resetTimer = window.setTimeout(() => {
-                        Dialogs.closePopup();
-                        resetTimer = null;
-                        settings.clear();
-
-                        // reset scores
-                        ScoreManager.resetGame();
-
-                        // lock all the boxes
-                        BoxManager.resetLocks();
-
-                        PubSub.publish(PubSub.ChannelId.LoadIntroVideo);
-                    }, 3000); // wait 3 seconds in case user changes their mind
-                });
-
-                on("#resetYesBtn", PointerCapture.endEventName, () => {
-                    if (resetTimer != null) {
-                        clearTimeout(resetTimer);
-                    }
-                });
-
                 // mini options panel
                 manager._updateMiniSoundButton(false, "optionSound", "");
                 on("#optionSound", "click", () => {
@@ -243,8 +215,6 @@ export default class PanelInitializer {
                 PubSub.subscribe(PubSub.ChannelId.LanguageChanged, () => {
                     manager._setImageBigText("#playBtn img", MenuStringId.PLAY);
                     manager._setImageBigText("#optionsBtn img", MenuStringId.OPTIONS);
-                    manager._setImageBigText("#resetYesBtn img", MenuStringId.YES);
-                    manager._setImageBigText("#resetNoBtn img", MenuStringId.NO);
 
                     Text.drawBig({
                         text: Lang.menuText(MenuStringId.LEADERBOARDS),
@@ -487,38 +457,6 @@ export default class PanelInitializer {
                     updateCutOption(isClickToCut);
                 });
 
-                resetBtn?.addEventListener("click", () => {
-                    // create localized text images
-                    const resetTextImg = Text.drawBig({
-                        text: Lang.menuText(MenuStringId.RESET_TEXT),
-                        alignment: Alignment.CENTER,
-
-                        // we use canvas scale because text is draw at game scale and
-                        // scaled to UI dimensions by setting the img width & height
-                        width: 1250 * resolution.CANVAS_SCALE,
-                        scaleToUI: true,
-                    });
-
-                    const resetHoldYesImg = Text.drawSmall({
-                        text: Lang.menuText(MenuStringId.RESET_HOLD_YES),
-                        scaleToUI: true,
-                    });
-
-                    // clear existing text image and append to placeholder divs
-
-                    if (resetTextContainer) {
-                        empty(resetTextContainer);
-                        append(resetTextContainer, resetTextImg);
-                    }
-
-                    if (resetHoldYesContainer) {
-                        empty(resetHoldYesContainer);
-                        append(resetHoldYesContainer, resetHoldYesImg);
-                    }
-                    SoundMgr.playSound(ResourceId.SND_TAP);
-                    Dialogs.showPopup("resetGame");
-                });
-
                 const updateXmasButtonText = () => {
                     if (!xmasToggleBtn) return;
                     const isXmas = getIsXmas();
@@ -570,7 +508,6 @@ export default class PanelInitializer {
                     updateMusicOption(musicBtn, settings.getMusicEnabled());
                     updateLangOption();
                     updateCutOption(settings.getClickToCut());
-                    platform.setResetText(resetBtn, Lang.menuText(MenuStringId.RESET));
 
                     // apply a lang-{code} class to a language layer for css styles
                     const langId = settings.getLangId();
