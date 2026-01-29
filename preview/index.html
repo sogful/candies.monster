@@ -960,7 +960,12 @@
                 }
                 const urldata = new URLSearchParams(window.location.search).get("data");
                 if (urldata) {
-                    setleveldata(urldata, !nopicker);
+                    const trimmed = urldata.trim();
+                    if (trimmed.startsWith("<")) {
+                        setlevelfromxml(trimmed, !nopicker);
+                    } else {
+                        setleveldata(trimmed, !nopicker);
+                    }
                     cleanurl();
                     if (!nopicker) {
                         try {
