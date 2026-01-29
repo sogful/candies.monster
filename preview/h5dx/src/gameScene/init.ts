@@ -37,6 +37,10 @@ import type Spikes from "@/game/Spikes";
 import type Ghost from "@/game/Ghost";
 import type Lantern from "@/game/Lantern";
 import type SteamTube from "@/game/SteamTube";
+import type LightBulb from "@/game/LightBulb";
+import type Mouse from "@/game/Mouse";
+import type MiceObject from "@/game/MiceObject";
+import ConveyorBeltObject from "@/game/ConveyorBeltObject";
 import { initAnimations } from "./initGameScene/initAnimations";
 import { initBackground } from "./initGameScene/initBackground";
 import { resetGameState } from "./initGameScene/resetGameState";
@@ -124,6 +128,10 @@ abstract class GameSceneInit extends BaseElement {
     ghosts: Ghost[];
     lanterns: Lantern[];
     tubes: SteamTube[];
+    lightbulbs: LightBulb[];
+    mice: Mouse[];
+    miceManager: MiceObject | null;
+    conveyors: ConveyorBeltObject;
     star: ConstrainedPoint;
     starL: ConstrainedPoint;
     starR: ConstrainedPoint;
@@ -161,6 +169,16 @@ abstract class GameSceneInit extends BaseElement {
     idlesTimer!: number;
     target!: GameObject;
     support!: ImageElement;
+    sleepAnimPrimary: Animation | null;
+    sleepAnimSecondary: Animation | null;
+    isNightTargetAwake: boolean | null;
+    sleepPulseActive: boolean;
+    sleepPulseTime: number;
+    sleepPulseDelay: number;
+    sleepPulseBaseY: number;
+    sleepSoundTimer: number;
+    sleepSoundId: number | null;
+    gameLostTriggered: boolean;
     mapWidth: number;
     mapHeight: number;
     special: number;
@@ -272,6 +290,10 @@ abstract class GameSceneInit extends BaseElement {
         this.ghosts = [];
         this.lanterns = [];
         this.tubes = [];
+        this.lightbulbs = [];
+        this.mice = [];
+        this.miceManager = null;
+        this.conveyors = new ConveyorBeltObject();
 
         PubSub.subscribe(PubSub.ChannelId.XmasChanged, (...args: unknown[]) => {
             const [isXmas] = args;
@@ -395,6 +417,16 @@ abstract class GameSceneInit extends BaseElement {
         this.special = 0;
         this.ropePhysicsSpeed = 1;
         this.nightLevel = 0;
+        this.sleepAnimPrimary = null;
+        this.sleepAnimSecondary = null;
+        this.isNightTargetAwake = null;
+        this.sleepPulseActive = false;
+        this.sleepPulseTime = 0;
+        this.sleepPulseDelay = 0;
+        this.sleepPulseBaseY = 0;
+        this.sleepSoundTimer = 0;
+        this.sleepSoundId = null;
+        this.gameLostTriggered = false;
 
         this.ignoreTouches = false;
         this.fastenCamera = false;
@@ -416,6 +448,28 @@ abstract class GameSceneInit extends BaseElement {
         return IS_JANUARY && isHolidayBox
             ? ResourceId.IMG_OBJ_CANDY_PADDINGTON
             : ResourceId.IMG_OBJ_CANDY_01;
+    }
+
+    getCandyFxResourceId(): number {
+        // This build currently uses legacy `IMG_OBJ_CANDY_01` for the base candy.
+        // The FX atlas exists as a separate resource and is safe to always use here.
+        return ResourceId.IMG_OBJ_CANDY_FX;
+    }
+
+    getCandyConstants() {
+        // Legacy candy constants (obj_candy_01)
+        return {
+            candy_bottom: GameSceneConstants.IMG_OBJ_CANDY_01_candy_bottom,
+            candy_main: GameSceneConstants.IMG_OBJ_CANDY_01_candy_main,
+            candy_top: GameSceneConstants.IMG_OBJ_CANDY_01_candy_top,
+            part_1: GameSceneConstants.IMG_OBJ_CANDY_01_part_1,
+            part_2: GameSceneConstants.IMG_OBJ_CANDY_01_part_2,
+            highlight_start: GameSceneConstants.IMG_OBJ_CANDY_01_highlight_start,
+            highlight_end: GameSceneConstants.IMG_OBJ_CANDY_01_highlight_end,
+            glow: GameSceneConstants.IMG_OBJ_CANDY_01_glow,
+            part_fx_start: GameSceneConstants.IMG_OBJ_CANDY_01_part_fx_start,
+            part_fx_end: GameSceneConstants.IMG_OBJ_CANDY_01_part_fx_end,
+        };
     }
     pointOutOfScreen(p: ConstrainedPoint): boolean {
         const bottomY = this.mapHeight + resolution.OUT_OF_SCREEN_ADJUSTMENT_BOTTOM;

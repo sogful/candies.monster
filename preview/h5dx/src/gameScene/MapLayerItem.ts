@@ -45,6 +45,9 @@ interface MapLayerItem {
     oneHandle?: boolean;
     nightLevel?: number;
     twoParts?: number;
+    litRadius?: number;
+    bindBulb?: boolean;
+    bulbNumber?: string;
 
     // Other
     part?: string;
@@ -113,6 +116,13 @@ interface TutorialTextItem extends MapLayerItem {
     locale?: string;
 }
 
+interface LightBulbItem extends MapLayerItem {
+    x: number;
+    y: number;
+    litRadius: number;
+    bulbNumber?: string;
+}
+
 interface TutorialImageItem extends MapLayerItem {
     x: number;
     y: number;
@@ -139,6 +149,19 @@ interface PumpItem extends MapLayerItem {
     x: number;
     y: number;
     angle: number;
+}
+
+interface LanternItem extends MapLayerItem {
+    x: number;
+    y: number;
+    candyCaptured?: boolean | number | string;
+}
+
+interface SteamTubeItem extends MapLayerItem {
+    x: number;
+    y: number;
+    angle?: number;
+    scale?: number;
 }
 
 interface SockItem extends MapLayerItem {
@@ -179,6 +202,26 @@ interface TargetItem extends MapLayerItem {
     y: number;
 }
 
+interface MouseItem extends MapLayerItem {
+    x: number;
+    y: number;
+    angle: number;
+    radius: number;
+    activeTime: number;
+    index: number;
+}
+
+interface ConveyorBeltItem extends MapLayerItem {
+    x: number;
+    y: number;
+    width: number;
+    length: number;
+    angle: number;
+    velocity: number;
+    direction: string;
+    type?: string;
+}
+
 interface GhostItem extends MapLayerItem {
     x: number;
     y: number;
@@ -189,13 +232,6 @@ interface GhostItem extends MapLayerItem {
     grab?: boolean;
 }
 
-interface SteamTubeItem extends MapLayerItem {
-    x: number;
-    y: number;
-    angle?: number;
-    scale?: number;
-}
-
 export type { MapLayerItem as default };
 export type {
     MapSettingsItem,
@@ -204,11 +240,13 @@ export type {
     CandyItem,
     GravitySwitchItem,
     StarItem,
+    LightBulbItem,
     TutorialTextItem,
     TutorialImageItem,
     HiddenItem,
     BubbleItem,
     PumpItem,
+    LanternItem,
     SockItem,
     SpikeItem,
     RotatedCircleItem,
@@ -216,4 +254,6 @@ export type {
     TargetItem,
     GhostItem,
     SteamTubeItem,
+    MouseItem,
+    ConveyorBeltItem,
 };

@@ -21,6 +21,10 @@ const drawImpl = function drawImpl(scene: GameScene): void {
     scene.back.updateWithCameraPos(scene.camera.pos);
     scene.back.draw();
 
+    if (scene.miceManager) {
+        scene.miceManager.drawHoles();
+    }
+
     // Scale overlayCut based on resolution to prevent visible seams at HD resolutions
     const overlayCut = Math.ceil((2 * resolution.CANVAS_SCALE) / 0.1875);
     if (scene.mapHeight > resolution.CANVAS_HEIGHT) {
@@ -94,6 +98,8 @@ const drawImpl = function drawImpl(scene: GameScene): void {
         scene.ghosts[i]?.draw();
     }
 
+    scene.conveyors.draw();
+
     for (let i = 0, len = scene.bubbles.length; i < len; i++) {
         scene.bubbles[i]?.draw();
     }
@@ -108,6 +114,10 @@ const drawImpl = function drawImpl(scene: GameScene): void {
 
     for (let i = 0, len = scene.bouncers.length; i < len; i++) {
         scene.bouncers[i]?.draw();
+    }
+
+    if (scene.miceManager) {
+        scene.miceManager.drawMice();
     }
 
     for (let i = 0, len = scene.socks.length; i < len; i++) {
@@ -138,6 +148,11 @@ const drawImpl = function drawImpl(scene: GameScene): void {
         bungee?.draw();
     }
 
+    for (let i = 0, len = scene.lightbulbs.length; i < len; i++) {
+        const lightbulb = scene.lightbulbs[i];
+        lightbulb?.drawLight();
+    }
+
     for (let i = 0, len = scene.stars.length; i < len; i++) {
         const star = scene.stars[i];
         star?.draw();
@@ -165,6 +180,11 @@ const drawImpl = function drawImpl(scene: GameScene): void {
             scene.candyR.y = scene.starR.pos.y;
             scene.candyR.draw();
         }
+    }
+
+    for (let i = 0, len = scene.lightbulbs.length; i < len; i++) {
+        const lightbulb = scene.lightbulbs[i];
+        lightbulb?.drawBottleAndFirefly();
     }
 
     for (let i = 0, len = bungees.length; i < len; i++) {

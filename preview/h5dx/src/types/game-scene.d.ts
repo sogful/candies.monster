@@ -19,6 +19,13 @@ import type PollenDrawer from "@/game/PollenDrawer";
 import type Pump from "@/game/Pump";
 import type Spikes from "@/game/Spikes";
 import type Star from "@/game/Star";
+import type Ghost from "@/game/Ghost";
+import type SteamTube from "@/game/SteamTube";
+import type Lantern from "@/game/Lantern";
+import type LightBulb from "@/game/LightBulb";
+import type Mouse from "@/game/Mouse";
+import type MiceObject from "@/game/MiceObject";
+import type ConveyorBeltObject from "@/game/ConveyorBeltObject";
 import type DelayedDispatcher from "@/utils/DelayedDispatcher";
 import type CTRGameObject from "@/game/CTRGameObject";
 import type TutorialText from "@/game/TutorialText";
@@ -32,11 +39,14 @@ type PartsTypeValue =
 type RestartStateValue =
     (typeof GameSceneConstants.RestartState)[keyof typeof GameSceneConstants.RestartState];
 type SockStateValue = (typeof Sock.StateType)[keyof typeof Sock.StateType];
-interface Rocket { update(delta: number): void }
+interface Rocket {
+    update(delta: number): void;
+}
 type ResourceIdValue = (typeof ResourceIdValues)[keyof typeof ResourceIdValues];
 
 interface GameSceneController {
     avgDelta: number;
+    frameBalance: number;
     onLevelWon(): void;
     onLevelLost(): void;
 }
@@ -55,6 +65,7 @@ export interface GameScene extends BaseElement {
     gameLost(): void;
     gameWon(): void;
     popBubble(x: number, y: number): void;
+    popLightBulbBubble(bulb: LightBulb): void;
     attachCandy(): void;
     detachCandy(): void;
     popCandyBubble(isLeft: boolean): void;
@@ -63,11 +74,14 @@ export interface GameScene extends BaseElement {
     spiderWon(grab: Grab): void;
     teleport(): void;
     operatePump(pump: Pump, delta: number): void;
+    revealCandyFromLantern(): void;
     handleBounce(bouncer: Bouncer, star: SceneStar, delta: number): void;
+    handleLightBulbBubbleTouch(bulb: LightBulb, x: number, y: number): boolean;
     pointOutOfScreen(point: SceneStar): boolean;
     cut(razor: BaseElement | null, v1: Vector, v2: Vector, immediate: boolean): number;
     camera: GameSceneCamera;
     back: BackgroundTileMap;
+    bgTexture: Texture2D | null;
     overlayTexture: Texture2D | null;
     mapHeight: number;
     mapWidth: number;
@@ -82,15 +96,32 @@ export interface GameScene extends BaseElement {
     initialCameraToStarDistance: number;
     support: ImageElement;
     target: GameObject;
+    sleepAnimPrimary: Animation | null;
+    sleepAnimSecondary: Animation | null;
+    isNightTargetAwake: boolean | null;
+    sleepPulseActive: boolean;
+    sleepPulseTime: number;
+    sleepPulseDelay: number;
+    sleepPulseBaseY: number;
+    sleepSoundTimer: number;
+    sleepSoundId: number | null;
+    gameLostTriggered: boolean;
     tutorials: TutorialText[];
     tutorialImages: (CTRGameObject & { special: number })[];
     razors: BaseElement[];
     rotatedCircles: RotatedCircle[];
     bubbles: Bubble[];
     pumps: Pump[];
+    lanterns: Lantern[];
+    lightbulbs: LightBulb[];
+    tubes: SteamTube[];
     spikes: Spikes[];
     bouncers: Bouncer[];
     socks: (Sock & { state: SockStateValue })[];
+    ghosts: Ghost[];
+    mice: Mouse[];
+    miceManager: MiceObject | null;
+    conveyors: ConveyorBeltObject;
     bungees: Grab[];
     stars: (Star | null)[];
     candy: GameObject;
@@ -103,6 +134,7 @@ export interface GameScene extends BaseElement {
     mouthCloseTimer: number;
     twoParts: PartsTypeValue;
     noCandy: boolean;
+    isCandyInLantern: boolean;
     noCandyL: boolean;
     noCandyR: boolean;
     targetSock: Sock | null;
@@ -117,6 +149,9 @@ export interface GameScene extends BaseElement {
     candyBubbleAnimation: Animation;
     candyBubbleAnimationL: Animation;
     candyBubbleAnimationR: Animation;
+    candyGhostBubbleAnimation?: Animation;
+    candyGhostBubbleAnimationL?: Animation;
+    candyGhostBubbleAnimationR?: Animation;
     bubbleDisappear: Animation;
     candyMain: GameObject;
     candyTop: GameObject;
@@ -138,9 +173,24 @@ export interface GameScene extends BaseElement {
     ropesAtOnceTimer: number;
     special: number;
     spiderTookCandy: boolean;
+    nightLevel: number;
     PM: number;
     PMX: number;
     PMY: number;
     rockets: Rocket[];
     candyResourceId: ResourceIdValue;
+    getCandyResourceId(): number;
+    getCandyFxResourceId(): number;
+    getCandyConstants(): {
+        candy_bottom: number;
+        candy_main: number;
+        candy_top: number;
+        part_1: number;
+        part_2: number;
+        highlight_start: number;
+        highlight_end: number;
+        glow: number;
+        part_fx_start: number;
+        part_fx_end: number;
+    };
 }

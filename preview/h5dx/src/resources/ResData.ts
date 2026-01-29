@@ -435,4 +435,44 @@ RES_DATA[ResourceId.SND_LANTERN_TELEPORT_OUT] = new ResEntry(
     ResourceType.SOUND
 );
 
+// Night levels / mice / conveyor
+RES_DATA[ResourceId.IMG_CHAR_ANIMATIONS_SLEEPING] = new ResEntry(
+    "char_animations_sleeping.webp",
+    ResourceType.IMAGE,
+    {
+        atlasPath: "char_animations_sleeping.json",
+        atlasFormat: "texture-packer",
+    }
+);
+RES_DATA[ResourceId.SND_MONSTER_SLEEP_1] = new ResEntry("monster_sleep01", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_MONSTER_SLEEP_2] = new ResEntry("monster_sleep02", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_MONSTER_SLEEP_3] = new ResEntry("monster_sleep03", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_STAR_LIGHT_1] = new ResEntry("star_light01", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_STAR_LIGHT_2] = new ResEntry("star_light02", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_MOUSE_RUSTLE] = new ResEntry("mouse_rustle", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_MOUSE_IDLE] = new ResEntry("mouse_idle", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_MOUSE_TAP] = new ResEntry("mouse_tap", ResourceType.SOUND);
+RES_DATA[ResourceId.IMG_OBJ_GAP] = new ResEntry("obj_gap.webp", ResourceType.IMAGE, {
+    atlasPath: "obj_gap.json",
+    atlasFormat: "texture-packer",
+});
+RES_DATA[ResourceId.IMG_OBJ_LIGHTER] = new ResEntry("obj_lighter.webp", ResourceType.IMAGE, {
+    atlasPath: "obj_lighter.json",
+    atlasFormat: "texture-packer",
+});
+RES_DATA[ResourceId.IMG_OBJ_STAR_NIGHT] = new ResEntry("obj_star_night.webp", ResourceType.IMAGE, {
+    atlasPath: "obj_star_night.json",
+    atlasFormat: "texture-packer",
+});
+RES_DATA[ResourceId.IMG_OBJ_TRANSPORTER] = new ResEntry("obj_transporter.png", ResourceType.IMAGE, {
+    atlasPath: "obj_transporter.json",
+    atlasFormat: "texture-packer",
+});
+RES_DATA[ResourceId.SND_TRANSPORTER_MOVE] = new ResEntry("transporter_move", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_TRANSPORTER_DROP] = new ResEntry("transporter_drop", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_CONV01] = new ResEntry("con01", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_CONV02] = new ResEntry("con02", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_CONV03] = new ResEntry("con03", ResourceType.SOUND);
+RES_DATA[ResourceId.SND_CONV04] = new ResEntry("con04", ResourceType.SOUND);
+
 export default RES_DATA;
