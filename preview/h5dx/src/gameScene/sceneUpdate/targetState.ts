@@ -10,6 +10,14 @@ import type { GameScene } from "@/types/game-scene";
 export function updateTargetState(this: GameScene, delta: number): boolean {
     let targetVector: Vector | undefined;
     if (!this.noCandy) {
+        const isNightSleeping =
+            this.nightLevel !== 0 &&
+            (this.isNightTargetAwake === false ||
+                this.target.currentTimelineIndex === GameSceneConstants.CharAnimation.SLEEPING);
+        if (isNightSleeping) {
+            this.mouthOpen = false;
+            this.mouthCloseTimer = 0;
+        } else {
         const mouthOpenRadius = resolution.MOUTH_OPEN_RADIUS;
         if (!this.mouthOpen) {
             targetVector = new Vector(this.target.x, this.target.y);
@@ -33,8 +41,9 @@ export function updateTargetState(this: GameScene, delta: number): boolean {
                 }
             }
         }
+        }
 
-        if (this.restartState !== GameSceneConstants.RestartState.FADE_IN) {
+        if (!isNightSleeping && this.restartState !== GameSceneConstants.RestartState.FADE_IN) {
             const candyIntersectingTarget = GameObject.intersect(this.candy, this.target) ?? false;
             if (candyIntersectingTarget) {
                 this.gameWon();
