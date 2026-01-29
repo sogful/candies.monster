@@ -231,6 +231,7 @@
         /*//////////////////////////////////////////////////////////////////////*/
 
         body.noui .details, body.noui .close, body.noui .link.clickable {display: none !important}
+        body.shareonly .details, body.shareonly .close {display: none !important}
 
         .link {
             position: fixed;
@@ -626,6 +627,7 @@
         (async function () {
             const urlparam = new URLSearchParams(window.location.search);
             if (urlparam.has("noui")) {document.body.classList.add("noui")}
+            if (urlparam.has("shareonly")) {document.body.classList.add("shareonly")}
 
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
