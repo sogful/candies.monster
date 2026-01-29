@@ -230,6 +230,8 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
+        body.noui .details, body.noui .close, body.noui .link.clickable {display: none !important}
+
         .link {
             position: fixed;
             bottom: 0.5em; left: 0.5em; height: 2em;
@@ -622,6 +624,9 @@
         /*//////////////////////////////////////////////////////////////////////*/
 
         (async function () {
+            const urlparam = new URLSearchParams(window.location.search);
+            if (urlparam.has("noui")) {document.body.classList.add("noui")}
+
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
             const shortcode_cache_key = "yourlevels";
