@@ -231,7 +231,7 @@
         /*//////////////////////////////////////////////////////////////////////*/
 
         body.noui .details, body.noui .close, body.noui .link.clickable {display: none !important}
-        body.shareonly .details, body.shareonly .close {display: none !important}
+        body.shareonly .details {display: none !important}
 
         .link {
             position: fixed;
@@ -1206,7 +1206,9 @@
             }
 
             closebtn.addEventListener("click", () => {
-                closegame();
+                if (document.body.classList.contains("shareonly")) {
+                    window.parent.postMessage("exitpreview", "*");
+                } else {closegame()}
             });
 
             document.querySelectorAll(".choice").forEach((choice) => {
@@ -1321,6 +1323,10 @@
             function showerror(message) {
                 const clean = message;
                 const now = Date.now();
+                
+                try {window.parent.postMessage({type: "errorlog", message: clean}, "*")}
+                catch (e) {}
+                
                 let entry = errorentries.get(clean);
                 if (!entry) {
                     const el = document.createElement("div");
