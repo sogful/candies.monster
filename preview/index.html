@@ -898,7 +898,12 @@
 
             function setleveldata(base64, showchoice = false) {
                 if (!base64) return;
-                levelbase64 = base64.trim();
+                const trimmed = base64.trim();
+                if (trimmed.startsWith("<") || trimmed.startsWith("{") || trimmed.startsWith("[")) {
+                    setlevelfromxml(trimmed, showchoice);
+                    return;
+                }
+                levelbase64 = trimmed;
                 try {
                     localStorage.setItem(storage_key, levelbase64);
                 } catch (storageerror) {
@@ -969,7 +974,12 @@
                     const data = await fetchlevelbycode(urlcode);
                     keeploadingbuddy = false;
                     if (data) {
-                        setleveldata(data, !nopicker);
+                        const trimmed = data.trim();
+                        if (trimmed.startsWith("<") || trimmed.startsWith("{") || trimmed.startsWith("[")) {
+                            setlevelfromxml(trimmed, !nopicker);
+                        } else {
+                            setleveldata(trimmed, !nopicker);
+                        }
                         cleanurl();
                         if (!nopicker) {
                             try {
