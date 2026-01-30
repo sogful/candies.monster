@@ -571,7 +571,6 @@ if (typeof window !== "undefined" && !window.famobi) {
 
                 menu: {
                     create: function() {
-                        // Menu functionality disabled - game only mode
                         return;
                     },
                     show: function() {

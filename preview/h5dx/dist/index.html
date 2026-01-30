@@ -47,7 +47,7 @@
                         objects: []
                     };
 
-                        const parseIntAttr = (value, fallback) => {
+                        const objectid = (value, fallback) => {
                             if (value == null || value === "") {
                                 return fallback;
                             }
@@ -186,9 +186,9 @@
                                     case "rotatedCircle":
                                         ctrobject.name = 120;
                                         ctrobject.oneHandle = obj.getAttribute("oneHandle") === "true";
-                                        const rotatedCircleSize = parseIntAttr(obj.getAttribute("size"), 100);
+                                        const rotatedCircleSize = objectid(obj.getAttribute("size"), 100);
                                         ctrobject.size = rotatedCircleSize;
-                                        ctrobject.handleAngle = parseIntAttr(
+                                        ctrobject.handleAngle = objectid(
                                             obj.getAttribute("handleAngle"),
                                             0
                                         );
@@ -249,9 +249,9 @@
                                         ctrobject.length = parseInt(obj.getAttribute("length")) || 90;
                                         ctrobject.moveLength = parseInt(obj.getAttribute("moveLength")) || -1;
                                         const grabRadiusAttr = obj.getAttribute("radius");
-                                        let grabRadius = parseIntAttr(grabRadiusAttr, Number.NaN);
+                                        let grabRadius = objectid(grabRadiusAttr, Number.NaN);
                                         if (Number.isNaN(grabRadius)) {
-                                            grabRadius = parseIntAttr(obj.getAttribute("size"), Number.NaN);
+                                            grabRadius = objectid(obj.getAttribute("size"), Number.NaN);
                                         }
                                         ctrobject.radius = Number.isNaN(grabRadius) ? -1 : grabRadius;
                                         
@@ -317,13 +317,13 @@
                                         return;
                                 };
 
-                                const rawSizeAttr = obj.getAttribute("size");
+                                const rawsizeattribute = obj.getAttribute("size");
                                 if (
-                                    rawSizeAttr != null &&
-                                    rawSizeAttr !== "" &&
+                                    rawsizeattribute != null &&
+                                    rawsizeattribute !== "" &&
                                     (ctrobject.size === undefined || ctrobject.size === null)
                                 ) {
-                                    const parsedSize = parseIntAttr(rawSizeAttr, Number.NaN);
+                                    const parsedSize = objectid(rawsizeattribute, Number.NaN);
                                     if (!Number.isNaN(parsedSize)) {
                                         ctrobject.size = parsedSize;
                                     }

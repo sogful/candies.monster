@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="/assets/static/slash.js"></script>
+    <script src="/assets/static/conversion.js"></script>
 
     <script src="/assets/static/prism.js"></script>
     <link href="/assets/static/prism.css" rel="stylesheet" />
@@ -363,9 +364,7 @@
                     }
                     cur += len;
                 }
-            } catch (e) {
-                // Ignore errors
-            }
+            } catch (e) {}
         }
 
         // xml highlighting
@@ -384,7 +383,7 @@
                     restorecursorpos(element, cursorpos);
                 }
             } catch (e) {
-                console.error("Prism.js error?!", e);
+                console.error("prism.js error?!", e);
                 element.textContent = text;
             }
         }
@@ -405,7 +404,7 @@
                     restorecursorpos(element, cursorpos);
                 }
             } catch (e) {
-                console.error("Prism.js error?!", e);
+                console.error("prism.js error?!", e);
                 element.textContent = text;
             }
         }
@@ -420,7 +419,7 @@
                 const mapelement = xmldoc.querySelector("map");
                 
                 if (!mapelement) {
-                    throw new Error("No <map> element found in XML");
+                    throw new Error("no <map> element found in xml");
                 }
                 const level = {
                     settings: [],
@@ -474,179 +473,16 @@
                         
                         let ctrobject = { name: 0, x: x, y: y };
                         
-                        switch (tagname) {
-                            case "candy":
-                                ctrobject.name = 52;
-                                break;
-                            case "candyl":
-                                ctrobject.name = 50;
-                                break;
-                            case "candyr": 
-                                ctrobject.name = 51;
-                                break;
-                            case "target":
-                                ctrobject.name = 2;
-                                break;
-                            case "star":
-                                ctrobject.name = 3;
-                                ctrobject.timeout = parseInt(obj.getAttribute("timeout")) || -1;
-                                break;
-                            case "bubble":
-                                ctrobject.name = 54;
-                                break;
-                            case "pump":
-                                ctrobject.name = 55;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                break;
-                            case "sock":
-                                ctrobject.name = 56;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.group = parseInt(obj.getAttribute("group")) || 0;
-                                break;
-                            case "spike2":
-                                ctrobject.name = 58;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-                                break;
-                            case "spike3":
-                                ctrobject.name = 80;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-                                ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
-                                ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 0;
-                                ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 0;
-                                ctrobject.toggled = false;
-                                if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
-                                if (obj.getAttribute("rotateSpeed")) ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed"));
-                                break;
-                            case "gravityswitch":
-                                ctrobject.name = 53;
-                                break;
-                            case "spike4":
-                                ctrobject.name = 60;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-                                ctrobject.toggled = parseInt(obj.getAttribute("toggled")) || 0;
-                                break;
-                            case "electro":
-                                ctrobject.size = parseInt(obj.getAttribute("size")) || 5;
-                                ctrobject.name = 80;
-                                ctrobject.onTime = parseFloat(obj.getAttribute("onTime")) || 2;
-                                ctrobject.initialDelay = parseFloat(obj.getAttribute("initialDelay")) || 0;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.offTime = parseFloat(obj.getAttribute("offTime")) || 3;
-                                break;
-                            case "bouncer1":
-                                ctrobject.name = 81;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-                                break;
-                            case "rotatedcircle":
-                                ctrobject.name = 120;
-                                ctrobject.oneHandle = obj.getAttribute("oneHandle") === "true";
-                                ctrobject.handleAngle = parseInt(obj.getAttribute("handleAngle")) || 0;
-                                break;
-                            case "ghost":
-                                ctrobject.name = 130;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.radius = parseInt(obj.getAttribute("radius")) || 100;
-                                ctrobject.bouncer = obj.getAttribute("bouncer") === "true";
-                                ctrobject.bubble = obj.getAttribute("bubble") === "true";
-                                ctrobject.grab = obj.getAttribute("grab") === "true";
-                                break;
-                            case "steamtube":
-                                ctrobject.name = 131;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                break;
-                            case "lantern":
-                                ctrobject.name = 132;
-                                ctrobject.candyCaptured = obj.getAttribute("candyCaptured") === "true";
-                                break;
-                            case "gap":
-                                ctrobject.name = 133;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.activeTime = parseFloat(obj.getAttribute("activeTime")) || 2;
-                                ctrobject.radius = parseInt(obj.getAttribute("radius")) || 50;
-                                ctrobject.index = parseInt(obj.getAttribute("index")) || 1;
-                                break;
-                            case "lightbulb":
-                                ctrobject.name = 134;
-                                ctrobject.litRadius = parseInt(obj.getAttribute("litRadius")) || 10;
-                                ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
-                                break;
-                            case "transporter":
-                                ctrobject.name = 135;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.direction = obj.getAttribute("direction") || "forward";
-                                ctrobject.type = obj.getAttribute("type") || "manual";
-                                ctrobject.width = parseInt(obj.getAttribute("width")) || 50;
-                                ctrobject.length = parseInt(obj.getAttribute("length")) || 100;
-                                ctrobject.velocity = parseInt(obj.getAttribute("velocity")) || 0;
-                                break;
-                            case "hiddenelement":
-                                ctrobject.name = 300;
-                                ctrobject.radius = parseInt(obj.getAttribute("radius")) || 30;
-                                break;
-                            case "grab":
-                                ctrobject.name = 100;
-                                ctrobject.spider = obj.getAttribute("spider") === "true";
-                                ctrobject.gun = obj.getAttribute("gun") === "true";
-                                ctrobject.wheel = obj.getAttribute("wheel") === "true";
-                                ctrobject.part = obj.getAttribute("part") || "L";
-                                ctrobject.hidePath = obj.getAttribute("hidePath") !== "false";
-                                ctrobject.moveOffset = parseInt(obj.getAttribute("moveOffset")) || 0;
-                                ctrobject.moveVertical = obj.getAttribute("moveVertical") === "true";
-                                ctrobject.length = parseInt(obj.getAttribute("length")) || 90;
-                                ctrobject.moveLength = parseInt(obj.getAttribute("moveLength")) || -1;
-                                ctrobject.radius = parseInt(obj.getAttribute("radius")) || -1;
-                                ctrobject.kickable = obj.getAttribute("kickable") === "true";
-                                ctrobject.kicked = obj.getAttribute("kicked") === "true";
-                                ctrobject.invisible = obj.getAttribute("invisible") === "true";
-                                ctrobject.helicopter = obj.getAttribute("helicopter") === "true";
-                                ctrobject.bindBulb = obj.getAttribute("bindBulb") === "true";
-                                ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
-                                if (ctrobject.spider) {
-                                    ctrobject.gun = false; 
-                                    ctrobject.wheel = false;
-                                }
-                                break;
-                            case "tutorial04":
-                                ctrobject.name = 8;
-                                ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-                                break;
-                            case "tutorialtext":
-                                ctrobject.name = 4;
-                                ctrobject.text = obj.getAttribute("text") || "";
-                                ctrobject.width = parseInt(obj.getAttribute("width")) || 100;
-                                ctrobject.height = parseInt(obj.getAttribute("height")) || 60;
-                                ctrobject.locale = obj.getAttribute("locale") || "en";
-                                break;
-                            case "tutorial10":
-                                ctrobject.name = 14;
-                                ctrobject.special = parseInt(obj.getAttribute("special")) || 2;
-                                ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-                                break;
-                            case "tutorial07":
-                                ctrobject.name = 7;
-                                ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-                                ctrobject.locale = obj.getAttribute("locale") || "en";
-                                break;
-                            case "spike":
-                                ctrobject.name = 57;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-                                break;
-                            case "spike1":
-                                ctrobject.name = 59;
-                                ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
-                                ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
-                                break;
-                            default:
-                                return;
-                        }; 
+                        const idmapping = window.ctrconversion?.getidmapping();
+                        const jsonid = idmapping?.xmltojson?.[tagname];
+                        if (jsonid === undefined) {
+                            return;
+                        }
+                        ctrobject.name = jsonid;
                         
-                        if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
-                        if (obj.getAttribute("moveSpeed")) ctrobject.moveSpeed = parseInt(obj.getAttribute("moveSpeed"));
+                        if (window.ctrconversion?.specialattributes) {
+                            window.ctrconversion.specialattributes(ctrobject, tagname, obj);
+                        }
                         
                         level.objects.push(ctrobject); objectcount++;
                     });
@@ -696,38 +532,8 @@
                 xml += "<layer name=\"Objects\">\n";
                 if (jsonobj.objects) {
                     jsonobj.objects.forEach(obj => {
-                        let tagname = "";
-                        switch (obj.name) {
-                            case 52: tagname = "candy"; break;
-                            case 50: tagname = "candyL"; break;
-                            case 51: tagname = "candyR"; break;
-                            case 2: tagname = "target"; break;
-                            case 3: tagname = "star"; break;
-                            case 54: tagname = "bubble"; break;
-                            case 55: tagname = "pump"; break;
-                            case 56: tagname = "sock"; break;
-                            case 58: tagname = "spike2"; break;
-                            case 80: tagname = "spike3"; break;
-                            case 53: tagname = "gravityswitch"; break;
-                            case 60: tagname = "spike4"; break;
-                            case 81: tagname = "bouncer1"; break;
-                            case 120: tagname = "rotatedcircle"; break;
-                            case 130: tagname = "ghost"; break;
-                            case 131: tagname = "steamtube"; break;
-                            case 132: tagname = "lantern"; break;
-                            case 133: tagname = "gap"; break;
-                            case 134: tagname = "lightbulb"; break;
-                            case 135: tagname = "transporter"; break;
-                            case 300: tagname = "hiddenelement"; break;
-                            case 100: tagname = "grab"; break;
-                            case 8: tagname = "tutorial04"; break;
-                            case 4: tagname = "tutorialtext"; break;
-                            case 14: tagname = "tutorial10"; break;
-                            case 7: tagname = "tutorial07"; break;
-                            case 57: tagname = "spike"; break;
-                            case 59: tagname = "spike1"; break;
-                            default: return;
-                        }
+                        const jsontoxml = window.ctrconversion?.getjsontoxml?.();
+                        const tagname = jsontoxml?.[String(obj.name)];
                         if (!tagname) return;
                         
                         let attrs = `x="${obj.x || 0}" y="${obj.y || 0}"`;
@@ -810,7 +616,7 @@
                                 highlightjson(jsoneditor);
                             }
                         } catch (e) {
-                            console.error("XML to JSON conversion error:", e);
+                            console.error("xml2json error?!", e);
                         }
                         converting = false;
                     }
@@ -830,7 +636,7 @@
                                 highlightjson(jsoneditor);
                             }
                         } catch (e) {
-                            console.error("XML to JSON conversion error:", e);
+                            console.error("xml2json error?!", e);
                         }
                         converting = false;
                     }
@@ -854,7 +660,7 @@
                                 highlight(xmleditor);
                             }
                         } catch (e) {
-                            console.error("JSON to XML conversion error:", e);
+                            console.error("json2xml error?!", e);
                         }
                         converting = false;
                     }
@@ -874,7 +680,7 @@
                                 highlight(xmleditor);
                             }
                         } catch (e) {
-                            console.error("Conversion error?! ", e);
+                            console.error("conversion error?! ", e);
                         }
                         converting = false;
                     }
@@ -908,7 +714,7 @@
                                 jsoneditor.textContent = jsonstr;
                                 highlightjson(jsoneditor);
                             } catch (err) {
-                                console.error("XML to JSON conversion error:", err);
+                                console.error("xml2json error?!", err);
                             }
                             converting = false;
                         }
@@ -940,7 +746,7 @@
                                 highlightjson(jsoneditor);
                                 highlight(xmleditor);
                             } catch (err) {
-                                console.error("Load/conversion error?!", err);
+                                console.error("load/conversion error?!", err);
                             }
                             converting = false;
                         }

@@ -1003,14 +1003,14 @@
                 }
 
                 if (creatures.length >= 4 && morefeatures) {
-                    const newMorefeatures = morefeatures.cloneNode(true);
-                    morefeatures.parentNode.replaceChild(newMorefeatures, morefeatures);
+                    const newmorefeatures = morefeatures.cloneNode(true);
+                    morefeatures.parentNode.replaceChild(newmorefeatures, morefeatures);
 
-                    let isExpanded = false;
+                    let isexpanded = false;
 
-                    function expandFeatures() {
-                        if (isExpanded) return;
-                        isExpanded = true;
+                    function expandfeatures() {
+                        if (isexpanded) return;
+                        isexpanded = true;
                         features.classList.remove("show");
                         features.classList.add("expanded");
                         creatures.forEach(img => {
@@ -1022,20 +1022,17 @@
                         }, 10);
                     }
 
-                    function collapseFeatures() {
-                        if (!isExpanded) return;
-                        isExpanded = false;
-                        // Ensure first 4 images stay visible during fade-out
+                    function collapsefeatures() {
+                        if (!isexpanded) return;
+                        isexpanded = false;
                         creatures.forEach((img, index) => {
                             if (index < 4) {
                                 img.style.display = "flex";
                             }
                         });
-                        // Start fade-out
                         features.classList.remove("show");
-                        // Wait for fade out transition before removing expanded class and hiding extra images
                         setTimeout(() => {
-                            if (!isExpanded) {
+                            if (!isexpanded) {
                                 features.classList.remove("expanded");
                                 creatures.forEach((img, index) => {
                                     img.style.display = (index >= 4) ? "none" : "flex";
@@ -1043,21 +1040,17 @@
                             }
                         }, 300);
                     }
-
-                    // Click to toggle expanded features list
-                    newMorefeatures.addEventListener("click", function(e) {
+                    newmorefeatures.addEventListener("click", function(e) {
                         e.stopPropagation();
-                        if (isExpanded) {
-                            collapseFeatures();
+                        if (isexpanded) {
+                            collapsefeatures();
                         } else {
-                            expandFeatures();
+                            expandfeatures();
                         }
                     });
-
-                    // Click outside to close
                     document.addEventListener("click", function(e) {
-                        if (isExpanded && !features.contains(e.target)) {
-                            collapseFeatures();
+                        if (isexpanded && !features.contains(e.target)) {
+                            collapsefeatures();
                         }
                     });
                 }
@@ -1243,14 +1236,14 @@
                 "Boobie"
             ];
 
-            let activeTooltipElement = null;
-            let tooltipTimeout = null;
+            let activetooltip = null;
+            let tooltipdelay = null;
 
             function showTooltip(element) {
                 const data = getpopuplist(element);
                 if (!data) return;
 
-                activeTooltipElement = element;
+                activetooltip = element;
 
                 // preset for the content of those popups; footer is optional
                 let html = `
@@ -1266,10 +1259,8 @@
                     const randomtxt = greatness[Math.floor(Math.random() * greatness.length)];
                     el.textContent = randomtxt;
                 });
-                
-                // Force reflow to ensure transition works
                 tooltip.style.opacity = "0";
-                tooltip.offsetHeight; // trigger reflow
+                tooltip.offsetHeight;
                 
                 const rect = element.getBoundingClientRect();
                 const tooltiprect = tooltip.getBoundingClientRect();
@@ -1278,45 +1269,39 @@
 
                 tooltip.style.left = Math.max(10, Math.min(window.innerWidth - tooltiprect.width - 10, left)) + "px";
                 tooltip.style.top = Math.max(10, top) + "px";
-                
-                // Fade in
+
                 requestAnimationFrame(() => {
                     tooltip.style.opacity = "1";
                 });
             }
 
-            function hideTooltip() {
-                if (tooltipTimeout) {
-                    clearTimeout(tooltipTimeout);
-                    tooltipTimeout = null;
+            function hidetooltip() {
+                if (tooltipdelay) {
+                    clearTimeout(tooltipdelay);
+                    tooltipdelay = null;
                 }
                 tooltip.style.opacity = "0";
-                activeTooltipElement = null;
+                activetooltip = null;
             }
 
-            // Click events only (hover removed)
             document.addEventListener("click", function(e) {
                 const element = e.target.closest(".tooltiphover");
                 const isTooltip = e.target.closest(".tooltip");
                 
                 if (element && !isTooltip) {
                     e.stopPropagation();
-                    if (activeTooltipElement === element) {
-                        // Clicking again closes it
-                        hideTooltip();
+                    if (activetooltip === element) {
+                        hidetooltip();
                     } else {
-                        // Clicking opens it
-                        if (activeTooltipElement) {
-                            hideTooltip();
+                        if (activetooltip) {
+                            hidetooltip();
                         }
-                        // Small delay to ensure previous tooltip is hidden
-                        tooltipTimeout = setTimeout(() => {
+                        tooltipdelay = setTimeout(() => {
                             showTooltip(element);
                         }, 50);
                     }
-                } else if (!isTooltip && activeTooltipElement) {
-                    // Click outside closes tooltip
-                    hideTooltip();
+                } else if (!isTooltip && activetooltip) {
+                    hidetooltip();
                 }
             }, true);
         });

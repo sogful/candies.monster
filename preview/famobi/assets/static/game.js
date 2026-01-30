@@ -14533,7 +14533,6 @@ dj("Array.prototype.values", function (ja) {
       if (this.Gc) {
         this.Gc.update(a);
       } else {
-        // Initialize Gc if it's missing (fallback for custom levels)
         if (!this.Gc) {
           this.Gc = new vf(this);
           this.Gc.x = 0;
