@@ -751,17 +751,32 @@
 
             function decodebase64utf8(str) {
                 let cleaned = str.replace(/\s/g, "");
-                cleaned = cleaned.replace(/-/g, "+").replace(/_/g, "/");
-                while (cleaned.length % 4 !== 0) {
-                    cleaned += "=";
+                let urlsafecleaned = cleaned.replace(/-/g, "+").replace(/_/g, "/");
+                while (urlsafecleaned.length % 4 !== 0) {
+                    urlsafecleaned += "=";
                 }
-                const binarystring = atob(cleaned);
-                const bytes = new Uint8Array(binarystring.length);
-                for (let i = 0; i < binarystring.length; i++) {
-                    bytes[i] = binarystring.charCodeAt(i);
+                
+                try {
+                    const binarystring = atob(urlsafecleaned);
+                    const bytes = new Uint8Array(binarystring.length);
+                    for (let i = 0; i < binarystring.length; i++) {
+                        bytes[i] = binarystring.charCodeAt(i);
+                    }
+                    const decoder = new TextDecoder("utf-8");
+                    return decoder.decode(bytes);
+                } catch (e) {
+                    let standardcleaned = cleaned;
+                    while (standardcleaned.length % 4 !== 0) {
+                        standardcleaned += "=";
+                    }
+                    const binarystring = atob(standardcleaned);
+                    const bytes = new Uint8Array(binarystring.length);
+                    for (let i = 0; i < binarystring.length; i++) {
+                        bytes[i] = binarystring.charCodeAt(i);
+                    }
+                    const decoder = new TextDecoder("utf-8");
+                    return decoder.decode(bytes);
                 }
-                const decoder = new TextDecoder("utf-8");
-                return decoder.decode(bytes);
             }
 
             function analyzexml(xml) {
@@ -968,10 +983,15 @@
                 const urldata = new URLSearchParams(window.location.search).get("data");
                 if (urldata) {
                     const trimmed = urldata.trim();
-                    if (trimmed.startsWith("<")) {
+                    if (trimmed.startsWith("<") || trimmed.startsWith("{") || trimmed.startsWith("[")) {
                         setlevelfromxml(trimmed, !nopicker);
                     } else {
-                        setleveldata(trimmed, !nopicker);
+                        try {
+                            const decoded = decodebase64utf8(trimmed);
+                            if (decoded.startsWith("<") || decoded.startsWith("{") || decoded.startsWith("[")) {
+                                setlevelfromxml(decoded, !nopicker);
+                            } else {setleveldata(trimmed, !nopicker)}
+                        } catch (e) {setleveldata(trimmed, !nopicker)}
                     }
                     cleanurl();
                     if (!nopicker) {
