@@ -1324,7 +1324,7 @@
             /*//////////////////////////////////////////////////////////////////////*/
 
             // error stuff (vee two)
-            function formaterrorargs(args) {
+            function formaterrorarguments(args) {
                 return args
                     .map((arg) => {
                         if (typeof arg === "string") return arg;
@@ -1427,7 +1427,7 @@
             const ogerror = console.error;
             console.error = function (...args) {
                 ogerror.apply(console, args);
-                showerror(formaterrorargs(args));
+                showerror(formaterrorarguments(args));
             };
             window.addEventListener("error", (event) => {
                 showerror(`${event.error?.name || "Error"}: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`);

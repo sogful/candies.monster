@@ -110,9 +110,11 @@
                                     case "candy":
                                         ctrobject.name = 52;
                                         break;
+                                    case "candyl":
                                     case "candyL":
                                         ctrobject.name = 50;
                                         break;
+                                    case "candyr":
                                     case "candyR": 
                                         ctrobject.name = 51;
                                         break;
@@ -265,7 +267,14 @@
                                             ctrobject.wheel = false;
                                         }
                                         break;
+                                    case "tutorial03":
+                                    case "tutorial3":
+                                        ctrobject.name = 7;
+                                        ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+                                        ctrobject.locale = obj.getAttribute("locale") || "en";
+                                        break;
                                     case "tutorial04":
+                                    case "tutorial4":
                                         ctrobject.name = 8;
                                         ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
                                         break;
@@ -276,17 +285,18 @@
                                         ctrobject.height = parseInt(obj.getAttribute("height")) || 60;
                                         ctrobject.locale = obj.getAttribute("locale") || "en";
                                         break;
+                                    case "tutorial07":
+                                    case "tutorial7":
+                                    case "Tutorial07":
+                                        ctrobject.name = 11;
+                                        ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
+                                        ctrobject.locale = obj.getAttribute("locale") || "en";
+                                        break;
+                                    case "tutorial10":
                                     case "tutorial10":
                                         ctrobject.name = 14;
                                         ctrobject.special = parseInt(obj.getAttribute("special")) || 2;
                                         ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-                                        break;
-                                    case "tutorial07":
-                                    case "tutorial7":
-                                    case "Tutorial07":
-                                        ctrobject.name = 7;
-                                        ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-                                        ctrobject.locale = obj.getAttribute("locale") || "en";
                                         break;
                                     case "spike":
                                     case "Spike":
@@ -387,7 +397,7 @@
                     }
                 }
 
-                function postPreviewMessage(kind, message) {
+                function postpreviewmessages(kind, message) {
                     try {
                         if (window.parent && window.parent !== window) {
                             window.parent.postMessage(
@@ -405,7 +415,7 @@
                     }
                 }
 
-                function formatErrorArgs(args) {
+                function formaterrorarguments(args) {
                     return args
                         .map((arg) => {
                             if (typeof arg === "string") return arg;
@@ -423,17 +433,17 @@
                 const ogerror = console.error;
                 console.error = function (...args) {
                     ogerror.apply(console, args);
-                    postPreviewMessage("console-error", formatErrorArgs(args));
+                    postpreviewmessages("console-error", formaterrorarguments(args));
                 };
 
                 window.addEventListener("error", function (event) {
                     const shownerror = `${event.error?.name || "Error"}: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`;
-                    postPreviewMessage("window-error", shownerror);
+                    postpreviewmessages("window-error", shownerror);
                 });
 
                 window.addEventListener("unhandledrejection", function (event) {
                     const shownerror = `Unhandled Promise Rejection: ${event.reason}`;
-                    postPreviewMessage("unhandled-rejection", shownerror);
+                    postpreviewmessages("unhandled-rejection", shownerror);
                 });
             })();
         </script>

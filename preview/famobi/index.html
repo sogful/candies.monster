@@ -398,7 +398,7 @@
 			
 			/*//////////////////////////////////////////////////////////////////////*/
 
-			function postPreviewMessage(kind, message) {
+			function postpreviewmessages(kind, message) {
 				try {
 					if (window.parent && window.parent !== window) {
 						window.parent.postMessage(
@@ -416,7 +416,7 @@
 				}
 			}
 			
-			function formatErrorArgs(args) {
+			function formaterrorarguments(args) {
 				return args
 					.map(arg => {
 						if (typeof arg === "string") return arg;
@@ -429,12 +429,12 @@
 			console.error = function (...args) {
 				ogerror.apply(console, args);
 				const message = formatErrorArgs(args);
-				postPreviewMessage("console-error", message);
+				postpreviewmessages("console-error", message);
 			};
 			
 			window.addEventListener("error", function (event) {
 				const shownerror = `${event.error?.name || "Error"}: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`;
-				postPreviewMessage("window-error", shownerror);
+				postpreviewmessages("window-error", shownerror);
 			});
 			
 			window.addEventListener("unhandledrejection", function (event) {
