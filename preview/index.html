@@ -765,17 +765,21 @@
                     const decoder = new TextDecoder("utf-8");
                     return decoder.decode(bytes);
                 } catch (e) {
-                    let standardcleaned = cleaned;
-                    while (standardcleaned.length % 4 !== 0) {
-                        standardcleaned += "=";
+                    try {
+                        let standardcleaned = cleaned;
+                        while (standardcleaned.length % 4 !== 0) {
+                            standardcleaned += "=";
+                        }
+                        const binarystring = atob(standardcleaned);
+                        const bytes = new Uint8Array(binarystring.length);
+                        for (let i = 0; i < binarystring.length; i++) {
+                            bytes[i] = binarystring.charCodeAt(i);
+                        }
+                        const decoder = new TextDecoder("utf-8");
+                        return decoder.decode(bytes);
+                    } catch (e2) {
+                        throw new Error("Invalid base64 string :(");
                     }
-                    const binarystring = atob(standardcleaned);
-                    const bytes = new Uint8Array(binarystring.length);
-                    for (let i = 0; i < binarystring.length; i++) {
-                        bytes[i] = binarystring.charCodeAt(i);
-                    }
-                    const decoder = new TextDecoder("utf-8");
-                    return decoder.decode(bytes);
                 }
             }
 
@@ -982,7 +986,15 @@
                 }
                 const urldata = new URLSearchParams(window.location.search).get("data");
                 if (urldata) {
-                    const trimmed = urldata.trim();
+                    let trimmed = urldata.trim();
+                    let urldecoded = null;
+                    try {
+                        urldecoded = decodeURIComponent(trimmed);
+                    } catch (e) {}
+                    if (urldecoded && urldecoded !== trimmed) {
+                        trimmed = urldecoded;
+                    }
+                    
                     if (trimmed.startsWith("<") || trimmed.startsWith("{") || trimmed.startsWith("[")) {
                         setlevelfromxml(trimmed, !nopicker);
                     } else {
