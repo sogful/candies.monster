@@ -55,8 +55,17 @@ export const updateLightBulbCollisions = (scene: GameScene): void => {
             continue;
         }
         // Candy collision (reuse same logic as hazards)
-        if (!scene.noCandy && !scene.targetSock) {
-            resolveConstraintCollision(bulb.constraint, scene.star, LIGHTBULB_COLLISION_DISTANCE);
+        if (!scene.targetSock) {
+            if (scene.twoParts !== GameSceneConstants.PartsType.NONE) {
+                if (!scene.noCandyL) {
+                    resolveConstraintCollision(bulb.constraint, scene.starL, LIGHTBULB_COLLISION_DISTANCE);
+                }
+                if (!scene.noCandyR) {
+                    resolveConstraintCollision(bulb.constraint, scene.starR, LIGHTBULB_COLLISION_DISTANCE);
+                }
+            } else if (!scene.noCandy) {
+                resolveConstraintCollision(bulb.constraint, scene.star, LIGHTBULB_COLLISION_DISTANCE);
+            }
         }
         // Bulb-to-bulb collision
         for (let j = i + 1; j < scene.lightbulbs.length; j++) {
@@ -257,7 +266,7 @@ const updateNightTargetAwake = (scene: GameScene, isAwake: boolean): void => {
     }
 
     // Don't switch to sleeping if candy has been eaten
-    if (scene.noCandy) {
+    if (scene.noCandy && scene.twoParts === GameSceneConstants.PartsType.NONE) {
         return;
     }
 
@@ -266,7 +275,10 @@ const updateNightTargetAwake = (scene: GameScene, isAwake: boolean): void => {
     scene.sleepPulseDelay = SLEEP_PULSE_START_DELAY;
     scene.sleepSoundTimer = 0;
     setNightSleepVisibility(scene, true);
-    scene.target.playTimeline(GameSceneConstants.CharAnimation.SLEEPING);
+
+    if (scene.target.currentTimelineIndex !== GameSceneConstants.CharAnimation.SLEEPING) {
+        scene.target.playTimeline(GameSceneConstants.CharAnimation.SLEEPING);
+    }
     scene.sleepPulseBaseY = getSleepPulsePivotOffsetY(scene.target.height);
     scene.target.rotationCenterY = scene.sleepPulseBaseY;
 };
@@ -283,10 +295,13 @@ export function updateNightLevel(this: GameScene, delta: number): void {
         this.sleepAnimSecondary.update(delta);
     }
 
-    // Skip awake state updates after candy is eaten (win animation playing)
-    if (!this.noCandy) {
+    const shouldCheckAwake = !this.noCandy || this.twoParts !== GameSceneConstants.PartsType.NONE;
+    if (shouldCheckAwake) {
         const targetPosition = new Vector(this.target.x, this.target.y);
         let isAwake = false;
+        if (this.lightbulbs.length > 0) {
+            (this as any).hadLightBulbsIThink = true;
+        }
         for (const bulb of this.lightbulbs) {
             if (
                 Vector.distance(
@@ -361,7 +376,8 @@ export function updateNightLevel(this: GameScene, delta: number): void {
     if (
         this.lightbulbs.length === 0 &&
         this.restartState !== GameSceneConstants.RestartState.FADE_IN &&
-        !this.noCandy
+        !this.noCandy &&
+        (this as any).hadLightBulbsIThink === true
     ) {
         this.gameLost();
     }

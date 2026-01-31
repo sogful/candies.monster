@@ -65,4 +65,5 @@ export function resetGameState(this: GameSceneInit): void {
     }
     this.sleepSoundId = null;
     this.gameLostTriggered = false;
+    (this as any).hadLightBulbsIThink = false;
 }
