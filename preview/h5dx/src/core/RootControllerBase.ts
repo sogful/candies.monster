@@ -40,6 +40,8 @@ class RootControllerBase extends ViewController {
     protected pointerCapture: PointerCapture | null;
     protected stopAnimation: boolean;
     idealDelta: number | undefined;
+    protected lastFrameTime: number;
+    protected targetFrameTime: number;
 
     constructor(parent?: CTRRootController) {
         super(parent as CTRRootController);
@@ -55,6 +57,8 @@ class RootControllerBase extends ViewController {
         this.pointerCapture = null;
         this.stopAnimation = false;
         this.idealDelta = undefined;
+        this.lastFrameTime = 0;
+        this.targetFrameTime = 1000 / 60;
 
         this.subscribeToControllerEvents();
     }
@@ -165,16 +169,23 @@ class RootControllerBase extends ViewController {
         this.activateMouseEvents();
 
         const requestAnimationFrame = window.requestAnimationFrame.bind(window);
-        const animationLoop = (): void => {
+        const animationLoop = (timestamp: DOMHighResTimeStamp): void => {
             const now = Date.now();
-            this.operateCurrentMVC(now);
+            const elapsed = now - this.lastFrameTime;
+            
+            if (elapsed >= this.targetFrameTime) {
+                this.lastFrameTime = now - (elapsed % this.targetFrameTime);
+                this.operateCurrentMVC(now);
+            }
+            
             if (!this.stopAnimation) {
                 requestAnimationFrame(animationLoop);
             }
         };
 
         this.stopAnimation = false;
-        animationLoop();
+        this.lastFrameTime = Date.now();
+        requestAnimationFrame(animationLoop);
     }
 
     override deactivate(): void {
