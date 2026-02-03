@@ -371,10 +371,15 @@ export function updateNightLevel(this: GameScene, delta: number): void {
     }
 
     // Night level loses if all lightbulbs are gone
+    const hasAnyCandy =
+        (this.twoParts === GameSceneConstants.PartsType.NONE && !this.noCandy) ||
+        (this.twoParts !== GameSceneConstants.PartsType.NONE &&
+            (!this.noCandyL || !this.noCandyR));
+
     if (
         this.lightbulbs.length === 0 &&
         this.restartState !== GameSceneConstants.RestartState.FADE_IN &&
-        !this.noCandy &&
+        hasAnyCandy &&
         (this as any).hadLightBulbsIThink === true
     ) {
         this.gameLost();

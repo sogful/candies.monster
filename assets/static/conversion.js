@@ -4,23 +4,100 @@
 (function() {
     const idmapping = {
         xmltojson: {
-            "candy": 52, "candyl": 50, "candyr": 51, "target": 2, "star": 3,
-            "bubble": 54, "pump": 55, "sock": 56, "spike2": 58, "spike3": 80,
-            "gravityswitch": 53, "spike4": 60, "electro": 80, "bouncer1": 81,
-            "rotatedcircle": 120, "ghost": 130, "steamtube": 131, "lantern": 132,
-            "gap": 133, "lightbulb": 134, "transporter": 135, "hiddenelement": 300,
-            "grab": 100, "tutorial03": 7, "tutorial3": 7, "tutorial04": 8, "tutorial4": 8,
-            "tutorialtext": 4, "tutorial07": 11, "tutorial7": 11, "tutorial10": 14,
-            "spike": 57, "spike1": 59
+            "candy": 52,
+            "candyl": 50,
+            "candyr": 51,
+            "target": 2,
+            "star": 3,
+            "bubble": 54,
+            "pump": 55,
+            "sock": 56,
+            "spike2": 58,
+            "spike3": 80,
+            "gravityswitch": 53,
+            "spike4": 60,
+            "electro": 80,
+            "bouncer1": 81,
+            "rotatedcircle": 120,
+            "ghost": 130,
+            "steamtube": 131,
+            "lantern": 132,
+            "gap": 133,
+            "lightbulb": 134,
+            "transporter": 135,
+            "hiddenelement": 300,
+            "grab": 100,
+
+            "tutorialtext": 4,
+            "tutorial01": 5,
+            "tutorial1": 5,
+            "tutorial02": 6,
+            "tutorial2": 6,
+            "tutorial03": 7,
+            "tutorial3": 7,
+            "tutorial04": 8,
+            "tutorial4": 8,
+            "tutorial05": 9,
+            "tutorial5": 9,
+            "tutorial06": 10,
+            "tutorial6": 10,
+            "tutorial07": 11,
+            "tutorial7": 11,
+            "tutorial08": 12,
+            "tutorial8": 12,
+            "tutorial09": 13,
+            "tutorial9": 13,
+            "tutorial10": 14,
+            "tutorial11": 15,
+            "tutorial12": 16,
+            "tutorial13": 17,
+            "tutorial14": 18,
+
+            "spike": 57,
+            "spike1": 59
         },
         jsontoxml: {
-            "52": "candy", "50": "candyL", "51": "candyR", "2": "target", "3": "star",
-            "54": "bubble", "55": "pump", "56": "sock", "58": "spike2", "80": "spike3",
-            "53": "gravityswitch", "60": "spike4", "81": "bouncer1", "120": "rotatedcircle",
-            "130": "ghost", "131": "steamtube", "132": "lantern", "133": "gap",
-            "134": "lightbulb", "135": "transporter", "300": "hiddenelement", "100": "grab",
-            "7": "tutorial07", "8": "tutorial04", "4": "tutorialtext", "11": "tutorial07",
-            "14": "tutorial10", "57": "spike", "59": "spike1"
+            "52": "candy",
+            "50": "candyL",
+            "51": "candyR",
+            "2": "target",
+            "3": "star",
+            "54": "bubble",
+            "55": "pump",
+            "56": "sock",
+            "58": "spike2",
+            "80": "spike3",
+            "53": "gravityswitch",
+            "60": "spike4",
+            "81": "bouncer1",
+            "120": "rotatedcircle",
+            "130": "ghost",
+            "131": "steamtube",
+            "132": "lantern",
+            "133": "gap",
+            "134": "lightbulb",
+            "135": "transporter",
+            "300": "hiddenelement",
+            "100": "grab",
+
+            "4": "tutorialtext",
+            "5": "tutorial01",
+            "6": "tutorial02",
+            "7": "tutorial03",
+            "8": "tutorial04",
+            "9": "tutorial05",
+            "10": "tutorial06",
+            "11": "tutorial07",
+            "12": "tutorial08",
+            "13": "tutorial09",
+            "14": "tutorial10",
+            "15": "tutorial11",
+            "16": "tutorial12",
+            "17": "tutorial13",
+            "18": "tutorial14",
+
+            "57": "spike",
+            "59": "spike1"
         }
     };
     function objectid(value, fallback) {
@@ -125,9 +202,12 @@
                 ctrobject.wheel = false;
             }
         }
+        if (tagname.indexOf("tutorial") === 0) {
+            ctrobject.locale = obj.getAttribute("locale") || "en";
+        }
+
         if (tagname === "tutorial03" || tagname === "tutorial3") {
             ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-            ctrobject.locale = obj.getAttribute("locale") || "en";
         }
         if (tagname === "tutorial04" || tagname === "tutorial4") {
             ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
@@ -136,11 +216,9 @@
             ctrobject.text = obj.getAttribute("text") || "";
             ctrobject.width = parseInt(obj.getAttribute("width")) || 100;
             ctrobject.height = parseInt(obj.getAttribute("height")) || 60;
-            ctrobject.locale = obj.getAttribute("locale") || "en";
         }
         if (tagname === "tutorial07" || tagname === "tutorial7") {
             ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 100;
-            ctrobject.locale = obj.getAttribute("locale") || "en";
         }
         if (tagname === "tutorial10") {
             ctrobject.special = parseInt(obj.getAttribute("special")) || 2;

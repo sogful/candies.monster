@@ -18,24 +18,37 @@ interface HazardWithBounds {
     b2: Vector;
 }
 
-export const isCandyHit = (hazard: HazardWithBounds, star: ConstrainedPoint, radius: number) => {
+export const isCandyHit = (
+    hazard: HazardWithBounds | null | undefined,
+    star: ConstrainedPoint | null | undefined,
+    radius: number
+) => {
+    if (!hazard || !star) {
+        return false;
+    }
+
+    const { t1, t2, b1, b2 } = hazard;
+    if (!t1 || !t2 || !b1 || !b2) {
+        return false;
+    }
+
     const diameter = radius * 2;
     return (
         Rectangle.lineInRect(
-            hazard.t1.x,
-            hazard.t1.y,
-            hazard.t2.x,
-            hazard.t2.y,
+            t1.x,
+            t1.y,
+            t2.x,
+            t2.y,
             star.pos.x - radius,
             star.pos.y - radius,
             diameter,
             diameter
         ) ||
         Rectangle.lineInRect(
-            hazard.b1.x,
-            hazard.b1.y,
-            hazard.b2.x,
-            hazard.b2.y,
+            b1.x,
+            b1.y,
+            b2.x,
+            b2.y,
             star.pos.x - radius,
             star.pos.y - radius,
             diameter,

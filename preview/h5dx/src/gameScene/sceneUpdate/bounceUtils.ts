@@ -6,7 +6,11 @@ import type Bouncer from "@/game/Bouncer";
 import type ConstrainedPoint from "@/physics/ConstrainedPoint";
 import type { GameScene } from "@/types/game-scene";
 
-function handleBounce(bouncer: Bouncer, star: ConstrainedPoint, delta: number): void {
+function handleBounce(bouncer: Bouncer | null | undefined, star: ConstrainedPoint | null | undefined, delta: number): void {
+    if (!bouncer || !star) {
+        return;
+    }
+
     if (bouncer.skip) {
         return;
     }

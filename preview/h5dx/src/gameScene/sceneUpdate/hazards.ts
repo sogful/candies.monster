@@ -662,7 +662,10 @@ export function updateHazards(this: HazardScene, delta: number, numGrabs: number
     const bouncerRadius = resolution.BOUNCER_RADIUS;
 
     for (let i = 0, len = this.bouncers.length; i < len; i++) {
-        const bouncer = this.bouncers[i]!;
+        const bouncer = this.bouncers[i];
+        if (!bouncer) {
+            continue;
+        }
         bouncer.update(delta);
         bouncer.updateRotation();
 
