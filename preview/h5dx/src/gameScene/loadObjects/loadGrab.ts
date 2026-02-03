@@ -4,6 +4,7 @@ import Constants from "@/utils/Constants";
 import PollenDrawer from "@/game/PollenDrawer";
 import Vector from "@/core/Vector";
 import * as GameSceneConstants from "@/gameScene/constants";
+import type LightBulb from "@/game/LightBulb";
 import type GameSceneLoaders from "../loaders";
 import type { GrabItem } from "../MapLayerItem";
 
@@ -71,8 +72,36 @@ export function loadGrab(this: GameSceneLoaders, item: GrabItem): void {
     if (r === Constants.UNDEFINED && !gun) {
         let tail = this.star;
         let attachesToCandy = true;
-        if (bindBulb && this.lightbulbs.length > 0) {
-            tail = this.lightbulbs[this.lightbulbs.length - 1]!.constraint;
+        const shouldBindBulb = bindBulb || !!item.bulbNumber;
+        if (shouldBindBulb && this.lightbulbs.length > 0) {
+            const grabBulbNumber = item.bulbNumber;
+            let matchedBulb: LightBulb | null = null;
+
+            if (grabBulbNumber) {
+                const normalizeBulbNumber = (value: string | undefined): string | null => {
+                    if (!value) return null;
+                    const lower = value.toLowerCase().trim();
+                    if (lower === "first" || lower === "1") return "1";
+                    if (lower === "second" || lower === "2") return "2";
+                    if (lower === "third" || lower === "3") return "3";
+                    return lower;
+                };
+
+                const normalizedGrab = normalizeBulbNumber(grabBulbNumber);
+                if (normalizedGrab) {
+                    for (const bulb of this.lightbulbs) {
+                        if (bulb && normalizeBulbNumber(bulb.bulbNumber) === normalizedGrab) {
+                            matchedBulb = bulb;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (matchedBulb) {
+                tail = matchedBulb.constraint;
+            } else {
+                tail = this.lightbulbs[this.lightbulbs.length - 1]!.constraint;
+            }
             attachesToCandy = false;
         } else if (this.twoParts !== GameSceneConstants.PartsType.NONE) {
             tail = left ? this.starL : this.starR;

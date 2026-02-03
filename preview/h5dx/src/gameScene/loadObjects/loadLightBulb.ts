@@ -11,5 +11,6 @@ export function loadLightBulb(this: GameSceneLoaders, item: LightBulbItem): void
     constraint.pos.y = item.y * this.PM + this.PMY;
 
     const bulb = new LightBulb(item.litRadius * this.PM, constraint);
+    bulb.bulbNumber = item.bulbNumber;
     this.lightbulbs.push(bulb);
 }

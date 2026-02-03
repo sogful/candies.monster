@@ -52,6 +52,7 @@ class LightBulb extends CTRGameObject {
     sockSpeed: number;
     localBounds: Rectangle;
     worldBounds: Rectangle;
+    bulbNumber: string | undefined;
 
     private readonly lightGlow: GameObject;
     private readonly firefly: Animation;
