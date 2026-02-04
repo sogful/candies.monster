@@ -196,7 +196,10 @@
             ctrobject.invisible = obj.getAttribute("invisible") === "true";
             ctrobject.helicopter = obj.getAttribute("helicopter") === "true";
             ctrobject.bindBulb = obj.getAttribute("bindBulb") === "true";
-            ctrobject.bulbNumber = obj.getAttribute("bulbNumber") || "first";
+            const grabbulbnumberattr = obj.getAttribute("bulbNumber");
+            if (grabbulbnumberattr != null && grabbulbnumberattr !== "") {
+                ctrobject.bulbNumber = grabbulbnumberattr;
+            }
             if (ctrobject.spider) {
                 ctrobject.gun = false; 
                 ctrobject.wheel = false;
