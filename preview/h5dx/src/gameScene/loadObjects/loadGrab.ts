@@ -99,8 +99,6 @@ export function loadGrab(this: GameSceneLoaders, item: GrabItem): void {
             }
             if (matchedBulb) {
                 tail = matchedBulb.constraint;
-            } else {
-                tail = this.lightbulbs[this.lightbulbs.length - 1]!.constraint;
             }
             attachesToCandy = false;
         } else if (this.twoParts !== GameSceneConstants.PartsType.NONE) {
