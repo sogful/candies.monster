@@ -234,8 +234,18 @@ export function updateHazards(this: HazardScene, delta: number, numGrabs: number
         const rc = this.rotatedCircles[i]!;
         const containedObjects = rc.containedObjects;
 
+        for (let k = containedObjects.length - 1; k >= 0; k--) {
+            const obj = containedObjects[k];
+            if (obj && this.bungees.indexOf(obj as Grab) === -1) {
+                containedObjects.splice(k, 1);
+            }
+        }
+
         for (let j = 0; j < numGrabs; j++) {
-            const g = this.bungees[j]!;
+            const g = this.bungees[j];
+            if (!g) {
+                continue;
+            }
             const gIndex = containedObjects.indexOf(g);
             const distance = Vector.distance(g.x, g.y, rc.x, rc.y);
 

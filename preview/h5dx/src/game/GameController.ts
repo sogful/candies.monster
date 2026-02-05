@@ -29,20 +29,29 @@ class GameController extends ViewController {
     static readonly ExitCodeFrom = ExitCodeFrom;
 
     private animateRestart: boolean;
+    private musicStarted: boolean;
     isGamePaused: boolean;
 
     constructor(parent: CTRRootController) {
         super(parent);
         this.animateRestart = false;
         this.isGamePaused = false;
+        this.musicStarted = false;
     }
 
     override activate(): void {
         super.activate();
-        SoundMgr.playGameMusic();
+        this.musicStarted = false;
         this.createGameView();
         this.initGameView();
         this.showView(0);
+    }
+
+    private startMusicOnInteraction(): void {
+        if (!this.musicStarted) {
+            this.musicStarted = true;
+            SoundMgr.playGameMusic();
+        }
     }
 
     private createGameView(): void {
@@ -71,7 +80,6 @@ class GameController extends ViewController {
 
     onLevelWon(): void {
         SoundMgr.playSound(ResourceId.SND_WIN);
-        // Restart the level instead of deactivating to prevent freezing
         this.restartLevel();
     }
 
@@ -128,6 +136,7 @@ class GameController extends ViewController {
     }
 
     override mouseDown(x: number, y: number): boolean {
+        this.startMusicOnInteraction();
         const handledByBase = super.mouseDown(x, y);
         if (handledByBase) {
             return true;
@@ -148,6 +157,7 @@ class GameController extends ViewController {
     }
 
     override mouseDragged(x: number, y: number): boolean {
+        this.startMusicOnInteraction();
         const handledByBase = super.mouseDragged(x, y);
         if (handledByBase) {
             return true;
