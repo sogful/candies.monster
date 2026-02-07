@@ -324,7 +324,7 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
-        .yetanothernotice {
+        /* .yetanothernotice {
             position: fixed; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             width: 100vw; height: 100vh; z-index: 655356553565535;
@@ -340,7 +340,7 @@
         .noticestuff {
             text-align: center;
             max-width: min(500px, 90vw);
-        }
+        } */
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -481,7 +481,7 @@
         <img src="assets/svgs/oops.svg">
     </div>
 
-    <div class="yetanothernotice hidden">
+    <!-- <div class="yetanothernotice hidden">
         <div class="noticestuff">
             <a>Please note that testing on web is <i>very</i> unreliable! Every release of the game for any platform has different physics, so this will never be 100% accurate.</a> <br>
             <a>Check out the</a>
@@ -492,7 +492,7 @@
             <img src="/assets/images/longbuttons/lbutton.webp" draggable="false">
             <span>Don't show again</span>
         </label>
-    </div>
+    </div> -->
 
     <div class="page">
         <div class="panel datapanel">
@@ -684,7 +684,7 @@
 
             /*//////////////////////////////////////////////////////////////////////*/
 
-            const notice_key = "dismissed";
+            /* const notice_key = "dismissed";
             const notice_seen_key = "seen";
 
             const yetanothernotice = document.querySelector(".yetanothernotice");
@@ -711,7 +711,7 @@
                 if (yetanothernotice) {
                     yetanothernotice.classList.add("hidden");
                 }
-            });
+            }); */
 
             document.querySelectorAll(".clickable").forEach((element) => {
                 element.addEventListener("click", () => {
