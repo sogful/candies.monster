@@ -148,16 +148,16 @@ class Box {
         this.reqImg = Text.drawBig({ text: String(reqstars), scaleToUI: true }) as HTMLImageElement;
 
         this.omNomImg = new Image();
-        this.omNomImg.src = `${platform.uiImageBaseUrl}box_omnom.png`;
-
+        this.omNomImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // 1x1 transparent
+        
         this.lockImg = new Image();
-        this.lockImg.src = `${platform.uiImageBaseUrl}box_lock.png`;
+        this.lockImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // 1x1 transparent
 
         this.starImg = new Image();
-        this.starImg.src = `${platform.uiImageBaseUrl}star_result_small.png`;
+        this.starImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // 1x1 transparent
 
         this.perfectMark = new Image();
-        this.perfectMark.src = `${platform.uiImageBaseUrl}perfect_mark.png`;
+        this.perfectMark.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // 1x1 transparent
 
         this.includeBoxNumberInTitle = true;
     }

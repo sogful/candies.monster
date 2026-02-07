@@ -171,7 +171,8 @@ export default class GameFlow {
 
     /** Shows the level background */
     private _showLevelBackground(): void {
-        show("#levelBackground");
+        // Skip showing level background for faster playtesting
+        // show("#levelBackground");
     }
 
     /** Hides the level background */
@@ -241,6 +242,13 @@ export default class GameFlow {
         fadeOut("#levelNavForward");
 
         fadeOut("#levelOptions", timeout).then(() => {
+            // Skip box cutting and door opening animations for faster playtesting
+            // Hide level background immediately
+            const levelBackground = document.getElementById("levelBackground");
+            if (levelBackground) {
+                levelBackground.style.display = "none";
+            }
+            
             if (this.manager.isBoxOpen) {
                 fadeOut("#levelResults", 800);
                 window.setTimeout(() => {
@@ -248,21 +256,15 @@ export default class GameFlow {
                         BoxManager.currentBoxIndex + 1,
                         BoxManager.currentLevelIndex
                     );
-                    Doors.openDoors(false, () => {
-                        this.showGameUI();
-                    });
+                    this.showGameUI();
                 }, 400);
             } else {
-                Doors.openBoxAnimation(() => {
-                    this.manager.isBoxOpen = true;
-                    RootController.startLevel(
-                        BoxManager.currentBoxIndex + 1,
-                        BoxManager.currentLevelIndex
-                    );
-                    Doors.openDoors(true, () => {
-                        this.showGameUI();
-                    });
-                });
+                this.manager.isBoxOpen = true;
+                RootController.startLevel(
+                    BoxManager.currentBoxIndex + 1,
+                    BoxManager.currentLevelIndex
+                );
+                this.showGameUI();
             }
         });
     }

@@ -100,17 +100,9 @@ class App {
                 this.progressBar.style.width = "100%";
             }
 
-            window.setTimeout(() => {
-                if (this.betterLoader) {
-                    this.betterLoader.style.transition = "opacity 0.5s";
-                    this.betterLoader.style.opacity = "0";
-                    window.setTimeout(() => {
-                        if (this.betterLoader) {
-                            this.betterLoader.style.display = "none";
-                        }
-                    }, 500);
-                }
-            }, 200);
+            if (this.betterLoader) {
+                this.betterLoader.style.display = "none";
+            }
 
             im.gameFlow.appReady();
             PubSub.publish(PubSub.ChannelId.AppRun);

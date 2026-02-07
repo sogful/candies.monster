@@ -59,6 +59,9 @@ class BoxDoors {
             if (!doorPath) continue;
 
             const doorImg = new Image();
+            doorImg.onerror = () => {
+                doorImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+            };
             doorImg.src = platform.uiImageBaseUrl + doorPath;
             BoxDoors.#doorImages[i] = doorImg;
         }
@@ -109,13 +112,15 @@ class BoxDoors {
         leftCtx.clearRect(0, 0, left.width, left.height);
         rightCtx.clearRect(0, 0, right.width, right.height);
 
-        leftCtx.drawImage(doorImg, 0, 0);
+        if (doorImg.complete && doorImg.naturalWidth > 0 && doorImg.naturalHeight > 0) {
+            leftCtx.drawImage(doorImg, 0, 0);
 
-        rightCtx.save();
-        rightCtx.translate(doorImg.width, doorImg.height);
-        rightCtx.rotate(Math.PI);
-        rightCtx.drawImage(doorImg, 0, 0);
-        rightCtx.restore();
+            rightCtx.save();
+            rightCtx.translate(doorImg.width, doorImg.height);
+            rightCtx.rotate(Math.PI);
+            rightCtx.drawImage(doorImg, 0, 0);
+            rightCtx.restore();
+        }
 
         if (BoxDoors.showTape) {
             leftCtx.drawImage(

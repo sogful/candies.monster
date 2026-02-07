@@ -129,13 +129,11 @@ class NetEdition {
     }
 
     get boxImages(): (string | null)[] {
-        return this.getNormalizedBoxMetadata().map(({ boxImage }) => boxImage);
+        return [];
     }
 
     get boxDoors(): string[] {
-        return this.getNormalizedBoxMetadata()
-            .map(({ boxDoor }) => boxDoor)
-            .filter((boxDoor): boxDoor is string => boxDoor != null);
+        return [];
     }
 
     get boxTypes(): BoxTypeValue[] {
