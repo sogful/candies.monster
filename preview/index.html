@@ -778,7 +778,10 @@
                         }
                     }
                     const decoder = new TextDecoder("utf-8");
-                    return decoder.decode(bytes);
+                    let decoded = decoder.decode(bytes);
+                    decoded = decoded.trim();
+                    if (decoded.charCodeAt(0) === 0xFEFF) {decoded = decoded.slice(1)}
+                    return decoded;
                 }
 
                 try {
@@ -1054,11 +1057,17 @@
                         try {
                             const decoded = decodebase64utf8(trimmed);
                             if (decoded.startsWith("<") || decoded.startsWith("{") || decoded.startsWith("[")) {
+                                if (decoded.trim().startsWith("<")) {
+                                    if (!decoded.match(/<map[\s>]/)) {
+                                        throw new Error("xml doesn't contain <map> element..");
+                                    }
+                                }
                                 setlevelfromxml(decoded, !nopicker);
                             } else {
                                 setleveldata(trimmed, !nopicker);
                             }
                         } catch (e) {
+                            showerror(`Failed to process level data?! ${e.message}`);
                             setleveldata(trimmed, !nopicker);
                         }
                     }
