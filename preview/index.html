@@ -766,14 +766,18 @@
                     return bytes;
                 }
                 function trydecode(b64) {
-                    const decoder = new TextDecoder("utf-8");
                     let bytes = base64tobytes(b64);
-                    if (typeof fflate !== "undefined" && bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b) {
+                    if (bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b) {
+                        if (typeof fflate === "undefined") {
+                            throw new Error("gzip data detected but fflate.js isn't loaded..");
+                        }
                         try {
                             bytes = fflate.decompressSync(bytes);
-                        } catch (_) {}
+                        } catch (decompError) {
+                            throw new Error(`gzip decompression failed?! ${decompError.message || decompError}`);
+                        }
                     }
-
+                    const decoder = new TextDecoder("utf-8");
                     return decoder.decode(bytes);
                 }
 
@@ -787,7 +791,7 @@
                         }
                         return trydecode(standardcleaned);
                     } catch (e2) {
-                        throw new Error("Invalid base64 string :(");
+                        throw new Error("invalid base64 string :(");
                     }
                 }
             }
@@ -1051,8 +1055,12 @@
                             const decoded = decodebase64utf8(trimmed);
                             if (decoded.startsWith("<") || decoded.startsWith("{") || decoded.startsWith("[")) {
                                 setlevelfromxml(decoded, !nopicker);
-                            } else {setleveldata(trimmed, !nopicker)}
-                        } catch (e) {setleveldata(trimmed, !nopicker)}
+                            } else {
+                                setleveldata(trimmed, !nopicker);
+                            }
+                        } catch (e) {
+                            setleveldata(trimmed, !nopicker);
+                        }
                     }
                     cleanurl();
                     if (!nopicker) {
