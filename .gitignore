@@ -1,9 +1,8 @@
 /preview/h5dx/node_modules
-/preview/win8
-/SUPERSECRETFOLDERWITHONEBILLIONPRIVATETOKENS
 /versions/scriptsyay/
-/preview/worker.js
-/preview/convertworker.js
-/webtile
+
+/preview/workers
 /preview/examplelevel.json
 /preview/examplelevel.xml
+
+/webtile
