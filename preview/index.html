@@ -956,10 +956,28 @@
                     return;
                 }
                 try {
-                    const base64 = encodeurl(xml);
+                    const trimmed = xml.trim();
+                    if (!trimmed.match(/<map[\s>]/)) {
+                        throw new Error("xml doesn't contain <map> element");
+                    }
+                    try {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(trimmed, "text/xml");
+                        const parseerror = doc.querySelector("parsererror");
+                        if (parseerror) {
+                            throw new Error("invalid xml structure..");
+                        }
+                        const mapElement = doc.querySelector("map");
+                        if (!mapElement) {
+                            throw new Error("xml doesn't contain <map> element");
+                        }
+                    } catch (parseErr) {
+                        throw new Error(`xml validation failed: ${parseErr.message}`);
+                    }
+                    const base64 = encodeurl(trimmed);
                     setleveldata(base64, showchoice);
                 } catch (error) {
-                    showerror(`Failed to encode level: ${error}`);
+                    showerror(`Failed to encode level: ${error.message || error}`);
                 }
             }
 
@@ -1057,12 +1075,25 @@
                         try {
                             const decoded = decodebase64utf8(trimmed);
                             if (decoded.startsWith("<") || decoded.startsWith("{") || decoded.startsWith("[")) {
-                                if (decoded.trim().startsWith("<")) {
-                                    if (!decoded.match(/<map[\s>]/)) {
+                                const trimmeddecoded = decoded.trim();
+                                if (trimmeddecoded.startsWith("<")) {
+                                    if (!trimmeddecoded.match(/<map[\s>]/)) {
+                                        console.error("decompressed xml doesn't contain <map>..", trimmeddecoded.substring(0, 200));
                                         throw new Error("xml doesn't contain <map> element..");
                                     }
+                                    try {
+                                        const parser = new DOMParser();
+                                        const testdoc = parser.parseFromString(trimmeddecoded, "text/xml");
+                                        if (testdoc.querySelector("parsererror")) {
+                                            console.error("xml parse error?!", testdoc.querySelector("parsererror")?.textContent);
+                                            throw new Error("xml parse error");
+                                        }
+                                    } catch (parseErr) {
+                                        console.error("xml validation failed?!", parseErr);
+                                        throw parseErr;
+                                    }
                                 }
-                                setlevelfromxml(decoded, !nopicker);
+                                setlevelfromxml(trimmeddecoded, !nopicker);
                             } else {
                                 setleveldata(trimmed, !nopicker);
                             }
