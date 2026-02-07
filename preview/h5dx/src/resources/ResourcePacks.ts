@@ -3,15 +3,12 @@ import ResourceId from "@/resources/ResourceId";
 class ResourcePacks {
     // --- Menu sounds ---
     static StandardMenuSounds = [
-        ResourceId.SND_MENU_MUSIC,
-        ResourceId.SND_MENU_MUSIC_XMAS,
         ResourceId.SND_BUTTON,
         ResourceId.SND_TAP,
     ];
 
     // --- Time Travel edition menu sounds ---
     static TimeMenuSounds = [
-        ResourceId.SND_TIME_MENU_MUSIC,
         ResourceId.SND_BUTTON,
         ResourceId.SND_TAP,
     ];
@@ -130,9 +127,6 @@ class ResourcePacks {
     // --- Game sounds ---
     static StandardGameSounds = [
         ResourceId.SND_GAME_MUSIC,
-        ResourceId.SND_GAME_MUSIC2,
-        ResourceId.SND_GAME_MUSIC3,
-        ResourceId.SND_GAME_MUSIC4,
         ResourceId.SND_GAME_MUSIC_XMAS,
         ResourceId.SND_BOUNCER,
         ResourceId.SND_BUBBLE,

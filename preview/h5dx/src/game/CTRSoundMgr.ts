@@ -47,20 +47,12 @@ class SoundManager {
         const isXmas = getIsXmas();
         this.gameMusicLibrary = isXmas
             ? [ResourceId.SND_GAME_MUSIC_XMAS]
-            : [
-                  ResourceId.SND_GAME_MUSIC,
-                  ResourceId.SND_GAME_MUSIC2,
-                  ResourceId.SND_GAME_MUSIC3,
-                  ResourceId.SND_GAME_MUSIC4,
-              ];
+            : [ResourceId.SND_GAME_MUSIC];
     }
     
     private _isGameMusic(soundId: number): boolean {
         return (
             soundId === ResourceId.SND_GAME_MUSIC ||
-            soundId === ResourceId.SND_GAME_MUSIC2 ||
-            soundId === ResourceId.SND_GAME_MUSIC3 ||
-            soundId === ResourceId.SND_GAME_MUSIC4 ||
             soundId === ResourceId.SND_GAME_MUSIC_XMAS
         );
     }

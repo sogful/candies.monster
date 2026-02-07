@@ -14,7 +14,7 @@ const resolvedMenuMusicId =
 export const getMenuMusicId = () => {
     const isXmas = getIsXmas();
     return (
-        resolvedMenuMusicId ?? (isXmas ? ResourceId.SND_MENU_MUSIC_XMAS : ResourceId.SND_MENU_MUSIC)
+        resolvedMenuMusicId ?? (isXmas ? ResourceId.SND_GAME_MUSIC_XMAS : ResourceId.SND_GAME_MUSIC)
     );
 };
 

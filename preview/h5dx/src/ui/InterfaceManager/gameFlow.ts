@@ -19,6 +19,7 @@ import { MENU_MUSIC_ID, startSnow, stopSnow } from "@/ui/InterfaceManager/consta
 import { fadeIn, fadeOut, delay, show, hide, text, width } from "@/utils/domHelpers";
 import LevelPanel from "@/ui/LevelPanel";
 import type InterfaceManager from "@/ui/InterfaceManagerClass";
+import ResourceId from "@/resources/ResourceId";
 
 const levelResults = document.getElementById("levelResults");
 const levelMenu = document.getElementById("levelMenu");
@@ -356,6 +357,28 @@ export default class GameFlow {
             }
         };
         document.addEventListener("visibilitychange", onVisibilityChange);
+
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape" || event.keyCode === 27) {
+                const isLevelMenuVisible = levelMenu && levelMenu.style.display !== "none";
+                
+                if (isLevelMenuVisible) {
+                    SoundMgr.playSound(ResourceId.SND_TAP);
+                    this._closeLevelMenu();
+                    RootController.resumeLevel();
+                } else {
+                    if (
+                        panelManager.currentPanelId === PanelId.GAME &&
+                        RootController.isLevelActive() &&
+                        !this.manager.isTransitionActive
+                    ) {
+                        SoundMgr.playSound(ResourceId.SND_TAP);
+                        this._openLevelMenu();
+                    }
+                }
+            }
+        };
+        document.addEventListener("keydown", onKeyDown);
 
         // hide behind the scenes when we update the page
         window.addEventListener("resize", () => {
