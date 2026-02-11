@@ -130,15 +130,17 @@
             display: flex;
             justify-content: center; align-items: center;
             max-width: 700px; width: 100%; object-fit: contain;
+            flex-wrap: wrap;
         }
         .button {
-            max-width: 140px; width: 100%;
+            max-width: 100px;
+            width: min(20vw, 100px);
             background-image: url("/assets/images/buttons/button.svg");
             filter: drop-shadow(0 0 12px rgba(0,0,0,0.33));
         }
         .small > a > .button {
-            max-width: 70px;
-            width: 100%;
+            max-width: 50px;
+            width: min(10vw, 50px);
         }
 		.buttons a {position: relative; display: inline-flex}
         .buttons a::after {
