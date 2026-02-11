@@ -1,0 +1,680 @@
+[
+  {
+    "category": "Candy Flick",
+    "icon": "candyflick.webp",
+    "tracks": [
+      {
+        "path": "candyflick/menu_music.mp3",
+        "formats": ["mp3"],
+        "background": "candyflick.webp"
+      }
+    ]
+  },
+  {
+    "category": "Cut the Rope",
+    "icon": "original.webp",
+    "tracks": [
+      {
+        "path": "ctr/game_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "cardboard.webp"
+      },
+      {
+        "path": "ctr/menu_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "menu.webp"
+      }
+    ]
+  },
+  {
+    "category": "Cut the Rope 2",
+    "icon": "ctr2.webp",
+    "tracks": [
+      {
+        "path": "ctr2/game_music_1.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "two1.webp"
+      },
+      {
+        "path": "ctr2/game_music_2.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "two2.webp"
+      },
+      {
+        "path": "ctr2/game_music_3.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "two4.webp"
+      },
+      {
+        "path": "ctr2/menu_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "twomenu.webp"
+      }
+    ]
+  },
+  {
+    "category": "Experiments",
+    "icon": "experiments.webp",
+    "tracks": [
+      {
+        "path": "experiments/game_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "experiments1.webp"
+      },
+      {
+        "path": "experiments/game_music2.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "experiments1.webp"
+      },
+      {
+        "path": "experiments/menu_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "experimentsmenu.webp"
+      }
+    ]
+  },
+  {
+    "category": "Daily",
+    "icon": "daily.webp",
+    "tracks": [
+      {
+        "path": "daily/beach_menu_music_122bpm_G_v2.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/beach_grind_music_122bpm_D_v6.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_beach.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/cafe_menu_music_110bpm_D_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/cafe_grind_music_96bpm_G_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_cafe_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/castle_menu_music_113bpm_e_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/castle_grind_music_97bpm_e_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_castle_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/christmas_menu_music_138bpm_D_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/christmas_grind_music_161bpm_D_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_christmas_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/cinema_menu_music_137bpm_G_v3.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/cinema_grind_music_118bpm_G_v2.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_cinema.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/engineer_menu_music_122bpm_C_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/engineer_grind_music_104bpm_cm_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_engineer_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/Garden_menu_music_134bpm_D_v1.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/Garden_grind_music_103bpm_e_v1.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_garden_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/Magic_menu_music_82bpm_g_v1.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/Magic_grind_music_134bpm_G_v1.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_magic_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/pumpkins_menu_music_90bpm_G_v1.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/pumpkins_grind_music_96bpm_D_v2.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_pumpkins.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/record_shop_menu_music_124bpm_A_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/record_shop_grind_music_108bpm_G_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_record_shop_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/snow_menu_118bpm_G_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/snow_grind_129bpm_G_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_snow_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/space_menu_music_109bpm_h_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/space_grind_music_92bpm_h_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_space_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/valentine_menu_108bpm_D_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/valentine_grind_music_169bpm_D_Loop.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/ambience_valentines_location.mp3",
+        "formats": ["mp3", "flac", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/game_music.mp3",
+        "formats": ["mp3", "ogg", "fsb"],
+        "background": "daily.webp"
+      },
+      {
+        "path": "daily/record_rotating_right_02.mp3",
+        "formats": ["mp3", "ogg", "fsb"],
+        "background": "daily.webp"
+      }
+    ]
+  },
+  {
+    "category": "Holiday Gift",
+    "icon": "holidaygift.webp",
+    "tracks": [
+      {
+        "path": "holidaygift/game_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "holidaybox.webp"
+      },
+      {
+        "path": "holidaygift/menu_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "holidaymenu.webp"
+      }
+    ]
+  },
+  {
+    "category": "Idle Candy",
+    "icon": "idlecandy.webp",
+    "tracks": [
+      {
+        "path": "idlecandy/frenzy_mode.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "menu.webp"
+      },
+      {
+        "path": "idlecandy/game_music_01.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "cardboard.webp"
+      },
+      {
+        "path": "idlecandy/game_music_02.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "cardboard.webp"
+      }
+    ]
+  },
+  {
+    "category": "Magic",
+    "icon": "magic.webp",
+    "tracks": [
+      {
+        "path": "magic/boss_game_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "magic4.webp"
+      },
+      {
+        "path": "magic/game_music_1.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "magic1.webp"
+      },
+      {
+        "path": "magic/game_music_2.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "magic2.webp"
+      },
+      {
+        "path": "magic/game_music_3.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "magic3.webp"
+      },
+      {
+        "path": "magic/game_music_4.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "magic4.webp"
+      },
+      {
+        "path": "magic/menu_music.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "magicmenu.webp"
+      }
+    ]
+  },
+  {
+    "category": "Merge",
+    "icon": "merge.webp",
+    "tracks": [
+      {
+        "path": "merge/MU_BOSS.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "merge.webp"
+      },
+      {
+        "path": "merge/MU_FOREST_AUTUMN.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "merge.webp"
+      },
+      {
+        "path": "merge/MU_FOREST_SUMMER.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "merge.webp"
+      },
+      {
+        "path": "merge/MU_FOREST_WINTER.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "merge.webp"
+      }
+    ]
+  },
+  {
+    "category": "My Om Nom",
+    "icon": "myomnom.webp",
+    "tracks": [
+      {
+        "path": "myomnom/dance_3.mp3",
+        "formats": ["mp3"],
+        "background": "disco.webp"
+      },
+      {
+        "path": "myomnom/dance_4.mp3",
+        "formats": ["mp3"],
+        "background": "disco.webp"
+      },
+      {
+        "path": "myomnom/disco_theme.mp3",
+        "formats": ["mp3"],
+        "background": "disco.webp"
+      },
+      {
+        "path": "myomnom/home_theme.mp3",
+        "formats": ["mp3"],
+        "background": "mainroom.webp"
+      },
+      {
+        "path": "myomnom/match3_theme_variant_2.mp3",
+        "formats": ["mp3"],
+        "background": "match3.webp"
+      },
+      {
+        "path": "myomnom/omnon_illness_3.mp3",
+        "formats": ["mp3"],
+        "background": "mainroom.webp"
+      },
+      {
+        "path": "myomnom/omnon_pechenki.mp3",
+        "formats": ["mp3"],
+        "background": "memory.webp"
+      },
+      {
+        "path": "myomnom/space_ride_theme.mp3",
+        "formats": ["mp3"],
+        "background": "space.webp"
+      },
+      {
+        "path": "myomnom/urban_theme.mp3",
+        "formats": ["mp3"],
+        "background": "disco.webp"
+      }
+    ]
+  },
+  {
+    "category": "Ringtone",
+    "icon": "ctrnet.webp",
+    "tracks": [
+      {
+        "path": "ringtone/cuttherope_level_theme.mp3",
+        "formats": ["mp3"],
+        "background": "birthday.webp"
+      },
+      {
+        "path": "ringtone/cuttherope_main_theme.mp3",
+        "formats": ["mp3"],
+        "background": "birthday.webp"
+      },
+      {
+        "path": "ringtone/cuttherope_movie_theme.mp3",
+        "formats": ["mp3"],
+        "background": "birthday.webp"
+      }
+    ]
+  },
+  {
+    "category": "Time Travel",
+    "icon": "timetravel.webp",
+    "tracks": [
+      {
+        "path": "timetravel/disco_loop.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "discott.webp"
+      },
+      {
+        "path": "timetravel/music_game.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "timetravel1.webp"
+      },
+      {
+        "path": "timetravel/music_menu.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "timetravelmenu.webp"
+      }
+    ]
+  },
+  {
+    "category": "Triple Treat",
+    "icon": "tripletreat.webp",
+    "tracks": [
+      {
+        "path": "tripletreat/menu_music.mp3",
+        "formats": ["mp3", "dspadpcm.bcstm"],
+        "background": "menu.webp"
+      }
+    ],
+    "subcategories": [
+      {
+        "name": "Classic",
+        "tracks": [
+          {
+            "path": "tripletreat/classic/game_music.mp3",
+            "formats": ["mp3", "dspadpcm.bcstm"],
+            "background": "cardboard.webp"
+          },
+          {
+            "path": "tripletreat/classic/menu_music.mp3",
+            "formats": ["mp3", "dspadpcm.bcstm"],
+            "background": "menu.webp"
+          }
+        ]
+      },
+      {
+        "name": "Experiments",
+        "tracks": [
+          {
+            "path": "tripletreat/experiments/game_music.mp3",
+            "formats": ["mp3", "dspadpcm.bcstm"],
+            "background": "experiments1.webp"
+          },
+          {
+            "path": "tripletreat/experiments/game_music2.mp3",
+            "formats": ["mp3", "dspadpcm.bcstm"],
+            "background": "experiments1.webp"
+          },
+          {
+            "path": "tripletreat/experiments/menu_music.mp3",
+            "formats": ["mp3", "dspadpcm.bcstm"],
+            "background": "experimentsmenu.webp"
+          }
+        ]
+      },
+      {
+        "name": "Time Travel",
+        "tracks": [
+          {
+            "path": "tripletreat/timetravel/music_game.mp3",
+            "formats": ["mp3", "dspadpcm.bcstm"],
+            "background": "timetravel1.webp"
+          },
+          {
+            "path": "tripletreat/timetravel/music_menu.mp3",
+            "formats": ["mp3", "dspadpcm.bcstm"],
+            "background": "timetravelmenu.webp"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Cut the Rope 3",
+    "icon": "ctr3.webp",
+    "tracks": [
+      {
+        "path": "ctr3/music_Cave.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "ctr3.webp"
+      },
+      {
+        "path": "ctr3/music_Desert.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "ctr3.webp"
+      },
+      {
+        "path": "ctr3/music_IceCave_Final.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "ctr3.webp"
+      },
+      {
+        "path": "ctr3/music_Jungle.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "ctr3.webp"
+      },
+      {
+        "path": "ctr3/music_Pirate.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "ctr3.webp"
+      },
+      {
+        "path": "ctr3/music_Title.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "ctr3.webp"
+      }
+    ]
+  },
+  {
+    "category": "Cut the Rope Remastered",
+    "icon": "remastered.webp",
+    "tracks": [
+      {
+        "path": "remastered/music_Boardgame_Birthday.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Boardgame_Christmas.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Boardgame_Circus.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Boardgame_Pirates.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Boardgame_Space.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Boardgame_WinterFun.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Chapter01.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Chapter02.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Chapter03.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Chapter04.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Chapter05.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_MiniStory_SuperHeroes.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_SpecialLevel_Adventure.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_SpecialLevel_Christmas.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_SpecialLevel_Circus.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_SpecialLevel_Pirates.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_SpecialLevel_Space.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_SpecialLevel_Winterfun.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Title.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      }
+    ]
+  }
+]
+
