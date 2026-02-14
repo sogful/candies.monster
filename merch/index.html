@@ -298,6 +298,7 @@
         <br>
         <a class="tiny" href="https://www.behance.net/gallery/16864783/Cut-The-Rope-Master-Toy-License">🔗 concept art for the plushies, micro nommies and om nom's playground sets</a>
         <a class="tiny" href="https://studiolicensinginc.wordpress.com/category/cut-the-rope">🔗 treasure trove of promotional material and information</a>
+        <a class="tiny" href="https://docs.google.com/document/d/1-FvbyQn7xmD2_RXVempyeAHE_fMeBuahvf5rKFTtanE/edit?usp=sharing">🔗 345rusl's google doc with other details</a>
         <br>
 
         <div>
@@ -662,6 +663,17 @@
                 <div class="search"><a class="searchbutton" href="https://amzn.eu/d/0aFxwwPo"><img src="assets/svgs/amazon.svg"></a></div>
                 <div search="cut the rope &quot;thermal drink jar&quot; OR bottle"></div>
             </div>
+            <div class="product">
+                <img src="assets/images/products/compressed/cinemood.webp">
+                <a>Storyteller Smart Case (CINEMOOD)</a>
+                <div search="cinemood om nom"></div>
+            </div>
+            <div class="product">
+                <img src="assets/images/products/wallet.jpg">
+                <a>Wallet</a>
+                <a class="tiny">..do you trust om nom with your money?</a>
+                <div class="search"><a class="searchbutton" href="https://amzn.eu/d/0g6jP5lw"><img src="assets/svgs/amazon.svg"></a></div>
+            </div>
         </div>
 
         <a class="title">Books</a>
@@ -841,8 +853,9 @@
             }
         })();
 
-        // loading
-        window.addEventListener("load", function() {
+        // this page is so massive that it's very difficult to load, this loading screen is fake
+        // I KNOW i know very hypocritical that i hate fake loading screens but proceed to use one anyways but it lasts for 750ms you can wait
+        setTimeout(function() {
             var loading = document.querySelector(".loading");
             if (loading) {
                 loading.style.opacity = "0";
@@ -850,7 +863,7 @@
                     if (loading.parentNode) {loading.parentNode.removeChild(loading)}
                 }, 500);
             }
-        });
+        }, 200);
 
         document.querySelectorAll(".product img, .searchbutton").forEach(function(el) {el.classList.add("clickable")});
 
