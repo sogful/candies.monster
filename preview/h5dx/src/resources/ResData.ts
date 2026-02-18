@@ -675,5 +675,9 @@ RES_DATA[ResourceId.IMG_OBJ_CANDY_51] = new ResEntry("candies/obj_candy_51_extra
     atlasPath: "candies/obj_candy_51_extracted.json",
     atlasFormat: "texture-packer",
 });
+RES_DATA[ResourceId.IMG_OBJ_CANDY_52] = new ResEntry("candies/obj_candy_52_extracted.webp", ResourceType.IMAGE, {
+    atlasPath: "candies/obj_candy_52_extracted.json",
+    atlasFormat: "texture-packer",
+});
 
 export default RES_DATA;
