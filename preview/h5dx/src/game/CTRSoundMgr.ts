@@ -21,6 +21,7 @@ class SoundManager {
             loopFn: () => void;
         }
     >;
+    forceMusicOff: boolean;
 
     constructor() {
         this.audioPaused = false;
@@ -32,6 +33,7 @@ class SoundManager {
 
         this.currentGameMusicId = ResourceId.SND_GAME_MUSIC;
         this.loopingSounds = new Map(); // Track looping sound state by instance
+        this.forceMusicOff = false;
         
         // Subscribe to XMAS changes to update music library
         PubSub.subscribe(PubSub.ChannelId.XmasChanged, (isXmas: boolean) => {
@@ -255,7 +257,7 @@ class SoundManager {
 
         this.musicId = soundId;
 
-        if (this.musicEnabled && !Sounds.isPlaying(soundId)) {
+        if (this.musicEnabled && !this.forceMusicOff && !Sounds.isPlaying(soundId)) {
             const offset = this.musicResumeOffset || 0;
             this.musicResumeOffset = 0;
             Sounds.setVolume(soundId, 70);
@@ -307,7 +309,7 @@ class SoundManager {
     }
 
     resumeMusic() {
-        if (this.musicId && !Sounds.isPlaying(this.musicId)) {
+        if (this.musicId && !Sounds.isPlaying(this.musicId) && !this.forceMusicOff) {
             this.playMusic(this.musicId);
         }
     }
@@ -320,6 +322,13 @@ class SoundManager {
     }
 
     setMusicEnabled(musicEnabled: boolean) {
+        if (this.forceMusicOff && musicEnabled) {
+            this.musicEnabled = false;
+            settings.setMusicEnabled(false);
+            this.pauseMusic();
+            return;
+        }
+
         this.musicEnabled = musicEnabled;
         settings.setMusicEnabled(musicEnabled);
         if (this.musicEnabled) {
@@ -339,6 +348,12 @@ class SoundManager {
             for (const soundId of soundIds) {
                 this.stopLoopedSound(soundId);
             }
+        }
+    }
+    setForceMusicOff(forceOff: boolean) {
+        this.forceMusicOff = forceOff;
+        if (forceOff) {
+            this.setMusicEnabled(false);
         }
     }
 }

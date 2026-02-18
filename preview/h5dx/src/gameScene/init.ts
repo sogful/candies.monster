@@ -17,6 +17,7 @@ import { getIsXmas, IS_JANUARY } from "@/utils/SpecialEvents";
 import PubSub from "@/utils/PubSub";
 import resolution from "@/resolution";
 import LangId from "@/resources/LangId";
+import QueryStrings from "@/ui/QueryStrings";
 import type Texture2D from "@/core/Texture2D";
 import type FingerCut from "@/game/FingerCut";
 import type EarthImage from "@/game/EarthImage";
@@ -443,6 +444,17 @@ abstract class GameSceneInit extends BaseElement {
     protected abstract playRegularIdleAfterPaddington(): void;
 
     getCandyResourceId(): number {
+        if (QueryStrings.candy != null) {
+            const candyNum = QueryStrings.candy;
+            if (candyNum >= 1 && candyNum <= 51) {
+                if (candyNum === 1) {
+                    return ResourceId.IMG_OBJ_CANDY_01;
+                } else {
+                    return (ResourceId.IMG_OBJ_CANDY_02 as number) + (candyNum - 2);
+                }
+            }
+        }
+        
         const boxType = edition.boxTypes?.[LevelState.pack];
         const isHolidayBox = boxType === BoxType.HOLIDAY;
         return IS_JANUARY && isHolidayBox

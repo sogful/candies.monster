@@ -9,9 +9,13 @@ const getQueryStrings = () => {
 
     for (let i = 0, len = keyValues.length; i < len; i++) {
         const kv = keyValues[i]?.split("=");
-        if (kv && kv.length > 1 && kv[0] && kv[1]) {
-            assoc[decode(kv[0])] = decode(kv[1]);
+        if (!kv || !kv[0]) {
+            continue;
         }
+
+        const key = decode(kv[0]);
+        const value = kv.length > 1 ? decode(kv.slice(1).join("=")) : "";
+        assoc[key] = value;
     }
     return assoc;
 };
@@ -32,24 +36,44 @@ class QueryStrings {
         return window.location.href.toLowerCase().includes(val.toLowerCase());
     }
 
-    /**
-     * Parse a numeric parameter.
-     */
     static #getInt(key: string): number | null {
         const raw = QueryStrings.#params[key];
         return raw == null || raw === "" ? null : parseInt(raw, 10);
     }
 
-    /**
-     * Evaluate a boolean flag encoded as `flagName=true`.
-     */
+
     static #getFlag(flagName: string): boolean {
-        return QueryStrings.#urlContains(`${flagName}=true`);
+        const raw = QueryStrings.#params[flagName];
+
+        if (raw != null) {
+            const value = raw.toLowerCase();
+            return value === "true" || value === "1" || value === "";
+        }
+
+        const href = window.location.href.toLowerCase();
+        const key = flagName.toLowerCase();
+
+        if (href.includes(`${key}=true`)) {
+            return true;
+        }
+        const candidates = [`?${key}`, `&${key}`];
+
+        return candidates.some((pattern) => {
+            const idx = href.indexOf(pattern);
+            if (idx === -1) {
+                return false;
+            }
+
+            const nextChar = href[idx + pattern.length] ?? "";
+            return nextChar === "" || nextChar === "&" || nextChar === "#";
+        });
     }
 
     static lang: string | undefined = QueryStrings.#params["lang"];
 
     static showBoxBackgrounds: boolean = QueryStrings.#getFlag("boxBackgrounds");
+
+    static disableMusic: boolean = QueryStrings.#getFlag("nomusic");
 
     static showFrameRate = Boolean(
         import.meta.env.DEV || QueryStrings.#getFlag("showFrameRate")
@@ -78,6 +102,8 @@ class QueryStrings {
     static box: number | null = QueryStrings.#getInt("box");
 
     static level: number | null = QueryStrings.#getInt("level");
+
+    static candy: number | null = QueryStrings.#getInt("candy");
 }
 
 export default QueryStrings;

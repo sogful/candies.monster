@@ -628,9 +628,12 @@
         /*//////////////////////////////////////////////////////////////////////*/
 
         (async function () {
+            
             const urlparam = new URLSearchParams(window.location.search);
             if (urlparam.has("noui")) {document.body.classList.add("noui")}
             if (urlparam.has("shareonly")) {document.body.classList.add("shareonly")}
+            const levelnomusic = urlparam.has("nomusic");
+            const levelcandy = urlparam.get("candy");
 
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
@@ -1289,9 +1292,9 @@
 
             function buildgameurl(path) {
                 const url = new URL(path, window.location.origin);
-                if (levelbase64) {
-                    url.searchParams.set("data", levelbase64);
-                }
+                if (levelbase64) {url.searchParams.set("data", levelbase64)}
+                if (levelnomusic) {url.searchParams.set("nomusic", "")}
+                if (levelcandy) {url.searchParams.set("candy", levelcandy)}
                 url.searchParams.set("_", Date.now().toString());
                 return url.toString();
             }

@@ -1,4 +1,19 @@
 import ResourceId from "@/resources/ResourceId";
+import QueryStrings from "@/ui/QueryStrings";
+
+function getCandyResourceId(): number | null {
+    if (QueryStrings.candy != null) {
+        const candyNum = QueryStrings.candy;
+        if (candyNum >= 1 && candyNum <= 51) {
+            if (candyNum === 1) {
+                return ResourceId.IMG_OBJ_CANDY_01;
+            } else {
+                return (ResourceId.IMG_OBJ_CANDY_02 as number) + (candyNum - 2);
+            }
+        }
+    }
+    return null;
+}
 
 class ResourcePacks {
     // --- Menu sounds ---
@@ -14,47 +29,56 @@ class ResourcePacks {
     ];
 
     // --- Standard game images ---
-    static StandardGameImages = [
-        ResourceId.IMG_CHAR_ANIMATIONS,
-        ResourceId.IMG_CHAR_ANIMATIONS2,
-        ResourceId.IMG_CHAR_ANIMATIONS3,
-        ResourceId.IMG_CHAR_ANIMATIONS_SLEEPING,
-        ResourceId.IMG_CHAR_GREETINGS_XMAS,
-        ResourceId.IMG_CHAR_IDLE_XMAS,
-        ResourceId.IMG_XMAS_LIGHTS,
-        ResourceId.IMG_OBJ_HOOK_01,
-        ResourceId.IMG_OBJ_HOOK_02,
-        ResourceId.IMG_OBJ_HOOK_AUTO,
-        ResourceId.IMG_OBJ_CANDY_01,
-        ResourceId.IMG_OBJ_BOUNCER_01,
-        ResourceId.IMG_OBJ_BOUNCER_02,
-        ResourceId.IMG_OBJ_BUBBLE_ATTACHED,
-        ResourceId.IMG_OBJ_BUBBLE_FLIGHT,
-        ResourceId.IMG_OBJ_BUBBLE_POP,
-        ResourceId.IMG_OBJ_PUMP,
-        ResourceId.IMG_OBJ_GAP,
-        ResourceId.IMG_OBJ_SPIDER,
-        ResourceId.IMG_OBJ_SPIKES_01,
-        ResourceId.IMG_OBJ_SPIKES_02,
-        ResourceId.IMG_OBJ_SPIKES_03,
-        ResourceId.IMG_OBJ_SPIKES_04,
-        ResourceId.IMG_OBJ_STAR_IDLE,
-        ResourceId.IMG_OBJ_STAR_NIGHT,
-        ResourceId.IMG_OBJ_STAR_DISAPPEAR,
-        ResourceId.IMG_HUD_STAR,
-        ResourceId.IMG_TUTORIAL_SIGNS,
-        ResourceId.IMG_DRAWING_HIDDEN,
-        ResourceId.IMG_CHAR_SUPPORTS,
-        ResourceId.IMG_CHAR_SUPPORTS_XMAS,
-        ResourceId.IMG_OBJ_CANDY_PADDINGTON,
-        ResourceId.IMG_SNOWFLAKES,
-        ResourceId.IMG_CONFETTI_PARTICLES,
-        ResourceId.IMG_OBJ_GHOST,
-        ResourceId.IMG_OBJ_PIPE,
-        ResourceId.IMG_OBJ_LANTERN,
-        ResourceId.IMG_OBJ_LIGHTER,
-        ResourceId.IMG_OBJ_TRANSPORTER,
-    ];
+    static StandardGameImages = (() => {
+        const base = [
+            ResourceId.IMG_CHAR_ANIMATIONS,
+            ResourceId.IMG_CHAR_ANIMATIONS2,
+            ResourceId.IMG_CHAR_ANIMATIONS3,
+            ResourceId.IMG_CHAR_ANIMATIONS_SLEEPING,
+            ResourceId.IMG_CHAR_GREETINGS_XMAS,
+            ResourceId.IMG_CHAR_IDLE_XMAS,
+            ResourceId.IMG_XMAS_LIGHTS,
+            ResourceId.IMG_OBJ_HOOK_01,
+            ResourceId.IMG_OBJ_HOOK_02,
+            ResourceId.IMG_OBJ_HOOK_AUTO,
+            ResourceId.IMG_OBJ_CANDY_01,
+            ResourceId.IMG_OBJ_BOUNCER_01,
+            ResourceId.IMG_OBJ_BOUNCER_02,
+            ResourceId.IMG_OBJ_BUBBLE_ATTACHED,
+            ResourceId.IMG_OBJ_BUBBLE_FLIGHT,
+            ResourceId.IMG_OBJ_BUBBLE_POP,
+            ResourceId.IMG_OBJ_PUMP,
+            ResourceId.IMG_OBJ_GAP,
+            ResourceId.IMG_OBJ_SPIDER,
+            ResourceId.IMG_OBJ_SPIKES_01,
+            ResourceId.IMG_OBJ_SPIKES_02,
+            ResourceId.IMG_OBJ_SPIKES_03,
+            ResourceId.IMG_OBJ_SPIKES_04,
+            ResourceId.IMG_OBJ_STAR_IDLE,
+            ResourceId.IMG_OBJ_STAR_NIGHT,
+            ResourceId.IMG_OBJ_STAR_DISAPPEAR,
+            ResourceId.IMG_HUD_STAR,
+            ResourceId.IMG_TUTORIAL_SIGNS,
+            ResourceId.IMG_DRAWING_HIDDEN,
+            ResourceId.IMG_CHAR_SUPPORTS,
+            ResourceId.IMG_CHAR_SUPPORTS_XMAS,
+            ResourceId.IMG_OBJ_CANDY_PADDINGTON,
+            ResourceId.IMG_SNOWFLAKES,
+            ResourceId.IMG_CONFETTI_PARTICLES,
+            ResourceId.IMG_OBJ_GHOST,
+            ResourceId.IMG_OBJ_PIPE,
+            ResourceId.IMG_OBJ_LANTERN,
+            ResourceId.IMG_OBJ_LIGHTER,
+            ResourceId.IMG_OBJ_TRANSPORTER,
+        ];
+        
+        const candyResId = getCandyResourceId();
+        if (candyResId != null && !base.includes(candyResId)) {
+            base.push(candyResId);
+        }
+        
+        return base;
+    })();
 
     // -- Game resources for Round 5 promo --
     static Round5AdditionalGameImages = [ResourceId.IMG_OBJ_BEE_HD, ResourceId.IMG_OBJ_POLLEN_HD];

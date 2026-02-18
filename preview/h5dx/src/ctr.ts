@@ -1,7 +1,7 @@
 import App from "@/app";
 import platform from "@/config/platforms/platform-web";
 import "@/game/CTRRootController";
-import "@/game/CTRSoundMgr";
+import SoundMgr from "@/game/CTRSoundMgr";
 import CTRSettings from "@/game/CTRSettings";
 import QueryStrings from "@/ui/QueryStrings";
 
@@ -12,6 +12,10 @@ if (hasCustomLevel) {
     // Use box 1 for custom levels (box 0 has unique theming that doesn't work with custom levels)
     QueryStrings.box = 1;
     QueryStrings.level = 1;
+}
+
+if (QueryStrings.disableMusic) {
+    SoundMgr.setForceMusicOff(true);
 }
 
 window.addEventListener("contextmenu", (event) => {
