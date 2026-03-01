@@ -263,7 +263,7 @@
         <br>
         This tool attempts to do the <i>zstd/zlib</i> decompression in the comfort of your browser to avoid that headache.
         <br></i></span>
-        <span class="tiny">IOS, large and split (.raw1 - .raw8) files do not work yet. Please<a href="https://github.com/sogful/candies.monster">contribute</a>if you have a solution!<br><br></span>
+        <span class="tiny">Large and split (.raw1 - .raw8) files do not work yet. Please<a href="https://github.com/sogful/candies.monster/pulls?q=sort%3Aupdated-desc+is%3Apr">contribute</a>if you have a solution!<br><br></span>
         <span class="tiny">For .xnb sprites, see<a href="https://github.com/LeonBlade/xnbcli">xnbcli</a>or<a href="https://lybell-art.github.io/xnb-js/">Web XNB Converter.</a></span>
         <span class="tiny">For .xnb audio, see<a href="//candies.monster/assets/static/XNBSoundConverter.exe">XNBSoundConverter</a>(to wav) and<a href="https://github.com/JavidPack/WAVToXNBSoundConverter">WAVToXNBSoundConverter</a>(to xnb). You can also directly play and convert .xnb audio with<a href="https://vgmstream.org/">vgmstream.</a></span>
 
@@ -749,7 +749,7 @@
                  const zipblob = await zip.generateAsync({type: "blob", compression: "DEFLATE"});
                  const uniqueid = idgen();
                  savefile(zipblob, `FeedwithCandy_${uniqueid}.zip`);
-                 progressinfo.textContent = "Done! Remember to rename .pngs back to .raws after editing.";
+                 progressinfo.textContent = "Done! Remember to rename the .pngs back to .raws after editing.";
             }
 
             async function handlesingle(file){
@@ -768,7 +768,7 @@
                          progressinfo.textContent = "Done with warnings! Check errors for details.";
                      } else {
                          setcounts(1, 0, 0);
-                         progressinfo.textContent = "Done! Remember to rename .png back to .raw after editing.";
+                         progressinfo.textContent = "Done! Remember to rename the .png back to .raw after editing.";
                      }
                  } catch (e){
                     setcounts(0, 1, 0);

@@ -1,13 +1,121 @@
-"""Decrypt ZeptoLab's custom RAW format to PNG"""
+"""Decrypt ZeptoLab's custom RAW format to PNG
 
+Based on decompiled ResourceMgr/Texture2D code:
+- Header variants used by loaders:
+  - bytes[2:4]  -> width  (little-endian u16)
+  - bytes[4:6]  -> height (little-endian u16)
+  - byte[6]     -> pixel format enum (0..4)
+  - Experiments HD: bytes[7:] is raw pixel payload
+  - Time Travel HD: 15-byte header + zlib payload
+"""
+
+import struct
 import zlib
 import sys
 from pathlib import Path
 import zstandard as zstd
 
 
+BYTES_PER_PIXEL = {
+    0: 4,  # RGBA8888
+    1: 2,  # RGB565
+    2: 2,  # RGBA4444
+    3: 2,  # RGBA5551
+    4: 1,  # A8
+}
+
+
+def u8_from_n(v: int, bits: int) -> int:
+    max_in = (1 << bits) - 1
+    return (v * 255 + (max_in // 2)) // max_in
+
+
+def unpremultiply_rgba8888(data: bytes) -> bytes:
+    out = bytearray(len(data))
+    for i in range(0, len(data), 4):
+        r = data[i]
+        g = data[i + 1]
+        b = data[i + 2]
+        a = data[i + 3]
+        if a == 0:
+            out[i : i + 4] = b"\x00\x00\x00\x00"
+            continue
+        if a < 255:
+            r = min(255, (r * 255 + (a // 2)) // a)
+            g = min(255, (g * 255 + (a // 2)) // a)
+            b = min(255, (b * 255 + (a // 2)) // a)
+        out[i : i + 4] = bytes((r, g, b, a))
+    return bytes(out)
+
+
+def decode_fmt_565(data: bytes, w: int, h: int) -> bytes:
+    out = bytearray(w * h * 4)
+    o = 0
+    for (p,) in struct.iter_unpack("<H", data):
+        r = u8_from_n((p >> 11) & 0x1F, 5)
+        g = u8_from_n((p >> 5) & 0x3F, 6)
+        b = u8_from_n(p & 0x1F, 5)
+        out[o : o + 4] = bytes((r, g, b, 255))
+        o += 4
+    return bytes(out)
+
+
+def decode_fmt_4444(data: bytes, w: int, h: int) -> bytes:
+    out = bytearray(w * h * 4)
+    o = 0
+    for (p,) in struct.iter_unpack("<H", data):
+        r = u8_from_n((p >> 12) & 0xF, 4)
+        g = u8_from_n((p >> 8) & 0xF, 4)
+        b = u8_from_n((p >> 4) & 0xF, 4)
+        a = u8_from_n(p & 0xF, 4)
+        out[o : o + 4] = bytes((r, g, b, a))
+        o += 4
+    return bytes(out)
+
+
+def decode_fmt_5551(data: bytes, w: int, h: int) -> bytes:
+    out = bytearray(w * h * 4)
+    o = 0
+    for (p,) in struct.iter_unpack("<H", data):
+        r = u8_from_n((p >> 11) & 0x1F, 5)
+        g = u8_from_n((p >> 6) & 0x1F, 5)
+        b = u8_from_n((p >> 1) & 0x1F, 5)
+        a = 255 if (p & 0x1) else 0
+        out[o : o + 4] = bytes((r, g, b, a))
+        o += 4
+    return bytes(out)
+
+
+def decode_fmt_a8(data: bytes, w: int, h: int) -> bytes:
+    out = bytearray(w * h * 4)
+    o = 0
+    for a in data:
+        out[o : o + 4] = bytes((255, 255, 255, a))
+        o += 4
+    return bytes(out)
+
+
+def _rgba4444_to_rgba8888(buf):
+    out = bytearray(len(buf) * 2)
+    j = 0
+    for i in range(0, len(buf), 2):
+        v = buf[i] | (buf[i + 1] << 8)
+
+        r = ((v >> 12) & 0xF) * 17
+        g = ((v >> 8) & 0xF) * 17
+        b = ((v >> 4) & 0xF) * 17
+        a = (v & 0xF) * 17
+
+        out[j] = r
+        out[j + 1] = g
+        out[j + 2] = b
+        out[j + 3] = a
+        j += 4
+
+    return bytes(out)
+
+
 def _decompress_payload(data):
-    """Find and decompress payload using zstd or zlib."""
     zstd_magic = b"\x28\xb5\x2f\xfd"
 
     # Try Zstandard first
@@ -32,26 +140,6 @@ def _decompress_payload(data):
     raise ValueError("could not decompress data with zstd or zlib")
 
 
-def _rgba4444_to_rgba8888(buf):
-    out = bytearray(len(buf) * 2)
-    j = 0
-    for i in range(0, len(buf), 2):
-        v = buf[i] | (buf[i + 1] << 8)
-
-        r = ((v >> 12) & 0xF) * 17
-        g = ((v >> 8) & 0xF) * 17
-        b = ((v >> 4) & 0xF) * 17
-        a = (v & 0xF) * 17
-
-        out[j] = r
-        out[j + 1] = g
-        out[j + 2] = b
-        out[j + 3] = a
-        j += 4
-
-    return bytes(out)
-
-
 def decryptrawpy(data):
     # normalize to bytes
     if hasattr(data, "tobytes"):
@@ -60,7 +148,7 @@ def decryptrawpy(data):
         data = bytes(data)
 
     # parse header
-    if len(data) < 16:
+    if len(data) < 7:
         raise ValueError("file too small")
 
     magic = int.from_bytes(data[0:2], "little")
@@ -76,7 +164,44 @@ def decryptrawpy(data):
     # --- Variant A: 07BC = RAW RGBA (iOS HD) ------------------------------------
     if magic == 0x07BC:
         expected_rgba = width * height * 4
-        payload = data[16:]
+        # Check if this uses the new format with pixel format enum
+        if len(data) >= 7:
+            pixel_format = data[6]
+            if pixel_format in BYTES_PER_PIXEL:
+                # New format: byte[6] is pixel format enum
+                print(f"Pixel format enum: {pixel_format}")
+                payload = data[7:]
+                expected = width * height * BYTES_PER_PIXEL[pixel_format]
+                
+                if len(payload) < expected:
+                    payload = payload + bytes(expected - len(payload))
+                payload = payload[:expected]
+                
+                if pixel_format == 0:
+                    pixels = payload
+                elif pixel_format == 1:
+                    pixels = decode_fmt_565(payload, width, height)
+                elif pixel_format == 2:
+                    pixels = decode_fmt_4444(payload, width, height)
+                elif pixel_format == 3:
+                    pixels = decode_fmt_5551(payload, width, height)
+                else:  # pixel_format == 4
+                    pixels = decode_fmt_a8(payload, width, height)
+                
+                # Unpremultiply for formats that may have premultiplied alpha
+                if pixel_format in (0, 2, 3):
+                    pixels = unpremultiply_rgba8888(pixels)
+                
+                return {
+                    "width": width,
+                    "height": height,
+                    "pixels": pixels,
+                    "magic": magic,
+                    "used_fallback": False,
+                }
+        
+        # Legacy format: raw RGBA starting at byte 16
+        payload = data[16:] if len(data) >= 16 else data[7:]
 
         # Pad if necessary
         if len(payload) < expected_rgba:
@@ -136,6 +261,66 @@ def decryptrawpy(data):
 
     # --- Compressed variants: 07BD and 08BD ---------------------------------
     if magic in (0x07BD, 0x08BD):
+        # Check for 15-byte header format (Time Travel HD)
+        if len(data) >= 15:
+            pixel_format = data[6]
+            if pixel_format in BYTES_PER_PIXEL:
+                # New format: 15-byte header with pixel format enum
+                out_len = int.from_bytes(data[7:11], "little")
+                comp_len = int.from_bytes(data[11:15], "little")
+                
+                print(f"Pixel format enum: {pixel_format}")
+                print(f"Expected decompressed size: {out_len} bytes")
+                print(f"Compressed size: {comp_len} bytes")
+                
+                comp = data[15:]
+                if len(comp) < comp_len:
+                    raise ValueError(
+                        f"Compressed payload too short: need {comp_len} bytes, got {len(comp)} bytes"
+                    )
+                
+                try:
+                    decompressed = zlib.decompress(comp[:comp_len])
+                except zlib.error:
+                    # Fallback to old decompression method
+                    decompressed, ctype = _decompress_payload(data)
+                    print(f"Compression: {ctype} (fallback)")
+                else:
+                    print(f"Compression: zlib")
+                    if out_len and len(decompressed) != out_len:
+                        print(f"Warning: Decompressed size mismatch: header {out_len}, actual {len(decompressed)}")
+                
+                print(f"Decompressed size: {len(decompressed):,} bytes")
+                
+                expected = width * height * BYTES_PER_PIXEL[pixel_format]
+                if len(decompressed) < expected:
+                    decompressed = decompressed + bytes(expected - len(decompressed))
+                payload = decompressed[:expected]
+                
+                if pixel_format == 0:
+                    pixels = payload
+                elif pixel_format == 1:
+                    pixels = decode_fmt_565(payload, width, height)
+                elif pixel_format == 2:
+                    pixels = decode_fmt_4444(payload, width, height)
+                elif pixel_format == 3:
+                    pixels = decode_fmt_5551(payload, width, height)
+                else:  # pixel_format == 4
+                    pixels = decode_fmt_a8(payload, width, height)
+                
+                # Unpremultiply for formats that may have premultiplied alpha
+                if pixel_format in (0, 2, 3):
+                    pixels = unpremultiply_rgba8888(pixels)
+                
+                return {
+                    "width": width,
+                    "height": height,
+                    "pixels": pixels,
+                    "magic": magic,
+                    "used_fallback": False,
+                }
+        
+        # Legacy format: scan for compressed payload
         decompressed, ctype = _decompress_payload(data)
         print(f"Compression: {ctype}")
         print(f"Decompressed size: {len(decompressed):,} bytes")
