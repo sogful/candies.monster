@@ -34,14 +34,14 @@
             background-position: center center;
             background-repeat: no-repeat; background-size: cover;
 
-            cursor: /*universal*/ url("/assets/static/idle.cur"), auto;
+            cursor: /*universal*/ url("//candies.monster/assets/static/idle.cur"), auto !important;
         }
         body:active, body:focus, body:focus-within, body:target, body:active * {
-            cursor: /*universal*/ url("/assets/static/active.cur"), auto; 
+            cursor: /*universal*/ url("//candies.monster/assets/static/active.cur"), auto; 
         }
         :any-link {
             color: #8feeff; text-decoration: none !important;
-            cursor: url("/assets/static/link.cur"), default !important;
+            cursor: url("//candies.monster/assets/static/link.cur"), default !important;
         }
         * {
             cursor: inherit !important;  
@@ -143,8 +143,7 @@
             position: absolute; display: flex;
             align-items: center; justify-content: center;
             top: 0.5em; left: 0.5em; z-index: 11111;
-            background: none; border: none;
-            cursor: url("//candies.monster/assets/static/link.cur"), default !important; width: 50px; 
+            background: none; border: none; width: 50px; 
             padding: 0 !important; margin: 0 !important
         }
         .backbutton img {
@@ -171,7 +170,7 @@
 
     <div class="page">
         <a class="backbutton clickable" href="/">
-            <img src="/comics/assets/images/back.png">
+            <img src="https://candies.monster/assets/images/back.png" crossorigin="anonymous">
         </a>
         <noscript><style>.notfound {opacity: 1} .subtitles, .silly {display: none}</style></noscript>
 
@@ -182,8 +181,8 @@
     </div>
 
     <div class="subtitles" aria-live="polite" aria-atomic="true"></div>
-    <audio class="nightmail" preload="auto">
-        <source src="/assets/audio/nightmailbypmfour.ogg" type="audio/ogg">
+    <audio class="nightmail" preload="auto" crossorigin="anonymous">
+        <source src="https://candies.monster/assets/audio/nightmailbypmfour.ogg" type="audio/ogg">
     </audio>
 
     <script>
@@ -192,9 +191,9 @@
             if (!canvas || !canvas.getContext) return;
             const ctx = canvas.getContext("2d");
 
-            const faceimg = new Image(); faceimg.src = "/assets/images/404/face.webp";
-            const bodyimg = new Image(); bodyimg.src = "/assets/images/404/body.webp";
-            const maskimg = new Image(); maskimg.src = "/assets/images/404/mask.webp";
+            const faceimg = new Image(); faceimg.crossOrigin = "anonymous"; faceimg.src = "https://candies.monster/assets/images/404/face.webp";
+            const bodyimg = new Image(); bodyimg.crossOrigin = "anonymous"; bodyimg.src = "https://candies.monster/assets/images/404/body.webp";
+            const maskimg = new Image(); maskimg.crossOrigin = "anonymous"; maskimg.src = "https://candies.monster/assets/images/404/mask.webp";
 
             const facecanvas = document.createElement("canvas");
             const facectx = facecanvas.getContext("2d");
@@ -303,7 +302,7 @@
                 }; return out;
             }
 
-            fetch("/assets/static/nightmail.srt")
+            fetch("https://candies.monster/assets/static/nightmail.srt")
                 .then(res => res.text())
                 .then(text => { cues = parsesrt(text); })
                 .catch(() => { cues = []; });
@@ -320,7 +319,7 @@
             let starttime = 0.02;
 
             function loadbuffer() {
-                return fetch("/assets/audio/nightmailbypmfour.ogg")
+                return fetch("https://candies.monster/assets/audio/nightmailbypmfour.ogg")
                     .then(res => res.arrayBuffer())
                     .then(data =>
                         new Promise((resolve, reject) => {
