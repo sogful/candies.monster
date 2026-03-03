@@ -48,7 +48,6 @@
             scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
         }
         *::-webkit-scrollbar {width: 0px}
-        a {margin: 1em}
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -61,17 +60,83 @@
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
         }
-        .sad {
-            -webkit-filter: 
-                drop-shadow(2px 2px 0 white) drop-shadow(-2px 2px 0 white)
-                drop-shadow(2px 0px 0 white) drop-shadow(-2px 0px 0 white)
-                drop-shadow(2px 2px 0 black) drop-shadow(-2px 2px 0 black)
-                drop-shadow(2px 0px 0 black) drop-shadow(-2px 0px 0 black);
-            filter: 
-                drop-shadow(2px 2px 0 white) drop-shadow(-2px 2px 0 white)
-                drop-shadow(2px 0px 0 white) drop-shadow(-2px 0px 0 white)
-                drop-shadow(2px 2px 0 black) drop-shadow(-2px 2px 0 black)
-                drop-shadow(2px 0px 0 black) drop-shadow(-2px 0px 0 black);
+        .notfound {
+            margin: 1em; height: 50vh; max-width: 80vw;
+            display: inline-flex; opacity: 0.15;
+            align-items: center; justify-content: center;
+            font-size: calc(0.5 * 50vh); z-index: -67;
+            -webkit-text-stroke: 0.125em black;
+            paint-order: stroke fill;
+        }
+        
+        .silly {
+            position: absolute;
+            animation: silly 1.7665s linear infinite;
+            transform-origin: center center;
+            overflow: hidden;
+        }
+        .silly canvas {
+            width: 100%; height: 100%;
+            display: block;
+        }
+
+        /* done using a web interface which let me move a placeholder element frame by frame to effectively trace any video and export the result as css keyframes.
+        the scale squishes had to be tweaked to be 2x stronger but this still ended up good! 
+        maybe i'll fix that vibecoded slop and commit it to my main website */
+        @keyframes silly {
+            0% {width: 160px; height: 160px; transform: translate(158px, 37px) scale(1.3352, 1.1008)}
+            1.89% {width: 160px; height: 160px; transform: translate(156px, -11px) scale(1.3352, 1.1008)}
+            5.66% {width: 160px; height: 160px; transform: translate(147px, -36px) scale(1.0904, 1.1478)}
+            7.39% {width: 160px; height: 160px; transform: translate(143px, -52px) scale(1.0904, 1.1478)}
+            9.23% {width: 160px; height: 160px; transform: translate(137px, -59px) scale(1.0904, 1.1478)}
+            11.13% {width: 160px; height: 160px; transform: translate(127px, -67px) scale(1.0904, 1.1478)}
+            13.03% {width: 160px; height: 160px; transform: translate(110px, -72px) scale(1.0904, 1.1478)}
+            14.74% {width: 160px; height: 160px; transform: translate(103px, -71px) scale(1.0904, 1.1478)}
+            16.64% {width: 160px; height: 160px; transform: translate(88px, -71px) scale(1.0904, 1.1478)}
+            18.53% {width: 160px; height: 160px; transform: translate(64px, -59px) scale(1.0904, 1.1478)}
+            20.43% {width: 160px; height: 160px; transform: translate(52px, -46px) scale(1.0904, 1.1478)}
+            22.33% {width: 160px; height: 160px; transform: translate(28px, -17px) scale(1.0904, 1.1478)}
+            24.17% {width: 160px; height: 160px; transform: translate(1px, 36px) scale(1.3076, 1.1478)}
+            26.07% {width: 160px; height: 160px; transform: translate(-13px, 19px) scale(1.3076, 1.1478)}
+            27.96% {width: 160px; height: 160px; transform: translate(-40px, -10px) scale(1.1572, 1.1478)}
+            29.86% {width: 160px; height: 160px; transform: translate(-66px, -35px) scale(1.1052, 1.1478)}
+            31.76% {width: 160px; height: 160px; transform: translate(-77px, -44px) scale(1.1052, 1.1478)}
+            33.59% {width: 160px; height: 160px; transform: translate(-97px, -57px) scale(1.1052, 1.1478)}
+            35.49% {width: 160px; height: 160px; transform: translate(-114px, -66px) scale(1.1052, 1.1478)}
+            37.39% {width: 160px; height: 160px; transform: translate(-124px, -68px) scale(1.1052, 1.1478)}
+            39.28% {width: 160px; height: 160px; transform: translate(-137px, -68px) scale(1.1052, 1.1478)}
+            41.18% {width: 160px; height: 160px; transform: translate(-148px, -67px) scale(1.1052, 1.1478)}
+            43.07% {width: 160px; height: 160px; transform: translate(-153px, -62px) scale(1.1052, 1.1478)}
+            44.97% {width: 160px; height: 160px; transform: translate(-161px, -46px) scale(1.1052, 1.1478)}
+            46.87% {width: 160px; height: 160px; transform: translate(-168px, -16px) scale(1.1052, 1.1478)}
+            48.77% {width: 160px; height: 160px; transform: translate(-169px, 8px) scale(1.1052, 1.1478)}
+            50.66% {width: 160px; height: 160px; transform: translate(-171px, 18px) scale(1.255, 1.1478)}
+            52.56% {width: 160px; height: 160px; transform: translate(-167px, -8px) scale(1.255, 1.1478)}
+            54.46% {width: 160px; height: 160px; transform: translate(-167px, -23px) scale(1.255, 1.1478)}
+            56.36% {width: 160px; height: 160px; transform: translate(-163px, -44px) scale(1.0894, 1.1478)}
+            58.25% {width: 160px; height: 160px; transform: translate(-154px, -56px) scale(1.0894, 1.1478)}
+            60.15% {width: 160px; height: 160px; transform: translate(-150px, -62px) scale(1.0894, 1.1478)}
+            62.05% {width: 160px; height: 160px; transform: translate(-141px, -69px) scale(1.0894, 1.1478)}
+            63.95% {width: 160px; height: 160px; transform: translate(-125px, -69px) scale(1.0894, 1.1478)}
+            65.84% {width: 160px; height: 160px; transform: translate(-119px, -69px) scale(1.0894, 1.1478)}
+            67.74% {width: 160px; height: 160px; transform: translate(-100px, -64px) scale(1.0894, 1.1478)}
+            69.64% {width: 160px; height: 160px; transform: translate(-82px, -44px) scale(1.0894, 1.1478)}
+            71.54% {width: 160px; height: 160px; transform: translate(-69px, -34px) scale(1.0894, 1.1478)}
+            73.43% {width: 160px; height: 160px; transform: translate(-46px, 6px) scale(1.2386, 1.1478)}
+            75.33% {width: 160px; height: 160px; transform: translate(-20px, 19px) scale(1.256, 1.1478)}
+            77.23% {width: 160px; height: 160px; transform: translate(-8px, 2px) scale(1.0968, 1.1478)}
+            79.12% {width: 160px; height: 160px; transform: translate(20px, -23px) scale(1.0968, 1.1478)}
+            81.02% {width: 160px; height: 160px; transform: translate(46px, -43px) scale(1.0968, 1.1478)}
+            82.92% {width: 160px; height: 160px; transform: translate(57px, -50px) scale(1.0968, 1.1478)}
+            84.82% {width: 160px; height: 160px; transform: translate(77px, -62px) scale(1.0968, 1.1478)}
+            86.71% {width: 160px; height: 160px; transform: translate(97px, -67px) scale(1.0968, 1.1478)}
+            88.61% {width: 160px; height: 160px; transform: translate(104px, -68px) scale(1.0968, 1.1478)}
+            90.51% {width: 160px; height: 160px; transform: translate(120px, -71px) scale(1.0968, 1.1478)}
+            92.41% {width: 160px; height: 160px; transform: translate(131px, -66px) scale(1.0968, 1.1478)}
+            94.3% {width: 160px; height: 160px; transform: translate(138px, -58px) scale(1.0968, 1.1478)}
+            96.2% {width: 160px; height: 160px; transform: translate(145px, -37px) scale(1.223, 1.1478)}
+            98.1% {width: 160px; height: 160px; transform: translate(153px, 6px) scale(1.223, 1.1478)}
+            100% {width: 160px; height: 160px; transform: translate(155px, 38px) scale(1.3384, 1.1478)}
         }
 
         .backbutton {
@@ -87,18 +152,227 @@
             height: 100%;
         }
 
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .subtitles {
+            position: fixed;
+            left: 0; bottom: 0.75em;
+            width: 100%;
+            text-align: center; pointer-events: none;
+            color: white; font-size: 2em;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="page">
         <a class="backbutton clickable" href="/">
-            <img src="//candies.monster/comics/assets/images/back.png">
+            <img src="/comics/assets/images/back.png">
         </a>
+        <noscript><style>.notfound {opacity: 1} .subtitles, .silly {display: none}</style></noscript>
 
-        <img class="sad" src="//candies.monster/assets/images/404.gif" title="om nom with a sad expression.">
-        <a>This page doesn't exist..</a>
+        <div class="silly">
+            <canvas width="160" height="160"></canvas>
+        </div>
+        <a class="notfound">404</a>
     </div>
-    
+
+    <div class="subtitles" aria-live="polite" aria-atomic="true"></div>
+    <audio class="nightmail" preload="auto">
+        <source src="/assets/audio/nightmailbypmfour.ogg" type="audio/ogg">
+    </audio>
+
+    <script>
+        (function () {
+            const canvas = document.querySelector("canvas");
+            if (!canvas || !canvas.getContext) return;
+            const ctx = canvas.getContext("2d");
+
+            const faceimg = new Image(); faceimg.src = "/assets/images/404/face.webp";
+            const bodyimg = new Image(); bodyimg.src = "/assets/images/404/body.webp";
+            const maskimg = new Image(); maskimg.src = "/assets/images/404/mask.webp";
+
+            const facecanvas = document.createElement("canvas");
+            const facectx = facecanvas.getContext("2d");
+
+            let loaded = 0;
+            let maskalpha = null;
+            let w = canvas.width, h = canvas.height;
+
+            function tryinit() {
+                if (++loaded < 3) return;
+                w = bodyimg.naturalWidth || maskimg.naturalWidth || faceimg.naturalWidth || w;
+                h = bodyimg.naturalHeight || maskimg.naturalHeight || faceimg.naturalHeight || h;
+                if (w && h) {
+                    canvas.width = w;
+                    canvas.height = h;
+                    facecanvas.width = w;
+                    facecanvas.height = h;
+                }
+                const maskcanvas = document.createElement("canvas");
+                maskcanvas.width = w; maskcanvas.height = h;
+                const mctx = maskcanvas.getContext("2d");
+                mctx.drawImage(maskimg, 0, 0, w, h);
+                const mdata = mctx.getImageData(0, 0, w, h).data;
+                maskalpha = new Uint8ClampedArray(mdata.length >> 2);
+                for (let i = 0, j = 0; i < mdata.length; i += 4, j++) {maskalpha[j] = mdata[i + 3]}
+                requestAnimationFrame(loop);
+            }
+            faceimg.onload = tryinit;
+            bodyimg.onload = tryinit;
+            maskimg.onload = tryinit;
+
+            let lasttime = null;
+            let offset = 0;
+            const speed = 200; // adjust for a faster face scroll
+
+            function loop(ts) {
+                if (!lasttime) lasttime = ts;
+                const dt = (ts - lasttime) / 1000;
+                lasttime = ts;
+
+                offset -= speed * dt;
+                const tilew = faceimg.naturalWidth || w;
+                const period = tilew * 1.5;
+                if (offset <= -period) offset += period;
+
+                ctx.clearRect(0, 0, w, h);
+                facectx.clearRect(0, 0, w, h);
+                ctx.drawImage(bodyimg, 0, 0, w, h);
+                for (let x = offset; x < w; x += period) {facectx.drawImage(faceimg, x, 0, tilew, h)}
+
+                if (maskalpha) {
+                    const fimg = facectx.getImageData(0, 0, w, h);
+                    const fd = fimg.data;
+                    for (let j = 0, p = 0; j < maskalpha.length; j++, p += 4) {
+                        if (maskalpha[j] < 16) fd[p + 3] = 0;
+                    }
+                    facectx.putImageData(fimg, 0, 0);
+                }
+                ctx.drawImage(facecanvas, 0, 0, w, h);
+                requestAnimationFrame(loop);
+            }
+        })();
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        // NOT stolen from soggy.cat/404. nope. not one bit. yeah.
+        // (i made that page too)
+        (function () {
+            const sillysubtitles = document.querySelector(".subtitles");
+            if (!sillysubtitles) return;
+
+            let cues = [];
+            let started = false;
+
+            function parsetime(str) {
+                const m = str.match(/(\d+):(\d+):(\d+),(\d+)/);
+                if (!m) return 0;
+                return (
+                    parseInt(m[1], 10) * 3600 +
+                    parseInt(m[2], 10) * 60 +
+                    parseInt(m[3], 10) +
+                    parseInt(m[4], 10) / 1000
+                );
+            }
+
+            function parsesrt(data) {
+                const lines = data.replace(/\r/g, "").split("\n");
+                const out = [];
+                for (let i = 0; i < lines.length;) {
+                    let line = lines[i++].trim();
+                    if (!line) continue;
+                    if (i >= lines.length) break;
+                    const timeline = lines[i++].trim();
+                    const parts = timeline.split("-->");
+                    if (parts.length !== 2) continue;
+                    const start = parsetime(parts[0].trim());
+                    const end = parsetime(parts[1].trim());
+                    const textlines = [];
+                    while (i < lines.length && lines[i].trim() !== "") {
+                        textlines.push(lines[i++]);
+                    }
+                    out.push({
+                        start: start, end: end,
+                        html: textlines.join("<br>")
+                    });
+                }; return out;
+            }
+
+            fetch("/assets/static/nightmail.srt")
+                .then(res => res.text())
+                .then(text => { cues = parsesrt(text); })
+                .catch(() => { cues = []; });
+
+            const audiocontextclass = window.AudioContext || window.webkitAudioContext;
+            if (!audiocontextclass) return;
+
+            const context = new audiocontextclass();
+            const gain = context.createGain();
+            gain.gain.value = 1;
+            gain.connect(context.destination);
+
+            let buffer = null; let source = null;
+            let starttime = 0.02;
+
+            function loadbuffer() {
+                return fetch("/assets/audio/nightmailbypmfour.ogg")
+                    .then(res => res.arrayBuffer())
+                    .then(data =>
+                        new Promise((resolve, reject) => {
+                            context.decodeAudioData(
+                                data, decoded => {buffer = decoded; resolve()}, err => reject(err)
+                            );
+                        })
+                    );
+            }
+
+            function showsubtitle(t) {
+                let active = null;
+                for (let i = 0; i < cues.length; i++) {
+                    const c = cues[i];
+                    if (t >= c.start && t <= c.end) {active = c; break}
+                }
+                sillysubtitles.innerHTML = active ? ('<a>' + active.html + '</a>') : "";
+            }
+
+            function startplayback() {
+                if (!buffer) return;
+                if (source) {
+                    try { source.stop(0); } catch (e) {}
+                    source.disconnect();
+                }
+                source = context.createBufferSource();
+                source.buffer = buffer;
+                source.connect(gain);
+                source.loop = true;
+                source.loopStart = 0;
+                source.loopEnd = buffer.duration;
+                starttime = context.currentTime;
+                source.start(0);
+            }
+
+            function tick() {
+                if (buffer && started) {
+                    const elapsed = context.currentTime - starttime;
+                    const t = buffer.duration ? (elapsed % buffer.duration) : elapsed;
+                    showsubtitle(t);
+                }; requestAnimationFrame(tick);
+            }; requestAnimationFrame(tick);
+
+            document.body.addEventListener("click", function () {
+                if (started) return;
+                started = true;
+                if (context.state === "suspended") context.resume();
+                if (buffer) {startplayback()}
+                else {loadbuffer().then(startplayback).catch(() => {})}
+            }, {once: true});
+        })();
+
+    </script>
 </body>
 </html>

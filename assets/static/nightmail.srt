@@ -1,0 +1,31 @@
+﻿1
+00:00:00,000 --> 00:00:00,928
+this is the nightmail
+
+2
+00:00:00,928 --> 00:00:01,777
+crossing the border
+
+3
+00:00:01,777 --> 00:00:02,436
+bringing the cheque
+
+4
+00:00:02,436 --> 00:00:03,571
+and the postal order
+
+5
+00:00:03,571 --> 00:00:04,444
+letters for the rich
+
+6
+00:00:04,444 --> 00:00:05,260
+letters for the poor
+
+7
+00:00:05,260 --> 00:00:06,111
+the shop at the corner
+
+8
+00:00:06,111 --> 00:00:07,112
+the girl next door
