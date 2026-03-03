@@ -836,11 +836,49 @@
                     const doc = parser.parseFromString(xml, "text/xml");
                     const objectslayer = doc.querySelector("layer[name='Objects']");
                     const objectcount = objectslayer ? objectslayer.children.length : 0;
-                    return { charcount: xml.length, objectcount };
+                    return {charcount: xml.length, objectcount, gzippedBytes: null};
                 } catch (error) {
                     console.warn("analysis error:", error);
-                    return { charcount: xml.length, objectcount: 0 };
+                    return {charcount: xml.length, objectcount: 0, gzippedBytes: null};
                 }
+            }
+
+            async function calculategzipped(xml) {
+                try {
+                    const encoder = new TextEncoder();
+                    const inputbytes = encoder.encode(xml);
+
+                    if (typeof fflate !== "undefined" && typeof fflate.gzipSync === "function") {
+                        const compressed = fflate.gzipSync(inputbytes);
+                        return compressed.length;
+                    }
+
+                    if (typeof CompressionStream !== "function") {return null}
+                    const cs = new CompressionStream("gzip");
+                    const writer = cs.writable.getWriter();
+                    await writer.write(inputbytes);
+                    await writer.close();
+                    const chunks = [];
+                    const reader = cs.readable.getReader();
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        if (value) chunks.push(value);
+                    }
+                    let totallength = 0;
+                    for (const chunk of chunks) {totallength += chunk.byteLength}
+                    return totallength;
+                } catch (error) {return null}
+            }
+
+            function updatestatsfromxml(xml) {
+                lateststats = analyzexml(xml);
+                updatedetails();
+                void calculategzipped(xml).then((size) => {
+                    if (size == null || !lateststats) return;
+                    lateststats.gzippedBytes = size;
+                    updatedetails();
+                });
             }
 
             /*//////////////////////////////////////////////////////////////////////*/
@@ -938,7 +976,12 @@
                     return;
                 }
                 details?.classList.remove("hidden");
-                detailstext.textContent = `${lateststats.objectcount} obj // ${lateststats.charcount} chars`;
+                const base = `${lateststats.objectcount} obj // ${lateststats.charcount} chars`;
+                if (lateststats.gzippedBytes != null && Number.isFinite(lateststats.gzippedBytes)) {
+                    detailstext.textContent = `${base} (${lateststats.gzippedBytes.toLocaleString()} gzipped)`;
+                } else {
+                    detailstext.textContent = base;
+                }
             }
 
             function setleveldata(base64, showchoice = false) {
@@ -956,13 +999,12 @@
                 }
                 try {
                     const xml = decodebase64utf8(levelbase64);
-                    lateststats = analyzexml(xml);
+                    updatestatsfromxml(xml);
                 } catch (error) {
                     lateststats = null;
                     showerror(`Failed to decode level: ${error}`);
                 }
                 toggleeditor(true);
-                updatedetails();
                 if (nopicker) {opengame("h5dx")}
                 else if (showchoice) {showchoicepanel()}
                 resetbutton.disabled = false;
