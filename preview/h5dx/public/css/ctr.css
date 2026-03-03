@@ -228,13 +228,6 @@ a:focus {
 }
 
 @font-face {
-    font-family: gooddognew;
-    src: url(../fonts/gooddog-new/gooddog_new-webfont.woff2) format("woff2");
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
     font-family: "Playpen Sans";
     src: url(../fonts/PlaypenSans-SemiBold.woff2) format("woff2");
     font-weight: 400;
@@ -265,7 +258,7 @@ a:focus {
 body {
     background-image: url(../images/page/tilebg.jpg);
     background-repeat: repeat;
-    font-family: gooddognew;
+    font-family: gooddogplain;
     font-size: 15px;
     color: #19130c;
     -webkit-user-select: none;
@@ -359,7 +352,7 @@ footer .zeptoLogo {
 }
 
 #content h3 {
-    font-family: gooddognew;
+    font-family: gooddogplain;
     font-size: 2em;
     line-height: 1em;
     margin-bottom: 15px;
@@ -367,7 +360,7 @@ footer .zeptoLogo {
 }
 
 #content h4 {
-    font-family: gooddognew;
+    font-family: gooddogplain;
     font-size: 1.5em;
     line-height: 1em;
     margin-bottom: 5px;
@@ -3742,7 +3735,7 @@ body {
     height: 848px;
     margin: 113px auto 0;
     text-align: center;
-    font-family: gooddognew;
+    font-family: gooddogplain;
     font-size: 60px;
     color: #3c2110;
     position: relative;

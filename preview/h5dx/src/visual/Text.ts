@@ -641,12 +641,12 @@ const setupFont = (ctx: CanvasRenderingContext2D, options: FontOptions) => {
     // Base sizes are for 1024x576, scale them for higher resolutions
     if (options.fontId === 4) {
         const fontSize = Math.round(32 * scaleFactor);
-        ctx.font = `bold ${fontSize}px 'gooddognew', sans-serif`;
+        ctx.font = `bold ${fontSize}px 'gooddogplain', sans-serif`;
         ctx.strokeStyle = "rgba(0,0,0,1)";
         ctx.lineWidth = Math.round(3 * scaleFactor);
     } else {
         const fontSize = Math.round(22 * scaleFactor);
-        ctx.font = `normal ${fontSize}px 'gooddognew', sans-serif`;
+        ctx.font = `normal ${fontSize}px 'gooddogplain', sans-serif`;
     }
 
     if (options.alpha) {

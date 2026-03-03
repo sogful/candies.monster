@@ -35,23 +35,6 @@ class VideoManager {
     private closeIntroCallback: (() => void) | null = null;
 
     loadIntroVideo = () => {
-        // only load the video if the first level hasn't been played
-        const defaultBoxIndex = getDefaultBoxIndex();
-        const firstLevelStars = ScoreManager.getStars(defaultBoxIndex, 0) || 0;
-        if (firstLevelStars === 0) {
-            const vid = ensureVideoElement();
-            const size = resolution.VIDEO_WIDTH;
-            const extension = platform.getVideoExtension();
-            const baseUrl = platform.videoBaseUrl;
-            if (vid != null && extension != null) {
-                try {
-                    vid.src = `${baseUrl}intro_${size}${extension}`;
-                    vid.load();
-                } catch (ex) {
-                    // loading the video sometimes causes an exception on win8
-                }
-            }
-        }
     };
 
     removeIntroVideo = () => {
@@ -68,35 +51,7 @@ class VideoManager {
     };
 
     playIntroVideo = (callback: () => void) => {
-        // always show the intro video if the 1st level hasn't been played
-        const defaultBoxIndex = getDefaultBoxIndex();
-        const firstLevelStars = ScoreManager.getStars(defaultBoxIndex, 0) || 0;
-        // the video might not exist if the user just reset the game
-        // (we don't want to replay it during the same app session)
-        const vid = document.getElementById("vid") as HTMLVideoElement | null;
-
         this.closeIntroCallback = callback;
-
-        if (firstLevelStars === 0 && vid) {
-            // make sure we can play the video
-            const readyState = vid.readyState;
-            if (
-                readyState === 2 || // HAVE_CURRENT_DATA (loadeddata)
-                readyState === 3 || // HAVE_FUTURE_DATA  (canplay)
-                readyState === 4
-            ) {
-                // HAVE_ENOUGH_DATA  (canplaythrough)
-
-                SoundMgr.pauseMusic();
-                fadeIn(vid, 300, "block").then(() => {
-                    vid.play();
-                });
-                vid.addEventListener("ended", this.closeIntroVideo);
-                vid.addEventListener("mousedown", this.closeIntroVideo);
-                return;
-            }
-        }
-
         this.closeIntroVideo();
     };
 
