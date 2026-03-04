@@ -5,20 +5,29 @@ import ResourceMgr from "@/resources/ResourceMgr";
 import Log from "@/utils/Log";
 import edition from "@/config/editions/net-edition";
 import * as GameSceneConstants from "@/gameScene/constants";
+import ResourceId from "@/resources/ResourceId";
+import { getIsXmas } from "@/utils/SpecialEvents";
 import type GameSceneInit from "../init";
 
 let currentPack = -1;
 
 export function initBackground(this: GameSceneInit): boolean {
-    // load the background image and overlay
-    const bgrID = edition.levelBackgroundIds[LevelState.pack];
+    const resolveBackgroundId = (): number | null => {
+        const baseId = edition.levelBackgroundIds[LevelState.pack] ?? null;
+        if (getIsXmas()) {
+            return ResourceId.IMG_BGR_XMAS;
+        }
+        return baseId;
+    };
+
     const overlayId = edition.levelOverlayIds[LevelState.pack];
+    const bgrID = resolveBackgroundId();
+
     if (bgrID == null) {
         return false;
     }
 
-    if (currentPack != LevelState.pack) {
-        this.bgTexture = ResourceMgr.getTexture(bgrID) ?? null;
+    const applyBackgroundToCanvas = (): boolean => {
         const canvasBackground = document.getElementById("c");
         const image = this.bgTexture?.image;
         const imageSrc = this.bgTexture?.imageSrc;
@@ -33,11 +42,20 @@ export function initBackground(this: GameSceneInit): boolean {
         }
         canvasBackground.style.background = backgroundSource ? `url('${backgroundSource}')` : "";
         canvasBackground.style.display = "block";
+        return true;
+    };
 
-        currentPack = LevelState.pack;
-    } else if (!this.bgTexture) {
-        // Make sure bgTexture is initialized even if pack hasn't changed
+    if (currentPack != LevelState.pack) {
         this.bgTexture = ResourceMgr.getTexture(bgrID) ?? null;
+        if (!applyBackgroundToCanvas()) {
+            return false;
+        }
+        currentPack = LevelState.pack;
+    } else {
+        this.bgTexture = ResourceMgr.getTexture(bgrID) ?? null;
+        if (!applyBackgroundToCanvas()) {
+            return false;
+        }
     }
 
     this.overlayTexture = overlayId ? (ResourceMgr.getTexture(overlayId) ?? null) : this.bgTexture;

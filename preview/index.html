@@ -654,6 +654,7 @@
             if (urlparam.has("shareonly")) {document.body.classList.add("shareonly")}
             const levelnomusic = urlparam.has("nomusic");
             const levelcandy = urlparam.get("candy");
+            const leveljolly = urlparam.has("jolly");
 
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
@@ -1357,6 +1358,7 @@
                 if (levelbase64) {url.searchParams.set("data", levelbase64)}
                 if (levelnomusic) {url.searchParams.set("nomusic", "")}
                 if (levelcandy) {url.searchParams.set("candy", levelcandy)}
+                if (leveljolly) {url.searchParams.set("jolly", "")}
                 url.searchParams.set("_", Date.now().toString());
                 return url.toString();
             }
@@ -1366,7 +1368,7 @@
                     showdatapanel();
                     return;
                 }
-                // VERY IMPORTANT!! okay not really since i doubt i'll be changing paths but still 
+                // in case paths need to be changed the index list is here
                 const sources = {
                     h5dx: "/preview/h5dx/dist/index.html",
                     famobi: "/preview/famobi/index.html",
