@@ -8,7 +8,8 @@ import ScoreManager from "@/ui/ScoreManager";
 import GameBorder from "@/ui/GameBorder";
 import SoundMgr from "@/game/CTRSoundMgr";
 import VideoManager from "@/ui/VideoManager";
-import RootController from "@/game/CTRRootController";
+import RootController, { CTRRootController } from "@/game/CTRRootController";
+import GravityButton from "@/game/GravityButton";
 import Doors from "@/Doors";
 import PubSub from "@/utils/PubSub";
 import EasterEggManager from "@/ui/EasterEggManager";
@@ -361,23 +362,60 @@ export default class GameFlow {
         document.addEventListener("visibilitychange", onVisibilityChange);
 
         const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "Escape" || event.keyCode === 27) {
+            const isGamePanelActive = panelManager.currentPanelId === PanelId.GAME;
+            const isLevelActive = RootController.isLevelActive();
+
+            if (!isGamePanelActive || !isLevelActive || this.manager.isTransitionActive) {
+                if (event.key !== "Escape" && event.key !== "Esc" && event.keyCode !== 27) {
+                    return;
+                }
+            }
+            if (event.key === "Escape" || event.key === "Esc" || event.keyCode === 27) {
                 const isLevelMenuVisible = levelMenu && levelMenu.style.display !== "none";
-                
+
                 if (isLevelMenuVisible) {
                     SoundMgr.playSound(ResourceId.SND_TAP);
                     this._closeLevelMenu();
                     RootController.resumeLevel();
                 } else {
-                    if (
-                        panelManager.currentPanelId === PanelId.GAME &&
-                        RootController.isLevelActive() &&
-                        !this.manager.isTransitionActive
-                    ) {
+                    if (isGamePanelActive && isLevelActive && !this.manager.isTransitionActive) {
                         SoundMgr.playSound(ResourceId.SND_TAP);
                         this._openLevelMenu();
                     }
                 }
+                return;
+            }
+
+            if ((event.key === " " || event.code === "Space") && !event.repeat) {
+                if (!isGamePanelActive || !isLevelActive || this.manager.isTransitionActive) return;
+                const gameController = RootController.getChild(CTRRootController.ChildController.GAME);
+                const view = gameController?.getView?.(0);
+                const scene = view?.getChild?.(0) as { gravityButton?: unknown; onButtonPressed?: (id: number) => void } | undefined;
+                const gravityButton = scene?.gravityButton as {
+                    isOn: () => boolean;
+                    getChild: (index: number) => unknown;
+                    toggle: () => void;
+                } | null;
+
+                if (gravityButton && typeof gravityButton.isOn === "function" && typeof scene?.onButtonPressed === "function") {
+                    const childIndex = gravityButton.isOn() ? 1 : 0;
+                    const child = gravityButton.getChild(childIndex) as { visible?: boolean } | null;
+                    if (child && child.visible !== false) {
+                        gravityButton.toggle();
+                        scene.onButtonPressed(GravityButton.DefaultId);
+                    }
+                }
+                return;
+            }
+            if (event.key === "r" || event.key === "R") {
+                if (!isGamePanelActive || !isLevelActive || this.manager.isTransitionActive) return;
+                SoundMgr.playSound(ResourceId.SND_TAP);
+                this._openLevel(BoxManager.currentLevelIndex, true);
+                return;
+            }
+            if (event.key === "m" || event.key === "M") {
+                this.manager._updateMiniSoundButton(true, "gameSound", "gameMsg");
+                return;
             }
         };
         document.addEventListener("keydown", onKeyDown);
