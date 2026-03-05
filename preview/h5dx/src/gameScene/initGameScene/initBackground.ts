@@ -28,6 +28,7 @@ export function initBackground(this: GameSceneInit): boolean {
                 case 9: return ResourceId.IMG_BGR_09_P1;
                 case 10: return ResourceId.IMG_BGR_10_P1;
                 case 11: return ResourceId.IMG_BGR_11_P1;
+                case 16: return ResourceId.IMG_BGR_XMAS;
                 default:
                     break;
             }

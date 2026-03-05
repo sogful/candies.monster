@@ -651,7 +651,7 @@
 
             const urlparam = new URLSearchParams(window.location.search);
 
-            // url parameter paramaliases!
+            // url parameter aliases!
             const paramaliases = {
                 noui: ["noui", "nu", "u"],
                 shareonly: ["shareonly", "so", "s"],
@@ -694,9 +694,9 @@
             const levelcandy = getstringparam("candy");
             const leveljolly = getflagparam("jolly");
             const levelbackgroundraw = getintegerparam("background");
-            const levelbackground = levelbackgroundraw != null && levelbackgroundraw >= 1 && levelbackgroundraw <= 11
-                ? levelbackgroundraw
-                : null;
+            const levelbackground = levelbackgroundraw != null && (
+                (levelbackgroundraw >= 1 && levelbackgroundraw <= 11) || levelbackgroundraw === 16
+            ) ? levelbackgroundraw : null;
 
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
