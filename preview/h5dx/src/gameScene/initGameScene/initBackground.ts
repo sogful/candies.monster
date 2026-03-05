@@ -7,12 +7,40 @@ import edition from "@/config/editions/net-edition";
 import * as GameSceneConstants from "@/gameScene/constants";
 import ResourceId from "@/resources/ResourceId";
 import { getIsXmas } from "@/utils/SpecialEvents";
+import QueryStrings from "@/ui/QueryStrings";
 import type GameSceneInit from "../init";
 
 let currentPack = -1;
 
 export function initBackground(this: GameSceneInit): boolean {
     const resolveBackgroundId = (): number | null => {
+        const override = QueryStrings.background;
+        if (override != null) {
+            const BACKGROUND_OVERRIDE_IDS: number[] = [
+                ResourceId.IMG_BGR_01_P1,
+                ResourceId.IMG_BGR_02_P1,
+                ResourceId.IMG_BGR_03_P1,
+                ResourceId.IMG_BGR_04_P1,
+                ResourceId.IMG_BGR_05_P1,
+                ResourceId.IMG_BGR_06_P1,
+                ResourceId.IMG_BGR_07_P1,
+                ResourceId.IMG_BGR_08_P1,
+                ResourceId.IMG_BGR_09_P1,
+                ResourceId.IMG_BGR_10_P1,
+                ResourceId.IMG_BGR_11_P1,
+                ResourceId.IMG_BGR_12_P1,
+                ResourceId.IMG_BGR_13_P1,
+                ResourceId.IMG_BGR_IE,
+                ResourceId.IMG_BGR_PADDINGTON,
+                ResourceId.IMG_BGR_XMAS,
+            ];
+
+            const idx = override - 1;
+            if (idx >= 0 && idx < BACKGROUND_OVERRIDE_IDS.length) {
+                return BACKGROUND_OVERRIDE_IDS[idx] ?? null;
+            }
+        }
+
         const baseId = edition.levelBackgroundIds[LevelState.pack] ?? null;
         if (getIsXmas()) {
             return ResourceId.IMG_BGR_XMAS;

@@ -648,13 +648,52 @@
         /*//////////////////////////////////////////////////////////////////////*/
 
         (async function () {
-            
+
             const urlparam = new URLSearchParams(window.location.search);
-            if (urlparam.has("noui")) {document.body.classList.add("noui")}
-            if (urlparam.has("shareonly")) {document.body.classList.add("shareonly")}
-            const levelnomusic = urlparam.has("nomusic");
-            const levelcandy = urlparam.get("candy");
-            const leveljolly = urlparam.has("jolly");
+
+            // url parameter paramaliases!
+            const paramaliases = {
+                noui: ["noui", "nu", "u"],
+                shareonly: ["shareonly", "so", "s"],
+                nomusic: ["nomusic", "nm", "m"],
+                candy: ["candy", "ca", "c"],
+                jolly: ["jolly", "jl", "j"],
+                background: ["background", "bg", "b"],
+            };
+
+            function getrawparam(logicalname) {
+                const aliases = paramaliases[logicalname] || [logicalname];
+                for (const key of aliases) {
+                    if (urlparam.has(key)) {
+                        return urlparam.get(key) ?? "";
+                    }
+                }
+                return null;
+            }
+            function getflagparam(logicalname) {
+                const raw = getrawparam(logicalname);
+                if (raw == null) return false;
+                const value = String(raw).toLowerCase();
+                return value === "" || value === "true" || value === "1";
+            }
+            function getstringparam(logicalname) {
+                const raw = getrawparam(logicalname);
+                return raw == null || raw === "" ? null : String(raw);
+            }
+            function getintegerparam(logicalname) {
+                const raw = getrawparam(logicalname);
+                if (raw == null || raw === "") return null;
+                const value = parseInt(String(raw), 10);
+                return Number.isFinite(value) ? value : null;
+            }
+
+            if (getflagparam("noui")) {document.body.classList.add("noui")}
+            if (getflagparam("shareonly")) {document.body.classList.add("shareonly")}
+
+            const levelnomusic = getflagparam("nomusic");
+            const levelcandy = getstringparam("candy");
+            const leveljolly = getflagparam("jolly");
+            const levelbackground = getintegerparam("background");
 
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
@@ -1359,6 +1398,7 @@
                 if (levelnomusic) {url.searchParams.set("nomusic", "")}
                 if (levelcandy) {url.searchParams.set("candy", levelcandy)}
                 if (leveljolly) {url.searchParams.set("jolly", "")}
+                if (levelbackground != null) {url.searchParams.set("background", String(levelbackground))}
                 url.searchParams.set("_", Date.now().toString());
                 return url.toString();
             }

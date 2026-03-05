@@ -104,6 +104,8 @@ class QueryStrings {
     static level: number | null = QueryStrings.#getInt("level");
 
     static candy: number | null = QueryStrings.#getInt("candy");
+
+    static background: number | null = QueryStrings.#getInt("background");
 }
 
 export default QueryStrings;
