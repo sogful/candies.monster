@@ -923,6 +923,16 @@ const RES_INFO_2560 = [
     },
 
     {
+        id: ResourceId.IMG_BGR_14_P1,
+        resScale: 1.25,
+        skipOffsetAdjustment: true,
+        rects: [0, 0, 2048, 1152],
+        offsets: [0, 0],
+        preCutWidth: 2048,
+        preCutHeight: 2304,
+    },
+
+    {
         id: ResourceId.IMG_TIME_BGR_1,
         resScale: 1.25,
         skipOffsetAdjustment: true,

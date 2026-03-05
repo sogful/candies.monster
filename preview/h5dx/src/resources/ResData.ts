@@ -207,6 +207,9 @@ RES_DATA[ResourceId.IMG_BGR_10_P1] = new ResEntry("bgr_10_p1.jpg", ResourceType.
 RES_DATA[ResourceId.IMG_BGR_10_P2] = new ResEntry("bgr_10_p2.jpg", ResourceType.IMAGE);
 RES_DATA[ResourceId.IMG_BGR_11_P1] = new ResEntry("bgr_11_p1.jpg", ResourceType.IMAGE);
 RES_DATA[ResourceId.IMG_BGR_11_P2] = new ResEntry("bgr_11_p2.jpg", ResourceType.IMAGE);
+RES_DATA[ResourceId.IMG_BGR_12_P1] = new ResEntry("bgr_12_p1.jpg", ResourceType.IMAGE);
+RES_DATA[ResourceId.IMG_BGR_13_P1] = new ResEntry("bgr_13_p1.jpg", ResourceType.IMAGE);
+RES_DATA[ResourceId.IMG_BGR_14_P1] = new ResEntry("bgr_14_p1.jpg", ResourceType.IMAGE);
 RES_DATA[ResourceId.IMG_BGR_XMAS] = new ResEntry("bgr_xmas.webp", ResourceType.IMAGE);
 RES_DATA[ResourceId.IMG_BGR_PADDINGTON] = new ResEntry("bgr_paddington.webp", ResourceType.IMAGE);
 

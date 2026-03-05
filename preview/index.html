@@ -355,7 +355,7 @@
 
             color: #ff7d7d; font-size: 0.75em;
             -webkit-text-stroke: 0.175em black;
-            paint-order: stroke fill;
+            paint-order: stroke fill; z-index: 676767676767; /* is shakespeare really dead? */
         }
         .errors div {
             margin-bottom: 0.5em;
@@ -693,7 +693,10 @@
             const levelnomusic = getflagparam("nomusic");
             const levelcandy = getstringparam("candy");
             const leveljolly = getflagparam("jolly");
-            const levelbackground = getintegerparam("background");
+            const levelbackgroundraw = getintegerparam("background");
+            const levelbackground = levelbackgroundraw != null && levelbackgroundraw >= 1 && levelbackgroundraw <= 11
+                ? levelbackgroundraw
+                : null;
 
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
