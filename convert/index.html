@@ -656,6 +656,19 @@
                 return (i === -1 ? name : name.slice(0, i)) + newExt;
             }
 
+            function sanitizezipsegment(name){
+                const s = String(name).replace(/[<>:"/\\|?*\x00-\x1f]/g, "_").replace(/\.+$/, "").trim();
+                return s || "folder";
+            }
+            function normalizerelpath(f){
+                return (f.webkitRelativePath || f.name).replace(/\\/g, "/");
+            }
+            function strippathseg(rel){
+                const s = rel.replace(/\\/g, "/");
+                const i = s.indexOf("/");
+                return i === -1 ? s : s.slice(i + 1);
+            }
+
             async function handlefolder(files){
                 showstats();
                 let succeeded = 0;
@@ -672,6 +685,16 @@
                     progressinfo.textContent = "No .raw files found... (Are you sure you selected the right folder?)";
                     return;
                 }
+
+                const uniqueid = idgen();
+                const zipbase = `FeedwithCandy_${uniqueid}`;
+                const firstRel = normalizerelpath(rawfiles[0]);
+                const slash = firstRel.indexOf("/");
+                const selectedfoldername = slash === -1
+                    ? "converted"
+                    : sanitizezipsegment(firstRel.slice(0, slash));
+
+                /* ZIP has no standard for per-folder icons in Explorer; layout only (see /assets/images/boxraw.png & boxpng.png for UI). */
                 
                 const allfiles = Array.from(files);
                 const potentialsplitfiles = allfiles.filter(f => {
@@ -706,7 +729,7 @@
 
                 for (const [basename, groupfiles] of filegroups) {
                     processedcount++;
-                    const rel = groupfiles[0].webkitRelativePath || groupfiles[0].name;
+                    const rel = normalizerelpath(groupfiles[0]);
                     progressinfo.textContent = `Processing (${processedcount}/${totalgroups}): ${basename}`;
                     
                     try {
@@ -727,8 +750,9 @@
                         });
 
                         const result = await decryptsplitfile(groupfiles);
-                        const targetpath = rel.replace(/\\/g,"/").replace(/\.[Rr][Aa][Ww](\d+)?(\.[\w]+)?$/i, "") + ".png";
-                        zip.file(targetpath, result.blob);
+                        const innerpng = strippathseg(rel).replace(/\.[Rr][Aa][Ww](\d+)?(\.[\w]+)?$/i, "") + ".png";
+                        const pngpath = `${zipbase}/${selectedfoldername}/${innerpng}`;
+                        zip.file(pngpath, result.blob);
                         
                         if (result.warning) {
                             warnings++;
@@ -748,6 +772,14 @@
                         errorlog(basename + ": " + (e && e.message ? e.message : e));
                     }
                     setcounts(succeeded, failed, warnings);
+                }
+
+                progressinfo.textContent = "Adding originals to zip…";
+                for (const f of rawfiles) {
+                    const rel = normalizerelpath(f);
+                    const inner = strippathseg(rel);
+                    const origpath = `${zipbase}/${selectedfoldername} (original)/${inner}`;
+                    zip.file(origpath, await f.arrayBuffer());
                 }
 
                 progressinfo.textContent = "Zipping results…";
@@ -773,8 +805,7 @@ box when it was compressed!
                     compression: "DEFLATE",
                     comment: zipcomment,
                 });
-                const uniqueid = idgen();
-                savefile(zipblob, `FeedwithCandy_${uniqueid}.zip`);
+                savefile(zipblob, `${zipbase}.zip`);
                 progressinfo.textContent = "Done! Remember to rename the .pngs back to .raws after editing.";
             }
 
