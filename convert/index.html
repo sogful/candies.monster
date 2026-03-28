@@ -609,12 +609,12 @@
                         const aname = a.name.toLowerCase();
                         const bname = b.name.toLowerCase();
                         
-                        const aIsRaw = aname.match(/\.raw(\.\w+)?$/) && !aname.match(/\.raw\d+(\.\w+)?$/);
-                        const bIsRaw = bname.match(/\.raw(\.\w+)?$/) && !bname.match(/\.raw\d+(\.\w+)?$/);
+                        const aisraw = aname.match(/\.raw(\.\w+)?$/) && !aname.match(/\.raw\d+(\.\w+)?$/);
+                        const bisraw = bname.match(/\.raw(\.\w+)?$/) && !bname.match(/\.raw\d+(\.\w+)?$/);
                         
-                        if (aIsRaw && !bIsRaw) return -1;
-                        if (!aIsRaw && bIsRaw) return 1;
-                        if (aIsRaw && bIsRaw) return 0;
+                        if (aisraw && !bisraw) return -1;
+                        if (!aisraw && bisraw) return 1;
+                        if (aisraw && bisraw) return 0;
                         
                         const anum = parseInt(aname.match(/\.raw(\d+)(\.\w+)?$/)?.[1] || '0');
                         const bnum = parseInt(bname.match(/\.raw(\d+)(\.\w+)?$/)?.[1] || '0');
@@ -714,12 +714,12 @@
                             const aname = a.name.toLowerCase();
                             const bname = b.name.toLowerCase();
                             
-                            const aIsRaw = aname.match(/\.raw(\.\w+)?$/) && !aname.match(/\.raw\d+(\.\w+)?$/);
-                            const bIsRaw = bname.match(/\.raw(\.\w+)?$/) && !bname.match(/\.raw\d+(\.\w+)?$/);
+                            const aisraw = aname.match(/\.raw(\.\w+)?$/) && !aname.match(/\.raw\d+(\.\w+)?$/);
+                            const bisraw = bname.match(/\.raw(\.\w+)?$/) && !bname.match(/\.raw\d+(\.\w+)?$/);
                             
-                            if (aIsRaw && !bIsRaw) return -1;
-                            if (!aIsRaw && bIsRaw) return 1;
-                            if (aIsRaw && bIsRaw) return 0;
+                            if (aisraw && !bisraw) return -1;
+                            if (!aisraw && bisraw) return 1;
+                            if (aisraw && bisraw) return 0;
                             
                             const anum = parseInt(aname.match(/\.raw(\d+)(\.\w+)?$/)?.[1] || '0');
                             const bnum = parseInt(bname.match(/\.raw(\d+)(\.\w+)?$/)?.[1] || '0');
@@ -751,7 +751,28 @@
                 }
 
                 progressinfo.textContent = "Zipping results…";
-                const zipblob = await zip.generateAsync({type: "blob", compression: "DEFLATE"});
+                // :)
+                const zipcomment = `
+As it turns out, Om Nom was 
+still inside the cardboard 
+box when it was compressed!
+⠀⠀⠀⠀⠀⠀⢀⣀
+⠀⠀⠀⠀⠀⠜⠁⠀⢆⣀⣀⡀
+⠀⠀⠀⢀⡨⠦⠤⠤⠄⠐⠒⠠⡉⠑⠢⢄
+⠀⠀⢠⠊⠀⠀⠀⠀⠀⠀⠀⠀⢱⠀⠀⠀⠑⢄
+⠀⠀⡧⠤⠤⡀⣠⠤⠖⠒⠒⠒⠒⠀⠀⠀⠀⠀⢇
+⠀⢨⠁⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⡌⠀
+⠀⣺⠰⡂⣄⣀⣀⣀⠤⢲⠛⠥⡠⠎⠁⠀⠀⠼⢄⡀
+⠀⠑⠭⠭⣇⠑⠁⢈⣩⠁⠀⠀⢀⠧⣔⣂⠀⠀⢀⡽
+⠀⠀⠀⠀⠀⠉⠉⠁⠈⠐⠒⠈⠉⠀⠀⠀⠉⠉⠁
+  ...He isn't very happy 
+        about it...
+`;
+                const zipblob = await zip.generateAsync({
+                    type: "blob",
+                    compression: "DEFLATE",
+                    comment: zipcomment,
+                });
                 const uniqueid = idgen();
                 savefile(zipblob, `FeedwithCandy_${uniqueid}.zip`);
                 progressinfo.textContent = "Done! Remember to rename the .pngs back to .raws after editing.";
