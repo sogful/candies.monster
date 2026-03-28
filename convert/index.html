@@ -80,7 +80,7 @@
             100% {transform: rotate(360deg)}
         }
 
-        .splitwarn {
+        /* .splitwarn {
             position: fixed; display: none; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             width: 100vw; height: 100vh; z-index: 65535;
@@ -100,7 +100,7 @@
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
-        }
+        } */
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -259,14 +259,14 @@
     <div class="nojsbg"></div> <img src="/assets/images/nojs.webp" draggable="false">
     <a>Please enable Javascript in your browser to use this page.</a></div></noscript>
 
-    <div class="splitwarn">
+    <!--div class="splitwarn">
         <a class="title" style="color:#f08b8b">Warning!</a>
         <a class="subtitle">This game version is likely old and will not return correct sprites. Split files have odd colorspace data that's not implemented yet.</a>
         <label class="button clickable" onclick="document.querySelector('.splitwarn').style.display = 'none'">
             <span>Ok</span>
             <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
         </label>
-    </div>
+    </div-->
 
     <div class="drag">Drop files here!</div>
 
@@ -386,7 +386,7 @@
              const errortitle = document.querySelector(".errortitle");
 
             let firstshown = false;
-            let splitwarnshown = false;
+            /* let splitwarnshown = false; */
             const scriptlist = {
                 ysnew: { path: "assets/static/ysnew.py", label: "New! (by yell0wsuit)" },
                 ysold: { path: "assets/static/ysold.py", label: "Old (by yell0wsuit)" },
@@ -421,30 +421,30 @@
                 }
             }
 
-             function errorlog(msg){
-                 const now = new Date().toISOString().replace("T"," ").replace("Z","");
-                 const logmsg = "[" + now + "] " + msg;
-                 errors.textContent += logmsg + "\n";
-                 errors.scrollTop = errors.scrollHeight;
-                 console.error(logmsg);
-             }
+            function errorlog(msg){
+                const now = new Date().toISOString().replace("T"," ").replace("Z","");
+                const logmsg = "[" + now + "] " + msg;
+                errors.textContent += logmsg + "\n";
+                errors.scrollTop = errors.scrollHeight;
+                console.error(logmsg);
+            }
 
-             function idgen() {
-                 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                 let result = '';
-                 for (let i = 0; i < 3; i++) {
-                     result += chars.charAt(Math.floor(Math.random() * chars.length));
-                 }; return result;
-             }
+            function idgen() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let result = '';
+                for (let i = 0; i < 3; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }; return result;
+            }
 
-             function savefile(blob, filename) {
-                 const url = URL.createObjectURL(blob);
-                 const a = document.createElement("a");
-                 a.href = url; a.download = filename;
-                 document.body.appendChild(a);
-                 a.click(); document.body.removeChild(a);
-                 URL.revokeObjectURL(url);
-             }
+            function savefile(blob, filename) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url; a.download = filename;
+                document.body.appendChild(a);
+                a.click(); document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
 
             function updatedecoderbuttons(){
                 document.querySelectorAll(".decoderchoice").forEach((el) => {
@@ -547,21 +547,17 @@
                 showstats();
                 const py = await runcode();
                 const decryptfunction = py.globals.get("decryptrawpy");
-
-                /* All files in a group are already .raw / .rawN; do not drop small split parts
-                   (old filter used file.size > 100 and could leave mainfiles empty). */
                 const mainfiles = Array.from(files);
                 
-                const splitfiles = files.some(file => {
+                /* const splitfiles = files.some(file => {
                     const name = file.name.toLowerCase();
                     return name.match(/\.raw\d+(\.\w+)?$/);
                 });
-                
                 if (splitfiles && !splitwarnshown) {
                     document.querySelector('.splitwarn').style.display = 'flex';
                     splitwarnshown = true;
-                }
-                
+                } */
+
                 if (mainfiles.length > 1) {
                     const raw1files = mainfiles.filter(f => f.name.toLowerCase().match(/\.raw\d+(\.\w+)?$/));
                     if (raw1files.length > 0) {
@@ -585,7 +581,7 @@
                                 const splitr = splitres.toJs({ create_proxies: false });
                                 if (splitr && splitr.width && splitr.height) {
                                     const blob = await rgbatoblob(splitr.width, splitr.height, new Uint8Array(splitr.pixels));
-                                    return {blob, used_fallback: !!splitr.used_fallback, warning: "Split file conversion - might have incorrect colors/dimensions :("};
+                                    return {blob, used_fallback: !!splitr.used_fallback};
                                 }
                             } catch (e) {
                                 console.warn(e);
@@ -598,7 +594,7 @@
                             const splitr = splitres.toJs({ create_proxies: false });
                             if (splitr && splitr.width && splitr.height) {
                                 const blob = await rgbatoblob(splitr.width, splitr.height, new Uint8Array(splitr.pixels));
-                                return {blob, used_fallback: !!splitr.used_fallback, warning: "Split file conversion - might have incorrect colors/dimensions :("};
+                                return {blob, used_fallback: !!splitr.used_fallback};
                             }
                         } catch (e) {
                             console.warn(e);
@@ -644,9 +640,8 @@
                 const used_fallback = r.used_fallback;
                 const blob = await rgbatoblob(width, height, pixels);
                 
-                const warning = splitfiles ? "Split file conversion - likely has incorrect colors/dimensions" : null;
-                
-                return {blob, used_fallback, warning};
+                /* const warning = splitfiles ? "Split file conversion - likely has incorrect colors/dimensions" : null; */
+                return {blob, used_fallback};
             }
 
             /*//////////////////////////////////////////////////////////////////////*/
@@ -688,20 +683,18 @@
 
                 const uniqueid = idgen();
                 const zipbase = `FeedwithCandy_${uniqueid}`;
-                const firstRel = normalizerelpath(rawfiles[0]);
-                const slash = firstRel.indexOf("/");
+                const firstrel = normalizerelpath(rawfiles[0]);
+                const slash = firstrel.indexOf("/");
                 const selectedfoldername = slash === -1
                     ? "converted"
-                    : sanitizezipsegment(firstRel.slice(0, slash));
-
-                /* ZIP has no standard for per-folder icons in Explorer; layout only (see /assets/images/boxraw.png & boxpng.png for UI). */
+                    : sanitizezipsegment(firstrel.slice(0, slash));
                 
                 const allfiles = Array.from(files);
                 const potentialsplitfiles = allfiles.filter(f => {
                     const name = f.name.toLowerCase();
                     return name.includes('raw') || 
-                           name.match(/\.\d+$/) /* ||
-                           // name.match(/\.part\d+$/); */
+                        name.match(/\.\d+$/) /* ||
+                        // name.match(/\.part\d+$/); */
                 });
 
                 const zip = new JSZip();
@@ -709,15 +702,12 @@
                 for (const file of rawfiles) {
                     const name = file.name.toLowerCase();
                     let basename;
-                    
                     if (name.match(/\.raw(\.\w+)?$/) && !name.match(/\.raw\d+(\.\w+)?$/)) {
                         basename = name.replace(/\.raw(\.\w+)?$/, '');
                     } else if (name.match(/\.raw\d+(\.\w+)?$/)) {
                         basename = name.replace(/\.raw\d+(\.\w+)?$/, '');
-                    } else {
-                        continue;
-                    }
-                    
+                    } else {continue}
+
                     if (!filegroups.has(basename)) {
                         filegroups.set(basename, []);
                     }
@@ -736,7 +726,6 @@
                         groupfiles.sort((a, b) => {
                             const aname = a.name.toLowerCase();
                             const bname = b.name.toLowerCase();
-                            
                             const aisraw = aname.match(/\.raw(\.\w+)?$/) && !aname.match(/\.raw\d+(\.\w+)?$/);
                             const bisraw = bname.match(/\.raw(\.\w+)?$/) && !bname.match(/\.raw\d+(\.\w+)?$/);
                             
@@ -764,9 +753,7 @@
                             const warnmsg = `${basename} - used fallback dimensions (will likely be corrupted)`;
                             errorlog(warnmsg);
                             console.warn(warnmsg);
-                        } else {
-                            succeeded++;
-                        }
+                        } else {succeeded++}
                     } catch (e){
                         failed++;
                         errorlog(basename + ": " + (e && e.message ? e.message : e));
@@ -783,7 +770,7 @@
                 }
 
                 progressinfo.textContent = "Zipping results…";
-                // :)
+                // :(
                 const zipcomment = `
 As it turns out, Om Nom was 
 still inside the cardboard 
