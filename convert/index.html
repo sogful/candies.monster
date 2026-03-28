@@ -26,12 +26,17 @@
             src: /*universal*/ url("/assets/fonts/gooddog.woff");
         }
 
+        html {overflow-x: hidden; scrollbar-width: none}
+        html::-webkit-scrollbar {width: 0; height: 0}
+
         body {
             font-family: "Good Dog";
             position: relative; z-index: 1;
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; min-width: 100vw; overflow: hidden;
-            user-select: none; padding: 0; margin: 0;
+            min-height: 100vh; min-width: 100vw;
+            overflow-x: hidden; overflow-y: auto;
+            user-select: none; padding: 3vh 0 4vh; margin: 0;
+            box-sizing: border-box;
             -webkit-user-drag: none;
 
             background-color: #e9a856;
@@ -102,7 +107,8 @@
         .page {
             display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
-            width: min(90vw, 700px); height: 90vh;
+            width: min(90vw, 700px); min-height: 90vh;
+            box-sizing: border-box; padding: 1.5em 0 3em;
             color: white; font-size: 1.5em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
@@ -114,6 +120,11 @@
             -webkit-text-stroke: 0.125em black;
             text-shadow: 0 0.1em 0 black;
             paint-order: stroke fill;
+        }
+        .titlelogo {
+            display: block; width: min(92vw, 440px); height: auto;
+            max-height: 9em; margin: 0 auto 0.15em;
+            user-select: none; -webkit-user-drag: none;
         }
         .subtitle {
             font-size: 2em;
@@ -188,13 +199,15 @@
         .errortitle {
             font-size: 0.9em;
             margin-bottom: 0.25em;
+            user-select: text; cursor: text;
         }
         .errors {
             background: rgba(0,0,0,0.25); color: #fff;
-            font-size: 0.8em; overflow: hidden !important;
+            font-size: 0.8em;
             text-shadow: none; padding: 0.5em;
             min-height: 10vh; max-height: 30vh;
             overflow: auto; white-space: pre-wrap; border-radius: 1em;
+            user-select: text; cursor: text;
         }
         .drag {
             position: fixed; display: none;
@@ -210,8 +223,8 @@
         }
     </style>
     
-    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.js"></script>
+    <script src="/assets/static/jszip.min.js"></script>
+    <script src="/assets/static/pyodide.js"></script>
 
 </head>
 <body>
@@ -255,15 +268,14 @@
         </label>
     </div>
 
-    <div class="drag">Drop file here!</div>
+    <div class="drag">Drop files here!</div>
 
     <div class="page">
-        <a class="title">raw2png</a>
+        <img class="titlelogo" src="assets/svgs/logo.svg" alt="raw2png" draggable="false">
         <span style="padding-bottom: 0.5em">Sprites in most of the Cut the Rope games for mobile are compressed, making them difficult to extract.
         <br>
         This tool attempts to do the <i>zstd/zlib</i> decompression in the comfort of your browser to avoid that headache.
         <br></i></span>
-        <span class="tiny">Large and split (.raw1 - .raw8) files do not work yet. Please<a href="https://github.com/sogful/candies.monster/pulls?q=sort%3Aupdated-desc+is%3Apr">contribute</a>if you have a solution!<br><br></span>
         <span class="tiny">For .xnb sprites, see<a href="https://github.com/LeonBlade/xnbcli">xnbcli</a>or<a href="https://lybell-art.github.io/xnb-js/">Web XNB Converter.</a></span>
         <span class="tiny">For .xnb audio, see<a href="//candies.monster/assets/static/XNBSoundConverter.exe">XNBSoundConverter</a>(to wav) and<a href="https://github.com/JavidPack/WAVToXNBSoundConverter">WAVToXNBSoundConverter</a>(to xnb). You can also directly play and convert .xnb audio with<a href="https://vgmstream.org/">vgmstream.</a></span>
 
@@ -283,8 +295,8 @@
             </label>
         </div>
         <div class="decoderselector tiny">
-            <a class="decoderchoice clickable active" data-decoder="ysnew">New! (by yell0wsuit)<br><span class="small">Better color detection</span></a>
-            <a class="decoderchoice clickable" data-decoder="ysold">Old (by yell0wsuit)<br><span class="small">Only save 100% correct images. Most will fail..</span></a>
+            <a class="decoderchoice clickable active" data-decoder="ysnew">Latest (by yell0wsuit)<br><span class="small">Better color detection and split file support</span></a>
+            <a class="decoderchoice clickable" data-decoder="ysold">Old (by yell0wsuit)<br><span class="small">Only save 100% correct images. Most will fail</span></a>
             <a class="decoderchoice clickable" data-decoder="old">Old (by cv)<br><span class="small">Broken alpha and lower decoding accuracy</span></a>
         </div>
 
@@ -376,9 +388,9 @@
             let firstshown = false;
             let splitwarnshown = false;
             const scriptlist = {
-                ysnew: { path: "ysnew.py", label: "New! (by yell0wsuit)" },
-                ysold: { path: "ysold.py", label: "Old (by yell0wsuit)" },
-                old: { path: "old.py", label: "Old (by cv)" },
+                ysnew: { path: "assets/static/ysnew.py", label: "New! (by yell0wsuit)" },
+                ysold: { path: "assets/static/ysold.py", label: "Old (by yell0wsuit)" },
+                old: { path: "assets/static/old.py", label: "Old (by cv)" },
             };
             const scriptcache = new Map();
             let selectedDecoderKey = "ysnew";
@@ -458,7 +470,7 @@
                 if (scriptcache.has(key)) {
                     return scriptcache.get(key);
                 }
-                const res = await fetch(scriptlist[key].path, { cache: "no-cache" });
+                const res = await fetch(scriptlist[key].path, {cache: "no-cache"});
                 if (!res.ok) {
                     throw new Error(`Failed to load ${scriptlist[key].path}`);
                 }
@@ -473,7 +485,11 @@
                 canvas.height = height;
                 const ctx = canvas.getContext("2d", {alpha: true});
                 ctx.clearRect(0, 0, width, height);
-                const imageData = new ImageData(new Uint8ClampedArray(pixels.buffer), width, height);
+                const need = width * height * 4;
+                const u8 = pixels instanceof Uint8Array ? pixels : new Uint8Array(pixels);
+                const clamped = new Uint8ClampedArray(need);
+                clamped.set(u8.subarray(0, need));
+                const imageData = new ImageData(clamped, width, height);
                 ctx.putImageData(imageData, 0, 0);
                 return new Promise((resolve, reject) => {
                     canvas.toBlob((blob) => {
@@ -527,21 +543,14 @@
 
             /*//////////////////////////////////////////////////////////////////////*/
 
-            // brokey
             async function decryptsplitfile(files){
                 showstats();
                 const py = await runcode();
-                
-                const mainfiles = files.filter(file => {
-                    const name = file.name.toLowerCase();
-                    if (name.match(/\.raw(\.\w+)?$/) && !name.match(/\.raw\d+(\.\w+)?$/)) {
-                        return true;
-                    }
-                    if (name.match(/\.raw\d+(\.\w+)?$/) && file.size > 100) {
-                        return true;
-                    }
-                    return false;
-                });
+                const decryptfunction = py.globals.get("decryptrawpy");
+
+                /* All files in a group are already .raw / .rawN; do not drop small split parts
+                   (old filter used file.size > 100 and could leave mainfiles empty). */
+                const mainfiles = Array.from(files);
                 
                 const splitfiles = files.some(file => {
                     const name = file.name.toLowerCase();
@@ -572,31 +581,28 @@
                                     combinedbuffer.set(buf, offset);
                                     offset += buf.length;
                                 }
-                                const result = await pyodide.runPython(`
-                                    result = decryptrawpy(${combinedbuffer})
-                                    result
-                                `);
-                                
-                            if (result && result.width && result.height) {
-                                const blob = await rgbatoblob(result.width, result.height, new Uint8Array(result.pixels));
-                                return { blob, used_fallback: false, warning: "Split file conversion - may have incorrect colors/dimensions" };
-                            }
+                                const splitres = await decryptfunction(py.toPy(combinedbuffer));
+                                const splitr = splitres.toJs({ create_proxies: false });
+                                if (splitr && splitr.width && splitr.height) {
+                                    const blob = await rgbatoblob(splitr.width, splitr.height, new Uint8Array(splitr.pixels));
+                                    return {blob, used_fallback: !!splitr.used_fallback, warning: "Split file conversion - might have incorrect colors/dimensions :("};
+                                }
                             } catch (e) {
+                                console.warn(e);
                             }
                         }; const testfile = raw1files[0];
                         
                         try {
                             const testbuf = new Uint8Array(await testfile.arrayBuffer());
-                            const result = await pyodide.runPython(`
-                                result = decryptrawpy(${testbuf})
-                                result
-                            `);
-                            
-                            if (result && result.width && result.height) {
-                                const blob = await rgbatoblob(result.width, result.height, new Uint8Array(result.pixels));
-                                return { blob, used_fallback: false, warning: "Split file conversion - may have incorrect colors/dimensions" };
+                            const splitres = await decryptfunction(py.toPy(testbuf));
+                            const splitr = splitres.toJs({ create_proxies: false });
+                            if (splitr && splitr.width && splitr.height) {
+                                const blob = await rgbatoblob(splitr.width, splitr.height, new Uint8Array(splitr.pixels));
+                                return {blob, used_fallback: !!splitr.used_fallback, warning: "Split file conversion - might have incorrect colors/dimensions :("};
                             }
-                        } catch (e) {}
+                        } catch (e) {
+                            console.warn(e);
+                        }
                     }
                     
                     mainfiles.sort((a, b) => {
@@ -630,8 +636,6 @@
                     offset += buf.length;
                 }
                 
-                const decryptfunction = py.globals.get("decryptrawpy");
-                
                 const result = await decryptfunction(py.toPy(combinedbuffer));
                 const r = result.toJs({ create_proxies: false });
                 const width = r.width;
@@ -653,6 +657,7 @@
             }
 
             async function handlefolder(files){
+                showstats();
                 let succeeded = 0;
                 let failed = 0;
                 let warnings = 0;
@@ -745,47 +750,63 @@
                     setcounts(succeeded, failed, warnings);
                 }
 
-                 progressinfo.textContent = "Zipping results…";
-                 const zipblob = await zip.generateAsync({type: "blob", compression: "DEFLATE"});
-                 const uniqueid = idgen();
-                 savefile(zipblob, `FeedwithCandy_${uniqueid}.zip`);
-                 progressinfo.textContent = "Done! Remember to rename the .pngs back to .raws after editing.";
+                progressinfo.textContent = "Zipping results…";
+                const zipblob = await zip.generateAsync({type: "blob", compression: "DEFLATE"});
+                const uniqueid = idgen();
+                savefile(zipblob, `FeedwithCandy_${uniqueid}.zip`);
+                progressinfo.textContent = "Done! Remember to rename the .pngs back to .raws after editing.";
             }
 
             async function handlesingle(file){
                 setcounts(0, 0, 0);
                 progressinfo.textContent = "Decrypting single file...";
-                 try {
-                     const result = await decryptfile(file);
-                     const outname = replaceext(file.name, ".png");
-                     savefile(result.blob, outname);
-                     
-                     if (result.used_fallback) {
-                         setcounts(0, 0, 1);
-                         const warnmsg = `${file.name} - used fallback dimensions (will likely be corrupted)`;
-                         errorlog(warnmsg);
-                         console.warn(warnmsg);
-                         progressinfo.textContent = "Done with warnings! Check errors for details.";
-                     } else {
-                         setcounts(1, 0, 0);
-                         progressinfo.textContent = "Done! Remember to rename the .png back to .raw after editing.";
-                     }
-                 } catch (e){
+                try {
+                    const result = await decryptfile(file);
+                    const outname = replaceext(file.name, ".png");
+                    savefile(result.blob, outname);
+                    
+                    if (result.used_fallback) {
+                        setcounts(0, 0, 1);
+                        const warnmsg = `${file.name} - used fallback dimensions (will likely be corrupted)`;
+                        errorlog(warnmsg);
+                        console.warn(warnmsg);
+                        progressinfo.textContent = "Done with warnings! Check errors for details.";
+                    } else {
+                        setcounts(1, 0, 0);
+                        progressinfo.textContent = "Done! Remember to rename the .png back to .raw after editing.";
+                    }
+                } catch (e){
                     setcounts(0, 1, 0);
                     errorlog("fail: " + file.name + (e && e.message ? e.message : e));
                     progressinfo.textContent = "Failed... If this is a split file, try selecting the folder containing all .raw files instead.";
                 }
             }
 
-            document.querySelector(".inputfolder").addEventListener("change", async (e) => {
+            document.querySelector(".inputfolder").addEventListener("change", (e) => {
                 if (!e.target.files || e.target.files.length === 0) return;
-                await handlefolder(e.target.files);
-                document.querySelector(".inputfolder").value = "";
+                const picked = e.target.files;
+                handlefolder(picked).catch((err) => {
+                    showstats();
+                    const msg = err && err.message ? err.message : String(err);
+                    errorlog("Folder batch failed: " + msg);
+                    progressinfo.textContent = "Failed - see errors below...";
+                    setcounts(0, 1, 0);
+                }).finally(() => {
+                    document.querySelector(".inputfolder").value = "";
+                });
             });
-            document.querySelector(".inputsingle").addEventListener("change", async (e) => {
+            document.querySelector(".inputsingle").addEventListener("change", (e) => {
                 if (!e.target.files || e.target.files.length === 0) return;
-                await handlesingle(e.target.files[0]);
-                document.querySelector(".inputsingle").value = "";
+                const f = e.target.files[0];
+                handlesingle(f).catch((err) => {
+                    showstats();
+                    const msg = err && err.message ? err.message : String(err);
+                    errorlog("Single file failed: " + msg);
+                    progressinfo.textContent = "Failed - see errors below...";
+                    setcounts(0, 1, 0);
+                }).finally(() => {
+                    document.querySelector(".inputsingle").value = "";
+                });
             });
 
             updatedecoderbuttons();
@@ -836,8 +857,21 @@
                         errorlog("No .raw files found in dropped files...");
                         return;
                     }
-                    if (rawfiles.length === 1) {handlesingle(rawfiles[0])}
-                    else {handlefolder(files)}
+                    if (rawfiles.length === 1) {
+                        handlesingle(rawfiles[0]).catch((err) => {
+                            showstats();
+                            errorlog("Drop failed: " + (err && err.message ? err.message : err));
+                            progressinfo.textContent = "Failed - see errors below...";
+                            setcounts(0, 1, 0);
+                        });
+                    } else {
+                        handlefolder(files).catch((err) => {
+                            showstats();
+                            errorlog("Drop batch failed: " + (err && err.message ? err.message : err));
+                            progressinfo.textContent = "Failed - see errors below...";
+                            setcounts(0, 1, 0);
+                        });
+                    }
                 }
             });
         })();
