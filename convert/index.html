@@ -302,7 +302,7 @@
 
         <div class="stats">
             <div class="counts"><a style="color:#6cf16c">0 succeeded</a>//<a style="color:#fff457">0 warnings</a>//<a style="color:#f08b8b">0 failed</a></div>
-            <div class="progressinfo">Starting…</div>
+            <div class="progressinfo">Starting...</div>
         </div>
 
         <div class="errorconsole">
@@ -670,7 +670,7 @@
                 let failed = 0;
                 let warnings = 0;
                 setcounts(succeeded, failed, warnings);
-                progressinfo.textContent = "Preparing…";
+                progressinfo.textContent = "Preparing...";
 
                 const rawfiles = Array.from(files).filter(f => {
                     const name = f.name.toLowerCase();
@@ -740,7 +740,7 @@
 
                         const result = await decryptsplitfile(groupfiles);
                         const innerpng = strippathseg(rel).replace(/\.[Rr][Aa][Ww](\d+)?(\.[\w]+)?$/i, "") + ".png";
-                        const pngpath = `${zipbase}/${selectedfoldername}/${innerpng}`;
+                        const pngpath = `${selectedfoldername}/${innerpng}`;
                         zip.file(pngpath, result.blob);
                         
                         if (result.warning) {
@@ -761,15 +761,15 @@
                     setcounts(succeeded, failed, warnings);
                 }
 
-                progressinfo.textContent = "Adding originals to zip…";
+                progressinfo.textContent = "Adding originals to zip...";
                 for (const f of rawfiles) {
                     const rel = normalizerelpath(f);
                     const inner = strippathseg(rel);
-                    const origpath = `${zipbase}/${selectedfoldername} (original)/${inner}`;
+                    const origpath = `${selectedfoldername} (original)/${inner}`;
                     zip.file(origpath, await f.arrayBuffer());
                 }
 
-                progressinfo.textContent = "Zipping results…";
+                progressinfo.textContent = "Zipping results...";
                 // :(
                 const zipcomment = `
 As it turns out, Om Nom was 
