@@ -4,11 +4,13 @@ import QueryStrings from "@/ui/QueryStrings";
 function getCandyResourceId(): number | null {
     if (QueryStrings.candy != null) {
         const candyNum = QueryStrings.candy;
-        if (candyNum >= 1 && candyNum <= 52) {
+        if (candyNum >= 1 && candyNum <= 53) {
             if (candyNum === 1) {
                 return ResourceId.IMG_OBJ_CANDY_01;
             } else if (candyNum === 52) {
                 return ResourceId.IMG_OBJ_CANDY_52;
+            } else if (candyNum === 53) {
+                return ResourceId.IMG_OBJ_CANDY_PADDINGTON;
             } else {
                 return (ResourceId.IMG_OBJ_CANDY_02 as number) + (candyNum - 2);
             }

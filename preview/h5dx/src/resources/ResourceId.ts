@@ -288,10 +288,10 @@ const ResourceId = {
     SND_CONV03: 279,
     SND_CONV04: 280,
 
-    IMG_BGR_14_P1: 281,
+    IMG_BGR_14_P1: 282,
 
     // Total number of resources
-    RESOURCES_COUNT: 281,
+    RESOURCES_COUNT: 282,
 } as const;
 
 export default ResourceId;

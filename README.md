@@ -1,6 +1,6 @@
 ![candies dot monster](https://github.com/sogful/candies.monster/blob/main/assets/images/logodark.webp)
 <h1 align="center">a cut the rope resource website</h1>
-<p align="center">updates every week with new fixes or pages! everything available is listed on the <a href="https://candies.monster">frontpage</a>, like:</p>
+<p align="center">updates less often now as i'm focusing on other projects. everything available is listed on the <a href="https://candies.monster">frontpage</a>, like:</p>
 
 <table align="center">
   <tr>
