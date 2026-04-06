@@ -8,3 +8,5 @@
 /webtile
 /convert/__pycache__
 /convert/assets/static/__pycache__
+
+/template.html

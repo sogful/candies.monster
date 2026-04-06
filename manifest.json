@@ -1,0 +1,28 @@
+{
+    "theme_color": "#e9a856",
+    "background_color": "#e9a856",
+    "icons": [
+        {
+            "purpose": "maskable",
+            "sizes": "512x512",
+            "src": "/assets/images/iconmaskable.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "any",
+            "sizes": "512x512",
+            "src": "/assets/images/iconrounded.png",
+            "type": "image/png"
+        }
+    ],
+    "orientation": "any",
+    "display": "browser",
+    "dir": "left",
+    "lang": "en-US",
+    "name": "candies.monster",
+    "short_name": "cdm",
+    "start_url": "https://candies.monster",
+    "scope": "https://candies.monster/",
+    "description": "cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc..",
+    "id": "candiesmonster"
+}
