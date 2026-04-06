@@ -62,7 +62,7 @@
             cursor: url("/assets/static/link.cur"), default !important;
         }
         * {
-            cursor: inherit !important;  
+            cursor: inherit !important;
             scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
         }
         *::-webkit-scrollbar {width: 0px}
@@ -209,6 +209,17 @@
             paint-order: stroke fill;
         }
 
+        .middleclick {
+            display: flex; position: fixed; flex-direction: row;
+            justify-content: center; align-items: top; flex-wrap: wrap;
+            bottom: 3.25em; width: 110px; height: 32px; 
+            padding-left: 17.5em;
+            user-select: none; pointer-events: none;
+            opacity: 0; transition: opacity 0.5s;
+        }
+        .sbuttons:hover ~ .middleclick,
+        .sbuttons:focus-within ~ .middleclick {opacity: 1}
+
         .music {
             position: fixed; bottom: 0.5em; left: 0.5em;
             width: 2em; height: 2em; z-index: 1000;
@@ -262,7 +273,7 @@
         <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
 
     </div>
-    <span class="tiny"><a href="/documentation">documentation</a>&nbsp;•&nbsp;<a href="https://discord.gg/ExFtwhB5kS">have a question?</a> (ping <a href="https://discord.com/users/763502120333869116">@cvgd</a>)&nbsp;•&nbsp;<a href="https://ctrhome.github.io/fan-projects">more stuff!</a></span>
+    <span class="tiny"><a href="/documentation">documentation</a>&nbsp;•&nbsp;<a href="https://discord.gg/ExFtwhB5kS">have a question?</a> (ping <a href="https://discord.com/users/763502120333869116">@cvgd</a>)&nbsp;•&nbsp;<a href="https://ctrhome.github.io/fan-projects">more fun stuff!</a></span>
 
 
     <img class="music clickable" src="/assets/images/nomusic.png" title="enable/disable tunes on this page">
@@ -270,7 +281,6 @@
     <div class="sbuttons">
         <a><img class="sbutton" src="/assets/images/88x31/default.png" title="an 88x31 button with om nom in front of the gift box background."></a>
         <a><img class="sbutton" src="/assets/images/88x31/tasty.png" title="an 88x31 button with the text: &quot;this page is TASTY!&quot;"></a>
-
         <!-- slide -->
         <a class="ctrgame">
             <img class="sbutton ctrimg" src="/assets/images/88x31/game1.gif" draggable="false" title="an 88x31 gif with a small cut the rope level. to the top left there is a rope that can be dragged over to be cut.">
@@ -311,6 +321,7 @@
         </a-->
         
     </div>
+    <img class="middleclick" src="/assets/images/middleclick.png">
 
     <script>
 
