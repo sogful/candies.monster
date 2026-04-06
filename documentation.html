@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>candies.monster</title>
+    <link rel="icon" type="image/png" href="/assets/images/candy.png">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="/assets/static/slash.js"></script>
+
+    <meta property="og:image" content="/assets/images/banner.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="/assets/images/banner.png">
+
+    <!-- search engines (practically no one is gonna find this through google but still) -->
+    <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="bingbot" content="index, follow">
+    <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
+
+    <style>
+
+        @font-face {
+            font-family: "Good Dog";
+            src: /*universal*/ url("/assets/fonts/gooddog.woff");
+        }
+        @font-face {
+            font-family: "JetBrains Mono";
+            src: /*universal*/ url("/assets/fonts/jetbrainsmono.woff");
+        }
+
+        body {
+            font-family: "Good Dog";
+            position: relative; z-index: 1;
+            display: flex; justify-content: center;
+            min-height: 100vh; min-width: 100vw;
+            overflow-y: visible !important; overflow-x: hidden !important;
+            user-select: auto; padding: 0; margin: 0;
+            -webkit-user-drag: none;
+
+            background-color: black;
+            background-position: center center;
+            background-repeat: no-repeat; background-size: cover;
+            background-attachment: fixed;
+
+            cursor: url("/assets/static/idle.cur"), default !important;
+        }
+        body:active, body:focus, body:focus-within, body:target, body:active * {
+            cursor: url("/assets/static/active.cur"), default !important;
+        }
+        :any-link, .link {
+            color: #8feeff; text-decoration: none !important;
+            cursor: url("/assets/static/link.cur"), default !important;
+        }
+        * {
+            cursor: inherit !important;  
+            scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
+        }
+        *::-webkit-scrollbar {width: 0px}
+
+        .bg {
+            position: fixed;
+            inset: 0; width: 100vw; height: 100vh;
+            background-image: url("/assets/images/bg.webp");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            opacity: 0.5; z-index: -1;
+            pointer-events: none;
+        }
+
+        p {margin: 0}
+
+        .loading {
+            position: fixed; display: flex;
+            justify-content: center;
+            width: 100vw; height: 100vh; z-index: 65535;
+            background-color: rgba(0,0,0,0.5);
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+            transition: opacity 0.5s;
+        }
+        .loading svg {
+            width: 100px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,/*0.55*/0.33));
+            animation: rotate 2s linear infinite;
+        }
+        @keyframes rotate {
+            0% {transform: rotate(0deg)}
+            100% {transform: rotate(360deg)}
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        .page {
+            display: flex; flex-direction: column;
+            width: min(90vw, 700px); min-height: 90vh;
+            color: white; font-size: 1em;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+            margin-top: 1em; margin-bottom: 20em;
+        }
+
+        .title {
+            font-size: 2em;
+            -webkit-text-stroke: 0.15em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+
+        .tiny {
+            position: fixed; bottom: 0.3em; width: 90%;
+            text-align: center;
+            color: rgb(223, 223, 223); font-size: 0.5em;
+            -webkit-text-stroke: 0.175em black;
+            text-shadow: 0 0.15em 0 black;
+            paint-order: stroke fill;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        h2, li, ul {font-weight: normal !important}
+        h2 {padding: 0; margin: 0}
+        .note {color: #ccc}
+        .optional {opacity: 0.5}
+        code {font-family: "JetBrains Mono"; font-size: 0.75em; -webkit-text-stroke: 0.275em black}
+
+        li {
+            list-style-type: none;
+            position: relative;
+            padding-left: 1.5em;
+            display: block; align-items: unset; 
+        }
+        li::before {
+            content: "";
+            display: inline-block; position: absolute;
+            left: 0; top: 50%; transform: translateY(-50%);
+            width: 1em; height: 1em;
+            background-image: url('/merch/assets/images/bullet.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
+    
+    <div class="loading">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <path fill="#fbfbfb" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm1 18-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
+            <path fill="#080808" d="M90 29h13l8 7 7 8 5 10 1 6v14l-4 11-3 5 8-6 8-9 7-12 5-16 4 1 9 10 8 15 4 13v9l-8 11-11 8-12 5-4 1h-15l-6-3-7-6-2-4 2 10 7 11 7 6 9 5 16 6 6 1-2 4-12 10-15 7-7 2h-9l-10-5-8-7-7-12-3-11v-15l4-10 4-6 3-4-10 8-9 10-9 15-8 20-4-2-9-10-8-16v-8l5-16 6-11 8-7 10-6 12-4h12l10 4 3 1-5-9-8-7-10-4-5-1H45l4-6 12-10 16-8 6-2Zm0 4-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
+            <path fill="#060606" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm4 3-16 3-16 7-11 7-11 10-8 11-8 16-3 12-1 7v17l2 12 5 14 6 11 9 11 10 9 15 9 14 5 11 2h18l13-3 14-5 14-9 12-11 9-13 7-16 2-7 1-9V90l-3-15-7-16-8-11-8-9-12-9-17-8-12-3-7-1Z"/>
+          </svg>          
+    </div>
+    <noscript><style>
+        html, body {margin: 0; padding: 0; height: 100%}
+        .nojs {
+            display: flex; position: fixed; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            inset: 0; width: 100vw; height: 100vh;
+            z-index: 6553565535; padding: 0;
+            background-color: black; color: white; font-size: 2em; 
+        }
+        .nojs img {width: 400px; max-width: 80vw; padding-bottom: 0.5em}
+        .nojs a {width: 500px; max-width: 80vw}
+        .nojsbg {
+            position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;
+            background-image: url("/assets/images/tile.webp");
+            background-repeat: repeat; background-size: auto;
+            opacity: 0.25; z-index: -1; pointer-events: none;
+        }
+    </style> <div class="nojs">
+    <div class="nojsbg"></div> <img src="/assets/images/nojs.webp" draggable="false">
+    <a>Please enable Javascript in your browser to use this page.</a></div></noscript>
+
+    <div class="bg"></div>
+
+    <div class="page">
+        <a class="title">Documentation</a>
+        <a>info possibly useful for people implementing the level preview/convert features into their own project</a>
+        <br>
+
+        <h2>cloudflare worker endpoints (non-github)</h2>
+
+        <ul style="padding-left:1.4em">
+            <li><span class="link">https://play.candies.monster/?data=<span class="list">［xml－plain﹒𝗢𝗥﹒base64﹒𝗢𝗥﹒url-safe﹒base64</span>&redirect&temp</span> - generate shortlink<br>
+            <span class="note"><span class="optional">(optional)</span> <code>redirect</code> - redirect to the level preview instead of returning data</span>
+            </li>
+
+            <li><span class="link">https://play.candies.monster/api/code/[shortlink]?</span> &mdash; get base64 data of a shortlink</li>
+        </ul>
+
+        <ul style="padding-left:1.4em">
+            <li><span class="link">https://convert.candies.monster/?xml=［xml－plain﹒𝗢𝗥﹒base64﹒𝗢𝗥﹒url-safe﹒base64］&amp;download&amp;gzip</span> &mdash; convert to json</li>
+
+            <li><span class="link">https://convert.candies.monster/?json=［json－plain﹒𝗢𝗥﹒base64﹒𝗢𝗥﹒url-safe﹒base64］&amp;download&amp;gzip</span> &mdash; convert to xml</li>
+
+            <li><span class="note"><span class="optional">(optional)</span> <code>gzip</code> - <a href="https://en.wikipedia.org/wiki/Gzip" target="_blank" style="color:#bbb;text-decoration:underline">gzip</a> and then base64 the data for best possible url safe compression
+            </span></li>
+
+            <li><span class="note"><span class="optional">(optional)</span> <code>download</code> - download file instead of getting the plain text response
+            </span></li>
+        </ul>
+
+        <ul style="padding-left:1.4em">
+            <li><span class="link">https://cdn.candies.monster/testflight/[hash].ipa</span> &mdash; 10 recovered teraleak ipas<br>
+            <span>archived from d193ln56du8muy.cloudfront.net/ipas</span></li>
+
+            <li><span class="link">https://cdn.candies.monster/leaks/[filename].apk</span> &mdash; 25+ zeptoapp apks<br>
+            <span>archived from zeptoapp.zeptodev.com/api/applications/download</span></li>
+
+            <li><span class="link">https://cdn.candies.monster/ads/[id].jpg</span> &mdash; 8700+ images of marketing material<br>
+            <span>mirror of bms.zeptolab.com/feeder/images</span></li>
+        </ul>
+
+        <h2>preview</h2>
+        <ul style="padding-left:1.4em">
+            <li><span class="link">https://candies.monster/preview?data=［xml－plain﹒𝗢𝗥﹒base64﹒𝗢𝗥﹒url-safe﹒base64﹒𝗢𝗥﹒gzip﹒base64］&amp;noui&amp;shareonly</span></li>
+
+            <li class="note"><span class="optional">(optional)</span> <code>noui</code> (<code>nu</code> / <code>u</code>) - hide close, share, edit buttons and xml info</li>
+
+            <li class="note"><span class="optional">(optional)</span> <code>shareonly</code> (<code>so</code> / <code>s</code>) - hide edit buttons and xml info, rebind close button to send a signal outside of an iframe (for ctr level editor)</li>
+
+            <li class="note"><span class="optional">(optional)</span> <code>nomusic</code> (<code>nm</code> / <code>m</code>) - force mute in-game music for this session, making the music toggle nonfunctional and level restart not restart it</li>
+
+            <li class="note"><span class="optional">(optional)</span> <code>jolly</code> (<code>jl</code> / <code>j</code>) - enable christmas mode for this session</li>
+
+            <li class="note"><span class="optional">(optional)</span> <code>candy</code> (<code>ca</code> / <code>c</code>) - choose between candies, so 1-52. if nothing is provided or is invalid then uses 1. 52 is the easter special from cut the rope 1.3 (ios)</li>
+
+            <li class="note"><span class="optional">(optional)</span> <code>background</code> (<code>bg</code> / <code>b</code>) - choose between backgrounds, so 1&ndash;11 &amp; 16, 16 is the xmas background</li>
+        </ul>
+        
+    </div>
+
+    <script>
+        
+        // animated favicon
+        (function() {
+            let spritejson = null; let sheetloaded = false;
+            let favicons = []; let index = 0; const delay = 300;
+            let sheetimg = null;
+
+            fetch("/assets/images/icon.json")
+                .then(response => response.json()).then(data => {
+                    spritejson = data.frames; sheetimg = new Image();
+                    sheetimg.onload = () => {
+                        sheetloaded = true;
+                        const canvas = document.createElement("canvas");
+                        const ctx = canvas.getContext("2d");
+                        favicons = spritejson.map(frame => {
+                            canvas.width = frame.frame.w;
+                            canvas.height = frame.frame.h;
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(
+                                sheetimg,
+                                frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h,
+                                0, 0, frame.frame.w, frame.frame.h
+                            ); return canvas.toDataURL("image/png");
+                        }); favicongif();
+                    }; sheetimg.src = "/assets/images/icon.webp";
+                });
+            function favicongif() {
+                if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
+                const link = document.querySelector("link[rel='icon']") || document.createElement("link");
+                link.rel = "icon"; link.href = favicons[index];
+                document.head.appendChild(link);
+                index = (index + 1) % favicons.length;
+                setTimeout(favicongif, delay);
+            }
+        })();
+
+        // loading
+        window.addEventListener("load", function() {
+            var loading = document.querySelector(".loading");
+            if (loading) {
+                loading.style.opacity = "0";
+                setTimeout(function() {
+                    if (loading.parentNode) {loading.parentNode.removeChild(loading)}
+                }, 500);
+            }
+        });
+
+        // click sfx
+        document.querySelectorAll(".clickable").forEach(function(element) {
+            element.addEventListener("click", function() {
+                document.querySelector(".click").currentTime = 0;
+                document.querySelector(".click").play();
+            });
+        });
+
+                
+    </script>
+</body>
+</html>
