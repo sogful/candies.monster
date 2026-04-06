@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-    <title>candies.monster</title>
+    <title>Documentation</title>
     <link rel="icon" type="image/png" href="/assets/images/candy.png">
 
     <meta charset="utf-8">
@@ -62,9 +62,8 @@
         .bg {
             position: fixed;
             inset: 0; width: 100vw; height: 100vh;
-            background-image: url("/assets/images/bg.webp");
-            background-repeat: no-repeat;
-            background-size: cover;
+            background-image: url("/assets/images/devbg.webp");
+            background-repeat: repeat;
             background-position: center center;
             opacity: 0.5; z-index: -1;
             pointer-events: none;
@@ -110,9 +109,7 @@
         }
 
         .tiny {
-            position: fixed; bottom: 0.3em; width: 90%;
-            text-align: center;
-            color: rgb(223, 223, 223); font-size: 0.5em;
+            font-size: 0.5em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
@@ -123,7 +120,7 @@
         h2, li, ul {font-weight: normal !important}
         h2 {padding: 0; margin: 0}
         .note {color: #ccc}
-        .optional {opacity: 0.5}
+        .optional {color: #999 !important}
         code {font-family: "JetBrains Mono"; font-size: 0.75em; -webkit-text-stroke: 0.275em black}
 
         li {
@@ -156,50 +153,31 @@
             <path fill="#060606" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm4 3-16 3-16 7-11 7-11 10-8 11-8 16-3 12-1 7v17l2 12 5 14 6 11 9 11 10 9 15 9 14 5 11 2h18l13-3 14-5 14-9 12-11 9-13 7-16 2-7 1-9V90l-3-15-7-16-8-11-8-9-12-9-17-8-12-3-7-1Z"/>
           </svg>          
     </div>
-    <noscript><style>
-        html, body {margin: 0; padding: 0; height: 100%}
-        .nojs {
-            display: flex; position: fixed; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            inset: 0; width: 100vw; height: 100vh;
-            z-index: 6553565535; padding: 0;
-            background-color: black; color: white; font-size: 2em; 
-        }
-        .nojs img {width: 400px; max-width: 80vw; padding-bottom: 0.5em}
-        .nojs a {width: 500px; max-width: 80vw}
-        .nojsbg {
-            position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;
-            background-image: url("/assets/images/tile.webp");
-            background-repeat: repeat; background-size: auto;
-            opacity: 0.25; z-index: -1; pointer-events: none;
-        }
-    </style> <div class="nojs">
-    <div class="nojsbg"></div> <img src="/assets/images/nojs.webp" draggable="false">
-    <a>Please enable Javascript in your browser to use this page.</a></div></noscript>
+    <noscript><style>.loading {display: none}</style></noscript>
 
     <div class="bg"></div>
 
     <div class="page">
         <a class="title">Documentation</a>
-        <a>info possibly useful for people implementing the level preview/convert features into their own project</a>
+        <a>info possibly useful for people implementing the level preview/convert features into their own project and more</a>
         <br>
 
-        <h2>cloudflare worker endpoints (non-github)</h2>
+        <h2>cloudflare worker endpoints</h2>
 
         <ul style="padding-left:1.4em">
-            <li><span class="link">https://play.candies.monster/?data=<span class="list">［xml－plain﹒𝗢𝗥﹒base64﹒𝗢𝗥﹒url-safe﹒base64</span>&redirect&temp</span> - generate shortlink<br>
+            <li><span class="link">https://play.candies.monster/?data=<span class="note"> (xml / plain / base64 / url-safe base64) </span>&redirect</span> - generate shortlink<br>
             <span class="note"><span class="optional">(optional)</span> <code>redirect</code> - redirect to the level preview instead of returning data</span>
             </li>
 
-            <li><span class="link">https://play.candies.monster/api/code/[shortlink]?</span> &mdash; get base64 data of a shortlink</li>
+            <li><span class="link">https://play.candies.monster/api/code/<span class="note"> (shortcode) </span></span> - get base64 data of a shortlink</li>
         </ul>
 
         <ul style="padding-left:1.4em">
-            <li><span class="link">https://convert.candies.monster/?xml=［xml－plain﹒𝗢𝗥﹒base64﹒𝗢𝗥﹒url-safe﹒base64］&amp;download&amp;gzip</span> &mdash; convert to json</li>
+            <li><span class="link">https://convert.candies.monster/?xml=<span class="note"> (xml / plain / base64 / url-safe base64) </span>&download&gzip</span> - convert to json</li>
 
-            <li><span class="link">https://convert.candies.monster/?json=［json－plain﹒𝗢𝗥﹒base64﹒𝗢𝗥﹒url-safe﹒base64］&amp;download&amp;gzip</span> &mdash; convert to xml</li>
+            <li><span class="link">https://convert.candies.monster/?json=<span class="note"> (xml / plain / base64 / url-safe base64) </span>&download&gzip</span> - convert to xml</li>
 
-            <li><span class="note"><span class="optional">(optional)</span> <code>gzip</code> - <a href="https://en.wikipedia.org/wiki/Gzip" target="_blank" style="color:#bbb;text-decoration:underline">gzip</a> and then base64 the data for best possible url safe compression
+            <li><span class="note"><span class="optional">(optional)</span> <code>gzip</code> - <a href="https://en.wikipedia.org/wiki/Gzip" target="_blank">gzip</a> and then base64 the data for the best possible url-safe compression. geometry dash uses this, actually!
             </span></li>
 
             <li><span class="note"><span class="optional">(optional)</span> <code>download</code> - download file instead of getting the plain text response
@@ -207,19 +185,19 @@
         </ul>
 
         <ul style="padding-left:1.4em">
-            <li><span class="link">https://cdn.candies.monster/testflight/[hash].ipa</span> &mdash; 10 recovered teraleak ipas<br>
-            <span>archived from d193ln56du8muy.cloudfront.net/ipas</span></li>
+            <li><span class="link">https://cdn.candies.monster/testflight/<span class="note"> (hash) </span>.ipa</span> - 10 recovered teraleak ipas<br>
+            <span class="note">archived from d193ln56du8muy.cloudfront.net/ipas</span></li>
 
-            <li><span class="link">https://cdn.candies.monster/leaks/[filename].apk</span> &mdash; 25+ zeptoapp apks<br>
-            <span>archived from zeptoapp.zeptodev.com/api/applications/download</span></li>
+            <li><span class="link">https://cdn.candies.monster/leaks/<span class="note"> (filename) </span>.apk</span> - 25+ zeptoapp apks<br>
+            <span class="note">archived from zeptoapp.zeptodev.com/api/applications/download</span></li>
 
-            <li><span class="link">https://cdn.candies.monster/ads/[id].jpg</span> &mdash; 8700+ images of marketing material<br>
-            <span>mirror of bms.zeptolab.com/feeder/images</span></li>
+            <li><span class="link">https://cdn.candies.monster/ads/<span class="note"> (id) </span>.jpg</span> - 8700+ images of marketing material<br>
+            <span class="note">mirror of bms.zeptolab.com/feeder/images</span></li>
         </ul>
 
         <h2>preview</h2>
         <ul style="padding-left:1.4em">
-            <li><span class="link">https://candies.monster/preview?data=［xml－plain﹒𝗢𝗥﹒base64﹒𝗢𝗥﹒url-safe﹒base64﹒𝗢𝗥﹒gzip﹒base64］&amp;noui&amp;shareonly</span></li>
+            <li><span class="link">https://candies.monster/preview?data=<span class="note"> (xml / plain / base64 / url-safe base64) </span>&noui&shareonly</span></li>
 
             <li class="note"><span class="optional">(optional)</span> <code>noui</code> (<code>nu</code> / <code>u</code>) - hide close, share, edit buttons and xml info</li>
 
@@ -229,9 +207,9 @@
 
             <li class="note"><span class="optional">(optional)</span> <code>jolly</code> (<code>jl</code> / <code>j</code>) - enable christmas mode for this session</li>
 
-            <li class="note"><span class="optional">(optional)</span> <code>candy</code> (<code>ca</code> / <code>c</code>) - choose between candies, so 1-52. if nothing is provided or is invalid then uses 1. 52 is the easter special from cut the rope 1.3 (ios)</li>
+            <li class="note"><span class="optional">(optional)</span> <code>candy</code> (<code>ca</code> / <code>c</code>) - choose between candies, so 1-52. <br> if nothing is provided or is invalid then uses 1. 52 is the easter special from cut the rope 1.3 (ios)</li>
 
-            <li class="note"><span class="optional">(optional)</span> <code>background</code> (<code>bg</code> / <code>b</code>) - choose between backgrounds, so 1&ndash;11 &amp; 16, 16 is the xmas background</li>
+            <li class="note"><span class="optional">(optional)</span> <code>background</code> (<code>bg</code> / <code>b</code>) - choose between backgrounds, so 1&ndash;11 & 16, 16 is the xmas background</li>
         </ul>
         
     </div>
