@@ -122,6 +122,13 @@
     "description": ""
   },
   {
+    "name": "Maya Papaya",
+    "package": "com.momzikov.sweetalchemy.google",
+    "icon": "/assets/images/gameicons/mayapapaya.webp",
+    "importance": 3,
+    "description": ""
+  },
+  {
     "name": "Om Nom Knockout",
     "package": "com.zeptolab.omnomknockout",
     "icon": "/assets/images/gameicons/knockout.webp",
