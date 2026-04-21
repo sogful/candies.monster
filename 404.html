@@ -83,6 +83,7 @@
         /* done using a web interface which let me move a placeholder element frame by frame to effectively trace any video and export the result as css keyframes.
         the scale squishes had to be tweaked to be 2x stronger but this still ended up good! 
         maybe i'll fix that vibecoded slop and commit it to my main website */
+        /* update: it's out! coolsite.cv/tools/csstrace */
         @keyframes silly {
             0% {width: 160px; height: 160px; transform: translate(158px, 37px) scale(1.3352, 1.1008)}
             1.89% {width: 160px; height: 160px; transform: translate(156px, -11px) scale(1.3352, 1.1008)}
@@ -265,47 +266,25 @@
             const sillysubtitles = document.querySelector(".subtitles");
             if (!sillysubtitles) return;
 
-            let cues = [];
-            let started = false;
+            const subs = [
+                {start: 0, end: 0.928, text: "this is the nightmail"},
+                {start: 0.928, end: 1.777, text: "crossing the border"},
+                {start: 1.777, end: 2.436, text: "bringing the cheque"},
+                {start: 2.436, end: 3.571, text: "and the postal order"},
+                {start: 3.571, end: 4.444, text: "letters for the rich"},
+                {start: 4.444, end: 5.260, text: "letters for the poor"},
+                {start: 5.26, end: 6.111, text: "the shop at the corner"},
+                {start: 6.111, end: 7.12, text: "the girl next door"}
+            ];
 
-            function parsetime(str) {
-                const m = str.match(/(\d+):(\d+):(\d+),(\d+)/);
-                if (!m) return 0;
-                return (
-                    parseInt(m[1], 10) * 3600 +
-                    parseInt(m[2], 10) * 60 +
-                    parseInt(m[3], 10) +
-                    parseInt(m[4], 10) / 1000
-                );
-            }
-
-            function parsesrt(data) {
-                const lines = data.replace(/\r/g, "").split("\n");
-                const out = [];
-                for (let i = 0; i < lines.length;) {
-                    let line = lines[i++].trim();
-                    if (!line) continue;
-                    if (i >= lines.length) break;
-                    const timeline = lines[i++].trim();
-                    const parts = timeline.split("-->");
-                    if (parts.length !== 2) continue;
-                    const start = parsetime(parts[0].trim());
-                    const end = parsetime(parts[1].trim());
-                    const textlines = [];
-                    while (i < lines.length && lines[i].trim() !== "") {
-                        textlines.push(lines[i++]);
+            function getsub(time) {
+                for (let i = 0; i < subs.length; i++) {
+                    if (time >= subs[i].start && time <= subs[i].end) {
+                        return subs[i].text;
                     }
-                    out.push({
-                        start: start, end: end,
-                        html: textlines.join("<br>")
-                    });
-                }; return out;
+                }
+                return null;
             }
-
-            fetch("https://candies.monster/assets/static/nightmail.srt")
-                .then(res => res.text())
-                .then(text => { cues = parsesrt(text); })
-                .catch(() => { cues = []; });
 
             const audiocontextclass = window.AudioContext || window.webkitAudioContext;
             if (!audiocontextclass) return;
@@ -316,6 +295,7 @@
             gain.connect(context.destination);
 
             let buffer = null; let source = null;
+            let started = false;
             let starttime = 0.02;
 
             function loadbuffer() {
@@ -331,12 +311,8 @@
             }
 
             function showsubtitle(t) {
-                let active = null;
-                for (let i = 0; i < cues.length; i++) {
-                    const c = cues[i];
-                    if (t >= c.start && t <= c.end) {active = c; break}
-                }
-                sillysubtitles.innerHTML = active ? ('<a>' + active.html + '</a>') : "";
+                const text = getsub(t);
+                sillysubtitles.innerHTML = text ? ('<a>' + text + '</a>') : "";
             }
 
             function startplayback() {
