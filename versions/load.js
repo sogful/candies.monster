@@ -85,11 +85,13 @@
         if (!Array.isArray(basegame.name)) {
             basegame.name = [basegame.name];
             basegame.package = [basegame.package];
+            basegame.verkey = [basegame.verkey];
             basegame.icon = [basegame.icon];
             basegame.description = [basegame.description];
         }
         basegame.name.push(entry.name);
         basegame.package.push(entry.package);
+        basegame.verkey.push(entry.verkey);
         basegame.icon.push(entry.icon);
         basegame.description.push(entry.description);
         const extras = parsepackageiconcolumns(line, entry.package);
@@ -123,10 +125,12 @@
                 const grouped = c0.startsWith("+ ");
                 const gameimp = parseInt(c4, 10);
                 const pkg = c1;
+                const verkey = pkg || `__empty_${r}`;
                 const extras = parsepackageiconcolumns(line, pkg);
                 const entry = {
                     name: grouped ? c0.slice(2).trim() : c0,
                     package: pkg,
+                    verkey: verkey,
                     icon: resolvegameicon(pkg, c2),
                     importance: Number.isNaN(gameimp) ? 0 : gameimp,
                     description: c3,
@@ -141,12 +145,13 @@
                     parsedgames.push(entry);
                     currentgame = entry;
                 }
-                bypackage.set(pkg, bypackage.get(pkg) || []);
+                bypackage.set(verkey, bypackage.get(verkey) || []);
                 continue;
             }
 
-            if (!currentgame || !currentgame.package) continue;
-            const versions = bypackage.get(currentgame.package) || [];
+            if (!currentgame) continue;
+            const vk = currentgame.verkey;
+            const versions = bypackage.get(vk) || [];
 
             // [blank], version, icon, download link, [blank], arch, size
             if (c1) {
@@ -158,7 +163,7 @@
                 } else {
                     if (!entry.icon && c2) entry.icon = resolveiconpath(c2);
                 }
-                bypackage.set(currentgame.package, versions);
+                bypackage.set(vk, versions);
                 currentversion = entry;
 
                 const rowimportance = parseInt(c4, 10);

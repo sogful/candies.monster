@@ -172,7 +172,11 @@ function rendergamecircle(isios) {
         sorted.forEach((g) => {
             const ic = document.createElement("div");
             ic.className = "gameicon clickable";
-            ic.dataset.gameid = Array.isArray(g.package) ? g.package[0] : g.package;
+            ic.dataset.gameid = (() => {
+                const vk = g.verkey;
+                if (vk != null) return Array.isArray(vk) ? vk[0] : vk;
+                return Array.isArray(g.package) ? g.package[0] : g.package;
+            })();
             const im = document.createElement("img");
             im.src = window.csvthing.resolveiconpath(Array.isArray(g.icon) ? g.icon[0] : g.icon);
             im.draggable = false;
@@ -201,7 +205,11 @@ function rendergamecircle(isios) {
         sorted.forEach((g, i) => {
             const ic = document.createElement("div");
             ic.className = "gameicon clickable";
-            ic.dataset.gameid = Array.isArray(g.package) ? g.package[0] : g.package;
+            ic.dataset.gameid = (() => {
+                const vk = g.verkey;
+                if (vk != null) return Array.isArray(vk) ? vk[0] : vk;
+                return Array.isArray(g.package) ? g.package[0] : g.package;
+            })();
             const sz = 50 + (g.importance - 3) * 5.7;
             ic.style.width = `${sz}px`;
             ic.style.height = `${sz}px`;
@@ -356,8 +364,15 @@ async function loadversions(packages, game, loadid, alreadyshown, vcache) {
     
     try {
         const gi = document.getElementById("gameinfo");
-        const packageStr = Array.isArray(packages) ? packages.join(", ") : packages;
+        const packagelist = Array.isArray(packages) ? packages : [packages];
+        const cachekeys = packagelist.map((pkg, i) => {
+            const vk = game.verkey;
+            if (vk == null) return pkg;
+            if (Array.isArray(vk)) return vk[i] != null ? vk[i] : pkg;
+            return i === 0 ? vk : pkg;
+        });
         const isMultiPackage = Array.isArray(packages) && packages.length > 1;
+        const showPrimaryPackage = packagelist[0] != null && String(packagelist[0]).trim() !== "";
         if (isMultiPackage) {
             gi.innerHTML = '';
             gi.style.display = 'none';
@@ -366,24 +381,24 @@ async function loadversions(packages, game, loadid, alreadyshown, vcache) {
             // parts of the overlay thing can be rearranged here 
             gi.innerHTML = `
                 <div class="gamename">${game.name}</div>
-                <div class="package">${packageStr}</div>
+                ${showPrimaryPackage ? `<div class="package">${packagelist[0]}</div>` : ''}
                 ${game.description ? `<div class="description">${game.description}</div>` : ''}
                 ${packageiconhtml(game, 0)}
             `;
         }
         const vl = document.getElementById("versionslist");
 
-        const packagelist = Array.isArray(packages) ? packages : [packages];
         const versionsbypackage = new Map();
         
-        for (const pkg of packagelist) {
-            const vlist = vcache.get(pkg) || [];
+        for (let i = 0; i < packagelist.length; i++) {
+            const ckey = cachekeys[i];
+            const vlist = vcache.get(ckey) || [];
             vlist.forEach(ver => {
                 if (ver.version && !ver.version.startsWith('v') && !ver.version.startsWith('V')) {
                     ver.version = 'v' + ver.version;
                 }
             });
-            versionsbypackage.set(pkg, vlist);
+            versionsbypackage.set(ckey, vlist);
         }
         if (loadid !== currentloadid) {return}
         
@@ -454,7 +469,8 @@ async function loadversions(packages, game, loadid, alreadyshown, vcache) {
             
             // additional arrangement for multiple game groups
             packagelist.forEach((pkg, index) => {
-                const vlist = versionsbypackage.get(pkg) || [];
+                const ckey = cachekeys[index];
+                const vlist = versionsbypackage.get(ckey) || [];
                 const column = document.createElement("div");
                 column.className = "packagecolumn";
                 
@@ -468,10 +484,12 @@ async function loadversions(packages, game, loadid, alreadyshown, vcache) {
                 nameelem.className = "gamename";
                 nameelem.textContent = packagename;
                 header.appendChild(nameelem);
-                const packageelem = document.createElement("div");
-                packageelem.className = "package";
-                packageelem.textContent = pkg;
-                header.appendChild(packageelem);
+                if (pkg != null && String(pkg).trim() !== "") {
+                    const packageelem = document.createElement("div");
+                    packageelem.className = "package";
+                    packageelem.textContent = pkg;
+                    header.appendChild(packageelem);
+                }
                 if (packagedesc) {
                     const descelem = document.createElement("div");
                     descelem.className = "description";
@@ -529,7 +547,7 @@ async function loadversions(packages, game, loadid, alreadyshown, vcache) {
             });
         } else {
             vl.classList.remove("multipackage");
-            const vlist = versionsbypackage.get(packagelist[0]) || [];
+            const vlist = versionsbypackage.get(cachekeys[0]) || [];
             
             vlist.forEach(ver => {
                 const unq = []; const seen = new Set();
@@ -641,7 +659,7 @@ function setupscrollnav() {
         navios.addEventListener("click", () => {
             const c = document.querySelector(".click");
             if (c) {c.currentTime = 0; c.play().catch(() => {})}
-            cont.scrollTo({ left: gsios.offsetLeft, behavior: "smooth" });
+            cont.scrollTo({left: gsios.offsetLeft, behavior: "smooth"});
             navios.style.display = "none";
             if (navand) navand.style.display = "flex";
         });
@@ -650,7 +668,7 @@ function setupscrollnav() {
         navand.addEventListener("click", () => {
             const c = document.querySelector(".click");
             if (c) {c.currentTime = 0; c.play().catch(() => {})}
-            cont.scrollTo({ left: gs.offsetLeft, behavior: "smooth" });
+            cont.scrollTo({left: gs.offsetLeft, behavior: "smooth"});
             navand.style.display = "none";
             if (navios) navios.style.display = "flex";
         });
