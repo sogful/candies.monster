@@ -7,12 +7,12 @@
     <td>
       <b>raw to png converter</b><br>
       <sup><a href="//candies.monster/convert"><tt>/convert</tt></a></sup><br>
-      ⤷ attempt to fix ctr's awful compressed files
+      ⤷ an attempt to fix ctr's awful compressed files
     </td>
     <td>
-      <b>apk archive</b><br>
+      <b>game archive</b><br>
       <sup><a href="//candies.monster/versions"><tt>/versions</tt></a></sup><br>
-      ⤷ all om nom games
+      ⤷ all mobile om nom games
     </td>
     <td>
       <b>level preview</b><br>
