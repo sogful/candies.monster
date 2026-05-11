@@ -46,7 +46,6 @@
         return `/assets/images/gameicons/${value}`;
     }
 
-    /** Bare .png filenames resolve under versions/icons/<package>/ */
     function resolvepackageicon(pkg, filename) {
         const f = cleanvalue(filename);
         if (!f || !pkg) return "";
@@ -58,7 +57,6 @@
         return "";
     }
 
-    /** Game row column 2: webp etc. → gameicons; bare .png → package folder; icons/... kept */
     function resolvegameicon(pkg, p) {
         const value = cleanvalue(p);
         if (!value) return "";
@@ -120,7 +118,7 @@
 
             if (!c0 && !c1 && !c2 && !c3 && !c4 && !c5 && !c6) continue;
 
-            // title, package, icon, description, importance, [png filenames...]
+            // title, package, icon, description, importance, additional icons
             if (c0) {
                 const grouped = c0.startsWith("+ ");
                 const gameimp = parseInt(c4, 10);
@@ -183,9 +181,8 @@
     }
 
     window.csvthing = {
-        parsegamescsv,
-        resolveiconpath,
-        resolvegameicon,
-        resolvepackageicon
+        parsegamescsv, resolveiconpath,
+        resolvegameicon, resolvepackageicon
     };
+    
 })();

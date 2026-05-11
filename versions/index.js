@@ -121,29 +121,51 @@ function renderdownloadbutton(d) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+function containerscroll(game) {
+    const cont = document.querySelector(".container");
+    if (!cont) return;
+    const id = game && game.iosstuff ? "gamescreenios" : "gamescreen";
+    const gs = document.getElementById(id);
+    if (!gs) return;
+    cont.scrollTo({ left: gs.offsetLeft, behavior: "smooth" });
+}
+
 let games = [];
+let iosgames = [];
 let currentgame = null;
 let currentloadid = 0;
 let versionscache = new Map();
+let iosversionscache = new Map();
 
 async function loadgames() {
     try {
-        const res = await fetch("games.csv");
+        const res = await fetch("android.csv");
         const text = await res.text();
         const parsed = window.csvthing.parsegamescsv(text);
         games = parsed.games;
         versionscache = parsed.versionscache;
         requestAnimationFrame(() => {setTimeout(() => {rendergamecircle()}, 50)});
     } catch (e) {}
+    try {
+        const res2 = await fetch("ios.csv");
+        const text2 = await res2.text();
+        const parsed2 = window.csvthing.parsegamescsv(text2);
+        iosgames = parsed2.games.map(g => ({...g, iosstuff: true}));
+        iosversionscache = parsed2.versionscache;
+        requestAnimationFrame(() => {setTimeout(() => {rendergamecircle(true)}, 80)});
+    } catch (e) {}
 }
 
 // this whole ordeal might be a little resource intensive,
 // but if you're on mobile this will be skipped for a simpler layout instead!
-function rendergamecircle() {
-    const circle = document.getElementById("gamecircle");
+function rendergamecircle(isios) {
+    const circleId = isios ? "gamecircle-ios" : "gamecircle";
+    const gamelist = isios ? iosgames : games;
+    const circle = document.getElementById(circleId);
+    if (!circle) return;
     circle.classList.add("rendering");
     circle.innerHTML = "";
-    const sorted = [...games].sort((a, b) => b.importance - a.importance);
+    const sorted = [...gamelist].sort((a, b) => b.importance - a.importance);
     const tinyscreen = window.innerWidth < 650;
     
     if (tinyscreen) {
@@ -291,15 +313,17 @@ async function selectgame(g) {
     const thisloadid = currentloadid;
     
     currentgame = g;
-    const gs = document.getElementById("gamescreen");
+    const gsid = g.iosstuff ? "gamescreenios" : "gamescreen";
+    const gs = document.getElementById(gsid);
     const vs = document.getElementById("versionscreen");
     const vl = document.getElementById("versionslist");
     const bb = document.querySelector(".backbutton");
     
     const alreadyshown = vs.classList.contains("active");
     
-    const packages = Array.isArray(g.package) ? g.package : [g.package];
-    await loadversions(packages, g, thisloadid, alreadyshown);
+        const packages = Array.isArray(g.package) ? g.package : [g.package];
+        const vcache = g.iosstuff ? iosversionscache : versionscache;
+        await loadversions(packages, g, thisloadid, alreadyshown, vcache);
 }
 
 let legacyctriconmap = null;
@@ -325,7 +349,8 @@ function parseversion(s) {
     return v.split('.').map(n => parseInt(n) || 0);
 }
 
-async function loadversions(packages, game, loadid, alreadyshown) {
+async function loadversions(packages, game, loadid, alreadyshown, vcache) {
+    if (!vcache) vcache = versionscache;
     if (loadid !== currentloadid) {return}
     const vs = document.getElementById("versionscreen");
     
@@ -352,7 +377,7 @@ async function loadversions(packages, game, loadid, alreadyshown) {
         const versionsbypackage = new Map();
         
         for (const pkg of packagelist) {
-            const vlist = versionscache.get(pkg) || [];
+            const vlist = vcache.get(pkg) || [];
             vlist.forEach(ver => {
                 if (ver.version && !ver.version.startsWith('v') && !ver.version.startsWith('V')) {
                     ver.version = 'v' + ver.version;
@@ -366,11 +391,12 @@ async function loadversions(packages, game, loadid, alreadyshown) {
         if (!hasversions) {
             vl.innerHTML = `<div style="color: white; -webkit-text-stroke: 0.125em black; text-shadow: 0 0.1em 0 black;">No versions found for this game.</div>`;
             if (loadid === currentloadid) {
-                const gs = document.getElementById("gamescreen");
+                const gsid3 = game && game.iosstuff ? "gamescreenios" : "gamescreen";
+                const gs = document.getElementById(gsid3);
                 const bb = document.querySelector(".backbutton");
                 vs.classList.add("active");
                 bb.classList.add("active");
-                gs.classList.add("slideleft");
+                if (gs) gs.classList.add("slideleft");
             }
             return;
         }
@@ -426,6 +452,7 @@ async function loadversions(packages, game, loadid, alreadyshown) {
         if (packagelist.length > 1) {
             vl.classList.add("multipackage");
             
+            // additional arrangement for multiple game groups
             packagelist.forEach((pkg, index) => {
                 const vlist = versionsbypackage.get(pkg) || [];
                 const column = document.createElement("div");
@@ -435,25 +462,25 @@ async function loadversions(packages, game, loadid, alreadyshown) {
                 const packageicon = Array.isArray(game.icon) ? game.icon[index] : game.icon;
                 const packagedesc = Array.isArray(game.description) ? game.description[index] : game.description;
 
-                const strip = packageiconhtml(game, index);
-                if (strip) column.insertAdjacentHTML("beforeend", strip);
-
-                const title = document.createElement("div");
-                title.className = "packagetitle";
-                title.textContent = packagename;
-                column.appendChild(title);
-                
-                const packageelement = document.createElement("div");
-                packageelement.className = "packagename";
-                packageelement.textContent = pkg;
-                column.appendChild(packageelement);
-                
+                const header = document.createElement("div");
+                header.className = "gameinfo";
+                const nameelem = document.createElement("div");
+                nameelem.className = "gamename";
+                nameelem.textContent = packagename;
+                header.appendChild(nameelem);
+                const packageelem = document.createElement("div");
+                packageelem.className = "package";
+                packageelem.textContent = pkg;
+                header.appendChild(packageelem);
                 if (packagedesc) {
-                    const description = document.createElement("div");
-                    description.className = "packagedesc";
-                    description.textContent = packagedesc;
-                    column.appendChild(description);
+                    const descelem = document.createElement("div");
+                    descelem.className = "description";
+                    descelem.textContent = packagedesc;
+                    header.appendChild(descelem);
                 }
+                const strip = packageiconhtml(game, index);
+                if (strip) header.insertAdjacentHTML("beforeend", strip);
+                column.appendChild(header);
 
                 const versioncontainer = document.createElement("div");
                 versioncontainer.className = "packageversions";
@@ -544,15 +571,16 @@ async function loadversions(packages, game, loadid, alreadyshown) {
         }
         if (loadid !== currentloadid) {return}
 
-        const gs = document.getElementById("gamescreen");
+        const gsid4 = game && game.iosstuff ? "gamescreenios" : "gamescreen";
+        const gs = document.getElementById(gsid4);
         const bb = document.querySelector(".backbutton");
         vs.classList.add("active");
         bb.classList.add("active");
-        gs.classList.add("slideleft");
+        if (gs) gs.classList.add("slideleft");
         if (!alreadyshown) {
             requestAnimationFrame(() => {
                 if (loadid === currentloadid) {
-                    vs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    containerscroll(game);
                 }
             });
         }
@@ -567,24 +595,28 @@ async function loadversions(packages, game, loadid, alreadyshown) {
         if (loadid !== currentloadid) {return}
         const vl = document.getElementById("versionslist");
         const vs = document.getElementById("versionscreen");
-        const gs = document.getElementById("gamescreen");
+        const gsid2 = game && game.iosstuff ? "gamescreenios" : "gamescreen";
+        const gs = document.getElementById(gsid2);
         const bb = document.querySelector(".backbutton");
         vl.innerHTML = `<div style="color: white; -webkit-text-stroke: 0.125em black; text-shadow: 0 0.1em 0 black;">No versions found for this game.</div>`;
         vs.classList.add("active");
         bb.classList.add("active");
-        gs.classList.add("slideleft");
+        if (gs) gs.classList.add("slideleft");
     }
 }
 
 function goback() {
     currentloadid++;
-    const gs = document.getElementById("gamescreen");
+    const gsid = currentgame && currentgame.iosstuff ? "gamescreenios" : "gamescreen";
+    const gs = document.getElementById(gsid);
     const vs = document.getElementById("versionscreen");
     const bb = document.querySelector(".backbutton");
-    gs.classList.remove("slideleft");
+    const cg = currentgame;
+    if (gs) gs.classList.remove("slideleft");
     vs.classList.remove("active");
     bb.classList.remove("active");
     currentgame = null;
+    if (cg) containerscroll(cg);
 }
 
 function setupbackbutton() {
@@ -599,8 +631,34 @@ function setupbackbutton() {
     }
 }
 
-if (document.readyState === 'loading') {document.addEventListener('DOMContentLoaded', setupbackbutton)}
-else {setupbackbutton()}
+function setupscrollnav() {
+    const navios = document.getElementById("navios");
+    const navand = document.getElementById("navandroid");
+    const gsios = document.getElementById("gamescreenios");
+    const gs = document.getElementById("gamescreen");
+    const cont = document.querySelector(".container");
+    if (navios && gsios && cont) {
+        navios.addEventListener("click", () => {
+            const c = document.querySelector(".click");
+            if (c) {c.currentTime = 0; c.play().catch(() => {})}
+            cont.scrollTo({ left: gsios.offsetLeft, behavior: "smooth" });
+            navios.style.display = "none";
+            if (navand) navand.style.display = "flex";
+        });
+    }
+    if (navand && gs && cont) {
+        navand.addEventListener("click", () => {
+            const c = document.querySelector(".click");
+            if (c) {c.currentTime = 0; c.play().catch(() => {})}
+            cont.scrollTo({ left: gs.offsetLeft, behavior: "smooth" });
+            navand.style.display = "none";
+            if (navios) navios.style.display = "flex";
+        });
+    }
+}
+
+if (document.readyState === 'loading') {document.addEventListener('DOMContentLoaded', () => {setupbackbutton(); setupscrollnav()})}
+else {setupbackbutton(); setupscrollnav()}
 loadgames();
 
 let resizet;
@@ -621,6 +679,7 @@ window.addEventListener("resize", () => {
     resizet = setTimeout(() => {
         if (!currentgame) {
             rendergamecircle();
+            rendergamecircle(true);
             currentlaymode = laymode;
             if (loading && gamecircle) {
                 setTimeout(() => {
@@ -640,6 +699,7 @@ window.addEventListener("load", () => {
     requestAnimationFrame(() => {
         setTimeout(() => {
             if (!currentgame && games.length > 0) {rendergamecircle()}
+            if (!currentgame && iosgames.length > 0) {rendergamecircle(true)}
         }, 150);
     });
 });
