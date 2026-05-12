@@ -274,13 +274,13 @@
         <img class="titlelogo" src="assets/svgs/logo.svg" alt="raw2png" draggable="false">
         <span style="padding-bottom: 0.5em">Sprites in most of the Cut the Rope games for mobile are compressed, making them difficult to extract.
         <br>
-        This tool attempts to do the <i>zstd/zlib</i> decompression in the comfort of your browser to avoid that headache.
+        This tool attempts to do the <i>zstd/zlib</i> decompression/compression in the comfort of your browser to avoid that headache.
         <br></i></span>
         <span class="tiny">For .xnb sprites, see<a href="https://github.com/LeonBlade/xnbcli">xnbcli</a>or<a href="https://lybell-art.github.io/xnb-js/">Web XNB Converter.</a></span>
-        <span class="tiny">For .xnb audio, see<a href="//candies.monster/assets/static/XNBSoundConverter.exe">XNBSoundConverter</a>(to wav) and<a href="https://github.com/JavidPack/WAVToXNBSoundConverter">WAVToXNBSoundConverter</a>(to xnb). You can also directly play and convert .xnb audio with<a href="https://vgmstream.org/">vgmstream.</a></span>
+        <span class="tiny">For .xnb audio, see<a href="//candies.monster/assets/static/XNBSoundConverter.exe">XNBSoundConverter</a>(to wav) and<a href="https://github.com/JavidPack/WAVToXNBSoundConverter">WAVToXNBSoundConverter</a>(to xnb). <br>You can also directly play and convert .xnb audio with<a href="https://vgmstream.org/">vgmstream.</a></span>
 
         <a class="subtitle">Select:</a>
-         <div class="buttons">
+        <div class="buttons">
             <label class="button clickable">
                 <input class="inputfolder" type="file" webkitdirectory directory multiple class="hiddeninput">
                 <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
@@ -378,22 +378,22 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
-         (function(){
-             
-             const progressinfo = document.querySelector(".progressinfo");
-             const errors = document.querySelector(".errors");
-             const loadingtext = document.querySelector(".loadingtext");
-             const errortitle = document.querySelector(".errortitle");
+        (function(){
+
+            const progressinfo = document.querySelector(".progressinfo");
+            const errors = document.querySelector(".errors");
+            const loadingtext = document.querySelector(".loadingtext");
+            const errortitle = document.querySelector(".errortitle");
 
             let firstshown = false;
             /* let splitwarnshown = false; */
             const scriptlist = {
-                ysnew: { path: "assets/static/ysnew.py", label: "New! (by yell0wsuit)" },
-                ysold: { path: "assets/static/ysold.py", label: "Old (by yell0wsuit)" },
-                old: { path: "assets/static/old.py", label: "Old (by cv)" },
+                ysnew: {path: "assets/static/ysnew.py", label: "New! (by yell0wsuit)"},
+                ysold: {path: "assets/static/ysold.py", label: "Old (by yell0wsuit)"},
+                old: {path: "assets/static/old.py", label: "Old (by cv)"},
             };
             const scriptcache = new Map();
-            let selectedDecoderKey = "ysnew";
+            let defaultselected = "ysnew";
             let pyready = null;
             let pyodideInstance = null;
 
@@ -409,8 +409,8 @@
                 const counts = document.querySelector(".counts");
                 counts.innerHTML = `<a style="color:#6cf16c">${succeeded} succeeded</a>//<a style="color:#fff457">${warnings} warnings</a>//<a style="color:#f08b8b">${failed} failed</a>`;
                 
-                const hasActivity = succeeded > 0 || failed > 0 || warnings > 0;
-                loadingtext.style.display = hasActivity ? "none" : "block";
+                const hasactivity = succeeded > 0 || failed > 0 || warnings > 0;
+                loadingtext.style.display = hasactivity ? "none" : "block";
                 
                 if (failed > 0 || warnings > 0) {
                     errortitle.style.display = "block";
@@ -448,14 +448,14 @@
 
             function updatedecoderbuttons(){
                 document.querySelectorAll(".decoderchoice").forEach((el) => {
-                    el.classList.toggle("active", el.dataset.decoder === selectedDecoderKey);
+                    el.classList.toggle("active", el.dataset.decoder === defaultselected);
                 });
             }
 
             function setdecoder(key){
                 if (!scriptlist[key]) return;
-                if (selectedDecoderKey === key) return;
-                selectedDecoderKey = key;
+                if (defaultselected === key) return;
+                defaultselected = key;
                 updatedecoderbuttons();
                 if (pyodideInstance) {
                     pyodideInstance._currentDecoderKey = null;
@@ -497,7 +497,6 @@
                     }, "image/png", 1.0);
                 });
             }
-
             async function runcode(){
                 if (!pyready){
                     pyready = (async () => {
@@ -516,10 +515,10 @@
                     })();
                 }
                 const py = await pyready;
-                if (py._currentDecoderKey !== selectedDecoderKey){
-                    const decoderSource = await getdecodersource(selectedDecoderKey);
+                if (py._currentDecoderKey !== defaultselected){
+                    const decoderSource = await getdecodersource(defaultselected);
                     await py.runPythonAsync(decoderSource);
-                    py._currentDecoderKey = selectedDecoderKey;
+                    py._currentDecoderKey = defaultselected;
                 }
                 return py;
             }
@@ -664,6 +663,163 @@
                 return i === -1 ? s : s.slice(i + 1);
             }
 
+            
+            function relpathhaspng(rel){
+                const p = String(rel).replace(/\\/g, "/");
+                return /(^|\/)png\/png\//i.test(p);
+            }
+
+            function pngreltoraw(rel){
+                const norm = String(rel).replace(/\\/g, "/");
+                const m = norm.match(/(^|\/)png\/png\/(.+)$/i);
+                if (!m) return null;
+                return m[2].replace(/\.png$/i, ".raw");
+            }
+
+            async function pngtorgba(file){
+                let bmp;
+                try {
+                    bmp = await createImageBitmap(file);
+                } catch (err) {
+                    throw new Error(err && err.message ? err.message : String(err));
+                }
+                const w = bmp.width;
+                const h = bmp.height;
+                const canvas = document.createElement("canvas");
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext("2d", {alpha: true});
+                ctx.clearRect(0, 0, w, h);
+                ctx.drawImage(bmp, 0, 0);
+                if (bmp.close) bmp.close();
+                const img = ctx.getImageData(0, 0, w, h);
+                const pixels = new Uint8Array(img.data.buffer, img.data.byteOffset, img.data.byteLength);
+                return { width: w, height: h, pixels };
+            }
+
+            async function ensurenew(py){
+                const decoderSource = await getdecodersource("ysnew");
+                await py.runPythonAsync(decoderSource);
+            }
+
+            async function isitapng(file){
+                if (file.size < 8) return false;
+                const buf = new Uint8Array(await file.slice(0, 8).arrayBuffer());
+                return buf.length >= 8 &&
+                    buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4E && buf[3] === 0x47 &&
+                    buf[4] === 0x0D && buf[5] === 0x0A && buf[6] === 0x1A && buf[7] === 0x0A;
+            }
+
+            async function encodesinglepng(file){
+                showstats();
+                const py = await runcode();
+                await ensurenew(py);
+                const encodeFn = py.globals.get("encryptrawpy");
+                if (!encodeFn) throw new Error("encryptrawpy missing after loading ysnew.py");
+                const {width, height, pixels} = await pngtorgba(file);
+                const result = await encodeFn(py.toPy(pixels), width, height);
+                const r = result.toJs({ create_proxies: false });
+                const rawbuffer = new Uint8Array(r.raw);
+                const blob = new Blob([rawbuffer], {type: "application/octet-stream" });
+                const outname = replaceext(file.name, ".raw");
+                savefile(blob, outname);
+            }
+
+            async function handlefolderpng(files){
+                showstats();
+                let succeeded = 0;
+                let failed = 0;
+                let warnings = 0;
+                setcounts(succeeded, failed, warnings);
+                progressinfo.textContent = "Preparing PNG→raw...";
+
+                const filearray = Array.from(files);
+                const pngfiles = filearray.filter(f => {
+                    const name = f.name.toLowerCase();
+                    if (!name.endsWith(".png")) return false;
+                    return relpathhaspng(normalizerelpath(f));
+                });
+                if (pngfiles.length === 0){
+                    progressinfo.textContent = "png/png/ folder detected but no .png files found under that path.";
+                    return;
+                }
+
+                const uniqueid = idgen();
+                const zipbase = `FeedwithCandy_${uniqueid}`;
+                const firstrel = normalizerelpath(pngfiles[0]);
+                const slash = firstrel.indexOf("/");
+                const selectedfoldername = slash === -1
+                    ? "converted"
+                    : sanitizezipsegment(firstrel.slice(0, slash));
+
+                const py = await runcode();
+                await ensurenew(py);
+                const encodeFn = py.globals.get("encryptrawpy");
+                if (!encodeFn){
+                    failed++;
+                    errorlog("encryptrawpy missing after loading ysnew.py");
+                    setcounts(succeeded, failed, warnings);
+                    progressinfo.textContent = "Encoder failed to load.";
+                    return;
+                }
+
+                const zip = new JSZip();
+                let processedcount = 0;
+                const total = pngfiles.length;
+
+                for (const file of pngfiles){
+                    processedcount++;
+                    const rel = normalizerelpath(file);
+                    const innerRaw = pngreltoraw(rel);
+                    const label = innerRaw || file.name;
+                    progressinfo.textContent = `Encoding (${processedcount}/${total}): ${label}`;
+                    if (!innerRaw){
+                        failed++;
+                        errorlog(file.name + ": expected path …/png/png/…");
+                        setcounts(succeeded, failed, warnings);
+                        continue;
+                    }
+                    try {
+                        const {width, height, pixels} = await pngtorgba(file);
+                        const result = await encodeFn(py.toPy(pixels), width, height);
+                        const r = result.toJs({create_proxies: false});
+                        const rawbuffer = new Uint8Array(r.raw);
+                        zip.file(`${selectedfoldername}/${innerRaw}`, rawbuffer);
+                        zip.file(`${selectedfoldername} (original)/${strippathseg(rel)}`, await file.arrayBuffer());
+                        succeeded++;
+                    } catch (e){
+                        failed++;
+                        errorlog(label + ": " + (e && e.message ? e.message : e));
+                    }
+                    setcounts(succeeded, failed, warnings);
+                }
+
+                progressinfo.textContent = "Zipping results...";
+                const zipcomment = `
+As it turns out, Om Nom was 
+still inside the cardboard 
+box when it was compressed!
+⠀⠀⠀⠀⠀⠀⢀⣀
+⠀⠀⠀⠀⠀⠜⠁⠀⢆⣀⣀⡀
+⠀⠀⠀⢀⡨⠦⠤⠤⠄⠐⠒⠠⡉⠑⠢⢄
+⠀⠀⢠⠊⠀⠀⠀⠀⠀⠀⠀⠀⢱⠀⠀⠀⠑⢄
+⠀⠀⡧⠤⠤⡀⣠⠤⠖⠒⠒⠒⠒⠀⠀⠀⠀⠀⢇
+⠀⢨⠁⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⡌⠀
+⠀⣺⠰⡂⣄⣀⣀⣀⠤⢲⠛⠥⡠⠎⠁⠀⠀⠼⢄⡀
+⠀⠑⠭⠭⣇⠑⠁⢈⣩⠁⠀⠀⢀⠧⣔⣂⠀⠀⢀⡽
+⠀⠀⠀⠀⠀⠉⠉⠁⠈⠐⠒⠈⠉⠀⠀⠀⠉⠉⠁
+  ...He isn't very happy 
+        about it...
+`;
+                const zipblob = await zip.generateAsync({
+                    type: "blob",
+                    compression: "DEFLATE",
+                    comment: zipcomment,
+                });
+                savefile(zipblob, `${zipbase}.zip`);
+                progressinfo.textContent = "Done!";
+            }
+
             async function handlefolder(files){
                 showstats();
                 let succeeded = 0;
@@ -672,7 +828,14 @@
                 setcounts(succeeded, failed, warnings);
                 progressinfo.textContent = "Preparing...";
 
-                const rawfiles = Array.from(files).filter(f => {
+                const filearray = Array.from(files);
+                const folderlookslikepng = filearray.some(f => relpathhaspng(normalizerelpath(f)));
+                if (folderlookslikepng){
+                    await handlefolderpng(filearray);
+                    return;
+                }
+
+                const rawfiles = filearray.filter(f => {
                     const name = f.name.toLowerCase();
                     return name.match(/\.raw(\.\w+)?$/) || name.match(/\.raw\d+(\.\w+)?$/);
                 });
@@ -689,7 +852,7 @@
                     ? "converted"
                     : sanitizezipsegment(firstrel.slice(0, slash));
                 
-                const allfiles = Array.from(files);
+                const allfiles = filearray;
                 const potentialsplitfiles = allfiles.filter(f => {
                     const name = f.name.toLowerCase();
                     return name.includes('raw') || 
@@ -793,11 +956,28 @@ box when it was compressed!
                     comment: zipcomment,
                 });
                 savefile(zipblob, `${zipbase}.zip`);
-                progressinfo.textContent = "Done! Remember to rename the .pngs back to .raws after editing.";
+                progressinfo.textContent = "Done!";
             }
 
             async function handlesingle(file){
                 setcounts(0, 0, 0);
+                const lower = file.name.toLowerCase();
+                const probablypng = lower.endsWith(".png") ||
+                    (file.size >= 8 && await isitapng(file));
+                if (probablypng) {
+                    progressinfo.textContent = "Encoding the image back...";
+                    try {
+                        await encodesinglepng(file);
+                        setcounts(1, 0, 0);
+                        progressinfo.textContent = "Done!";
+                    } catch (e){
+                        setcounts(0, 1, 0);
+                        errorlog("fail: " + file.name + (e && e.message ? e.message : e));
+                        progressinfo.textContent = "Failed, could not encode the image back :(";
+                    }
+                    return;
+                }
+
                 progressinfo.textContent = "Decrypting single file...";
                 try {
                     const result = await decryptfile(file);
@@ -812,7 +992,7 @@ box when it was compressed!
                         progressinfo.textContent = "Done with warnings! Check errors for details.";
                     } else {
                         setcounts(1, 0, 0);
-                        progressinfo.textContent = "Done! Remember to rename the .png back to .raw after editing.";
+                        progressinfo.textContent = "Done!";
                     }
                 } catch (e){
                     setcounts(0, 1, 0);
@@ -828,7 +1008,7 @@ box when it was compressed!
                     showstats();
                     const msg = err && err.message ? err.message : String(err);
                     errorlog("Folder batch failed: " + msg);
-                    progressinfo.textContent = "Failed - see errors below...";
+                    progressinfo.textContent = "Failed - see errors above...";
                     setcounts(0, 1, 0);
                 }).finally(() => {
                     document.querySelector(".inputfolder").value = "";
@@ -841,7 +1021,7 @@ box when it was compressed!
                     showstats();
                     const msg = err && err.message ? err.message : String(err);
                     errorlog("Single file failed: " + msg);
-                    progressinfo.textContent = "Failed - see errors below...";
+                    progressinfo.textContent = "Failed - see errors above...";
                     setcounts(0, 1, 0);
                 }).finally(() => {
                     document.querySelector(".inputsingle").value = "";
@@ -888,11 +1068,50 @@ box when it was compressed!
                 setTimeout(() => {dragoverlay.style.display = "none"}, 500);
                 const files = e.dataTransfer.files;
                 if (files.length > 0) {
-                    const rawfiles = Array.from(files).filter(f => {
+                    const list = Array.from(files);
+                    const droppedfileispng = list.some(f => relpathhaspng(normalizerelpath(f)));
+                    if (droppedfileispng) {
+                        handlefolder(files).catch((err) => {
+                            showstats();
+                            errorlog("Drop batch failed: " + (err && err.message ? err.message : err));
+                            progressinfo.textContent = "Failed - see errors above...";
+                            setcounts(0, 1, 0);
+                        });
+                        return;
+                    }
+                    const rawfiles = list.filter(f => {
                         const name = f.name.toLowerCase();
                         return name.match(/\.raw(\.\w+)?$/) || name.match(/\.raw\d+(\.\w+)?$/);
                     });
                     if (rawfiles.length === 0) {
+                        if (list.length === 1) {
+                            const lone = list[0];
+                            const fn = lone.name.toLowerCase();
+                            if (fn.endsWith(".png")) {
+                                handlesingle(lone).catch((err) => {
+                                    showstats();
+                                    errorlog("Drop failed: " + (err && err.message ? err.message : err));
+                                    progressinfo.textContent = "Failed, see errors above...";
+                                    setcounts(0, 1, 0);
+                                });
+                                return;
+                            }
+                            void (async () => {
+                                try {
+                                    if (lone.size >= 8 && await isitapng(lone)) {
+                                        await handlesingle(lone);
+                                    } else {
+                                        errorlog("No .raw files found in dropped files...");
+                                    }
+                                } catch (err) {
+                                    showstats();
+                                    errorlog("Drop failed: " + (err && err.message ? err.message : err));
+                                    progressinfo.textContent = "Failed, see errors above...";
+                                    setcounts(0, 1, 0);
+                                }
+                            })();
+                            return;
+                        }
                         errorlog("No .raw files found in dropped files...");
                         return;
                     }
@@ -900,14 +1119,14 @@ box when it was compressed!
                         handlesingle(rawfiles[0]).catch((err) => {
                             showstats();
                             errorlog("Drop failed: " + (err && err.message ? err.message : err));
-                            progressinfo.textContent = "Failed - see errors below...";
+                            progressinfo.textContent = "Failed, see errors above...";
                             setcounts(0, 1, 0);
                         });
                     } else {
                         handlefolder(files).catch((err) => {
                             showstats();
                             errorlog("Drop batch failed: " + (err && err.message ? err.message : err));
-                            progressinfo.textContent = "Failed - see errors below...";
+                            progressinfo.textContent = "Failed, see errors above...";
                             setcounts(0, 1, 0);
                         });
                     }

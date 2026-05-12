@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Convert ZeptoLab custom .raw texture files to PNG.
+"""
 
+Version 6.7: i ruined it -cv
 Version 2.1: Extract constant names and add docstrings
 Version 2.0: Support ZSTD decompression
 Version 1.0: Initial release
@@ -12,6 +13,7 @@ Based on decompiled ResourceMgr/Texture2D code:
   - byte[6]     -> pixel format enum (0..4)
   - bytes[7:]   -> raw pixel payload
   - Some ZeptoLab games might have 15-byte header + zlib payload
+  
 """
 
 import argparse
@@ -28,6 +30,8 @@ TRANSPARENT_PIXEL = b"\x00\x00\x00\x00"
 # ZeptoLab .raw header magic values (first two bytes, little-endian)
 COMPRESSED_MAGIC_ZLIB = 0x07BD
 COMPRESSED_MAGIC_ZSTD = 0x08BD
+
+ZSTD_COMPRESSION_LEVEL = 19
 
 # Header layout
 HEADER_MIN_SIZE = 7
@@ -48,6 +52,7 @@ BYTES_PER_PIXEL: dict[int, int] = {
     FMT_A8: 1,
 }
 
+#*//////////////////////////////////////////////////////////////////////*#
 
 def u8_from_n(v: int, bits: int) -> int:
     """Scale an N-bit unsigned integer to the full 0-255 range with rounding."""
@@ -71,6 +76,21 @@ def unpremultiply_rgba8888(data: bytes) -> bytes:
             g: int = min(255, (g * 255 + (a // 2)) // a)
             b: int = min(255, (b * 255 + (a // 2)) // a)
         out[i : i + 4] = bytes((r, g, b, a))
+    return bytes(out)
+
+
+def premultiply_rgba8888(data: bytes) -> bytes:
+    """Convert straight-alpha RGBA to premultiplied-alpha (inverse of unpremultiply)."""
+    out = bytearray(len(data))
+    for i in range(0, len(data), 4):
+        r: int = data[i]
+        g: int = data[i + 1]
+        b: int = data[i + 2]
+        a: int = data[i + 3]
+        out[i] = (r * a + 127) // 255
+        out[i + 1] = (g * a + 127) // 255
+        out[i + 2] = (b * a + 127) // 255
+        out[i + 3] = a
     return bytes(out)
 
 
@@ -240,6 +260,66 @@ def decryptrawpy(data):
         "used_fallback": False,
     }
 
+#*//////////////////////////////////////////////////////////////////////*#
+
+def encode_rgba_to_zeptolab_raw(
+    rgba: bytes,
+    width: int,
+    height: int,
+    *,
+    pixel_format: int = FMT_RGBA8888,
+    compress: bool = True,
+    compression: str = "zstd",
+) -> bytes:
+    """Build ZeptoLab .raw bytes from straight-alpha RGBA8888 (browser canvas order)."""
+    if width <= 0 or height <= 0:
+        raise ValueError(f"Invalid dimensions: {width}x{height}")
+    need = width * height * 4
+    if len(rgba) < need:
+        raise ValueError(f"RGBA buffer too short: need {need} bytes")
+    rgba = bytes(rgba[:need])
+
+    if pixel_format != FMT_RGBA8888:
+        raise ValueError("Web encoder only supports RGBA8888 (format 0)")
+
+    payload = premultiply_rgba8888(rgba)
+    out_len = len(payload)
+
+    if compress:
+        if compression == "zstd":
+            cctx = zstd.ZstdCompressor(level=ZSTD_COMPRESSION_LEVEL)
+            comp = cctx.compress(payload)
+            magic_le = COMPRESSED_MAGIC_ZSTD
+        elif compression == "zlib":
+            comp = zlib.compress(payload, level=9)
+            magic_le = COMPRESSED_MAGIC_ZLIB
+        else:
+            raise ValueError('compression must be "zstd" or "zlib"')
+
+        comp_len = len(comp)
+        header = struct.pack(
+            "<HHHBII",
+            magic_le,
+            width, height,
+            pixel_format,
+            out_len, comp_len,
+        )
+        return header + comp
+
+    # Uncompressed: bytes [0:2] must not be zlib/zstd compressed magic (see parse_zeptolab_raw_bytes).
+    header = struct.pack("<HHB", 0, width, height, pixel_format)
+    return header + payload
+
+
+def encryptrawpy(data, width: int, height: int):
+    """Pyodide entry: RGBA8888 bytes (width*height*4), dimensions -> .raw blob."""
+    if hasattr(data, "tobytes"):
+        data = data.tobytes()
+    elif not isinstance(data, (bytes, bytearray)):
+        data = bytes(data)
+    raw_bytes = encode_rgba_to_zeptolab_raw(data, int(width), int(height))
+    return {"raw": raw_bytes}
+
 
 def convert(
     raw_path: Path, out_path: Path, flip_y: bool = False, unpremultiply: bool = True
@@ -288,6 +368,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    # Pyodide runs this whole file with __name__ == "__main__" but no CLI argv; skip argparse.
     if sys.platform != "emscripten":
         main()
