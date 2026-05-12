@@ -7,8 +7,8 @@ assignees: sogful
 
 ---
 
-**what is occuring?**
+**what is occuring?** <br>
 *(write here)*
 
-**how can the issue be replicated?**
+**how can the issue be replicated?** <br>
 *(write here)*

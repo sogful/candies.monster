@@ -7,9 +7,9 @@ assignees: sogful
 
 ---
 
-**is this related to an erroneous occurence?**
-<sup> (if it is a bug, use the bug report template instead)</sup>
+**is this related to an erroneous occurence?** <br>
+<sup> (if it is a bug, use the bug report template instead)</sup> <br>
 *(write here)*
 
-**what would you like for this website to have?**
+**what would you like for this website to have?** <br>
 *(write here)*
