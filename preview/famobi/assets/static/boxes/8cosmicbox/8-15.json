@@ -1,0 +1,125 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "view": {
+        "x": 320,
+        "y": 0,
+        "height": 480,
+        "width": 320
+      },
+      "scrollX": -1,
+      "height": 480,
+      "gridSize": 32,
+      "width": 640
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 2,
+      "x": 319,
+      "y": 404
+    },
+    {
+      "name": 52,
+      "x": 320,
+      "y": 286
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 95,
+      "x": 478,
+      "y": 266,
+      "moveLength": 140,
+      "radius": 28
+    },
+    {
+      "name": 3,
+      "x": 320,
+      "y": 153,
+      "timeout": 10
+    },
+    {
+      "name": 3,
+      "x": 545,
+      "y": 184,
+      "timeout": 6
+    },
+    {
+      "name": 3,
+      "x": 101,
+      "y": 189,
+      "timeout": 6
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 140,
+      "moveVertical": false,
+      "length": 95,
+      "x": 168,
+      "y": 267,
+      "moveLength": 140,
+      "radius": 28
+    },
+    {
+      "name": 100,
+      "spider": true,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 208,
+      "x": 322,
+      "y": 51,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 55,
+      "angle": 0,
+      "x": 238,
+      "y": 269
+    },
+    {
+      "name": 55,
+      "angle": 180,
+      "x": 407,
+      "y": 272
+    },
+    {
+      "name": 58,
+      "size": 2,
+      "path": "0,0",
+      "angle": 0,
+      "rotateSpeed": 150,
+      "x": 320,
+      "y": 216
+    },
+    {
+      "name": 57,
+      "size": 1,
+      "angle": 0,
+      "x": 321,
+      "y": 342
+    },
+    {
+      "name": 300,
+      "x": 59,
+      "y": 420
+    }
+  ]
+}

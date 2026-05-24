@@ -1,0 +1,140 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "twoParts": true
+    }
+  ],
+  "objects": [
+    {
+      "name": 50,
+      "x": 48,
+      "y": 135
+    },
+    {
+      "name": 51,
+      "x": 276,
+      "y": 133
+    },
+    {
+      "name": 2,
+      "x": 247,
+      "y": 412
+    },
+    {
+      "name": 54,
+      "x": 157,
+      "y": 322
+    },
+    {
+      "name": 54,
+      "x": 103,
+      "y": 271
+    },
+    {
+      "name": 54,
+      "x": 216,
+      "y": 276
+    },
+    {
+      "name": 54,
+      "x": 60,
+      "y": 216
+    },
+    {
+      "name": 54,
+      "x": 262,
+      "y": 217
+    },
+    {
+      "name": 54,
+      "x": 100,
+      "y": 160
+    },
+    {
+      "name": 54,
+      "x": 224,
+      "y": 161
+    },
+    {
+      "name": 54,
+      "x": 161,
+      "y": 196
+    },
+    {
+      "name": 3,
+      "moveSpeed": 70,
+      "path": "RW60",
+      "x": 123,
+      "y": 227,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "moveSpeed": 60,
+      "path": "RC60",
+      "x": 199,
+      "y": 224,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "moveSpeed": 40,
+      "path": "RW60",
+      "x": 161,
+      "y": 264,
+      "timeout": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 140,
+      "x": 163,
+      "y": 253,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "R",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 140,
+      "x": 162,
+      "y": 253,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 55,
+      "angle": 0,
+      "x": 71,
+      "y": 416
+    },
+    {
+      "name": 58,
+      "size": 2,
+      "angle": 90,
+      "x": 164,
+      "y": 90
+    },
+    {
+      "name": 300,
+      "x": 47,
+      "y": 45
+    }
+  ]
+}

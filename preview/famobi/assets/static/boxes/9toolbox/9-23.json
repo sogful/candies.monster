@@ -1,0 +1,128 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 52,
+      "x": 164,
+      "y": 100
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 80,
+      "x": 42,
+      "y": 98,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": true,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 220,
+      "x": 169,
+      "y": 370,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 40,
+      "x": 260,
+      "y": 100,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 2,
+      "x": 165,
+      "y": 413
+    },
+    {
+      "name": 3,
+      "x": 165,
+      "y": 213,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 165,
+      "y": 273,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 167,
+      "y": 337,
+      "timeout": -1
+    },
+    {
+      "name": 54,
+      "x": 51,
+      "y": 209
+    },
+    {
+      "name": 60,
+      "size": 4,
+      "angle": 0,
+      "x": 214,
+      "y": 159,
+      "toggled": 1
+    },
+    {
+      "name": 60,
+      "size": 4,
+      "angle": 90,
+      "x": 229,
+      "y": 267,
+      "toggled": 1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 30,
+      "x": 174,
+      "y": 37,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 300,
+      "x": 284,
+      "y": 213
+    }
+  ]
+}

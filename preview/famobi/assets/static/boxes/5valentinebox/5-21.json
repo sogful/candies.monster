@@ -1,0 +1,129 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "twoParts": true
+    }
+  ],
+  "objects": [
+    {
+      "name": 50,
+      "x": 105,
+      "y": 337
+    },
+    {
+      "name": 54,
+      "x": 97,
+      "y": 335
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 75,
+      "x": 98,
+      "y": 439,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 51,
+      "x": 221,
+      "y": 338
+    },
+    {
+      "name": 54,
+      "x": 218,
+      "y": 334
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "R",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 75,
+      "x": 218,
+      "y": 439,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 100,
+      "x": 160,
+      "y": 298,
+      "moveLength": -1,
+      "radius": 40
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 100,
+      "x": 159,
+      "y": 193,
+      "moveLength": -1,
+      "radius": 40
+    },
+    {
+      "name": 2,
+      "x": 162,
+      "y": 56
+    },
+    {
+      "name": 55,
+      "angle": 180,
+      "x": 292,
+      "y": 327
+    },
+    {
+      "name": 3,
+      "x": 224,
+      "y": 225,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 98,
+      "y": 223,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 161,
+      "y": 128,
+      "timeout": -1
+    },
+    {
+      "name": 55,
+      "angle": 0,
+      "x": 27,
+      "y": 329
+    },
+    {
+      "name": 300,
+      "x": 54,
+      "y": 124
+    }
+  ]
+}

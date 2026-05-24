@@ -1,0 +1,194 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 700,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 2,
+      "x": 166,
+      "y": 44
+    },
+    {
+      "name": 52,
+      "x": 77,
+      "y": 579
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 60,
+      "path": "0,-195,",
+      "x": 161,
+      "y": 658,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 60,
+      "path": "0,195,",
+      "x": 37,
+      "y": 486,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "0,-195,",
+      "x": 161,
+      "y": 481,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "0,-195,",
+      "x": 161,
+      "y": 288,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "0,195,",
+      "x": 37,
+      "y": 288,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "0,195,",
+      "x": 36,
+      "y": 93,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "0,195,",
+      "x": 283,
+      "y": 480,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "0,195,",
+      "x": 284,
+      "y": 287,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "0,195,",
+      "x": 283,
+      "y": 95,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 3,
+      "x": 224,
+      "y": 472,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 97,
+      "y": 267,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 150,
+      "y": 97,
+      "timeout": -1
+    },
+    {
+      "name": 300,
+      "x": 225,
+      "y": 267
+    }
+  ]
+}

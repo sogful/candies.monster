@@ -1,0 +1,117 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 2,
+      "x": 48,
+      "y": 416
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "95,0,",
+      "x": 23,
+      "y": 240,
+      "moveLength": -1,
+      "radius": 50
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 100,
+      "moveVertical": true,
+      "length": 50,
+      "x": 162,
+      "y": 444,
+      "moveLength": 100,
+      "radius": 50
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 70,
+      "x": 163,
+      "y": 40,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 52,
+      "x": 161,
+      "y": 136
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "moveSpeed": 50,
+      "length": 50,
+      "path": "-95,0,",
+      "x": 300,
+      "y": 237,
+      "moveLength": -1,
+      "radius": 50
+    },
+    {
+      "name": 3,
+      "x": 161,
+      "y": 353,
+      "timeout": 6
+    },
+    {
+      "name": 3,
+      "moveSpeed": 15,
+      "path": "1,176,",
+      "x": 160,
+      "y": 16,
+      "timeout": 13
+    },
+    {
+      "name": 3,
+      "x": 38,
+      "y": 353,
+      "timeout": -1
+    },
+    {
+      "name": 300,
+      "x": 286,
+      "y": 353
+    }
+  ]
+}

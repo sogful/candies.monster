@@ -1,0 +1,131 @@
+{
+  "settings": [
+    {
+      "scrollY": -1,
+      "name": 0,
+      "view": {
+        "x": 0,
+        "y": 480,
+        "height": 480,
+        "width": 320
+      },
+      "height": 960,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 52,
+      "x": 158,
+      "y": 142
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 80,
+      "x": 157,
+      "y": 246,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 54,
+      "x": 159,
+      "y": 137
+    },
+    {
+      "name": 55,
+      "angle": 0,
+      "x": 74,
+      "y": 369
+    },
+    {
+      "name": 57,
+      "size": 1,
+      "moveSpeed": 40,
+      "path": "0,193,",
+      "angle": 0,
+      "x": 156,
+      "y": 278
+    },
+    {
+      "name": 3,
+      "x": 156,
+      "y": 368,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 158,
+      "y": 478,
+      "timeout": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 100,
+      "x": 159,
+      "y": 526,
+      "moveLength": -1,
+      "radius": 50
+    },
+    {
+      "name": 54,
+      "x": 158,
+      "y": 718
+    },
+    {
+      "name": 2,
+      "x": 257,
+      "y": 67
+    },
+    {
+      "name": 60,
+      "size": 4,
+      "angle": 20,
+      "x": 76,
+      "y": 771
+    },
+    {
+      "name": 60,
+      "size": 4,
+      "angle": -20,
+      "x": 241,
+      "y": 771
+    },
+    {
+      "name": 3,
+      "x": 257,
+      "y": 418,
+      "timeout": -1
+    },
+    {
+      "name": 55,
+      "angle": 0,
+      "x": 74,
+      "y": 497
+    },
+    {
+      "name": 300,
+      "x": 57,
+      "y": 71
+    }
+  ]
+}

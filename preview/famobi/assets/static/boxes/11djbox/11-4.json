@@ -1,0 +1,132 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 2,
+      "x": 189,
+      "y": 73
+    },
+    {
+      "name": 120,
+      "oneHandle": true,
+      "size": 50,
+      "handleAngle": 0,
+      "x": 236,
+      "y": 373
+    },
+    {
+      "name": 120,
+      "oneHandle": true,
+      "size": 50,
+      "handleAngle": 180,
+      "x": 60,
+      "y": 291
+    },
+    {
+      "name": 120,
+      "oneHandle": true,
+      "size": 50,
+      "handleAngle": 0,
+      "x": 212,
+      "y": 214
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 100,
+      "x": 169,
+      "y": 213,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 100,
+      "x": 190,
+      "y": 370,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 100,
+      "x": 97,
+      "y": 290,
+      "moveLength": -1,
+      "radius": 60
+    },
+    {
+      "name": 52,
+      "x": 123,
+      "y": 534
+    },
+    {
+      "name": 54,
+      "x": 122,
+      "y": 533
+    },
+    {
+      "name": 3,
+      "x": 111,
+      "y": 91,
+      "timeout": 4
+    },
+    {
+      "name": 3,
+      "x": 112,
+      "y": 150,
+      "timeout": 3.5
+    },
+    {
+      "name": 3,
+      "x": 111,
+      "y": 39,
+      "timeout": 5
+    },
+    {
+      "name": 59,
+      "size": 3,
+      "angle": 90,
+      "x": 72,
+      "y": 74,
+      "toggled": false
+    },
+    {
+      "name": 300,
+      "x": 73,
+      "y": 449
+    }
+  ]
+}

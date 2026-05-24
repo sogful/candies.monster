@@ -1,0 +1,147 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "twoParts": true
+    }
+  ],
+  "objects": [
+    {
+      "name": 50,
+      "x": 68,
+      "y": 136
+    },
+    {
+      "name": 51,
+      "x": 261,
+      "y": 135
+    },
+    {
+      "name": 54,
+      "x": 257,
+      "y": 133
+    },
+    {
+      "name": 2,
+      "x": 156,
+      "y": 443
+    },
+    {
+      "name": 54,
+      "x": 224,
+      "y": 299
+    },
+    {
+      "name": 3,
+      "x": 288,
+      "y": 300,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 161,
+      "y": 374,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 33,
+      "y": 300,
+      "timeout": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 200,
+      "x": 227,
+      "y": 44,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "R",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 200,
+      "x": 96,
+      "y": 45,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 54,
+      "x": 100,
+      "y": 297
+    },
+    {
+      "name": 54,
+      "x": 101,
+      "y": 369
+    },
+    {
+      "name": 54,
+      "x": 161,
+      "y": 373
+    },
+    {
+      "name": 54,
+      "x": 223,
+      "y": 373
+    },
+    {
+      "name": 54,
+      "x": 62,
+      "y": 134
+    },
+    {
+      "name": 54,
+      "x": 162,
+      "y": 298
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 50,
+      "x": 56,
+      "y": 213,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "wheel": false,
+      "part": "R",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 50,
+      "x": 269,
+      "y": 210,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 300,
+      "x": 34,
+      "y": 383
+    }
+  ]
+}

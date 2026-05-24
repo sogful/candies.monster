@@ -1,0 +1,106 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 2,
+      "x": 167,
+      "y": 341
+    },
+    {
+      "name": 3,
+      "x": 40,
+      "y": 157,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 252,
+      "y": 248,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 102,
+      "y": 342,
+      "timeout": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": true,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 325,
+      "x": 164,
+      "y": 425,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 53,
+      "x": 268,
+      "y": 413
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 75,
+      "x": 293,
+      "y": 53,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 75,
+      "x": 35,
+      "y": 52,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 52,
+      "x": 166,
+      "y": 59
+    },
+    {
+      "name": 57,
+      "size": 1,
+      "angle": 0,
+      "x": 164,
+      "y": 299,
+      "toggled": false
+    },
+    {
+      "name": 300,
+      "x": 40,
+      "y": 425
+    }
+  ]
+}

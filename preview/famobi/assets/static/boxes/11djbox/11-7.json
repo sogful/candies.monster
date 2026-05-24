@@ -1,0 +1,127 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 52,
+      "x": 67,
+      "y": 185
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 60,
+      "x": 72,
+      "y": 353,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 20,
+      "x": 77,
+      "y": 59,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 3,
+      "x": 270,
+      "y": 142,
+      "timeout": 15
+    },
+    {
+      "name": 3,
+      "x": 266,
+      "y": 252,
+      "timeout": 10
+    },
+    {
+      "name": 3,
+      "x": 264,
+      "y": 375,
+      "timeout": 12
+    },
+    {
+      "name": 60,
+      "size": 4,
+      "angle": 0,
+      "x": 47,
+      "y": 303,
+      "toggled": false
+    },
+    {
+      "name": 2,
+      "x": 272,
+      "y": 62
+    },
+    {
+      "name": 56,
+      "group": 0,
+      "angle": 0,
+      "x": 48,
+      "y": 355
+    },
+    {
+      "name": 56,
+      "group": 0,
+      "angle": 270,
+      "x": 265,
+      "y": 431
+    },
+    {
+      "name": 120,
+      "oneHandle": false,
+      "size": 70,
+      "handleAngle": 45,
+      "x": 239,
+      "y": 313
+    },
+    {
+      "name": 120,
+      "oneHandle": false,
+      "size": 70,
+      "handleAngle": -45,
+      "x": 167,
+      "y": 221
+    },
+    {
+      "name": 120,
+      "oneHandle": false,
+      "size": 70,
+      "handleAngle": 45,
+      "x": 91,
+      "y": 125
+    },
+    {
+      "name": 300,
+      "x": 73,
+      "y": 444
+    }
+  ]
+}

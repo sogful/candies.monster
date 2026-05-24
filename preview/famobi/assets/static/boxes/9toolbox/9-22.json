@@ -1,0 +1,101 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "twoParts": false
+    }
+  ],
+  "objects": [
+    {
+      "name": 56,
+      "group": 0,
+      "angle": 0,
+      "x": 183,
+      "y": 179
+    },
+    {
+      "name": 56,
+      "group": 0,
+      "angle": 180,
+      "x": 143,
+      "y": 238
+    },
+    {
+      "name": 56,
+      "group": 1,
+      "angle": 0,
+      "x": 180,
+      "y": 307
+    },
+    {
+      "name": 56,
+      "group": 1,
+      "angle": 180,
+      "x": 145,
+      "y": 108
+    },
+    {
+      "name": 2,
+      "x": 249,
+      "y": 85
+    },
+    {
+      "name": 52,
+      "x": 230,
+      "y": 502
+    },
+    {
+      "name": 54,
+      "x": 229,
+      "y": 497
+    },
+    {
+      "name": 55,
+      "angle": 0,
+      "x": 52,
+      "y": 113
+    },
+    {
+      "name": 55,
+      "angle": 180,
+      "x": 275,
+      "y": 175
+    },
+    {
+      "name": 3,
+      "moveSpeed": 15,
+      "path": "0,-170",
+      "x": 97,
+      "y": 304,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "moveSpeed": 15,
+      "path": "0,-170",
+      "x": 97,
+      "y": 365,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "moveSpeed": 15,
+      "path": "0,-170",
+      "x": 97,
+      "y": 426,
+      "timeout": -1
+    },
+    {
+      "name": 300,
+      "x": 161,
+      "y": 367
+    }
+  ]
+}

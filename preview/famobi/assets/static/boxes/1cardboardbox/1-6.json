@@ -1,0 +1,287 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 1,
+      "twoParts": false
+    }
+  ],
+  "nl": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "nl",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "nl"
+    }
+  ],
+  "br": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "br",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "br"
+    }
+  ],
+  "it": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "it",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "it"
+    }
+  ],
+  "ja": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "ja",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "ja"
+    }
+  ],
+  "de": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "de",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "de"
+    }
+  ],
+  "es": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "es",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "es"
+    }
+  ],
+  "en": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "en",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "en"
+    }
+  ],
+  "ko": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "ko",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "ko"
+    }
+  ],
+  "fr": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "fr",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "fr"
+    }
+  ],
+  "tr": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "tr",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "tr"
+    }
+  ],
+  "ru": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "ru",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "ru"
+    }
+  ],
+  "objects": [
+    {
+      "name": 3,
+      "x": 161,
+      "y": 371,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "x": 163,
+      "y": 293,
+      "timeout": -1
+    },
+    {
+      "name": 2,
+      "x": 160,
+      "y": 432
+    },
+    {
+      "name": 52,
+      "x": 160,
+      "y": 217
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "hidePath": false,
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 50,
+      "x": 163,
+      "y": 152,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 54,
+      "x": 161,
+      "y": 293
+    },
+    {
+      "name": 3,
+      "x": 161,
+      "y": 91,
+      "timeout": -1
+    },
+    {
+      "name": 300,
+      "x": 45,
+      "y": 291
+    }
+  ],
+  "zh": [
+    {
+      "name": 4,
+      "text": "TUTORIAL_LVL_1_6",
+      "x": 30,
+      "y": 100,
+      "height": 80,
+      "locale": "zh",
+      "width": 100
+    },
+    {
+      "name": 13,
+      "rotateSpeed": 100,
+      "x": 73,
+      "y": 65,
+      "locale": "zh"
+    }
+  ]
+}

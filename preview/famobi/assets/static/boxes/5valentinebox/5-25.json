@@ -1,0 +1,146 @@
+{
+  "settings": [
+    {
+      "name": 0,
+      "height": 480,
+      "gridSize": 32,
+      "width": 320
+    },
+    {
+      "name": 1,
+      "ropePhysicsSpeed": 1,
+      "special": 1,
+      "twoParts": true
+    }
+  ],
+  "objects": [
+    {
+      "name": 50,
+      "x": 212,
+      "y": 343
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "L",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 90,
+      "x": 210,
+      "y": 458,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 51,
+      "x": 105,
+      "y": 342
+    },
+    {
+      "name": 2,
+      "x": 232,
+      "y": 109
+    },
+    {
+      "name": 80,
+      "onTime": 4,
+      "initialDelay": -4,
+      "size": 5,
+      "angle": 90,
+      "x": 170,
+      "offTime": 4,
+      "y": 122
+    },
+    {
+      "name": 54,
+      "x": 100,
+      "y": 341
+    },
+    {
+      "name": 80,
+      "onTime": 4,
+      "initialDelay": -4,
+      "size": 5,
+      "angle": 0,
+      "x": 103,
+      "offTime": 4,
+      "y": 192
+    },
+    {
+      "name": 80,
+      "onTime": 4,
+      "initialDelay": -4,
+      "size": 5,
+      "angle": 0,
+      "x": 103,
+      "offTime": 4,
+      "y": 53
+    },
+    {
+      "name": 80,
+      "onTime": 4,
+      "initialDelay": -4,
+      "size": 5,
+      "angle": 90,
+      "x": 31,
+      "offTime": 4,
+      "y": 120
+    },
+    {
+      "name": 3,
+      "moveSpeed": 50,
+      "path": "RC30",
+      "x": 91,
+      "y": 99,
+      "timeout": -1
+    },
+    {
+      "name": 100,
+      "spider": false,
+      "gun": false,
+      "wheel": false,
+      "part": "R",
+      "moveOffset": 0,
+      "moveVertical": false,
+      "length": 90,
+      "x": 100,
+      "y": 460,
+      "moveLength": -1,
+      "radius": -1
+    },
+    {
+      "name": 3,
+      "moveSpeed": 50,
+      "path": "RW20",
+      "x": 99,
+      "y": 137,
+      "timeout": -1
+    },
+    {
+      "name": 3,
+      "moveSpeed": 20,
+      "path": "RW30",
+      "x": 109,
+      "y": 117,
+      "timeout": -1
+    },
+    {
+      "name": 55,
+      "angle": 180,
+      "x": 273,
+      "y": 339
+    },
+    {
+      "name": 54,
+      "x": 206,
+      "y": 338
+    },
+    {
+      "name": 300,
+      "x": 271,
+      "y": 405
+    }
+  ]
+}

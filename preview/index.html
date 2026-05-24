@@ -162,20 +162,6 @@
             flex-wrap: nowrap; white-space: nowrap;
         }
 
-        [data-game="famobi"] {
-            filter: grayscale(1) brightness(0.5)
-        }
-        [data-game="famobi"]::after {
-            position: fixed; display: flex;
-            content: "broken :(";
-            z-index: 999; padding-bottom: 0.5em;
-            pointer-events: none;
-
-            -webkit-text-stroke: 0.125em black;
-            text-shadow: 0 0.1em 0 black;
-            paint-order: stroke fill;
-        }
-
         /*//////////////////////////////////////////////////////////////////////*/
 
         .details {
@@ -394,6 +380,29 @@
 
         /*//////////////////////////////////////////////////////////////////////*/
 
+        .YOURTOOLONG {
+            position: fixed; display: none; flex-direction: column;
+            justify-content: center; align-items: center;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: black; z-index: 4000;
+            text-align: center; padding: 1em; box-sizing: border-box;
+
+            color: #ff7d7d;
+            -webkit-text-stroke: 0.125em black;
+            text-shadow: 0 0.1em 0 black;
+            paint-order: stroke fill;
+        }
+        .YOURTOOLONG.active {display: flex}
+        .YOURTOOLONG .YOURTOOLONGtitle {
+            font-size: 3em;
+        }
+        .YOURTOOLONG .YOURTOOLONGbody {
+            font-size: 1.25em; max-width: min(90vw, 600px);
+            margin-top: 0.5em; color: white;
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
         .multi {
             display: flex; flex-direction: row;
             width: min(90vw, 700px); 
@@ -607,6 +616,10 @@
         </div>
     </div>
     <iframe class="gameframe"></iframe>
+    <div class="YOURTOOLONG">
+        <a class="YOURTOOLONGtitle">level too large</a>
+        <a class="YOURTOOLONGbody">the server, whether it be github pages or not, can't accept this much data through the url as of now :(</a>
+    </div>
 
     <script>
 
@@ -721,7 +734,7 @@
             const loading = document.querySelector(".loading");
 
             // autoselects h5dx, enabling this only when it's the only working choice
-            const nopicker = true;
+            const nopicker = false;
             
             const hasurldata = urlparam.has("data") || urlparam.has("code");
             let hasstoreddata = false;
@@ -1406,6 +1419,11 @@
                 return url.toString();
             }
 
+            const YOURTOOLONG = document.querySelector(".YOURTOOLONG");
+            // server-side request header limit before HTTP 431; matches the
+            // 16kb cutoff used by the share-link toolong warning.
+            const URL_LIMIT_BYTES = 16384;
+
             function opengame(game) {
                 if (!levelbase64) {
                     showdatapanel();
@@ -1424,17 +1442,30 @@
                     console.warn("storage error:", storageerror);
                 }
                 const url = buildgameurl(path);
-                frame.src = url;
-                frame.classList.add("active");
+                const urlbytes = new TextEncoder().encode(url).length;
                 closebtn.classList.add("active");
                 document.body.classList.add("playing");
                 choicepanel?.classList.add("hidden");
                 datapanel?.classList.remove("show");
+
+                if (urlbytes > URL_LIMIT_BYTES) {
+                    // skip the iframe load entirely - the server would reject
+                    // it with 431. show the error and let close exit out.
+                    YOURTOOLONG?.classList.add("active");
+                    frame.classList.remove("active");
+                    if (frame.src !== "about:blank") {frame.src = "about:blank"}
+                    return;
+                }
+
+                YOURTOOLONG?.classList.remove("active");
+                frame.src = url;
+                frame.classList.add("active");
             }
 
             function closegame() {
                 frame.classList.remove("active");
                 closebtn.classList.remove("active");
+                YOURTOOLONG?.classList.remove("active");
                 document.body.classList.remove("playing");
                 if (levelbase64) {
                     if (nopicker) {

@@ -1,0 +1,108 @@
+{"frames": [
+
+{
+	"filename": "flash",
+	"frame": {"x":0,"y":276,"w":108,"h":65},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":108,"h":65},
+	"sourceSize": {"w":108,"h":67}
+},
+{
+	"filename": "frame_bl",
+	"frame": {"x":318,"y":72,"w":40,"h":35},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":35},
+	"sourceSize": {"w":40,"h":35}
+},
+{
+	"filename": "frame_br",
+	"frame": {"x":318,"y":108,"w":40,"h":35},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":35},
+	"sourceSize": {"w":40,"h":35}
+},
+{
+	"filename": "frame_hor_tile",
+	"frame": {"x":0,"y":270,"w":400,"h":5},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":5},
+	"sourceSize": {"w":400,"h":5}
+},
+{
+	"filename": "frame_tl",
+	"frame": {"x":318,"y":144,"w":40,"h":35},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":35},
+	"sourceSize": {"w":40,"h":35}
+},
+{
+	"filename": "frame_tr",
+	"frame": {"x":318,"y":180,"w":40,"h":35},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":35},
+	"sourceSize": {"w":40,"h":35}
+},
+{
+	"filename": "frame_ver_tile",
+	"frame": {"x":401,"y":0,"w":5,"h":400},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":5,"h":400},
+	"sourceSize": {"w":5,"h":400}
+},
+{
+	"filename": "light_spot",
+	"frame": {"x":318,"y":0,"w":71,"h":71},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":71,"h":71},
+	"sourceSize": {"w":71,"h":71}
+},
+{
+	"filename": "particle",
+	"frame": {"x":318,"y":216,"w":33,"h":31},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":5,"w":33,"h":31},
+	"sourceSize": {"w":40,"h":40}
+},
+{
+	"filename": "ray",
+	"frame": {"x":268,"y":0,"w":49,"h":256},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":0,"w":49,"h":256},
+	"sourceSize": {"w":64,"h":256}
+},
+{
+	"filename": "tips_glow",
+	"frame": {"x":109,"y":276,"w":85,"h":86},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":86},
+	"sourceSize": {"w":85,"h":88}
+},
+{
+	"filename": "wave",
+	"frame": {"x":0,"y":0,"w":267,"h":269},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":267,"h":269},
+	"sourceSize": {"w":267,"h":269}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sheet.png",
+	"format": "RGBA8888",
+	"size": {"w":406,"h":400},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:7642c4ca0f427a9eb10f0dc5032fbe82:061bfaa2388e9e6397b10a6eb3fc0388:1cbd29238421f6664e303bb7b9164bbd$"
+}
+}

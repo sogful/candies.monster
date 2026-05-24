@@ -1,0 +1,258 @@
+[
+  {
+    "id": 1001,
+    "name": "win"
+  },
+  {
+    "id": 1002,
+    "name": "wheel"
+  },
+  {
+    "id": 1003,
+    "name": "transporter_move"
+  },
+  {
+    "id": 1004,
+    "name": "transporter_drop"
+  },
+  {
+    "id": 1005,
+    "name": "teleport"
+  },
+  {
+    "id": 1006,
+    "name": "steam_start_2"
+  },
+  {
+    "id": 1007,
+    "name": "steam_start"
+  },
+  {
+    "id": 1008,
+    "name": "steam_end"
+  },
+  {
+    "id": 1009,
+    "name": "star_light02"
+  },
+  {
+    "id": 1010,
+    "name": "star_light01"
+  },
+  {
+    "id": 1011,
+    "name": "star_3"
+  },
+  {
+    "id": 1012,
+    "name": "star_2"
+  },
+  {
+    "id": 1013,
+    "name": "star_1"
+  },
+  {
+    "id": 1014,
+    "name": "sp_telekinesis"
+  },
+  {
+    "id": 1015,
+    "name": "sp_field_bounce"
+  },
+  {
+    "id": 1016,
+    "name": "sp_field"
+  },
+  {
+    "id": 1017,
+    "name": "sp_cloverleaf"
+  },
+  {
+    "id": 1018,
+    "name": "spike_rotate_out"
+  },
+  {
+    "id": 1019,
+    "name": "spike_rotate_in"
+  },
+  {
+    "id": 1020,
+    "name": "spider_win"
+  },
+  {
+    "id": 1021,
+    "name": "spider_fall"
+  },
+  {
+    "id": 1022,
+    "name": "spider_activate"
+  },
+  {
+    "id": 1023,
+    "name": "scratch_out"
+  },
+  {
+    "id": 1024,
+    "name": "scratch_in"
+  },
+  {
+    "id": 1025,
+    "name": "salute"
+  },
+  {
+    "id": 1026,
+    "name": "rope_get"
+  },
+  {
+    "id": 1027,
+    "name": "rope_bleak_4"
+  },
+  {
+    "id": 1028,
+    "name": "rope_bleak_3"
+  },
+  {
+    "id": 1029,
+    "name": "rope_bleak_2"
+  },
+  {
+    "id": 1030,
+    "name": "rope_bleak_1"
+  },
+  {
+    "id": 1031,
+    "name": "reward"
+  },
+  {
+    "id": 1032,
+    "name": "pump_4"
+  },
+  {
+    "id": 1033,
+    "name": "pump_3"
+  },
+  {
+    "id": 1034,
+    "name": "pump_2"
+  },
+  {
+    "id": 1035,
+    "name": "pump_1"
+  },
+  {
+    "id": 1036,
+    "name": "mouse_tap"
+  },
+  {
+    "id": 1037,
+    "name": "mouse_rustle"
+  },
+  {
+    "id": 1038,
+    "name": "mouse_idle"
+  },
+  {
+    "id": 1039,
+    "name": "monster_sleep03"
+  },
+  {
+    "id": 1040,
+    "name": "monster_sleep02"
+  },
+  {
+    "id": 1041,
+    "name": "monster_sleep01"
+  },
+  {
+    "id": 1042,
+    "name": "monster_sad"
+  },
+  {
+    "id": 1043,
+    "name": "monster_open"
+  },
+  {
+    "id": 1044,
+    "name": "monster_close"
+  },
+  {
+    "id": 1045,
+    "name": "monster_chewing"
+  },
+  {
+    "id": 1046,
+    "name": "magnet_idle"
+  },
+  {
+    "id": 1047,
+    "name": "magnet_attract"
+  },
+  {
+    "id": 1048,
+    "name": "lantern_teleport_out"
+  },
+  {
+    "id": 1049,
+    "name": "lantern_teleport_in"
+  },
+  {
+    "id": 1050,
+    "name": "gravity_on"
+  },
+  {
+    "id": 1051,
+    "name": "gravity_off"
+  },
+  {
+    "id": 1052,
+    "name": "ghost_puff"
+  },
+  {
+    "id": 1053,
+    "name": "electric"
+  },
+  {
+    "id": 1054,
+    "name": "con04"
+  },
+  {
+    "id": 1055,
+    "name": "con03"
+  },
+  {
+    "id": 1056,
+    "name": "con02"
+  },
+  {
+    "id": 1057,
+    "name": "con01"
+  },
+  {
+    "id": 1058,
+    "name": "candy_link"
+  },
+  {
+    "id": 1059,
+    "name": "candy_break"
+  },
+  {
+    "id": 1060,
+    "name": "buzz"
+  },
+  {
+    "id": 1061,
+    "name": "button"
+  },
+  {
+    "id": 1062,
+    "name": "bubble_break"
+  },
+  {
+    "id": 1063,
+    "name": "bubble"
+  },
+  {
+    "id": 1064,
+    "name": "bouncer"
+  }
+]
