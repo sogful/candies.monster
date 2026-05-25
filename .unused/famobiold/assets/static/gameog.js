@@ -225,11 +225,11 @@ dj("Array.prototype.values", function (ja) {
     ib(a, b) {
       this.config = a;
       this.DC = b;
-      ma.console.info(
+      /* ma.console.info(
         "%c" + a.title.toUpperCase() + " %c" + Cd.xG,
         "font-weight:bold;",
         null
-      );
+      ); */
       a.hB &&
         (window.addEventListener("error", P(this, this.Ae)),
         window.addEventListener("unhandledrejection", P(this, this.Ae)));

@@ -64,20 +64,29 @@
       a.setX(190);
       a.setY(400);
       this.av = LevelState.mO();
+      // preview bridge: in custom-level mode the level is locked to one,
+      // so the album/quit/next-level buttons make no sense - show only
+      // restart, centered in the first row. buttons[] still receives all
+      // four so Pd()'s hb(1..4) indices stay aligned.
+      let _customlevel = window.customleveldata != null;
       a = new AlbumButton();
       a.setX(59);
       a.setY(640);
-      this.ra.appendChild(a.j);
+      if (!_customlevel) {
+        this.ra.appendChild(a.j);
+        this.oa(a);
+      }
       this.buttons.push(a);
-      this.oa(a);
       a = ButtonBase.create(null, Keys.Uk, Keys.Vk, Keys.lz);
       a.setX(219);
       a.setY(640);
-      this.ra.appendChild(a.j);
+      if (!_customlevel) {
+        this.ra.appendChild(a.j);
+        this.oa(a);
+      }
       this.buttons.push(a);
-      this.oa(a);
       a = ButtonBase.create(null, Keys.Uk, Keys.Vk, Keys.oz);
-      a.setX(379);
+      a.setX(_customlevel ? 300 : 379);
       a.setY(640);
       this.ra.appendChild(a.j);
       this.buttons.push(a);
@@ -85,10 +94,18 @@
       a = ButtonBase.create(null, Keys.Rt, Keys.St, Keys.dL);
       a.setX(188.5);
       a.setY(750);
-      this.ra.appendChild(a.j);
+      if (!_customlevel) {
+        this.ra.appendChild(a.j);
+        this.oa(a);
+      }
       this.buttons.push(a);
-      this.oa(a);
-      a.focus();
+      // focus restart in custom-level mode (buttons[3]) since the
+      // next-level button (buttons[4]) is hidden.
+      if (_customlevel) {
+        this.buttons[3].focus();
+      } else {
+        a.focus();
+      }
       if (LevelState.box == 17 && LevelState.level == 25) {
         a.L(false);
       }
@@ -262,6 +279,12 @@
       // permanently hidden. Just keep them visible from the start.
     }
     jp() {
+      // preview bridge: skip the SDK tracking/interstitial chain in
+      // custom-level mode so restart fires immediately.
+      if (window.customleveldata != null) {
+        this.Of();
+        return;
+      }
       this.Jl();
       let a = this;
       SDK.trackLevelRestart(currentLevelId(), function () {
@@ -450,6 +473,12 @@
       super();
     }
     jp() {
+      // preview bridge: skip the SDK tracking/interstitial chain in
+      // custom-level mode so restart fires immediately.
+      if (window.customleveldata != null) {
+        this.Of();
+        return;
+      }
       this.Jl();
       let a = this;
       SDK.trackLevelRestart(currentLevelId(), function () {

@@ -746,13 +746,21 @@
       this.Ke(550, 550);
       var a = ButtonBase.create(null, Keys.hz, Keys.iz, Keys.VK);
       this.buttons.push(a);
-      a.setX(133.5);
-      a.setY(200);
-      this.ra.appendChild(a.j);
-      this.oa(a);
+      // preview bridge: skip the back-to-menu button in custom-level mode.
+      // we still push it into buttons[] to keep the resume button at index 2
+      // (Pd() does hb(2) for resume), but don't attach to the scene so it's
+      // invisible and hb(1) won't fire.
+      if (window.customleveldata == null) {
+        a.setX(133.5);
+        a.setY(200);
+        this.ra.appendChild(a.j);
+        this.oa(a);
+      }
       a = ButtonBase.create(null, Keys.hz, Keys.iz, Keys.eL);
       this.buttons.push(a);
-      a.setX(293.5);
+      // preview bridge: continue button centered (midpoint of the original
+      // two-button row) when the back-to-menu button is hidden.
+      a.setX(window.customleveldata != null ? 213.5 : 293.5);
       a.setY(200);
       this.ra.appendChild(a.j);
       this.oa(a);
@@ -779,7 +787,7 @@
         if (this.O.lh().Nb(415)) {
           a = true;
         }
-        if (this.O.lh().Nb(461)) {
+        if (this.O.lh().Nb(461) || this.O.lh().Nb(156) || this.O.lh().Nb(112)) {
           this.Kw();
         } else if (this.hb(2) || a) {
           this.Kw();

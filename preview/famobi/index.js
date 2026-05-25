@@ -11094,13 +11094,21 @@ class StorageProvider {
       this.Ke(550, 550);
       var a = ButtonBase.create(null, Keys.hz, Keys.iz, Keys.VK);
       this.buttons.push(a);
-      a.setX(133.5);
-      a.setY(200);
-      this.ra.appendChild(a.j);
-      this.oa(a);
+      // preview bridge: skip the back-to-menu button in custom-level mode.
+      // we still push it into buttons[] to keep the resume button at index 2
+      // (Pd() does hb(2) for resume), but don't attach to the scene so it's
+      // invisible and hb(1) won't fire.
+      if (window.customleveldata == null) {
+        a.setX(133.5);
+        a.setY(200);
+        this.ra.appendChild(a.j);
+        this.oa(a);
+      }
       a = ButtonBase.create(null, Keys.hz, Keys.iz, Keys.eL);
       this.buttons.push(a);
-      a.setX(293.5);
+      // preview bridge: continue button centered (midpoint of the original
+      // two-button row) when the back-to-menu button is hidden.
+      a.setX(window.customleveldata != null ? 213.5 : 293.5);
       a.setY(200);
       this.ra.appendChild(a.j);
       this.oa(a);
@@ -11127,7 +11135,7 @@ class StorageProvider {
         if (this.O.lh().Nb(415)) {
           a = true;
         }
-        if (this.O.lh().Nb(461)) {
+        if (this.O.lh().Nb(461) || this.O.lh().Nb(156) || this.O.lh().Nb(112)) {
           this.Kw();
         } else if (this.hb(2) || a) {
           this.Kw();
@@ -12992,7 +13000,7 @@ class StorageProvider {
           }
           break;
         case 2:
-          a = this.jb(window.customleveldata != null ? 0.25 : 0.15);
+          a = this.jb(window.customleveldata != null ? 0.2 : 0.2);
           this.np.W(a);
           if (a == 1) {
             this.S.dispose();
@@ -13003,7 +13011,7 @@ class StorageProvider {
           break;
         case 3:
           this.S.update(a);
-          a = this.jb(window.customleveldata != null ? 0.5 : 0.2);
+          a = this.jb(window.customleveldata != null ? 0.2 : 0.2);
           this.np.W(1 - a);
           if (a == 1) {
             this.node.removeChild(this.np.u);
@@ -13049,8 +13057,28 @@ class StorageProvider {
     }
     Pd() {
       if (this.state != 7) {
+        // preview hotkeys (ported from h5dx gameflow.ts): R=restart,
+        // M=mute music, Space=toggle gravity (only when the level has a
+        // gravity switch). Escape is folded into the pause check below.
+        if (this.state == 1) {
+          let _kb = this.O.lh();
+          if (_kb.Nb(114)) {
+            this.BD();
+          } else if (_kb.Nb(109)) {
+            Save.Ec = !Save.Ec;
+            Save.flush();
+            this.O.Sa.Sf(Save.Ec ? 1 : 0);
+            if (this.buttons[3] && this.buttons[3].icon) {
+              this.buttons[3].icon.L(!Save.Ec);
+            }
+          } else if (_kb.Nb(32) && this.S != null && this.S.Rd != null) {
+            this.S.Rd.toggle();
+            this.S.Rr(0);
+          }
+        }
+
         var a = this.O.lh().Nb(112);
-        if (this.O.lh().Nb(173) || this.O.lh().Nb(461)) {
+        if (this.O.lh().Nb(173) || this.O.lh().Nb(461) || this.O.lh().Nb(156)) {
           a = true;
         }
         if (WebApplication.externalPause && (this.hb(1) || a)) {
@@ -13714,20 +13742,29 @@ class StorageProvider {
       a.setX(190);
       a.setY(400);
       this.av = LevelState.mO();
+      // preview bridge: in custom-level mode the level is locked to one,
+      // so the album/quit/next-level buttons make no sense - show only
+      // restart, centered in the first row. buttons[] still receives all
+      // four so Pd()'s hb(1..4) indices stay aligned.
+      let _customlevel = window.customleveldata != null;
       a = new AlbumButton();
       a.setX(59);
       a.setY(640);
-      this.ra.appendChild(a.j);
+      if (!_customlevel) {
+        this.ra.appendChild(a.j);
+        this.oa(a);
+      }
       this.buttons.push(a);
-      this.oa(a);
       a = ButtonBase.create(null, Keys.Uk, Keys.Vk, Keys.lz);
       a.setX(219);
       a.setY(640);
-      this.ra.appendChild(a.j);
+      if (!_customlevel) {
+        this.ra.appendChild(a.j);
+        this.oa(a);
+      }
       this.buttons.push(a);
-      this.oa(a);
       a = ButtonBase.create(null, Keys.Uk, Keys.Vk, Keys.oz);
-      a.setX(379);
+      a.setX(_customlevel ? 300 : 379);
       a.setY(640);
       this.ra.appendChild(a.j);
       this.buttons.push(a);
@@ -13735,10 +13772,18 @@ class StorageProvider {
       a = ButtonBase.create(null, Keys.Rt, Keys.St, Keys.dL);
       a.setX(188.5);
       a.setY(750);
-      this.ra.appendChild(a.j);
+      if (!_customlevel) {
+        this.ra.appendChild(a.j);
+        this.oa(a);
+      }
       this.buttons.push(a);
-      this.oa(a);
-      a.focus();
+      // focus restart in custom-level mode (buttons[3]) since the
+      // next-level button (buttons[4]) is hidden.
+      if (_customlevel) {
+        this.buttons[3].focus();
+      } else {
+        a.focus();
+      }
       if (LevelState.box == 17 && LevelState.level == 25) {
         a.L(false);
       }
@@ -13912,6 +13957,12 @@ class StorageProvider {
       // permanently hidden. Just keep them visible from the start.
     }
     jp() {
+      // preview bridge: skip the SDK tracking/interstitial chain in
+      // custom-level mode so restart fires immediately.
+      if (window.customleveldata != null) {
+        this.Of();
+        return;
+      }
       this.Jl();
       let a = this;
       SDK.trackLevelRestart(currentLevelId(), function () {
@@ -14100,6 +14151,12 @@ class StorageProvider {
       super();
     }
     jp() {
+      // preview bridge: skip the SDK tracking/interstitial chain in
+      // custom-level mode so restart fires immediately.
+      if (window.customleveldata != null) {
+        this.Of();
+        return;
+      }
       this.Jl();
       let a = this;
       SDK.trackLevelRestart(currentLevelId(), function () {
@@ -29896,14 +29953,22 @@ class StorageProvider {
         c.x = (b.A + b.B) / 2;
         c.y = (b.D + b.G) / 2;
       } else {
+        // preview bridge: when a custom level declares dimensions larger
+        // than the canonical 320x480, the engine would fit the whole
+        // level into the viewport and shrink everything. clamp the camera
+        // bounds (and recenter) so the camera renders at the normal
+        // scale; oversized object positions just clip off-screen rather
+        // than triggering a global zoom-out.
+        let _maxW = window.customleveldata != null ? Math.min(this.Ag, 320 * this.ga) : this.Ag;
+        let _maxH = window.customleveldata != null ? Math.min(this.zg, 480 * this.ga) : this.zg;
         b = this.Bb.Ok;
         b.A = 0;
         b.D = 0;
-        b.B = this.Ag;
-        b.G = this.zg;
+        b.B = _maxW;
+        b.G = _maxH;
         b = this.Bb.g;
-        b.x = this.Ag / 2;
-        b.y = this.zg / 2;
+        b.x = _maxW / 2;
+        b.y = _maxH / 2;
       }
       this.ie = new Vec4(0, 0, 0, 1);
       if (a.scrollX != null) {

@@ -417,14 +417,22 @@
         c.x = (b.A + b.B) / 2;
         c.y = (b.D + b.G) / 2;
       } else {
+        // preview bridge: when a custom level declares dimensions larger
+        // than the canonical 320x480, the engine would fit the whole
+        // level into the viewport and shrink everything. clamp the camera
+        // bounds (and recenter) so the camera renders at the normal
+        // scale; oversized object positions just clip off-screen rather
+        // than triggering a global zoom-out.
+        let _maxW = window.customleveldata != null ? Math.min(this.Ag, 320 * this.ga) : this.Ag;
+        let _maxH = window.customleveldata != null ? Math.min(this.zg, 480 * this.ga) : this.zg;
         b = this.Bb.Ok;
         b.A = 0;
         b.D = 0;
-        b.B = this.Ag;
-        b.G = this.zg;
+        b.B = _maxW;
+        b.G = _maxH;
         b = this.Bb.g;
-        b.x = this.Ag / 2;
-        b.y = this.zg / 2;
+        b.x = _maxW / 2;
+        b.y = _maxH / 2;
       }
       this.ie = new Vec4(0, 0, 0, 1);
       if (a.scrollX != null) {

@@ -381,10 +381,10 @@
         /*//////////////////////////////////////////////////////////////////////*/
 
         .YOURTOOLONG {
+            display: flex; flex-direction: column;
             position: fixed; display: none; flex-direction: column;
             justify-content: center; align-items: center;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: black; z-index: 4000;
+            top: 0; left: 0; width: 100vw; height: 100vh; z-index: 4000;
             text-align: center; padding: 1em; box-sizing: border-box;
 
             color: #ff7d7d;
@@ -1420,11 +1420,20 @@
             }
 
             const YOURTOOLONG = document.querySelector(".YOURTOOLONG");
-            // server-side request header limit before HTTP 431; matches the
-            // 16kb cutoff used by the share-link toolong warning.
-            const URL_LIMIT_BYTES = 16384;
+            const URLBYTELIMIT = 16384;
+            let opengameseq = 0;
 
-            function opengame(game) {
+            function looksLikeTooLong(doc) {
+                if (!doc) return false;
+                try {
+                    const title = (doc.title || "").toLowerCase();
+                    const body = (doc.body && doc.body.innerText || "").toLowerCase();
+                    return /\b(431|414)\b/.test(title + " " + body) ||
+                           /request header fields too large|uri too long|too long/.test(title + " " + body);
+                } catch (_) {return false}
+            }
+
+            async function opengame(game) {
                 if (!levelbase64) {
                     showdatapanel();
                     return;
@@ -1448,14 +1457,75 @@
                 choicepanel?.classList.add("hidden");
                 datapanel?.classList.remove("show");
 
-                if (urlbytes > URL_LIMIT_BYTES) {
-                    // skip the iframe load entirely - the server would reject
-                    // it with 431. show the error and let close exit out.
+                const seq = ++opengameseq;
+                const showtoolong = (why) => {
+                    if (seq !== opengameseq) return;
+                    console.warn("[preview] showing too-long overlay:", why);
                     YOURTOOLONG?.classList.add("active");
                     frame.classList.remove("active");
                     if (frame.src !== "about:blank") {frame.src = "about:blank"}
+                };
+
+                console.log(`[preview] opengame ${game}: url ${urlbytes} bytes`);
+
+                if (urlbytes > URLBYTELIMIT) {
+                    showtoolong(`url ${urlbytes}b over hard limit ${URLBYTELIMIT}b`);
                     return;
                 }
+
+                let probefailed = false;
+                let probereason = "";
+                try {
+                    const resp = await fetch(url, {method: "GET", cache: "no-store", credentials: "same-origin"});
+                    console.log(`[preview] probe: ${resp.status} ${resp.statusText}`);
+                    if (!resp.ok) {
+                        probefailed = true;
+                        probereason = `probe ${resp.status} ${resp.statusText}`;
+                    }
+                } catch (e) {
+                    probefailed = true;
+                    probereason = `probe threw: ${e?.message || e}`;
+                    console.warn("[preview] probe threw:", e);
+                }
+                if (seq !== opengameseq) return;
+                if (probefailed) {
+                    showtoolong(probereason);
+                    return;
+                }
+
+                let loadfired = false;
+                const onframeload = () => {
+                    loadfired = true;
+                    if (seq !== opengameseq) return;
+                    let len = null;
+                    try {
+                        const doc = frame.contentDocument;
+                        const txt = (doc?.title || "") + " " + (doc?.body?.innerText || "");
+                        len = txt.trim().length;
+                        console.log(`[preview] iframe load fired, doc text length ${len}`);
+                        if (looksLikeTooLong(doc)) {
+                            showtoolong("iframe content looks like an error page");
+                            return;
+                        }
+                        if (len === 0) {
+                            showtoolong("iframe loaded an empty document");
+                        }
+                    } catch (e) {
+                        console.warn("[preview] iframe contentDocument read failed:", e);
+                    }
+                };
+                if (frame._toolongcheck) {
+                    frame.removeEventListener("load", frame._toolongcheck);
+                }
+                frame._toolongcheck = onframeload;
+                frame.addEventListener("load", onframeload);
+
+                window.setTimeout(() => {
+                    if (seq !== opengameseq) return;
+                    if (!loadfired) {
+                        showtoolong("iframe load timeout (8s)");
+                    }
+                }, 8000);
 
                 YOURTOOLONG?.classList.remove("active");
                 frame.src = url;

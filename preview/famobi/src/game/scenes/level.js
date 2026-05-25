@@ -749,7 +749,7 @@
           }
           break;
         case 2:
-          a = this.jb(window.customleveldata != null ? 0.25 : 0.15);
+          a = this.jb(window.customleveldata != null ? 0.2 : 0.2);
           this.np.W(a);
           if (a == 1) {
             this.S.dispose();
@@ -760,7 +760,7 @@
           break;
         case 3:
           this.S.update(a);
-          a = this.jb(window.customleveldata != null ? 0.5 : 0.2);
+          a = this.jb(window.customleveldata != null ? 0.2 : 0.2);
           this.np.W(1 - a);
           if (a == 1) {
             this.node.removeChild(this.np.u);
@@ -806,8 +806,28 @@
     }
     Pd() {
       if (this.state != 7) {
+        // preview hotkeys (ported from h5dx gameflow.ts): R=restart,
+        // M=mute music, Space=toggle gravity (only when the level has a
+        // gravity switch). Escape is folded into the pause check below.
+        if (this.state == 1) {
+          let _kb = this.O.lh();
+          if (_kb.Nb(114)) {
+            this.BD();
+          } else if (_kb.Nb(109)) {
+            Save.Ec = !Save.Ec;
+            Save.flush();
+            this.O.Sa.Sf(Save.Ec ? 1 : 0);
+            if (this.buttons[3] && this.buttons[3].icon) {
+              this.buttons[3].icon.L(!Save.Ec);
+            }
+          } else if (_kb.Nb(32) && this.S != null && this.S.Rd != null) {
+            this.S.Rd.toggle();
+            this.S.Rr(0);
+          }
+        }
+
         var a = this.O.lh().Nb(112);
-        if (this.O.lh().Nb(173) || this.O.lh().Nb(461)) {
+        if (this.O.lh().Nb(173) || this.O.lh().Nb(461) || this.O.lh().Nb(156)) {
           a = true;
         }
         if (WebApplication.externalPause && (this.hb(1) || a)) {
