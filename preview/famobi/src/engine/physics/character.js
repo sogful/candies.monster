@@ -1,44 +1,44 @@
   class MovingEntity extends Entity {
     constructor() {
       super();
-      this.$E = -1;
+      this.ownerId = -1;
     }
-    lx(a) {
-      this.$E = a;
+    setOwner(a) {
+      this.ownerId = a;
     }
-    Sl() {
-      return this.$E != -1;
+    isOwned() {
+      return this.ownerId != -1;
     }
-    Kj() {
+    position() {
       return new Vec2(this.x, this.y);
     }
-    Jg(a) {
+    setPosition(a) {
       this.x = a.x;
       this.y = a.y;
     }
-    tg() {
+    collisionSize() {
       return null;
     }
-    Yq() {
-      let a = this.tg();
+    scoreValue() {
+      let a = this.collisionSize();
       return (a.x + a.y) / 4;
     }
-    NR(a) {
-      this.Dj = a.x;
+    setScale(a) {
+      this.visualScale = a.x;
     }
-    NC() {}
-    Ji(a) {
+    onConveyorEdge() {}
+    applyMotion(a) {
       this.rotation = a.angle ?? 0;
       let b = a.path;
       if (b != null) {
-        let c = PathResolver.Ey;
+        let c = PathResolver.DEFAULT_RES;
         if (b.charAt(0) == "R") {
           c = Math.round(Numeric.parseInt(Std.substr(b, 2, null)) * 3 / 2 + 1);
         }
-        a = new PathState(c, a.moveSpeed * LevelController.mn, a.rotateSpeed);
+        a = new PathState(c, a.moveSpeed * LevelController.SCALE, a.rotateSpeed);
         a.angle = this.rotation;
-        a.$D(b, this.x, this.y);
-        this.YD(a);
+        a.fromSpec(b, this.x, this.y);
+        this.setMotion(a);
         a.start();
       }
     }
@@ -51,32 +51,32 @@
   class BezierMover extends MotionBase {
     constructor(a, b) {
       super();
-      this.c = new AnimSequenceCtl();
-      this.wf = a;
-      this.I = b;
+      this.animCtl = new AnimSequenceCtl();
+      this.ownerEntity = a;
+      this.point = b;
     }
     play(a) {
       let b = a.data[0];
       this.set(b.x, b.y);
-      this.c.play(a);
-      this.c.Yo = cachedBind(this, this.$P);
-      this.c.ik = cachedBind(this, this.ik);
-      this.lq(this.c);
+      this.animCtl.play(a);
+      this.animCtl.onFrameCb = cachedBind(this, this.onFrame);
+      this.animCtl.onDoneCb = cachedBind(this, this.onDoneCb);
+      this.attachAnim(this.animCtl);
     }
-    ik() {
+    onDoneCb() {
       this.free();
-      this.wf.tq = null;
+      this.ownerEntity.bezierMover = null;
     }
-    $cachedBind(a, b, c) {
+    onFrame(a, b, c) {
       let d = a.x;
       a = a.y;
       this.set(d + (b.x - d) * c, a + (b.y - a) * c);
     }
     set(a, b) {
-      this.I.g.x = this.wf.x + a;
-      this.I.g.y = this.wf.y + b;
-      this.I.ha.x = this.I.g.x;
-      this.I.ha.y = this.I.g.y;
+      this.point.g.x = this.ownerEntity.x + a;
+      this.point.g.y = this.ownerEntity.y + b;
+      this.point.prev.x = this.point.g.x;
+      this.point.prev.y = this.point.g.y;
     }
   }
   BezierMover.i = true;
@@ -86,93 +86,93 @@
   });
   class CharacterController {
     constructor(a) {
-      this.S = a;
-      this.be = null;
-      this.Bq = -1;
-      this.oC = false;
-      this.El = [];
+      this.controller = a;
+      this.activeMouse = null;
+      this.activeIndex = -1;
+      this.locked = false;
+      this.mice = [];
     }
     update(a) {
       let b = 0;
-      let c = this.El;
+      let c = this.mice;
       while (b < c.length) {
         c[b++].update(a);
       }
     }
-    M() {
+    draw() {
       let a = 0;
-      let b = this.El;
+      let b = this.mice;
       while (a < b.length) {
-        b[a++].M();
+        b[a++].draw();
       }
     }
-    yu(a) {
-      if (this.be == null) {
+    containsGrab(a) {
+      if (this.activeMouse == null) {
         return false;
-      } else if (this.be.isActive) {
-        return this.be.yu(a);
+      } else if (this.activeMouse.isActive) {
+        return this.activeMouse.containsGrab(a);
       } else {
         return false;
       }
     }
-    Du(a) {
-      if (this.be != null) {
-        this.be.Du(a);
+    captureGrab(a) {
+      if (this.activeMouse != null) {
+        this.activeMouse.captureGrab(a);
       }
     }
-    yi() {
-      if (this.be == null) {
+    hasGrab() {
+      if (this.activeMouse == null) {
         return false;
       } else {
-        return this.be.yi();
+        return this.activeMouse.hasGrab();
       }
     }
-    oa(a, b) {
-      this.El.push(a);
+    addChild(a, b) {
+      this.mice.push(a);
       if (b == 1) {
-        this.xf = new Container();
-        var c = new Sprite(this.xf, Resources.wf, Keys.nH);
+        this.mouseContainer = new Container();
+        var c = new Sprite(this.mouseContainer, Resources.wf, Keys.nH);
         c.setUniformScale(0.4);
         c.center();
-        c = new Sprite(this.xf, Resources.wf, Keys.kH);
+        c = new Sprite(this.mouseContainer, Resources.wf, Keys.kH);
         c.setUniformScale(0.4);
         c.center();
-        a.eC(this.xf, a.da);
-        this.be = a;
-        this.Bq = b;
+        a.enter(this.mouseContainer, a.mainGrab);
+        this.activeMouse = a;
+        this.activeIndex = b;
       }
     }
-    jk(a, b, c) {
-      if (this.be == null) {
+    tryClick(a, b, c) {
+      if (this.activeMouse == null) {
         return false;
-      } else if (this.be.isActive && this.be.yi() && this.be.jk(a, b, c)) {
-        this.be.kR();
+      } else if (this.activeMouse.isActive && this.activeMouse.hasGrab() && this.activeMouse.tryClickAt(a, b, c)) {
+        this.activeMouse.dropGrab();
         return true;
       } else {
         return false;
       }
     }
-    tN() {
-      if (!this.oC) {
+    switchToNext() {
+      if (!this.locked) {
         var a = this;
-        var b = Lambda.find(this.El, function (e) {
-          return e.index == a.Bq;
+        var b = Lambda.find(this.mice, function (e) {
+          return e.index == a.activeIndex;
         });
-        var c = this.Bq + 1;
-        if (c == this.El.length + 1) {
+        var c = this.activeIndex + 1;
+        if (c == this.mice.length + 1) {
           c = 1;
         }
-        var d = Lambda.find(this.El, function (e) {
+        var d = Lambda.find(this.mice, function (e) {
           return e.index == c;
         });
-        d.eC(this.xf, b.da);
-        b.da = null;
-        this.Bq = c;
-        this.be = d;
+        d.enter(this.mouseContainer, b.mainGrab);
+        b.mainGrab = null;
+        this.activeIndex = c;
+        this.activeMouse = d;
       }
     }
-    ZO() {
-      this.oC = true;
+    lock() {
+      this.locked = true;
     }
   }
   CharacterController.i = true;
@@ -182,43 +182,43 @@
   class Character extends MovingEntity {
     constructor(a) {
       super();
-      this.bs = false;
-      this.j = new Container();
-      this.Pm = new Sprite(null, Resources.ca, X.ym() ? Keys.aH : Keys.bH);
-      this.Pm.center();
-      this.Pm.setUniformScale(0.4);
-      this.j.appendChild(this.Pm);
-      this.ca = new Sprite(null, Resources.ca, Keys.Jy);
-      this.ca.setUniformScale(0.4);
-      this.ca.center();
-      this.j.appendChild(this.ca);
-      a.ma(5).P(this.j.u);
-      a = Character.iy.w / 2;
-      let b = Character.iy.J / 2;
-      a = this.ea = new Bounds(0 - a, 0 - b, a, b);
-      this.sa = new Bounds(a.A, a.D, a.B, a.G);
+      this.popped = false;
+      this.container = new Container();
+      this.baseSprite = new Sprite(null, Resources.ca, X.bool() ? Keys.aH : Keys.bH);
+      this.baseSprite.center();
+      this.baseSprite.setUniformScale(0.4);
+      this.container.appendChild(this.baseSprite);
+      this.faceSprite = new Sprite(null, Resources.ca, Keys.Jy);
+      this.faceSprite.setUniformScale(0.4);
+      this.faceSprite.center();
+      this.container.appendChild(this.faceSprite);
+      a.layer(5).appendChild(this.container.node);
+      a = Character.BOUNDS.w / 2;
+      let b = Character.BOUNDS.h / 2;
+      a = this.localBounds = new Bounds(0 - a, 0 - b, a, b);
+      this.bounds = new Bounds(a.left, a.top, a.right, a.bottom);
     }
     pop() {
-      this.ca.L(false);
-      this.bs = true;
+      this.faceSprite.setVisible(false);
+      this.popped = true;
     }
     update(a) {
       super.update(a);
-      this.pe();
+      this.updateBounds();
     }
-    M() {
-      this.Pm.setX(this.x);
-      this.Pm.setY(this.y);
-      this.ca.setX(this.x);
-      this.ca.setY(this.y);
-      this.ca.setUniformScale(this.Dj * 0.4);
-      if (this.qF || this.Sl()) {
-        this.Pm.L(false);
+    draw() {
+      this.baseSprite.setX(this.x);
+      this.baseSprite.setY(this.y);
+      this.faceSprite.setX(this.x);
+      this.faceSprite.setY(this.y);
+      this.faceSprite.setUniformScale(this.visualScale * 0.4);
+      if (this.bubbleHit || this.isOwned()) {
+        this.baseSprite.setVisible(false);
       }
     }
-    tg() {
-      let a = Resources.ca.hc.yf(Keys.Jy).Od;
-      return new Vec2(a.w * 0.4, a.J * 0.4);
+    collisionSize() {
+      let a = Resources.ca.frames.findByName(Keys.Jy).uvOffset;
+      return new Vec2(a.w * 0.4, a.h * 0.4);
     }
   }
   Character.i = true;
@@ -230,49 +230,49 @@
   class BeeAnims {
     constructor() {
       function a(d) {
-        d = new Sprite(b.j, Resources.de, Keys.jj(Keys.Wp, d));
+        d = new Sprite(b.container, Resources.de, Keys.indexed(Keys.Wp, d));
         d.center();
         return d;
       }
-      this.j = new Container();
-      this.fc = [];
+      this.container = new Container();
+      this.animators = [];
       let b = this;
       if (BeeAnims.zn == null) {
         BeeAnims.zn = AnimTimeline.parse("0,s.32<x34<y9<,.48,s.31>x33>y8>,.96,s.30<x34<y7<,1.44,s.31>x34>y9>,1.92,s.32x33y8,2.4,x34y9");
       }
       var c = new SpriteAnimator(a(0));
       c.loop(BeeAnims.zn);
-      this.fc.push(c);
+      this.animators.push(c);
       if (BeeAnims.An == null) {
         BeeAnims.An = AnimTimeline.parse("-100,s.38>,-99.,s.4<,-99.,s.38>,-98.,s.37,0,sx.37sy.4x26<y23<,.4,x25>y22>,.8,x24<y21<,1.20,x25>y22>,1.6,x26y23");
       }
       c = new SpriteAnimator(a(1));
       c.loop(BeeAnims.An);
-      this.fc.push(c);
+      this.animators.push(c);
       if (BeeAnims.Pz == null) {
         BeeAnims.Pz = AnimTimeline.parse("0,s.13<x-34<y4<,.43,s.14>x-35>y3>,.86,s.16<x-36<y2<,1.29,s.14>x-35>y3>,1.72,s.13x-34y4");
       }
       c = new SpriteAnimator(a(1));
       c.loop(BeeAnims.Pz);
-      this.fc.push(c);
+      this.animators.push(c);
       if (BeeAnims.Xh == null) {
         BeeAnims.Xh = AnimTimeline.parse("0,s.24<x-30<y17<,.42,s.22>x-29>y16>,.84,s.21<x-28<y15<,1.26,s.22>x-29>y16>,1.68,s.24x-30y17");
       }
       c = new SpriteAnimator(a(0));
       c.loop(BeeAnims.Xh);
-      this.fc.push(c);
+      this.animators.push(c);
       if (BeeAnims.Wh == null) {
         BeeAnims.Wh = AnimTimeline.parse("0,s.37<x-2<y31<,.47,s.38>x-3>y32>,.94,s.4<x-4<y33<,1.41,s.38>x-3>y32>,1.88,s.37x-2y31");
       }
       c = a(4);
-      c.la(350);
+      c.setRotation(350);
       c = new SpriteAnimator(c);
       c.loop(BeeAnims.Wh);
-      this.fc.push(c);
+      this.animators.push(c);
     }
     free() {
-      this.j.free();
-      this.j = null;
+      this.container.free();
+      this.container = null;
     }
   }
   BeeAnims.i = true;
@@ -282,29 +282,29 @@
 
   class Bee extends Character {
     constructor(a) {
-      super(a.S);
-      this.de = a;
+      super(a.controller);
+      this.switcher = a;
       this.alpha = 1;
       this.state = 0;
-      this.Cb = new BeeAnims();
-      this.j.appendChild(this.Cb.j);
+      this.beeAnims = new BeeAnims();
+      this.container.appendChild(this.beeAnims.container);
     }
     free() {
-      this.j.free();
-      this.j = null;
-      this.Cb.free();
-      this.Cb = null;
+      this.container.free();
+      this.container = null;
+      this.beeAnims.free();
+      this.beeAnims = null;
     }
-    Pl() {
+    isDying() {
       return this.state < 0;
     }
-    Io() {
+    startEnter() {
       if (this.state != 1) {
         this.state = 1;
         this.time = 0;
       }
     }
-    Jo() {
+    startExit() {
       if (this.state != -1) {
         this.state = -1;
         this.time = 0;
@@ -312,7 +312,7 @@
     }
     pop() {
       super.pop();
-      this.Cb.j.L(false);
+      this.beeAnims.container.setVisible(false);
     }
     update(a) {
       super.update(a);
@@ -330,17 +330,17 @@
         this.alpha = 1 - a;
         if (a == 1) {
           this.state = 0;
-          this.de.uD();
+          this.switcher.freeBeeSlot();
         }
       }
     }
-    M() {
-      super.M();
-      if (this.Cb != null) {
-        this.Cb.j.setX(this.x);
-        this.Cb.j.setY(this.y);
+    draw() {
+      super.draw();
+      if (this.beeAnims != null) {
+        this.beeAnims.container.setX(this.x);
+        this.beeAnims.container.setY(this.y);
       }
-      this.j.W(this.alpha);
+      this.container.setAlpha(this.alpha);
     }
   }
   Bee.i = true;
@@ -348,138 +348,152 @@
   Object.assign(Bee.prototype, {
     l: Bee
   });
+  // OmNom - the player character that eats the candy. `state` is a
+  // small animation FSM (0=idle, 1/2=look-left/right, 3=wakeStart,
+  // 4=settle, 5=surprised, 6=eat, 7/8=mouthOpen/Close, 9=chewLoop,
+  // 10=idleCalm, 11=snooze, 12=transform, 13=nightIdle loop,
+  // 14=grabBy loop). `playAnim()` drives it and feeds the resource
+  // back-channel (Fu/iM/ml atlases) for the right sprite sheet.
+  // `ate` latches true once the candy is eaten (final state).
+  // `transformed` latches true once the candy-into-OmNom morph fires
+  // (the IQ "field" sound). on night levels (`controller.nightMode`)
+  // OmNom is asleep until lit by the player: zSprite / zSprite2 are
+  // the floating ZZZ glyphs that fade out, and snoreTimer ticks down
+  // to play a random snore SFX every 4s while unlit. `blinkCountdown`
+  // randomises how many idle cycles happen before the eye blink.
+  // shadowSprite is the static drop-shadow under the character.
   class OmNom extends Entity {
     constructor(a, b) {
       super();
-      this.S = a;
-      this.Xa = 0;
-      this.Cf = false;
+      this.controller = a;
+      this.state = 0;
+      this.ate = false;
       this.x = b.x * WorldScale.scale;
       this.y = b.y * WorldScale.scale;
-      this.BB = X.xh(5, 20);
-      this.ru = 3;
-      this.Xz = false;
+      this.blinkCountdown = X.randInt(5, 20);
+      this.idlesUntilBlink = 3;
+      this.snoring = false;
       this.time = 0;
-      b = a.ma(1);
-      this.Cp = new Sprite(null, Resources.wq);
-      this.Cp.center();
-      this.Cp.setUniformScale(0.4);
-      b.P(this.Cp.u);
-      this.Ln = new Container();
-      this.Ln.setUniformScale(0.4);
-      this.char = new Sprite(this.Ln, Resources.Fu, Keys.IF);
+      b = a.layer(1);
+      this.shadowSprite = new Sprite(null, Resources.wq);
+      this.shadowSprite.center();
+      this.shadowSprite.setUniformScale(0.4);
+      b.appendChild(this.shadowSprite.node);
+      this.charNode = new Container();
+      this.charNode.setUniformScale(0.4);
+      this.char = new Sprite(this.charNode, Resources.Fu, Keys.IF);
       this.char.center();
-      b.P(this.Ln.u);
+      b.appendChild(this.charNode.node);
       this.blink = new Sprite(null, Resources.Fu, Keys.EF);
       this.blink.center();
       this.blink.setUniformScale(0.4);
-      this.blink.L(false);
-      b.P(this.blink.u);
-      var c = Rect.Zb(OmNom.jK);
+      this.blink.setVisible(false);
+      b.appendChild(this.blink.node);
+      var c = Rect.clone(OmNom.defaultBounds);
       c.x -= 128;
       c.y -= 128;
       let d = c.x;
       let e = c.y;
-      c = this.ea = new Bounds(d, e, d + c.w, e + c.J);
-      this.sa = new Bounds(c.A, c.D, c.B, c.G);
-      this.pe();
-      this.Cp.setX(this.x + Math.round(vLN023 * 0.4));
-      this.Cp.setY(this.y + Math.round(vLN024 * 0.4));
-      if (a.$c) {
-        this.ff = new Sprite(null, Resources.ml);
-        this.ff.setUniformScale(0.4);
-        this.ff.pa().loop(OM_NOM_ZZZ_ANIM);
-        this.ff.center();
-        this.ff.setX(this.x);
-        this.ff.setY(this.y);
-        b.P(this.ff.u);
-        this.gf = new Sprite(null, Resources.ml);
-        this.gf.setUniformScale(0.4);
-        this.gf.pa().loop(OM_NOM_ZZZ_ANIM_REV);
-        this.gf.center();
-        this.gf.setX(this.x);
-        this.gf.setY(this.y);
-        b.P(this.gf.u);
+      c = this.localBounds = new Bounds(d, e, d + c.w, e + c.h);
+      this.bounds = new Bounds(c.left, c.top, c.right, c.bottom);
+      this.updateBounds();
+      this.shadowSprite.setX(this.x + Math.round(vLN023 * 0.4));
+      this.shadowSprite.setY(this.y + Math.round(vLN024 * 0.4));
+      if (a.nightMode) {
+        this.zSprite = new Sprite(null, Resources.ml);
+        this.zSprite.setUniformScale(0.4);
+        this.zSprite.anim().loop(OM_NOM_ZZZ_ANIM);
+        this.zSprite.center();
+        this.zSprite.setX(this.x);
+        this.zSprite.setY(this.y);
+        b.appendChild(this.zSprite.node);
+        this.zSprite2 = new Sprite(null, Resources.ml);
+        this.zSprite2.setUniformScale(0.4);
+        this.zSprite2.anim().loop(OM_NOM_ZZZ_ANIM_REV);
+        this.zSprite2.center();
+        this.zSprite2.setX(this.x);
+        this.zSprite2.setY(this.y);
+        b.appendChild(this.zSprite2.node);
       }
-      this.fe = null;
-      this.Om = 0;
-      this.Ss = -1;
-      this.Fc(0);
+      this.lit = null;
+      this.snoreTimer = 0;
+      this.snoreSfxId = -1;
+      this.playAnim(0);
     }
-    JQ() {
-      if (!this.Cf && !this.sr) {
-        this.Fc(10);
-      }
-    }
-    KQ() {
-      if (!this.Cf && this.In()) {
-        this.Fc(1);
+    playIdleCalm() {
+      if (!this.ate && !this.transformed) {
+        this.playAnim(10);
       }
     }
-    LQ() {
-      if (!this.Cf && this.In()) {
-        this.Fc(2);
+    playLookLeft() {
+      if (!this.ate && this.isAwake()) {
+        this.playAnim(1);
       }
     }
-    NQ() {
-      if (!this.Cf && this.In()) {
-        this.Fc(7);
+    playLookRight() {
+      if (!this.ate && this.isAwake()) {
+        this.playAnim(2);
       }
     }
-    MQ() {
-      if (!this.Cf && this.In()) {
-        this.Fc(8);
+    playMouthOpen() {
+      if (!this.ate && this.isAwake()) {
+        this.playAnim(7);
       }
     }
-    EQ() {
-      if (!this.Cf) {
-        this.Fc(5);
-        this.DE();
+    playMouthClose() {
+      if (!this.ate && this.isAwake()) {
+        this.playAnim(8);
       }
     }
-    PQ() {
-      if (!this.Cf) {
-        this.Fc(6);
-        this.DE();
-        this.Cf = true;
+    playSurprised() {
+      if (!this.ate) {
+        this.playAnim(5);
+        this.stopSnore();
       }
     }
-    YC() {
-      if (!this.Cf && this.In()) {
-        this.Fc(3);
+    playEat() {
+      if (!this.ate) {
+        this.playAnim(6);
+        this.stopSnore();
+        this.ate = true;
       }
     }
-    $C() {
-      if (!this.Cf) {
-        this.Fc(11);
+    playWakeStart() {
+      if (!this.ate && this.isAwake()) {
+        this.playAnim(3);
       }
     }
-    IQ() {
-      this.Fc(12);
-      this.sr = true;
+    playSnooze() {
+      if (!this.ate) {
+        this.playAnim(11);
+      }
+    }
+    playTransform() {
+      this.playAnim(12);
+      this.transformed = true;
       SoundFx.play(SoundFx.sp_field);
-      if (this.S.$c) {
-        this.ff.L(false);
-        this.gf.L(false);
+      if (this.controller.nightMode) {
+        this.zSprite.setVisible(false);
+        this.zSprite2.setVisible(false);
       }
     }
-    HQ() {
-      if (this.Xa != 12) {
-        this.Fc(13);
+    playNight() {
+      if (this.state != 12) {
+        this.playAnim(13);
       }
     }
-    GQ() {
-      switch (this.Xa) {
+    playGrabBy() {
+      switch (this.state) {
         case 7:
         case 8:
         case 14:
           break;
         default:
-          this.Fc(14);
+          this.playAnim(14);
       }
     }
-    IO() {
-      switch (this.Xa) {
+    isCalm() {
+      switch (this.state) {
         case 0:
         case 1:
         case 2:
@@ -488,48 +502,48 @@
           return false;
       }
     }
-    Lm(a) {
-      if (this.sr) {
-        this.fe = true;
-      } else if (this.fe != a) {
-        let b = this.fe == null;
-        this.fe = a;
+    setLit(a) {
+      if (this.transformed) {
+        this.lit = true;
+      } else if (this.lit != a) {
+        let b = this.lit == null;
+        this.lit = a;
         if (b) {
-          this.$C();
+          this.playSnooze();
         } else if (a) {
-          this.YC();
-          this.ff.pa().stop();
-          this.ff.L(false);
-          this.gf.pa().stop();
-          this.gf.L(false);
-          SoundFx.stop(this.Ss);
+          this.playWakeStart();
+          this.zSprite.anim().stop();
+          this.zSprite.setVisible(false);
+          this.zSprite2.anim().stop();
+          this.zSprite2.setVisible(false);
+          SoundFx.stop(this.snoreSfxId);
           this.char.setScaleY(1);
-        } else if (!this.Cf) {
-          this.Om = 0;
-          this.$C();
-          this.ff.pa().play(OM_NOM_ZZZ_ANIM);
-          this.ff.L(true);
-          this.gf.pa().play(OM_NOM_ZZZ_ANIM_REV);
-          this.gf.L(true);
+        } else if (!this.ate) {
+          this.snoreTimer = 0;
+          this.playSnooze();
+          this.zSprite.anim().play(OM_NOM_ZZZ_ANIM);
+          this.zSprite.setVisible(true);
+          this.zSprite2.anim().play(OM_NOM_ZZZ_ANIM_REV);
+          this.zSprite2.setVisible(true);
         }
       }
     }
-    In() {
-      if (this.S.$c) {
-        return this.fe;
+    isAwake() {
+      if (this.controller.nightMode) {
+        return this.lit;
       } else {
         return true;
       }
     }
-    DE() {
-      if (this.S.$c) {
-        SoundFx.stop(this.Ss);
-        this.ff.L(false);
-        this.gf.L(false);
-        this.Om = 0;
+    stopSnore() {
+      if (this.controller.nightMode) {
+        SoundFx.stop(this.snoreSfxId);
+        this.zSprite.setVisible(false);
+        this.zSprite2.setVisible(false);
+        this.snoreTimer = 0;
       }
     }
-    Fc(a) {
+    playAnim(a) {
       switch (a) {
         case 3:
         case 4:
@@ -548,7 +562,7 @@
         default:
           b = Resources.Fu;
       }
-      this.char.Uf(b);
+      this.char.setTexture(b);
       switch (a) {
         case 9:
           b = true;
@@ -560,90 +574,90 @@
         default:
           b = false;
       }
-      this.Xa = a;
+      this.state = a;
       if (b) {
-        this.char.pa().loop(OM_NOM_ANIMS[a]);
+        this.char.anim().loop(OM_NOM_ANIMS[a]);
       } else {
-        this.char.pa().play(OM_NOM_ANIMS[a], a == 2 ? 2 : 1).Be(cachedBind(this, this.ZP));
+        this.char.anim().play(OM_NOM_ANIMS[a], a == 2 ? 2 : 1).onProgress(cachedBind(this, this.onAnimDone));
       }
     }
-    ZP() {
+    onAnimDone() {
       let a = this;
-      switch (this.Xa) {
+      switch (this.state) {
         case 0:
-          this.ru--;
-          if (this.ru == 0) {
-            this.blink.L(true);
-            this.blink.pa().play(OM_NOM_BLINK_ANIM).Be(function () {
-              a.blink.L(false);
+          this.idlesUntilBlink--;
+          if (this.idlesUntilBlink == 0) {
+            this.blink.setVisible(true);
+            this.blink.anim().play(OM_NOM_BLINK_ANIM).onProgress(function () {
+              a.blink.setVisible(false);
             });
-            this.ru = 3;
+            this.idlesUntilBlink = 3;
           }
-          if (--this.BB == 0) {
-            if (X.ym()) {
-              this.KQ();
+          if (--this.blinkCountdown == 0) {
+            if (X.bool()) {
+              this.playLookLeft();
             } else {
-              this.LQ();
+              this.playLookRight();
             }
-            this.BB = X.xh(5, 20);
+            this.blinkCountdown = X.randInt(5, 20);
           } else {
-            this.Fc(0);
+            this.playAnim(0);
           }
           break;
         case 1:
         case 2:
         case 3:
         case 4:
-          this.Fc(0);
+          this.playAnim(0);
           break;
         case 6:
-          this.Fc(9);
+          this.playAnim(9);
           break;
         case 8:
-          if (this.sr) {
-            this.Fc(13);
+          if (this.transformed) {
+            this.playAnim(13);
           } else {
-            this.Fc(4);
+            this.playAnim(4);
           }
           break;
         case 10:
-          this.Fc(0);
+          this.playAnim(0);
           break;
         case 11:
-          this.Xz = true;
+          this.snoring = true;
           break;
         case 12:
-          this.Fc(13);
+          this.playAnim(13);
       }
     }
     update(a) {
       super.update(a);
-      this.pe();
-      if (this.S.$c && !this.sr) {
-        if (this.Xz) {
+      this.updateBounds();
+      if (this.controller.nightMode && !this.transformed) {
+        if (this.snoring) {
           let b = remap(Math.sin(this.time * 2), -1, 1, 0.95, 1.05);
           this.char.setOrigin(0, 433);
           this.char.setScaleY(b);
           this.time += a;
         }
-        if (!this.fe) {
-          this.Om += a;
-          if (this.Om > 4) {
-            this.Om = 0;
-            this.Ss = [1041, 1040, 1039][X.xh(0, 2)];
-            SoundFx.play(this.Ss);
+        if (!this.lit) {
+          this.snoreTimer += a;
+          if (this.snoreTimer > 4) {
+            this.snoreTimer = 0;
+            this.snoreSfxId = [1041, 1040, 1039][X.randInt(0, 2)];
+            SoundFx.play(this.snoreSfxId);
           }
         }
       }
     }
-    M() {
-      super.M();
-      this.sa.A = this.x + this.ea.A;
-      this.sa.D = this.y + this.ea.D;
-      this.sa.B = this.x + this.ea.B;
-      this.sa.G = this.y + this.ea.G;
-      this.Ln.setX(this.x);
-      this.Ln.setY(this.y);
+    draw() {
+      super.draw();
+      this.bounds.left = this.x + this.localBounds.left;
+      this.bounds.top = this.y + this.localBounds.top;
+      this.bounds.right = this.x + this.localBounds.right;
+      this.bounds.bottom = this.y + this.localBounds.bottom;
+      this.charNode.setX(this.x);
+      this.charNode.setY(this.y);
       this.blink.setX(this.x);
       this.blink.setY(this.y);
     }

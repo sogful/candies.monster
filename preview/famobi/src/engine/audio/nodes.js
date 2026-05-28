@@ -1,51 +1,61 @@
+  // AudioGraphNode - thin wrapper over a Web Audio node so the rest of
+  // the engine can manage a node graph without touching the raw API.
+  // `n` is the underlying AudioNode, `type` is a small enum used by
+  // get() to walk the chain to a specific node type (e.g. find the
+  // gain stage from a source). `inputs`/`output` track wiring.
   class AudioGraphNode {
-    constructor(a, b) {
-      this.n = a;
-      this.type = b;
+    constructor(audioNode, typeId) {
+      this.audioNode = audioNode;
+      this.type = typeId;
       this.inputs = [];
       this.output = null;
     }
-    get(a) {
-      let b = this;
-      while (b != null) {
-        if (b.type == a) {
-          return b;
+    // get - walk the output chain until a node of `type` is found.
+    get(type) {
+      let cursor = this;
+      while (cursor != null) {
+        if (cursor.type == type) {
+          return cursor;
         }
-        b = b.output;
+        cursor = cursor.output;
       }
       return null;
     }
     free() {
-      this.n = this.output = this.inputs = null;
+      this.audioNode = this.output = this.inputs = null;
     }
-    connect(a) {
-      this.output = a;
-      a.inputs.push(this);
-      this.n.disconnect();
-      this.n.connect(a.n);
+    connect(target) {
+      this.output = target;
+      target.inputs.push(this);
+      this.audioNode.disconnect();
+      this.audioNode.connect(target.audioNode);
     }
-    append(a) {
+    // append - splice `node` in between `this` and `this.output`.
+    append(node) {
       Std.remove(this.output.inputs, this);
-      a.connect(this.output);
-      this.connect(a);
+      node.connect(this.output);
+      this.connect(node);
     }
   }
   AudioGraphNode.i = true;
   Object.assign(AudioGraphNode.prototype, {
     l: AudioGraphNode
   });
+
+  // AudioGainNode - type 2; wraps GainNode. setValue is instant, xm
+  // ramps to a target over a duration.
   class AudioGainNode extends AudioGraphNode {
     constructor() {
       super(Audio.context.createGain(), 2);
     }
-    Gs(a) {
-      this.n.gain.value = a;
+    setValue(value) {
+      this.audioNode.gain.value = value;
     }
-    xm(a, b) {
-      let c = Audio.context.currentTime;
-      let d = this.n;
-      d.gain.cancelScheduledValues(0);
-      d.gain.linearRampToValueAtTime(a, c + b);
+    rampTo(target, duration) {
+      let now = Audio.context.currentTime;
+      let node = this.audioNode;
+      node.gain.cancelScheduledValues(0);
+      node.gain.linearRampToValueAtTime(target, now + duration);
     }
   }
   AudioGainNode.i = true;
@@ -53,14 +63,17 @@
   Object.assign(AudioGainNode.prototype, {
     l: AudioGainNode
   });
+
+  // AudioPannerNode - type 1; wraps StereoPannerNode. setPan smoothly
+  // targets a pan value with a 5ms exponential ramp.
   class AudioPannerNode extends AudioGraphNode {
     constructor() {
       super(Audio.context.createStereoPanner(), 1);
     }
-    pS(a) {
-      let b = this.n;
-      b.pan.cancelScheduledValues(0);
-      b.pan.setTargetAtTime(a, Audio.context.currentTime, 0.005);
+    setPan(value) {
+      let node = this.audioNode;
+      node.pan.cancelScheduledValues(0);
+      node.pan.setTargetAtTime(value, Audio.context.currentTime, 0.005);
     }
   }
   AudioPannerNode.i = true;
@@ -69,6 +82,7 @@
     l: AudioPannerNode
   });
 
+  // AudioDestinationNode - type 8; wraps the shared context destination.
   class AudioDestinationNode extends AudioGraphNode {
     constructor() {
       super(Audio.context.destination, 8);
@@ -79,26 +93,28 @@
   Object.assign(AudioDestinationNode.prototype, {
     l: AudioDestinationNode
   });
+
+  // AudioBufferSourceNode - type 0; wraps a one-shot BufferSourceNode.
+  // Web Audio source nodes are single-use, so callers free() after the
+  // onended callback fires.
   class AudioBufferSourceNode extends AudioGraphNode {
     constructor() {
       super(Audio.context.createBufferSource(), 0);
     }
     free() {
-      this.n.onended = null;
+      this.audioNode.onended = null;
       super.free();
     }
-    play(a, b, c, d) {
-      let e = this.n;
-      e.buffer = a;
-      e.loop = b;
-      e.start(0, c);
-      e.onended = d;
+    play(buffer, loop, offsetSeconds, onended) {
+      let node = this.audioNode;
+      node.buffer = buffer;
+      node.loop = loop;
+      node.start(0, offsetSeconds);
+      node.onended = onended;
     }
-    stop(a) {
-      if (a == null) {
-        a = 0;
-      }
-      this.n.stop(a);
+    stop(when) {
+      if (when == null) when = 0;
+      this.audioNode.stop(when);
     }
   }
   AudioBufferSourceNode.i = true;

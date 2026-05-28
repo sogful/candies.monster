@@ -1,8 +1,8 @@
   class SaveBase {
     constructor(a) {
       this.storage = a;
-      this.CR = this.RB = false;
-      this.version = this.ho();
+      this.saveFailed = this.saving = false;
+      this.version = this.currentVersion();
       this.reset();
     }
     load(a) {
@@ -12,11 +12,11 @@
         try {
           if (c != null) {
             b.parse(c);
-            if (b.version > b.ho()) {
+            if (b.version > b.currentVersion()) {
               throw 4;
             }
-            for (c = false; b.version < b.ho();) {
-              b.Zr(b.version + 1);
+            for (c = false; b.version < b.currentVersion();) {
+              b.migrate(b.version + 1);
               b.version++;
               c = true;
             }
@@ -39,11 +39,11 @@
       });
     }
     save(a) {
-      this.RB = true;
+      this.saving = true;
       let b = this;
       this.storage.save(this.stringify(), function (c) {
-        b.RB = false;
-        b.CR = c == 0;
+        b.saving = false;
+        b.saveFailed = c == 0;
         a();
       });
     }
@@ -59,131 +59,133 @@
       this.reset();
     }
     reset() {
-      this.version = this.ho();
-      Save.Ec = true;
-      Save.Bd = true;
-      Save.Yi(null);
-      Save.me = WebApplication.xmasMode ? 3 : 0;
+      this.version = this.currentVersion();
+      Save.musicOn = true;
+      Save.sfxOn = true;
+      Save.setLanguage(null);
+      Save.skin = WebApplication.xmasMode ? 3 : 0;
       Save.hint = 1;
-      Save.Dl = false;
-      Save.wg = [];
-      Save.ig = [];
-      Save.Df = [];
+      Save.gameWon = false;
+      Save.levelStars = [];
+      Save.blueStars = [];
+      Save.cleared = [];
       Save.locked = [];
-      Save.Ho = false;
-      Save.Dp = false;
-      Save.Mi = [];
-      Save.kk = 0;
+      Save.magnetUsed = false;
+      Save.telekinesisUsed = false;
+      Save.pictures = [];
+      Save.pictureBadgeCount = 0;
       let a = 1;
       while (a <= 17) {
-        this.FB(a, a != 1 && a != 6 && a != 11);
+        this.initBox(a, a != 1 && a != 6 && a != 11);
         ++a;
       }
     }
     parse(a) {
       a = JSON.parse(a);
       this.version = a.v;
-      Save.Ec = a.music;
-      Save.Bd = a.sound;
-      Save.Yi(a.language);
-      Save.wg = a.levelStars;
-      Save.Df = a.levelCleared;
+      Save.musicOn = a.music;
+      Save.sfxOn = a.sound;
+      Save.setLanguage(a.language);
+      Save.levelStars = a.levelStars;
+      Save.cleared = a.levelCleared;
       Save.locked = a.locked;
       if (this.version >= 2) {
         Save.hint = a.hint;
-        Save.me = a.skin;
-        Save.Dl = a.gameWon;
+        Save.skin = a.skin;
+        Save.gameWon = a.gameWon;
       }
-      Save.me = WebApplication.xmasMode ? 3 : Save.me;
+      Save.skin = WebApplication.xmasMode ? 3 : Save.skin;
       if (this.version >= 3) {
-        Save.ig = a.blueStars;
-        Save.Ho = a.magnetUsed;
-        Save.Dp = a.levelCleared;
-        Save.Mi = a.pictures;
-        Save.kk = a.picturesBadgeCounter;
+        Save.blueStars = a.blueStars;
+        Save.magnetUsed = a.magnetUsed;
+        Save.telekinesisUsed = a.levelCleared;
+        Save.pictures = a.pictures;
+        Save.pictureBadgeCount = a.picturesBadgeCounter;
       }
     }
     stringify() {
       let a = {
         v: this.version,
-        music: Save.Ec,
-        sound: Save.Bd,
+        music: Save.musicOn,
+        sound: Save.sfxOn,
         language: Save.language,
-        levelStars: Save.wg,
-        blueStars: Save.ig,
-        levelCleared: Save.Df,
+        levelStars: Save.levelStars,
+        blueStars: Save.blueStars,
+        levelCleared: Save.cleared,
         locked: Save.locked,
         hint: Save.hint,
-        skin: WebApplication.xmasMode ? 0 : Save.me,
-        gameWon: Save.Dl,
-        magnetUsed: Save.Ho,
-        telekinesisUsed: Save.Dp,
-        pictures: Save.Mi,
-        picturesBadgeCounter: Save.kk
+        skin: WebApplication.xmasMode ? 0 : Save.skin,
+        gameWon: Save.gameWon,
+        magnetUsed: Save.magnetUsed,
+        telekinesisUsed: Save.telekinesisUsed,
+        pictures: Save.pictures,
+        picturesBadgeCounter: Save.pictureBadgeCount
       };
       return JSON.stringify(a);
     }
-    Zr(a) {
+    migrate(a) {
       switch (a) {
         case 2:
           Save.hint = 1;
-          Save.me = 0;
-          Save.Dl = false;
+          Save.skin = 0;
+          Save.gameWon = false;
           for (a = 3; a <= 17;) {
-            this.FB(a, a != 6 && a != 11);
+            this.initBox(a, a != 6 && a != 11);
             ++a;
           }
           break;
         case 3:
           for (a = 0; a < 17;) {
-            Save.ig[a] = [];
+            Save.blueStars[a] = [];
             for (var b = 0; b < 25;) {
-              Save.ig[a][b++] = 0;
+              Save.blueStars[a][b++] = 0;
             }
             ++a;
           }
-          Save.Ho = false;
-          Save.Dp = false;
-          Save.Mi = [];
-          Save.kk = 0;
+          Save.magnetUsed = false;
+          Save.telekinesisUsed = false;
+          Save.pictures = [];
+          Save.pictureBadgeCount = 0;
           for (a = 1; a < 22;) {
             var c = a++;
-            b = LevelMath.PA(c);
-            c = LevelMath.rv(c);
-            if (Save.Df[b - 1][c - 1]) {
-              Save.Mi.push("" + b + "-" + c);
-              Save.kk++;
+            b = LevelMath.seasonForBox(c);
+            c = LevelMath.globalIndex(c);
+            if (Save.cleared[b - 1][c - 1]) {
+              Save.pictures.push("" + b + "-" + c);
+              Save.pictureBadgeCount++;
             }
           }
       }
     }
-    ho() {
+    currentVersion() {
       return 3;
     }
-    FB(a, b) {
+    initBox(a, b) {
       if (b == null) {
         b = true;
       }
       --a;
       Save.locked[a] = b;
-      Save.wg[a] = [];
-      Save.Df[a] = [];
+      Save.levelStars[a] = [];
+      Save.cleared[a] = [];
       let c = 0;
       while (c < 25) {
         let d = c++;
-        Save.wg[a][d] = 0;
-        Save.Df[a][d] = false;
+        Save.levelStars[a][d] = 0;
+        Save.cleared[a][d] = false;
       }
       if (!b) {
-        Save.Df[a][0] = true;
+        Save.cleared[a][0] = true;
       }
-      Save.ig[a] = [];
+      Save.blueStars[a] = [];
       for (b = 0; b < 25;) {
-        Save.ig[a][b++] = 0;
+        Save.blueStars[a][b++] = 0;
       }
     }
-    static Yi(a) {
-      if (!Lambda.Ej(Loader.hv(), function (b) {
+    // setLanguage - validate `a` against the loader's available
+    // language list and store it (falling back to "en").
+    static setLanguage(a) {
+      if (!Lambda.exists(Loader.languageList(), function (b) {
         return b == a;
       })) {
         a = "en";
@@ -254,10 +256,10 @@
     }
     parse() {}
     reset() {}
-    ho() {
+    currentVersion() {
       return 1;
     }
-    Zr() {}
+    migrate() {}
   }
   NullSave.i = true;
   NullSave.s = SaveBase;

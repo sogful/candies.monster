@@ -14,8 +14,8 @@
       // Intro video preload removed - the .mp4 files are not shipped, so
       // requesting them at menu init triggers a 404 that stalls the loader.
       // The original line was:
-      //   if (LevelState.Nj() == 0) {
-      //     a.push(this.O.window.bo() > 1 ? Loader.introLandscapeVid : Loader.introPortraitVid);
+      //   if (LevelState.totalStars() == 0) {
+      //     a.push(this.app.window.aspectRatio() > 1 ? Loader.introLandscapeVid : Loader.introPortraitVid);
       //   }
       return a;
     }
@@ -28,102 +28,102 @@
     }
     transitionIn(a, b) {
       if (b == null) {
-        this.fh.W(1 - a);
+        this.fade.setAlpha(1 - a);
       } else {
         super.transitionIn(a, b);
       }
     }
-    Vg() {
-      super.Vg();
-      this.Pc = new Sprite(null, Resources.Sz);
-      this.node.P(this.Pc.u);
+    addBackground() {
+      super.addBackground();
+      this.bgFront = new Sprite(null, Resources.Sz);
+      this.node.appendChild(this.bgFront.node);
     }
-    Nd() {
-      super.Nd();
+    loadTextures() {
+      super.loadTextures();
       let a = WebApplication.xmasMode ? Loader.menuBg2Xmas : Loader.menuBg2;
-      if (Loader.ob(a)) {
+      if (Loader.isLoaded(a)) {
         Resources.Sz = this.createTexture(a);
       }
     }
     init() {
       super.init();
-      this.Vg();
-      this.sj();
-      this.Ke(600, 900);
-      this.Mh = new Sprite(null, Resources.Wa, Keys.rL);
-      this.gh = new Sprite(null, Resources.Wa, Keys.JK);
-      this.node.P(this.Mh.u);
-      this.node.P(this.gh.u);
-      this.we = new Container(null, this.ra);
-      this.we.setX(303);
-      this.we.setY(220);
-      this.we.setUniformScale(0.9);
+      this.addBackground();
+      this.addCursor();
+      this.setSize(600, 900);
+      this.leftSilhouette = new Sprite(null, Resources.Wa, Keys.rL);
+      this.rightSilhouette = new Sprite(null, Resources.Wa, Keys.JK);
+      this.node.appendChild(this.leftSilhouette.node);
+      this.node.appendChild(this.rightSilhouette.node);
+      this.titleContainer = new Container(null, this.layout);
+      this.titleContainer.setX(303);
+      this.titleContainer.setY(220);
+      this.titleContainer.setUniformScale(0.9);
       if (WebApplication.xmasMode) {
-        var a = new Sprite(this.we, Resources.Wa, Keys.pL);
+        var a = new Sprite(this.titleContainer, Resources.Wa, Keys.pL);
         a.setX(-230);
         a.setY(-275);
       }
-      new Sprite(this.we, Resources.Wa, Loader.qv() == "ru" ? Keys.UK : Keys.TK).center();
+      new Sprite(this.titleContainer, Resources.Wa, Loader.getLanguage() == "ru" ? Keys.UK : Keys.TK).center();
       if (WebApplication.xmasMode) {
-        a = new Sprite(this.we, Resources.Wa, Keys.qL);
+        a = new Sprite(this.titleContainer, Resources.Wa, Keys.qL);
         a.setX(-230);
         a.setY(-275);
       }
-      this.I = new Sprite(this.ra, Resources.Wa);
-      this.I.setX(378);
-      this.I.setY(364);
-      this.fF();
-      this.I.center();
-      this.uq = 0;
-      a = LabelledButton.ol(this.yb("PLAY"));
+      this.skinPreview = new Sprite(this.layout, Resources.Wa);
+      this.skinPreview.setX(378);
+      this.skinPreview.setY(364);
+      this.updateSkinPreview();
+      this.skinPreview.center();
+      this.skinCycleTimer = 0;
+      a = LabelledButton.create(this.tr("PLAY"));
       a.setX(65);
       a.setY(500);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
+      this.addChild(a);
       a.focus();
       a = ButtonBase.create(null, Keys.Uk, Keys.Vk, Keys.KK);
       a.setX(309);
       a.setY(617);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
+      this.addChild(a);
       a = new AlbumButton();
       a.setX(129);
       a.setY(617);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
+      this.addChild(a);
       let b = this;
       Audio.once("EContextResumed", function () {
-        if (!b.O.Sa.Dc(WebApplication.menuMusicId)) {
-          b.sm();
+        if (!b.app.audio.isPlaying(WebApplication.menuMusicId)) {
+          b.startMenuMusic();
         }
       });
     }
     start() {
       super.start();
       MenuScene.freshBoot = false;
-      this.sm();
+      this.startMenuMusic();
       this.eD();
-      if (Save.hint == 1 && X.ym() && LevelState.Nj() > 3 && this.time > 3) {
-        this.oa(new HintPointerAnim());
+      if (Save.hint == 1 && X.bool() && LevelState.totalStars() > 3 && this.time > 3) {
+        this.addChild(new HintPointerAnim());
       }
-      this.ia([97, 95, 93, 91, 89][Save.me]);
-      Resources.I = null;
-      this.JD();
+      this.release([97, 95, 93, 91, 89][Save.skin]);
+      Resources.skinAtlas = null;
+      this.playSalute();
       this.resize();
     }
     resize() {
       var a = 0;
-      this.rd.y = 900;
+      this.designSize.y = 900;
       var b = 0.9;
-      var c = this.fa.Se();
+      var c = this.director.aspectRatio();
       if (c > 1) {
         if (c > 2) {
           c = 2;
         }
-        this.rd.y = remap(c, 1, 2, 900, 650);
+        this.designSize.y = remap(c, 1, 2, 900, 650);
         a = remap(c, 1, 2, 0, -80);
         b = remap(c, 1, 2, 0.9, 0.8);
       }
@@ -131,154 +131,154 @@
       this.buttons[1].setY(500 + a);
       this.buttons[2].setY(617 + a);
       this.buttons[3].setY(617 + a);
-      this.we.setUniformScale(b);
+      this.titleContainer.setUniformScale(b);
       if (WebApplication.xmasMode) {
-        this.I.setX(378);
-        this.I.setY(370);
+        this.skinPreview.setX(378);
+        this.skinPreview.setY(370);
         if (c > 1.1) {
           a = remap(c, 1.1, 2, 0, 1);
-          b = this.I;
+          b = this.skinPreview;
           b.setX(b.getX() - a * 10);
-          b = this.I;
+          b = this.skinPreview;
           b.setY(b.getY() - a * 15);
         }
         if (c > 0.6) {
-          a = this.I;
+          a = this.skinPreview;
           a.setX(a.getX() - 8);
         }
       } else {
-        this.I.setX(378);
-        this.I.setY(370);
-        if (Loader.qv() != "ru") {
-          a = this.I;
+        this.skinPreview.setX(378);
+        this.skinPreview.setY(370);
+        if (Loader.getLanguage() != "ru") {
+          a = this.skinPreview;
           a.setX(a.getX() + 3);
-          a = this.I;
+          a = this.skinPreview;
           a.setY(a.getY() + 6);
         }
         if (c > 1.1) {
           a = remap(c, 1.1, 2, 0, 1);
-          b = this.I;
+          b = this.skinPreview;
           b.setX(b.getX() - a * 8);
-          b = this.I;
+          b = this.skinPreview;
           b.setY(b.getY() - a * 7);
         }
       }
       if (WebApplication.xmasMode && c > 0.6) {
-        c = this.we;
-        c.setUniformScale(c.Ra * 0.85);
+        c = this.titleContainer;
+        c.setUniformScale(c.scaleX * 0.85);
       }
-      b = this.fa.dr();
-      c = this.Ea.getWidth() / this.Pc.X.x;
-      this.Pc.setUniformScale(c);
-      this.Pc.setX((b.A + b.B) / 2);
-      c = this.Pc;
-      c.setX(c.getX() - this.Pc.getWidth() / 2);
-      this.Pc.setY(this.Ea.getHeight() - this.Pc.getHeight());
-      if (this.oN) {
-        this.Pc.setY(b.G - b.D - this.Pc.getHeight());
-        c = this.Pc;
-        c.setY(c.getY() + this.fa.Se() * this.Pc.getHeight() * 0.3);
+      b = this.director.viewportRect();
+      c = this.background.getWidth() / this.bgFront.size.x;
+      this.bgFront.setUniformScale(c);
+      this.bgFront.setX((b.left + b.right) / 2);
+      c = this.bgFront;
+      c.setX(c.getX() - this.bgFront.getWidth() / 2);
+      this.bgFront.setY(this.background.getHeight() - this.bgFront.getHeight());
+      if (this.isPortrait) {
+        this.bgFront.setY(b.bottom - b.top - this.bgFront.getHeight());
+        c = this.bgFront;
+        c.setY(c.getY() + this.director.aspectRatio() * this.bgFront.getHeight() * 0.3);
       }
-      c = (b.B - b.A) / 2;
+      c = (b.right - b.left) / 2;
       a = 0.2;
-      var d = this.fa.Se();
+      var d = this.director.aspectRatio();
       if (d > 1) {
         a = 0.2 + (d - 1);
         if (a > 0.3) {
           a = 0.3;
         }
       }
-      a = new Bounds(0, 0, c, (b.G - b.D) * a);
-      b = b.G;
-      let e = a.G - a.D;
-      a.G = b;
-      a.D = b - e;
-      this.Yv = a.hi(1);
+      a = new Bounds(0, 0, c, (b.bottom - b.top) * a);
+      b = b.bottom;
+      let e = a.bottom - a.top;
+      a.bottom = b;
+      a.top = b - e;
+      this.leftButtonsRect = a.fitAspect(1);
       b = d > 1 ? 0.6 : 0.4;
-      d = this.Yv;
-      this.Mh.setUniformScale((d.B - d.A) * b / this.Mh.X.x);
-      d = this.Yv;
-      this.Mh.setX((d.A + d.B) / 2 - this.Mh.getWidth() / 2);
-      this.Mh.setY(this.Yv.G - this.Mh.getHeight() * 1.1);
-      this.Mh.W(0.5);
-      d = a.B - a.A;
-      a.A = c;
-      a.B = c + d;
-      c = this.Zv = a.hi(1);
-      this.gh.setUniformScale((c.B - c.A) * b / this.gh.X.x);
-      c = this.Zv;
-      this.gh.setX((c.A + c.B) / 2 - this.gh.getWidth() / 2);
-      this.gh.setY(this.Zv.G - this.gh.getHeight() * 1.1);
-      this.gh.W(0.5);
+      d = this.leftButtonsRect;
+      this.leftSilhouette.setUniformScale((d.right - d.left) * b / this.leftSilhouette.size.x);
+      d = this.leftButtonsRect;
+      this.leftSilhouette.setX((d.left + d.right) / 2 - this.leftSilhouette.getWidth() / 2);
+      this.leftSilhouette.setY(this.leftButtonsRect.bottom - this.leftSilhouette.getHeight() * 1.1);
+      this.leftSilhouette.setAlpha(0.5);
+      d = a.right - a.left;
+      a.left = c;
+      a.right = c + d;
+      c = this.rightButtonsRect = a.fitAspect(1);
+      this.rightSilhouette.setUniformScale((c.right - c.left) * b / this.rightSilhouette.size.x);
+      c = this.rightButtonsRect;
+      this.rightSilhouette.setX((c.left + c.right) / 2 - this.rightSilhouette.getWidth() / 2);
+      this.rightSilhouette.setY(this.rightButtonsRect.bottom - this.rightSilhouette.getHeight() * 1.1);
+      this.rightSilhouette.setAlpha(0.5);
     }
     update(a) {
       super.update(a);
       this.resize();
-      if (this.$n(HintPointerAnim, this) == null) {
-        this.uq -= a;
-        if (this.uq <= 0 && this.O.hd().Nb(0) && this.I.Ub(this.pointer.pos)) {
-          Save.me = this.VP();
+      if (this.findNode(HintPointerAnim, this) == null) {
+        this.skinCycleTimer -= a;
+        if (this.skinCycleTimer <= 0 && this.app.pointer().justPressed(0) && this.skinPreview.hitTest(this.pointer.pos)) {
+          Save.skin = this.nextSkinIndex();
           Save.hint = 0;
-          this.fF();
-          this.fC();
+          this.updateSkinPreview();
+          this.animateSkinPreview();
           SoundFx.play(SoundFx.button);
           Save.flush();
-          this.uq = 0.25;
+          this.skinCycleTimer = 0.25;
         }
       }
     }
     render(a) {
       super.render(a);
     }
-    Pd() {
-      if (this.O.lh().Nb(461)) {
+    handleInput() {
+      if (this.app.keyboard().justPressed(461)) {
         try {
           PlatformBack.back();
         } catch (a) {}
       }
-      if (this.hb(1)) {
+      if (this.consumeClick(1)) {
         this.play();
       }
-      if (this.hb(2)) {
-        this.qE();
+      if (this.consumeClick(2)) {
+        this.gotoOptions();
       }
-      if (this.hb(3)) {
-        this.vp();
+      if (this.consumeClick(3)) {
+        this.gotoPictures();
       }
     }
     play() {
-      if (LevelState.Nj() == 0) {
-        if (this.Nm()) {
-          this.$(IntroVideoScene);
+      if (LevelState.totalStars() == 0) {
+        if (this.canPlayIntro()) {
+          this.push(IntroVideoScene);
         } else {
-          this.$(LevelScene);
+          this.push(LevelScene);
         }
       } else {
-        this.$(SelectSeasonScene);
+        this.push(SelectSeasonScene);
       }
     }
-    Nm() {
-      return !this.O.SB();
+    canPlayIntro() {
+      return !this.app.isWebView();
     }
-    qE() {
-      this.$(OptionsScene);
+    gotoOptions() {
+      this.push(OptionsScene);
     }
-    vp() {
-      this.$(PicturesScene);
+    gotoPictures() {
+      this.push(PicturesScene);
     }
-    fF() {
-      this.I.Fb(Keys.jj(Keys.IK, Save.me));
-      switch (Save.me) {
+    updateSkinPreview() {
+      this.skinPreview.setFrame(Keys.indexed(Keys.IK, Save.skin));
+      switch (Save.skin) {
         case 0:
         case 1:
-          this.I.Es();
+          this.skinPreview.moveToBottom();
           break;
         case 2:
-          this.I.Jm();
+          this.skinPreview.moveToTop();
       }
     }
-    VP() {
-      let a = Save.me;
+    nextSkinIndex() {
+      let a = Save.skin;
       if (WebApplication.xmasMode) {
         switch (a) {
           case 3:
@@ -301,18 +301,18 @@
       }
       return a;
     }
-    fC() {
-      this.I.setUniformScale(0.95);
-      this.I.tween().IS();
-      this.I.tween().scale(1, 1, Easing.elasticOut(0.1, 0.5));
+    animateSkinPreview() {
+      this.skinPreview.setUniformScale(0.95);
+      this.skinPreview.tween().stopAll();
+      this.skinPreview.tween().scale(1, 1, Easing.elasticOut(0.1, 0.5));
     }
     eD() {
-      if (Save.wg[0][0] == 0) {
-        if (this.Nm() && WebApplication.ds) {
-          this.O.Xl(IntroVideoScene);
+      if (Save.levelStars[0][0] == 0) {
+        if (this.canPlayIntro() && WebApplication.assetsDownloaded) {
+          this.app.preloadAssets(IntroVideoScene);
         }
       } else {
-        this.O.Xl(SelectSeasonScene);
+        this.app.preloadAssets(SelectSeasonScene);
       }
     }
     getName() {
@@ -331,8 +331,8 @@
     init() {
       super.init();
       if (!SDK.hasFeature("credits")) {
-        this.Mh.L(false);
-        this.gh.L(false);
+        this.Mh.setVisible(false);
+        this.gh.setVisible(false);
       }
     }
     start() {
@@ -345,38 +345,38 @@
     play() {
       let a = this;
       SDK.showInterstitialAd("button:main:start", function () {
-        if (LevelState.Nj() == 0) {
-          if (a.Nm()) {
-            a.$(CTRCIntroVideoScene);
+        if (LevelState.totalStars() == 0) {
+          if (a.canPlayIntro()) {
+            a.push(CTRCIntroVideoScene);
           } else {
             let b = CTRCLevelScene;
             SDK.trackLevelStart(currentLevelId(), function () {
-              a.$(b);
+              a.push(b);
             });
           }
         } else {
-          a.$(CTRCSelectSeasonScene);
+          a.push(CTRCSelectSeasonScene);
         }
       });
     }
-    qE() {
-      this.$(CTRCOptionsScene);
+    gotoOptions() {
+      this.push(CTRCOptionsScene);
     }
     eD() {
-      if (Save.wg[0][0] == 0) {
-        if (this.Nm() && WebApplication.ds) {
-          this.O.Xl(CTRCIntroVideoScene);
+      if (Save.levelStars[0][0] == 0) {
+        if (this.canPlayIntro() && WebApplication.assetsDownloaded) {
+          this.app.preloadAssets(CTRCIntroVideoScene);
         }
       } else {
-        this.O.Xl(CTRCSelectSeasonScene);
+        this.app.preloadAssets(CTRCSelectSeasonScene);
       }
     }
-    vp() {
-      this.$(CTRCPicturesScene);
+    gotoPictures() {
+      this.push(CTRCPicturesScene);
     }
-    Nm() {
+    canPlayIntro() {
       if (SDK.hasFeature("intro")) {
-        return super.Nm();
+        return super.canPlayIntro();
       } else {
         return false;
       }
@@ -399,156 +399,156 @@
     }
     init() {
       super.init();
-      this.Vg();
-      this.sj();
-      this.Ke(600, 900);
-      this.$k();
+      this.addBackground();
+      this.addCursor();
+      this.setSize(600, 900);
+      this.addBackButton();
       var a = ButtonBase.create(null, Keys.Rt, Keys.St, Keys.mL);
       a.setX(65);
       a.setY(303);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
+      this.addChild(a);
       a = ButtonBase.create(null, Keys.Rt, Keys.St, Keys.$K);
       a.setX(311.5);
       a.setY(303);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
-      this.x = [];
-      this.x[1] = new Sprite(this.ra, Resources.Wa, Keys.pz);
-      this.x[1].setX(65);
-      this.x[1].setY(303);
-      this.x[1].L(false);
-      this.x[2] = new Sprite(this.ra, Resources.Wa, Keys.pz);
-      this.x[2].setX(311.5);
-      this.x[2].setY(303);
-      this.x[2].L(false);
-      this.et(1, Save.Bd);
-      this.et(2, Save.Ec);
-      a = LabelledButton.ol(this.yb("LANGUAGE"));
+      this.addChild(a);
+      this.checks = [];
+      this.checks[1] = new Sprite(this.layout, Resources.Wa, Keys.pz);
+      this.checks[1].setX(65);
+      this.checks[1].setY(303);
+      this.checks[1].setVisible(false);
+      this.checks[2] = new Sprite(this.layout, Resources.Wa, Keys.pz);
+      this.checks[2].setX(311.5);
+      this.checks[2].setY(303);
+      this.checks[2].setVisible(false);
+      this.setToggle(1, Save.sfxOn);
+      this.setToggle(2, Save.musicOn);
+      a = LabelledButton.create(this.tr("LANGUAGE"));
       a.setX(65);
       a.setY(420);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
+      this.addChild(a);
       a.focus();
-      a = LabelledButton.ol(this.yb("RESET"));
+      a = LabelledButton.create(this.tr("RESET"));
       a.setX(65);
       a.setY(537);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
+      this.addChild(a);
     }
     start() {
       super.start();
-      this.sm();
-      this.Cq = Save.language;
-      this.Vv = LANGUAGES.indexOf(this.Cq);
+      this.startMenuMusic();
+      this.savedLang = Save.language;
+      this.langIdx = LANGUAGES.indexOf(this.savedLang);
     }
     layout() {
-      let a = this.fa.Se();
+      let a = this.director.aspectRatio();
       let b = 0;
-      this.rd.y = 900;
+      this.designSize.y = 900;
       if (a > 1.25) {
-        this.rd.y = 650;
+        this.designSize.y = 650;
         b = 1 / a * -350;
-        if (this.O.jd) {
+        if (this.app.isWebOS) {
           b *= 2;
         }
       }
       super.layout();
-      this.ra.setY(this.ih.D + b);
+      this.layout.setY(this.viewportBounds.top + b);
     }
-    Oc() {
-      super.Oc();
-      if (this.Cq != Save.language) {
-        this.O.V.ia(Resources.ki);
-        Resources.bm[Loader.fontImg] = null;
+    onStop() {
+      super.onStop();
+      if (this.savedLang != Save.language) {
+        this.app.renderer.release(Resources.ki);
+        Resources.textureCache[Loader.fontImg] = null;
         Resources.ki = this.createTexture(Loader.fontImg);
-        let a = Resources.ov(Save.language, Save.language);
+        let a = Resources.langIndex(Save.language, Save.language);
         Resources.ic = Resources.ki.children[a];
         Resources.ji = Resources.ki.children[a + 1];
-        this.O.OM();
+        this.app.freeReleasedImages();
       }
     }
-    Pd() {
-      if (this.hb(0)) {
+    handleInput() {
+      if (this.consumeClick(0)) {
         Save.flush();
-        this.Vb();
+        this.saveAndBack();
       }
-      if (this.hb(1)) {
-        this.Mk();
+      if (this.consumeClick(1)) {
+        this.toggleSfx();
       }
-      if (this.hb(2)) {
-        this.Lk();
+      if (this.consumeClick(2)) {
+        this.toggleMusic();
       }
-      if (this.hb(3)) {
-        var a = this.Vv + 1;
+      if (this.consumeClick(3)) {
+        var a = this.langIdx + 1;
         let b = LANGUAGES.length;
         a %= b;
         if (a < 0) {
           a += b;
         }
-        this.Vv = a;
-        Save.Yi(LANGUAGES[this.Vv]);
-        Loader.Wi(Save.language);
-        a = Resources.ov(this.Cq, Save.language);
+        this.langIdx = a;
+        Save.setLanguage(LANGUAGES[this.langIdx]);
+        Loader.setLanguage(Save.language);
+        a = Resources.langIndex(this.savedLang, Save.language);
         Resources.ic = Resources.ki.children[a];
         Resources.ji = Resources.ki.children[a + 1];
-        this.buttons[3].iF();
-        this.buttons[4].iF();
-        this.buttons[3].Ad(false);
+        this.buttons[3].refreshFont();
+        this.buttons[4].refreshFont();
+        this.buttons[3].setSelected(false);
         this.buttons[3].ke = 0;
-        this.buttons[3].WD(this.yb("LANGUAGE"));
-        this.buttons[4].WD(this.yb("RESET"));
+        this.buttons[3].setLabel(this.tr("LANGUAGE"));
+        this.buttons[4].setLabel(this.tr("RESET"));
       }
-      if (this.hb(4)) {
-        this.rE();
+      if (this.consumeClick(4)) {
+        this.resetScene();
       }
     }
     $(a) {
-      if (this.Cq != Save.language) {
-        Loader.ps(Loader.fontImg);
-        Loader.ps(Loader.fontDat);
+      if (this.savedLang != Save.language) {
+        Loader.purge(Loader.fontImg);
+        Loader.purge(Loader.fontDat);
       }
-      super.$(a);
+      super.push(a);
     }
-    rE() {
-      this.$(ResetScene);
+    resetScene() {
+      this.push(ResetScene);
     }
-    Mk() {
-      Save.Bd = !Save.Bd;
-      this.et(1, Save.Bd);
-      this.buttons[1].Ad(false);
+    toggleSfx() {
+      Save.sfxOn = !Save.sfxOn;
+      this.setToggle(1, Save.sfxOn);
+      this.buttons[1].setSelected(false);
       this.buttons[1].ke = 0;
       Save.flush();
     }
-    Lk() {
-      Save.Ec = !Save.Ec;
-      if (Save.Ec) {
-        this.O.Sa.Sf(1);
+    toggleMusic() {
+      Save.musicOn = !Save.musicOn;
+      if (Save.musicOn) {
+        this.app.audio.setMusicVolume(1);
       } else {
-        this.O.Sa.Sf(0);
+        this.app.audio.setMusicVolume(0);
       }
-      this.et(2, Save.Ec);
-      this.buttons[2].Ad(false);
+      this.setToggle(2, Save.musicOn);
+      this.buttons[2].setSelected(false);
       this.buttons[2].ke = 0;
       Save.flush();
     }
-    Vb() {
-      this.$(MenuScene);
+    saveAndBack() {
+      this.push(MenuScene);
     }
-    et(a, b) {
+    setToggle(a, b) {
       let c = this.buttons[a];
       let d = c.icon;
       if (b) {
-        d.pp(null);
+        d.setColorTransform(null);
       } else {
-        d.pp(new ColorTransform().Vw(-0.5));
+        d.setColorTransform(new ColorTransform().brightness(-0.5));
       }
-      c.icon.W(b ? 1 : 0.5);
-      this.x[a].L(!b);
+      c.icon.setAlpha(b ? 1 : 0.5);
+      this.checks[a].setVisible(!b);
     }
     getName() {
       return "OptionsScene";
@@ -566,28 +566,28 @@
     init() {
       super.init();
       if (SDK.hasFeature("external_mute")) {
-        this.buttons[1].L(false);
-        this.buttons[2].L(false);
+        this.buttons[1].setVisible(false);
+        this.buttons[2].setVisible(false);
       }
       if (SDK.hasFeature("force_english")) {
-        this.buttons[3].L(false);
-        let a = this.buttons[4].j;
+        this.buttons[3].setVisible(false);
+        let a = this.buttons[4].container;
         a.setY(a.getY() - 117);
       }
     }
     Vb() {
-      this.$(CTRCMenuScene);
+      this.push(CTRCMenuScene);
     }
     rE() {
-      this.$(CTRCResetScene);
+      this.push(CTRCResetScene);
     }
-    Mk() {
-      super.Mk();
-      SDK.trackVolumeChange(Save.Ec ? 1 : 0, Save.Bd ? 1 : 0);
+    toggleSfx() {
+      super.toggleSfx();
+      SDK.trackVolumeChange(Save.musicOn ? 1 : 0, Save.sfxOn ? 1 : 0);
     }
-    Lk() {
-      super.Lk();
-      SDK.trackVolumeChange(Save.Ec ? 1 : 0, Save.Bd ? 1 : 0);
+    toggleMusic() {
+      super.toggleMusic();
+      SDK.trackVolumeChange(Save.musicOn ? 1 : 0, Save.sfxOn ? 1 : 0);
     }
     getName() {
       return "CTRCOptionsScene";
@@ -607,55 +607,55 @@
     }
     init() {
       super.init();
-      this.Vg();
-      this.sj();
-      this.Ke(600, 900);
-      this.$k();
-      var a = new TextNode(this.ra, Resources.ic);
+      this.addBackground();
+      this.addCursor();
+      this.setSize(600, 900);
+      this.addBackButton();
+      var a = new TextNode(this.layout, Resources.ic);
       a.setX(20);
       a.setY(100);
       a.setFontSize(50);
-      a.Tf(true);
+      a.setMultiline(true);
       a.setAlign(0);
       a.setBoxSize(560, 200);
-      a.setText(this.yb("RESET_TEXT"));
-      a = new TextNode(this.ra, Resources.ji);
-      a.setText(this.yb("RESET_HOLD_TEXT"));
+      a.setText(this.tr("RESET_TEXT"));
+      a = new TextNode(this.layout, Resources.ji);
+      a.setText(this.tr("RESET_HOLD_TEXT"));
       a.setFontSize(40);
-      a.Tf(true);
+      a.setMultiline(true);
       a.setAlign(0);
       a.setBoxSize(560, 100);
       a.setX(20);
       a.setY(225);
-      a = LabelledButton.ol(this.yb("YES"));
+      a = LabelledButton.create(this.tr("YES"));
       a.setX(65);
       a.setY(383);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
+      this.addChild(a);
       a.focus();
-      a = LabelledButton.ol(this.yb("NO"));
+      a = LabelledButton.create(this.tr("NO"));
       a.setX(65);
       a.setY(500);
-      this.ra.appendChild(a.j);
+      this.layout.appendChild(a.container);
       this.buttons.push(a);
-      this.oa(a);
+      this.addChild(a);
       this.blink = this.state = 0;
     }
     layout() {
-      let a = this.fa.Se();
+      let a = this.director.aspectRatio();
       let b = 0;
-      this.rd.y = 900;
+      this.designSize.y = 900;
       if (a > 1.25) {
-        this.rd.y = 650;
+        this.designSize.y = 650;
         b = 1 / a * -100;
       }
       super.layout();
-      this.ra.setY(this.ih.D + b);
+      this.layout.setY(this.viewportBounds.top + b);
     }
     update(a) {
       super.update(a);
-      this.O.lh();
+      this.app.keyboard();
       if (this.state == 2) {
         if (!(this.time < 0.1)) {
           this.buttons[1].$w((this.blink & 1) == 0);
@@ -663,10 +663,10 @@
           this.time = 0;
           if (this.blink == 10) {
             this.state = 3;
-            this.pu();
+            this.gotoMenu();
           }
         }
-      } else if (this.pointer.isHovered(1) && this.O.hd().zo(0)) {
+      } else if (this.pointer.isHovered(1) && this.app.pointer().moved(0)) {
         switch (this.state) {
           case 0:
             this.time = 0;
@@ -676,7 +676,7 @@
             if (this.time > 3) {
               a = Save.language;
               Save.instance.reset();
-              Save.Yi(a);
+              Save.setLanguage(a);
               Save.flush();
               LevelState.reset();
               this.state = 2;
@@ -686,24 +686,24 @@
         }
       }
     }
-    Pd() {
-      if (this.hb(0)) {
-        this.pu();
+    handleInput() {
+      if (this.consumeClick(0)) {
+        this.gotoMenu();
       }
-      if (this.state != 2 && this.hb(1)) {
+      if (this.state != 2 && this.consumeClick(1)) {
         this.time = this.state = 0;
-        this.buttons[1].Ad(false);
+        this.buttons[1].setSelected(false);
         this.buttons[1].ke = 0;
       }
-      if (this.hb(2)) {
+      if (this.consumeClick(2)) {
         this.Vb();
       }
     }
-    pu() {
-      this.$(MenuScene);
+    gotoMenu() {
+      this.push(MenuScene);
     }
     Vb() {
-      this.$(OptionsScene);
+      this.push(OptionsScene);
     }
     getName() {
       return "ResetScene";
@@ -719,10 +719,10 @@
       super();
     }
     Vb() {
-      this.$(CTRCOptionsScene);
+      this.push(CTRCOptionsScene);
     }
-    pu() {
-      this.$(CTRCMenuScene);
+    gotoMenu() {
+      this.push(CTRCMenuScene);
     }
     getName() {
       return "CTRCResetScene";
@@ -740,10 +740,10 @@
     }
     init() {
       super.init();
-      this.Pc = new ColorRectShape(null, new Vec4(0, 0, 0, 1));
-      this.Pc.W(0.5);
-      this.node.P(this.Pc.u);
-      this.Ke(550, 550);
+      this.dimmer = new ColorRectShape(null, new Vec4(0, 0, 0, 1));
+      this.dimmer.setAlpha(0.5);
+      this.node.appendChild(this.dimmer.node);
+      this.setSize(550, 550);
       var a = ButtonBase.create(null, Keys.hz, Keys.iz, Keys.VK);
       this.buttons.push(a);
       // preview bridge: skip the back-to-menu button in custom-level mode.
@@ -753,8 +753,8 @@
       if (window.customleveldata == null) {
         a.setX(133.5);
         a.setY(200);
-        this.ra.appendChild(a.j);
-        this.oa(a);
+        this.layout.appendChild(a.container);
+        this.addChild(a);
       }
       a = ButtonBase.create(null, Keys.hz, Keys.iz, Keys.eL);
       this.buttons.push(a);
@@ -762,11 +762,11 @@
       // two-button row) when the back-to-menu button is hidden.
       a.setX(window.customleveldata != null ? 213.5 : 293.5);
       a.setY(200);
-      this.ra.appendChild(a.j);
-      this.oa(a);
+      this.layout.appendChild(a.container);
+      this.addChild(a);
       a.focus();
       this.state = 0;
-      this.O.Sa.Sf(0);
+      this.app.audio.setMusicVolume(0);
       SoundFx.stop(SoundFx.electric);
       SoundFx.stop(SoundFx.monster_chewing);
     }
@@ -778,58 +778,58 @@
         return 0;
       }
     }
-    Pd() {
+    handleInput() {
       if (this.state == 0) {
-        if (this.hb(1)) {
-          this.AD();
+        if (this.consumeClick(1)) {
+          this.onQuitButton();
         }
         var a = false;
-        if (this.O.lh().Nb(415)) {
+        if (this.app.keyboard().justPressed(415)) {
           a = true;
         }
-        if (this.O.lh().Nb(461) || this.O.lh().Nb(156) || this.O.lh().Nb(112)) {
-          this.Kw();
-        } else if (this.hb(2) || a) {
-          this.Kw();
+        if (this.app.keyboard().justPressed(461) || this.app.keyboard().justPressed(156) || this.app.keyboard().justPressed(112)) {
+          this.onResumeButton();
+        } else if (this.consumeClick(2) || a) {
+          this.onResumeButton();
         }
       }
     }
-    AD() {
-      this.kD();
+    onQuitButton() {
+      this.quitWithCurtain();
     }
-    Kw() {
-      this.GD();
+    onResumeButton() {
+      this.resume();
     }
-    GD() {
-      this.O.Sa.Sf(Save.Ec ? 1 : 0);
-      SoundFx.Xi(SoundFx.monster_chewing, 1);
-      this.Kf();
+    resume() {
+      this.app.audio.setMusicVolume(Save.musicOn ? 1 : 0);
+      SoundFx.setVolume(SoundFx.monster_chewing, 1);
+      this.pop();
     }
-    kD() {
+    quitWithCurtain() {
       SoundFx.stop(SoundFx.monster_chewing);
-      this.Ya = this.add(LevelCurtain);
-      this.node.P(this.Ya.node);
-      this.Ya.ZD();
-      this.Ya.JA();
+      this.curtain = this.add(LevelCurtain);
+      this.node.appendChild(this.curtain.node);
+      this.curtain.markReady();
+      this.curtain.skipClose();
       this.state = 1;
     }
-    uE() {
-      this.$(SelectLevelScene);
+    pushLevelSelect() {
+      this.push(SelectLevelScene);
     }
     update(a) {
       super.update(a);
       switch (this.state) {
         case 1:
-          if (this.Ya.state == 7) {
-            this.Ya.state = 0;
-            this.Ya.nu();
+          if (this.curtain.state == 7) {
+            this.curtain.state = 0;
+            this.curtain.playOpenAnim();
             this.state = 2;
           }
           break;
         case 2:
-          if (this.Ya.state == 0) {
+          if (this.curtain.state == 0) {
             this.state = 3;
-            this.uE();
+            this.pushLevelSelect();
           }
       }
     }
@@ -849,17 +849,17 @@
     constructor() {
       super();
     }
-    Kw() {
-      SDK.trackResume(cachedBind(this, this.GD));
+    onResumeButton() {
+      SDK.trackResume(cachedBind(this, this.resume));
     }
-    AD() {
+    onQuitButton() {
       let a = this;
       SDK.trackLevelFail("quit", currentLevelId(), function () {
-        SDK.showInterstitialAd("button:pause:quit", cachedBind(a, a.kD));
+        SDK.showInterstitialAd("button:pause:quit", cachedBind(a, a.quitWithCurtain));
       });
     }
-    uE() {
-      this.$(CTRCSelectLevelScene);
+    pushLevelSelect() {
+      this.push(CTRCSelectLevelScene);
     }
     getName() {
       return "CTRCPauseOverlay";

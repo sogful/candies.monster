@@ -1,73 +1,101 @@
+  // RenderQueue - per-renderer draw queue. `camera` is the active
+  // Camera assigned via setCamera(); drawList is the main batched-draw list (sized
+  // 1024 with reusableIter so it grows in-place); auxList is the auxiliary list
+  // used for operations queued outside the main batch.
   class RenderQueue {
     constructor() {
-      this.Ab = null;
-      this.Wx = new ArrayList(1024);
-      this.Wx.Dm = true;
+      this.camera = null;
+      this.drawList = new ArrayList(1024);
+      this.drawList.reusableIter = true;
       this.stack = new Stack();
-      this.Fd = new ArrayList();
+      this.auxList = new ArrayList();
     }
-    wk(a) {
-      this.Ab = a;
+    // wk - set the active camera for this queue.
+    setCamera(camera) {
+      this.camera = camera;
     }
   }
   RenderQueue.i = true;
   Object.assign(RenderQueue.prototype, {
     l: RenderQueue
   });
+
+  // RenderStateCollector - groups a node's effective render states into
+  // 7 type-indexed buckets (one Stack per state type) so the renderer
+  // can apply / restore them in O(1). Vs is the bucket array; MD is a
+  // scratch stack for walking ancestors. Static so allocations are
+  // amortised across every node draw.
   class RenderStateCollector {
+    // kM - reset every bucket's length to 0 (cheap: the underlying
+    // arrays stay sized).
     static kM() {
-      let a = 0;
-      while (a < 7) {
-        RenderStateCollector.Vs[a++].Ga = 0;
+      let i = 0;
+      while (i < 7) {
+        RenderStateCollector.Vs[i++].count = 0;
       }
     }
-    static bR(a) {
+    // bR - collect render states for `node`. Walks parents into a
+    // temp stack, drains it in root->leaf order so each ancestor can
+    // push its own states (dR), then folds in the node's own first
+    // level child states (Qd linked list). Returns the bucket array.
+    static bR(node) {
       if (RenderStateCollector.Vs == null) {
-        RenderStateCollector.uO();
+        RenderStateCollector.initBuckets();
       }
-      let b = RenderStateCollector.Vs;
-      let c = RenderStateCollector.MD;
-      var d = a;
-      for (c.clear(); d.parent != null;) {
-        var e = d.parent;
-        if (c.Ga == c.eb) {
-          c.grow();
+      let buckets = RenderStateCollector.Vs;
+      let tmpStack = RenderStateCollector.MD;
+      var walker = node;
+      // push every ancestor onto the temp stack (leaf-first order)
+      for (tmpStack.clear(); walker.parent != null;) {
+        var parent = walker.parent;
+        if (tmpStack.count == tmpStack.capacity) {
+          tmpStack.grow();
         }
-        c.N[c.Ga++] = e;
-        d = d.parent;
+        tmpStack.array[tmpStack.count++] = parent;
+        walker = walker.parent;
       }
-      d = 0;
-      for (e = c.Ga; d < e;) {
-        ++d;
-        c.N[--c.Ga].dR(b);
+      // drain root->leaf so each ancestor applies its states in order
+      let i = 0;
+      for (let n = tmpStack.count; i < n;) {
+        ++i;
+        tmpStack.array[--tmpStack.count].pushStatesTo(buckets);
       }
-      for (a = a.Qd; a != null;) {
-        d = b[a.state.type];
-        e = a.state;
-        if (d.Ga == d.eb) {
-          d.grow();
+      // append the node's own immediate-children states into the right
+      // bucket by state type
+      for (let child = node.firstState; child != null;) {
+        let bucket = buckets[child.state.type];
+        let state = child.state;
+        if (bucket.count == bucket.capacity) {
+          bucket.grow();
         }
-        d.N[d.Ga++] = e;
-        a = a.next;
+        bucket.array[bucket.count++] = state;
+        child = child.next;
       }
-      c.clear(true);
-      return b;
+      tmpStack.clear(true);
+      return buckets;
     }
-    static uO() {
+    // uO - lazy-init the static buckets (7 type Stacks + the ancestor
+    // walk scratch stack).
+    static initBuckets() {
       RenderStateCollector.Vs = Array(7);
-      let a = 0;
-      while (a < 7) {
-        RenderStateCollector.Vs[a++] = new Stack();
+      let i = 0;
+      while (i < 7) {
+        RenderStateCollector.Vs[i++] = new Stack();
       }
       RenderStateCollector.MD = new Stack(16);
     }
   }
   RenderStateCollector.i = true;
 
+  // RendererInfo - per-renderer scratch state. `renderer` is the
+  // owning Renderer; `effect` / `visual` / `spriteData` are slots the
+  // renderer fills in while walking the scene (effect = active GL
+  // effect, visual = SceneGroup currently being drawn, spriteData =
+  // current TextureDrawEffect frame source).
   class RendererInfo {
-    constructor(a) {
-      this.V = a;
-      this.Rz = this.va = this.effect = null;
+    constructor(renderer) {
+      this.renderer = renderer;
+      this.spriteData = this.visual = this.effect = null;
     }
   }
   RendererInfo.i = true;

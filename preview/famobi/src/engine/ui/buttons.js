@@ -2,50 +2,50 @@
     constructor(a, b, c, d) {
       super();
       this.frame = b;
-      this.Kl = c;
+      this.focusFrame = c;
       if (a == null) {
         a = Resources.Wa;
       }
-      this.T = new Sprite(null, a, this.frame = b);
-      this.j.appendChild(this.T);
+      this.sprite = new Sprite(null, a, this.frame = b);
+      this.container.appendChild(this.sprite);
       this.icon = null;
       if (d != null) {
         this.icon = new Sprite(null, a, d);
         this.icon.centerOrigin();
-        this.j.appendChild(this.icon);
+        this.container.appendChild(this.icon);
       }
-      a = this.T.X;
-      this.ec = new Vec4(a.x, a.y, 0, 1);
-      this.ke = 0;
+      a = this.sprite.size;
+      this.contentSize = new Vec4(a.x, a.y, 0, 1);
+      this.debounce = 0;
     }
     reset() {
-      this.T.Fb(this.frame);
+      this.sprite.setFrame(this.frame);
     }
-    $w(a) {
+    applyHover(a) {
       if (this.focused) {
         a = true;
       }
-      if (this.Kl != null) {
-        this.j.nb(0).Fb(a ? this.Kl : this.frame);
+      if (this.focusFrame != null) {
+        this.container.childAt(0).setFrame(a ? this.focusFrame : this.frame);
       }
     }
     update(a) {
       super.update(a);
-      if (this.ke > 0) {
-        this.ke -= a;
-        if (this.ke < 0) {
-          this.T.Fb(this.frame);
-          this.ke = 0;
+      if (this.debounce > 0) {
+        this.debounce -= a;
+        if (this.debounce < 0) {
+          this.sprite.setFrame(this.frame);
+          this.debounce = 0;
         }
       }
     }
     focus() {}
     select() {
       super.select();
-      this.ke = 0.2;
+      this.debounce = 0.2;
     }
-    Ub(a) {
-      return this.j.Ub(a);
+    hitTest(a) {
+      return this.container.hitTest(a);
     }
     static create(a, b, c, d) {
       return new ButtonBase(a, b, c, d);
@@ -59,13 +59,13 @@
   class AlbumButton extends ButtonBase {
     constructor() {
       super(Resources.Wa, Keys.Uk, Keys.Vk, Keys.mK);
-      let a = Save.kk;
+      let a = Save.pictureBadgeCount;
       if (a != 0) {
-        new Sprite(this.j, Resources.Wa, Keys.oK);
+        new Sprite(this.container, Resources.Wa, Keys.oK);
         if (a > 19) {
           a = 19;
         }
-        new Sprite(this.j, Resources.Wa, "album/" + a);
+        new Sprite(this.container, Resources.Wa, "album/" + a);
       }
     }
   }
@@ -78,12 +78,12 @@
   class AdPowerupButton extends ButtonBase {
     constructor(a, b, c, d) {
       super(a, b, c);
-      this.IL = d;
-      this.pm = false;
+      this.glowFrame = d;
+      this.disabledLocally = false;
       this.time = Math.random();
       this.setState("ENoAd");
     }
-    ND(a) {
+    setHasAd(a) {
       switch (this.state) {
         case "EAd":
           this.setState(a ? "EAd" : "ENoAd");
@@ -115,47 +115,47 @@
         this.state = a;
         switch (this.state) {
           case "EActive":
-            a = new Sprite(null, Resources.Wa, this.IL);
-            a.ox("glow");
+            a = new Sprite(null, Resources.Wa, this.glowFrame);
+            a.setName("glow");
             let b = new AnimTimeline();
-            b.La(0, 0);
-            b.La(1, 0.5);
-            b.La(0, 1);
+            b.alphaKey(0, 0);
+            b.alphaKey(1, 0.5);
+            b.alphaKey(0, 1);
             new SpriteAnimator(a).loop(b);
-            this.j.appendChild(a);
+            this.container.appendChild(a);
             if (this.badge != null) {
-              this.j.Jm(this.badge);
+              this.container.moveToTop(this.badge);
             }
             break;
           case "EAd":
-            this.re = new Sprite(null, Resources.Wa, "ads_icon");
-            this.re.setX(120);
-            this.re.setY(120);
-            this.re.center();
-            this.j.appendChild(this.re);
-            this.j.W(1);
-            this.Ad(false);
+            this.adIcon = new Sprite(null, Resources.Wa, "ads_icon");
+            this.adIcon.setX(120);
+            this.adIcon.setY(120);
+            this.adIcon.center();
+            this.container.appendChild(this.adIcon);
+            this.container.setAlpha(1);
+            this.setSelected(false);
             break;
           case "EFilled":
-            this.Ad(false);
-            if (this.re != null) {
-              this.re.free();
-              this.re = null;
+            this.setSelected(false);
+            if (this.adIcon != null) {
+              this.adIcon.free();
+              this.adIcon = null;
             }
-            this.badge = new TextNode(this.j, Resources.ic);
+            this.badge = new TextNode(this.container, Resources.ic);
             this.badge.setBoxSize(60, 60);
             this.badge.setX(105);
             this.badge.setY(70);
-            this.badge.kp();
-            this.badge.setText(isFinite(this.count) ? Numeric.Ed(this.count) : "∞");
-            this.badge.setMultiline(false);
+            this.badge.markDirty();
+            this.badge.setText(isFinite(this.count) ? Numeric.toStr(this.count) : "∞");
+            this.badge.autoFit(false);
             break;
           case "ENoAd":
-            this.j.W(0.5);
-            this.Ad(true);
-            if (this.re != null) {
-              this.re.free();
-              this.re = null;
+            this.container.setAlpha(0.5);
+            this.setSelected(true);
+            if (this.adIcon != null) {
+              this.adIcon.free();
+              this.adIcon = null;
             }
         }
       }
@@ -164,24 +164,24 @@
       super.update(a);
       switch (this.state) {
         case "EAd":
-          if (this.re != null && this.time > 3 && !this.pm) {
-            this.re.setY(100);
-            this.re.tween().y(110, 1, Easing.elasticOut());
+          if (this.adIcon != null && this.time > 3 && !this.disabledLocally) {
+            this.adIcon.setY(100);
+            this.adIcon.tween().y(110, 1, Easing.elasticOut());
             this.time = 0;
           }
-          this.j.W(this.pm ? 0.5 : 1);
+          this.container.setAlpha(this.disabledLocally ? 0.5 : 1);
           break;
         case "EFilled":
-          this.j.W(this.pm ? 0.5 : 1);
+          this.container.setAlpha(this.disabledLocally ? 0.5 : 1);
       }
     }
     reset() {
       super.reset();
-      let a = this.j.fo("glow");
+      let a = this.container.childByName("glow");
       if (a != null) {
         a.free();
       }
-      this.pm = false;
+      this.disabledLocally = false;
       switch (this.state) {
         case "EActive":
         case "EAd":
@@ -191,7 +191,7 @@
     }
     select() {
       super.select();
-      this.ke = 0;
+      this.debounce = 0;
       switch (this.state) {
         case "EActive":
         case "EAd":
@@ -201,22 +201,22 @@
           this.setState("EActive");
       }
     }
-    Ad(a) {
+    setSelected(a) {
       switch (this.state) {
         case "EActive":
         case "ENoAd":
           a = true;
       }
-      super.Ad(a);
+      super.setSelected(a);
     }
     getHeight() {
-      return this.T.getHeight();
+      return this.sprite.getHeight();
     }
-    yv() {
-      return this.j.getX() + this.T.getWidth() * this.j.Ra;
+    rightEdge() {
+      return this.container.getX() + this.sprite.getWidth() * this.container.scaleX;
     }
     getWidth() {
-      return this.T.getWidth() * this.j.Ra;
+      return this.sprite.getWidth() * this.container.scaleX;
     }
   }
   AdPowerupButton.i = true;
@@ -227,12 +227,12 @@
   class AdPowerupButtonA extends AdPowerupButton {
     constructor() {
       super(Resources.Wa, Keys.fz, Keys.gz, Keys.vK);
-      if (AdPowerupButtonA.Mf > 0) {
-        this.fill(AdPowerupButtonA.Mf);
+      if (AdPowerupButtonA.COOLDOWN > 0) {
+        this.fill(AdPowerupButtonA.COOLDOWN);
       }
     }
     fill(a) {
-      AdPowerupButtonA.Mf = a;
+      AdPowerupButtonA.COOLDOWN = a;
       super.fill(a);
     }
     use() {
@@ -244,13 +244,13 @@
       switch (this.state) {
         case "EActive":
           this.frame = Keys.fz;
-          this.Kl = Keys.gz;
-          this.T.Fb(this.frame);
+          this.focusFrame = Keys.gz;
+          this.sprite.setFrame(this.frame);
           break;
         case "EFilled":
           this.frame = Keys.wK;
-          this.Kl = Keys.xK;
-          this.T.Fb(this.frame);
+          this.focusFrame = Keys.xK;
+          this.sprite.setFrame(this.frame);
       }
     }
   }
@@ -262,12 +262,12 @@
   class AdPowerupButtonB extends AdPowerupButton {
     constructor() {
       super(Resources.Wa, Keys.cz, Keys.dz, Keys.qK);
-      if (AdPowerupButtonB.Mf > 0) {
-        this.fill(AdPowerupButtonB.Mf);
+      if (AdPowerupButtonB.COOLDOWN > 0) {
+        this.fill(AdPowerupButtonB.COOLDOWN);
       }
     }
     fill(a) {
-      AdPowerupButtonB.Mf = a;
+      AdPowerupButtonB.COOLDOWN = a;
       super.fill(a);
     }
     use() {
@@ -279,12 +279,12 @@
       switch (this.state) {
         case "EActive":
           this.frame = Keys.cz;
-          this.Kl = Keys.dz;
+          this.focusFrame = Keys.dz;
           break;
         case "EFilled":
           this.frame = Keys.rK;
-          this.Kl = Keys.sK;
-          this.T.Fb(this.frame);
+          this.focusFrame = Keys.sK;
+          this.sprite.setFrame(this.frame);
       }
     }
   }
@@ -296,26 +296,26 @@
   class LabelledButton extends ButtonBase {
     constructor(a, b, c) {
       super(null, a, b);
-      this.wc = new TextNode(null, Resources.ic);
-      this.wc.setBoxSize(this.T.X.x - 80, this.T.X.y - 50);
-      this.wc.setX(40);
-      this.wc.setY(25);
-      this.wc.setText(c);
-      this.wc.setAlign(0, 0);
-      this.wc.setMultiline(false);
-      this.j.appendChild(this.wc);
+      this.label = new TextNode(null, Resources.ic);
+      this.label.setBoxSize(this.sprite.size.x - 80, this.sprite.size.y - 50);
+      this.label.setX(40);
+      this.label.setY(25);
+      this.label.setText(c);
+      this.label.setAlign(0, 0);
+      this.label.autoFit(false);
+      this.container.appendChild(this.label);
     }
-    iF() {
-      this.wc.Uf(Resources.ic);
-      this.wc.setBoxSize(this.T.X.x - 80, this.T.X.y - 50);
-      this.wc.setAlign(0, 0);
+    refreshFont() {
+      this.label.setTexture(Resources.ic);
+      this.label.setBoxSize(this.sprite.size.x - 80, this.sprite.size.y - 50);
+      this.label.setAlign(0, 0);
     }
-    WD(a) {
-      this.wc.kp();
-      this.wc.setText(a);
-      this.wc.setMultiline();
+    setLabel(a) {
+      this.label.markDirty();
+      this.label.setText(a);
+      this.label.autoFit();
     }
-    static ol(a) {
+    static create(a) {
       return new LabelledButton(Keys.GK, Keys.HK, a);
     }
   }

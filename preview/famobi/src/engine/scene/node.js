@@ -1,18 +1,18 @@
   class Node {
     constructor() {
-      this.O = Application.instance;
+      this.app = Application.instance;
       this.listener = null;
-      this.Sx = false;
-      this.parent = this.Me = this.Y = null;
-      this.zC = this.yC = false;
+      this.ticked = false;
+      this.parent = this.firstChild = this.nextSibling = null;
+      this.pausedUpdate = this.hiddenRender = false;
       this.name = null;
       this.time = 0;
-      Node.qw.pushBack(this);
+      Node.all.pushBack(this);
     }
     dispose() {
-      if (this.O != null) {
-        for (var a = this.Me; a != null;) {
-          var b = a.Y;
+      if (this.app != null) {
+        for (var a = this.firstChild; a != null;) {
+          var b = a.nextSibling;
           a.dispose();
           a = b;
         }
@@ -25,8 +25,8 @@
           a.next = null;
           a = b;
         }
-        this.O = this.listener = null;
-        Node.qw.swapPop(Node.qw.indexOf(this));
+        this.app = this.listener = null;
+        Node.all.swapPop(Node.all.indexOf(this));
       }
     }
     remove() {
@@ -37,20 +37,20 @@
     iterator() {
       return new NodeTreeIter(this);
     }
-    oa(a) {
+    addChild(a) {
       return this.appendChild(a);
     }
     add(a) {
-      return this.appendChild(Construct.qA(a));
+      return this.appendChild(Construct.create(a));
     }
     update(a) {
-      if (this.O != null) {
-        this.Sx = true;
-        for (var b = this.Me, c; b != null;) {
-          c = b.Y;
-          if (!b.zC && b.O != null) {
+      if (this.app != null) {
+        this.ticked = true;
+        for (var b = this.firstChild, c; b != null;) {
+          c = b.nextSibling;
+          if (!b.pausedUpdate && b.app != null) {
             b.update(a);
-            b.iq(a);
+            b.lateUpdate(a);
             b.time += a;
           }
           b = c;
@@ -58,25 +58,27 @@
         this.time += a;
       }
     }
-    iq() {}
+    lateUpdate() {}
     render(a) {
-      if (this.O != null && this.Sx != 0) {
-        for (var b = this.Me, c; b != null;) {
-          c = b.Y;
-          if (!b.yC && b.O != null) {
+      if (this.app != null && this.ticked != 0) {
+        for (var b = this.firstChild, c; b != null;) {
+          c = b.nextSibling;
+          if (!b.hiddenRender && b.app != null) {
             b.render(a);
           }
           b = c;
         }
       }
     }
-    Qr() {}
-    jb(a) {
+    onAttach() {}
+    progress(a) {
       return Math.min(1, this.time / a);
     }
-    $n(a, b) {
+    // findNode - locate a parent (walking up) or descendant (BFS,
+    // excluding `b`) that is an instance of class `a`.
+    findNode(a, b) {
       for (var c = this.parent; c != null;) {
-        if (StdString.Xt(c, a)) {
+        if (StdString.isType(c, a)) {
           return c;
         }
         c = c.parent;
@@ -85,12 +87,12 @@
       let d = [this];
       while (c > 0) {
         let e = d[--c];
-        let f = e.Me;
+        let f = e.firstChild;
         while (f != null) {
           d[c++] = f;
-          f = f.Y;
+          f = f.nextSibling;
         }
-        if (e != b && StdString.Xt(e, a)) {
+        if (e != b && StdString.isType(e, a)) {
           return e;
         }
       }
@@ -98,16 +100,16 @@
     }
     appendChild(a) {
       a.parent = this;
-      var b = this.Me;
+      var b = this.firstChild;
       if (b != null) {
-        while (b.Y != null) {
-          b = b.Y;
+        while (b.nextSibling != null) {
+          b = b.nextSibling;
         }
-        b.Y = a;
+        b.nextSibling = a;
       } else {
-        this.Me = a;
+        this.firstChild = a;
       }
-      a.Qr();
+      a.onAttach();
       return a;
     }
     static removeChild(a) {
@@ -115,18 +117,18 @@
         return false;
       }
       var b = a.parent;
-      if (a == b.Me) {
-        b.Me = a.Y;
+      if (a == b.firstChild) {
+        b.firstChild = a.nextSibling;
       } else {
-        for (b = b.Me; b != null;) {
-          if (b.Y == a) {
-            b.Y = a.Y;
+        for (b = b.firstChild; b != null;) {
+          if (b.nextSibling == a) {
+            b.nextSibling = a.nextSibling;
             break;
           }
-          b = b.Y;
+          b = b.nextSibling;
         }
       }
-      a.parent = a.Y = null;
+      a.parent = a.nextSibling = null;
       return true;
     }
   }
@@ -135,7 +137,7 @@
     l: Node
   });
   class NodeTreeUtil {
-    static Ov(a, b) {
+    static contains(a, b) {
       for (a = a.parent; a != null;) {
         if (a == b) {
           return true;
@@ -144,114 +146,114 @@
       }
       return false;
     }
-    static Yf(a) {
-      let b = NodeTreeUtil.yx;
+    static updateWorldTransforms(a) {
+      let b = NodeTreeUtil.scratchStack;
       b.clear();
       for (b.reserve(SceneNode.count); a != null;) {
-        b.N[b.Ga++] = a;
+        b.array[b.count++] = a;
         a = a.parent;
       }
-      a = b.N[--b.Ga];
-      for (a.Fa.set(a.Db); b.Ga > 0;) {
-        let c = b.N[--b.Ga];
+      a = b.array[--b.count];
+      for (a.worldT.set(a.localT); b.count > 0;) {
+        let c = b.array[--b.count];
         if ((c.flags & 64) <= 0) {
           if ((c.flags & 512) > 0) {
-            c.Fa.cE(a.Fa, c.Db);
+            c.worldT.composeMirror(a.worldT, c.localT);
           } else {
-            c.Fa.bE(a.Fa, c.Db);
+            c.worldT.compose(a.worldT, c.localT);
           }
         }
         a = c;
       }
     }
-    static CN(a, b) {
-      let c = NodeTreeUtil.DS;
+    static collectVisuals(a, b) {
+      let c = NodeTreeUtil.renderStack;
       c.reserve(SceneNode.count);
-      var d = NodeTreeUtil.yx;
+      var d = NodeTreeUtil.scratchStack;
       d.reserve(SceneNode.count);
       d.clear();
-      for (d.N[d.Ga++] = a; d.Ga > 0;) {
-        a = d.N[--d.Ga];
-        if (a.Ne != 1) {
+      for (d.array[d.count++] = a; d.count > 0;) {
+        a = d.array[--d.count];
+        if (a.visibility != 1) {
           if ((a.flags & 2) > 0) {
             if (a.effect != null) {
-              c.N[c.Ga++] = a;
+              c.array[c.count++] = a;
             }
           } else if ((a.flags & 1) > 0) {
             for (a = a.children; a != null;) {
-              d.N[d.Ga++] = a;
-              a = a.Y;
+              d.array[d.count++] = a;
+              a = a.nextSibling;
             }
           }
         }
       }
       b.clear();
-      b.reserve(c.Ga);
+      b.reserve(c.count);
       d = 0;
-      for (a = c.Ga; d < a;) {
+      for (a = c.count; d < a;) {
         ++d;
-        let e = c.N[--c.Ga];
-        b.N[b.ba++] = e;
+        let e = c.array[--c.count];
+        b.array[b.count++] = e;
       }
     }
-    static Fl(a, b, c) {
+    static computeBounds(a, b, c) {
       let d = FLOAT_MAX;
       let e = FLOAT_MAX;
       let f = FLOAT_MIN;
       let g = FLOAT_MIN;
-      let h = NodeTreeUtil.yx;
+      let h = NodeTreeUtil.scratchStack;
       h.reserve(SceneNode.count);
       h.clear();
-      for (h.N[h.Ga++] = a; h.Ga > 0;) {
-        a = h.N[--h.Ga];
+      for (h.array[h.count++] = a; h.count > 0;) {
+        a = h.array[--h.count];
         if ((a.flags & 2) > 0) {
-          a.Fl(b, c);
-          if (c.A < d) {
-            d = c.A;
+          a.computeWorldBounds(b, c);
+          if (c.left < d) {
+            d = c.left;
           }
-          if (c.D < e) {
-            e = c.D;
+          if (c.top < e) {
+            e = c.top;
           }
-          if (c.B > f) {
-            f = c.B;
+          if (c.right > f) {
+            f = c.right;
           }
-          if (c.G > g) {
-            g = c.G;
+          if (c.bottom > g) {
+            g = c.bottom;
           }
         } else if ((a.flags & 1) > 0) {
           for (a = a.children; a != null;) {
-            h.N[h.Ga++] = a;
-            a = a.Y;
+            h.array[h.count++] = a;
+            a = a.nextSibling;
           }
         }
       }
-      c.A = d;
-      c.D = e;
-      c.B = f;
-      c.G = g;
+      c.left = d;
+      c.top = e;
+      c.right = f;
+      c.bottom = g;
       return c;
     }
-    static cT(a, b, c) {
-      let d = c.A;
-      let e = c.D;
-      let f = c.B;
-      let g = c.G;
+    static transformBounds(a, b, c) {
+      let d = c.left;
+      let e = c.top;
+      let f = c.right;
+      let g = c.bottom;
       let h = FLOAT_MAX;
       let m = FLOAT_MAX;
       let n = FLOAT_MIN;
       let q = FLOAT_MIN;
       let p = new Vec4(0, 0, 0, 1);
       if (b == a) {
-        h = c.A;
-        m = c.D;
-        n = c.B;
-        q = c.G;
+        h = c.left;
+        m = c.top;
+        n = c.right;
+        q = c.bottom;
       } else {
         if (b == a.parent) {
-          b = a.Db;
+          b = a.localT;
           p.x = d;
           p.y = e;
-          b.Jb(p, p);
+          b.transformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -266,7 +268,7 @@
           }
           p.x = f;
           p.y = e;
-          b.Jb(p, p);
+          b.transformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -281,7 +283,7 @@
           }
           p.x = f;
           p.y = g;
-          b.Jb(p, p);
+          b.transformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -296,12 +298,12 @@
           }
           p.x = d;
           p.y = g;
-          b.Jb(p, p);
+          b.transformPoint2D(p, p);
         } else if (b.parent == null) {
-          b = a.Fa;
+          b = a.worldT;
           p.x = d;
           p.y = e;
-          b.Jb(p, p);
+          b.transformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -316,7 +318,7 @@
           }
           p.x = f;
           p.y = e;
-          b.Jb(p, p);
+          b.transformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -331,7 +333,7 @@
           }
           p.x = f;
           p.y = g;
-          b.Jb(p, p);
+          b.transformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -346,14 +348,14 @@
           }
           p.x = d;
           p.y = g;
-          b.Jb(p, p);
+          b.transformPoint2D(p, p);
         } else {
-          a = a.Fa;
-          b = b.Fa;
+          a = a.worldT;
+          b = b.worldT;
           p.x = d;
           p.y = e;
-          a.Jb(p, p);
-          b.gg(p, p);
+          a.transformPoint2D(p, p);
+          b.inverseTransformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -368,8 +370,8 @@
           }
           p.x = f;
           p.y = e;
-          a.Jb(p, p);
-          b.gg(p, p);
+          a.transformPoint2D(p, p);
+          b.inverseTransformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -384,8 +386,8 @@
           }
           p.x = f;
           p.y = g;
-          a.Jb(p, p);
-          b.gg(p, p);
+          a.transformPoint2D(p, p);
+          b.inverseTransformPoint2D(p, p);
           if (p.x < h) {
             h = p.x;
           }
@@ -400,8 +402,8 @@
           }
           p.x = d;
           p.y = g;
-          a.Jb(p, p);
-          b.gg(p, p);
+          a.transformPoint2D(p, p);
+          b.inverseTransformPoint2D(p, p);
         }
         if (p.x < h) {
           h = p.x;
@@ -424,14 +426,14 @@
   class DelayedCallback extends Node {
     constructor(a, b) {
       super();
-      this.f = a;
-      this.t = b;
+      this.cb = a;
+      this.timer = b;
     }
     update(a) {
-      this.t -= a;
-      if (!(this.t > 0)) {
-        this.f();
-        this.f = null;
+      this.timer -= a;
+      if (!(this.timer > 0)) {
+        this.cb();
+        this.cb = null;
         this.dispose();
       }
     }

@@ -10,188 +10,188 @@
       a.push([197, 192, 187, 182, 177, 172, 167, 162, 156, 151, 146, 141, 136, 131, 126, 121, 116][b]);
       return a;
     }
-    DD(a) {
-      this.PC(a);
+    startLevel(a) {
+      this.commitLevel(a);
     }
-    PC(a) {
-      LevelState.sp(a);
+    commitLevel(a) {
+      LevelState.setLevel(a);
       SoundFx.play(SoundFx.button);
       this.state = 1;
       this.time = 0;
     }
     init() {
       super.init();
-      this.fh.L(true);
+      this.fade.setVisible(true);
       if (LevelCurtain.instance != null) {
         LevelCurtain.instance.dispose();
       }
-      this.Ya = this.add(LevelCurtain);
-      this.fa.back.P(this.Ya.node);
+      this.curtain = this.add(LevelCurtain);
+      this.director.back.appendChild(this.curtain.node);
       this.state = 0;
-      this.sj();
-      this.$k();
+      this.addCursor();
+      this.addBackButton();
       var a = 20;
-      if (LevelState.uB()) {
+      if (LevelState.levelBlueStarCollected()) {
         a = 0;
       }
-      this.vo = new Container();
-      var b = Resources.Wa.hc.yf(Keys.$p).ec;
+      this.gridContainer = new Container();
+      var b = Resources.Wa.frames.findByName(Keys.$p).sourceSize;
       let c = b.x - a;
       let d = b.y;
       let e = 1;
-      this.vi = new Grid2D(5, 5);
+      this.grid = new Grid2D(5, 5);
       let f = this;
-      this.vi.forEach(function (g, h, m) {
+      this.grid.forEach(function (g, h, m) {
         e += 1;
         g = new LevelDot(e - 1);
-        f.vo.appendChild(g.j);
-        g.j.setX(h * c);
-        g.j.setY(m * d);
+        f.gridContainer.appendChild(g.container);
+        g.container.setX(h * c);
+        g.container.setY(m * d);
         return g;
       });
-      this.vo.setX(-5);
+      this.gridContainer.setX(-5);
       this.size = new Size(c * 5, d * 5);
-      this.Ke(this.size.x, this.size.y);
-      this.ra.appendChild(this.vo);
-      for (a = this.vi.iterator(); a.fb();) {
+      this.setSize(this.size.x, this.size.y);
+      this.layout.appendChild(this.gridContainer);
+      for (a = this.grid.iterator(); a.hasNext();) {
         b = a.next();
-        if (LevelState.LO(b.Ci)) {
-          b.bS(LevelState.sv(b.Ci), LevelState.uB(b.Ci));
+        if (LevelState.isCleared(b.index)) {
+          b.setStars(LevelState.levelStars(b.index), LevelState.levelBlueStarCollected(b.index));
         }
       }
-      for (a = this.vi.iterator(); a.fb();) {
+      for (a = this.grid.iterator(); a.hasNext();) {
         b = a.next();
-        if (LevelState.sv(b.Ci) < 3) {
+        if (LevelState.levelStars(b.index) < 3) {
           b.focus();
-          this.jh = b;
+          this.focusedDot = b;
           break;
         }
       }
-      if (this.jh == null) {
-        a = this.vi;
-        this.jh = a.N[a.Tb * 0];
+      if (this.focusedDot == null) {
+        a = this.grid;
+        this.focusedDot = a.array[a.cols * 0];
       }
-      this.jh.focus();
-      this.vb = this.add(ScoreLabel);
-      a = LevelState.QA();
-      this.vb.setText(Numeric.Ed(a == 0 ? 0 : a));
-      this.sm();
+      this.focusedDot.focus();
+      this.scoreLabel = this.add(ScoreLabel);
+      a = LevelState.boxStars();
+      this.scoreLabel.setText(Numeric.toStr(a == 0 ? 0 : a));
+      this.startMenuMusic();
     }
     start() {
       super.start();
-      this.O.Sa.Sf(Save.Ec ? 1 : 0);
+      this.app.audio.setMusicVolume(Save.musicOn ? 1 : 0);
     }
     dispose() {
       super.dispose();
-      this.Ya = null;
+      this.curtain = null;
     }
-    Nd() {
-      super.Nd();
+    loadTextures() {
+      super.loadTextures();
       Resources.xj = this.createTexture([196, 191, 186, 181, 176, 171, 166, 161, 155, 150, 145, 140, 135, 130, 125, 120, 115][LevelState.box - 1]);
     }
     update(a) {
       super.update(a);
       switch (this.state) {
         case 0:
-          if (this.O.hd().oF(0)) {
-            for (var b = this.vi.iterator(); b.fb();) {
+          if (this.app.pointer().hovered(0)) {
+            for (var b = this.grid.iterator(); b.hasNext();) {
               a = b.next();
-              if (a.Ub(this.pointer.pos)) {
-                b = this.jh;
+              if (a.hitTest(this.pointer.pos)) {
+                b = this.focusedDot;
                 if (b != null) {
                   b.blur();
                 }
-                this.jh = a;
-                this.jh.focus();
+                this.focusedDot = a;
+                this.focusedDot.focus();
                 break;
               }
             }
           }
-          if (this.O.hd().Nb(0)) {
-            for (a = this.vi.iterator(); a.fb();) {
+          if (this.app.pointer().justPressed(0)) {
+            for (a = this.grid.iterator(); a.hasNext();) {
               b = a.next();
-              if (b.Ub(this.pointer.pos)) {
-                this.Gv = b;
+              if (b.hitTest(this.pointer.pos)) {
+                this.pressedDot = b;
                 break;
               }
             }
           }
-          if (this.O.hd().qe(0) && this.Gv != null && this.Gv.Ub(this.pointer.pos)) {
-            this.DD(this.Gv.Ci);
+          if (this.app.pointer().justReleased(0) && this.pressedDot != null && this.pressedDot.hitTest(this.pointer.pos)) {
+            this.startLevel(this.pressedDot.index);
           }
-          if (this.jh != null) {
+          if (this.focusedDot != null) {
             a = new Coord();
-            b = this.vi;
-            var c = this.jh.Ci - 1;
-            a.y = c / b.Tb | 0;
-            a.x = c % b.Tb;
-            b = this.vi;
-            c = this.jh.Ci - 1;
-            a.y = c / b.Tb | 0;
-            a.x = c % b.Tb;
+            b = this.grid;
+            var c = this.focusedDot.index - 1;
+            a.y = c / b.cols | 0;
+            a.x = c % b.cols;
+            b = this.grid;
+            c = this.focusedDot.index - 1;
+            a.y = c / b.cols | 0;
+            a.x = c % b.cols;
           }
           break;
         case 1:
-          a = this.jb(0.3);
-          this.mi().bf(1 - a);
+          a = this.progress(0.3);
+          this.fadeState().setAlpha(1 - a);
           if (a == 1) {
-            this.Uq();
-            this.Ya.DM();
+            this.stopAllMusic();
+            this.curtain.playCloseAnim();
             this.state = 2;
           }
           break;
         case 2:
-          if (this.Ya.state == 0) {
+          if (this.curtain.state == 0) {
             this.state = 3;
-            this.Ya.remove();
-            this.gk();
+            this.curtain.remove();
+            this.goToNextScene();
           }
       }
     }
     transitionOut(a, b) {
       if (b instanceof LevelScene) {
         if (a == 0) {
-          this.fa.back.removeChild(this.Ya.node);
-          this.fa.front.P(this.Ya.node);
+          this.director.back.removeChild(this.curtain.node);
+          this.director.front.appendChild(this.curtain.node);
         }
       } else {
         super.transitionOut(a, b);
         if (a == 1 && b instanceof SelectBoxScene) {
-          this.Ya.dispose();
+          this.curtain.dispose();
         }
       }
     }
     layout() {
-      this.rd.y = this.size.y;
-      this.vo.setY(0);
-      let a = this.fa.Se();
-      if (!this.O.Vj && a > 0.7) {
-        this.rd.y += 400;
-        this.vo.setY(200);
+      this.designSize.y = this.size.y;
+      this.gridContainer.setY(0);
+      let a = this.director.aspectRatio();
+      if (!this.app.isMobile && a > 0.7) {
+        this.designSize.y += 400;
+        this.gridContainer.setY(200);
       }
       super.layout();
-      this.Ya.layout();
-      this.$n(ScoreLabel, this).layout();
+      this.curtain.layout();
+      this.findNode(ScoreLabel, this).layout();
     }
-    Pd() {
-      if (this.hb(0)) {
-        this.Vb();
+    handleInput() {
+      if (this.consumeClick(0)) {
+        this.backToBoxSelect();
       }
     }
-    Vb() {
+    backToBoxSelect() {
       switch (LevelState.season) {
         case 1:
-          this.$(Season1Scene);
+          this.push(Season1Scene);
           break;
         case 2:
-          this.$(Season2Scene);
+          this.push(Season2Scene);
           break;
         case 3:
-          this.$(Season3Scene);
+          this.push(Season3Scene);
       }
     }
-    gk() {
-      this.$(LevelScene);
+    goToNextScene() {
+      this.push(LevelScene);
     }
     getName() {
       return "SelectLevelScene";
@@ -206,28 +206,28 @@
     constructor() {
       super();
     }
-    DD(a) {
-      LevelState.sp(a);
+    startLevel(a) {
+      LevelState.setLevel(a);
       let b = this;
       SDK.trackLevelStart(currentLevelId(), function () {
         SDK.showInterstitialAd("button:levelselection:level", function () {
-          b.PC(a);
+          b.commitLevel(a);
         });
       });
     }
-    gk() {
-      this.$(CTRCLevelScene);
+    goToNextScene() {
+      this.push(CTRCLevelScene);
     }
-    Vb() {
+    backToBoxSelect() {
       switch (LevelState.season) {
         case 1:
-          this.$(CTRCSeason1Scene);
+          this.push(CTRCSeason1Scene);
           break;
         case 2:
-          this.$(CTRCSeason2Scene);
+          this.push(CTRCSeason2Scene);
           break;
         case 3:
-          this.$(CTRCSeason3Scene);
+          this.push(CTRCSeason3Scene);
       }
     }
     getName() {
@@ -253,8 +253,8 @@
         return (BOX_OBJECT_FLAGS[c] & d) > 0;
       }
       let b = [Loader.fontDat, Loader.fontImg, Loader.menuUi, Loader.menuUiJson, Loader.menuCut, Loader.menuCutJson, Loader.strings, Loader.char1, Loader.char1Json, Loader.char2, Loader.char2Json, Loader.objHook, Loader.objHookJson, Loader.objStar, Loader.objStarJson, Loader.gameTut, Loader.gameTutJson, WebApplication.gameMusicId];
-      b.push([97, 95, 93, 91, 89][Save.me]);
-      b.push([98, 96, 94, 92, 90][Save.me]);
+      b.push([97, 95, 93, 91, 89][Save.skin]);
+      b.push([98, 96, 94, 92, 90][Save.skin]);
       let c = LevelState.box - 1;
       if (a(1)) {
         b.push(Loader.objBubble);
@@ -340,7 +340,7 @@
       }
       return b;
     }
-    Oj() {
+    bootMode() {
       if (LevelScene.freshBoot) {
         return 1;
       } else {
@@ -351,140 +351,140 @@
       super.init();
       LevelScene.pendingLevelJump = -1;
       LevelScene.pendingRestart = false;
-      LevelScene.ev = false;
-      this.Go = 0;
-      this.Sm = this.O.jd && this.O.window.Hc.x == 1920;
-      this.fh.L(false);
-      this.np = new ColorRectShape(null, new Vec4(1, 1, 1, 1));
-      this.S = new LevelController(this);
+      LevelScene.forceFailNext = false;
+      this.failCount = 0;
+      this.isWebOSHD = this.app.isWebOS && this.app.window.canvasSize.x == 1920;
+      this.fade.setVisible(false);
+      this.whiteFade = new ColorRectShape(null, new Vec4(1, 1, 1, 1));
+      this.controller = new LevelController(this);
       var a = ButtonBase.create(null, Keys.AK, Keys.BK);
       this.buttons.push(a);
-      this.node.P(a.j.u);
+      this.node.appendChild(a.container.node);
       a = ButtonBase.create(null, Keys.CK, Keys.DK);
       this.buttons.push(a);
-      this.node.P(a.j.u);
+      this.node.appendChild(a.container.node);
       if (WebApplication.externalMute) {
         a = ButtonBase.create(null, Keys.zK, Keys.yK, Keys.ez);
-        a.icon.L(!Save.Ec);
+        a.icon.setVisible(!Save.musicOn);
         this.buttons.push(a);
-        this.node.P(a.j.u);
+        this.node.appendChild(a.container.node);
         a = ButtonBase.create(null, Keys.FK, Keys.EK, Keys.ez);
-        a.icon.L(!Save.Bd);
+        a.icon.setVisible(!Save.sfxOn);
         this.buttons.push(a);
-        this.node.P(a.j.u);
+        this.node.appendChild(a.container.node);
       }
       if (WebApplication.magnetEnabled) {
-        this.tO();
+        this.addMagnetButton();
       }
       if (WebApplication.telekinesisEnabled) {
-        this.wO();
+        this.addTelekinesisButton();
       }
-      this.uf(false);
-      this.vb = new Container();
-      this.node.P(this.vb.u);
+      this.setButtonsEnabled(false);
+      this.scoreLabel = new Container();
+      this.node.appendChild(this.scoreLabel.node);
       for (a = 0; a < 3;) {
         ++a;
-        new Sprite(this.vb, Resources.Wa, HUD_STAR_FRAME_0).center();
+        new Sprite(this.scoreLabel, Resources.Wa, HUD_STAR_FRAME_0).center();
       }
-      a = this.vb.nb(0).getWidth();
-      var b = this.vb.nb(0);
+      a = this.scoreLabel.childAt(0).getWidth();
+      var b = this.scoreLabel.childAt(0);
       b.setX(b.getX() - a);
-      b = this.vb.nb(2);
+      b = this.scoreLabel.childAt(2);
       b.setX(b.getX() + a);
-      a = this.O.jd ? this.Sm ? 40 : 80 : 60;
-      this.ee = new Container();
-      b = new TextNode(this.ee, Resources.ic);
+      a = this.app.isWebOS ? this.isWebOSHD ? 40 : 80 : 60;
+      this.levelText = new Container();
+      b = new TextNode(this.levelText, Resources.ic);
       b.setBoxSize(200, a);
-      b.setText(this.yb("LEVEL"));
-      b.setMultiline();
-      b = new TextNode(this.ee, Resources.ic);
+      b.setText(this.tr("LEVEL"));
+      b.autoFit();
+      b = new TextNode(this.levelText, Resources.ic);
       b.setY(a * 0.9);
       b.setBoxSize(200, a);
-      this.gF();
-      this.node.P(this.ee.u);
-      this.Vo = this.state = this.ti = this.so = 0;
-      this.tm = this.hg = false;
+      this.setLevelText();
+      this.node.appendChild(this.levelText.node);
+      this.starsCollected = this.state = this.starsAnimTime = this.starsAnimState = 0;
+      this.timerOn = this.bonusCollected = false;
     }
-    Oc() {
-      super.Oc();
-      if (this.Ya != null) {
-        this.Ya.remove();
+    onStop() {
+      super.onStop();
+      if (this.curtain != null) {
+        this.curtain.remove();
       }
       let a = 0;
       let b = [27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7];
       while (a < b.length) {
-        this.ia(b[a++]);
+        this.release(b[a++]);
       }
     }
-    Nd() {
-      super.Nd();
+    loadTextures() {
+      super.loadTextures();
       let a = LevelState.box - 1;
-      if (Resources.I == null) {
-        Resources.I = this.createTexture([97, 95, 93, 91, 89][Save.me]);
+      if (Resources.skinAtlas == null) {
+        Resources.skinAtlas = this.createTexture([97, 95, 93, 91, 89][Save.skin]);
         Resources.Fu = this.createTexture(Loader.char1);
         Resources.iM = this.createTexture(Loader.char2);
         Resources.eT = this.createTexture(Loader.gameTut);
         Resources.Oa = this.createTexture(Loader.objStar);
         Resources.ph = this.createTexture(Loader.objHook);
       }
-      if (Resources.ca == null && Loader.ob(Loader.objBubble)) {
+      if (Resources.ca == null && Loader.isLoaded(Loader.objBubble)) {
         Resources.ca = this.createTexture(Loader.objBubble);
       }
-      if (Resources.Dd == null && Loader.ob(Loader.objSpikes)) {
+      if (Resources.Dd == null && Loader.isLoaded(Loader.objSpikes)) {
         Resources.Dd = this.createTexture(Loader.objSpikes);
       }
-      if (Resources.wm == null && Loader.ob(Loader.objPump)) {
+      if (Resources.wm == null && Loader.isLoaded(Loader.objPump)) {
         Resources.wm = this.createTexture(Loader.objPump);
       }
-      if (Resources.mc == null && Loader.ob(Loader.objSpider)) {
+      if (Resources.mc == null && Loader.isLoaded(Loader.objSpider)) {
         Resources.mc = this.createTexture(Loader.objSpider);
       }
-      if (Resources.ce == null && Loader.ob(Loader.objElectro)) {
+      if (Resources.ce == null && Loader.isLoaded(Loader.objElectro)) {
         Resources.ce = this.createTexture(Loader.objElectro);
       }
-      if (Resources.Dk == null && Loader.ob(Loader.objSock)) {
+      if (Resources.Dk == null && Loader.isLoaded(Loader.objSock)) {
         Resources.Dk = this.createTexture(Loader.objSock);
       }
-      if (Resources.fd == null && Loader.ob(Loader.objBouncer)) {
+      if (Resources.fd == null && Loader.isLoaded(Loader.objBouncer)) {
         Resources.fd = this.createTexture(Loader.objBouncer);
       }
-      if (Resources.Kb == null && Loader.ob(Loader.objGravity)) {
+      if (Resources.Kb == null && Loader.isLoaded(Loader.objGravity)) {
         Resources.Kb = this.createTexture(Loader.objGravity);
         if (LevelState.box == 8) {
           Resources.Xn = this.createTexture(Loader.box8Earth);
         }
       }
-      if (Resources.gl == null && Loader.ob(Loader.objBlades)) {
+      if (Resources.gl == null && Loader.isLoaded(Loader.objBlades)) {
         Resources.gl = this.createTexture(Loader.objBlades);
       }
-      if (Resources.Ld == null && Loader.ob(Loader.objBee)) {
+      if (Resources.Ld == null && Loader.isLoaded(Loader.objBee)) {
         Resources.Ld = this.createTexture(Loader.objBee);
       }
-      if (Resources.Tc == null && Loader.ob(Loader.objVinyl)) {
+      if (Resources.Tc == null && Loader.isLoaded(Loader.objVinyl)) {
         Resources.Tc = this.createTexture(Loader.objVinyl);
       }
-      if (Resources.de == null && Loader.ob(Loader.objGhost)) {
+      if (Resources.de == null && Loader.isLoaded(Loader.objGhost)) {
         Resources.de = this.createTexture(Loader.objGhost);
       }
-      if (Resources.Kk == null && Loader.ob(Loader.objSteam)) {
+      if (Resources.Kk == null && Loader.isLoaded(Loader.objSteam)) {
         Resources.Kk = this.createTexture(Loader.objSteam);
       }
-      if (Resources.Ai == null && Loader.ob(Loader.objLantern)) {
+      if (Resources.Ai == null && Loader.isLoaded(Loader.objLantern)) {
         Resources.Ai = this.createTexture(Loader.objLantern);
       }
-      if (Resources.wf == null && Loader.ob(Loader.objGap)) {
+      if (Resources.wf == null && Loader.isLoaded(Loader.objGap)) {
         Resources.wf = this.createTexture(Loader.objGap);
       }
-      if (Resources.Ef == null && Loader.ob(Loader.objLighter)) {
+      if (Resources.Ef == null && Loader.isLoaded(Loader.objLighter)) {
         Resources.Ef = this.createTexture(Loader.objLighter);
       }
-      if (Resources.Rc == null && Loader.ob(Loader.objTransporter)) {
+      if (Resources.Rc == null && Loader.isLoaded(Loader.objTransporter)) {
         Resources.Rc = this.createTexture(Loader.objTransporter);
       }
-      if (Resources.Kd == null && Loader.ob(Loader.objSp)) {
+      if (Resources.Kd == null && Loader.isLoaded(Loader.objSp)) {
         Resources.Kd = this.createTexture(Loader.objSp);
       }
-      if (Resources.ml == null && Loader.ob(Loader.char3)) {
+      if (Resources.ml == null && Loader.isLoaded(Loader.char3)) {
         Resources.ml = this.createTexture(Loader.char3);
       }
       if (Resources.wq == null) {
@@ -499,394 +499,394 @@
       let a = this;
       switch (this.state) {
         case 0:
-          this.FQ();
-          this.S.show();
-          this.Ya = LevelCurtain.instance;
-          if (this.Ya == null) {
-            this.uf(true);
+          this.startGameMusic();
+          this.controller.show();
+          this.curtain = LevelCurtain.instance;
+          if (this.curtain == null) {
+            this.setButtonsEnabled(true);
             this.setState(1);
             break;
           }
-          this.oa(this.Ya);
-          this.Ya.dF(function () {
-            a.Ya.dispose();
-            a.uf(true);
+          this.addChild(this.curtain);
+          this.curtain.setOnCloseDone(function () {
+            a.curtain.dispose();
+            a.setButtonsEnabled(true);
           });
-          this.Lw();
+          this.resetStars();
           this.setState(1);
           break;
         case 4:
-          this.Hs(true);
+          this.setPaused(true);
           this.setState(1);
-          this.buttons[1].Ad(false);
+          this.buttons[1].setSelected(false);
           break;
         case 9:
-          this.S.dispose();
-          this.S = new LevelController(this);
-          this.S.show();
-          this.S.update(0.016666666666666666);
-          this.Ya.dF(function () {
-            a.Ya.dispose();
-            a.uf(true);
+          this.controller.dispose();
+          this.controller = new LevelController(this);
+          this.controller.show();
+          this.controller.update(0.016666666666666666);
+          this.curtain.setOnCloseDone(function () {
+            a.curtain.dispose();
+            a.setButtonsEnabled(true);
           });
           this.setState(1);
-          this.uf(false);
-          this.Lw();
-          this.gF();
-          this.oE();
+          this.setButtonsEnabled(false);
+          this.resetStars();
+          this.setLevelText();
+          this.resetLevelText();
       }
     }
-    uw(a) {
-      this.vb.nb(a - 1).pa().play(HUD_STAR_ANIM);
-      this.Vo++;
+    onStarCollected(a) {
+      this.scoreLabel.childAt(a - 1).anim().play(HUD_STAR_ANIM);
+      this.starsCollected++;
     }
-    rw() {
-      this.hg = true;
-      new Sprite(this.vb, Resources.Wa, HUD_STAR_FRAME_0).center();
-      let a = this.vb.nb(0).getWidth();
+    onBonusCollected() {
+      this.bonusCollected = true;
+      new Sprite(this.scoreLabel, Resources.Wa, HUD_STAR_FRAME_0).center();
+      let a = this.scoreLabel.childAt(0).getWidth();
       let b = a * -1.5;
       let c = 0;
       while (c < 4) {
-        this.vb.nb(c++).setX(b);
+        this.scoreLabel.childAt(c++).setX(b);
         b += a;
       }
-      this.vb.nb(3).pa().play(HUD_STAR_ANIM);
+      this.scoreLabel.childAt(3).anim().play(HUD_STAR_ANIM);
     }
-    tw() {
-      this.uf(false);
-      this.mp();
-      this.tm = false;
+    onLevelWon() {
+      this.setButtonsEnabled(false);
+      this.resetPowerups();
+      this.timerOn = false;
     }
-    fQ() {
-      LevelState.TR(Math.max(LevelState.sv(), this.Vo), this.hg);
-      SoundFx.Zn(SoundFx.monster_chewing);
+    onLevelWonRecord() {
+      LevelState.recordCleared(Math.max(LevelState.levelStars(), this.starsCollected), this.bonusCollected);
+      SoundFx.fadeOut(SoundFx.monster_chewing);
       this.setState(5);
-      this.zl();
+      this.addCurtain();
     }
-    eQ() {
-      this.uf(false);
-      this.mp();
-      this.tm = false;
+    onLevelWonAlt() {
+      this.setButtonsEnabled(false);
+      this.resetPowerups();
+      this.timerOn = false;
     }
-    JC() {
+    onFailEvent() {
       if (this.state == 1) {
-        if (LevelScene.am != -1 && (this.Go++, this.Go == LevelScene.am)) {
-          this.Go = 0;
+        if (LevelScene.MAX_FAILS != -1 && (this.failCount++, this.failCount == LevelScene.MAX_FAILS)) {
+          this.failCount = 0;
           let a = 1;
           let b = this.buttons.length;
           while (a < b) {
-            this.buttons[a++].Ad(true);
+            this.buttons[a++].setSelected(true);
           }
           // preview bridge: skip the curtain (box-closing) fail animation
           // in custom-level mode so CD()->Of() can run the white-fade
           // restart while state is still 1 (Of() guards on state == 1).
           if (window.customleveldata == null) {
             this.setState(6);
-            this.zl();
+            this.addCurtain();
           }
         }
-        this.CD();
+        this.onFail();
       }
     }
-    zl() {
-      this.Ya = this.add(LevelCurtain);
-      this.Ya.ZD();
-      this.node.P(this.Ya.node);
-      this.Ya.JA();
+    addCurtain() {
+      this.curtain = this.add(LevelCurtain);
+      this.curtain.markReady();
+      this.node.appendChild(this.curtain.node);
+      this.curtain.playOpenAnim();
     }
-    tO() {
-      this.td = new AdPowerupButtonA();
-      this.buttons.push(this.td);
-      this.node.P(this.td.j.u);
+    addMagnetButton() {
+      this.magnetButton = new AdPowerupButtonA();
+      this.buttons.push(this.magnetButton);
+      this.node.appendChild(this.magnetButton.container.node);
     }
-    wO() {
-      this.ne = new AdPowerupButtonB();
-      this.buttons.push(this.ne);
-      this.node.P(this.ne.j.u);
+    addTelekinesisButton() {
+      this.telekinesisButton = new AdPowerupButtonB();
+      this.buttons.push(this.telekinesisButton);
+      this.node.appendChild(this.telekinesisButton.container.node);
     }
-    mp() {
+    resetPowerups() {
       if (WebApplication.magnetEnabled) {
-        this.td.reset();
+        this.magnetButton.reset();
       }
       if (WebApplication.telekinesisEnabled) {
-        this.ne.reset();
+        this.telekinesisButton.reset();
       }
     }
-    uf(a) {
+    setButtonsEnabled(a) {
       let b = 1;
       let c = this.buttons.length;
       while (b < c) {
-        this.buttons[b++].Ad(a ? false : true);
+        this.buttons[b++].setSelected(a ? false : true);
       }
     }
-    CD() {
-      this.Of();
+    onFail() {
+      this.restartFlow();
     }
-    Of() {
-      if (this.state == 1 && !this.S.Cm) {
-        this.S.Cm = true;
-        this.Lw();
-        this.node.P(this.np.u);
-        this.np.W(0);
-        this.uf(false);
-        this.mp();
+    restartFlow() {
+      if (this.state == 1 && !this.controller.restarting) {
+        this.controller.restarting = true;
+        this.resetStars();
+        this.node.appendChild(this.whiteFade.node);
+        this.whiteFade.setAlpha(0);
+        this.setButtonsEnabled(false);
+        this.resetPowerups();
         this.setState(2);
       }
     }
-    tx() {
-      this.Dg(PauseScene);
+    openPauseMenu() {
+      this.pushOver(PauseScene);
     }
     setState(a) {
       this.state = a;
       this.time = 0;
       if (a == 1) {
-        this.tm = true;
-        this.vs = 0;
+        this.timerOn = true;
+        this.candyChewTimer = 0;
       }
     }
-    Lw() {
-      this.hg = false;
-      this.Vo = 0;
-      if (this.vb.Mj() == 4) {
-        this.vb.nb(3).free();
+    resetStars() {
+      this.bonusCollected = false;
+      this.starsCollected = 0;
+      if (this.scoreLabel.childCount() == 4) {
+        this.scoreLabel.childAt(3).free();
       }
-      var a = this.vb.nb(0).getWidth();
-      this.vb.nb(0).setX(-a);
-      this.vb.nb(1).setX(0);
-      this.vb.nb(2).setX(a);
+      var a = this.scoreLabel.childAt(0).getWidth();
+      this.scoreLabel.childAt(0).setX(-a);
+      this.scoreLabel.childAt(1).setX(0);
+      this.scoreLabel.childAt(2).setX(a);
       for (a = 0; a < 3;) {
-        this.vb.nb(a++).Fb(HUD_STAR_FRAME_0);
+        this.scoreLabel.childAt(a++).setFrame(HUD_STAR_FRAME_0);
       }
     }
-    oE() {
-      this.ti = this.so = 0;
-      this.ee.L(true);
+    resetLevelText() {
+      this.starsAnimTime = this.starsAnimState = 0;
+      this.levelText.setVisible(true);
     }
-    gF() {
-      let a = this.ee.nb(1);
+    setLevelText() {
+      let a = this.levelText.childAt(1);
       a.setFontSize(100);
       a.setText("" + LevelState.box + " - " + LevelState.level);
-      a.setMultiline();
+      a.autoFit();
     }
-    Hs(a) {
-      this.vb.L(a);
-      this.buttons[1].L(a);
-      this.buttons[2].L(a);
+    setPaused(a) {
+      this.scoreLabel.setVisible(a);
+      this.buttons[1].setVisible(a);
+      this.buttons[2].setVisible(a);
       if (a && !WebApplication.externalPause) {
-        this.buttons[1].L(a);
+        this.buttons[1].setVisible(a);
       }
       if (WebApplication.externalMute) {
-        this.buttons[3].L(a);
-        this.buttons[4].L(a);
+        this.buttons[3].setVisible(a);
+        this.buttons[4].setVisible(a);
       }
       if (WebApplication.magnetEnabled) {
-        this.td.L(a);
+        this.magnetButton.setVisible(a);
       }
       if (WebApplication.telekinesisEnabled) {
-        this.ne.L(a);
+        this.telekinesisButton.setVisible(a);
       }
     }
     update(a) {
       super.update(a);
-      this.ti += a;
-      switch (this.so) {
+      this.starsAnimTime += a;
+      switch (this.starsAnimState) {
         case 0:
-          var b = Math.min(this.ti / 0.5, 1);
+          var b = Math.min(this.starsAnimTime / 0.5, 1);
           if (b == 1) {
-            this.so = 1;
-            this.ti = 0;
+            this.starsAnimState = 1;
+            this.starsAnimTime = 0;
           }
-          this.ee.W(Easing.quadOut()(b));
+          this.levelText.setAlpha(Easing.quadOut()(b));
           break;
         case 1:
-          if (this.ti > 1) {
-            this.so = 2;
-            this.ti = 0;
+          if (this.starsAnimTime > 1) {
+            this.starsAnimState = 2;
+            this.starsAnimTime = 0;
           }
           break;
         case 2:
-          b = Math.min(this.ti / 0.5, 1);
+          b = Math.min(this.starsAnimTime / 0.5, 1);
           if (b == 1) {
-            this.so = 3;
-            this.ee.L(false);
+            this.starsAnimState = 3;
+            this.levelText.setVisible(false);
           }
-          this.ee.W(Easing.quadOut()(1 - b));
+          this.levelText.setAlpha(Easing.quadOut()(1 - b));
       }
       LevelScene.isPlaying = this.state == 1;
       switch (this.state) {
         case 1:
-          this.sB();
-          this.S.update(a);
-          this.VQ(a);
+          this.clearPointer();
+          this.controller.update(a);
+          this.updateAdPolling(a);
           if (LevelScene.pendingLevelJump != -1) {
             SoundFx.stop(SoundFx.monster_chewing);
-            this.tm = false;
-            this.mp();
-            this.uf(false);
-            a = LevelState.xN(LevelScene.pendingLevelJump);
-            this.Ha.box = a[0];
-            this.Ha.level = a[1];
+            this.timerOn = false;
+            this.resetPowerups();
+            this.setButtonsEnabled(false);
+            a = LevelState.fromGlobalIndex(LevelScene.pendingLevelJump);
+            this.sharedState.box = a[0];
+            this.sharedState.level = a[1];
             LevelScene.pendingLevelJump = -1;
-            this.FD();
+            this.warpToLevel();
             this.state = 9;
           }
           if (LevelScene.pendingRestart) {
             LevelScene.pendingRestart = false;
             SoundFx.stop(SoundFx.monster_chewing);
-            this.tm = false;
-            this.mp();
-            this.uf(false);
-            this.zl();
+            this.timerOn = false;
+            this.resetPowerups();
+            this.setButtonsEnabled(false);
+            this.addCurtain();
             this.setState(8);
           }
-          if (LevelScene.ev) {
-            LevelScene.ev = false;
-            a = LevelScene.am;
-            LevelScene.am = 1;
-            this.Go = 0;
-            this.JC();
-            LevelScene.am = a;
+          if (LevelScene.forceFailNext) {
+            LevelScene.forceFailNext = false;
+            a = LevelScene.MAX_FAILS;
+            LevelScene.MAX_FAILS = 1;
+            this.failCount = 0;
+            this.onFailEvent();
+            LevelScene.MAX_FAILS = a;
           }
           break;
         case 2:
-          a = this.jb(window.customleveldata != null ? 0.2 : 0.2);
-          this.np.W(a);
+          a = this.progress(window.customleveldata != null ? 0.2 : 0.2);
+          this.whiteFade.setAlpha(a);
           if (a == 1) {
-            this.S.dispose();
-            this.S = new LevelController(this);
-            this.S.show();
+            this.controller.dispose();
+            this.controller = new LevelController(this);
+            this.controller.show();
             this.setState(3);
           }
           break;
         case 3:
-          this.S.update(a);
-          a = this.jb(window.customleveldata != null ? 0.2 : 0.2);
-          this.np.W(1 - a);
+          this.controller.update(a);
+          a = this.progress(window.customleveldata != null ? 0.2 : 0.2);
+          this.whiteFade.setAlpha(1 - a);
           if (a == 1) {
-            this.node.removeChild(this.np.u);
+            this.node.removeChild(this.whiteFade.node);
             this.setState(1);
-            this.uf(true);
-            this.oE();
+            this.setButtonsEnabled(true);
+            this.resetLevelText();
           }
           break;
         case 4:
-          this.S.update(0);
+          this.controller.update(0);
           break;
         case 5:
-          this.S.update(a);
-          if (this.Ya.state == 7) {
-            this.Ya.state = 0;
+          this.controller.update(a);
+          if (this.curtain.state == 7) {
+            this.curtain.state = 0;
             this.state = 9;
-            this.nE();
+            this.showLevelCleared();
           }
           break;
         case 6:
-          this.S.update(a);
-          if (this.Ya.state == 7) {
+          this.controller.update(a);
+          if (this.curtain.state == 7) {
             this.state = 9;
-            this.Ha.count = this.Go;
-            this.pE();
+            this.sharedState.count = this.failCount;
+            this.showLevelLost();
           }
           break;
         case 7:
-          this.S.update(a);
+          this.controller.update(a);
           break;
         case 8:
-          this.S.update(a);
-          if (this.Ya.state == 7) {
-            this.Ya.state = 0;
+          this.controller.update(a);
+          if (this.curtain.state == 7) {
+            this.curtain.state = 0;
             this.state = 9;
-            this.$(MenuScene);
+            this.push(MenuScene);
           }
       }
     }
     iq(a) {
-      super.iq(a);
+      super.lateUpdate(a);
       this.resize();
     }
-    Pd() {
+    handleInput() {
       if (this.state != 7) {
         // preview hotkeys (ported from h5dx gameflow.ts): R=restart,
         // M=mute music, Space=toggle gravity (only when the level has a
         // gravity switch). Escape is folded into the pause check below.
         if (this.state == 1) {
-          let _kb = this.O.lh();
-          if (_kb.Nb(114)) {
-            this.BD();
-          } else if (_kb.Nb(109)) {
-            Save.Ec = !Save.Ec;
+          let _kb = this.app.keyboard();
+          if (_kb.justPressed(114)) {
+            this.restart();
+          } else if (_kb.justPressed(109)) {
+            Save.musicOn = !Save.musicOn;
             Save.flush();
-            this.O.Sa.Sf(Save.Ec ? 1 : 0);
+            this.app.audio.setMusicVolume(Save.musicOn ? 1 : 0);
             if (this.buttons[3] && this.buttons[3].icon) {
-              this.buttons[3].icon.L(!Save.Ec);
+              this.buttons[3].icon.setVisible(!Save.musicOn);
             }
-          } else if (_kb.Nb(32) && this.S != null && this.S.Rd != null) {
-            this.S.Rd.toggle();
-            this.S.Rr(0);
+          } else if (_kb.justPressed(32) && this.controller != null && this.controller.gravityButton != null) {
+            this.controller.gravityButton.toggle();
+            this.controller.onGravityClick(0);
           }
         }
 
-        var a = this.O.lh().Nb(112);
-        if (this.O.lh().Nb(173) || this.O.lh().Nb(461) || this.O.lh().Nb(156)) {
+        var a = this.app.keyboard().justPressed(112);
+        if (this.app.keyboard().justPressed(173) || this.app.keyboard().justPressed(461) || this.app.keyboard().justPressed(156)) {
           a = true;
         }
-        if (WebApplication.externalPause && (this.hb(1) || a)) {
+        if (WebApplication.externalPause && (this.consumeClick(1) || a)) {
           if (this.state != 1) {
-            this.buttons[1].Ad(false);
+            this.buttons[1].setSelected(false);
             return;
           }
-          SoundFx.Xi(SoundFx.monster_chewing, 0);
-          this.S.Ml();
-          this.sB();
-          this.Hs(false);
+          SoundFx.setVolume(SoundFx.monster_chewing, 0);
+          this.controller.resetInput();
+          this.clearPointer();
+          this.setPaused(false);
           this.setState(4);
-          this.zD();
+          this.pause();
         }
-        if (this.hb(2)) {
-          this.BD();
+        if (this.consumeClick(2)) {
+          this.restart();
         }
         if (WebApplication.externalMute) {
-          if (this.hb(3)) {
-            this.Lk(this.buttons[3]);
+          if (this.consumeClick(3)) {
+            this.toggleMusic(this.buttons[3]);
           }
-          if (this.hb(4)) {
-            this.Mk(this.buttons[4]);
+          if (this.consumeClick(4)) {
+            this.toggleSfx(this.buttons[4]);
           }
         }
-        if (!this.S.Rl && !this.S.Ve) {
-          if (WebApplication.magnetEnabled && this.hb(WebApplication.externalMute ? 5 : 3)) {
-            if (AdPowerupButtonA.Mf == 0) {
-              this.yD();
+        if (!this.controller.magnetActive && !this.controller.telekinesisActive) {
+          if (WebApplication.magnetEnabled && this.consumeClick(WebApplication.externalMute ? 5 : 3)) {
+            if (AdPowerupButtonA.COOLDOWN == 0) {
+              this.showMagnetAd();
             } else {
-              this.td.use();
+              this.magnetButton.use();
               if (WebApplication.telekinesisEnabled) {
-                this.ne.pm = true;
+                this.telekinesisButton.pm = true;
               }
-              this.S.GL();
-              if (!Save.Ho) {
-                Save.Ho = true;
+              this.controller.activateMagnet();
+              if (!Save.magnetUsed) {
+                Save.magnetUsed = true;
                 Save.flush();
                 a = new LevelToast(Strings.get("MAGNET_TIP"));
-                this.node.P(a.j.u);
-                this.oa(a);
+                this.node.appendChild(a.container.node);
+                this.addChild(a);
               }
             }
           }
-          if (WebApplication.telekinesisEnabled && this.hb(WebApplication.externalMute ? 6 : 4)) {
-            if (AdPowerupButtonB.Mf == 0) {
-              this.ED();
+          if (WebApplication.telekinesisEnabled && this.consumeClick(WebApplication.externalMute ? 6 : 4)) {
+            if (AdPowerupButtonB.COOLDOWN == 0) {
+              this.showTelekinesisAd();
             } else {
-              this.ne.use();
+              this.telekinesisButton.use();
               if (WebApplication.magnetEnabled) {
-                this.td.pm = true;
+                this.magnetButton.pm = true;
               }
-              this.S.HL();
-              if (!Save.Dp) {
-                Save.Dp = true;
+              this.controller.activateTelekinesis();
+              if (!Save.telekinesisUsed) {
+                Save.telekinesisUsed = true;
                 Save.flush();
                 a = new LevelToast(Strings.get("ANTIMAGNET_TIP"));
-                this.node.P(a.j.u);
-                this.oa(a);
+                this.node.appendChild(a.container.node);
+                this.addChild(a);
               }
             }
           }
@@ -895,19 +895,19 @@
     }
     transitionOut(a, b) {
       if (b instanceof SelectBoxScene) {
-        this.fh.L(true);
+        this.fade.setVisible(true);
         if (a == 1 && b instanceof SelectBoxScene) {
           LevelCurtain.instance.dispose();
         }
       }
       if (b instanceof MenuScene) {
-        this.fh.L(true);
+        this.fade.setVisible(true);
         if (a == 1 && b instanceof MenuScene) {
           LevelCurtain.instance.dispose();
         }
       }
       if (b instanceof WarpScene) {
-        this.fh.L(true);
+        this.fade.setVisible(true);
       }
       super.transitionOut(a, b);
     }
@@ -920,47 +920,47 @@
     }
     render(a) {
       if (this.state != 0) {
-        let b = this.S;
+        let b = this.controller;
         if (b != null) {
           b.render(a);
         }
       }
       super.render(a);
     }
-    VQ(a) {
-      if (!!this.tm && (!!WebApplication.magnetEnabled || !!WebApplication.telekinesisEnabled) && !this.S.Rl && !this.S.Ve) {
-        this.vs += a;
-        if (this.vs >= 1) {
-          this.vs = 0;
-          a = this.tr();
+    updateAdPolling(a) {
+      if (!!this.timerOn && (!!WebApplication.magnetEnabled || !!WebApplication.telekinesisEnabled) && !this.controller.magnetActive && !this.controller.telekinesisActive) {
+        this.candyChewTimer += a;
+        if (this.candyChewTimer >= 1) {
+          this.candyChewTimer = 0;
+          a = this.hasAd();
           if (WebApplication.magnetEnabled) {
-            this.td.ND(a);
+            this.magnetButton.setHasAd(a);
           }
           if (WebApplication.telekinesisEnabled) {
-            this.ne.ND(a);
+            this.telekinesisButton.setHasAd(a);
           }
         }
       }
     }
-    tr() {
+    hasAd() {
       return true;
     }
     resize() {
-      var a = this.O.window.lo();
+      var a = this.app.window.viewportRect();
       var b = window.devicePixelRatio;
       var c = b < 1 ? 1 : b > 2 ? 2 : b;
-      var d = this.O.window.bp;
-      var e = this.fa.Se();
+      var d = this.app.window.bp;
+      var e = this.director.aspectRatio();
       b = e > 1;
       c = c <= 1 ? 0.05 : c <= 1.25 ? 0.06 : 0.07;
-      if (this.O.Vj) {
-        c = (c = Math.min(a.w, a.J) <= 800 && Math.max(a.w, a.J) <= 1280 && d <= 2) ? 0.08 : 0.04;
+      if (this.app.isMobile) {
+        c = (c = Math.min(a.w, a.h) <= 800 && Math.max(a.w, a.h) <= 1280 && d <= 2) ? 0.08 : 0.04;
       }
-      if (this.O.jd) {
+      if (this.app.isWebOS) {
         c = 0.04;
       }
-      c = Math.max(a.w, a.J) * c * d;
-      if (!this.O.Vj) {
+      c = Math.max(a.w, a.h) * c * d;
+      if (!this.app.isMobile) {
         if (c < 70) {
           c = 70;
         }
@@ -970,138 +970,138 @@
       }
       let f = 30;
       var g = 0;
-      if (this.O.jd) {
+      if (this.app.isWebOS) {
         g = d * 25;
         f = 60;
       }
-      this.vb.setUniformScale(c / 150);
+      this.scoreLabel.setUniformScale(c / 150);
       var h = 0;
-      if (this.O.jd) {
+      if (this.app.isWebOS) {
         h = 20;
       }
-      this.vb.setX(a.w / 2);
-      var m = this.O.jd ? this.Sm ? 0.75 : 1.4 : 1;
+      this.scoreLabel.setX(a.w / 2);
+      var m = this.app.isWebOS ? this.isWebOSHD ? 0.75 : 1.4 : 1;
       var n = this.buttons[1];
       if (WebApplication.externalPause) {
-        n.j.setUniformScale(c / n.ec.y * m);
-        n.up(a.w - h - g);
+        n.container.setUniformScale(c / n.sourceSize.y * m);
+        n.alignRight(a.w - h - g);
         n.setY(0);
       } else {
-        n.L(false);
+        n.setVisible(false);
       }
       d = this.buttons[2];
-      d.j.setUniformScale(c / d.ec.y * m);
+      d.container.setUniformScale(c / d.sourceSize.y * m);
       if (WebApplication.externalPause) {
-        d.up(n.getX() - h);
+        d.alignRight(n.getX() - h);
       } else {
-        d.up(a.w - h);
+        d.alignRight(a.w - h);
       }
       d.setY(0);
       n = null;
       if (WebApplication.externalMute) {
         var q = this.buttons[3];
-        q.j.setUniformScale(c / q.ec.y * m);
-        q.up(d.getX() - h);
+        q.container.setUniformScale(c / q.sourceSize.y * m);
+        q.alignRight(d.getX() - h);
         q.setY(0);
         n = this.buttons[4];
-        n.j.setUniformScale(c / n.ec.y * m);
-        n.up(q.getX() - h);
+        n.container.setUniformScale(c / n.sourceSize.y * m);
+        n.alignRight(q.getX() - h);
         n.setY(0);
       }
       if (WebApplication.magnetEnabled) {
-        q = c / this.td.ec.y * m;
-        this.td.setX(g);
-        this.td.j.setUniformScale(q);
+        q = c / this.magnetButton.sourceSize.y * m;
+        this.magnetButton.setX(g);
+        this.magnetButton.container.setUniformScale(q);
       }
       if (WebApplication.telekinesisEnabled) {
-        this.ne.j.setUniformScale(c / this.td.ec.y * m);
+        this.telekinesisButton.container.setUniformScale(c / this.magnetButton.sourceSize.y * m);
         if (WebApplication.magnetEnabled) {
-          this.ne.setX(this.td.getX() + this.td.getWidth() + h);
+          this.telekinesisButton.setX(this.magnetButton.getX() + this.magnetButton.getWidth() + h);
         } else {
-          this.ne.setX(g);
+          this.telekinesisButton.setX(g);
         }
       }
       h = 1;
       for (m = this.buttons.length; h < m;) {
-        this.buttons[h++].j.setY(g);
+        this.buttons[h++].container.setY(g);
       }
-      this.vb.setY(d.getY() + d.getHeight() / 2);
+      this.scoreLabel.setY(d.getY() + d.getHeight() / 2);
       if (e < 0.8) {
-        e = WebApplication.magnetEnabled && WebApplication.telekinesisEnabled ? this.ne.yv() : WebApplication.magnetEnabled ? this.td.yv() : WebApplication.telekinesisEnabled ? this.ne.yv() : 0;
+        e = WebApplication.magnetEnabled && WebApplication.telekinesisEnabled ? this.telekinesisButton.rightEdge() : WebApplication.magnetEnabled ? this.magnetButton.rightEdge() : WebApplication.telekinesisEnabled ? this.telekinesisButton.rightEdge() : 0;
         g = WebApplication.externalMute ? n.getX() : d.getX();
-        this.vb.setX(e + (g - e) / 2);
-        if (g - e < this.vb.getWidth()) {
-          e = this.vb;
-          e.setY(e.getY() + this.vb.getHeight() * 1.25);
+        this.scoreLabel.setX(e + (g - e) / 2);
+        if (g - e < this.scoreLabel.getWidth()) {
+          e = this.scoreLabel;
+          e.setY(e.getY() + this.scoreLabel.getHeight() * 1.25);
         }
       }
-      this.ee.setUniformScale(c / 100);
-      this.ee.setX(f);
-      this.ee.setY(a.J - this.ee.getHeight() * 1.1 - f);
-      if (this.O.Vj && b) {
-        a = this.ee;
+      this.levelText.setUniformScale(c / 100);
+      this.levelText.setX(f);
+      this.levelText.setY(a.h - this.levelText.getHeight() * 1.1 - f);
+      if (this.app.isMobile && b) {
+        a = this.levelText;
         a.setX(a.getX() + 20);
-        a = this.ee;
+        a = this.levelText;
         a.setY(a.getY() - 20);
       }
     }
-    yD() {
+    showMagnetAd() {
       this.setState(7);
-      DelayedCall.delay(cachedBind(this, this.KC), 1000);
+      DelayedCall.delay(cachedBind(this, this.afterMagnetAdShown), 1000);
     }
-    KC() {
-      this.td.fill(WebApplication.magnetRefill);
+    useMagnet() {
+      this.magnetButton.fill(WebApplication.magnetRefill);
       SoundFx.play(SoundFx.pump_4);
-      this.S.Ml();
+      this.controller.resetInput();
       this.setState(1);
     }
-    iQ() {
-      this.S.Ml();
-      this.td.reject();
+    onMagnetAdReject() {
+      this.controller.resetInput();
+      this.magnetButton.reject();
       this.setState(1);
     }
-    ED() {
+    showTelekinesisAd() {
       this.setState(7);
-      DelayedCall.delay(cachedBind(this, this.RC), 1000);
+      DelayedCall.delay(cachedBind(this, this.afterTelekinesisAdShown), 1000);
     }
-    RC() {
-      this.ne.fill(WebApplication.telekinesisRefill);
+    useTelekinesis() {
+      this.telekinesisButton.fill(WebApplication.telekinesisRefill);
       SoundFx.play(SoundFx.pump_4);
-      this.S.Ml();
+      this.controller.resetInput();
       this.setState(1);
     }
-    qQ() {
-      this.S.Ml();
-      this.ne.reject();
+    onTelekinesisAdReject() {
+      this.controller.resetInput();
+      this.telekinesisButton.reject();
       this.setState(1);
     }
-    zD() {
-      this.tx();
+    pause() {
+      this.openPauseMenu();
     }
-    FD() {
-      this.$(WarpScene);
+    warpToLevel() {
+      this.push(WarpScene);
     }
-    Lk(a) {
-      Save.Ec = !Save.Ec;
+    toggleMusic(a) {
+      Save.musicOn = !Save.musicOn;
       Save.flush();
-      a.icon.L(!Save.Ec);
-      a.Ad(false);
+      a.icon.setVisible(!Save.musicOn);
+      a.setSelected(false);
       a.ke = 0;
-      this.O.Sa.Sf(Save.Ec ? 1 : 0);
+      this.app.audio.setMusicVolume(Save.musicOn ? 1 : 0);
     }
-    Mk(a) {
-      Save.Bd = !Save.Bd;
+    toggleSfx(a) {
+      Save.sfxOn = !Save.sfxOn;
       Save.flush();
-      a.icon.L(!Save.Bd);
-      a.Ad(false);
+      a.icon.setVisible(!Save.sfxOn);
+      a.setSelected(false);
       a.ke = 0;
     }
-    BD() {
-      this.Of();
+    restart() {
+      this.restartFlow();
     }
-    sB() {
-      let a = this.O.hd();
-      let b = this.O.Qj();
+    clearPointer() {
+      let a = this.app.pointer();
+      let b = this.app.touchDevice();
       let c = 0;
       let d = vA6;
       while (c < d.length) {
@@ -1109,25 +1109,25 @@
         ++c;
         var e = a.position[f];
         e = new Size(e.x, e.y);
-        let g = b.bO(f);
-        if (a.Nb(f)) {
-          this.S.WS(e, g);
+        let g = b.slotForId(f);
+        if (a.justPressed(f)) {
+          this.controller.onTouchPress(e, g);
         }
-        if (a.oF(f)) {
-          this.S.XS(e, g);
+        if (a.hovered(f)) {
+          this.controller.onTouchMove(e, g);
         }
-        if (a.qe(f)) {
-          this.S.YS(e, g);
+        if (a.justReleased(f)) {
+          this.controller.onTouchRelease(e, g);
         }
       }
     }
-    nE() {
-      this.Ha.stars = this.Vo;
-      this.Ha.blueStar = this.hg;
-      this.Dg(LevelClearedOverlay);
+    showLevelCleared() {
+      this.sharedState.stars = this.starsCollected;
+      this.sharedState.blueStar = this.bonusCollected;
+      this.pushOver(LevelClearedOverlay);
     }
-    pE() {
-      this.Dg(LevelLostOverlay);
+    showLevelLost() {
+      this.pushOver(LevelLostOverlay);
     }
     getName() {
       return "LevelScene";
@@ -1141,38 +1141,38 @@
   class CTRCLevelScene extends LevelScene {
     constructor() {
       super();
-      LevelScene.am = 1;
-      this.Ox = false;
+      LevelScene.MAX_FAILS = 1;
+      this.adPlayed = false;
     }
-    tr() {
+    hasAd() {
       return SDK.hasRewardedAd();
     }
-    yD() {
+    showMagnetAd() {
       this.setState(7);
       SDK.trackDesignEvent("game:powerup:magnet:rewarded");
       let a = this;
       SDK.showRewardedAd(function (b) {
         if (b) {
-          a.KC();
+          a.useMagnet();
         } else {
-          a.iQ();
+          a.onMagnetAdReject();
         }
       });
     }
-    ED() {
+    showTelekinesisAd() {
       this.setState(7);
       SDK.trackDesignEvent("game:powerup:telekinesis:rewarded");
       let a = this;
       SDK.showRewardedAd(function (b) {
         if (b) {
-          a.RC();
+          a.useTelekinesis();
         } else {
-          a.qQ();
+          a.onTelekinesisAdReject();
         }
       });
     }
-    tw() {
-      if (LevelState.level == 25 && Save.Df[LevelState.box - 1][LevelState.level] == null) {
+    onLevelWon() {
+      if (LevelState.level == 25 && Save.cleared[LevelState.box - 1][LevelState.level] == null) {
         let a = Strings.get("BOX1_LABEL BOX2_LABEL BOX3_LABEL BOX4_LABEL BOX5_LABEL BOX6_LABEL BOX7_LABEL BOX8_LABEL BOX9_LABEL BOX10_LABEL BOX11_LABEL BOX12_LABEL BOX13_LABEL BOX14_LABEL BOX15_LABEL BOX16_LABEL BOX17_LABEL".split(" ")[LevelState.box - 1]);
         SDK.trackEvent("EVENT_CUSTOM", {
           eventName: "BOX_CLEARED",
@@ -1180,84 +1180,84 @@
           boxName: a
         });
       }
-      this.Ox = true;
-      super.tw();
+      this.adPlayed = true;
+      super.onLevelWon();
     }
-    Mk(a) {
-      super.Mk(a);
-      SDK.trackVolumeChange(Save.Ec ? 1 : 0, Save.Bd ? 1 : 0);
+    toggleSfx(a) {
+      super.toggleSfx(a);
+      SDK.trackVolumeChange(Save.musicOn ? 1 : 0, Save.sfxOn ? 1 : 0);
     }
-    Lk(a) {
-      super.Lk(a);
-      SDK.trackVolumeChange(Save.Ec ? 1 : 0, Save.Bd ? 1 : 0);
+    toggleMusic(a) {
+      super.toggleMusic(a);
+      SDK.trackVolumeChange(Save.musicOn ? 1 : 0, Save.sfxOn ? 1 : 0);
     }
-    zD() {
+    pause() {
       let a = this;
       SDK.trackPause(function () {
         SDK.showInterstitialAd("button:level:pause", cachedBind(a, a.tx));
       });
     }
-    tx() {
-      this.Dg(CTRCPauseScene);
+    openPauseMenu() {
+      this.pushOver(CTRCPauseScene);
     }
-    BD() {
+    restart() {
       let a = this;
       SDK.trackLevelRestart(currentLevelId(), function () {
-        a.Hs(false);
+        a.setPaused(false);
         SDK.showInterstitialAd("button:level:restart", function () {
-          a.Hs(true);
-          a.Of();
+          a.setPaused(true);
+          a.restartFlow();
         });
       });
     }
-    CD() {
+    onFail() {
       // preview bridge: skip SDK tracking / interstitial in custom-level
       // mode so the white-fade restart runs immediately.
       if (window.customleveldata != null) {
-        this.Of();
+        this.restartFlow();
         return;
       }
       let a = this;
-      SDK.trackLevelEnd(LevelState.Nj(), "fail", function () {
+      SDK.trackLevelEnd(LevelState.totalStars(), "fail", function () {
         SDK.trackLevelFail("dead", currentLevelId(), function () {
           SDK.showInterstitialAd("break:fail", cachedBind(a, a.Of));
         });
       }, function () {
-        a.Of();
+        a.restartFlow();
       });
     }
-    FD() {
-      this.$(CTRCWarpScene);
+    warpToLevel() {
+      this.push(CTRCWarpScene);
     }
-    uw(a) {
-      super.uw(a);
+    onStarCollected(a) {
+      super.onStarCollected(a);
       SDK.trackLiveScore(a);
     }
-    nE() {
-      this.Ha.stars = this.Vo;
-      this.Ha.blueStar = this.hg;
-      this.Dg(CTRCLevelClearedOverlay);
+    showLevelCleared() {
+      this.sharedState.stars = this.starsCollected;
+      this.sharedState.blueStar = this.bonusCollected;
+      this.pushOver(CTRCLevelClearedOverlay);
     }
-    zl() {
+    addCurtain() {
       let a = this;
-      if (this.state == 5 && this.Ox) {
-        SDK.trackLevelEnd(LevelState.Nj(), "success", function () {
+      if (this.state == 5 && this.adPlayed) {
+        SDK.trackLevelEnd(LevelState.totalStars(), "success", function () {
           a.Ox = false;
-          a.zl();
+          a.addCurtain();
         }, function () {});
       } else {
-        super.zl();
+        super.addCurtain();
       }
     }
-    pE() {
+    showLevelLost() {
       // preview bridge: in custom-level mode, skip the fail overlay and just
       // trigger the white-fade restart flow directly (durations bumped to
       // 0.5s by the patched case 2 / case 3 in LevelScene.update).
       if (window.customleveldata != null) {
-        this.Of();
+        this.restartFlow();
         return;
       }
-      this.Dg(CTRCLevelLostOverlay);
+      this.pushOver(CTRCLevelLostOverlay);
     }
     getName() {
       return "CTRCLevelScene";
@@ -1275,35 +1275,35 @@
       LevelState.box = 1;
       LevelState.level = 1;
     }
-    static xN(a) {
+    static fromGlobalIndex(a) {
       return [1 + ((a - 1) / 25 | 0), (a - 1) % 25 + 1];
     }
-    static zk(a) {
+    static setSeason(a) {
       LevelState.season = a;
     }
-    static Ui(a) {
+    static setBox(a) {
       LevelState.box = a;
     }
-    static sp(a) {
+    static setLevel(a) {
       LevelState.level = a;
     }
-    static TR(a, b) {
+    static recordCleared(a, b) {
       let c = LevelState.box - 1;
       let d = LevelState.level - 1;
-      Save.wg[c][d] = a;
-      Save.ig[c][d] = b ? 1 : 0;
+      Save.levelStars[c][d] = a;
+      Save.blueStars[c][d] = b ? 1 : 0;
       if (d < 25) {
-        Save.Df[c][d + 1] = true;
+        Save.cleared[c][d + 1] = true;
       }
       Save.flush();
     }
-    static QN() {
-      return Save.Mi.length;
+    static pictureCount() {
+      return Save.pictures.length;
     }
-    static QB(a) {
-      return Save.Mi.includes("" + LevelMath.PA(a) + "-" + LevelMath.rv(a));
+    static hasPicture(a) {
+      return Save.pictures.includes("" + LevelMath.seasonForBox(a) + "-" + LevelMath.globalIndex(a));
     }
-    static OO() {
+    static currentLevelHasPicture() {
       switch (LevelState.box) {
         case 1:
           return [-1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1][LevelState.level] == 1;
@@ -1313,51 +1313,51 @@
           return false;
       }
     }
-    static mO() {
-      if (!LevelState.OO() || Save.Mi.includes("" + LevelState.box + "-" + LevelState.level)) {
+    static tryUnlockPicture() {
+      if (!LevelState.currentLevelHasPicture() || Save.pictures.includes("" + LevelState.box + "-" + LevelState.level)) {
         return false;
       }
-      Save.Mi.push("" + LevelState.box + "-" + LevelState.level);
-      Save.kk++;
+      Save.pictures.push("" + LevelState.box + "-" + LevelState.level);
+      Save.pictureBadgeCount++;
       Save.flush();
       return true;
     }
-    static LO(a) {
-      return Save.Df[LevelState.box - 1][a - 1];
+    static isCleared(a) {
+      return Save.cleared[LevelState.box - 1][a - 1];
     }
-    static Ar(a) {
+    static isBoxLocked(a) {
       return Save.locked[a - 1];
     }
-    static hA(a) {
-      return LevelState.tv(a) <= 0;
+    static canUnlockBox(a) {
+      return LevelState.starsNeededForBox(a) <= 0;
     }
-    static iT(a) {
+    static unlockBox(a) {
       Save.locked[a - 1] = false;
-      Save.Df[a - 1][0] = true;
+      Save.cleared[a - 1][0] = true;
       Save.flush();
     }
-    static tv(a) {
+    static starsNeededForBox(a) {
       --a;
-      return BOX_STAR_THRESHOLDS[a] - LevelState.wv();
+      return BOX_STAR_THRESHOLDS[a] - LevelState.seasonStars();
     }
-    static hl() {
+    static isLastLevel() {
       return LevelState.level == 25;
     }
-    static nS() {
-      LevelState.sp(LevelState.level + 1);
+    static goToNextLevel() {
+      LevelState.setLevel(LevelState.level + 1);
     }
-    static Nj() {
+    static totalStars() {
       let a = 0;
       let b = LevelState.season;
       let c = 0;
       while (c < 3) {
         LevelState.season = c++ + 1;
-        a += LevelState.wv();
+        a += LevelState.seasonStars();
       }
       LevelState.season = b;
       return a;
     }
-    static wv() {
+    static seasonStars() {
       var a = 0;
       var b = 0;
       let c = 0;
@@ -1379,26 +1379,26 @@
         let e = 0;
         while (e < 25) {
           let f = e++;
-          c += Save.wg[d][f];
-          c += Save.ig[d][f];
+          c += Save.levelStars[d][f];
+          c += Save.blueStars[d][f];
         }
       }
       return c;
     }
-    static QL() {
+    static allLevelsCleared() {
       let a = 0;
       while (a < 17) {
         let b = a++;
         let c = 0;
         while (c < 25) {
-          if (!Save.Df[b][c++]) {
+          if (!Save.cleared[b][c++]) {
             return false;
           }
         }
       }
       return true;
     }
-    static QA(a) {
+    static boxStars(a) {
       if (a == null) {
         a = LevelState.box;
       }
@@ -1406,22 +1406,22 @@
       let c = 0;
       while (c < 25) {
         let d = c++;
-        b += Save.wg[a - 1][d];
-        b += Save.ig[a - 1][d];
+        b += Save.levelStars[a - 1][d];
+        b += Save.blueStars[a - 1][d];
       }
       return b;
     }
-    static sv(a) {
+    static levelStars(a) {
       if (a == null) {
         a = LevelState.level;
       }
-      return Save.wg[LevelState.box - 1][a - 1];
+      return Save.levelStars[LevelState.box - 1][a - 1];
     }
-    static uB(a) {
+    static levelBlueStarCollected(a) {
       if (a == null) {
         a = LevelState.level;
       }
-      return Save.ig[LevelState.box - 1][a - 1] > 0;
+      return Save.blueStars[LevelState.box - 1][a - 1] > 0;
     }
   }
   LevelState.i = true;

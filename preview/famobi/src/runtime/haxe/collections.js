@@ -11,48 +11,48 @@
       if (a == null) {
         a = 2;
       }
-      this.sd = null;
-      this.ba = 0;
-      this.Dm = false;
-      this.Rj = -2;
-      this.cm = a < 2 ? 2 : a;
+      this.cachedIter = null;
+      this.count = 0;
+      this.reusableIter = false;
+      this.growStrategy = -2;
+      this.initCapacity = a < 2 ? 2 : a;
       if (b != null && b.length > 0) {
-        this.ba = b.length;
-        this.N = b.slice(0, b.length);
-        this.eb = this.ba;
+        this.count = b.length;
+        this.array = b.slice(0, b.length);
+        this.capacity = this.count;
       } else {
-        this.eb = this.cm;
-        this.N = Array(this.eb);
+        this.capacity = this.initCapacity;
+        this.array = Array(this.capacity);
       }
       if (c) {
-        this.Rj = 0;
+        this.growStrategy = 0;
       }
     }
     pushBack(a) {
-      if (this.ba == this.eb) {
+      if (this.count == this.capacity) {
         this.grow();
       }
-      this.N[this.ba++] = a;
+      this.array[this.count++] = a;
     }
     front() {
-      return this.N[0];
+      return this.array[0];
     }
     swapPop(a) {
-      let b = this.N;
-      b[a] = b[--this.ba];
+      let b = this.array;
+      b[a] = b[--this.count];
     }
     trim(a) {
-      this.ba = a;
+      this.count = a;
       return this;
     }
     indexOf(a) {
-      if (this.ba == 0) {
+      if (this.count == 0) {
         return -1;
       }
       let b = 0;
       let c = -1;
-      let d = this.ba - 1;
-      let e = this.N;
+      let d = this.count - 1;
+      let e = this.array;
       do {
         if (e[b] == a) {
           c = b;
@@ -62,50 +62,50 @@
       return c;
     }
     reserve(a) {
-      if (a > this.eb) {
-        this.eb = a;
+      if (a > this.capacity) {
+        this.capacity = a;
         this.resizeContainer(a);
       }
     }
-    ib(a, b) {
+    init(a, b) {
       this.reserve(a);
-      this.ba = a;
-      let c = this.N;
+      this.count = a;
+      let c = this.array;
       let d = 0;
       while (d < a) {
         c[d++] = b;
       }
     }
     pack() {
-      if (this.eb > this.cm) {
-        var a = this.cm;
-        var b = this.ba;
-        this.eb = a > b ? a : b;
-        this.resizeContainer(this.eb);
+      if (this.capacity > this.initCapacity) {
+        var a = this.initCapacity;
+        var b = this.count;
+        this.capacity = a > b ? a : b;
+        this.resizeContainer(this.capacity);
       } else {
-        a = this.N;
-        b = this.ba;
-        let c = this.eb;
+        a = this.array;
+        b = this.count;
+        let c = this.capacity;
         while (b < c) {
           a[b++] = null;
         }
       }
     }
     grow() {
-      this.eb = GrowStrategy.On(this.Rj, this.eb);
-      this.resizeContainer(this.eb);
+      this.capacity = GrowStrategy.compute(this.growStrategy, this.capacity);
+      this.resizeContainer(this.capacity);
     }
     resizeContainer(a) {
       a = Array(a);
-      NativeArray.Bn(this.N, 0, a, this.ba);
-      this.N = a;
+      NativeArray.blit(this.array, 0, a, this.count);
+      this.array = a;
     }
-    cv() {
-      NativeArray.Or(this.N);
-      this.N = null;
-      if (this.sd != null) {
-        this.sd.cv();
-        this.sd = null;
+    freeNative() {
+      NativeArray.fill(this.array);
+      this.array = null;
+      if (this.cachedIter != null) {
+        this.cachedIter.freeNative();
+        this.cachedIter = null;
       }
     }
     clear(a) {
@@ -113,21 +113,21 @@
         a = false;
       }
       if (a) {
-        NativeArray.Or(this.N);
+        NativeArray.fill(this.array);
       }
-      this.ba = 0;
+      this.count = 0;
     }
     iterator() {
-      if (this.Dm) {
-        if (this.sd == null) {
-          this.sd = new ArrayListIter(this);
+      if (this.reusableIter) {
+        if (this.cachedIter == null) {
+          this.cachedIter = new ArrayListIter(this);
         } else {
-          let a = this.sd;
-          a.N = a.ye.N;
-          a.yg = a.ye.ba;
-          a.xe = 0;
+          let a = this.cachedIter;
+          a.array = a.list.array;
+          a.end = a.list.count;
+          a.idx = 0;
         }
-        return this.sd;
+        return this.cachedIter;
       }
       return new ArrayListIter(this);
     }
@@ -139,65 +139,65 @@
   });
   class Grid2D {
     constructor(a, b, c) {
-      this.sd = null;
-      this.Dm = false;
+      this.cachedIter = null;
+      this.reusableIter = false;
       if (c != null) {
-        this.Tb = a;
-        this.Yc = b;
-        a = this.N = Array(this.Tb * this.Yc);
+        this.cols = a;
+        this.rows = b;
+        a = this.array = Array(this.cols * this.rows);
         b = 0;
-        let d = this.Tb * this.Yc;
+        let d = this.cols * this.rows;
         while (b < d) {
           let e = b++;
           a[e] = c[e];
         }
       } else {
-        this.Tb = a;
-        this.Yc = b;
-        this.N = Array(this.Tb * this.Yc);
+        this.cols = a;
+        this.rows = b;
+        this.array = Array(this.cols * this.rows);
       }
     }
     forEach(a) {
-      let b = this.N;
-      let c = this.Tb;
+      let b = this.array;
+      let c = this.cols;
       let d = 0;
-      let e = this.Tb * this.Yc;
+      let e = this.cols * this.rows;
       while (d < e) {
         let f = d++;
         b[f] = a(b[f], f % c, f / c | 0);
       }
       return this;
     }
-    zi(a) {
-      let b = this.N;
+    forEachValue(a) {
+      let b = this.array;
       let c = 0;
-      let d = this.Tb * this.Yc;
+      let d = this.cols * this.rows;
       while (c < d) {
         a(b[c++]);
       }
       return this;
     }
     resize(a, b) {
-      if (a == this.Tb && b == this.Yc) {
+      if (a == this.cols && b == this.rows) {
         return this;
       }
-      let c = this.N;
-      this.N = Array(a * b);
-      if (a == this.Tb) {
-        NativeArray.Bn(c, 0, this.N, this.Tb * (b < this.Yc ? b : this.Yc));
-        this.Tb = a;
-        this.Yc = b;
+      let c = this.array;
+      this.array = Array(a * b);
+      if (a == this.cols) {
+        NativeArray.blit(c, 0, this.array, this.cols * (b < this.rows ? b : this.rows));
+        this.cols = a;
+        this.rows = b;
         return this;
       }
-      let d = a < this.Tb ? a : this.Tb;
+      let d = a < this.cols ? a : this.cols;
       let e;
-      let f = this.N;
+      let f = this.array;
       let g = 0;
-      let h = b < this.Yc ? b : this.Yc;
+      let h = b < this.rows ? b : this.rows;
       while (g < h) {
         var m = g++;
         e = m * a;
-        m *= this.Tb;
+        m *= this.cols;
         let n = 0;
         let q = d;
         while (n < q) {
@@ -205,22 +205,22 @@
           f[e + p] = c[m + p];
         }
       }
-      this.Tb = a;
-      this.Yc = b;
+      this.cols = a;
+      this.rows = b;
       return this;
     }
     iterator() {
-      if (this.Dm) {
-        if (this.sd == null) {
-          this.sd = new Grid2DIter(this);
+      if (this.reusableIter) {
+        if (this.cachedIter == null) {
+          this.cachedIter = new Grid2DIter(this);
         } else {
-          let a = this.sd;
-          a.N = a.ye.N;
-          let b = a.ye;
-          a.yg = b.Tb * b.Yc;
-          a.xe = 0;
+          let a = this.cachedIter;
+          a.array = a.list.array;
+          let b = a.list;
+          a.end = b.cols * b.rows;
+          a.idx = 0;
         }
-        return this.sd;
+        return this.cachedIter;
       }
       return new Grid2DIter(this);
     }
@@ -238,17 +238,17 @@
   });
   class Grid2DIter {
     constructor(a) {
-      this.ye = a;
-      this.N = this.ye.N;
-      a = this.ye;
-      this.yg = a.Tb * a.Yc;
-      this.xe = 0;
+      this.list = a;
+      this.array = this.list.array;
+      a = this.list;
+      this.end = a.cols * a.rows;
+      this.idx = 0;
     }
-    fb() {
-      return this.xe < this.yg;
+    hasNext() {
+      return this.idx < this.end;
     }
     next() {
-      return this.N[this.xe++];
+      return this.array[this.idx++];
     }
   }
   Grid2DIter.i = true;
@@ -265,54 +265,54 @@
       if (a == null) {
         a = 16;
       }
-      this.Ga = 0;
-      this.Rj = -2;
-      this.eb = this.cm = a < 1 ? 1 : a;
+      this.count = 0;
+      this.growStrategy = -2;
+      this.capacity = this.initCapacity = a < 1 ? 1 : a;
       if (b != null) {
-        a = this.Ga = b.length;
-        var d = this.eb;
-        this.eb = a > d ? a : d;
+        a = this.count = b.length;
+        var d = this.capacity;
+        this.capacity = a > d ? a : d;
       }
-      this.N = Array(this.eb);
+      this.array = Array(this.capacity);
       if (b != null) {
-        a = this.N;
+        a = this.array;
         d = 0;
-        let e = this.Ga;
+        let e = this.count;
         while (d < e) {
           let f = d++;
           a[f] = b[f];
         }
       }
       if (c) {
-        this.Rj = 0;
+        this.growStrategy = 0;
       }
     }
     reserve(a) {
-      if (a > this.eb) {
-        this.eb = a;
+      if (a > this.capacity) {
+        this.capacity = a;
         this.resizeContainer(a);
       }
     }
     top() {
-      return this.N[this.Ga - 1];
+      return this.array[this.count - 1];
     }
     clear(a) {
       if (a == null) {
         a = false;
       }
       if (a) {
-        NativeArray.Or(this.N);
+        NativeArray.fill(this.array);
       }
-      this.Ga = 0;
+      this.count = 0;
     }
     grow() {
-      this.eb = GrowStrategy.On(this.Rj, this.eb);
-      this.resizeContainer(this.eb);
+      this.capacity = GrowStrategy.compute(this.growStrategy, this.capacity);
+      this.resizeContainer(this.capacity);
     }
     resizeContainer(a) {
       a = Array(a);
-      NativeArray.Bn(this.N, 0, a, this.Ga);
-      this.N = a;
+      NativeArray.blit(this.array, 0, a, this.count);
+      this.array = a;
     }
   }
   Stack.i = true;
@@ -332,42 +332,42 @@
       if (a == null) {
         a = 1;
       }
-      this.sd = null;
-      this.ba = 0;
-      this.Dm = false;
-      this.Rj = -2;
-      this.cm = a < 1 ? 1 : a;
-      this.eb = a;
-      this.xg = b;
+      this.cachedIter = null;
+      this.count = 0;
+      this.reusableIter = false;
+      this.growStrategy = -2;
+      this.initCapacity = a < 1 ? 1 : a;
+      this.capacity = a;
+      this.minHeap = b;
       if (c != null) {
-        a = this.ba = c.length;
-        b = this.eb;
-        this.eb = a > b ? a : b;
+        a = this.count = c.length;
+        b = this.capacity;
+        this.capacity = a > b ? a : b;
       }
-      this.N = Array(this.eb + 1);
-      this.N[0] = null;
+      this.array = Array(this.capacity + 1);
+      this.array[0] = null;
       if (c != null) {
-        a = this.N;
+        a = this.array;
         b = 1;
-        let d = this.ba + 1;
+        let d = this.count + 1;
         while (b < d) {
           let e = b++;
           a[e] = c[e - 1];
         }
-        this.pR();
+        this.buildHeap();
       }
     }
     enqueue(a) {
-      if (this.ba == this.eb) {
+      if (this.count == this.capacity) {
         this.grow();
       }
-      this.N[++this.ba] = a;
-      a = a.g = this.ba;
-      let b = this.N;
+      this.array[++this.count] = a;
+      a = a.g = this.count;
+      let b = this.array;
       let c = a >> 1;
       let d = b[a];
       let e = d.priority;
-      if (this.xg) {
+      if (this.minHeap) {
         while (c > 0) {
           var f = b[c];
           if (e - f.priority < 0) {
@@ -395,20 +395,20 @@
       b[a] = d;
       d.g = a;
     }
-    KM() {
-      var a = this.N;
+    dequeue() {
+      var a = this.array;
       let b = a[1];
       b.g = -1;
-      a[1] = a[this.ba];
+      a[1] = a[this.count];
       a = 1;
-      let c = this.N;
+      let c = this.array;
       let d = 2;
       let e;
       let f = c[1];
       let g = f.priority;
-      if (this.xg) {
-        while (d < this.ba) {
-          if (d < this.ba - 1 && c[d].priority - c[d + 1].priority > 0) {
+      if (this.minHeap) {
+        while (d < this.count) {
+          if (d < this.count - 1 && c[d].priority - c[d + 1].priority > 0) {
             ++d;
           }
           e = c[d];
@@ -422,8 +422,8 @@
           }
         }
       } else {
-        while (d < this.ba) {
-          if (d < this.ba - 1 && c[d].priority - c[d + 1].priority < 0) {
+        while (d < this.count) {
+          if (d < this.count - 1 && c[d].priority - c[d + 1].priority < 0) {
             ++d;
           }
           e = c[d];
@@ -439,22 +439,22 @@
       }
       c[a] = f;
       f.g = a;
-      this.ba--;
+      this.count--;
       return b;
     }
-    rR(a, b) {
+    reprioritize(a, b) {
       var c = a.priority;
       if (c != b) {
         a.priority = b;
         a = a.g;
-        if (this.xg) {
+        if (this.minHeap) {
           if (b < c) {
             b = a;
-            c = this.N;
+            c = this.array;
             var d = a >> 1;
             a = c[a];
             var e = a.priority;
-            if (this.xg) {
+            if (this.minHeap) {
               while (d > 0) {
                 var f = c[d];
                 if (e - f.priority < 0) {
@@ -483,13 +483,13 @@
             a.g = b;
           } else {
             b = a;
-            c = this.N;
+            c = this.array;
             d = a << 1;
             e = c[a];
             f = e.priority;
-            if (this.xg) {
-              while (d < this.ba) {
-                if (d < this.ba - 1 && c[d].priority - c[d + 1].priority > 0) {
+            if (this.minHeap) {
+              while (d < this.count) {
+                if (d < this.count - 1 && c[d].priority - c[d + 1].priority > 0) {
                   ++d;
                 }
                 a = c[d];
@@ -503,8 +503,8 @@
                 }
               }
             } else {
-              while (d < this.ba) {
-                if (d < this.ba - 1 && c[d].priority - c[d + 1].priority < 0) {
+              while (d < this.count) {
+                if (d < this.count - 1 && c[d].priority - c[d + 1].priority < 0) {
                   ++d;
                 }
                 a = c[d];
@@ -520,12 +520,12 @@
             }
             c[b] = e;
             e.g = b;
-            a = this.ba;
-            b = this.N;
+            a = this.count;
+            b = this.array;
             c = a >> 1;
             d = b[a];
             e = d.priority;
-            if (this.xg) {
+            if (this.minHeap) {
               while (c > 0) {
                 f = b[c];
                 if (e - f.priority < 0) {
@@ -555,11 +555,11 @@
           }
         } else if (b > c) {
           b = a;
-          c = this.N;
+          c = this.array;
           d = a >> 1;
           a = c[a];
           e = a.priority;
-          if (this.xg) {
+          if (this.minHeap) {
             while (d > 0) {
               f = c[d];
               if (e - f.priority < 0) {
@@ -588,13 +588,13 @@
           a.g = b;
         } else {
           b = a;
-          c = this.N;
+          c = this.array;
           d = a << 1;
           e = c[a];
           f = e.priority;
-          if (this.xg) {
-            while (d < this.ba) {
-              if (d < this.ba - 1 && c[d].priority - c[d + 1].priority > 0) {
+          if (this.minHeap) {
+            while (d < this.count) {
+              if (d < this.count - 1 && c[d].priority - c[d + 1].priority > 0) {
                 ++d;
               }
               a = c[d];
@@ -608,8 +608,8 @@
               }
             }
           } else {
-            while (d < this.ba) {
-              if (d < this.ba - 1 && c[d].priority - c[d + 1].priority < 0) {
+            while (d < this.count) {
+              if (d < this.count - 1 && c[d].priority - c[d + 1].priority < 0) {
                 ++d;
               }
               a = c[d];
@@ -625,12 +625,12 @@
           }
           c[b] = e;
           e.g = b;
-          a = this.ba;
-          b = this.N;
+          a = this.count;
+          b = this.array;
           c = a >> 1;
           d = b[a];
           e = d.priority;
-          if (this.xg) {
+          if (this.minHeap) {
             while (c > 0) {
               f = b[c];
               if (e - f.priority < 0) {
@@ -665,33 +665,33 @@
         a = false;
       }
       if (a) {
-        NativeArray.Or(this.N);
+        NativeArray.fill(this.array);
       }
-      this.ba = 0;
+      this.count = 0;
     }
     iterator() {
-      if (this.Dm) {
-        if (this.sd == null) {
+      if (this.reusableIter) {
+        if (this.cachedIter == null) {
           return new ArrayReverseIter(this);
         }
-        this.sd.reset();
-        return this.sd;
+        this.cachedIter.reset();
+        return this.cachedIter;
       }
       return new ArrayReverseIter(this);
     }
-    pR() {
-      let a = this.ba >> 1;
+    buildHeap() {
+      let a = this.count >> 1;
       while (a >= 1) {
-        this.vB(a, this.ba);
+        this.siftDown(a, this.count);
         --a;
       }
     }
-    vB(a, b) {
-      let c = this.N;
+    siftDown(a, b) {
+      let c = this.array;
       var d = a << 1;
       var e = d + 1;
       let f = a;
-      if (this.xg) {
+      if (this.minHeap) {
         if (d <= b && c[d].priority - c[a].priority < 0) {
           f = d;
         }
@@ -714,17 +714,17 @@
         a = d.g;
         d.g = e.g;
         e.g = a;
-        this.vB(f, b);
+        this.siftDown(f, b);
       }
     }
     grow() {
-      this.eb = GrowStrategy.On(this.Rj, this.eb);
-      this.resizeContainer(this.eb);
+      this.capacity = GrowStrategy.compute(this.growStrategy, this.capacity);
+      this.resizeContainer(this.capacity);
     }
     resizeContainer(a) {
       a = Array(a + 1);
-      NativeArray.Bn(this.N, 0, a, this.ba + 1);
-      this.N = a;
+      NativeArray.blit(this.array, 0, a, this.count + 1);
+      this.array = a;
     }
   }
   PriorityQueue.i = true;
@@ -733,7 +733,7 @@
     l: PriorityQueue
   });
   class NativeArray {
-    static Bn(a, b, c, d) {
+    static blit(a, b, c, d) {
       if (d > 0) {
         if (a == c) {
           if (b < 0) {
@@ -773,7 +773,7 @@
         }
       }
     }
-    static Or(a) {
+    static fill(a) {
       var b;
       var c;
       if (c == null) {
@@ -787,7 +787,7 @@
         a[d++] = null;
       }
     }
-    static WL(a, b, c) {
+    static binarySearch(a, b, c) {
       let d = 0;
       let e;
       let f = c + 1;
@@ -832,22 +832,22 @@
 
   class HashMap {
     constructor() {
-      this.J = {};
+      this.map = {};
     }
     get(a) {
-      return this.J[a];
+      return this.map[a];
     }
     remove(a) {
-      if (!this.J.hasOwnProperty(a)) {
+      if (!this.map.hasOwnProperty(a)) {
         return false;
       }
-      delete this.J[a];
+      delete this.map[a];
       return true;
     }
     keys() {
       let a = [];
-      for (var b in this.J) {
-        if (this.J.hasOwnProperty(b)) {
+      for (var b in this.map) {
+        if (this.map.hasOwnProperty(b)) {
           a.push(+b);
         }
       }
@@ -855,14 +855,14 @@
     }
     iterator() {
       return {
-        ks: this.J,
-        Ao: this.keys(),
-        fb: function () {
-          return this.Ao.fb();
+        store: this.map,
+        keyIter: this.keys(),
+        hasNext: function () {
+          return this.keyIter.hasNext();
         },
         next: function () {
-          let a = this.Ao.next();
-          return this.ks[a];
+          let a = this.keyIter.next();
+          return this.store[a];
         }
       };
     }
@@ -874,13 +874,13 @@
   });
   class KeyTable {
     constructor() {
-      this.J = Object.create(null);
+      this.map = Object.create(null);
     }
     get(a) {
-      return this.J[a];
+      return this.map[a];
     }
     keys() {
-      return new ObjectIter(this.J);
+      return new ObjectIter(this.map);
     }
   }
   KeyTable.i = true;
@@ -891,13 +891,13 @@
   class ArrayIter {
     constructor(a) {
       this.current = 0;
-      this.Mz = a;
+      this.arr = a;
     }
-    fb() {
-      return this.current < this.Mz.length;
+    hasNext() {
+      return this.current < this.arr.length;
     }
     next() {
-      return this.Mz[this.current++];
+      return this.arr[this.current++];
     }
   }
   ArrayIter.i = true;
@@ -906,19 +906,19 @@
   });
   class ArrayListIter {
     constructor(a) {
-      this.ye = a;
-      this.N = this.ye.N;
-      this.yg = this.ye.ba;
-      this.xe = 0;
+      this.list = a;
+      this.array = this.list.array;
+      this.end = this.list.count;
+      this.idx = 0;
     }
-    cv() {
-      this.N = this.ye = null;
+    freeNative() {
+      this.array = this.list = null;
     }
-    fb() {
-      return this.xe < this.yg;
+    hasNext() {
+      return this.idx < this.end;
     }
     next() {
-      return this.N[this.xe++];
+      return this.array[this.idx++];
     }
   }
   ArrayListIter.i = true;
@@ -928,15 +928,15 @@
   });
   class UidGen {
     static next() {
-      if (UidGen.xz == null) {
-        UidGen.xz = 0;
+      if (UidGen.counter == null) {
+        UidGen.counter = 0;
       }
-      return UidGen.xz++;
+      return UidGen.counter++;
     }
   }
   UidGen.i = true;
   class GrowStrategy {
-    static On(a, b) {
+    static compute(a, b) {
       if (a > 0) {
         b += a;
       } else {
@@ -967,7 +967,7 @@
       this.stack = [];
       this.push(a);
     }
-    fb() {
+    hasNext() {
       return this.top > 0;
     }
     next() {
@@ -976,9 +976,9 @@
       return a;
     }
     push(a) {
-      for (a = a.Me; a != null;) {
+      for (a = a.firstChild; a != null;) {
         this.stack[this.top++] = a;
-        a = a.Y;
+        a = a.nextSibling;
       }
     }
   }
@@ -989,21 +989,21 @@
 
   class ArrayReverseIter {
     constructor(a) {
-      this.ye = a;
+      this.list = a;
       this.reset();
     }
     reset() {
-      this.xe = 0;
-      this.yg = this.ye.ba;
-      this.N = Array(this.yg);
-      NativeArray.Bn(this.ye.N, 1, this.N, this.yg);
+      this.idx = 0;
+      this.end = this.list.count;
+      this.array = Array(this.end);
+      NativeArray.blit(this.list.array, 1, this.array, this.end);
       return this;
     }
-    fb() {
-      return this.xe < this.yg;
+    hasNext() {
+      return this.idx < this.end;
     }
     next() {
-      return this.N[this.xe++];
+      return this.array[this.idx++];
     }
   }
   ArrayReverseIter.i = true;
@@ -1014,7 +1014,7 @@
 
   class OrderedMap {
     constructor() {
-      this.J = {
+      this.map = {
         Wk: {}
       };
     }
@@ -1023,40 +1023,40 @@
       if (c == null) {
         c = a.jf = host.zt++;
       }
-      this.J[c] = b;
-      this.J.Wk[c] = a;
+      this.map[c] = b;
+      this.map.Wk[c] = a;
     }
     get(a) {
-      return this.J[a.jf];
+      return this.map[a.jf];
     }
     remove(a) {
       a = a.jf;
-      if (this.J.Wk[a] == null) {
+      if (this.map.Wk[a] == null) {
         return false;
       }
-      delete this.J[a];
-      delete this.J.Wk[a];
+      delete this.map[a];
+      delete this.map.Wk[a];
       return true;
     }
     keys() {
       let a = [];
-      for (var b in this.J.Wk) {
-        if (this.J.hasOwnProperty(b)) {
-          a.push(this.J.Wk[b]);
+      for (var b in this.map.Wk) {
+        if (this.map.hasOwnProperty(b)) {
+          a.push(this.map.Wk[b]);
         }
       }
       return new ArrayIter(a);
     }
     iterator() {
       return {
-        ks: this.J,
-        Ao: this.keys(),
-        fb: function () {
-          return this.Ao.fb();
+        store: this.map,
+        keyIter: this.keys(),
+        hasNext: function () {
+          return this.keyIter.hasNext();
         },
         next: function () {
-          let a = this.Ao.next();
-          return this.ks[a.jf];
+          let a = this.keyIter.next();
+          return this.store[a.jf];
         }
       };
     }
@@ -1069,12 +1069,12 @@
 
   class ObjectIter {
     constructor(a) {
-      this.J = a;
+      this.map = a;
       this.keys = Object.keys(a);
       this.length = this.keys.length;
       this.current = 0;
     }
-    fb() {
+    hasNext() {
       return this.current < this.length;
     }
     next() {

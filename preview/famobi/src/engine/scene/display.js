@@ -7,7 +7,7 @@
   class MotionBase {
     constructor() {
       this.controllers = null;
-      this.wM = true;
+      this.animsEnabled = true;
     }
     free() {
       let a = this.controllers;
@@ -18,7 +18,7 @@
         a = b;
       }
     }
-    lq(a) {
+    attachAnim(a) {
       if (this.controllers != null) {
         a.next = this.controllers;
       }
@@ -38,7 +38,7 @@
       a.next = null;
       a.object = null;
     }
-    lN() {
+    findAnimController() {
       let a = this.controllers;
       while (a != null) {
         if (a.type == 303) {
@@ -49,7 +49,7 @@
       return null;
     }
     tickAnims(a) {
-      if (this.controllers == null || !this.wM) {
+      if (this.controllers == null || !this.animsEnabled) {
         return false;
       }
       let b = false;
@@ -73,14 +73,14 @@
     constructor(a, b) {
       super();
       this.type = this.typeId();
-      this.flags = b | 32 | SceneNode.IM;
-      this.Y = this.parent = this.name = null;
-      this.Db = new SceneTransform();
-      this.Fa = new SceneTransform();
-      this.Ne = 0;
-      this.sa = this.Mu(a);
+      this.flags = b | 32 | SceneNode.DEFAULT_FLAGS;
+      this.nextSibling = this.parent = this.name = null;
+      this.localT = new SceneTransform();
+      this.worldT = new SceneTransform();
+      this.visibility = 0;
+      this.bounds = this.makeLocalBounds(a);
       this.key = UidGen.next();
-      this.Qd = this.Xg = null;
+      this.firstState = this.owner = null;
       SceneNode.count++;
     }
     free() {
@@ -89,89 +89,96 @@
         if (this.parent != null) {
           this.parent.removeChild(this);
         }
-        this.sa = this.Fa = this.Db = null;
-        for (var a = this.Qd; a != null;) {
-          a.state.Xr = null;
+        this.bounds = this.worldT = this.localT = null;
+        for (var a = this.firstState; a != null;) {
+          a.state.owner = null;
           a = a.next;
         }
-        this.lR();
+        this.releaseAllStates();
         this.flags = 16;
         SceneNode.count--;
       }
     }
-    gB() {
+    root() {
       let a = this;
       while (a.parent != null) {
         a = a.parent;
       }
       return a;
     }
-    Gd(a, b) {
+    // updateTransforms - refresh this node's local-to-world Fa matrix
+    // from its parent's, then trigger any post-transform hooks (pe)
+    // and bubble up to ancestors (iD) so they see the new world.
+    updateTransforms(a, b) {
       if (b == null) {
         b = true;
       }
       if (a == null) {
         a = true;
       }
-      this.Rx(b);
+      this.recomputeWorld(b);
       if (b) {
-        this.pe();
+        this.updateBounds();
         if (a) {
-          this.iD();
+          this.markAncestorsDirty();
         }
       }
     }
-    Rx() {
+    recomputeWorld() {
       if (!((this.flags & 64) > 0)) {
         if ((this.flags & 512) > 0) {
           if (this.parent != null) {
-            this.Fa.cE(this.parent.Fa, this.Db);
+            this.worldT.composeMirror(this.parent.worldT, this.localT);
           } else {
-            this.Fa.Tw(this.Db);
+            this.worldT.copyFrom2D(this.localT);
           }
         } else if (this.parent != null) {
-          this.Fa.bE(this.parent.Fa, this.Db);
+          this.worldT.compose(this.parent.worldT, this.localT);
         } else {
-          this.Fa.set(this.Db);
+          this.worldT.set(this.localT);
         }
       }
     }
-    pe() {}
-    iD() {
+    updateBounds() {}
+    markAncestorsDirty() {
       if (this.parent != null) {
-        this.parent.pe();
-        this.parent.iD();
+        this.parent.updateBounds();
+        this.parent.markAncestorsDirty();
       }
     }
-    Um(a) {
+    // collectRenderStates - push every render-state child of this
+    // node into the right type bucket of `a` (or freshly collect one
+    // via RenderStateCollector if `a` was omitted). Pops them back
+    // off when descending out of scope.
+    collectRenderStates(a) {
       var b = a == null;
       if (b) {
         a = RenderStateCollector.bR(this);
       } else {
-        let c = this.Qd;
+        let c = this.firstState;
         while (c != null) {
           let d = a[c.state.type];
           let e = c.state;
-          if (d.Ga == d.eb) {
+          if (d.count == d.capacity) {
             d.grow();
           }
-          d.N[d.Ga++] = e;
+          d.array[d.count++] = e;
           c = c.next;
         }
       }
-      this.jD(a);
+      this.collapseStateBuckets(a);
       if (b) {
         RenderStateCollector.kM();
       } else {
-        for (b = this.Qd; b != null;) {
-          --a[b.state.type].Ga;
+        for (b = this.firstState; b != null;) {
+          --a[b.state.type].count;
           b = b.next;
         }
       }
       this.flags &= -33;
     }
-    li(a) {
-      let b = this.Qd;
+    getRenderState(a) {
+      let b = this.firstState;
       while (b != null) {
         if (b.state.type == a) {
           return b.state;
@@ -180,13 +187,13 @@
       }
       return null;
     }
-    Bh(a) {
-      a.Xr = this;
+    setRenderState(a) {
+      a.owner = this;
       this.flags |= 32;
-      if (this.Qd == null) {
-        this.Qd = new StateNode(a);
+      if (this.firstState == null) {
+        this.firstState = new StateNode(a);
       } else {
-        for (var b = this.Qd; b != null;) {
+        for (var b = this.firstState; b != null;) {
           if (b.state.type == a.type) {
             b.state = a;
             return;
@@ -194,19 +201,19 @@
           b = b.next;
         }
         b = new StateNode(a);
-        b.next = this.Qd;
-        this.Qd = b;
+        b.next = this.firstState;
+        this.firstState = b;
       }
     }
-    qs(a) {
-      let b = this.Qd;
+    removeRenderState(a) {
+      let b = this.firstState;
       let c = null;
       while (b != null) {
         if (b.state.type == a) {
           if (c != null) {
             c.next = b.next;
           } else {
-            this.Qd = b.next;
+            this.firstState = b.next;
           }
           b.next = null;
           this.flags |= 32;
@@ -216,8 +223,8 @@
         b = b.next;
       }
     }
-    lR() {
-      let a = this.Qd;
+    releaseAllStates() {
+      let a = this.firstState;
       let b;
       if (a != null) {
         this.flags |= 32;
@@ -227,23 +234,23 @@
         a.next = null;
         a = b;
       }
-      this.Qd = null;
+      this.firstState = null;
     }
-    dR(a) {
-      let b = this.Qd;
+    pushStatesTo(a) {
+      let b = this.firstState;
       while (b != null) {
         let c = a[b.state.type];
         let d = b.state;
-        if (c.Ga == c.eb) {
+        if (c.count == c.capacity) {
           c.grow();
         }
-        c.N[c.Ga++] = d;
+        c.array[c.count++] = d;
         b = b.next;
       }
     }
-    Mu(a) {
+    makeLocalBounds(a) {
       if (a == null) {
-        a = SceneNode.HM;
+        a = SceneNode.RECT_TYPE;
       }
       if (a == null) {
         throw 10;
@@ -270,13 +277,13 @@
   class SceneGroup extends SceneNode {
     constructor(a, b) {
       super(b, 2);
-      this.ea = this.Mu(b);
-      this.Jk = Array(7);
+      this.localBounds = this.makeLocalBounds(b);
+      this.stateSlots = Array(7);
       if (a != null) {
-        a.P(this);
+        a.appendChild(this);
       }
-      this.hr = 0;
-      this.effect = this.Xo = null;
+      this.stateMaskBits = 0;
+      this.effect = this.onFrameChanged = null;
       SceneGroup.count++;
     }
     free() {
@@ -285,19 +292,19 @@
           this.effect.free();
         }
         this.effect = null;
-        this.ea.free();
-        this.Jk = this.ea = null;
+        this.localBounds.free();
+        this.stateSlots = this.localBounds = null;
         super.free();
         SceneGroup.count--;
       }
     }
-    Rf(a) {
+    setEffect(a) {
       this.effect = a;
-      this.effect.Dh(this);
+      this.effect.attachToVisual(this);
     }
-    Sc() {}
-    Ub(a, b) {
-      if (!this.sa.contains(a)) {
+    rebuildGeometry() {}
+    hitTest(a, b) {
+      if (!this.bounds.contains(a)) {
         return false;
       }
       if (b != null) {
@@ -305,33 +312,33 @@
       }
       return true;
     }
-    Fl(a, b) {
+    computeWorldBounds(a, b) {
       return b;
     }
-    pe() {
+    updateBounds() {
       if (!((this.flags & 128) > 0)) {
-        this.ea.kt(this.Fa, this.sa);
-        super.pe();
+        this.localBounds.transformInto(this.worldT, this.bounds);
+        super.updateBounds();
       }
     }
-    jD(a) {
+    collapseStateBuckets(a) {
       let b = 0;
-      let c = this.Jk;
+      let c = this.stateSlots;
       let d = 0;
       let e = 0;
       while (e < a.length) {
         var f = a[e];
         ++e;
-        if (f.Ga == 0) {
+        if (f.count == 0) {
           c[d] = null;
         } else {
-          f = f.N[f.Ga - 1].collapse(f);
+          f = f.array[f.count - 1].collapse(f);
           c[d] = f;
           b |= 1 << f.type;
         }
         ++d;
       }
-      this.hr = b;
+      this.stateMaskBits = b;
     }
     typeId() {
       return 201;
@@ -350,15 +357,15 @@
       this.max = new Vec4(1, 1, 0, 1);
       this.cols = a;
       this.rows = b;
-      this.FP();
-      this.Sc();
+      this.buildMesh();
+      this.rebuildGeometry();
     }
-    FP() {
-      this.pw = (this.cols + 1) * (this.rows + 1);
-      this.gj = new ArrayList(this.pw);
-      for (var a = 0, b = this.pw; a < b;) {
+    buildMesh() {
+      this.vertexCount = (this.cols + 1) * (this.rows + 1);
+      this.vertices = new ArrayList(this.vertexCount);
+      for (var a = 0, b = this.vertexCount; a < b;) {
         ++a;
-        this.gj.pushBack(new Vec4(0, 0, 0, 1));
+        this.vertices.pushBack(new Vec4(0, 0, 0, 1));
       }
       a = this.cols + 1;
       b = this.rows + 1;
@@ -366,15 +373,15 @@
       let d;
       while (c < b) {
         for (d = 0; d < a;) {
-          var e = this.gj.N[c * a + d];
+          var e = this.vertices.array[c * a + d];
           e.x = this.min.x + d / (a - 1) * this.max.x;
           e.y = this.min.y + c / (b - 1) * this.max.y;
           ++d;
         }
         ++c;
       }
-      this.YP = (this.cols * 2 + 2) * this.rows + (this.rows - 1) * 2;
-      this.indices = new Uint8Array(this.YP);
+      this.indexCount = (this.cols * 2 + 2) * this.rows + (this.rows - 1) * 2;
+      this.indices = new Uint8Array(this.indexCount);
       --b;
       for (c = e = 0; c < b;) {
         for (d = 0; d < a;) {
@@ -389,8 +396,8 @@
         ++c;
       }
     }
-    Sc() {
-      super.Sc();
+    rebuildGeometry() {
+      super.rebuildGeometry();
     }
     typeId() {
       return 601;
@@ -404,32 +411,32 @@
   class BufferNode extends SceneGroup {
     constructor(a, b) {
       super(a, 402);
-      this.gv = b;
-      this.Sc();
-      this.AB = this.jF = null;
+      this.vertexBuffer = b;
+      this.rebuildGeometry();
+      this.indexBuffer = this.vao = null;
     }
     free() {
-      this.gv = null;
-      var a = this.jF;
+      this.vertexBuffer = null;
+      var a = this.vao;
       if (a != null) {
         a.free();
       }
-      a = this.AB;
+      a = this.indexBuffer;
       if (a != null) {
         a.free();
       }
-      this.AB = this.jF = null;
+      this.indexBuffer = this.vao = null;
       super.free();
     }
-    Mu() {
+    makeLocalBounds() {
       return new CircleBounds();
     }
-    Ub() {
+    hitTest() {
       return false;
     }
-    Sc() {
-      let a = this.gv.getData(0);
-      this.ea.Pn(a);
+    rebuildGeometry() {
+      let a = this.vertexBuffer.getData(0);
+      this.localBounds.fromVertices(a);
     }
     typeId() {
       return 501;
@@ -448,16 +455,16 @@
       super(b, c | 1);
       this.children = null;
       if (a != null) {
-        a.P(this);
+        a.appendChild(this);
       }
       SceneRoot.count++;
     }
     free() {
       if (!((this.flags & 16) > 0)) {
         for (var a = this.children; a != null;) {
-          let b = a.Y;
-          if (a.Xg != null) {
-            a.Xg.free();
+          let b = a.nextSibling;
+          if (a.owner != null) {
+            a.owner.free();
           } else {
             a.free();
           }
@@ -467,18 +474,18 @@
         SceneRoot.count--;
       }
     }
-    Fl(a, b) {
-      return NodeTreeUtil.Fl(this, a, b);
+    computeWorldBounds(a, b) {
+      return NodeTreeUtil.computeBounds(this, a, b);
     }
-    Ub(a, b) {
+    hitTest(a, b) {
       let c = false;
-      if (this.sa.contains(a)) {
+      if (this.bounds.contains(a)) {
         let d = this.children;
         while (d != null) {
-          if (d.Ub(a, b)) {
+          if (d.hitTest(a, b)) {
             c = true;
           }
-          d = d.Y;
+          d = d.nextSibling;
         }
       }
       return c;
@@ -488,7 +495,7 @@
       let c = this.children;
       let d;
       while (c != null) {
-        d = c.Y;
+        d = c.nextSibling;
         if (c.tickAnims(a)) {
           b = true;
         }
@@ -496,190 +503,190 @@
       }
       return b;
     }
-    P(a) {
+    appendChild(a) {
       if (this.children == null) {
         this.children = a;
-        a.Y = null;
+        a.nextSibling = null;
       } else {
         let b = this.children;
-        while (b.Y != null) {
-          b = b.Y;
+        while (b.nextSibling != null) {
+          b = b.nextSibling;
         }
-        b.Y = a;
+        b.nextSibling = a;
       }
       a.parent = this;
     }
-    Mj() {
+    childCount() {
       let a = 0;
       let b = this.children;
       while (b != null) {
         ++a;
-        b = b.Y;
+        b = b.nextSibling;
       }
       return a;
     }
-    ML(a, b) {
+    insertChild(a, b) {
       if (b == 0) {
-        a.Y = this.children;
+        a.nextSibling = this.children;
         this.children = a;
       } else {
         let c = this.children;
         let d = 0;
         for (--b; d < b;) {
           ++d;
-          c = c.Y;
+          c = c.nextSibling;
         }
-        a.Y = c.Y;
-        c.Y = a;
+        a.nextSibling = c.nextSibling;
+        c.nextSibling = a;
       }
       a.parent = this;
     }
     removeChild(a) {
       if (this.children == a) {
-        this.children = a.Y;
+        this.children = a.nextSibling;
       } else {
         let b = this.children;
-        while (b.Y != a) {
-          b = b.Y;
+        while (b.nextSibling != a) {
+          b = b.nextSibling;
         }
-        b.Y = a.Y;
+        b.nextSibling = a.nextSibling;
       }
-      a.Y = null;
+      a.nextSibling = null;
       a.parent = null;
       return this;
     }
-    nb(a) {
+    childAt(a) {
       let b = this.children;
       let c = 0;
       while (c <= a) {
         if (c == a) {
           return b;
         }
-        b = b.Y;
+        b = b.nextSibling;
         ++c;
       }
       return null;
     }
-    Ww(a, b) {
+    moveChildTo(a, b) {
       this.removeChild(a);
-      this.ML(a, b);
+      this.insertChild(a, b);
     }
-    fo(a) {
+    childByName(a) {
       let b = this.children;
       while (b != null) {
         if (b.name == a) {
           return b;
         }
-        b = b.Y;
+        b = b.nextSibling;
       }
       return null;
     }
-    MS(a, b) {
+    swapSiblings(a, b) {
       let c = null;
       let d = null;
       for (var e = 0, f = this.children; e < 2 && f != null;) {
-        if (f.Y == a) {
+        if (f.nextSibling == a) {
           c = f;
           ++e;
-        } else if (f.Y == b) {
+        } else if (f.nextSibling == b) {
           d = f;
           ++e;
         }
-        f = f.Y;
+        f = f.nextSibling;
       }
-      e = a.Y;
-      f = b.Y;
-      a.Y = null;
-      b.Y = null;
+      e = a.nextSibling;
+      f = b.nextSibling;
+      a.nextSibling = null;
+      b.nextSibling = null;
       if (e == b) {
         if (c != null) {
-          c.Y = b;
+          c.nextSibling = b;
         } else {
           this.children = b;
         }
-        b.Y = a;
-        a.Y = f;
+        b.nextSibling = a;
+        a.nextSibling = f;
       } else if (f == a) {
         if (d != null) {
-          d.Y = a;
+          d.nextSibling = a;
         } else {
           this.children = a;
         }
-        a.Y = b;
-        b.Y = e;
+        a.nextSibling = b;
+        b.nextSibling = e;
       } else {
         if (c != null) {
-          c.Y = b;
+          c.nextSibling = b;
         } else {
           this.children = b;
         }
-        b.Y = e;
+        b.nextSibling = e;
         if (d != null) {
-          d.Y = a;
+          d.nextSibling = a;
         } else {
           this.children = a;
         }
-        a.Y = f;
+        a.nextSibling = f;
       }
     }
-    NS(a, b) {
-      this.MS(this.nb(a), this.nb(b));
+    swapSiblingsAt(a, b) {
+      this.swapSiblings(this.childAt(a), this.childAt(b));
     }
-    Yw(a) {
+    moveToFront(a) {
       if (this.children != a) {
-        for (var b = this.children; b.Y != a;) {
-          b = b.Y;
+        for (var b = this.children; b.nextSibling != a;) {
+          b = b.nextSibling;
         }
-        b.Y = a.Y;
-        a.Y = this.children;
+        b.nextSibling = a.nextSibling;
+        a.nextSibling = this.children;
         this.children = a;
       }
     }
-    bx(a) {
-      if (a.Y != null) {
+    moveToBack(a) {
+      if (a.nextSibling != null) {
         var b = this.children;
         if (b == a) {
-          while (b.Y != null) {
-            b = b.Y;
+          while (b.nextSibling != null) {
+            b = b.nextSibling;
           }
-          b.Y = a;
-          this.children = a.Y;
+          b.nextSibling = a;
+          this.children = a.nextSibling;
         } else {
-          while (b.Y != a) {
-            b = b.Y;
+          while (b.nextSibling != a) {
+            b = b.nextSibling;
           }
-          for (b = b.Y = a.Y; b.Y != null;) {
-            b = b.Y;
+          for (b = b.nextSibling = a.nextSibling; b.nextSibling != null;) {
+            b = b.nextSibling;
           }
-          b.Y = a;
+          b.nextSibling = a;
         }
-        a.Y = null;
+        a.nextSibling = null;
       }
     }
-    Rx(a) {
-      super.Rx(a);
+    recomputeWorld(a) {
+      super.recomputeWorld(a);
       let b = this.children;
       while (b != null) {
-        b.Gd(false, a);
-        b = b.Y;
+        b.updateTransforms(false, a);
+        b = b.nextSibling;
       }
     }
-    pe() {
+    updateBounds() {
       if (!((this.flags & 128) > 0) && this.children != null) {
         var a = this.children;
-        this.sa.from(a.sa);
-        for (a = a.Y; a != null;) {
-          this.sa.lr(a.sa);
-          a = a.Y;
+        this.bounds.from(a.bounds);
+        for (a = a.nextSibling; a != null;) {
+          this.bounds.union(a.bounds);
+          a = a.nextSibling;
         }
-        super.pe();
+        super.updateBounds();
       }
     }
-    jD(a) {
+    collapseStateBuckets(a) {
       let b = this.children;
       while (b != null) {
-        b.Um(a);
-        b = b.Y;
+        b.collectRenderStates(a);
+        b = b.nextSibling;
       }
     }
     typeId() {
@@ -696,20 +703,20 @@
       super(a, 302);
       this.flags |= 512;
       this.size = new Vec4(1, 1, 0, 1);
-      this.Sc();
+      this.rebuildGeometry();
     }
-    Lb(a, b) {
+    setSize(a, b) {
       let c = this.size;
       c.x = a;
       c.y = b;
-      this.Sc();
+      this.rebuildGeometry();
     }
-    Ub(a, b) {
-      if (!this.sa.contains(a)) {
+    hitTest(a, b) {
+      if (!this.bounds.contains(a)) {
         return false;
       }
-      a = this.Fa.gg(a, new Vec4(0, 0, 0, 1));
-      if (PointInRect.RS(a.x, a.y, this.size.x, this.size.y)) {
+      a = this.worldT.inverseTransformPoint2D(a, new Vec4(0, 0, 0, 1));
+      if (PointInRect.test(a.x, a.y, this.size.x, this.size.y)) {
         if (b != null) {
           b.add(this);
         }
@@ -718,7 +725,7 @@
         return false;
       }
     }
-    Fl(a, b) {
+    computeWorldBounds(a, b) {
       let c = new Vec4(0, 0, 0, 1);
       let d = FLOAT_MAX;
       let e = FLOAT_MAX;
@@ -732,10 +739,10 @@
         g = m;
       } else {
         if (a == this.parent) {
-          var n = this.Db;
+          var n = this.localT;
           c.x = 0;
           c.y = 0;
-          n.Jb(c, c);
+          n.transformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -750,7 +757,7 @@
           }
           c.x = h;
           c.y = 0;
-          n.Jb(c, c);
+          n.transformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -765,7 +772,7 @@
           }
           c.x = h;
           c.y = m;
-          n.Jb(c, c);
+          n.transformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -780,12 +787,12 @@
           }
           c.x = 0;
           c.y = m;
-          n.Jb(c, c);
+          n.transformPoint2D(c, c);
         } else if (a.parent == null) {
-          n = this.Fa;
+          n = this.worldT;
           c.x = 0;
           c.y = 0;
-          n.Jb(c, c);
+          n.transformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -800,7 +807,7 @@
           }
           c.x = h;
           c.y = 0;
-          n.Jb(c, c);
+          n.transformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -815,7 +822,7 @@
           }
           c.x = h;
           c.y = m;
-          n.Jb(c, c);
+          n.transformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -830,14 +837,14 @@
           }
           c.x = 0;
           c.y = m;
-          n.Jb(c, c);
+          n.transformPoint2D(c, c);
         } else {
-          n = this.Fa;
-          a = a.Fa;
+          n = this.worldT;
+          a = a.worldT;
           c.x = 0;
           c.y = 0;
-          n.Jb(c, c);
-          a.gg(c, c);
+          n.transformPoint2D(c, c);
+          a.inverseTransformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -852,8 +859,8 @@
           }
           c.x = h;
           c.y = 0;
-          n.Jb(c, c);
-          a.gg(c, c);
+          n.transformPoint2D(c, c);
+          a.inverseTransformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -868,8 +875,8 @@
           }
           c.x = h;
           c.y = m;
-          n.Jb(c, c);
-          a.gg(c, c);
+          n.transformPoint2D(c, c);
+          a.inverseTransformPoint2D(c, c);
           if (c.x < d) {
             d = c.x;
           }
@@ -884,8 +891,8 @@
           }
           c.x = 0;
           c.y = m;
-          n.Jb(c, c);
-          a.gg(c, c);
+          n.transformPoint2D(c, c);
+          a.inverseTransformPoint2D(c, c);
         }
         if (c.x < d) {
           d = c.x;
@@ -903,26 +910,26 @@
       if (b == null) {
         b = new Bounds(d, e, f, g);
       } else {
-        b.A = d;
-        b.D = e;
-        b.B = f;
-        b.G = g;
+        b.left = d;
+        b.top = e;
+        b.right = f;
+        b.bottom = g;
       }
       return b;
     }
-    Sc() {
-      super.Sc();
+    rebuildGeometry() {
+      super.rebuildGeometry();
       var a = this.size.x / 2;
       let b = this.size.y / 2;
-      this.ea.C.x = a;
-      this.ea.C.y = b;
-      this.ea.Z = Math.sqrt(a * a + b * b);
-      if (this.ea.type == 302) {
-        a = this.ea.gb;
-        a.A = 0;
-        a.D = 0;
-        a.B = this.size.x;
-        a.G = this.size.y;
+      this.localBounds.center.x = a;
+      this.localBounds.center.y = b;
+      this.localBounds.radius = Math.sqrt(a * a + b * b);
+      if (this.localBounds.type == 302) {
+        a = this.localBounds.bounds;
+        a.left = 0;
+        a.top = 0;
+        a.right = this.size.x;
+        a.bottom = this.size.y;
       }
     }
     typeId() {
@@ -944,219 +951,219 @@
   class DisplayBase {
     constructor(a) {
       DisplayBase.count++;
-      this.u = a;
-      a.Xg = this;
-      this.VL = this.typeId();
+      this.node = a;
+      a.owner = this;
+      this.typeIdValue = this.typeId();
       this.flags = 6;
-      this.eg = this.ed = this.dg = this.Ra = 1;
-      this.qn = this.pn = this.Sg = this.Rg = this.Ug = this.Tg = this.cg = this.Zd = 0;
-      this.Uc = 1;
-      this.eu = true;
+      this.scaleYSafe = this.scaleY = this.scaleXSafe = this.scaleX = 1;
+      this.originXBase = this.originYBase = this.originY = this.originX = this.pivotY = this.pivotX = this.rotationRad = this.rotation = 0;
+      this.alpha = 1;
+      this.visible = true;
     }
     free() {
-      this.u = null;
+      this.node = null;
       DisplayBase.count--;
     }
     remove() {
-      let a = this.u.parent;
+      let a = this.node.parent;
       if (a != null) {
-        a.removeChild(this.u);
+        a.removeChild(this.node);
       }
     }
-    mh() {
-      var a = this.u.parent;
-      if (a != null && (a = a.Xg, a != null && a.VL == 204)) {
+    parentContainer() {
+      var a = this.node.parent;
+      if (a != null && (a = a.owner, a != null && a.typeIdValue == 204)) {
         return a;
       } else {
         return null;
       }
     }
-    ox(a) {
-      this.u.name = a;
+    setName(a) {
+      this.node.name = a;
     }
-    W(a) {
+    setAlpha(a) {
       a = a < 0 ? 0 : a > 1 ? 1 : a;
-      if (this.Uc != a) {
-        this.Uc = a;
-        let b = this.u;
+      if (this.alpha != a) {
+        this.alpha = a;
+        let b = this.node;
         if (a < 1) {
-          let c = b.li(5);
+          let c = b.getRenderState(5);
           if (c == null) {
-            b.Bh(new AlphaState(this.Uc));
+            b.setRenderState(new AlphaState(this.alpha));
           } else {
-            c.bf(a);
+            c.setAlpha(a);
           }
         } else {
-          b.qs(5);
+          b.removeRenderState(5);
         }
         b.flags |= 32;
       }
     }
-    ri() {
-      return this.eu;
+    isVisible() {
+      return this.visible;
     }
-    L(a) {
-      if (this.eu != a) {
-        this.eu = a;
-        this.u.Ne = a ? 0 : 1;
+    setVisible(a) {
+      if (this.visible != a) {
+        this.visible = a;
+        this.node.visibility = a ? 0 : 1;
       }
     }
     setScaleX(a) {
-      if (this.Ra != a) {
-        this.dg = this.Ra = a;
+      if (this.scaleX != a) {
+        this.scaleXSafe = this.scaleX = a;
         if (absLessThan(a, 0.001)) {
-          this.dg = (a >= 0 ? 1 : -1) * 0.001;
+          this.scaleXSafe = (a >= 0 ? 1 : -1) * 0.001;
         }
-        if (a == 1 && this.ed == 1) {
+        if (a == 1 && this.scaleY == 1) {
           this.flags = this.flags & -3 | 4;
-          a = this.u.Db;
+          a = this.node.localT;
           a.scale.x = 1;
           a.scale.y = 1;
-          a.K |= 500;
+          a.flags |= 500;
         } else {
           this.flags &= -7;
         }
-        this.oc();
+        this.invalidateLayout();
       }
     }
     setScaleY(a) {
-      if (this.ed != a) {
-        this.eg = this.ed = a;
+      if (this.scaleY != a) {
+        this.scaleYSafe = this.scaleY = a;
         if (absLessThan(a, 0.001)) {
-          this.eg = (a >= 0 ? 1 : -1) * 0.001;
+          this.scaleYSafe = (a >= 0 ? 1 : -1) * 0.001;
         }
-        if (a == 1 && this.Ra == 1) {
+        if (a == 1 && this.scaleX == 1) {
           this.flags = this.flags & -3 | 4;
-          a = this.u.Db;
+          a = this.node.localT;
           a.scale.x = 1;
           a.scale.y = 1;
-          a.K |= 500;
+          a.flags |= 500;
         } else {
           this.flags &= -7;
         }
-        this.oc();
+        this.invalidateLayout();
       }
     }
     setUniformScale(a) {
-      if (this.Ra != a || this.ed != a) {
-        this.Ra = this.ed = a;
+      if (this.scaleX != a || this.scaleY != a) {
+        this.scaleX = this.scaleY = a;
         if (absLessThan(a, 0.001)) {
-          this.dg = this.eg = (a >= 0 ? 1 : -1) * 0.001;
+          this.scaleXSafe = this.scaleYSafe = (a >= 0 ? 1 : -1) * 0.001;
         } else {
-          this.dg = this.eg = a;
+          this.scaleXSafe = this.scaleYSafe = a;
         }
         this.flags |= 2;
         if (a == 1) {
-          a = this.u.Db;
+          a = this.node.localT;
           a.scale.x = 1;
           a.scale.y = 1;
-          a.K |= 500;
+          a.flags |= 500;
           this.flags |= 4;
         } else {
           this.flags &= -5;
         }
-        this.oc();
+        this.invalidateLayout();
       }
     }
     setScale(a, b) {
-      if (this.Ra != a || this.ed != b) {
+      if (this.scaleX != a || this.scaleY != b) {
         if (a == 1 && b == 1) {
           this.flags = this.flags & -3 | 4;
-          let c = this.u.Db;
+          let c = this.node.localT;
           c.scale.x = 1;
           c.scale.y = 1;
-          c.K |= 500;
+          c.flags |= 500;
         } else {
           this.flags = a == b ? (this.flags &= -5) | 2 : this.flags & -7;
         }
-        this.Ra = this.dg = a;
-        this.ed = this.eg = b;
+        this.scaleX = this.scaleXSafe = a;
+        this.scaleY = this.scaleYSafe = b;
         if (absLessThan(a, 0.001)) {
-          this.dg = (a >= 0 ? 1 : -1) * 0.001;
+          this.scaleXSafe = (a >= 0 ? 1 : -1) * 0.001;
         }
         if (absLessThan(b, 0.001)) {
-          this.eg = (b >= 0 ? 1 : -1) * 0.001;
+          this.scaleYSafe = (b >= 0 ? 1 : -1) * 0.001;
         }
-        this.oc();
+        this.invalidateLayout();
       }
     }
-    la(a) {
-      if (this.Zd != a) {
-        this.Zd = a;
+    setRotation(a) {
+      if (this.rotation != a) {
+        this.rotation = a;
         let b;
         b = a % 360;
         if (b < 0) {
           b += 360;
         }
-        this.cg = b * DEG2RAD;
+        this.rotationRad = b * DEG2RAD;
         if (a == 0) {
           this.flags &= -2;
-          this.u.Db.RD();
+          this.node.localT.resetRotation();
         } else {
           this.flags |= 1;
         }
-        this.oc();
+        this.invalidateLayout();
       }
     }
     getX() {
-      return this.Tg;
+      return this.pivotX;
     }
     setX(a) {
-      if (this.Tg != a) {
-        this.Tg = a;
-        this.oc();
+      if (this.pivotX != a) {
+        this.pivotX = a;
+        this.invalidateLayout();
       }
       return a;
     }
     getY() {
-      return this.Ug;
+      return this.pivotY;
     }
     setY(a) {
-      if (this.Ug != a) {
-        this.Ug = a;
-        this.oc();
+      if (this.pivotY != a) {
+        this.pivotY = a;
+        this.invalidateLayout();
       }
     }
-    uS(a) {
-      if (this.Tg != a.x || this.Ug != a.y) {
-        this.Tg = a.x;
-        this.Ug = a.y;
-        this.oc();
+    setOriginXY(a) {
+      if (this.pivotX != a.x || this.pivotY != a.y) {
+        this.pivotX = a.x;
+        this.pivotY = a.y;
+        this.invalidateLayout();
       }
     }
-    gS(a, b, c, d) {
+    setTransform(a, b, c, d) {
       let e = false;
-      if (this.Tg != a || this.Ug != b) {
-        this.Tg = a;
-        this.Ug = b;
+      if (this.pivotX != a || this.pivotY != b) {
+        this.pivotX = a;
+        this.pivotY = b;
         e = true;
       }
-      if (this.Zd != 0) {
-        a = this.Zd = 0;
+      if (this.rotation != 0) {
+        a = this.rotation = 0;
         if (a < 0) {
           a += 360;
         }
-        this.cg = a * DEG2RAD;
+        this.rotationRad = a * DEG2RAD;
         this.flags &= -2;
-        this.u.Db.RD();
+        this.node.localT.resetRotation();
         e = true;
       }
-      if (this.Ra != c || this.ed != d) {
-        this.dg = c;
+      if (this.scaleX != c || this.scaleY != d) {
+        this.scaleXSafe = c;
         if (absLessThan(c, 0.001)) {
-          this.dg = (c >= 0 ? 1 : -1) * 0.001;
+          this.scaleXSafe = (c >= 0 ? 1 : -1) * 0.001;
         }
-        this.eg = d;
+        this.scaleYSafe = d;
         if (absLessThan(d, 0.001)) {
-          this.eg = (d >= 0 ? 1 : -1) * 0.001;
+          this.scaleYSafe = (d >= 0 ? 1 : -1) * 0.001;
         }
         if (c == d) {
           if (c == 1) {
             this.flags = this.flags & -3 | 4;
-            c = this.u.Db;
+            c = this.node.localT;
             c.scale.x = 1;
             c.scale.y = 1;
-            c.K |= 500;
+            c.flags |= 500;
           } else {
             this.flags = this.flags & -5 | 2;
           }
@@ -1166,48 +1173,48 @@
         e = true;
       }
       if (e) {
-        this.oc();
+        this.invalidateLayout();
       }
     }
-    tS(a) {
+    setOriginVec(a) {
       let b = a.x;
       a = a.y;
       if (b == null) {
-        b = this.Rg;
+        b = this.originX;
       }
       if (a == null) {
-        a = this.Sg;
+        a = this.originY;
       }
-      if (this.Rg != b || this.Sg != a) {
-        this.Rg = b;
-        this.Sg = a;
-        this.oc();
+      if (this.originX != b || this.originY != a) {
+        this.originX = b;
+        this.originY = a;
+        this.invalidateLayout();
       }
     }
     setPivot(a, b) {
       if (a == null) {
-        a = this.Rg;
+        a = this.originX;
       }
       if (b == null) {
-        b = this.Sg;
+        b = this.originY;
       }
-      if (this.Rg != a || this.Sg != b) {
-        this.Rg = a;
-        this.Sg = b;
-        this.oc();
+      if (this.originX != a || this.originY != b) {
+        this.originX = a;
+        this.originY = b;
+        this.invalidateLayout();
       }
     }
     setOrigin(a, b) {
       if (a == null) {
-        a = this.pn;
+        a = this.originYBase;
       }
       if (b == null) {
-        b = this.qn;
+        b = this.originXBase;
       }
-      if (this.pn != a || this.qn != b) {
-        this.pn = a;
-        this.qn = b;
-        this.oc();
+      if (this.originYBase != a || this.originXBase != b) {
+        this.originYBase = a;
+        this.originXBase = b;
+        this.invalidateLayout();
       }
     }
     center() {
@@ -1215,38 +1222,38 @@
       this.centerOrigin();
     }
     update(a) {
-      this.u.tickAnims(a);
-      this.u.Gd();
-      this.u.Um();
+      this.node.tickAnims(a);
+      this.node.updateTransforms();
+      this.node.collectRenderStates();
     }
-    Jx(a) {
-      NodeTreeUtil.Yf(this.u);
-      return this.u.Fa.Jb(a, new Vec4(0, 0, 0, 1));
+    localToWorld(a) {
+      NodeTreeUtil.updateWorldTransforms(this.node);
+      return this.node.worldT.transformPoint2D(a, new Vec4(0, 0, 0, 1));
     }
-    Ix(a) {
-      NodeTreeUtil.Yf(this.u);
-      return this.u.Fa.gg(a, new Vec4(0, 0, 0, 1));
+    worldToLocal(a) {
+      NodeTreeUtil.updateWorldTransforms(this.node);
+      return this.node.worldT.inverseTransformPoint2D(a, new Vec4(0, 0, 0, 1));
     }
     tween() {
       return new SpriteTween(this);
     }
-    Wd(a) {
+    setBlendMode(a) {
       if (a == null) {
-        this.u.qs(0);
+        this.node.removeRenderState(0);
       } else {
-        this.u.Bh(new BlendModeState(a, false));
+        this.node.setRenderState(new BlendModeState(a, false));
       }
     }
-    pp(a) {
-      var b = this.u.li(2);
+    setColorTransform(a) {
+      var b = this.node.getRenderState(2);
       if (a != null) {
         if (b == null) {
           b = new ColorTransformState();
-          this.u.Bh(b);
+          this.node.setRenderState(b);
         }
         b = b.transform;
-        var c = b.$b;
-        var d = a.$b;
+        var c = b.mul;
+        var d = a.mul;
         c.x = d.x;
         c.y = d.y;
         c.z = d.z;
@@ -1259,41 +1266,41 @@
         c.w = d.w;
         b.hint = a.hint;
       } else if (b != null) {
-        this.u.qs(2);
+        this.node.removeRenderState(2);
       }
     }
-    jE(a) {
-      let b = this.u.li(1);
+    setClipBounds(a) {
+      let b = this.node.getRenderState(1);
       if (a != null) {
         if (b == null) {
           b = new ClipState();
-          this.u.Bh(b);
+          this.node.setRenderState(b);
         }
-        b.fS(a);
+        b.fromBounds(a);
       } else if (b != null) {
-        this.u.qs(1);
+        this.node.removeRenderState(1);
       }
     }
-    oc() {
-      let a = this.u.Db;
-      let b = this.Tg;
-      let c = this.Ug;
-      let d = this.Rg;
-      let e = this.Sg;
-      let f = this.pn;
-      let g = this.qn;
-      let h = this.dg;
-      var m = this.eg;
+    invalidateLayout() {
+      let a = this.node.localT;
+      let b = this.pivotX;
+      let c = this.pivotY;
+      let d = this.originX;
+      let e = this.originY;
+      let f = this.originYBase;
+      let g = this.originXBase;
+      let h = this.scaleXSafe;
+      var m = this.scaleYSafe;
       var n = this.flags;
       if ((n & 1) > 0) {
-        let p = Math.sin(this.cg);
-        let v = Math.cos(this.cg);
+        let p = Math.sin(this.rotationRad);
+        let v = Math.cos(this.rotationRad);
         var q = a.matrix;
         q.m11 = v;
         q.m12 = -p;
         q.m21 = p;
         q.m22 = v;
-        a.K = a.K & -4 | 504;
+        a.flags = a.flags & -4 | 504;
         if ((n & 4) > 0) {
           a.translate.x = -(f * v) + g * p + f + b - d;
           a.translate.y = -(f * p) - g * v + g + c - e;
@@ -1301,7 +1308,7 @@
           m = h * f;
           n = h * g;
           a.scale.x = a.scale.y = h;
-          a.K = a.K & -2 | 500;
+          a.flags = a.flags & -2 | 500;
           a.translate.x = -(m * v) + n * p + f + b - d;
           a.translate.y = -(m * p) - n * v + g + c - e;
         } else {
@@ -1309,7 +1316,7 @@
           q = m * g;
           a.scale.x = h;
           a.scale.y = m;
-          a.K = a.K & -6 | 496;
+          a.flags = a.flags & -6 | 496;
           a.translate.x = -(n * v) + q * p + f + b - d;
           a.translate.y = -(n * p) - q * v + g + c - e;
         }
@@ -1318,17 +1325,17 @@
         a.translate.y = c - e;
       } else if ((n & 2) > 0) {
         a.scale.x = a.scale.y = h;
-        a.K = a.K & -2 | 500;
+        a.flags = a.flags & -2 | 500;
         a.translate.x = -(h * f) + f + b - d;
         a.translate.y = -(h * g) + g + c - e;
       } else {
         a.scale.x = h;
         a.scale.y = m;
-        a.K = a.K & -6 | 496;
+        a.flags = a.flags & -6 | 496;
         a.translate.x = -(h * f) + f + b - d;
         a.translate.y = -(m * g) + g + c - e;
       }
-      a.K = a.K & -2 | 496;
+      a.flags = a.flags & -2 | 496;
     }
     typeId() {
       return 104;
@@ -1342,15 +1349,15 @@
 
   class MeshBuffer {
     constructor() {
-      this.pw = 0;
-      this.gj = Array(6);
+      this.channelCount = 0;
+      this.channels = Array(6);
       let a = 0;
       while (a < 6) {
-        this.gj[a++] = [];
+        this.channels[a++] = [];
       }
     }
     getData(a) {
-      return this.gj[a];
+      return this.channels[a];
     }
   }
   MeshBuffer.i = true;
@@ -1361,13 +1368,13 @@
   class ShapeBounds {
     constructor() {
       this.type = this.typeId();
-      this.C = new Vec4(0, 0, 0, 1);
-      this.Z = 0;
+      this.center = new Vec4(0, 0, 0, 1);
+      this.radius = 0;
     }
     free() {
-      this.C = null;
+      this.center = null;
     }
-    Pn() {}
+    fromVertices() {}
     from() {}
     typeId() {
       return 102;
@@ -1381,103 +1388,103 @@
   class BoxBounds extends ShapeBounds {
     constructor() {
       super();
-      this.gb = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
+      this.bounds = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
     }
     free() {
-      this.gb = null;
+      this.bounds = null;
       super.free();
     }
-    Pn(a) {
-      var b = this.gb;
-      b.A = b.D = vInfinity;
-      b.B = b.G = vNegInfinity;
+    fromVertices(a) {
+      var b = this.bounds;
+      b.left = b.top = vInfinity;
+      b.right = b.bottom = vNegInfinity;
       b = a.length >> 1;
       let c = 0;
       while (c < b) {
         let d = c++;
-        this.gb.ku(new Vec4(a[d << 1], a[(d << 1) + 1], 0, 1));
+        this.bounds.expand(new Vec4(a[d << 1], a[(d << 1) + 1], 0, 1));
       }
     }
     contains(a) {
-      let b = this.gb;
+      let b = this.bounds;
       let c = a.x;
       a = a.y;
-      if (c >= b.A && c <= b.B && a >= b.D) {
-        return a <= b.G;
+      if (c >= b.left && c <= b.right && a >= b.top) {
+        return a <= b.bottom;
       } else {
         return false;
       }
     }
-    lr(a) {
+    union(a) {
       switch (a.type) {
         case 202:
-          var b = a.C;
-          a = a.Z;
-          this.gb.ku(new Vec4(b.x - a, b.y - a, 0, 1));
-          this.gb.ku(new Vec4(b.x + a, b.y + a, 0, 1));
+          var b = a.center;
+          a = a.radius;
+          this.bounds.expand(new Vec4(b.x - a, b.y - a, 0, 1));
+          this.bounds.expand(new Vec4(b.x + a, b.y + a, 0, 1));
           break;
         case 302:
-          this.gb.add(a.gb);
+          this.bounds.add(a.bounds);
       }
-      b = this.gb;
-      b = (b.B - b.A) / 2;
-      a = this.gb;
-      a = (a.G - a.D) / 2;
-      this.C.x = this.gb.A + b;
-      this.C.y = this.gb.D + a;
-      this.Z = Math.sqrt(b * b + a * a);
+      b = this.bounds;
+      b = (b.right - b.left) / 2;
+      a = this.bounds;
+      a = (a.bottom - a.top) / 2;
+      this.center.x = this.bounds.left + b;
+      this.center.y = this.bounds.top + a;
+      this.radius = Math.sqrt(b * b + a * a);
     }
     from(a) {
-      let b = a.C;
-      let c = a.Z;
+      let b = a.center;
+      let c = a.radius;
       switch (a.type) {
         case 202:
-          this.gb.A = b.x - c;
-          this.gb.D = b.y - c;
-          this.gb.B = b.x + c;
-          this.gb.G = b.y + c;
+          this.bounds.left = b.x - c;
+          this.bounds.top = b.y - c;
+          this.bounds.right = b.x + c;
+          this.bounds.bottom = b.y + c;
           break;
         case 302:
-          var d = this.gb;
-          a = a.gb;
-          d.A = a.A;
-          d.D = a.D;
-          d.B = a.B;
-          d.G = a.G;
+          var d = this.bounds;
+          a = a.bounds;
+          d.left = a.left;
+          d.top = a.top;
+          d.right = a.right;
+          d.bottom = a.bottom;
       }
-      d = this.C;
+      d = this.center;
       d.x = b.x;
       d.y = b.y;
       d.z = b.z;
-      this.Z = c;
+      this.radius = c;
     }
-    kt(a, b) {
-      var c = this.C;
-      var d = b.C;
-      if ((a.K & 64) > 0) {
-        a.Tm();
+    transformInto(a, b) {
+      var c = this.center;
+      var d = b.center;
+      if ((a.flags & 64) > 0) {
+        a.update2DComposite();
       }
-      var e = a.Ue;
+      var e = a.compositeM;
       var f = e.m21 * c.x + e.m22 * c.y + e.m24;
       d.x = e.m11 * c.x + e.m12 * c.y + e.m14;
       d.y = f;
-      b.Z = ((a.K & 8) > 0 ? Math.max(Math.abs(a.scale.x), Math.abs(a.scale.y)) : Math.max(Math.abs(a.matrix.m11) + Math.abs(a.matrix.m12), Math.abs(a.matrix.m21) + Math.abs(a.matrix.m22))) * this.Z;
-      b = b.gb;
-      c = this.gb;
-      d = c.B - c.A;
-      c = this.gb;
-      c = c.G - c.D;
-      f = e = BoxBounds.Fd;
-      var g = this.gb;
-      var h = this.gb;
-      f.x = (g.A + g.B) / 2;
-      f.y = (h.D + h.G) / 2;
-      a.Jb(e, e);
-      b.A = e.x;
-      b.D = e.y;
-      b.B = e.x;
-      b.G = e.y;
-      if ((a.K & 8) > 0) {
+      b.radius = ((a.flags & 8) > 0 ? Math.max(Math.abs(a.scale.x), Math.abs(a.scale.y)) : Math.max(Math.abs(a.matrix.m11) + Math.abs(a.matrix.m12), Math.abs(a.matrix.m21) + Math.abs(a.matrix.m22))) * this.radius;
+      b = b.bounds;
+      c = this.bounds;
+      d = c.right - c.left;
+      c = this.bounds;
+      c = c.bottom - c.top;
+      f = e = BoxBounds.SCRATCH;
+      var g = this.bounds;
+      var h = this.bounds;
+      f.x = (g.left + g.right) / 2;
+      f.y = (h.top + h.bottom) / 2;
+      a.transformPoint2D(e, e);
+      b.left = e.x;
+      b.top = e.y;
+      b.right = e.x;
+      b.bottom = e.y;
+      if ((a.flags & 8) > 0) {
         h = a.matrix;
         e = h.m11;
         f = h.m12;
@@ -1487,32 +1494,32 @@
         d = d * a.x * 0.5;
         a = c * a.y * 0.5;
         if (e > 0) {
-          b.A -= e * d;
-          b.B += e * d;
+          b.left -= e * d;
+          b.right += e * d;
         } else {
-          b.A += e * d;
-          b.B -= e * d;
+          b.left += e * d;
+          b.right -= e * d;
         }
         if (f > 0) {
-          b.A -= f * a;
-          b.B += f * a;
+          b.left -= f * a;
+          b.right += f * a;
         } else {
-          b.A += f * a;
-          b.B -= f * a;
+          b.left += f * a;
+          b.right -= f * a;
         }
         if (g > 0) {
-          b.D -= g * d;
-          b.G += g * d;
+          b.top -= g * d;
+          b.bottom += g * d;
         } else {
-          b.D += g * d;
-          b.G -= g * d;
+          b.top += g * d;
+          b.bottom -= g * d;
         }
         if (h > 0) {
-          b.D -= h * a;
-          b.G += h * a;
+          b.top -= h * a;
+          b.bottom += h * a;
         } else {
-          b.D += h * a;
-          b.G -= h * a;
+          b.top += h * a;
+          b.bottom -= h * a;
         }
       } else {
         g = a.matrix;
@@ -1525,32 +1532,32 @@
         d = Math.cos(e);
         e = Math.sin(e);
         if (d > 0) {
-          b.A -= d * a;
-          b.B += d * a;
+          b.left -= d * a;
+          b.right += d * a;
         } else {
-          b.A += d * a;
-          b.B -= d * a;
+          b.left += d * a;
+          b.right -= d * a;
         }
         if (e > 0) {
-          b.A -= e * c;
-          b.B += e * c;
+          b.left -= e * c;
+          b.right += e * c;
         } else {
-          b.A += e * c;
-          b.B -= e * c;
+          b.left += e * c;
+          b.right -= e * c;
         }
         if (-e > 0) {
-          b.D -= -e * a;
-          b.G += -e * a;
+          b.top -= -e * a;
+          b.bottom += -e * a;
         } else {
-          b.D += -e * a;
-          b.G -= -e * a;
+          b.top += -e * a;
+          b.bottom -= -e * a;
         }
         if (d > 0) {
-          b.D -= d * c;
-          b.G += d * c;
+          b.top -= d * c;
+          b.bottom += d * c;
         } else {
-          b.D += d * c;
-          b.G -= d * c;
+          b.top += d * c;
+          b.bottom -= d * c;
         }
       }
     }
@@ -1567,7 +1574,7 @@
     constructor() {
       super();
     }
-    Pn(a) {
+    fromVertices(a) {
       let b = 0;
       let c = 0;
       let d = 0;
@@ -1591,32 +1598,32 @@
           g = h;
         }
       }
-      this.Z = Math.sqrt(g);
-      a = this.C;
+      this.radius = Math.sqrt(g);
+      a = this.center;
       a.x = b;
       a.y = c;
       a.z = d;
     }
     contains(a) {
-      let b = a.x - this.C.x;
-      let c = a.y - this.C.y;
-      a = a.z - this.C.z;
-      return b * b + c * c + a * a <= this.Z * this.Z;
+      let b = a.x - this.center.x;
+      let c = a.y - this.center.y;
+      a = a.z - this.center.z;
+      return b * b + c * c + a * a <= this.radius * this.radius;
     }
-    lr(a) {
-      var b = a.Z;
+    union(a) {
+      var b = a.radius;
       if (b != 0) {
-        var c = this.Z;
+        var c = this.radius;
         if (c == 0) {
-          this.Z = a.Z;
-          b = this.C;
-          c = a.C;
+          this.radius = a.radius;
+          b = this.center;
+          c = a.center;
           b.x = c.x;
           b.y = c.y;
           b.z = c.z;
         } else {
-          var d = this.C;
-          var e = a.C;
+          var d = this.center;
+          var e = a.center;
           var f = e.x - d.x;
           var g = e.y - d.y;
           e = e.z - d.z;
@@ -1624,9 +1631,9 @@
           var m = b - c;
           if (m * m >= h) {
             if (m >= 0) {
-              this.Z = a.Z;
-              b = this.C;
-              c = a.C;
+              this.radius = a.radius;
+              b = this.center;
+              c = a.center;
               b.x = c.x;
               b.y = c.y;
               b.z = c.z;
@@ -1635,24 +1642,24 @@
             a = Math.sqrt(h);
             if (a > 0) {
               m = (a + m) / (a * 2);
-              h = this.C;
+              h = this.center;
               h.x = d.x + f * m;
               h.y = d.y + g * m;
               h.z = d.z + e * m;
             }
-            this.Z = (a + c + b) / 2;
+            this.radius = (a + c + b) / 2;
           }
         }
       }
     }
     from(a) {
-      this.C.x = a.C.x;
-      this.C.y = a.C.y;
-      this.Z = a.Z;
+      this.center.x = a.center.x;
+      this.center.y = a.center.y;
+      this.radius = a.radius;
     }
-    kt(a, b) {
-      b.C = a.UL(this.C, b.C);
-      b.Z = a.PN() * this.Z;
+    transformInto(a, b) {
+      b.center = a.transformPoint3D(this.center, b.center);
+      b.radius = a.maxAbsScale() * this.radius;
     }
     typeId() {
       return 502;
@@ -1669,40 +1676,40 @@
       a = new SpriteNode(a != null ? a.node : null);
       super(a);
       this.effect = new TextDrawEffect(b);
-      a.Rf(this.effect);
+      a.setEffect(this.effect);
       b = this.effect.size;
-      a.Lb(b.x, b.y);
+      a.setSize(b.x, b.y);
     }
     free() {
-      if (this.u != null) {
-        this.u.free();
-        this.Hb = this.effect = null;
+      if (this.node != null) {
+        this.node.free();
+        this.texture = this.effect = null;
         super.free();
       }
     }
-    Uf(a) {
+    setCharset(a) {
       this.effect.free();
       this.effect = new TextDrawEffect(a);
-      a = this.u;
-      a.Rf(this.effect);
+      a = this.node;
+      a.setEffect(this.effect);
       let b = this.effect.size;
-      a.Lb(b.x, b.y);
+      a.setSize(b.x, b.y);
     }
-    setMultiline(a) {
+    autoFit(a) {
       if (a == null) {
         a = true;
       }
       if (this.effect.Ze) {
         this.effect.shape();
       }
-      this.effect.nN(a);
+      this.effect.autoFit(a);
     }
     shape() {
       this.effect.shape();
     }
     setBoxSize(a, b) {
       this.effect.setBoxSize(a, b);
-      this.u.Lb(a, b);
+      this.node.setSize(a, b);
     }
     setText(a) {
       this.effect.setText(a);
@@ -1710,64 +1717,64 @@
     setAlign(a, b) {
       this.effect.setAlign(a, b);
     }
-    $q() {
-      return this.effect.$q();
+    getFontSize() {
+      return this.effect.getFontSize();
     }
     setFontSize(a) {
       this.effect.setFontSize(a);
     }
-    uv() {
-      return this.effect.uv();
+    lineCount() {
+      return this.effect.lineCount();
     }
-    kp() {
-      this.effect.kp();
+    markDirty() {
+      this.effect.markDirty();
     }
-    kx(a) {
-      this.effect.kx(a);
+    setLineHeightOffset(a) {
+      this.effect.setLineHeightOffset(a);
     }
-    Is(a) {
-      this.effect.Is(a);
+    setYOffsetPerLine(a) {
+      this.effect.setYOffsetPerLine(a);
     }
-    Tf(a) {
-      this.effect.Tf(a);
+    setMultiline(a) {
+      this.effect.setMultiline(a);
     }
-    Re(a, b) {
+    boundingBox(a, b) {
       if (b == null) {
         b = true;
       }
       this.shape();
-      var c = this.effect.Og.gb;
-      c = new Bounds(c.A, c.D, c.B, c.G);
-      if (c.A >= c.B || c.D >= c.G || a == this) {
+      var c = this.effect.layout.bounds;
+      c = new Bounds(c.left, c.top, c.right, c.bottom);
+      if (c.left >= c.right || c.top >= c.bottom || a == this) {
         return c;
       }
       if (b) {
-        NodeTreeUtil.Yf(this.u);
-        if (a != null && !NodeTreeUtil.Ov(this.u, a.u)) {
-          NodeTreeUtil.Yf(a.u);
+        NodeTreeUtil.updateWorldTransforms(this.node);
+        if (a != null && !NodeTreeUtil.contains(this.node, a.node)) {
+          NodeTreeUtil.updateWorldTransforms(a.node);
         }
       }
-      return NodeTreeUtil.cT(this.u, a == null ? this.u.gB() : a.u, c);
+      return NodeTreeUtil.transformBounds(this.node, a == null ? this.node.root() : a.node, c);
     }
     centerOrigin() {
-      let a = this.Re(this);
-      if (a.A >= a.B || a.D >= a.G) {
+      let a = this.boundingBox(this);
+      if (a.left >= a.right || a.top >= a.bottom) {
         this.setOrigin(0, 0);
       } else {
-        this.setOrigin((a.A + a.B) / 2, (a.D + a.G) / 2);
+        this.setOrigin((a.left + a.right) / 2, (a.top + a.bottom) / 2);
       }
     }
     centerPivot() {
-      let a = this.Re(this);
-      if (a.A >= a.B || a.D >= a.G) {
+      let a = this.boundingBox(this);
+      if (a.left >= a.right || a.top >= a.bottom) {
         this.setPivot(0, 0);
       } else {
-        this.setPivot((a.A + a.B) / 2, (a.D + a.G) / 2);
+        this.setPivot((a.left + a.right) / 2, (a.top + a.bottom) / 2);
       }
     }
     getWidth() {
-      let a = this.Re(this.mh());
-      return a.B - a.A;
+      let a = this.boundingBox(this.parentContainer());
+      return a.right - a.left;
     }
     setScaleX() {
       throw 24;
@@ -1793,10 +1800,10 @@
       this.box = null;
       super.free();
     }
-    Pn(a) {
+    fromVertices(a) {
       var b = this.box;
-      b.A = b.D = vInfinity;
-      b.B = b.G = vNegInfinity;
+      b.left = b.top = vInfinity;
+      b.right = b.bottom = vNegInfinity;
       a = a.length >> 1;
       for (b = 0; b < a;) {
         ++b;
@@ -1805,22 +1812,22 @@
     contains() {
       return false;
     }
-    lr() {}
+    union() {}
     from() {}
-    kt(a, b) {
-      var c = this.C;
-      var d = b.C;
-      if ((a.K & 16) > 0) {
-        a.nt();
+    transformInto(a, b) {
+      var c = this.center;
+      var d = b.center;
+      if ((a.flags & 16) > 0) {
+        a.updateComposite();
       }
-      var e = a.Ue;
+      var e = a.compositeM;
       let f = c.x;
       let g = c.y;
       c = c.z;
       d.x = e.m11 * f + e.m12 * g + e.m13 * c + e.m14;
       d.y = e.m21 * f + e.m22 * g + e.m23 * c + e.m24;
       d.z = e.m31 * f + e.m32 * g + e.m33 * c + e.m34;
-      if ((a.K & 8) > 0) {
+      if ((a.flags & 8) > 0) {
         d = Math.abs(a.scale.x);
         e = Math.abs(a.scale.y);
         a = Math.abs(a.scale.z);
@@ -1830,7 +1837,7 @@
         e = Math.abs(a.m21) + Math.abs(a.m22) + Math.abs(a.m23);
         a = Math.abs(a.m31) + Math.abs(a.m32) + Math.abs(a.m33);
       }
-      b.Z = Math.max(Math.max(d, e), a) * this.Z;
+      b.radius = Math.max(Math.max(d, e), a) * this.radius;
     }
     typeId() {
       return 402;
@@ -1845,7 +1852,7 @@
     constructor() {
       super();
     }
-    Pn(a) {
+    fromVertices(a) {
       let b = a.length >> 1;
       var c = 0;
       var d = 0;
@@ -1854,31 +1861,31 @@
         c += a[f << 1];
         d += a[(f << 1) + 1];
       }
-      c = this.C.x = c / b;
-      d = this.C.y = d / b;
-      for (e = this.Z = 0; e < b;) {
+      c = this.center.x = c / b;
+      d = this.center.y = d / b;
+      for (e = this.radius = 0; e < b;) {
         var g = e++;
         f = a[g << 1] - c;
         g = a[(g << 1) + 1] - d;
-        this.Z = Math.max(f * f + g * g, this.Z);
+        this.radius = Math.max(f * f + g * g, this.radius);
       }
-      this.Z = Math.sqrt(this.Z);
+      this.radius = Math.sqrt(this.radius);
     }
     contains(a) {
-      let b = a.x - this.C.x;
-      a = a.y - this.C.y;
-      return b * b + a * a <= this.Z * this.Z;
+      let b = a.x - this.center.x;
+      a = a.y - this.center.y;
+      return b * b + a * a <= this.radius * this.radius;
     }
-    lr(a) {
-      if (a.Z != 0) {
-        if (this.Z == 0) {
-          this.Z = a.Z;
-          this.C.x = a.C.x;
-          this.C.y = a.C.y;
+    union(a) {
+      if (a.radius != 0) {
+        if (this.radius == 0) {
+          this.radius = a.radius;
+          this.center.x = a.center.x;
+          this.center.y = a.center.y;
         } else {
-          var b = a.C.x - this.C.x;
-          var c = a.C.y - this.C.y;
-          var d = a.Z - this.Z;
+          var b = a.center.x - this.center.x;
+          var c = a.center.y - this.center.y;
+          var d = a.radius - this.radius;
           var e = b * b + c * c;
           if (d * d >= e) {
             if (d >= 0) {
@@ -1886,30 +1893,30 @@
             }
           } else {
             d = Math.sqrt(e);
-            e = (d + a.Z - this.Z) / (d * 2);
-            this.C.x += e * b;
-            this.C.y += e * c;
-            this.Z = (d + this.Z + a.Z) / 2;
+            e = (d + a.radius - this.radius) / (d * 2);
+            this.center.x += e * b;
+            this.center.y += e * c;
+            this.radius = (d + this.radius + a.radius) / 2;
           }
         }
       }
     }
     from(a) {
-      this.C.x = a.C.x;
-      this.C.y = a.C.y;
-      this.Z = a.Z;
+      this.center.x = a.center.x;
+      this.center.y = a.center.y;
+      this.radius = a.radius;
     }
-    kt(a, b) {
-      var c = this.C;
-      var d = b.C;
-      if ((a.K & 64) > 0) {
-        a.Tm();
+    transformInto(a, b) {
+      var c = this.center;
+      var d = b.center;
+      if ((a.flags & 64) > 0) {
+        a.update2DComposite();
       }
-      let e = a.Ue;
+      let e = a.compositeM;
       let f = e.m21 * c.x + e.m22 * c.y + e.m24;
       d.x = e.m11 * c.x + e.m12 * c.y + e.m14;
       d.y = f;
-      if ((a.K & 8) > 0) {
+      if ((a.flags & 8) > 0) {
         c = Math.abs(a.scale.x);
         d = Math.abs(a.scale.y);
         a = Math.abs(a.scale.z);
@@ -1919,7 +1926,7 @@
         d = Math.abs(a.m21) + Math.abs(a.m22) + Math.abs(a.m23);
         a = Math.abs(a.m31) + Math.abs(a.m32) + Math.abs(a.m33);
       }
-      b.Z = Math.max(Math.max(c, d), a) * this.Z;
+      b.radius = Math.max(Math.max(c, d), a) * this.radius;
     }
     typeId() {
       return 202;
@@ -1933,24 +1940,24 @@
 
   class ColorRectShape {
     constructor(a, b) {
-      this.u = this.va = new SceneGroup();
-      this.u.Xg = this;
-      this.va.Bh(new AlphaState(1));
+      this.node = this.visual = new SceneGroup();
+      this.node.owner = this;
+      this.visual.setRenderState(new AlphaState(1));
       if (a != null) {
-        this.va.Rf(new MeshDrawEffect(a));
+        this.visual.setEffect(new MeshDrawEffect(a));
       } else {
-        this.va.Rf(new ClearEffect(b));
+        this.visual.setEffect(new ClearEffect(b));
       }
     }
-    W(a) {
-      this.va.li(5).bf(a);
+    setAlpha(a) {
+      this.visual.getRenderState(5).setAlpha(a);
     }
-    L(a) {
-      this.va.Ne = a ? 2 : 1;
+    setVisible(a) {
+      this.visual.visibility = a ? 2 : 1;
     }
     free() {
-      this.va.free();
-      this.u = this.va = null;
+      this.visual.free();
+      this.node = this.visual = null;
     }
   }
   ColorRectShape.i = true;

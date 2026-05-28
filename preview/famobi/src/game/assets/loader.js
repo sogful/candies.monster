@@ -1,19 +1,26 @@
   class Keys {
-    static VC(a) {
-      return StringUtil.AP(a == null ? "null" : "" + a);
+    static padNum(a) {
+      return StringUtil.padNumber4(a == null ? "null" : "" + a);
     }
-    static jj(a, b) {
-      return a + Keys.VC(b);
+    static indexed(a, b) {
+      return a + Keys.padNum(b);
     }
-    static Pa(a, b, c, d) {
+    static range(a, b, c, d) {
       return InternKey.create((a == null ? "" : a + ",") + b + "-" + c + "@" + d);
     }
   }
   Keys.i = true;
+  // Resources - global asset cache + helpers. Most fields are filled
+  // in by Scene.loadTextures() and consumed by the rest of the engine
+  // via short slot names (Resources.Wa = menu UI sheet, Resources.ic
+  // = current font, etc.).
   class Resources {
-    static ov(a, b) {
+    // langIndex - look up the index of `b` in the LANGUAGES list,
+    // ensuring `a` appears at its sorted position (used to pick the
+    // right font variant for a language).
+    static langIndex(a, b) {
       let c = LANGUAGES.slice();
-      c.sort(Comparator.mM);
+      c.sort(Comparator.compareLower);
       c.splice(c.indexOf(a), 0, a);
       return c.indexOf(b);
     }
@@ -21,87 +28,90 @@
   Resources.i = true;
   class ScriptLoader {
     constructor() {
-      this.nC = this.kC = 0;
-      this.$l = [];
-      this.yd = new PriorityQueue();
+      this.newPriority = this.bumpPriority = 0;
+      this.activeDownloads = [];
+      this.loader = new PriorityQueue();
       this.version = null;
-      this.DC = this.lw = 0;
-      this.Wo = 1;
+      this.totalDone = this.totalQueued = 0;
+      this.maxConcurrent = 1;
     }
     load(a) {
-      if (this.PB(a) || this.Rv(a) || this.Tj(a)) {
+      if (this.isQueued(a) || this.isLoaded(a) || this.isDecoding(a)) {
         return false;
       }
-      this.lw++;
+      this.totalQueued++;
       a = new ScriptDownload(a, this);
-      a.priority = this.nC--;
-      if (this.$l.length == this.Wo) {
-        this.yd.enqueue(a);
+      a.priority = this.newPriority--;
+      if (this.activeDownloads.length == this.maxConcurrent) {
+        this.loader.enqueue(a);
         return true;
       }
-      this.$l.push(a);
+      this.activeDownloads.push(a);
       a.load();
       return true;
     }
     stop() {
-      this.yd.clear();
+      this.loader.clear();
     }
-    $Q(a) {
-      if (this.PB(a) && !this.Rv(a) && !this.Tj(a)) {
-        var b = Lambda.find(this.yd, function (c) {
-          return c.Nk.url.indexOf(a) > -1;
+    reprioritize(a) {
+      if (this.isQueued(a) && !this.isLoaded(a) && !this.isDecoding(a)) {
+        var b = Lambda.find(this.loader, function (c) {
+          return c.req.url.indexOf(a) > -1;
         });
         if (b != null) {
-          this.yd.rR(b, ++this.kC);
+          this.loader.reprioritize(b, ++this.bumpPriority);
         }
       }
     }
-    jo(a) {
-      if (this.lw == 0) {
+    progress(a) {
+      if (this.totalQueued == 0) {
         return 1;
       }
       if (a == null) {
-        return this.DC / this.lw;
+        return this.totalDone / this.totalQueued;
       }
       let b = this;
       return Lambda.count(a, function (c) {
-        return b.Rv(c);
+        return b.isUrlLoaded(c);
       }) / a.length;
     }
-    PB(a) {
+    isUrlLoaded(a) {
+      return Loader.isLoaded(Loader.idByName(a));
+    }
+    isQueued(a) {
       function b(c) {
-        return c.Nk.url.indexOf(a) > -1;
+        return c.req.url.indexOf(a) > -1;
       }
-      if (this.yd == null) {
+      if (this.loader == null) {
         return false;
       } else {
-        return Lambda.count(this.yd, b) + Lambda.count(this.$l, b) > 0;
+        return Lambda.count(this.loader, b) + Lambda.count(this.activeDownloads, b) > 0;
       }
     }
-    mQ(a) {
-      Std.remove(this.$l, a);
-      this.DC++;
-      if (this.yd.ba == 0 && this.$l.length == 0) {
-        this.nC = this.kC = 0;
+    onDownloadDone(a) {
+      Std.remove(this.activeDownloads, a);
+      this.totalDone++;
+      if (this.loader.count == 0 && this.activeDownloads.length == 0) {
+        this.newPriority = this.bumpPriority = 0;
       }
-      let b = Loader.rg(a.Nk.url);
+      let b = Loader.idByName(a.req.url);
       if (b >= 0) {
-        Loader.setData(b, a.Nk.data);
+        Loader.setData(b, a.req.data);
       }
-      if (this.yd.ba > 0) {
-        a = this.yd.KM();
-        this.$l.push(a);
+      if (this.loader.count > 0) {
+        a = this.loader.dequeue();
+        this.activeDownloads.push(a);
         a.load();
       }
     }
-    lQ() {
+    cancel() {
       this.stop();
     }
-    Rv(a) {
-      return Loader.ob(Loader.rg(a));
+    isLoaded(a) {
+      return Loader.isLoaded(Loader.idByName(a));
     }
-    Tj(a) {
-      return Loader.Tj(Loader.rg(a));
+    isDecoding(a) {
+      return Loader.isDecoding(Loader.idByName(a));
     }
   }
   ScriptLoader.i = true;
@@ -110,7 +120,7 @@
   });
   class DataReader {
     constructor(a) {
-      this.oq = [];
+      this.entries = [];
       this.data = null;
       var b = new Uint8Array(a);
       var c = b.byteLength;
@@ -118,11 +128,11 @@
         var d = b[c - 6] | b[c - 5] << 8 | b[c - 4] << 16;
         var e = a.slice(c - (d + 6), c - 6);
         if ((b[c - 3] & 1) > 0) {
-          a = Bytes.hk(a.slice(0, a.byteLength - (d + 6)));
+          a = Bytes.fromBuffer(a.slice(0, a.byteLength - (d + 6)));
           b = MD5.encode(Base64.encode(a));
           a = [];
           for (c = 0; c < 32;) {
-            a.push(Std.Eu(b, c++));
+            a.push(Std.charCode(b, c++));
           }
           b = new Uint8Array(e);
           c = 0;
@@ -131,25 +141,25 @@
             b[f] ^= a[f & 31];
           }
         }
-        this.data = Bytes.hk(e);
+        this.data = Bytes.fromBuffer(e);
         e = new BytesReader(this.data);
-        a = e.ta();
+        a = e.readByte();
         for (b = 0; b < a;) {
           ++b;
-          d = e.ta();
-          f = e.ta();
+          d = e.readByte();
+          f = e.readByte();
           c = null;
-          let g = e.zd();
+          let g = e.readUInt16();
           if (g > 0) {
-            c = e.hs(g, v141.Ut);
+            c = e.readString(g, v141.Ut);
           }
           if (d == 0) {
-            d = e.zd();
+            d = e.readUInt16();
             f = new Bytes(new ArrayBuffer(d));
-            e.zm(f, 0, d);
-            this.oq.push(new NamedDataEntry(c, f, null));
+            e.readBytes(f, 0, d);
+            this.entries.push(new NamedDataEntry(c, f, null));
           } else {
-            this.oq.push(new NamedDataEntry(c, this.oq[f].data, f));
+            this.entries.push(new NamedDataEntry(c, this.entries[f].data, f));
           }
         }
       }
@@ -160,32 +170,32 @@
     l: DataReader
   });
   class Loader {
-    static ib() {
+    static init() {
       Loader.data = new HashMap();
-      Loader.em = new HashMap();
-      Loader.fA = [];
-      Loader.us = 1;
+      Loader.metadata = new HashMap();
+      Loader.asyncCallbacks = [];
+      Loader.maxResolution = 1;
       Loader.language = "en";
-      Loader.wo = "png";
-      Loader.el = null;
-      Loader.Qw = new KeyTable();
-      Loader.Pu = new HashMap();
+      Loader.imageExt = "png";
+      Loader.audioExt = null;
+      Loader.nameTable = new KeyTable();
+      Loader.decoders = new HashMap();
       Loader.decoding = new HashMap();
-      Loader.rq = null;
-      Loader.hh = new HashMap();
-      Loader.hh.J[0] = ["wav", "ogg", "aac"];
-      Loader.hh.J[2] = ["png", "jpg"];
-      Loader.hh.J[3] = ["txt", "json", "tmj", "tsj"];
-      Loader.hh.J[1] = ["dat", "tps", "fnt", "zst"];
-      Loader.hh.J[4] = ["mp4"];
+      Loader.keysByName = null;
+      Loader.extensions = new HashMap();
+      Loader.extensions.map[0] = ["wav", "ogg", "aac"];
+      Loader.extensions.map[2] = ["png", "jpg"];
+      Loader.extensions.map[3] = ["txt", "json", "tmj", "tsj"];
+      Loader.extensions.map[1] = ["dat", "tps", "fnt", "zst"];
+      Loader.extensions.map[4] = ["mp4"];
     }
-    static Ls(a) {
-      Loader.us = a;
+    static setMaxResolution(a) {
+      Loader.maxResolution = a;
     }
-    static qv() {
+    static getLanguage() {
       return Loader.language;
     }
-    static Wi(a) {
+    static setLanguage(a) {
       var b;
       if (b == null) {
         b = false;
@@ -194,61 +204,65 @@
         a = "en";
       }
       a = a.toLowerCase();
-      var c = Loader.hv();
-      if (c.length > 0 && !Lambda.Ej(c, function (d) {
+      var c = Loader.languageList();
+      if (c.length > 0 && !Lambda.exists(c, function (d) {
         return d == a;
       })) {
         a = "en";
       }
       if (b && a != Loader.language) {
         b = 0;
-        c = Loader.Ce;
+        c = Loader.paths;
         while (b < c.length) {
           let d = c[b];
           ++b;
           if (new EReg("{language}", "").match(d)) {
-            Loader.rg(d);
-            Loader.ps(Loader.rg(d));
+            Loader.idByName(d);
+            Loader.purge(Loader.idByName(d));
           }
         }
       }
       Loader.language = a;
       return Loader.language;
     }
-    static RR() {
-      // was: Loader.wo = "avif"; - switched to png everywhere
+    static selectImageFormat() {
+      // was: Loader.imageExt = "avif"; - switched to png everywhere
     }
-    static HN(a) {
-      var b = new RegExp("^(" + Loader.Rp + "/)", "");
-      a = Loader.ni(a).replace(b, "");
+    static getResolutionLevel(a) {
+      var b = new RegExp("^(" + Loader.prefix + "/)", "");
+      a = Loader.getUrl(a).replace(b, "");
       b = new EReg("-(\\d)x", "");
       if (b.match(a)) {
-        return Numeric.parseInt(b.Zc(1));
+        return Numeric.parseInt(b.matched(1));
       } else {
         return 1;
       }
     }
-    static KN(a) {
-      return Loader.KP[a];
+    static maxResolutionLevel(a) {
+      return Loader.RESOLUTIONS[a];
     }
-    static OA() {
-      return Loader.el;
+    static getAudioExt() {
+      return Loader.audioExt;
     }
-    static JR(a) {
-      Loader.el = a;
+    static setAudioExt(a) {
+      Loader.audioExt = a;
     }
     static getType(a) {
       let b = 0;
       while (b < 5) {
         let c = b++;
-        if (new EReg("\\.(" + Loader.hh.J[c].join("|") + ")", "mi").match(a)) {
+        if (new EReg("\\.(" + Loader.extensions.map[c].join("|") + ")", "mi").match(a)) {
           return c;
         }
       }
       throw 21;
     }
-    static ni(a) {
-      let b = Loader.Ce[a];
+    // getUrl - resolve resource id `a` to its URL string, substituting
+    // {language}/{image}/{audio}/{resolution} placeholders against the
+    // currently-selected language and best-supported image / audio
+    // codec / DPI tier.
+    static getUrl(a) {
+      let b = Loader.paths[a];
       if (b == null) {
         return null;
       }
@@ -259,36 +273,36 @@
           b = b.replace(c.r, "-" + Loader.language);
         }
         c = new EReg("{image}", "g");
-        if (c.match(b) && Loader.wo != null) {
-          b = b.replace(c.r, Loader.wo);
+        if (c.match(b) && Loader.imageExt != null) {
+          b = b.replace(c.r, Loader.imageExt);
         }
         c = new EReg("{audio}", "g");
-        if (c.match(b) && Loader.el != null) {
-          b = b.replace(c.r, Loader.el);
+        if (c.match(b) && Loader.audioExt != null) {
+          b = b.replace(c.r, Loader.audioExt);
         }
         c = new EReg("{resolution}", "g");
-        if (c.match(b) && Loader.us != null) {
-          b = Loader.us == 1 ? b.replace(c.r, "") : b.replace(c.r, "-" + Math.min(Loader.KN(a), Loader.us) + "x");
+        if (c.match(b) && Loader.maxResolution != null) {
+          b = Loader.maxResolution == 1 ? b.replace(c.r, "") : b.replace(c.r, "-" + Math.min(Loader.maxResolutionLevel(a), Loader.maxResolution) + "x");
         }
       }
-      return "" + Loader.Rp + "/" + b;
+      return "" + Loader.prefix + "/" + b;
     }
-    static TN() {
+    static allUrls() {
       var a;
       if (a == null) {
-        a = Loader.FN();
+        a = Loader.allIds();
       }
       let b = [];
       let c = 0;
       while (c < a.length) {
-        let d = Loader.ni(a[c++]);
+        let d = Loader.getUrl(a[c++]);
         if (d != null) {
           b.push(d);
         }
       }
       return b;
     }
-    static FN() {
+    static allIds() {
       let a = [];
       let b = 0;
       let c = Loader.MAX;
@@ -300,85 +314,94 @@
     static iterator() {
       return new AssetIdIter();
     }
-    static fB() {
-      let a = Loader.YQ;
+    static filterLanguageRes() {
+      let a = Loader.LANGUAGE_RESOURCES;
       let b = [];
       let c = 0;
       while (c < a.length) {
         let d = a[c];
         ++c;
-        if (Loader.LE(d)) {
+        if (Loader.canLoad(d)) {
           b.push(d);
         }
       }
       return b;
     }
-    static GN() {
-      let a = Loader.rO;
+    static filterImageRes() {
+      let a = Loader.IMAGE_RESOURCES;
       let b = [];
       let c = 0;
       while (c < a.length) {
         let d = a[c];
         ++c;
-        if (Loader.LE(d)) {
+        if (Loader.canLoad(d)) {
           b.push(d);
         }
       }
       return b;
     }
-    static Hl(a, b, c) {
+    // idForExt - look up the resource id whose URL is `a` rewritten
+    // with extension `b`. `c` strips the `.p.` infix some sheet
+    // variants use.
+    static idForExt(a, b, c) {
       if (c == null) {
         c = false;
       }
       let d = RegExp("\\.(\\w+)$", "");
-      a = Loader.ni(a).replace(d, "." + b);
+      a = Loader.getUrl(a).replace(d, "." + b);
       if (c) {
         a = a.replace(RegExp("\\.p\\.", ""), ".");
       }
-      return Loader.rg(a);
+      return Loader.idByName(a);
     }
-    static rg(a) {
+    // idByName - reverse-lookup a path string to its resource id.
+    // Walks the name table first (Qw), then strips the project prefix
+    // and tries the URL table (Ce) with progressively more aggressive
+    // language / DPI / codec normalisation.
+    static idByName(a) {
       function b(d, e) {
         a = a.replace(new RegExp(d, ""), e);
       }
-      if (Object.prototype.hasOwnProperty.call(Loader.Qw.J, a)) {
-        return Numeric.parseInt(Loader.Qw.J[a]);
+      if (Object.prototype.hasOwnProperty.call(Loader.nameTable.map, a)) {
+        return Numeric.parseInt(Loader.nameTable.map[a]);
       }
-      b("^(" + Loader.Rp + "/)(.*)", "$2");
-      var c = Loader.Ce.indexOf(a);
+      b("^(" + Loader.prefix + "/)(.*)", "$2");
+      var c = Loader.paths.indexOf(a);
       if (c != -1) {
         return c;
       }
-      c = Loader.hv();
+      c = Loader.languageList();
       if (c.length > 0) {
         b("-(" + c.join("|") + ")", "{language}");
       }
-      if (Loader.zQ.includes(a)) {
+      if (Loader.resolutionList.includes(a)) {
         b("(\\.\\w+)$", "{resolution}$1");
       } else {
         b("[\\/-][124]x", "{resolution}");
       }
-      c = Loader.Ce.indexOf(a);
+      c = Loader.paths.indexOf(a);
       if (c != -1) {
         return c;
       }
-      if (new EReg("(" + Loader.hh.J[2].join("|") + ")", "g").match(a)) {
-        c = Loader.wN();
+      if (new EReg("(" + Loader.extensions.map[2].join("|") + ")", "g").match(a)) {
+        c = Loader.imageFormats();
         if (c.length > 0) {
           b("(.*?)\\.(" + c.join("|") + ")$", "$1.{image}");
           b("((" + c.join("|") + ")\\/)", "{image}/");
         }
-      } else if (new EReg("(" + Loader.hh.J[0].join("|") + ")", "g").match(a)) {
-        c = Loader.Xq();
+      } else if (new EReg("(" + Loader.extensions.map[0].join("|") + ")", "g").match(a)) {
+        c = Loader.audioFormats();
         if (c.length > 0) {
           b("(.*?)\\.(" + c.join("|") + ")$", "$1.{audio}");
           b("((" + c.join("|") + ")\\/)", "{audio}/");
         }
       }
-      return Loader.Ce.indexOf(a);
+      return Loader.paths.indexOf(a);
     }
-    static yb(a) {
-      a = Loader.data.J[a];
+    // getText - read resource `a` from the data table as a string.
+    // Accepts string or ArrayBuffer-backed entries; UTF-8 decoded.
+    static getText(a) {
+      a = Loader.data.map[a];
       if (typeof a == "string") {
         return a;
       }
@@ -387,33 +410,34 @@
           a = new DataView(a);
           return new TextDecoder("utf-8").decode(a);
         }
-        a = Bytes.hk(a);
-        return a.yb(0, a.length);
+        a = Bytes.fromBuffer(a);
+        return a.decodeString(0, a.length);
       }
       return null;
     }
-    static eo(a) {
-      return Bytes.hk(Loader.data.J[a]);
+    // getBytes - read resource `a` as a Bytes object.
+    static getBytes(a) {
+      return Bytes.fromBuffer(Loader.data.map[a]);
     }
-    static zN(a) {
-      if (Loader.rq == null) {
-        Loader.rq = new KeyTable();
+    static idByName2(a) {
+      if (Loader.keysByName == null) {
+        Loader.keysByName = new KeyTable();
         let b = 0;
-        let c = Loader.bA;
+        let c = Loader.manifest;
         while (b < c.length) {
           let d = c[b++].split(":");
-          Loader.rq.J[Loader.Rp + "/" + d[0]] = Numeric.parseInt(d[1]);
+          Loader.keysByName.map[Loader.prefix + "/" + d[0]] = Numeric.parseInt(d[1]);
         }
       }
-      return Loader.rq.J[a];
+      return Loader.keysByName.map[a];
     }
-    static LE(a) {
-      if (Loader.Lv(a)) {
-        if (Loader.el == null) {
+    static canLoad(a) {
+      if (Loader.isAudioResource(a)) {
+        if (Loader.audioExt == null) {
           return false;
         } else {
-          return Lambda.Ej(Loader.Xq(), function (b) {
-            return b == Loader.el;
+          return Lambda.exists(Loader.audioFormats(), function (b) {
+            return b == Loader.audioExt;
           });
         }
       } else {
@@ -421,15 +445,15 @@
       }
     }
     static setData(a, b) {
-      if (Loader.Pu.J.hasOwnProperty(a) && Loader.decoding.J[a] == 0) {
-        Loader.decoding.J[a] = 1;
-        Loader.Pu.J[a](a, b, function (c) {
-          Loader.decoding.J[a] = 2;
+      if (Loader.decoders.map.hasOwnProperty(a) && Loader.decoding.map[a] == 0) {
+        Loader.decoding.map[a] = 1;
+        Loader.decoders.map[a](a, b, function (c) {
+          Loader.decoding.map[a] = 2;
           Loader.setData(a, c);
         });
       } else {
-        Loader.data.J[a] = b;
-        b = Loader.fA;
+        Loader.data.map[a] = b;
+        b = Loader.asyncCallbacks;
         let c = b.length;
         while (--c > -1) {
           if (b[c].id == a) {
@@ -441,62 +465,63 @@
         }
       }
     }
-    static ob(a) {
-      return Loader.data.J[a] != null;
+    // isLoaded - has resource id `a` been fetched into the data table?
+    static isLoaded(a) {
+      return Loader.data.map[a] != null;
     }
-    static ps(a) {
-      Loader.data.J[a] = null;
+    static purge(a) {
+      Loader.data.map[a] = null;
       Loader.data.remove(a);
-      Loader.decoding.J[a] = 0;
+      Loader.decoding.map[a] = 0;
     }
-    static VR(a, b) {
-      Loader.em.J[a] = b;
+    static setMetadata(a, b) {
+      Loader.metadata.map[a] = b;
     }
-    static LN(a) {
-      return Loader.em.J[a];
+    static getMetadata(a) {
+      return Loader.metadata.map[a];
     }
-    static Lv(a) {
+    static isAudioResource(a) {
       if (a > 1000) {
-        a = Loader.Qw.J[a == null ? "null" : "" + a];
+        a = Loader.nameTable.map[a == null ? "null" : "" + a];
         return new EReg("(ogg|aac|mp3|wav)$", "").match(a);
       } else {
-        return new EReg("{audio}", "").match(Loader.Ce[a]);
+        return new EReg("{audio}", "").match(Loader.paths[a]);
       }
     }
-    static ug(a) {
-      return new EReg("music", "").match(Loader.Ce[a]);
+    static isMusic(a) {
+      return new EReg("music", "").match(Loader.paths[a]);
     }
-    static JO(a) {
-      a = Loader.Ce[a];
+    static isImageResource(a) {
+      a = Loader.paths[a];
       let b = new EReg("{image}", "g");
-      if (b.match(a) && Loader.wo != null) {
-        a = a.replace(b.r, Loader.wo);
+      if (b.match(a) && Loader.imageExt != null) {
+        a = a.replace(b.r, Loader.imageExt);
       }
-      return new EReg("\\.(" + Loader.hh.J[2].join("|") + ")$", "").match(a);
+      return new EReg("\\.(" + Loader.extensions.map[2].join("|") + ")$", "").match(a);
     }
-    static Tj(a) {
-      return Loader.decoding.J[a] == 1;
+    static isDecoding(a) {
+      return Loader.decoding.map[a] == 1;
     }
-    static aQ(a, b) {
-      if (Loader.ni(a) != null) {
-        if (Loader.ob(a)) {
+    static onceLoaded(a, b) {
+      if (Loader.getUrl(a) != null) {
+        if (Loader.isLoaded(a)) {
           b(a);
         } else {
-          Loader.fA.push(new AsyncCallback(a, b));
+          Loader.asyncCallbacks.push(new AsyncCallback(a, b));
         }
       }
     }
-    static Cz(a, b) {
-      Loader.Pu.J[a] = b;
-      Loader.decoding.J[a] = 0;
+    static setDecoder(a, b) {
+      Loader.decoders.map[a] = b;
+      Loader.decoding.map[a] = 0;
     }
-    static Xq() {
+    static audioFormats() {
       return ["ogg", "aac"].slice();
     }
-    static wN() {
+    static imageFormats() {
       return ["png", "jpg"].slice();
     }
-    static hv() {
+    static languageList() {
       return "ru nl ko ja it fr es en de br".split(" ").slice();
     }
   }
@@ -510,23 +535,23 @@
   });
   class ScriptDownload {
     constructor(a, b) {
-      this.Nk = new AssetXHR(a, b.version);
-      this.yd = b;
+      this.req = new AssetXHR(a, b.version);
+      this.loader = b;
     }
     load() {
       let a = this;
-      this.Nk.load(function () {
-        ScriptLoader.cA += Loader.zN(a.Nk.url);
-        a.yd.mQ(a);
+      this.req.load(function () {
+        ScriptLoader.totalLoaded += Loader.idByName2(a.req.url);
+        a.loader.onDownloadDone(a);
         a.free();
       }, function () {
-        a.yd.lQ();
+        a.loader.cancel();
         a.free();
       });
     }
     free() {
-      this.yd = null;
-      this.Nk.free();
+      this.loader = null;
+      this.req.free();
     }
   }
   ScriptDownload.i = true;
@@ -538,7 +563,7 @@
     constructor(a, b, c) {
       this.name = a;
       this.data = b;
-      this.ks = c;
+      this.aliasOf = c;
     }
   }
   NamedDataEntry.i = true;
@@ -547,13 +572,13 @@
   });
   class AssetIdIter {
     constructor() {
-      this.yB = 0;
+      this.idx = 0;
     }
-    fb() {
-      return this.yB < Loader.MAX;
+    hasNext() {
+      return this.idx < Loader.MAX;
     }
     next() {
-      return this.yB++;
+      return this.idx++;
     }
   }
   AssetIdIter.i = true;
@@ -562,18 +587,18 @@
   });
   class AssetXHR {
     constructor(a, b) {
-      this.mm = this.Ae = null;
+      this.onDone = this.onError = null;
       this.progress = 0;
       this.data = null;
       this.url = a;
       this.version = b;
     }
     free() {
-      this.Ae = this.mm = this.data = null;
+      this.onError = this.onDone = this.data = null;
     }
     load(a, b) {
-      this.mm = a;
-      this.Ae = b;
+      this.onDone = a;
+      this.onError = b;
       let c;
       switch (Loader.getType(this.url)) {
         case 0:
@@ -592,24 +617,24 @@
           c = "blob";
       }
       let d = this;
-      this.zT(this.url, c, function (e) {
-        d.Hi(e);
+      this.createXHR(this.url, c, function (e) {
+        d.onData(e);
       });
     }
-    zT(a, b, c) {
+    createXHR(a, b, c) {
       let d = new XMLHttpRequest();
       let e = this;
       d.onerror = function () {
-        if (e.Ae != null) {
-          e.Ae();
+        if (e.onError != null) {
+          e.onError();
         }
         d.onerror = d.onload = d.onprogress = null;
       };
       d.onload = function () {
         e.progress = 1;
         if (d.status == 404) {
-          if (e.Ae != null) {
-            e.Ae();
+          if (e.onError != null) {
+            e.onError();
           }
         } else {
           var f = d.response;
@@ -628,10 +653,10 @@
         d.send();
       } catch (f) {}
     }
-    Hi(a) {
+    onData(a) {
       this.data = a;
-      this.mm();
-      this.mm = null;
+      this.onDone();
+      this.onDone = null;
     }
   }
   AssetXHR.i = true;

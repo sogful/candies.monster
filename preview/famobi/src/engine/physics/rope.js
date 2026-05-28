@@ -1,16 +1,16 @@
   class RopeBase {
     constructor() {
-      this.sD = 1;
-      this.za = [];
+      this.segmentLength = 1;
+      this.points = [];
     }
-    Ez(a, b) {
-      this.za.splice(b, 0, a);
+    insertPoint(a, b) {
+      this.points.splice(b, 0, a);
     }
-    Dz(a) {
-      this.za.push(a);
+    pushPoint(a) {
+      this.points.push(a);
     }
-    oR(a) {
-      this.za.splice(a, 1);
+    removePoint(a) {
+      this.points.splice(a, 1);
     }
   }
   RopeBase.i = true;
@@ -20,104 +20,104 @@
   class Rope extends RopeBase {
     constructor(a, b, c, d, e, f, g, h) {
       super();
-      this.SM = new Vec4(0, 0, 0, 1);
-      this.TM = new Vec4(0, 0, 0, 1);
-      this.WM = new Vec4(0, 0, 0, 1);
-      this.UM = new Vec4(0, 0, 0, 1);
-      this.XM = new Vec4(0, 0, 0, 1);
+      this.col0 = new Vec4(0, 0, 0, 1);
+      this.col1 = new Vec4(0, 0, 0, 1);
+      this.col2 = new Vec4(0, 0, 0, 1);
+      this.col3 = new Vec4(0, 0, 0, 1);
+      this.col4 = new Vec4(0, 0, 0, 1);
       this.effect = new GradientLineEffect();
-      this.effect.Z = 2;
-      this.va = new SceneGroup();
-      this.va.Rf(this.effect);
-      a.P(this.va);
-      this.Fw = 0;
-      this.sD = 30;
-      this.yc = -1;
-      this.bh = 0;
-      this.wB = false;
-      this.Kc = 42;
-      this.Jc = b ?? new VerletPoint();
+      this.effect.radius = 2;
+      this.visual = new SceneGroup();
+      this.visual.setEffect(this.effect);
+      a.appendChild(this.visual);
+      this.breakProgress = 0;
+      this.segmentLength = 30;
+      this.breakIndex = -1;
+      this.breakDelay = 0;
+      this.pumped = false;
+      this.segLength = 42;
+      this.startPoint = b ?? new VerletPoint();
       if (e != null) {
-        this.Mb = e;
+        this.endPoint = e;
       } else {
-        this.Mb = new VerletPoint();
-        this.Mb.Ng(1);
+        this.endPoint = new VerletPoint();
+        this.endPoint.setWeight(1);
       }
-      this.Jc.Ng(0.02);
-      this.Jc.g.x = c;
-      this.Jc.g.y = d;
-      this.Mb.g.x = f;
-      this.Mb.g.y = g;
-      this.Dz(this.Jc);
-      this.Dz(this.Mb);
-      this.Mb.al(this.Jc, this.Kc, 0);
-      a = Vec2.Ia(this.Mb.g, this.Jc.g);
-      a.xA(Math.round(h / this.Kc + 2));
-      this.dc(h, a);
-      this.Al = false;
-      this.rh = -1;
-      this.PM = this.Fv = this.Mn = false;
-      this.Tu = [];
-      this.aA = 3;
+      this.startPoint.setWeight(0.02);
+      this.startPoint.g.x = c;
+      this.startPoint.g.y = d;
+      this.endPoint.g.x = f;
+      this.endPoint.g.y = g;
+      this.pushPoint(this.startPoint);
+      this.pushPoint(this.endPoint);
+      this.endPoint.addLink(this.startPoint, this.segLength, 0);
+      a = Vec2.diff(this.endPoint.g, this.startPoint.g);
+      a.div(Math.round(h / this.segLength + 2));
+      this.extend(h, a);
+      this.alive = false;
+      this.pumpId = -1;
+      this.stretched = this.skipReturnTrail = this.severed = false;
+      this.trail = [];
+      this.colorIdx = 3;
     }
     free() {
-      this.va.free();
-      this.Tu = this.Mb = this.Jc = this.va = null;
+      this.visual.free();
+      this.trail = this.endPoint = this.startPoint = this.visual = null;
     }
-    Rb() {
-      let a = 0;
-      let b = this.za.length;
-      if (b > 0) {
-        let c = this.za[0].g;
-        let d = 1;
-        while (d < b) {
-          let e = this.za[d++];
-          a += c.sf(e.g);
-          c = e.g;
+    length() {
+      let total = 0;
+      let n = this.points.length;
+      if (n > 0) {
+        let prev = this.points[0].g;
+        let i = 1;
+        while (i < n) {
+          let pt = this.points[i++];
+          total += prev.distTo(pt.g);
+          prev = pt.g;
         }
       }
-      return a;
+      return total;
     }
-    dc(a, b) {
+    extend(a, b) {
       if (b == null) {
-        b = Vec2.sc();
+        b = Vec2.zero();
       }
-      let c = this.za[this.za.length - 2];
-      let d = this.Mb.zh(c);
+      let c = this.points[this.points.length - 2];
+      let d = this.endPoint.restLenTo(c);
       for (var e; a > 0;) {
-        if (a >= this.Kc) {
-          c = this.za[this.za.length - 2];
+        if (a >= this.segLength) {
+          c = this.points[this.points.length - 2];
           e = new VerletPoint();
-          e.Ng(0.02);
-          e.g = Vec2.tb(c.g, b);
-          this.Ez(e, this.za.length - 1);
-          this.Mb.lA(c, e, d);
-          e.al(c, this.Kc, 0);
-          a -= this.Kc;
+          e.setWeight(0.02);
+          e.g = Vec2.sum(c.g, b);
+          this.insertPoint(e, this.points.length - 1);
+          this.endPoint.replaceLinkTarget(c, e, d);
+          e.addLink(c, this.segLength, 0);
+          a -= this.segLength;
         } else {
           e = a + d;
-          if (e > this.Kc) {
-            a = this.Kc;
-            d = e - this.Kc;
+          if (e > this.segLength) {
+            a = this.segLength;
+            d = e - this.segLength;
           } else {
-            c = this.za[this.za.length - 2];
-            this.Mb.vq(c, e);
+            c = this.points[this.points.length - 2];
+            this.endPoint.setLinkDistance(c, e);
             a = 0;
           }
         }
       }
     }
-    M() {
-      this.effect.OR();
-      let a = this.za.length;
+    rebuildTrail() {
+      this.effect.clearTrail();
+      let a = this.points.length;
       var b;
-      if (this.yc == -1) {
+      if (this.breakIndex == -1) {
         var c = Array(a);
         for (b = 0; b < a;) {
           var d = b++;
-          c[d] = this.za[d].g;
+          c[d] = this.points[d].g;
         }
-        this.Su(c);
+        this.renderTrail(c);
       } else {
         d = [];
         let e = [];
@@ -125,15 +125,15 @@
         let g = 0;
         while (g < a) {
           let h = g++;
-          c = this.za[h];
+          c = this.points[h];
           let m = true;
           if (h > 0) {
-            b = this.za[h - 1];
-            if (!c.lO(b)) {
+            b = this.points[h - 1];
+            if (!c.hasLink(b)) {
               m = false;
             }
           }
-          if (c.vh.x == -1 && !m) {
+          if (c.pinPos.x == -1 && !m) {
             f = true;
           }
           if (f) {
@@ -143,18 +143,18 @@
           }
         }
         if (d.length > 0) {
-          this.Su(d);
+          this.renderTrail(d);
         }
-        if (e.length > 0 && !this.Fv) {
-          this.Su(e);
+        if (e.length > 0 && !this.skipReturnTrail) {
+          this.renderTrail(e);
         }
       }
     }
-    Su(a) {
+    renderTrail(a) {
       var b = a.length;
-      let c = this.Tu;
+      let c = this.trail;
       if (!(b < 2)) {
-        var d = this.yc == -1 || this.Al ? 1 : this.bh / 1.95;
+        var d = this.breakIndex == -1 || this.alive ? 1 : this.breakDelay / 1.95;
         if (!(d <= 0)) {
           if (d > 1) {
             d = 1;
@@ -164,13 +164,13 @@
           var g = e.x - f.x;
           f = e.y - f.y;
           var h = Math.sqrt(g * g + f * f);
-          this.Fw = h <= this.Kc + 0.3 ? 0 : h <= this.Kc + 1 ? 1 : h < this.Kc + 4 ? 2 : 3;
+          this.breakProgress = h <= this.segLength + 0.3 ? 0 : h <= this.segLength + 1 ? 1 : h < this.segLength + 4 ? 2 : 3;
           if (!(b < 3)) {
-            var m = this.SM;
-            var n = this.TM;
-            g = this.WM;
-            var q = this.UM;
-            f = this.XM;
+            var m = this.col0;
+            var n = this.col1;
+            g = this.col2;
+            var q = this.col3;
+            f = this.col4;
             m.x = 0;
             m.y = 0;
             m.z = 0;
@@ -191,7 +191,7 @@
             f.y = 0.198;
             f.z = 0.124;
             f.w = d;
-            if (this.wB) {
+            if (this.pumped) {
               n.x *= 3;
               n.y *= 3;
               n.z *= 3;
@@ -241,8 +241,8 @@
                 f.z = 1;
               }
             }
-            if (h > this.Kc + 7 && !this.PM) {
-              h = h / this.Kc * 2;
+            if (h > this.segLength + 7 && !this.stretched) {
+              h = h / this.segLength * 2;
               g.x *= h;
               f.x *= h;
               if (g.x > 1) {
@@ -253,7 +253,7 @@
               }
             }
             h = false;
-            b = (b - 1) * this.aA;
+            b = (b - 1) * this.colorIdx;
             var p = b - 1;
             m = (n.x - g.x) / p;
             var v = (n.y - g.y) / p;
@@ -261,11 +261,11 @@
             var u = (q.x - f.x) / p;
             var A = (q.y - f.y) / p;
             q = (q.z - f.z) / p;
-            p = this.aA - 1;
+            p = this.colorIdx - 1;
             var D = p - 1;
             var B = c[0];
             if (B == null) {
-              c[0] = e.Zb();
+              c[0] = e.clone();
             } else {
               B.x = e.x;
               B.y = e.y;
@@ -276,15 +276,15 @@
               if (K == null) {
                 K = c[e] = new Vec2(0, 0);
               }
-              Vec2.OD(a, B, K);
+              Vec2.bezierInto(a, B, K);
               B = (e - 1) % p;
               if (B == D || e == b) {
-                var E = this.Al ? 16777215 : h ? ((g.z * 255 | 0) & 255) << 16 | ((g.y * 255 | 0) & 255) << 8 | (g.x * 255 | 0) & 255 : ((f.z * 255 | 0) & 255) << 16 | ((f.y * 255 | 0) & 255) << 8 | (f.x * 255 | 0) & 255;
+                var E = this.alive ? 16777215 : h ? ((g.z * 255 | 0) & 255) << 16 | ((g.y * 255 | 0) & 255) << 8 | (g.x * 255 | 0) & 255 : ((f.z * 255 | 0) & 255) << 16 | ((f.y * 255 | 0) & 255) << 8 | (f.x * 255 | 0) & 255;
                 K = [];
                 let vA = [];
                 this.effect.points.push(K);
-                this.effect.Zh.push(vA);
-                this.effect.vn.push(d);
+                this.effect.colorLists.push(vA);
+                this.effect.alphas.push(d);
                 let v11 = e - B - 1;
                 let V = c[v11++];
                 K.push(new Vec4(V.x, V.y, 0, 1));
@@ -310,100 +310,100 @@
         }
       }
     }
-    xR(a) {
-      var b = this.za.length;
-      for (var c = this.Mb.zh(this.za[b - 2]), d; a > 0;) {
-        if (a >= this.Kc) {
+    shrink(a) {
+      var b = this.points.length;
+      for (var c = this.endPoint.restLenTo(this.points[b - 2]), d; a > 0;) {
+        if (a >= this.segLength) {
           var e = b - 2;
-          d = this.za[e];
-          this.Mb.lA(d, this.za[b - 3], c);
-          this.oR(e);
+          d = this.points[e];
+          this.endPoint.replaceLinkTarget(d, this.points[b - 3], c);
+          this.removePoint(e);
           --b;
-          a -= this.Kc;
+          a -= this.segLength;
         } else {
           e = c - a;
           if (e < 1) {
-            a = this.Kc;
-            c = this.Kc + e + 1;
+            a = this.segLength;
+            c = this.segLength + e + 1;
           } else {
-            d = this.za[b - 2];
-            this.Mb.vq(d, e);
+            d = this.points[b - 2];
+            this.endPoint.setLinkDistance(d, e);
             a = 0;
           }
         }
       }
-      a = (b - 1) * (this.Kc + 3);
-      b = this.Mb.jg;
+      a = (b - 1) * (this.segLength + 3);
+      b = this.endPoint.links;
       c = b.length;
       for (d = 0; d < c;) {
         e = b[d++];
         if (e.type == 1) {
-          e.zh = a;
+          e.restLen = a;
         }
       }
     }
     update(a) {
-      if (this.bh > 0) {
-        this.bh = PathResolver.dk(this.bh, 0, 1, a);
-        if (this.bh < 1.95 && this.Al) {
-          this.Gw(this.yc);
+      if (this.breakDelay > 0) {
+        this.breakDelay = PathResolver.rampToward(this.breakDelay, 0, 1, a);
+        if (this.breakDelay < 1.95 && this.alive) {
+          this.severAt(this.breakIndex);
         }
       }
-      let b = this.za.length;
+      let b = this.points.length;
       var c;
       for (var d = 0; d < b;) {
-        c = this.za[d++];
-        if (c != this.Mb) {
+        c = this.points[d++];
+        if (c != this.endPoint) {
           c.update(a);
         }
       }
       a = 0;
-      for (c = this.sD; a < c;) {
+      for (c = this.segmentLength; a < c;) {
         ++a;
         d = 0;
         while (d < b) {
-          this.za[d++].As();
+          this.points[d++].applyConstraints();
         }
       }
     }
-    Gw(a) {
-      this.Al = false;
-      var b = this.za[a];
-      var c = this.za[a + 1];
+    severAt(a) {
+      this.alive = false;
+      var b = this.points[a];
+      var c = this.points[a + 1];
       if (c == null) {
-        b.vD();
+        b.clearLinks();
       } else {
-        var d = c.jg;
+        var d = c.links;
         let e = d.length;
         let f = 0;
         while (f < e) {
           let g = f++;
-          if (d[g].Cj == b) {
-            c.mR(g);
+          if (d[g].other == b) {
+            c.removeLinkAt(g);
             d = new VerletPoint();
-            d.Ng(0.00001);
-            d.g.Pb(c.g);
-            d.ha.Pb(c.ha);
-            this.Ez(d, a + 1);
-            d.al(b, this.Kc, 0);
+            d.setWeight(0.00001);
+            d.g.copyFrom(c.g);
+            d.prev.copyFrom(c.prev);
+            this.insertPoint(d, a + 1);
+            d.addLink(b, this.segLength, 0);
             break;
           }
         }
       }
       a = 0;
-      for (b = this.za.length; a < b;) {
-        c = this.za[a];
-        if (c != this.Mb) {
-          c.Ng(0.00001);
+      for (b = this.points.length; a < b;) {
+        c = this.points[a];
+        if (c != this.endPoint) {
+          c.setWeight(0.00001);
         }
         ++a;
       }
     }
-    Fs(a) {
-      this.yc = a;
-      this.bh = 2;
-      this.Al = true;
-      this.wB = false;
+    markBreakAt(a) {
+      this.breakIndex = a;
+      this.breakDelay = 2;
+      this.alive = true;
+      this.pumped = false;
     }
   }
   Rope.i = true;

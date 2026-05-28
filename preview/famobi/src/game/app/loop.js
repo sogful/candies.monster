@@ -1,52 +1,60 @@
+  // FpsMeter - rolling per-second framerate count. update() increments
+  // a frame counter each call; once a second of `time` has accumulated
+  // it stamps the count into a [0..60] histogram and resets.
   class FpsMeter {
     constructor() {
       this.current = 60;
-      let a = [];
-      let b = 0;
-      while (b < 60) {
-        ++b;
-        a.push(0);
+      let buckets = [];
+      let i = 0;
+      while (i < 60) {
+        ++i;
+        buckets.push(0);
       }
-      this.values = a;
-      this.time = this.mw = 0;
+      this.values = buckets;
+      this.time = this.frameCount = 0;
     }
-    update(a) {
-      this.time += a;
+    update(dt) {
+      this.time += dt;
       if (this.time > 1) {
-        this.current = Math.min(this.mw, 60);
+        this.current = Math.min(this.frameCount, 60);
         this.values[this.current - 1]++;
-        this.mw = 0;
+        this.frameCount = 0;
         --this.time;
       }
-      this.mw++;
+      this.frameCount++;
     }
   }
   FpsMeter.i = true;
   Object.assign(FpsMeter.prototype, {
     l: FpsMeter
   });
+
+  // LoadProgress - aggregates an async loader (`yd`) and the set of
+  // resource ids it's expected to deliver (`Ce`). er() = percent done
+  // (rounded, capped at 99 until everything is actually in memory).
+  // xv() = "done", Tj() = "some id is still missing from the cache".
   class LoadProgress {
-    constructor(a, b) {
-      this.yd = a;
-      this.Ce = b;
+    constructor(loader, ids) {
+      this.loader = loader;
+      this.ids = ids;
     }
-    er() {
-      if (this.Ce.length == 0) {
+    percent() {
+      if (this.ids.length == 0) {
         return 100;
       }
-      let a = Math.round(this.yd.jo(this.Ce) * 100);
-      if (this.Tj()) {
-        --a;
+      let pct = Math.round(this.loader.progress(this.ids) * 100);
+      if (this.hasMissing()) {
+        --pct;
       }
-      if (a < 0) {
-        a = 0;
+      if (pct < 0) {
+        pct = 0;
       }
-      return a;
+      return pct;
     }
-    xv() {
-      if (this.Ce.length != 0) {
-        if (this.yd.jo() == 1) {
-          return !this.Tj();
+    isDone() {
+      if (this.ids.length != 0) {
+        if (this.loader.progress() == 1) {
+          return !this.hasMissing();
         } else {
           return false;
         }
@@ -54,11 +62,11 @@
         return true;
       }
     }
-    Tj() {
-      let a = 0;
-      let b = this.Ce;
-      while (a < b.length) {
-        if (!Loader.ob(Loader.rg(b[a++]))) {
+    hasMissing() {
+      let i = 0;
+      let ids = this.ids;
+      while (i < ids.length) {
+        if (!Loader.isLoaded(Loader.idByName(ids[i++]))) {
           return true;
         }
       }
@@ -69,58 +77,64 @@
   Object.assign(LoadProgress.prototype, {
     l: LoadProgress
   });
+
+  // FixedTimestep - timing config; Rk is the static default step.
   class FixedTimestep {
     constructor() {
-      this.Th = FixedTimestep.Rk;
+      this.accum = FixedTimestep.STEP;
       this.elapsedTime = 0;
-      this.Hx = 1;
+      this.scale = 1;
     }
   }
   FixedTimestep.i = true;
   Object.assign(FixedTimestep.prototype, {
     l: FixedTimestep
   });
+
+  // MainLoop - rAF-driven game loop. zs=running, Zu=first-tick flag (so
+  // the first `dt` doesn't include the gap between start() and the
+  // first rAF callback). Subclasses override tick(dt) to advance the app.
   class MainLoop {
     constructor() {
       this.elapsedTime = 0;
-      this.zs = false;
+      this.running = false;
       this.handle = -1;
       this.now = 0;
-      this.Zu = true;
+      this.firstTick = true;
       this.startTime = 0;
     }
-    Hg() {}
+    tick() {}
     start() {
-      if (!this.zs) {
+      if (!this.running) {
         this.stop();
-        this.zs = true;
-        var a = null;
+        this.running = true;
+        var tick = null;
         v10 = window;
-        var b = cachedBind(v10, v10.requestAnimationFrame);
-        var c = this;
-        a = function (d) {
-          c.handle = b(a);
-          if (c.Zu) {
-            c.startTime = d;
-            c.now = d;
-            c.Zu = false;
+        var raf = cachedBind(v10, v10.requestAnimationFrame);
+        var self = this;
+        tick = function (timestamp) {
+          self.handle = raf(tick);
+          if (self.Zu) {
+            self.startTime = timestamp;
+            self.now = timestamp;
+            self.Zu = false;
           } else {
-            let e = d - c.now;
-            c.now = d;
-            c.elapsedTime = (d - c.startTime) / 1000;
-            c.Hg(e / 1000);
+            let dtMs = timestamp - self.now;
+            self.now = timestamp;
+            self.elapsedTime = (timestamp - self.startTime) / 1000;
+            self.tick(dtMs / 1000);
           }
         };
-        this.handle = b(a);
+        this.handle = raf(tick);
       }
     }
     stop() {
-      if (this.zs) {
-        this.Zu = true;
+      if (this.running) {
+        this.firstTick = true;
         if (!(this.handle < 0)) {
           window.cancelAnimationFrame(this.handle);
           this.handle = -1;
-          this.zs = false;
+          this.running = false;
         }
       }
     }

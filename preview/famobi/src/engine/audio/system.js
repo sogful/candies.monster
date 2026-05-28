@@ -1,5 +1,6 @@
   class Audio {
-    static no() {
+    // isRunning - true if the AudioContext exists and is unblocked.
+    static isRunning() {
       if (Audio.context != null) {
         return Audio.context.state == "running";
       } else {
@@ -12,10 +13,14 @@
     static once(a, b) {
       Audio.events.once(a, b);
     }
-    static ib() {
+    // init - lazy-init AudioContext. iOS Safari sometimes locks the
+    // context after backgrounding; the DelayedCall watchdog detects
+    // currentTime not advancing and emits EContextBroken so callers
+    // can recreate it.
+    static init() {
       if (Audio.context != null) {
-        Audio.lM();
-        var a = Audio.df;
+        Audio.closeContext();
+        var a = Audio.watchdog;
         if (a != null) {
           a.stop();
         }
@@ -26,11 +31,11 @@
       }
       if (a) {
         Audio.currentTime = null;
-        Audio.df = new DelayedCall(1000);
-        Audio.df.Hg = function () {
-          if (Audio.context != null && Audio.no()) {
+        Audio.watchdog = new DelayedCall(1000);
+        Audio.watchdog.tick = function () {
+          if (Audio.context != null && Audio.isRunning()) {
             if (Audio.currentTime != null && Audio.currentTime == Audio.context.currentTime) {
-              Audio.df.stop();
+              Audio.watchdog.stop();
               Audio.events.emit("EContextBroken");
             }
             Audio.currentTime = Audio.context.currentTime;
@@ -44,29 +49,34 @@
           Audio.context = new webkitAudioContext();
         }
         Audio.context.onstatechange = function () {
-          Audio.events.emit(Audio.no() ? "EContextResumed" : "EContextSuspended");
+          Audio.events.emit(Audio.isRunning() ? "EContextResumed" : "EContextSuspended");
         };
         Audio.events.emit("EContextCreated");
-        if (!Audio.no()) {
+        if (!Audio.isRunning()) {
           Audio.installAutoplayHandlers();
         }
       } catch (b) {
         Audio.context = null;
       }
     }
-    static MB() {
+    // isSupported - feature-test the AudioContext API once and cache
+    // the result in Yx.
+    static isSupported() {
       while (true) {
-        if (Audio.Yx != null) {
-          return Audio.Yx;
+        if (Audio.supportCache != null) {
+          return Audio.supportCache;
         }
         try {
-          Audio.Yx = !!window.AudioContext || !!window.webkitAudioContext;
+          Audio.supportCache = !!window.AudioContext || !!window.webkitAudioContext;
         } catch (a) {
-          Audio.Yx = false;
+          Audio.supportCache = false;
         }
       }
     }
-    static LM() {
+    // bestFormat - audio container probe (returns "ogg" / "mp3" /
+    // "aac"). Stripped down to always "ogg" for this build since the
+    // sound sprite was split into per-file ogg vorbis assets.
+    static bestFormat() {
       // We ship ogg only now (sound sprite was split into individual
       // files under assets/audio/sfx/, plus the music tracks at
       // assets/audio/*.ogg). Skip the canPlayType probe and return "ogg"
@@ -106,7 +116,7 @@
           }
           return m;
         }
-        return ObjectAccess.vf(c, b.canPlayType(h).replace(RegExp("^no$", ""), ""));
+        return ObjectAccess.getField(c, b.canPlayType(h).replace(RegExp("^no$", ""), ""));
       };
       let e = {};
       a("mp3", d("audio/mp3;"));
@@ -121,20 +131,21 @@
       while (f < g.length) {
         let h = g[f];
         ++f;
-        if (ObjectAccess.vf(e, h) > 0) {
+        if (ObjectAccess.getField(e, h) > 0) {
           return h;
         }
       }
       return null;
     }
-    static lM() {
+    // closeContext - tear down the active AudioContext.
+    static closeContext() {
       try {
         Audio.context.onstatechange = null;
         Audio.context.close();
       } catch (a) {}
       Audio.context = null;
     }
-    static UC(a) {
+    static handleAutoplay(a) {
       a.preventDefault();
       if (Audio.context != null && Audio.context.state != "running") {
         Audio.context.resume().then(function () {}, function () {
@@ -143,8 +154,8 @@
       }
     }
     static installAutoplayHandlers() {
-      window.addEventListener("mouseup", Audio.UC);
-      window.addEventListener("touchend", Audio.UC);
+      window.addEventListener("mouseup", Audio.handleAutoplay);
+      window.addEventListener("touchend", Audio.handleAutoplay);
     }
   }
   Audio.i = true;
@@ -154,19 +165,22 @@
       if (b == null) {
         b = false;
       }
-      if (Save.Bd) {
-        Application.instance.Sa.play(a, b);
+      if (Save.sfxOn) {
+        Application.instance.audio.play(a, b);
       }
     }
     static stop(a) {
-      Application.instance.Sa.stop(a);
+      Application.instance.audio.stop(a);
     }
-    static Xi(a, b) {
-      Application.instance.Sa.kS(a, b);
+    // setVolume - retarget the volume of an already-playing sound `a`
+    // to `b` (instant, no ramp).
+    static setVolume(a, b) {
+      Application.instance.audio.setActiveVolume(a, b);
     }
-    static Zn(a) {
-      if (Save.Bd) {
-        Application.instance.Sa.Zn(a, 1, true);
+    // fadeOut - one-second fade-to-zero on sound `a`, then stop.
+    static fadeOut(a) {
+      if (Save.sfxOn) {
+        Application.instance.audio.fadeStop(a, 1, true);
       }
     }
   }

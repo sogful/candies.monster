@@ -1,12 +1,12 @@
   class LevelMath {
-    static PA(a) {
+    static seasonForBox(a) {
       if (a <= 17) {
         return 1;
       } else {
         return 2;
       }
     }
-    static rv(a) {
+    static globalIndex(a) {
       switch (a) {
         case 1:
           return 1;
@@ -54,7 +54,7 @@
           return -1;
       }
     }
-    static br(a, b) {
+    static boxLevelFromGlobal(a, b) {
       switch (a) {
         case 1:
           switch (b) {
@@ -116,15 +116,15 @@
   LevelMath.i = true;
   class Strings {
     static get(a, b) {
-      if (Strings.ud == null) {
-        Strings.ud = JSON.parse(Loader.yb(Loader.strings));
+      if (Strings.wrapper == null) {
+        Strings.wrapper = JSON.parse(Loader.getText(Loader.strings));
       }
-      var c = ObjectAccess.vf(Strings.ud, a);
+      var c = ObjectAccess.getField(Strings.wrapper, a);
       if (c == null || Save.language == null) {
         return a;
       }
       if (Object.prototype.hasOwnProperty.call(c, Save.language)) {
-        a = ObjectAccess.vf(c, Save.language);
+        a = ObjectAccess.getField(c, Save.language);
         if (b != null) {
           c = 0;
           let d = b.length;
@@ -134,7 +134,7 @@
         }
         return a;
       }
-      return ObjectAccess.vf(c, "en");
+      return ObjectAccess.getField(c, "en");
     }
   }
 
@@ -147,11 +147,11 @@
       if (window.customleveldata != null) {
         return window.customleveldata;
       }
-      if (BoxLevelData.aw[a] == null) {
-        let c = Loader.yb([195, 190, 185, 180, 175, 170, 165, 159, 154, 149, 144, 139, 134, 129, 124, 119, 114][a - 1]);
-        BoxLevelData.aw[a] = JSON.parse(c);
+      if (BoxLevelData.cache[a] == null) {
+        let c = Loader.getText([195, 190, 185, 180, 175, 170, 165, 159, 154, 149, 144, 139, 134, 129, 124, 119, 114][a - 1]);
+        BoxLevelData.cache[a] = JSON.parse(c);
       }
-      return BoxLevelData.aw[a][b - 1];
+      return BoxLevelData.cache[a][b - 1];
     }
   }
   BoxLevelData.i = true;

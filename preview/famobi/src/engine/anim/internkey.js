@@ -1,135 +1,156 @@
+  // InternKey - thin facade over AnimController for sprite-tied
+  // animations. Each Sprite gets at most one shared AnimController
+  // (lazy-installed via ensureController()); InternKey wraps the play/stop/loop API
+  // and forwards the controller's per-frame frame index back to the
+  // sprite's setFrame(frameIndex) setter so the displayed bitmap updates.
   class InternKey {
-    constructor(a) {
-      this.U = a;
-      this.controller = this.mv();
+    constructor(sprite) {
+      this.sprite = sprite;
+      this.controller = this.ensureController();
     }
-    kB() {
-      if (this.controller.Yt) {
-        return this.controller.Bg - this.controller.he;
+    // remaining - duration left on the current animation, or -1 if idle.
+    remaining() {
+      if (this.controller.playing) {
+        return this.controller.endTime - this.controller.startTime;
       } else {
         return -1;
       }
     }
-    Dc(a) {
-      return this.controller.Xa == a;
+    isPlaying(animId) {
+      return this.controller.anim == animId;
     }
-    play(a, b) {
-      this.controller.yh = 0;
-      this.controller.Iw = b != null ? b - 1 : 0;
-      this.controller.play(a);
+    play(animId, startFrame) {
+      this.controller.loopMode = 0;
+      this.controller.repeatsLeft = startFrame != null ? startFrame - 1 : 0;
+      this.controller.play(animId);
       return this;
     }
-    WC(a) {
-      let b = this;
-      this.play(a).Be(function () {
-        b.U.free();
+    // playAndFree - one-shot animation that frees its sprite on end.
+    // Used for effects that own their sprite (e.g. burst particles).
+    playAndFree(animId) {
+      let self = this;
+      this.play(animId).onComplete(function () {
+        self.sprite.free();
       });
     }
-    loop(a, b) {
-      if (b == null) {
-        b = false;
-      }
-      this.controller.yh = b ? 2 : 1;
-      this.controller.play(a);
+    loop(animId, pingpong) {
+      if (pingpong == null) pingpong = false;
+      this.controller.loopMode = pingpong ? 2 : 1;
+      this.controller.play(animId);
       return this;
     }
     stop() {
       this.controller.stop();
       return this;
     }
-    Be(a) {
-      this.controller.ZR(a);
+    onComplete(callback) {
+      this.controller.onComplete(callback);
     }
-    Cw() {
-      this.controller.vd = X.Yn(0, this.kB());
+    // randomize - jump the playhead to a random point in the current
+    // animation (used to desync looping decorative sprites).
+    randomize() {
+      this.controller.time = X.randRange(0, this.remaining());
     }
-    setTime(a) {
-      let b = this.kB();
-      this.controller.vd = a < 0 ? 0 : a > b ? b : a;
+    setTime(t) {
+      let duration = this.remaining();
+      this.controller.time = t < 0 ? 0 : t > duration ? duration : t;
       return this;
     }
-    mv() {
-      let a = this.U.u.lN();
-      let b = this;
-      if (a == null || !a.Iz) {
-        a = new AnimController();
-        a.YR(function (c, d) {
-          b.U.qp(d);
+    // mv - lazily install (or return) the AnimController that drives
+    // this sprite. Registers our frame-index -> sprite callback so the
+    // displayed bitmap follows the active animation.
+    ensureController() {
+      let existing = this.sprite.node.findAnimController();
+      let self = this;
+      if (existing == null || !existing.alive) {
+        existing = new AnimController();
+        existing.onFrame(function (_, frameIndex) {
+          self.sprite.setFrame(frameIndex);
         });
-        this.U.u.lq(a);
+        this.sprite.node.attachAnim(existing);
       }
-      return a;
+      return existing;
     }
-    static create(a) {
-      function b(v) {
-        if (g.Zc(v) != null) {
-          v = Std.substr(g.Zc(v), 1, null);
-          e = v.indexOf(".") != -1 ? parseFloat(v) : 1 / Numeric.parseInt(v);
+    // create - mini language for declaring animations from spec strings
+    // separated by commas. Each segment matches one of:
+    //
+    //   name(@duration)                  set the active base name and
+    //                                     optional per-frame duration
+    //                                     (seconds, or 1/N if integer)
+    //   a-b(@duration)                   range: emit frames a..b
+    //                                     (auto-reversing if a > b)
+    //   a x N(@duration)                 emit frame `a` N times
+    //   number(@duration)(@duration)     emit a single numbered frame
+    //
+    // Frame numbers are zero-padded to 4 digits and appended to the
+    // current base name (e.g. "blink" + 12 -> "blink0012"). Returns
+    // an AnimSequence ready for AnimController.play().
+    static create(spec) {
+      function parseDuration(groupIndex) {
+        if (matcher.matched(groupIndex) != null) {
+          let raw = Std.substr(matcher.matched(groupIndex), 1, null);
+          frameDuration = raw.indexOf(".") != -1 ? parseFloat(raw) : 1 / Numeric.parseInt(raw);
         }
       }
-      function c(v) {
-        return f + (v < 10 ? "000" : v < 100 ? "00" : "0") + v;
+      function frameName(num) {
+        return baseName + (num < 10 ? "000" : num < 100 ? "00" : "0") + num;
       }
-      let d = [];
-      let e = 0.03333333333333333;
-      let f = "";
-      let g = null;
-      let h = 0;
-      for (a = a.split(","); h < a.length;) {
-        var m = a[h];
-        ++h;
-        g = new EReg("^([a-z][\\w\\/]*)(@[\\d\\.]+)*", "i");
-        if (g.match(m)) {
-          f = g.Zc(1);
-          b(2);
+      let frames = [];
+      let frameDuration = 0.03333333333333333;
+      let baseName = "";
+      let matcher = null;
+      let i = 0;
+      for (let parts = spec.split(","); i < parts.length;) {
+        let segment = parts[i];
+        ++i;
+        matcher = new EReg("^([a-z][\\w\\/]*)(@[\\d\\.]+)*", "i");
+        if (matcher.match(segment)) {
+          baseName = matcher.matched(1);
+          parseDuration(2);
         } else {
-          g = new EReg("^(\\d+)-(\\d+)(@[\\d\\.]+)*", "");
-          if (g.match(m)) {
-            var n = Numeric.parseInt(g.Zc(1));
-            var q = Numeric.parseInt(g.Zc(2));
-            b(3);
-            m = [];
-            var p = n;
-            if (n > q) {
-              while (p >= q) {
-                m.push(p--);
-              }
+          matcher = new EReg("^(\\d+)-(\\d+)(@[\\d\\.]+)*", "");
+          if (matcher.match(segment)) {
+            let from = Numeric.parseInt(matcher.matched(1));
+            let to = Numeric.parseInt(matcher.matched(2));
+            parseDuration(3);
+            let nums = [];
+            let cursor = from;
+            if (from > to) {
+              while (cursor >= to) nums.push(cursor--);
             } else {
-              while (p <= q) {
-                m.push(p++);
-              }
+              while (cursor <= to) nums.push(cursor++);
             }
-            n = [];
-            q = 0;
-            for (p = m.length; q < p;) {
-              ++q;
-              n.push(e);
+            let durations = [];
+            let j = 0;
+            for (let n = nums.length; j < n;) {
+              ++j;
+              durations.push(frameDuration);
             }
-            for (p = q = 0; p < m.length;) {
-              d.push(new AnimFrameRef(c(m[p++]), n[q++]));
+            for (let k = j = 0; k < nums.length;) {
+              frames.push(new AnimFrameRef(frameName(nums[k++]), durations[j++]));
             }
           } else {
-            g = new EReg("^(\\d+)x(\\d+)(@[\\d\\.]+)*", "");
-            if (g.match(m)) {
-              m = Numeric.parseInt(g.Zc(1));
-              n = Numeric.parseInt(g.Zc(2));
-              b(3);
-              q = 0;
-              while (q < n) {
-                ++q;
-                d.push(new AnimFrameRef(c(m), e));
+            matcher = new EReg("^(\\d+)x(\\d+)(@[\\d\\.]+)*", "");
+            if (matcher.match(segment)) {
+              let num = Numeric.parseInt(matcher.matched(1));
+              let count = Numeric.parseInt(matcher.matched(2));
+              parseDuration(3);
+              let j = 0;
+              while (j < count) {
+                ++j;
+                frames.push(new AnimFrameRef(frameName(num), frameDuration));
               }
             } else {
-              g = new EReg("^\\d+(@[\\d\\.]+)*(@[\\d\\.]+)*", "");
-              if (g.match(m)) {
-                b(1);
-                d.push(new AnimFrameRef(c(Numeric.parseInt(g.Zc(0))), e));
+              matcher = new EReg("^\\d+(@[\\d\\.]+)*(@[\\d\\.]+)*", "");
+              if (matcher.match(segment)) {
+                parseDuration(1);
+                frames.push(new AnimFrameRef(frameName(Numeric.parseInt(matcher.matched(0))), frameDuration));
               }
             }
           }
         }
       }
-      return new AnimSequence(d, 0);
+      return new AnimSequence(frames, 0);
     }
   }
   InternKey.i = true;

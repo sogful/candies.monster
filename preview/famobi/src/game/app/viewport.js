@@ -1,9 +1,9 @@
   class Insets {
     constructor(a, b, c, d) {
-      this.VB = a;
-      this.r = b;
-      this.t = c;
-      this.b = d;
+      this.left = a;
+      this.right = b;
+      this.top = c;
+      this.bottom = d;
     }
   }
   Insets.i = true;
@@ -13,12 +13,12 @@
   class C173 {
     constructor() {
       this.size = new Size(0, 0);
-      this.V = null;
+      this.renderer = null;
     }
-    dE(a) {
-      this.V = a;
+    setRenderer(a) {
+      this.renderer = a;
     }
-    LR(a, b) {
+    resize(a, b) {
       let c = this.size;
       c.x = a;
       c.y = b;
@@ -31,23 +31,23 @@
   class C174 extends C173 {
     constructor() {
       super();
-      this.Hc = new Size(0, 0);
+      this.canvasSize = new Size(0, 0);
       this.events = new EventEmitter();
       this.visible = true;
-      this.Nw = this.Vq = false;
+      this.lostContextFlag = this.focused = false;
     }
     addListener(a, b) {
       return this.events.addListener(a, b);
     }
-    lo() {
-      let a = this.V.viewport;
-      let b = this.Hc.x;
-      let c = this.Hc.y;
-      return new TexRect(a.x * b | 0, a.y * c | 0, a.w * b | 0, a.J * c | 0);
+    viewportRect() {
+      let a = this.renderer.viewport;
+      let b = this.canvasSize.x;
+      let c = this.canvasSize.y;
+      return new TexRect(a.x * b | 0, a.y * c | 0, a.w * b | 0, a.h * c | 0);
     }
-    pi() {
-      let a = this.V.viewport;
-      return new Size(this.Hc.x * a.w | 0, this.Hc.y * a.J | 0);
+    viewportSize() {
+      let a = this.renderer.viewport;
+      return new Size(this.canvasSize.x * a.w | 0, this.canvasSize.y * a.h | 0);
     }
   }
   C174.i = true;
@@ -59,16 +59,16 @@
   class Viewport extends C174 {
     constructor(a) {
       super();
-      this.Cu = a;
+      this.canvasId = a;
       this.context = null;
-      this.Vq = false;
-      this.bP = [];
-      this.uo = new EReg("(iPad|iPhone)", "g").match(host.navigator.platform);
-      this.Rn = new Size(-1, -1);
-      this.Mw = this.Ou = null;
-      this.vS();
-      this.bp = 1;
-      this.rj();
+      this.focused = false;
+      this.events_pool = [];
+      this.isIOS = new EReg("(iPad|iPhone)", "g").match(host.navigator.platform);
+      this.lastSize = new Size(-1, -1);
+      this.resizeObserver = this.fullscreenSize = null;
+      this.clearObserver();
+      this.scale = 1;
+      this.installListeners();
       if (a != null) {
         this.canvas = window.document.getElementById(a);
         if (this.canvas == null) {
@@ -92,17 +92,17 @@
         this.canvas.focus();
       }
     }
-    Pj() {
+    pixelRatio() {
       return window.devicePixelRatio;
     }
-    vS() {
-      if (this.Mw != null) {
-        this.Mw.disconnect();
-        this.Mw = null;
+    clearObserver() {
+      if (this.resizeObserver != null) {
+        this.resizeObserver.disconnect();
+        this.resizeObserver = null;
       }
-      this.BS = false;
+      this.observerActive = false;
     }
-    sO(a) {
+    initContext(a) {
       if (a == null) {
         a = {
           willReadFrequently: false
@@ -112,7 +112,7 @@
       this.canvas.addEventListener("contextlost", function () {});
       this.canvas.addEventListener("contextrestored", function () {});
     }
-    yO(a) {
+    install(a) {
       function b() {
         try {
           e.events.emit(6);
@@ -145,41 +145,41 @@
       this.canvas.removeEventListener("webglcontextrestored", b);
       return false;
     }
-    bo() {
-      let a = this.pi();
+    aspectRatio() {
+      let a = this.viewportSize();
       return a.x / a.y;
     }
     getContext() {
       return this.context;
     }
-    aS(a) {
-      this.Rn = new Size(-1, -1);
-      this.bp = a;
+    setResolution(a) {
+      this.lastSize = new Size(-1, -1);
+      this.scale = a;
       this.update();
     }
     update() {
-      this.Nw = false;
+      this.lostContextFlag = false;
       var a = this.canvas.clientWidth;
       var b = this.canvas.clientHeight;
-      if (a != 0 && b != 0 && (this.Ou != null && (a = this.Ou.x, b = this.Ou.y), this.Rn.x != a || this.Rn.y != b)) {
-        var c = this.Rn;
+      if (a != 0 && b != 0 && (this.fullscreenSize != null && (a = this.fullscreenSize.x, b = this.fullscreenSize.y), this.lastSize.x != a || this.lastSize.y != b)) {
+        var c = this.lastSize;
         c.x = a;
         c.y = b;
-        this.Hc.x = a * this.Pj() | 0;
-        this.Hc.y = b * this.Pj() | 0;
-        b = this.bp == 0 ? this.Pj() : this.bp;
-        a = this.Hc.x / b | 0;
-        b = this.Hc.y / b | 0;
+        this.canvasSize.x = a * this.pixelRatio() | 0;
+        this.canvasSize.y = b * this.pixelRatio() | 0;
+        b = this.scale == 0 ? this.pixelRatio() : this.scale;
+        a = this.canvasSize.x / b | 0;
+        b = this.canvasSize.y / b | 0;
         this.canvas.width = a;
         this.canvas.height = b;
-        this.LR(a, b);
-        this.Nw = true;
+        this.resize(a, b);
+        this.lostContextFlag = true;
         this.events.emit(0);
       }
     }
-    HO() {
+    supportsFullscreen() {
       try {
-        if (this.uo) {
+        if (this.isIOS) {
           return false;
         } else {
           return document.fullscreenEnabled;
@@ -188,7 +188,7 @@
         return false;
       }
     }
-    rj() {
+    installListeners() {
       this.addDomListener(window, "contextmenu", function (b) {
         b.preventDefault();
       });
@@ -200,13 +200,13 @@
         a.visible = window.document.visibilityState == "visible";
         a.events.emit(a.visible ? 1 : 2);
       });
-      if (this.HO()) {
+      if (this.supportsFullscreen()) {
         this.addDomListener(window.document, "fullscreenchange", function () {
           a.Vq = document.Vq;
           a.events.emit(a.Vq ? 3 : 4);
         });
       }
-      if (this.uo) {
+      if (this.isIOS) {
         this.addDomListener(window, "orientationchange", function () {
           a.events.emit(5);
           setInterval(function () {
@@ -232,7 +232,7 @@
         type: b,
         listener: c
       };
-      this.bP.push(d);
+      this.events_pool.push(d);
       a.addEventListener(b, c);
     }
   }

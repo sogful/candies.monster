@@ -2,21 +2,21 @@
     constructor(a, b, c, d, e, f) {
       this.id = a;
       this.name = b;
-      this.ec = c;
-      this.Od = d;
-      this.Ip = e;
-      this.mt = f;
+      this.sourceSize = c;
+      this.uvOffset = d;
+      this.trimmed = e;
+      this.trimOrigin = f;
     }
     clone() {
-      let a = this.ec;
-      let b = this.Od;
-      if (this.mt != null) {
-        var c = this.mt;
+      let a = this.sourceSize;
+      let b = this.uvOffset;
+      if (this.trimOrigin != null) {
+        var c = this.trimOrigin;
         c = new Size(c.x, c.y);
       } else {
         c = null;
       }
-      return new TextureFrame(this.id, this.name, new Size(a.x, a.y), new TexRect(b.x, b.y, b.w, b.J), this.Ip, c);
+      return new TextureFrame(this.id, this.name, new Size(a.x, a.y), new TexRect(b.x, b.y, b.w, b.h), this.trimmed, c);
     }
   }
   TextureFrame.i = true;
@@ -28,7 +28,7 @@
       this.x = a;
       this.y = b;
       this.w = c;
-      this.J = d;
+      this.h = d;
     }
   }
   TexRect.i = true;
@@ -39,36 +39,36 @@
     constructor() {
       super();
     }
-    M(a) {
+    render(a) {
       var b = a.effect;
-      let c = a.V;
-      var d = a.va;
-      var e = b.Hb;
-      if (e.fr()) {
-        c.SD((e.flags & 8) > 0);
+      let c = a.renderer;
+      var d = a.visual;
+      var e = b.texture;
+      if (e.isReady()) {
+        c.setSmoothing((e.flags & 8) > 0);
         a = e.image.data;
         var f = d.size;
         var g = f.x;
         f = f.y;
-        c.xk(d.Fa);
-        d = b.Ep;
+        c.setTransformFromNode(d.worldT);
+        d = b.uvRect;
         var h = d.x;
         var m = d.y;
         var n = d.w;
-        var q = d.J;
+        var q = d.h;
         var p = c.globalAlpha;
-        if ((c.od & 4) > 0) {
-          a = c.Lz(a, h, m, n, q);
+        if ((c.renderFlags & 4) > 0) {
+          a = c.composeColorTransformLayer(a, h, m, n, q);
           h = m = 0;
         }
-        if ((c.od & 1) > 0 && c.Zg == 0) {
-          a = c.Kz(a, h, m, n, q);
+        if ((c.renderFlags & 1) > 0 && c.mode == 0) {
+          a = c.composeMultiplyLayer(a, h, m, n, q);
           h = m = 0;
           p = 1;
         }
-        d = 1 / c.Ab.Wm.m11 * c.TL;
-        if (b.Am == 1 && b.hp == 1 && b.offsetX == 0 && b.offsetY == 0) {
-          c.La(p);
+        d = 1 / c.camera.localM.m11 * c.pixelPadding;
+        if (b.scaleX == 1 && b.scaleY == 1 && b.offsetX == 0 && b.offsetY == 0) {
+          c.setGlobalAlpha(p);
           c.drawImage(a, h, m, n, q, 0 - d, 0 - d, g + d * 2, f + d * 2);
         } else {
           var v = 0;
@@ -80,10 +80,10 @@
           if (A != 0) {
             v |= 2;
           }
-          if (b.Am != 1) {
+          if (b.scaleX != 1) {
             v |= 4;
           }
-          if (b.hp != 1) {
+          if (b.scaleY != 1) {
             v |= 8;
           }
           if (v == 1) {
@@ -105,12 +105,12 @@
             c.drawImage(a, h, m + e, n, q - e, 0 - d, 0 - d, g + d * 2, f - b + d * 2);
             c.drawImage(a, h, m, n, e, 0 - d, f - e - d, g + d * 2, b + d * 2);
           } else {
-            c.La(p);
+            c.setGlobalAlpha(p);
             h = e.size.x;
             m = e.size.y;
-            g = b.Am;
-            var D = b.hp;
-            f = c.bb;
+            g = b.scaleX;
+            var D = b.scaleY;
+            f = c.currentCtx;
             f.save();
             n = new Path2D();
             n.rect(0, 0, h, m);
@@ -193,10 +193,10 @@
         }
       }
     }
-    Bc() {
+    getEffectType() {
       return 205;
     }
-    kh() {
+    typeId() {
       return 401;
     }
   }
@@ -219,18 +219,18 @@
   });
   class Texture {
     constructor(a, b) {
-      this.Td = 0;
-      this.$e = 1;
+      this.textureVersion = 0;
+      this.scale = 1;
       this.children = [];
       this.parent = null;
       this.name = "?";
       this.size = new Size(0, 0);
-      this.image = this.hc = null;
-      this.id = Texture.WP++;
-      this.V = a;
+      this.image = this.frames = null;
+      this.id = Texture.COUNTER++;
+      this.renderer = a;
       this.flags = b;
     }
-    fr() {
+    isReady() {
       if (this.image != null) {
         return this.image.loaded;
       } else {
@@ -238,8 +238,8 @@
       }
     }
     free() {
-      if (this.V != null) {
-        var a = this.hc;
+      if (this.renderer != null) {
+        var a = this.frames;
         if (a != null) {
           a.free();
         }
@@ -247,13 +247,13 @@
         for (var b = this.children; a < b.length;) {
           b[a++].free();
         }
-        this.V = this.parent = this.hc = this.image = this.children = null;
+        this.renderer = this.parent = this.frames = this.image = this.children = null;
       }
     }
-    ax(a) {
+    setImage(a) {
       if (this.image != null) {
-        this.image.Px();
-        this.Td++;
+        this.image.dispose();
+        this.textureVersion++;
       }
       this.image = a;
       var b = this.size;
@@ -269,24 +269,24 @@
         let e = this.size;
         d.x = e.x;
         d.y = e.y;
-        c.Td = this.Td;
+        c.textureVersion = this.textureVersion;
       }
     }
-    IR(a) {
-      this.hc = a;
-      this.$e = 1 / a.scale;
+    setFrames(a) {
+      this.frames = a;
+      this.scale = 1 / a.scale;
     }
-    oa(a, b) {
+    addChild(a, b) {
       a.parent = this;
       this.children.push(a);
-      a.hc = b;
+      a.frames = b;
       a.image = this.image;
       b = a.size;
       let c = this.size;
       b.x = c.x;
       b.y = c.y;
-      a.Td = this.Td;
-      a.$e = this.$e;
+      a.textureVersion = this.textureVersion;
+      a.scale = this.scale;
     }
   }
   Texture.i = true;
@@ -298,10 +298,10 @@
       if (b == null) {
         b = 1;
       }
-      this.bv = new KeyTable();
+      this.byName = new KeyTable();
       this.frames = a.slice();
       this.scale = b;
-      this.Np = c;
+      this.charset = c;
       b = [];
       for (c = 0; c < a.length;) {
         b.push(a[c++].id);
@@ -310,25 +310,25 @@
         return d - e;
       });
       b = b[b.length - 1];
-      this.Bl = Array(b);
+      this.byId = Array(b);
       for (c = 0; c < b;) {
-        this.Bl[c++] = null;
+        this.byId[c++] = null;
       }
       for (b = 0; b < a.length;) {
         c = a[b];
         ++b;
-        this.Bl[c.id] = c;
-        this.bv.J[c.name] = c;
+        this.byId[c.id] = c;
+        this.byName.map[c.name] = c;
       }
     }
     free() {
-      this.Np = this.frames = this.bv = this.Bl = null;
+      this.charset = this.frames = this.byName = this.byId = null;
     }
-    EN(a) {
-      return this.Bl[a];
+    findById(a) {
+      return this.byId[a];
     }
-    yf(a) {
-      return this.bv.J[a];
+    findByName(a) {
+      return this.byName.map[a];
     }
     offset(a, b) {
       let c = 0;
@@ -336,8 +336,8 @@
       while (c < d.length) {
         let e = d[c];
         ++c;
-        e.Od.x += a;
-        e.Od.y += b;
+        e.uvOffset.x += a;
+        e.uvOffset.y += b;
       }
     }
     clone() {
@@ -347,7 +347,7 @@
       while (b < c.length) {
         a.push(c[b++].clone());
       }
-      return new FrameCollection(a, this.scale, this.Np);
+      return new FrameCollection(a, this.scale, this.charset);
     }
   }
   FrameCollection.i = true;
@@ -363,7 +363,7 @@
         a = true;
       }
       super();
-      this.uT = a;
+      this.dpiTier = a;
       this.flipY = b;
     }
     load(a, b, c) {
@@ -377,7 +377,7 @@
         b();
       }).catch(function () {});
     }
-    Px() {
+    dispose() {
       if (this.loaded) {
         try {
           if (this.data instanceof HTMLImageElement) {
@@ -400,30 +400,30 @@
           b = "image/png";
         }
         a = a.replace(RegExp("\\s+", "g"), "");
-        return this.decode(new Blob([new Uint8Array(Base64.decode(a).b.aM)], {
+        return this.decode(new Blob([new Uint8Array(Base64.decode(a).bytes.buffer)], {
           type: b
         }));
       } else if (a instanceof HTMLImageElement) {
         return Promise.resolve(a);
       } else if (a instanceof HTMLCanvasElement) {
         return Promise.resolve(a);
-      } else if (this.uT) {
+      } else if (this.dpiTier) {
         if (window.createImageBitmap == null) {
-          return this.dt(a);
+          return this.loadAsImage(a);
         } else if (typeof a == "string") {
-          return this.dt(a).then(function (d) {
-            return c.SE(d);
+          return this.loadAsImage(a).then(function (d) {
+            return c.loadAsImageBitmap(d);
           });
         } else {
-          return this.SE(a).then(null, function () {
-            return c.dt(a);
+          return this.loadAsImageBitmap(a).then(null, function () {
+            return c.loadAsImage(a);
           });
         }
       } else {
-        return this.dt(a);
+        return this.loadAsImage(a);
       }
     }
-    dt(a) {
+    loadAsImage(a) {
       return new Promise(function (b, c) {
         let d = window.document.createElement("img");
         d.addEventListener("load", function () {
@@ -440,7 +440,7 @@
         }
       });
     }
-    SE(a) {
+    loadAsImageBitmap(a) {
       return window.createImageBitmap(a, {
         imageOrientation: this.flipY ? "flipY" : "none",
         premultiplyAlpha: "default"
@@ -466,43 +466,43 @@
     constructor(a, b) {
       super(a, b);
       this.handle = null;
-      this.R = a.R;
+      this.gl = a.gl;
     }
     free() {
       if (this.parent == null) {
-        this.R.deleteTexture(this.handle);
+        this.gl.deleteTexture(this.handle);
       }
-      this.R = this.handle = null;
+      this.gl = this.handle = null;
       super.free();
     }
-    ax(a) {
-      super.ax(a);
+    setImage(a) {
+      super.setImage(a);
       if (this.handle != null) {
         if (this.parent == null) {
-          this.R.deleteTexture(this.handle);
+          this.gl.deleteTexture(this.handle);
         }
         this.handle = null;
       }
       if (this.handle == null) {
-        this.handle = this.R.createTexture();
+        this.handle = this.gl.createTexture();
       }
-      this.R.bindTexture(3553, this.handle);
+      this.gl.bindTexture(3553, this.handle);
       try {
         var b = a.data instanceof ImageBitmap;
       } catch (d) {
         b = false;
       }
       if (!b) {
-        this.R.pixelStorei(37441, 1);
+        this.gl.pixelStorei(37441, 1);
       }
-      this.R.pixelStorei(37440, 1);
+      this.gl.pixelStorei(37440, 1);
       b = (this.flags & 2) > 0 ? (this.flags & 4) > 0 ? 33648 : 10497 : 33071;
       let c = (this.flags & 8) > 0 ? 9729 : 9728;
-      this.R.texParameteri(3553, 10242, b);
-      this.R.texParameteri(3553, 10243, b);
-      this.R.texParameteri(3553, 10241, c);
-      this.R.texParameteri(3553, 10240, c);
-      this.R.texImage2D(3553, 0, 6408, 6408, 5121, a.data);
+      this.gl.texParameteri(3553, 10242, b);
+      this.gl.texParameteri(3553, 10243, b);
+      this.gl.texParameteri(3553, 10241, c);
+      this.gl.texParameteri(3553, 10240, c);
+      this.gl.texImage2D(3553, 0, 6408, 6408, 5121, a.data);
       if ((this.flags & 240) > 0) {
         a = 9984;
         if ((this.flags & 32) > 0) {
@@ -514,17 +514,17 @@
         if ((this.flags & 128) > 0) {
           a = 9987;
         }
-        this.R.texParameteri(3553, 10241, a);
-        this.R.generateMipmap(3553);
+        this.gl.texParameteri(3553, 10241, a);
+        this.gl.generateMipmap(3553);
       }
       a = 0;
       for (b = this.children; a < b.length;) {
         b[a++].handle = this.handle;
       }
-      this.R.bindTexture(3553, null);
+      this.gl.bindTexture(3553, null);
     }
-    oa(a, b) {
-      super.oa(a, b);
+    addChild(a, b) {
+      super.addChild(a, b);
       a.handle = this.handle;
     }
   }

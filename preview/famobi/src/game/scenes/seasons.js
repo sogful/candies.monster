@@ -7,105 +7,105 @@
     }
     init() {
       super.init();
-      this.ia(Loader.menuSeason1);
-      this.ia(Loader.menuSeason2);
-      this.ia(Loader.menuSeason3);
-      this.eF();
-      this.Vg();
-      this.Ke(600, 900);
-      this.sj();
-      this.$k();
+      this.release(Loader.menuSeason1);
+      this.release(Loader.menuSeason2);
+      this.release(Loader.menuSeason3);
+      this.releaseAllTextures();
+      this.addBackground();
+      this.setSize(600, 900);
+      this.addCursor();
+      this.addBackButton();
       Resources.Ig = this.createTexture(Loader.menuSeasons);
-      this.Qz = 750 / Resources.Ig.hc.yf(Keys.Pt).ec.x;
+      this.seasonScale = 750 / Resources.Ig.frames.findByName(Keys.Pt).sourceSize.x;
       this.offsetY = 150;
-      this.CE = Resources.Ig.hc.yf(Keys.Pt).ec.y * 0.7;
-      this.Ig = [];
+      this.seasonStride = Resources.Ig.frames.findByName(Keys.Pt).sourceSize.y * 0.7;
+      this.seasons = [];
       let a = 0;
       while (a < 3) {
         var b = a++;
-        let c = new Container(null, this.ra);
+        let c = new Container(null, this.layout);
         new Sprite(c, Resources.Ig, Keys.Pt);
         new Sprite(c, Resources.Ig, [Keys.rJ, Keys.sJ, Keys.tJ][b]);
         c.center();
-        c.setUniformScale(this.Qz);
+        c.setUniformScale(this.seasonScale);
         c.setX(300);
-        c.setY(this.offsetY + b * this.CE);
-        this.Ig.push(c);
+        c.setY(this.offsetY + b * this.seasonStride);
+        this.seasons.push(c);
         let d = new TextNode(c, Resources.ic);
         d.setX(312);
         d.setY(140);
         d.setFontSize(70);
         d.setAlign(0);
         d.setBoxSize(400, 100);
-        d.setText(this.yb("SEASON_NO", Numeric.Ed(b + 1)));
+        d.setText(this.tr("SEASON_NO", Numeric.toStr(b + 1)));
         b = ButtonBase.create(Resources.Ig, Keys.uJ, Keys.vJ);
         b.setX(512);
         b.setY(285);
-        b.j.center();
-        c.appendChild(b.j);
+        b.container.center();
+        c.appendChild(b.container);
         this.buttons.push(b);
-        this.oa(b);
+        this.addChild(b);
       }
       this.buttons[1].focus();
     }
     start() {
       super.start();
-      this.sm();
-      this.JD();
+      this.startMenuMusic();
+      this.playSalute();
     }
     layout() {
       super.layout();
-      let a = Math.min(Math.max(0, this.O.window.bo() - 1), 0.2);
+      let a = Math.min(Math.max(0, this.app.window.aspectRatio() - 1), 0.2);
       let b = 0;
       while (b < 3) {
         let c = b++;
-        this.Ig[c].setUniformScale(this.Qz + a);
-        this.Ig[c].setY(this.offsetY + c * (this.CE + a * 150));
+        this.seasons[c].setUniformScale(this.seasonScale + a);
+        this.seasons[c].setY(this.offsetY + c * (this.seasonStride + a * 150));
       }
     }
-    Oc() {
-      super.Oc();
+    onStop() {
+      super.onStop();
       Resources.Ig = null;
-      this.ia(Loader.menuSeasons);
+      this.release(Loader.menuSeasons);
     }
-    Pd() {
-      if (this.hb(0)) {
+    handleInput() {
+      if (this.consumeClick(0)) {
         Save.flush();
-        this.Mp(LevelState.box);
-        this.Vb();
+        this.releaseBoxTextures(LevelState.box);
+        this.backToMenu();
       } else {
         for (var a = 1; a < 4;) {
           let b = a++;
-          if (this.hb(b)) {
-            this.fN(b);
+          if (this.consumeClick(b)) {
+            this.selectSeason(b);
           }
         }
       }
     }
-    fN(a) {
+    selectSeason(a) {
       if (a != LevelState.season) {
-        this.ia([40, 38, 36][LevelState.season - 1]);
+        this.release([40, 38, 36][LevelState.season - 1]);
         Resources.Yb = null;
       }
-      LevelState.zk(a);
-      this.Mp(LevelState.box);
+      LevelState.setSeason(a);
+      this.releaseBoxTextures(LevelState.box);
       switch (a) {
         case 1:
-          LevelState.Ui(1);
+          LevelState.setBox(1);
           break;
         case 2:
-          LevelState.Ui(6);
+          LevelState.setBox(6);
           break;
         case 3:
-          LevelState.Ui(11);
+          LevelState.setBox(11);
       }
-      this.$(this.hB()[a - 1]);
+      this.push(this.seasonScenes()[a - 1]);
     }
-    hB() {
+    seasonScenes() {
       return [Season1Scene, Season2Scene, Season3Scene];
     }
-    Vb() {
-      this.$(MenuScene);
+    backToMenu() {
+      this.push(MenuScene);
     }
     getName() {
       return "SelectSeasonScene";
@@ -123,8 +123,8 @@
     hB() {
       return [CTRCSeason1Scene, CTRCSeason2Scene, CTRCSeason3Scene];
     }
-    Vb() {
-      this.$(CTRCMenuScene);
+    backToSeasonSelect() {
+      this.push(CTRCMenuScene);
     }
     getName() {
       return "CTRCSelectSeasonScene";
@@ -144,23 +144,23 @@
     }
     init() {
       super.init();
-      this.ub = LevelState.box;
-      if (this.ub > 10) {
-        this.ub -= 10;
-      } else if (this.ub > 5) {
-        this.ub -= 5;
+      this.boxIdx = LevelState.box;
+      if (this.boxIdx > 10) {
+        this.boxIdx -= 10;
+      } else if (this.boxIdx > 5) {
+        this.boxIdx -= 5;
       }
       this.state = 0;
-      this.Vg();
-      this.sj();
-      this.Ke(650, 650);
-      this.Yb = new Container(null, this.ra);
-      this.Yb.setX(75);
-      this.Yb.setY(75);
-      this.offsetX = this.Yb.getX();
+      this.addBackground();
+      this.addCursor();
+      this.setSize(650, 650);
+      this.boxContainer = new Container(null, this.layout);
+      this.boxContainer.setX(75);
+      this.boxContainer.setY(75);
+      this.offsetX = this.boxContainer.getX();
       this.advance = 500;
-      var a = this.kv();
-      var b = this.jv();
+      var a = this.seasonLabels();
+      var b = this.seasonKeys();
       switch (LevelState.season) {
         case 2:
           var c = 5;
@@ -171,28 +171,28 @@
         default:
           c = 5;
       }
-      this.il = c;
-      this.Tz = [];
-      for (var d = c = 0, e = this.il; d < e;) {
+      this.visibleBoxes = c;
+      this.bgRects = [];
+      for (var d = c = 0, e = this.visibleBoxes; d < e;) {
         ++d;
-        var f = new Sprite(this.Yb);
+        var f = new Sprite(this.boxContainer);
         f.setColor(new Vec4(0.17647058823529413, 0.17647058823529413, 0.20784313725490197, 1), 300, 300);
         f.setX(100 + c);
         f.setY(150);
-        this.Tz.push(f);
+        this.bgRects.push(f);
         c += this.advance;
       }
-      this.Ka = new Sprite(this.Yb, Resources.Yb, Keys.$I);
+      this.omNom = new Sprite(this.boxContainer, Resources.Yb, Keys.$I);
       this.clipPath = new Bounds(0, 0, 177, 182);
-      this.Fn = [];
-      e = this.il;
-      this.rm = e += LevelState.season < 3 ? 1 : 0;
+      this.boxes = [];
+      e = this.visibleBoxes;
+      this.totalBoxes = e += LevelState.season < 3 ? 1 : 0;
       for (d = c = 0; d < e;) {
         f = d++;
-        var g = this.Ir(f);
-        let q = new Container(null, this.Yb);
-        this.Fn.push(q);
-        let p = f == this.il;
+        var g = this.boxFor(f);
+        let q = new Container(null, this.boxContainer);
+        this.boxes.push(q);
+        let p = f == this.visibleBoxes;
         q.setX(c);
         var h = null;
         if (p && LevelState.season < 3) {
@@ -201,21 +201,21 @@
         } else {
           new Sprite(q, Resources.Yb, b[f]);
           var m = new Sprite(q, Resources.Yb, b[f]);
-          m.setOrigin(m.X.x, 0);
+          m.setOrigin(m.size.x, 0);
           m.setScaleX(-1);
         }
-        if (!p && LevelState.Ar(g)) {
+        if (!p && LevelState.isBoxLocked(g)) {
           m = new Container(null, q);
-          m.ox("lock");
+          m.setName("lock");
           new Sprite(m, Resources.Yb, Keys.Ot);
           var n = new Sprite(m, Resources.Yb, Keys.Ot);
-          n.setOrigin(n.X.x, 0);
+          n.setOrigin(n.size.x, 0);
           n.setScaleX(-1);
           m.center();
-          n = Resources.Yb.hc.yf(Keys.Ot).ec;
+          n = Resources.Yb.frames.findByName(Keys.Ot).sourceSize;
           m.setX(m.getX() + n.x);
           m.setY(m.getY() + n.y / 2);
-          if (LevelState.tv(g) > 0) {
+          if (LevelState.starsNeededForBox(g) > 0) {
             m = new Sprite(q, Resources.Wa, Keys.Tt);
             m.setX(260);
             m.setY(320);
@@ -223,25 +223,25 @@
             n = new TextNode(q, Resources.ic);
             n.setBoxSize(80, m.getHeight());
             n.setAlign(1, 0);
-            n.kx(-3);
-            n.setText(Numeric.Ed(BOX_STAR_THRESHOLDS[g - 1]));
+            n.setLineHeightOffset(-3);
+            n.setText(Numeric.toStr(BOX_STAR_THRESHOLDS[g - 1]));
             n.setFontSize((m.getHeight() | 0) * 1.2);
             n.setX(m.getX() - 80);
             n.setY(m.getY());
           }
-          if (LevelState.season == 3 && f == this.il - 1) {
+          if (LevelState.season == 3 && f == this.visibleBoxes - 1) {
             new Sprite(q, Resources.Yb, Keys.qJ);
             m = new TextNode(q, Resources.ic);
-            m.setText(this.yb("MECH_HARDEST"));
+            m.setText(this.tr("MECH_HARDEST"));
             m.setBoxSize(184, 60);
             m.setFontSize(36);
             m.setAlign(0);
             m.setX(253);
             m.setY(425);
-            m.la(-16);
+            m.setRotation(-16);
           }
         }
-        if (!p && LevelState.QA(g) == 75) {
+        if (!p && LevelState.boxStars(g) == 75) {
           new Sprite(q, Resources.Yb, Keys.dJ);
         }
         if (p && LevelState.season < 3) {
@@ -251,156 +251,156 @@
           g.setY(206);
           g.setText(a[f]);
           g.setFontSize(60);
-          g.Tf(true);
-          g.Is(-40);
+          g.setMultiline(true);
+          g.setYOffsetPerLine(-40);
           g.setAlign(0, 0);
           h.centerOrigin();
-          h.la(15);
+          h.setRotation(15);
         } else {
           h = new TextNode(q, Resources.ic);
           h.setBoxSize(400, 200);
           h.setX(56);
           h.setText(a[f]);
           h.setFontSize(70);
-          h.Tf(true);
+          h.setMultiline(true);
           h.setAlign(0);
-          h.Is(-30);
+          h.setYOffsetPerLine(-30);
           h.shape();
-          h.setY(h.uv() == 1 ? 110 : 90);
+          h.setY(h.lineCount() == 1 ? 110 : 90);
         }
         c += this.advance;
       }
-      this.Qc = [];
+      this.arrows = [];
       for (a = 0; a < 2;) {
         ++a;
         b = new Sprite(null, Resources.Wa, Keys.mz);
         b.center();
-        this.ra.appendChild(b);
-        this.Qc.push(b);
+        this.layout.appendChild(b);
+        this.arrows.push(b);
       }
-      this.$k();
-      this.vb = this.add(ScoreLabel);
-      a = LevelState.wv();
-      this.vb.setText(a == null ? "null" : "" + a);
-      this.ZL = new HitTestRect(this.ra.node, new Bounds(145, 145, 505, 505));
-      this.pt();
-      this.kq = true;
-      this.tu = false;
-      this.EA = true;
+      this.addBackButton();
+      this.scoreLabel = this.add(ScoreLabel);
+      a = LevelState.seasonStars();
+      this.scoreLabel.setText(a == null ? "null" : "" + a);
+      this.hitArea = new HitTestRect(this.layout.node, new Bounds(145, 145, 505, 505));
+      this.updateArrows();
+      this.canScroll = true;
+      this.scrolling = false;
+      this.firstFrame = true;
     }
-    Qq() {
-      this.$(SelectLevelScene);
+    goToLevelSelect() {
+      this.push(SelectLevelScene);
     }
-    pt() {
-      if (this.ub > 1) {
-        this.Qc[0].Fb(Keys.mz);
-        this.Qc[0].Wd(1);
+    updateArrows() {
+      if (this.boxIdx > 1) {
+        this.arrows[0].setFrame(Keys.mz);
+        this.arrows[0].setBlendMode(1);
       } else {
-        this.Qc[0].Fb(Keys.cL);
-        this.Qc[0].Wd(2);
+        this.arrows[0].setFrame(Keys.cL);
+        this.arrows[0].setBlendMode(2);
       }
-      if (this.ub == this.rm) {
-        this.Qc[1].Fb(Keys.aL);
-        this.Qc[1].Wd(2);
+      if (this.boxIdx == this.totalBoxes) {
+        this.arrows[1].setFrame(Keys.aL);
+        this.arrows[1].setBlendMode(2);
       } else {
-        this.Qc[1].Fb(Keys.bL);
-        this.Qc[1].Wd(1);
+        this.arrows[1].setFrame(Keys.bL);
+        this.arrows[1].setBlendMode(1);
       }
-      this.Qc[0].setUniformScale(1);
-      this.Qc[1].setUniformScale(1);
+      this.arrows[0].setUniformScale(1);
+      this.arrows[1].setUniformScale(1);
     }
-    ux() {
-      this.Cs = -1;
-      this.hu();
+    scrollLeft() {
+      this.scrollDir = -1;
+      this.updateLockState();
       this.setState(1);
-      this.Ie = -(this.ub - 1) * this.advance;
-      this.x1 = this.Ie - this.advance * this.Cs;
-      this.Ie += this.offsetX;
+      this.scrollTargetX = -(this.boxIdx - 1) * this.advance;
+      this.x1 = this.scrollTargetX - this.advance * this.scrollDir;
+      this.scrollTargetX += this.offsetX;
       this.x1 += this.offsetX;
-      this.kq = this.ub != this.rm || LevelState.season == 3;
-      this.ub--;
-      this.pt();
-      this.Qc[0].setUniformScale(0.9);
+      this.canScroll = this.boxIdx != this.totalBoxes || LevelState.season == 3;
+      this.boxIdx--;
+      this.updateArrows();
+      this.arrows[0].setUniformScale(0.9);
     }
-    Qs() {
-      this.Cs = 1;
-      this.hu();
+    scrollRight() {
+      this.scrollDir = 1;
+      this.updateLockState();
       this.setState(1);
-      this.Ie = -(this.ub - 1) * this.advance;
-      this.x1 = this.Ie - this.advance * this.Cs;
-      this.Ie += this.offsetX;
+      this.scrollTargetX = -(this.boxIdx - 1) * this.advance;
+      this.x1 = this.scrollTargetX - this.advance * this.scrollDir;
+      this.scrollTargetX += this.offsetX;
       this.x1 += this.offsetX;
-      this.kq = this.ub != this.il;
-      this.ub++;
-      this.pt();
-      this.Qc[1].setUniformScale(0.9);
+      this.canScroll = this.boxIdx != this.visibleBoxes;
+      this.boxIdx++;
+      this.updateArrows();
+      this.arrows[1].setUniformScale(0.9);
     }
     update(a) {
       super.update(a);
-      if (this.De == "Running") {
-        var b = this.O.hd().Nb(0);
-        a = this.O.hd().qe(0);
+      if (this.lifecycle == "Running") {
+        var b = this.app.pointer().justPressed(0);
+        a = this.app.pointer().justReleased(0);
         switch (this.state) {
           case 0:
-            if (this.time > (this.EA ? 1 : 0) && !this.tu) {
-              this.tu = true;
-              this.EA = false;
-              this.Uz();
+            if (this.time > (this.firstFrame ? 1 : 0) && !this.scrolling) {
+              this.scrolling = true;
+              this.firstFrame = false;
+              this.jumpToBox();
             }
-            if (this.Hq) {
-              var c = this.O.hd().position[0];
-              this.ng = c.x - this.yA.x;
-              if (Math.abs(c.y - this.yA.y) < 50) {
-                if (this.ng < -100 && this.ub < this.rm) {
-                  this.Hq = false;
-                  this.Qs();
+            if (this.dragActive) {
+              var c = this.app.pointer().position[0];
+              this.dragDeltaX = c.x - this.dragStartPos.x;
+              if (Math.abs(c.y - this.dragStartPos.y) < 50) {
+                if (this.dragDeltaX < -100 && this.boxIdx < this.totalBoxes) {
+                  this.dragActive = false;
+                  this.scrollRight();
                 }
-                if (this.ng > 100 && this.ub > 1) {
-                  this.Hq = false;
-                  this.ux();
+                if (this.dragDeltaX > 100 && this.boxIdx > 1) {
+                  this.dragActive = false;
+                  this.scrollLeft();
                 }
               }
             }
-            c = this.ZL.Ub(this.pointer.pos);
-            var d = this.Qc[0].Ub(this.pointer.pos);
-            let e = this.Qc[1].Ub(this.pointer.pos);
+            c = this.hitArea.hitTest(this.pointer.pos);
+            var d = this.arrows[0].hitTest(this.pointer.pos);
+            let e = this.arrows[1].hitTest(this.pointer.pos);
             if (b) {
               this.buttons[0].blur();
-              this.cp = this.ub > 1 && d;
-              this.To = this.ub < this.rm && e;
-              this.$L = this.ub <= this.rm && c;
-              this.Hq = true;
+              this.canScrollLeft = this.boxIdx > 1 && d;
+              this.canScrollRight = this.boxIdx < this.totalBoxes && e;
+              this.canSelectBox = this.boxIdx <= this.totalBoxes && c;
+              this.dragActive = true;
               b = this.pointer.pos;
-              this.yA = new Vec4(b.x, b.y, 0, 1);
-              this.ng = 0;
+              this.dragStartPos = new Vec4(b.x, b.y, 0, 1);
+              this.dragDeltaX = 0;
             }
             if (a) {
-              if (this.cp && d) {
-                this.ux();
+              if (this.canScrollLeft && d) {
+                this.scrollLeft();
                 SoundFx.play(SoundFx.button);
               }
-              if (this.To && e) {
-                this.Qs();
+              if (this.canScrollRight && e) {
+                this.scrollRight();
                 SoundFx.play(SoundFx.button);
               }
-              this.Hq = this.To = this.cp = false;
-              if (this.$L && c && Math.abs(this.ng) < 10) {
+              this.dragActive = this.canScrollRight = this.canScrollLeft = false;
+              if (this.canSelectBox && c && Math.abs(this.dragDeltaX) < 10) {
                 SoundFx.play(SoundFx.button);
-                if (this.ub > this.il) {
-                  if (this.Zo()) {
+                if (this.boxIdx > this.visibleBoxes) {
+                  if (this.lockReached()) {
                     this.setState(4);
                   }
                 } else {
-                  a = this.Ir(this.ub - 1);
-                  if (LevelState.Ar(a)) {
-                    this.Ha.starCount = LevelState.tv(a);
-                    this.Dg(MissingStarsPopup);
+                  a = this.boxFor(this.boxIdx - 1);
+                  if (LevelState.isBoxLocked(a)) {
+                    this.sharedState.starCount = LevelState.starsNeededForBox(a);
+                    this.pushOver(MissingStarsPopup);
                   } else {
                     if (LevelState.box != a) {
-                      this.Mp(LevelState.box);
+                      this.releaseBoxTextures(LevelState.box);
                     }
-                    LevelState.Ui(a);
-                    this.Qq();
+                    LevelState.setBox(a);
+                    this.goToLevelSelect();
                     this.setState(4);
                   }
                 }
@@ -408,99 +408,99 @@
             }
             break;
           case 1:
-            c = this.Ir(this.ub - 1);
-            if (!(c <= 17) || !LevelState.Ar(c) || !LevelState.hA(c)) {
-              c = this.Qc[0].Ub(this.pointer.pos);
-              d = this.Qc[1].Ub(this.pointer.pos);
+            c = this.boxFor(this.boxIdx - 1);
+            if (!(c <= 17) || !LevelState.isBoxLocked(c) || !LevelState.canUnlockBox(c)) {
+              c = this.arrows[0].hitTest(this.pointer.pos);
+              d = this.arrows[1].hitTest(this.pointer.pos);
               if (b) {
-                this.cp = this.ub > 1 && c;
-                this.To = this.ub < this.rm && d;
+                this.canScrollLeft = this.boxIdx > 1 && c;
+                this.canScrollRight = this.boxIdx < this.totalBoxes && d;
               }
               if (a) {
-                if (this.cp && c) {
-                  this.Ka.setX(-(this.x1 - this.offsetX));
-                  this.ux();
+                if (this.canScrollLeft && c) {
+                  this.omNom.setX(-(this.x1 - this.offsetX));
+                  this.scrollLeft();
                   SoundFx.play(SoundFx.button);
                 }
-                if (this.To && d) {
-                  this.Ka.setX(-(this.x1 - this.offsetX));
-                  this.Qs();
+                if (this.canScrollRight && d) {
+                  this.omNom.setX(-(this.x1 - this.offsetX));
+                  this.scrollRight();
                   SoundFx.play(SoundFx.button);
                 }
-                this.To = this.cp = false;
+                this.canScrollRight = this.canScrollLeft = false;
               }
             }
-            a = this.jb(0.2);
-            b = this.Ie;
-            this.Yb.setX(b + (this.x1 - b) * Easing.quadOut()(a));
-            b = -(this.Yb.getX() - this.offsetX);
-            if (this.kq) {
-              this.Ka.setX(b);
-              b = b + this.Ie - this.offsetX;
-              if (this.Cs > 0) {
+            a = this.progress(0.2);
+            b = this.scrollTargetX;
+            this.boxContainer.setX(b + (this.x1 - b) * Easing.quadOut()(a));
+            b = -(this.boxContainer.getX() - this.offsetX);
+            if (this.canScroll) {
+              this.omNom.setX(b);
+              b = b + this.scrollTargetX - this.offsetX;
+              if (this.scrollDir > 0) {
                 if (b > this.advance / 2) {
                   c = this.clipPath;
                   b = this.advance - b;
-                  d = c.B - c.A;
-                  c.A = b;
-                  c.B = b + d;
+                  d = c.right - c.left;
+                  c.left = b;
+                  c.right = b + d;
                 } else {
                   c = this.clipPath;
                   b = -b;
-                  d = c.B - c.A;
-                  c.A = b;
-                  c.B = b + d;
+                  d = c.right - c.left;
+                  c.left = b;
+                  c.right = b + d;
                 }
               } else {
                 b = -b;
                 if (b > this.advance / 2) {
                   c = this.clipPath;
                   b = -this.advance + b;
-                  d = c.B - c.A;
-                  c.A = b;
-                  c.B = b + d;
+                  d = c.right - c.left;
+                  c.left = b;
+                  c.right = b + d;
                 } else {
                   c = this.clipPath;
-                  d = c.B - c.A;
-                  c.A = b;
-                  c.B = b + d;
+                  d = c.right - c.left;
+                  c.left = b;
+                  c.right = b + d;
                 }
               }
-              this.Ka.jE(this.clipPath);
+              this.omNom.setClipBounds(this.clipPath);
             } else {
-              this.Ka.jE(null);
+              this.omNom.setClipBounds(null);
             }
             if (a == 1) {
-              this.tu = false;
+              this.scrolling = false;
               this.setState(2);
-              this.pt();
+              this.updateArrows();
             }
             break;
           case 2:
-            a = this.Ir(this.ub - 1);
-            if (LevelState.Ar(a) && LevelState.hA(a)) {
-              this.Uz();
+            a = this.boxFor(this.boxIdx - 1);
+            if (LevelState.isBoxLocked(a) && LevelState.canUnlockBox(a)) {
+              this.jumpToBox();
               this.setState(3);
-              this.Fn[this.ub - 1].fo("lock").Jm();
+              this.boxes[this.boxIdx - 1].childByName("lock").moveToTop();
               SoundFx.play(SoundFx.star_1);
               b = new PuffEffect();
-              c = this.ih;
-              b.j.setX((c.A + c.B) / 2);
-              d = c = this.ih;
-              b.j.setY((c.D + c.G) / 2 + (d.G - d.D) * 0.15);
-              this.oa(b);
-              this.node.P(b.j.u);
-              LevelState.iT(a);
+              c = this.viewportBounds;
+              b.container.setX((c.left + c.right) / 2);
+              d = c = this.viewportBounds;
+              b.container.setY((c.top + c.bottom) / 2 + (d.bottom - d.top) * 0.15);
+              this.addChild(b);
+              this.node.appendChild(b.container.node);
+              LevelState.unlockBox(a);
             } else {
               this.setState(0);
             }
             break;
           case 3:
-            a = this.Fn[this.ub - 1].fo("lock");
-            b = this.jb(1.5);
+            a = this.boxes[this.boxIdx - 1].childByName("lock");
+            b = this.progress(1.5);
             a.setUniformScale(1 + b * 0.5);
-            a.W(1 - b);
-            a.pp(new ColorTransform().Vw(-b * 0.5));
+            a.setAlpha(1 - b);
+            a.setColorTransform(new ColorTransform().brightness(-b * 0.5));
             if (b == 1) {
               this.setState(0);
             }
@@ -511,18 +511,18 @@
       this.state = a;
       this.time = 0;
     }
-    Uz() {
-      this.vu = this.oa(new BounceAnim(this.Fn[this.ub - 1]));
-      this.GC = this.oa(new BounceAnim(this.Ka));
+    jumpToBox() {
+      this.boxBounceAnim = this.addChild(new BounceAnim(this.boxes[this.boxIdx - 1]));
+      this.omNomBounceAnim = this.addChild(new BounceAnim(this.omNom));
     }
-    hu() {
-      if (this.vu != null) {
-        this.vu.dispose();
-        this.GC.dispose();
-        this.GC = this.vu = null;
+    updateLockState() {
+      if (this.boxBounceAnim != null) {
+        this.boxBounceAnim.dispose();
+        this.omNomBounceAnim.dispose();
+        this.omNomBounceAnim = this.boxBounceAnim = null;
       }
     }
-    Ir(a) {
+    boxFor(a) {
       a += 1;
       if (LevelState.season == 2) {
         a += 5;
@@ -532,7 +532,7 @@
       }
       return a;
     }
-    Zo() {
+    lockReached() {
       return false;
     }
     getTransitionDuration(a) {
@@ -544,42 +544,42 @@
     }
     start() {
       super.start();
-      this.sm();
-      this.ia(Loader.menuBg2);
+      this.startMenuMusic();
+      this.release(Loader.menuBg2);
       Resources.we = null;
       Resources.Sz = null;
-      if (this.caller != null && this.caller.Ha.boxComplete && LevelState.box != 17) {
-        this.Qs();
+      if (this.caller != null && this.caller.sharedState.boxComplete && LevelState.box != 17) {
+        this.scrollRight();
       }
     }
     layout() {
       super.layout();
-      this.hu();
+      this.updateLockState();
       this.advance = 500;
-      let a = this.fa.Se();
+      let a = this.director.aspectRatio();
       if (!(a < 0.6)) {
         this.advance *= Math.min(1.5, remap(a, 0.6, 2, 1, 1.2));
       }
       var b = 0;
-      for (var c = 0, d = this.Tz; c < d.length;) {
+      for (var c = 0, d = this.bgRects; c < d.length;) {
         let e = d[c];
         ++c;
         e.setX(100 + b);
-        e.W(0.5);
+        e.setAlpha(0.5);
         b += this.advance;
       }
       c = b = 0;
-      for (d = this.Fn; c < d.length;) {
+      for (d = this.boxes; c < d.length;) {
         d[c++].setX(b);
         b += this.advance;
       }
-      this.Yb.setX(-(this.ub - 1) * this.advance + this.offsetX);
-      if (this.kq) {
-        this.Ka.setX(-(this.Yb.getX() - this.offsetX));
+      this.boxContainer.setX(-(this.boxIdx - 1) * this.advance + this.offsetX);
+      if (this.canScroll) {
+        this.omNom.setX(-(this.boxContainer.getX() - this.offsetX));
         this.setState(0);
       }
-      b = this.Qc[0];
-      c = this.Qc[1];
+      b = this.arrows[0];
+      c = this.arrows[1];
       if (a > 0.7) {
         b.setX(50);
         b.setY(325);
@@ -591,15 +591,15 @@
         c.setX(400);
         c.setY(650);
       }
-      this.$n(ScoreLabel, this).layout();
+      this.findNode(ScoreLabel, this).layout();
     }
-    Pd() {
-      if (this.hb(0)) {
-        this.Vb();
+    handleInput() {
+      if (this.consumeClick(0)) {
+        this.backToSeasonSelect();
       }
     }
-    Vb() {
-      this.$(SelectSeasonScene);
+    backToSeasonSelect() {
+      this.push(SelectSeasonScene);
     }
     getName() {
       return "SelectBoxScene";
@@ -617,16 +617,16 @@
     getPreloads() {
       return super.getPreloads().concat([Loader.menuSeason1, Loader.menuSeason1Json]);
     }
-    Nd() {
-      super.Nd();
+    loadTextures() {
+      super.loadTextures();
       Resources.Yb = this.createTexture(Loader.menuSeason1);
     }
-    Zo() {
-      this.$(Season2Scene);
+    lockReached() {
+      this.push(Season2Scene);
       return true;
     }
-    kv() {
-      let a = this.cr("BOX1_LABEL", "BOX2_LABEL", "BOX3_LABEL", "BOX4_LABEL", "BOX5_LABEL", "NEXT_SEASON");
+    seasonLabels() {
+      let a = this.trAll("BOX1_LABEL", "BOX2_LABEL", "BOX3_LABEL", "BOX4_LABEL", "BOX5_LABEL", "NEXT_SEASON");
       let b = 0;
       while (b < 5) {
         let c = b++;
@@ -634,7 +634,7 @@
       }
       return a;
     }
-    jv() {
+    seasonKeys() {
       return [Keys.VI, Keys.WI, Keys.XI, Keys.YI, Keys.ZI, Keys.Xy];
     }
     getName() {
@@ -650,15 +650,15 @@
     constructor() {
       super();
     }
-    Zo() {
-      this.$(CTRCSeason2Scene);
+    lockReached() {
+      this.push(CTRCSeason2Scene);
       return true;
     }
-    Vb() {
-      this.$(CTRCSelectSeasonScene);
+    backToSeasonSelect() {
+      this.push(CTRCSelectSeasonScene);
     }
-    Qq() {
-      this.$(CTRCSelectLevelScene);
+    goToLevelSelect() {
+      this.push(CTRCSelectLevelScene);
     }
     getName() {
       return "CTRCSeason1Scene";
@@ -678,26 +678,26 @@
     }
     init() {
       if (this.caller != null && this.caller instanceof Season1Scene) {
-        LevelState.zk(2);
-        this.Mp(LevelState.box);
-        LevelState.Ui(6);
+        LevelState.setSeason(2);
+        this.releaseBoxTextures(LevelState.box);
+        LevelState.setBox(6);
       }
       super.init();
     }
     start() {
       super.start();
-      this.ia(40);
+      this.release(40);
     }
-    Nd() {
-      super.Nd();
+    loadTextures() {
+      super.loadTextures();
       Resources.Yb = this.createTexture(Loader.menuSeason2);
     }
-    Zo() {
-      this.$(Season3Scene);
+    lockReached() {
+      this.push(Season3Scene);
       return true;
     }
-    kv() {
-      let a = this.cr("BOX6_LABEL", "BOX7_LABEL", "BOX8_LABEL", "BOX9_LABEL", "BOX10_LABEL", "NEXT_SEASON");
+    seasonLabels() {
+      let a = this.trAll("BOX6_LABEL", "BOX7_LABEL", "BOX8_LABEL", "BOX9_LABEL", "BOX10_LABEL", "NEXT_SEASON");
       let b = 0;
       while (b < 5) {
         let c = b++;
@@ -705,7 +705,7 @@
       }
       return a;
     }
-    jv() {
+    seasonKeys() {
       return [Keys.fJ, Keys.gJ, Keys.hJ, Keys.iJ, Keys.eJ, Keys.Xy];
     }
     getName() {
@@ -721,15 +721,15 @@
     constructor() {
       super();
     }
-    Zo() {
-      this.$(CTRCSeason3Scene);
+    lockReached() {
+      this.push(CTRCSeason3Scene);
       return true;
     }
-    Vb() {
-      this.$(CTRCSelectSeasonScene);
+    backToSeasonSelect() {
+      this.push(CTRCSelectSeasonScene);
     }
-    Qq() {
-      this.$(CTRCSelectLevelScene);
+    goToLevelSelect() {
+      this.push(CTRCSelectLevelScene);
     }
     getName() {
       return "CTRCSeason2Scene";
@@ -749,22 +749,22 @@
     }
     init() {
       if (this.caller != null && this.caller instanceof Season2Scene) {
-        LevelState.zk(3);
-        this.Mp(LevelState.box);
-        LevelState.Ui(11);
+        LevelState.setSeason(3);
+        this.releaseBoxTextures(LevelState.box);
+        LevelState.setBox(11);
       }
       super.init();
     }
     start() {
       super.start();
-      this.ia(38);
+      this.release(38);
     }
-    Nd() {
-      super.Nd();
+    loadTextures() {
+      super.loadTextures();
       Resources.Yb = this.createTexture(Loader.menuSeason3);
     }
-    kv() {
-      let a = this.cr("BOX11_LABEL", "BOX12_LABEL", "BOX13_LABEL", "BOX14_LABEL", "BOX15_LABEL", "BOX16_LABEL", "BOX17_LABEL");
+    seasonLabels() {
+      let a = this.trAll("BOX11_LABEL", "BOX12_LABEL", "BOX13_LABEL", "BOX14_LABEL", "BOX15_LABEL", "BOX16_LABEL", "BOX17_LABEL");
       let b = 0;
       while (b < 7) {
         let c = b++;
@@ -772,7 +772,7 @@
       }
       return a.slice(0, 7);
     }
-    jv() {
+    seasonKeys() {
       return [Keys.jJ, Keys.kJ, Keys.lJ, Keys.mJ, Keys.nJ, Keys.oJ, Keys.pJ].slice(0, 7);
     }
     getName() {
@@ -788,11 +788,11 @@
     constructor() {
       super();
     }
-    Vb() {
-      this.$(CTRCSelectSeasonScene);
+    backToSeasonSelect() {
+      this.push(CTRCSelectSeasonScene);
     }
-    Qq() {
-      this.$(CTRCSelectLevelScene);
+    goToLevelSelect() {
+      this.push(CTRCSelectLevelScene);
     }
     getName() {
       return "CTRCSeason3Scene";

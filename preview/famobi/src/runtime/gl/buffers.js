@@ -1,6 +1,6 @@
   class GLTypeSize {
-    static UA(a) {
-      return GLTypeSize.dA[a >> 2];
+    static bytesPerComponent(a) {
+      return GLTypeSize.SIZES[a >> 2];
     }
   }
   class ShaderAttribute {
@@ -21,10 +21,10 @@
       this.type = a;
       this.location = b;
       this.usage = c;
-      this.kw = a % 4 + 1;
-      this.lm = this.kw * GLTypeSize.dA[a >> 2];
+      this.components = a % 4 + 1;
+      this.byteSize = this.components * GLTypeSize.SIZES[a >> 2];
       this.offset = 0;
-      this.AC = false;
+      this.normalized = false;
     }
   }
   VertexAttribute.i = true;
@@ -33,17 +33,17 @@
   });
   class C185 {
     constructor(a, b, c) {
-      this.tT = c;
-      this.CC = a;
-      this.cN = b;
-      this.lm = a * b;
-      this.eh = true;
+      this.usage = c;
+      this.maxCount = a;
+      this.stride = b;
+      this.byteSize = a * b;
+      this.dirty = true;
     }
     resize(a) {
-      if (a > this.CC) {
-        this.CC = a;
-        this.eh = true;
-        this.lm = a * this.cN;
+      if (a > this.maxCount) {
+        this.maxCount = a;
+        this.dirty = true;
+        this.byteSize = a * this.stride;
         return true;
       } else {
         return false;
@@ -57,67 +57,67 @@
 
   class VertexBuffer extends C185 {
     constructor(a, b, c, d) {
-      super(b, c.Vm, d);
+      super(b, c.stride, d);
       this.format = c;
-      this.R = a;
-      this.wu = a.createBuffer();
-      this.data = new ArrayBuffer(this.lm);
-      this.hj = [];
-      this.GB();
+      this.gl = a;
+      this.handle = a.createBuffer();
+      this.data = new ArrayBuffer(this.byteSize);
+      this.views = [];
+      this.createViews();
     }
     free() {
-      this.R.deleteBuffer(this.wu);
-      this.data = this.hj = this.R = this.wu = null;
+      this.gl.deleteBuffer(this.handle);
+      this.data = this.views = this.gl = this.handle = null;
     }
     resize(a) {
       if (super.resize(a)) {
-        this.data = new ArrayBuffer(this.lm);
-        this.GB();
+        this.data = new ArrayBuffer(this.byteSize);
+        this.createViews();
         return true;
       } else {
         return false;
       }
     }
-    iB(a) {
-      return this.hj[a >> 2];
+    viewForType(a) {
+      return this.views[a >> 2];
     }
     bind() {
-      let a = this.R;
-      a.bindBuffer(34962, this.wu);
-      let b = this.format.Vm;
+      let a = this.gl;
+      a.bindBuffer(34962, this.handle);
+      let b = this.format.stride;
       var c = this.format.attributes;
-      let d = c.N;
+      let d = c.array;
       let e = 0;
-      for (c = c.ba; e < c;) {
+      for (c = c.count; e < c;) {
         let f = d[e++];
         if (f.location != -1) {
           a.enableVertexAttribArray(f.location);
-          a.vertexAttribPointer(f.location, f.kw, VertexBuffer.hO[f.type >> 2], f.AC, b, f.offset);
+          a.vertexAttribPointer(f.location, f.components, VertexBuffer.GL_TYPES[f.type >> 2], f.normalized, b, f.offset);
         }
       }
-      if (this.eh) {
-        a.bufferData(34962, this.data, 35040 + this.tT * 4);
-        this.eh = false;
+      if (this.dirty) {
+        a.bufferData(34962, this.data, 35040 + this.usage * 4);
+        this.dirty = false;
       }
     }
-    uN(a) {
+    writerFor(a) {
       var b = 0;
       if (b == null) {
         b = 0;
       }
       return new VertexBufferWriter(this, a, b);
     }
-    NA() {
+    createWriters() {
       var a = [];
-      let b = Array(this.format.ew + 1);
+      let b = Array(this.format.maxLocation + 1);
       for (var c = 0, d = b.length; c < d;) {
         b[c++] = null;
       }
       if (a.length == 0) {
-        for (a = this.format.iterator(); a.fb();) {
+        for (a = this.format.iterator(); a.hasNext();) {
           c = a.next();
           if (c.location != -1) {
-            b[c.location] = this.uN(c.location);
+            b[c.location] = this.writerFor(c.location);
           }
         }
       } else {
@@ -132,25 +132,25 @@
       if (c == null) {
         c = 0;
       }
-      this.eh = true;
+      this.dirty = true;
       if (c == 0) {
         c = b.length;
       }
       var d = this.format.get(a);
-      a = d.kw;
-      var e = GLTypeSize.UA(d.type);
-      let f = this.format.Vm / e | 0;
+      a = d.components;
+      var e = GLTypeSize.bytesPerComponent(d.type);
+      let f = this.format.stride / e | 0;
       e = d.offset / e | 0;
-      d = this.iB(d.type);
+      d = this.viewForType(d.type);
       let g = 0;
       while (g < c) {
         d[e + (g / a | 0) * f + g % a] = b[g];
         ++g;
       }
     }
-    GB() {
+    createViews() {
       let a = this.data;
-      this.hj = [new Int8Array(a), new Uint8Array(a), new Int16Array(a), new Uint16Array(a), new Float32Array(a), new Uint32Array(a)];
+      this.views = [new Int8Array(a), new Uint8Array(a), new Int16Array(a), new Uint16Array(a), new Float32Array(a), new Uint32Array(a)];
     }
   }
   VertexBuffer.i = true;
@@ -160,16 +160,16 @@
   });
   class VertexBufferWriter {
     constructor(a, b, c) {
-      this.mb = a;
+      this.buffer = a;
       let d = a.format;
       b = d.get(b);
-      this.view = a.iB(b.type);
-      a = GLTypeSize.UA(b.type);
-      this.stride = d.Vm / a | 0;
+      this.view = a.viewForType(b.type);
+      a = GLTypeSize.bytesPerComponent(b.type);
+      this.stride = d.stride / a | 0;
       this.start = this.g = (b.offset / a | 0) + c * this.stride;
-      this.mb.eh = true;
+      this.buffer.dirty = true;
     }
-    gE(a, b) {
+    writeTriangle3(a, b) {
       let c = this.view;
       let d = this.g;
       let e = this.stride;
@@ -188,17 +188,17 @@
   });
   class VertexFormat {
     constructor(a) {
-      this.Vm = this.ew = 0;
+      this.stride = this.maxLocation = 0;
       this.attributes = new ArrayList(a);
-      this.attributes.ib(a, null);
+      this.attributes.init(a, null);
     }
     get(a) {
-      return this.attributes.N[a];
+      return this.attributes.array[a];
     }
     iterator() {
       return this.attributes.iterator();
     }
-    KL(a, b, c, d) {
+    addAttribute(a, b, c, d) {
       if (d == null) {
         d = false;
       }
@@ -206,22 +206,22 @@
         c = -1;
       }
       b = new VertexAttribute(b, a, c);
-      this.ew = Math.max(this.ew, a);
-      b.AC = d;
+      this.maxLocation = Math.max(this.maxLocation, a);
+      b.normalized = d;
       if (a == -1) {
         this.attributes.pushBack(b);
       } else {
-        this.attributes.N[a] = b;
+        this.attributes.array[a] = b;
       }
-      this.Vm += b.lm;
+      this.stride += b.byteSize;
     }
     seal() {
       this.attributes.pack();
-      let a = this.attributes.ba;
+      let a = this.attributes.count;
       let b = 1;
       while (b < a) {
-        let c = this.attributes.N[b - 1];
-        this.attributes.N[b].offset = c.offset + c.lm;
+        let c = this.attributes.array[b - 1];
+        this.attributes.array[b].offset = c.offset + c.byteSize;
         ++b;
       }
     }
@@ -232,12 +232,12 @@
   });
   class LineNormalBuilder {
     constructor() {
-      this.ck = new Vec4(0, 0, 0, 1);
-      this.GE = new Vec4(0, 0, 0, 1);
-      this.Hr = new Vec4(0, 0, 0, 1);
-      this.Wl = new Vec4(0, 0, 0, 1);
+      this.tmpDir = new Vec4(0, 0, 0, 1);
+      this.tmpNorm = new Vec4(0, 0, 0, 1);
+      this.tmpAvg = new Vec4(0, 0, 0, 1);
+      this.tmpOut = new Vec4(0, 0, 0, 1);
     }
-    On(a, b) {
+    build(a, b) {
       function c(v, u) {
         f.push(v.x);
         f.push(v.y);
@@ -275,25 +275,25 @@
         let v = q.x - n.x;
         n = q.y - n.y;
         let u = Math.sqrt(v * v + n * n);
-        this.Wl = new Vec4(v / u, n / u, 0, 1);
+        this.tmpOut = new Vec4(v / u, n / u, 0, 1);
         if (e == null) {
-          e = this.Wl;
+          e = this.tmpOut;
           e = new Vec4(-e.y, e.x, 0, 1);
         }
         if (m == 1) {
           c(e, 1);
         }
         if (p == null) {
-          e = this.Wl;
+          e = this.tmpOut;
           e = new Vec4(-e.y, e.x, 0, 1);
           c(e, 1);
         } else {
           m = p.x - q.x;
           q = p.y - q.y;
           p = Math.sqrt(m * m + q * q);
-          this.Hr = new Vec4(m / p, q / p, 0, 1);
-          q = d(this.GE, this.ck, this.Wl, this.Hr, 1);
-          c(this.ck, q);
+          this.tmpAvg = new Vec4(m / p, q / p, 0, 1);
+          q = d(this.tmpNorm, this.tmpDir, this.tmpOut, this.tmpAvg, 1);
+          c(this.tmpDir, q);
         }
       }
       if (b && a.length > 2) {
@@ -303,17 +303,17 @@
         h = b.x - e.x;
         e = b.y - e.y;
         q = Math.sqrt(h * h + e * e);
-        this.Wl = new Vec4(h / q, e / q, 0, 1);
+        this.tmpOut = new Vec4(h / q, e / q, 0, 1);
         h = a.x - b.x;
         a = a.y - b.y;
         b = Math.sqrt(h * h + a * a);
-        this.Hr = new Vec4(h / b, a / b, 0, 1);
-        a = d(this.GE, this.ck, this.Wl, this.Hr, 1);
-        f[0] = this.ck.x;
-        f[1] = this.ck.y;
+        this.tmpAvg = new Vec4(h / b, a / b, 0, 1);
+        a = d(this.tmpNorm, this.tmpDir, this.tmpOut, this.tmpAvg, 1);
+        f[0] = this.tmpDir.x;
+        f[1] = this.tmpDir.y;
         f[2] = a;
-        f[g * 3 - 3] = this.ck.x;
-        f[g * 3 - 2] = this.ck.y;
+        f[g * 3 - 3] = this.tmpDir.x;
+        f[g * 3 - 2] = this.tmpDir.y;
         f[g * 3 - 1] = a;
         f.pop();
         f.pop();
@@ -328,14 +328,14 @@
   });
 
   class VertexBufferReset {
-    static Ow(a) {
+    static reset(a) {
       let b = 0;
       let c = a.length;
       while (b < c) {
         let d = a[b++];
         if (d != null) {
           d.g = d.start;
-          d.mb.eh = true;
+          d.buffer.dirty = true;
         }
       }
     }
