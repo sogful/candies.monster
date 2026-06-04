@@ -2,11 +2,11 @@
     constructor() {
       this.alpha = 1;
       this.rotation = 0;
-      this.scaleX = this.scaleY = 1;
+      this.Hm = this.Im = 1;
       this.x = this.y = 0;
     }
     update() {}
-    draw() {}
+    M() {}
   }
   GameObject.i = true;
   Object.assign(GameObject.prototype, {
@@ -14,43 +14,43 @@
   });
   class Entity {
     constructor() {
-      this.visualScale = 1;
+      this.Dj = 1;
       this.x = this.y = this.rotation = 0;
       this.visible = true;
-      this.bounds = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
+      this.sa = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
     }
-    updateBounds() {
-      this.bounds.left = this.x + this.localBounds.left;
-      this.bounds.top = this.y + this.localBounds.top;
-      this.bounds.right = this.x + this.localBounds.right;
-      this.bounds.bottom = this.y + this.localBounds.bottom;
+    pe() {
+      this.sa.A = this.x + this.ea.A;
+      this.sa.D = this.y + this.ea.D;
+      this.sa.B = this.x + this.ea.B;
+      this.sa.G = this.y + this.ea.G;
     }
-    draw() {}
-    setMotion(a) {
-      this.motion = a;
+    M() {}
+    YD(a) {
+      this.pb = a;
     }
     update(a) {
-      if (this.motion != null) {
-        this.motion.update(a);
-        this.x = this.motion.g.x;
-        this.y = this.motion.g.y;
-        this.rotation = this.motion.angle;
+      if (this.pb != null) {
+        this.pb.update(a);
+        this.x = this.pb.g.x;
+        this.y = this.pb.g.y;
+        this.rotation = this.pb.angle;
       }
     }
-    boundsContainsPoint(a, b) {
-      let c = this.bounds;
-      let d = this.bounds;
-      return Rect.pointInside(a, b, this.bounds.left, this.bounds.top, c.right - c.left, d.bottom - d.top);
+    RQ(a, b) {
+      let c = this.sa;
+      let d = this.sa;
+      return Rect.lk(a, b, this.sa.A, this.sa.D, c.B - c.A, d.G - d.D);
     }
-    boundsOverlapsRect(a, b, c, d) {
-      let e = this.bounds.left;
-      let f = this.bounds.top;
-      let g = this.localBounds;
-      let h = this.localBounds;
-      return Rect.overlapAABB(a, b, c, d, e, f, e + (g.right - g.left), f + (h.bottom - h.top));
+    iR(a, b, c, d) {
+      let e = this.sa.A;
+      let f = this.sa.D;
+      let g = this.ea;
+      let h = this.ea;
+      return Rect.Ew(a, b, c, d, e, f, e + (g.B - g.A), f + (h.G - h.D));
     }
-    static boundsOverlap(a, b) {
-      return AABBTest.test(a.bounds, b.bounds);
+    static yo(a, b) {
+      return AABBTest.test(a.sa, b.sa);
     }
   }
   Entity.i = true;
@@ -61,11 +61,11 @@
     constructor() {
       super();
       this.constraint = null;
-      this.spinVel = 0;
-      this.skipSpin = false;
-      this.litBy = null;
-      this.bouncePower = 0;
-      this.bubbleAnim = null;
+      this.vg = 0;
+      this.NB = false;
+      this.Gc = null;
+      this.Rw = 0;
+      this.Gn = this.ca = null;
     }
   }
   AnchoredEntity.i = true;
@@ -73,151 +73,139 @@
   Object.assign(AnchoredEntity.prototype, {
     l: AnchoredEntity
   });
-  // ParticleEmitter - classic 2d particle system (Cocos2d style).
-  // `capacity` caps live particle count; `particles` holds active
-  // ParticleData. emission rate is `emitRate` (particles/sec), with
-  // `emitAccum` carrying fractional spawn budget between frames.
-  // `duration` of -1 means infinite; otherwise the emitter auto-stops
-  // and calls `onDone(this)` once particles drain. per-particle
-  // variance pairs: angle/angleVar, speed/speedVar, life/lifeVar,
-  // size/sizeVar, radialAccel/radialAccelVar, tangentialAccel/
-  // tangentialAccelVar, angularVel/angularVelVar (subclasses use),
-  // colorStart/colorStartVar -> colorEnd/colorEndVar. outPoints +
-  // outColors are write-only buffers populated each frame by
-  // writeOutput() for the renderer to consume.
   class ParticleEmitter extends GameObject {
     constructor(a) {
       super();
       this.y = this.x = 0;
-      this.scaleY = this.scaleX = 1;
+      this.Im = this.Hm = 1;
       this.rotation = 0;
-      this.outPoints = [];
-      this.outColors = [];
-      this.capacity = a;
-      this.particles = [];
+      this.gj = [];
+      this.Zh = [];
+      this.Kx = a;
+      this.ac = [];
       this.active = false;
-      this.elapsed = this.duration = 0;
-      this.gravity = new Vec2(0, 0);
-      this.posVar = new Vec2(0, 0);
-      this.lifeVar = this.life = this.sizeVar = this.size = this.radialAccelVar = this.radialAccel = this.tangentialAccelVar = this.tangentialAccel = this.speedVar = this.speed = this.angleVar = this.angle = 0;
-      this.colorStart = new RGBA(0, 0, 0, 0);
-      this.colorStartVar = new RGBA(0, 0, 0, 0);
-      this.colorEnd = new RGBA(0, 0, 0, 0);
-      this.colorEndVar = new RGBA(0, 0, 0, 0);
-      this.angularVelVar = this.angularVel = this.emitAccum = this.emitRate = 0;
-      this.outPoints = [];
-      this.outColors = [];
-      this.idx = 0;
-      this.onDone = null;
+      this.Kq = this.duration = 0;
+      this.Kb = new Vec2(0, 0);
+      this.cD = new Vec2(0, 0);
+      this.Xv = this.Xc = this.wx = this.size = this.lD = this.fs = this.HE = this.$s = this.yp = this.speed = this.wn = this.angle = 0;
+      this.aj = new RGBA(0, 0, 0, 0);
+      this.Ws = new RGBA(0, 0, 0, 0);
+      this.ei = new RGBA(0, 0, 0, 0);
+      this.Nq = new RGBA(0, 0, 0, 0);
+      this.xs = this.Fm = this.xl = this.Lq = 0;
+      this.gj = [];
+      this.Zh = [];
+      this.Ki = 0;
+      this.HC = null;
     }
-    spawn() {
-      if (this.particles.length != this.capacity) {
+    Fz() {
+      if (this.ac.length != this.Kx) {
         var a = new ParticleData();
-        this.initParticle(a);
-        this.particles.push(a);
+        this.qh(a);
+        this.ac.push(a);
       }
     }
-    initParticle(a) {
-      a.g.x = this.x + this.posVar.x * X.randCentered();
-      a.g.y = this.y + this.posVar.y * X.randCentered();
-      a.prev.copyFrom(a.g);
-      var b = (this.angle + this.angleVar * X.randCentered()) * DEG2RAD;
+    qh(a) {
+      a.g.x = this.x + this.cD.x * X.Ac();
+      a.g.y = this.y + this.cD.y * X.Ac();
+      a.bj.Pb(a.g);
+      var b = (this.angle + this.wn * X.Ac()) * DEG2RAD;
       b = new Vec2(Math.cos(b), Math.sin(b));
-      b.multiply(this.speed + this.speedVar * X.randCentered());
+      b.multiply(this.speed + this.yp * X.Ac());
       a.dir = b;
-      a.radialAccel = this.radialAccel + this.radialAccelVar * X.randCentered();
-      a.tangentialAccel = this.tangentialAccel + this.tangentialAccelVar * X.randCentered();
-      a.lifeStart = a.life = this.life + this.lifeVar * X.randCentered();
-      b = new RGBA(this.colorStart.r + this.colorStartVar.r * X.randCentered(), this.colorStart.g + this.colorStartVar.g * X.randCentered(), this.colorStart.b + this.colorStartVar.b * X.randCentered(), this.colorStart.a + this.colorStartVar.a * X.randCentered());
-      let c = new RGBA(this.colorEnd.r + this.colorEndVar.r * X.randCentered(), this.colorEnd.g + this.colorEndVar.g * X.randCentered(), this.colorEnd.b + this.colorEndVar.b * X.randCentered(), this.colorEnd.a + this.colorEndVar.a * X.randCentered());
+      a.fs = this.fs + this.lD * X.Ac();
+      a.$s = this.$s + this.HE * X.Ac();
+      a.Fr = a.Xc = this.Xc + this.Xv * X.Ac();
+      b = new RGBA(this.aj.r + this.Ws.r * X.Ac(), this.aj.ue + this.Ws.ue * X.Ac(), this.aj.b + this.Ws.b * X.Ac(), this.aj.a + this.Ws.a * X.Ac());
+      let c = new RGBA(this.ei.r + this.Nq.r * X.Ac(), this.ei.ue + this.Nq.ue * X.Ac(), this.ei.b + this.Nq.b * X.Ac(), this.ei.a + this.Nq.a * X.Ac());
       a.color = b;
-      a.colorRate.r = (c.r - b.r) / a.life;
-      a.colorRate.g = (c.g - b.g) / a.life;
-      a.colorRate.b = (c.b - b.b) / a.life;
-      a.colorRate.a = (c.a - b.a) / a.life;
-      a.size = this.size + this.sizeVar * X.randCentered();
+      a.bi.r = (c.r - b.r) / a.Xc;
+      a.bi.ue = (c.ue - b.ue) / a.Xc;
+      a.bi.b = (c.b - b.b) / a.Xc;
+      a.bi.a = (c.a - b.a) / a.Xc;
+      a.size = this.size + this.wx * X.Ac();
     }
     update(a) {
       super.update(a);
-      if (this.onDone == null || this.particles.length != 0 || this.active) {
-        if (this.active && this.emitRate != 0) {
-          var b = 1 / this.emitRate;
-          for (this.emitAccum += a; this.particles.length < this.capacity && this.emitAccum > b;) {
-            this.spawn();
-            this.emitAccum -= b;
+      if (this.HC == null || this.ac.length != 0 || this.active) {
+        if (this.active && this.Lq != 0) {
+          var b = 1 / this.Lq;
+          for (this.xl += a; this.ac.length < this.Kx && this.xl > b;) {
+            this.Fz();
+            this.xl -= b;
           }
-          this.elapsed += a;
-          if (this.duration != -1 && this.duration < this.elapsed) {
-            this.stop();
+          this.Kq += a;
+          if (this.duration != -1 && this.duration < this.Kq) {
+            this.KS();
           }
         }
-        for (this.idx = 0; this.idx < this.particles.length;) {
-          b = this.particles[this.idx];
-          if (b.life > 0) {
-            this.integrate(b, a);
-            b.color.r += b.colorRate.r * a;
-            b.color.g += b.colorRate.g * a;
-            b.color.b += b.colorRate.b * a;
-            b.color.a += b.colorRate.a * a;
-            b.life -= a;
-            this.writeOutput(b, this.idx, a);
-            this.idx++;
+        for (this.Ki = 0; this.Ki < this.ac.length;) {
+          b = this.ac[this.Ki];
+          if (b.Xc > 0) {
+            this.oT(b, a);
+            b.color.r += b.bi.r * a;
+            b.color.ue += b.bi.ue * a;
+            b.color.b += b.bi.b * a;
+            b.color.a += b.bi.a * a;
+            b.Xc -= a;
+            this.Kh(b, this.Ki, a);
+            this.Ki++;
           } else {
-            this.removeAt(this.idx);
+            this.Fg(this.Ki);
           }
         }
       } else {
-        this.onDone(this);
+        this.HC(this);
       }
     }
-    integrate(a, b) {
+    oT(a, b) {
       if (a.g.x != 0 || a.g.y != 0) {
-        var c = a.g.clone();
+        var c = a.g.Zb();
         c.normalize();
       } else {
         c = new Vec2(0, 0);
       }
-      let d = c.clone();
-      c.multiply(a.radialAccel);
+      let d = c.Zb();
+      c.multiply(a.fs);
       let e = d.x;
       d.x = -d.y;
       d.y = e;
-      d.multiply(a.tangentialAccel);
-      c = Vec2.sum(c, d);
-      c.add(this.gravity);
+      d.multiply(a.$s);
+      c = Vec2.tb(c, d);
+      c.add(this.Kb);
       c.multiply(b);
       a.dir.add(c);
-      c.copyFrom(a.dir);
+      c.Pb(a.dir);
       c.multiply(b);
       a.g.add(c);
     }
-    writeOutput(a) {
-      this.outPoints[this.idx] = new PointWithSize(a.g.x, a.g.y, a.size);
-      this.outColors[this.idx] = a.color;
+    Kh(a) {
+      this.gj[this.Ki] = new PointWithSize(a.g.x, a.g.y, a.size);
+      this.Zh[this.Ki] = a.color;
     }
-    removeAt(a) {
-      this.particles.splice(a, 1);
+    Fg(a) {
+      this.ac.splice(a, 1);
     }
-    start(a) {
-      if (this.particles.length > 0) {
-        while (this.particles.length > 0) {
-          this.removeAt(0);
+    Qm(a) {
+      if (this.ac.length > 0) {
+        while (this.ac.length > 0) {
+          this.Fg(0);
         }
       }
-      this.particles = [];
+      this.ac = [];
       let b = 0;
       while (b < a) {
         ++b;
-        this.spawn();
+        this.Fz();
       }
       this.active = true;
     }
-    stop() {
+    KS() {
       this.active = false;
-      this.elapsed = this.duration;
-      this.emitAccum = 0;
+      this.Kq = this.duration;
+      this.xl = 0;
     }
-    draw() {}
+    M() {}
   }
   ParticleEmitter.i = true;
   ParticleEmitter.s = GameObject;
@@ -227,32 +215,32 @@
   class AnimatedNineSlice extends GameObject {
     constructor(a, b, c, d, e) {
       super();
-      this.container = new Container();
-      a.layer(0).appendChild(this.container.node);
-      this.container.setBlendMode(3);
-      this.container.setVisible(false);
+      this.j = new Container();
+      a.ma(0).P(this.j.u);
+      this.j.Wd(3);
+      this.j.L(false);
       this.frames = [];
       a = [];
       for (var f = 0; f < d;) {
         ++f;
         a.push(0);
       }
-      this.phases = a;
+      this.Va = a;
       for (a = 0; a < d;) {
         f = a++;
-        let g = this.buildFrame(b, c);
-        this.container.appendChild(g);
+        let g = this.xM(b, c);
+        this.j.appendChild(g);
         this.frames.push(g);
-        this.phases[f] = 1 / d * f;
+        this.Va[f] = 1 / d * f;
       }
       this.delay = 0.3;
-      this.outward = e;
+      this.EO = e;
     }
     free() {
-      this.container.free();
-      this.container = null;
+      this.j.free();
+      this.j = null;
     }
-    buildFrame(a, b) {
+    xM(a, b) {
       let c = new Container();
       let d = a / 2;
       let e = b / 2;
@@ -270,27 +258,27 @@
       h.setY(b - h.getHeight());
       let m = new Sprite(c, Resources.Kd, Keys.Ny);
       m.setX(f.getX() + f.getWidth());
-      m.setScaleX((g.getX() - f.getWidth()) / m.size.x);
+      m.setScaleX((g.getX() - f.getWidth()) / m.X.x);
       m.setScaleY(0.25);
       g = new Sprite(c, Resources.Kd, Keys.Ny);
-      g.setScaleX(m.scaleX);
+      g.setScaleX(m.Ra);
       g.setScaleY(0.25);
       g.setX(f.getX() + f.getWidth());
       g.setY(b - g.getHeight());
       b = new Sprite(c, Resources.Kd, Keys.Oy);
       b.setY(f.getHeight());
       b.setScaleX(0.25);
-      b.setScaleY((h.getY() - f.getHeight()) / b.size.y);
+      b.setScaleY((h.getY() - f.getHeight()) / b.X.y);
       f = new Sprite(c, Resources.Kd, Keys.Oy);
       f.setScaleX(0.25);
-      f.setScaleY(b.scaleY);
+      f.setScaleY(b.ed);
       f.setX(a - f.getWidth());
       f.setY(b.getY());
       for (a = 0; a < 8;) {
         f = a++;
-        b = c.childAt(f);
+        b = c.nb(f);
         b.setX(b.getX() - d);
-        f = c.childAt(f);
+        f = c.nb(f);
         f.setY(f.getY() - e);
       }
       c.setX(d);
@@ -299,20 +287,20 @@
     }
     update(a) {
       this.delay -= a;
-      if (!(this.delay > 0) && this.container != null) {
+      if (!(this.delay > 0) && this.j != null) {
         super.update(a);
-        this.container.setVisible(true);
+        this.j.L(true);
         for (var b = 0, c = this.frames.length; b < c;) {
           var d = b++;
-          this.phases[d] += a;
-          if (this.phases[d] > 1) {
-            this.phases[d] -= this.phases[d];
+          this.Va[d] += a;
+          if (this.Va[d] > 1) {
+            this.Va[d] -= this.Va[d];
           }
           let e = this.frames[d];
-          d = this.phases[d];
-          e.setAlpha(remap(d, 0, 1, 1, 0));
+          d = this.Va[d];
+          e.W(remap(d, 0, 1, 1, 0));
           e.setUniformScale(remap(d, 0, 1, 0.89, 1.1));
-          if (this.outward) {
+          if (this.EO) {
             e.setUniformScale(remap(d, 0, 1, 0.89, 1.1));
           } else {
             e.setUniformScale(remap(d, 0, 1, 1.1, 0.89));
@@ -331,31 +319,31 @@
     constructor() {
       super();
       new Rect(-1, -1, -1, -1);
-      this.clickData = this.state = 0;
+      this.cM = this.state = 0;
     }
-    setState(a) {
+    Ak(a) {
       this.state = a;
     }
-    tryPressDown(a, b) {
-      if (this.state == 0 && this.containsPoint(a, b)) {
-        this.setState(1);
+    vw(a, b) {
+      if (this.state == 0 && this.Ql(a, b)) {
+        this.Ak(1);
         return true;
       } else {
         return false;
       }
     }
-    tryReleaseUp(a, b) {
-      if (this.state == 1 && (this.setState(0), this.containsPoint(a, b))) {
-        if (this.onClick != null) {
-          this.onClick(this.clickData);
+    sQ(a, b) {
+      if (this.state == 1 && (this.Ak(0), this.Ql(a, b))) {
+        if (this.sw != null) {
+          this.sw(this.cM);
         }
         return true;
       } else {
         return false;
       }
     }
-    containsPoint(a, b) {
-      return PointInCircle.test(a, b, this.x, this.y, 20);
+    Ql(a, b) {
+      return PointInCircle.Cx(a, b, this.x, this.y, 20);
     }
   }
   TouchableEntity.i = true;
@@ -366,178 +354,178 @@
   class GameItemSwitcher extends Entity {
     constructor(a) {
       super();
-      this.controller = a;
-      this.fadingIn = this.fadingOut = false;
-      this.fadeInProgress = this.fadeOutProgress = 0;
+      this.S = a;
+      this.Pv = this.Br = false;
+      this.jq = this.Gq = 0;
     }
-    init(a, b, c, d, e, f, g) {
-      this.bouncerVariant = d;
-      this.candyRadius = c;
-      this.availableSlotsMask = b | 1;
-      this.currentSlot = 1;
-      this.beesList = e;
-      this.candyList = f;
-      this.bouncerList = g;
+    CO(a, b, c, d, e, f, g) {
+      this.YL = d;
+      this.iO = c;
+      this.dD = b | 1;
+      this.gr = 1;
+      this.oB = e;
+      this.pB = f;
+      this.nB = g;
       this.x = a.x;
       this.y = a.y;
-      this.time = X.next();
-      this.ghostContainer = new Container();
-      this.ghostContainer.setX(this.x);
-      this.ghostContainer.setY(this.y);
-      this.controller.layer(5).appendChild(this.ghostContainer.node);
-      this.puff = new PollenEmitter(this.controller, 7);
-      this.puff.x = this.x;
-      this.puff.y = this.y;
-      this.ghostBody = new Sprite(this.ghostContainer, Resources.de, Keys.pH);
-      this.ghostBody.setUniformScale(0.4);
-      this.ghostBody.center();
-      this.ghostFace = new Sprite(this.ghostContainer, Resources.de, Keys.qH);
-      this.ghostFace.center();
-      this.ghostFace.setUniformScale(0.4);
-      this.bouncer = this.candy = this.bee = null;
-      this.canSwitch = true;
+      this.time = X.gi();
+      this.zf = new Container();
+      this.zf.setX(this.x);
+      this.zf.setY(this.y);
+      this.S.ma(5).P(this.zf.u);
+      this.Po = new PollenEmitter(this.S, 7);
+      this.Po.x = this.x;
+      this.Po.y = this.y;
+      this.zv = new Sprite(this.zf, Resources.de, Keys.pH);
+      this.zv.setUniformScale(0.4);
+      this.zv.center();
+      this.Av = new Sprite(this.zf, Resources.de, Keys.qH);
+      this.Av.center();
+      this.Av.setUniformScale(0.4);
+      this.fd = this.cc = this.ca = null;
+      this.mg = true;
     }
     update(a) {
       super.update(a);
-      if (this.fadingOut) {
-        this.fadeOutProgress += a;
-        var b = Math.min(1, this.fadeOutProgress / 0.16);
-        this.ghostContainer.setAlpha(1 - b);
+      if (this.Br) {
+        this.Gq += a;
+        var b = Math.min(1, this.Gq / 0.16);
+        this.zf.W(1 - b);
         if (b == 1) {
-          this.ghostContainer.setVisible(false);
-          this.fadingOut = false;
+          this.zf.L(false);
+          this.Br = false;
         }
       }
-      if (this.fadingIn) {
-        this.fadeInProgress += a;
-        b = Math.min(1, this.fadeInProgress / 0.36);
-        this.ghostContainer.setAlpha(b);
+      if (this.Pv) {
+        this.jq += a;
+        b = Math.min(1, this.jq / 0.36);
+        this.zf.W(b);
         if (b == 1) {
-          this.fadingIn = false;
+          this.Pv = false;
         }
       }
       this.time += a;
-      this.ghostBody.setY(remap(Math.sin(this.time * 5), -1, 1, 0, -5));
-      this.ghostFace.setY(remap(Math.sin(this.time * 5 + 0.05), -1, 1, 0, -3));
-      if (this.candy != null && this.candy.rope != null && this.candy.rope.breakIndex != -1 && !this.candy.isDying()) {
-        this.canSwitch = true;
-        this.setSlot(1);
+      this.zv.setY(remap(Math.sin(this.time * 5), -1, 1, 0, -5));
+      this.Av.setY(remap(Math.sin(this.time * 5 + 0.05), -1, 1, 0, -3));
+      if (this.cc != null && this.cc.kb != null && this.cc.kb.yc != -1 && !this.cc.Pl()) {
+        this.mg = true;
+        this.Si(1);
       }
-      this.puff.update(a);
+      this.Po.update(a);
     }
-    draw() {
-      super.draw();
-      this.puff.draw();
-      this.ghostContainer.setX(this.x);
-      this.ghostContainer.setX(this.x);
+    M() {
+      super.M();
+      this.Po.M();
+      this.zf.setX(this.x);
+      this.zf.setX(this.x);
     }
-    setSlot(a) {
-      if ((a & this.availableSlotsMask) != 0) {
-        if (this.currentSlot == 1) {
-          this.fadingOut = true;
-          this.fadeOutProgress = 0;
+    Si(a) {
+      if ((a & this.dD) != 0) {
+        if (this.gr == 1) {
+          this.Br = true;
+          this.Gq = 0;
         }
-        this.currentSlot = a;
-        if (this.bee != null) {
-          if (this.bee.isDying()) {
-            this.freeBeeSlot();
+        this.gr = a;
+        if (this.ca != null) {
+          if (this.ca.Pl()) {
+            this.uD();
           } else {
-            this.bee.startExit();
-            this.bee.popped = true;
+            this.ca.Jo();
+            this.ca.bs = true;
           }
         }
-        if (this.candy != null) {
-          a = this.candy.rope;
+        if (this.cc != null) {
+          a = this.cc.kb;
           if (a != null) {
-            a.breakDelay = 0.36;
+            a.bh = 0.36;
           }
-          if (this.candy.isDying()) {
-            this.freeCandySlot();
+          if (this.cc.Pl()) {
+            this.wD();
           } else {
-            this.candy.startExit();
+            this.cc.Jo();
           }
         }
-        if (this.bouncer != null) {
-          if (this.bouncer.isDying()) {
-            this.freeBouncerSlot();
+        if (this.fd != null) {
+          if (this.fd.Pl()) {
+            this.tD();
           } else {
-            this.bouncer.startExit();
+            this.fd.Jo();
           }
         }
-        switch (this.currentSlot) {
+        switch (this.gr) {
           case 1:
-            this.fadingIn = true;
-            this.fadingOut = false;
-            this.ghostContainer.setVisible(true);
-            this.fadeInProgress = 0;
+            this.Pv = true;
+            this.Br = false;
+            this.zf.L(true);
+            this.jq = 0;
             break;
           case 2:
-            this.bee = new Bee(this);
-            this.bee.x = this.x;
-            this.bee.y = this.y;
-            this.bee.startEnter();
-            this.beesList.push(this.bee);
+            this.ca = new Bee(this);
+            this.ca.x = this.x;
+            this.ca.y = this.y;
+            this.ca.Io();
+            this.oB.push(this.ca);
             break;
           case 4:
-            this.candy = new CandyVariant(this);
-            this.candy.x = this.x;
-            this.candy.y = this.y;
-            this.candy.Zf = false;
-            this.candy.spider = null;
-            this.candy.setRadius(this.candyRadius);
-            this.candy.startEnter();
-            this.candy.buildAnimations();
-            this.candyList.push(this.candy);
+            this.cc = new CandyVariant(this);
+            this.cc.x = this.x;
+            this.cc.y = this.y;
+            this.cc.Zf = false;
+            this.cc.mc = null;
+            this.cc.setRadius(this.iO);
+            this.cc.Io();
+            this.cc.mu();
+            this.pB.push(this.cc);
             break;
           case 8:
-            this.bouncer = new BouncerFace(this, this.x, this.y, 1, this.bouncerVariant);
-            this.bouncer.buildAnimations();
-            this.bouncer.startEnter();
-            this.bouncerList.push(this.bouncer);
+            this.fd = new BouncerFace(this, this.x, this.y, 1, this.YL);
+            this.fd.mu();
+            this.fd.Io();
+            this.nB.push(this.fd);
         }
-        this.puff.start(7);
+        this.Po.Qm(7);
         SoundFx.play(SoundFx.ghost_puff);
       }
     }
-    cycleSlot() {
-      let a = this.currentSlot;
+    vR() {
+      let a = this.gr;
       do {
         a <<= 1;
         if (a == 32) {
           a = 2;
         }
-      } while ((a & this.availableSlotsMask) == 0);
-      this.setSlot(a);
+      } while ((a & this.dD) == 0);
+      this.Si(a);
     }
-    tryPressDown(a, b) {
+    vw(a, b) {
       a -= this.x;
       b -= this.y;
-      if (this.canSwitch && Math.sqrt(a * a + b * b) < 40) {
-        this.cycleSlot();
+      if (this.mg && Math.sqrt(a * a + b * b) < 40) {
+        this.vR();
         return true;
       } else {
         return false;
       }
     }
-    freeBeeSlot() {
-      if (this.bee != null) {
-        Std.remove(this.beesList, this.bee);
-        this.bee.free();
-        this.bee = null;
+    uD() {
+      if (this.ca != null) {
+        Std.remove(this.oB, this.ca);
+        this.ca.free();
+        this.ca = null;
       }
     }
-    freeCandySlot() {
-      if (this.candy != null) {
-        this.candy.free();
-        Std.remove(this.candyList, this.candy);
-        this.candy = null;
+    wD() {
+      if (this.cc != null) {
+        this.cc.free();
+        Std.remove(this.pB, this.cc);
+        this.cc = null;
       }
     }
-    freeBouncerSlot() {
-      if (this.bouncer != null) {
-        Std.remove(this.bouncerList, this.bouncer);
-        this.bouncer.free();
-        this.bouncer = null;
+    tD() {
+      if (this.fd != null) {
+        Std.remove(this.nB, this.fd);
+        this.fd.free();
+        this.fd = null;
       }
     }
   }

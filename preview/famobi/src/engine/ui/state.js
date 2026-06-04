@@ -25,32 +25,28 @@
     resetHover() {
       this.hoverId = -1;
     }
-    // fi - per-frame finalize hook (no-op; subclasses may override).
-    endFrame() {}
-    // poll - hit-test `bounds` for region `id` and run the press/release
-    // state machine. Returns true exactly once per completed click that
-    // started AND released inside the region.
-    poll(id, bounds) {
-      let inside = bounds.hitTest(this.pos);
+    fi() {}
+    poll(a, b) {
+      b = b.Ub(this.pos);
       if (this.pressedId < 0) {
         if (this.pressed) {
-          this.cancelId = inside ? id : -1;
+          this.cancelId = b ? a : -1;
         }
-        if (inside) {
-          this.hoverId = id;
+        if (b) {
+          this.hoverId = a;
           if (this.pressed) {
-            this.pressedId = id;
+            this.pressedId = a;
           }
         }
       }
-      if (this.pressedId == id && (inside && (this.hoverId = id), this.released)) {
-        let cancelled = this.cancelId != id;
+      if (this.pressedId == a && (b && (this.hoverId = a), this.released)) {
+        b = this.cancelId != a;
         this.cancelId = -1;
-        if (cancelled) {
+        if (b) {
           this.pressedId = -1;
           return this.pressed = this.released = false;
         }
-        if (id == this.hoverId) {
+        if (a == this.hoverId) {
           this.pressedId = -1;
           this.pressed = this.released = false;
           return true;
@@ -59,11 +55,11 @@
       }
       return false;
     }
-    isHovered(id) {
-      return id == this.hoverId;
+    isHovered(a) {
+      return a == this.hoverId;
     }
-    isActive(id) {
-      return id == this.pressedId;
+    isActive(a) {
+      return a == this.pressedId;
     }
   }
   ButtonInputState.i = true;

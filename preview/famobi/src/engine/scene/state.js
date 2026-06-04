@@ -1,16 +1,8 @@
-  // RenderState - base class for everything in the scene's per-node
-  // render-state bucket array (BlendMode, ClipState, AlphaState,
-  // CullFaceState, DepthTestState, PassThroughState). `type` selects
-  // the bucket (0..6). `key` is a packed int used by the renderer to
-  // sort/compare states cheaply (sub-fields encode the specific
-  // settings - blend factors, alpha as fixed-point, cull flags, ...).
-  // `owner` is the SceneNode this state was attached to, used by the
-  // renderer to read worldT during apply.
   class RenderState {
     constructor(a) {
       this.type = a;
-      this.key = 0;
-      this.owner = null;
+      this.cb = 0;
+      this.Xr = null;
     }
     set() {}
     collapse() {
@@ -24,20 +16,20 @@
   class ClipState extends RenderState {
     constructor() {
       super(1);
-      this.visual = null;
-      this.invert = false;
-      this.corners = null;
-      this.key = ClipState.next++;
+      this.va = null;
+      this.FO = false;
+      this.Gu = null;
+      this.cb = ClipState.next++;
     }
     set(a) {
-      a.applyClip(this);
+      a.hx(this);
     }
-    fromBounds(a) {
-      let b = a.left;
-      let c = a.top;
-      let d = a.right - a.left;
-      a = a.bottom - a.top;
-      this.corners = [new Vec4(b, c, 0, 1), new Vec4(b, c + a, 0, 1), new Vec4(b + d, c + a, 0, 1), new Vec4(b + d, c, 0, 1)];
+    fS(a) {
+      let b = a.A;
+      let c = a.D;
+      let d = a.B - a.A;
+      a = a.G - a.D;
+      this.Gu = [new Vec4(b, c, 0, 1), new Vec4(b, c + a, 0, 1), new Vec4(b + d, c + a, 0, 1), new Vec4(b + d, c, 0, 1)];
     }
   }
   ClipState.i = true;
@@ -48,30 +40,30 @@
   class AlphaState extends RenderState {
     constructor(a) {
       super(5);
-      this.alpha = 1;
+      this.Xk = 1;
       this.collapsed = null;
-      this.setAlpha(a);
+      this.bf(a);
     }
-    setAlpha(a) {
-      this.alpha = a < 0 ? 0 : a > 1 ? 1 : a;
-      this.key = this.alpha * 65535 | 0;
+    bf(a) {
+      this.Xk = a < 0 ? 0 : a > 1 ? 1 : a;
+      this.cb = this.Xk * 65535 | 0;
     }
     set(a) {
-      a.applyAlpha(this);
+      a.jx(this);
     }
     collapse(a) {
-      if (a.count == 1) {
+      if (a.Ga == 1) {
         return this;
       }
-      let b = a.top().alpha;
-      let c = a.count - 2;
+      let b = a.top().Xk;
+      let c = a.Ga - 2;
       while (c > -1) {
-        b *= a.array[c--].alpha;
+        b *= a.N[c--].Xk;
       }
       if (this.collapsed == null) {
         this.collapsed = new AlphaState(b);
       } else {
-        this.collapsed.setAlpha(b);
+        this.collapsed.bf(b);
       }
       return this.collapsed;
     }
@@ -88,19 +80,19 @@
         b = true;
       }
       super(0);
-      this.mode = a;
-      this.key = this.key & -16 | a;
-      this.premultiplied = b;
-      this.key &= -65537;
+      this.Zg = a;
+      this.cb = this.cb & -16 | a;
+      this.QQ = b;
+      this.cb &= -65537;
       if (b) {
-        this.key |= 65536;
+        this.cb |= 65536;
       }
       this.blendEquation = 1;
-      this.key = this.key & -61441 | 4096;
-      this.factorSrc = this.factorDst = 0;
+      this.cb = this.cb & -61441 | 4096;
+      this.wA = this.kE = 0;
     }
     set(a) {
-      a.applyBlend(this);
+      a.Uw(this);
     }
   }
   BlendModeState.i = true;
@@ -108,73 +100,63 @@
   Object.assign(BlendModeState.prototype, {
     l: BlendModeState
   });
-  // DepthTestState - type 4. Controls gl.depthFunc when `enabled`.
-  // `compareFunc` indexes into WebGLRenderer's depth-compare map
-  // (1=LESS, 2=EQUAL, 3=LEQUAL, ...). Originally named ScissorState
-  // by an earlier pass - that was wrong; the renderer's applyDepth
-  // (formerly PD) calls gl.enable(DEPTH_TEST)/depthFunc, never any
-  // scissor API.
-  class DepthTestState extends RenderState {
+  class ScissorState extends RenderState {
     constructor(a, b) {
       if (b == null) {
         b = 1;
       }
       super(4);
-      this.compareFunc = b;
-      this.enabled = a;
-      this.setEnabled(a);
-      this.setCompareFunc(b);
+      this.zz = b;
+      this.rn = a;
+      this.mx(a);
+      this.sS(b);
     }
-    setEnabled(a) {
-      this.key &= -257;
+    mx(a) {
+      this.cb &= -257;
       if (a) {
-        this.key |= 256;
+        this.cb |= 256;
       }
-      this.enabled = a;
+      this.rn = a;
     }
-    setCompareFunc(a) {
-      this.key = this.key & -256 | 1 << a;
-      this.compareFunc = a;
+    sS(a) {
+      this.cb = this.cb & -256 | 1 << a;
+      this.zz = a;
     }
     set(a) {
-      a.applyDepth(this);
+      a.PD(this);
+    }
+  }
+  ScissorState.i = true;
+  ScissorState.s = RenderState;
+  Object.assign(ScissorState.prototype, {
+    l: ScissorState
+  });
+  class DepthTestState extends RenderState {
+    constructor(a, b) {
+      if (b == null) {
+        b = true;
+      }
+      super(3);
+      this.rn = a;
+      this.yL = b;
+      this.mx(a);
+      this.rS(b);
+    }
+    rS(a) {
+      this.cb = (this.cb &= -3) | (a ? 2 : 0);
+    }
+    mx(a) {
+      this.cb = (this.cb &= -2) | (a ? 1 : 0);
+      this.rn = a;
+    }
+    set(a) {
+      a.QD(this);
     }
   }
   DepthTestState.i = true;
   DepthTestState.s = RenderState;
   Object.assign(DepthTestState.prototype, {
     l: DepthTestState
-  });
-  // CullFaceState - type 3. Controls gl.cullFace(BACK) when enabled,
-  // plus gl.frontFace(CCW/CW) per `frontCCW`. Earlier pass mislabeled
-  // this as DepthTestState; renderer.applyCullFace (formerly QD) only
-  // touches CULL_FACE / frontFace / cullFace.
-  class CullFaceState extends RenderState {
-    constructor(a, b) {
-      if (b == null) {
-        b = true;
-      }
-      super(3);
-      this.enabled = a;
-      this.frontCCW = b;
-      this.setEnabled(a);
-      this.setFrontCCW(b);
-    }
-    setFrontCCW(a) {
-      this.key = (this.key &= -3) | (a ? 2 : 0);
-    }
-    setEnabled(a) {
-      this.key = (this.key &= -2) | (a ? 1 : 0);
-      this.enabled = a;
-    }
-    set(a) {
-      a.applyCullFace(this);
-    }
-  }
-  CullFaceState.i = true;
-  CullFaceState.s = RenderState;
-  Object.assign(CullFaceState.prototype, {
-    l: CullFaceState
   });
   class PassThroughState extends RenderState {
     constructor() {
@@ -199,9 +181,9 @@
   });
   class SceneTransform {
     constructor() {
-      this.inverseM = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-      this.compositeM = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-      this.flags = 15;
+      this.qB = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      this.Ue = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      this.K = 15;
       this.scale = new Vec4(1, 1, 1, 1);
       this.translate = new Vec4(0, 0, 0, 1);
       this.matrix = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
@@ -228,9 +210,9 @@
       b.m31 = c.m31;
       b.m32 = c.m32;
       b.m33 = c.m33;
-      this.flags = a.flags | 240;
+      this.K = a.K | 240;
     }
-    copyFrom2D(a) {
+    Tw(a) {
       this.translate.x = a.translate.x;
       this.translate.y = a.translate.y;
       this.scale.x = a.scale.x;
@@ -241,20 +223,20 @@
       b.m12 = c.m12;
       b.m21 = c.m21;
       b.m22 = c.m22;
-      this.flags = a.flags | 240;
+      this.K = a.K | 240;
     }
-    resetRotation() {
+    RD() {
       let a = this.matrix;
       a.m11 = 1;
       a.m12 = 0;
       a.m21 = 0;
       a.m22 = 1;
-      this.flags |= 506;
+      this.K |= 506;
     }
-    maxAbsScale() {
+    PN() {
       let a;
       let b;
-      if ((this.flags & 8) > 0) {
+      if ((this.K & 8) > 0) {
         a = Math.abs(this.scale.x);
         b = Math.abs(this.scale.y);
         var c = Math.abs(this.scale.z);
@@ -266,9 +248,9 @@
       }
       return Math.max(Math.max(a, b), c);
     }
-    compose(a, b) {
-      let c = a.flags;
-      let d = b.flags;
+    bE(a, b) {
+      let c = a.K;
+      let d = b.K;
       if ((c & 1) > 0) {
         this.set(b);
       } else if ((d & 1) > 0) {
@@ -327,7 +309,7 @@
           v90.m32 = v89;
           v90.m33 = V;
         }
-        this.flags = this.flags & -4 | 248;
+        this.K = this.K & -4 | 248;
         let e = a.scale.x;
         if ((c & 2) > 0) {
           let f = a.scale.x;
@@ -348,16 +330,16 @@
           this.translate.y = (g.m21 * m + g.m22 * n + g.m23 * q) * f + p.y;
           this.translate.z = (g.m31 * m + g.m32 * n + g.m33 * q) * f + p.z;
         }
-        this.flags = this.flags & -2 | 240;
+        this.K = this.K & -2 | 240;
         if ((d & 4) > 0) {
           this.scale.x = this.scale.y = this.scale.z = e * b.scale.x;
-          this.flags = this.flags & -2 | 244;
+          this.K = this.K & -2 | 244;
         } else {
           let f = b.scale;
           this.scale.x = f.x * e;
           this.scale.y = f.y * e;
           this.scale.z = f.z * e;
-          this.flags = this.flags & -6 | 240;
+          this.K = this.K & -6 | 240;
         }
       } else {
         if ((c & 8) > 0 && (d & 8) > 0) {
@@ -399,7 +381,7 @@
           v103.m31 = D * v94 + B * v97 + K * v100;
           v103.m32 = D * v95 + B * v98 + K * v101;
           v103.m33 = D * v96 + B * v99 + K * v102;
-          this.flags = 240;
+          this.K = 240;
           let v104 = b.translate;
           let v105 = v104.x;
           let v106 = v104.y;
@@ -443,7 +425,7 @@
           v117.m31 = D * v109 + B * v111 + K * v114;
           v117.m32 = D * v110 + B * v112 + K * v115;
           v117.m33 = D * V + B * v113 + K * v116;
-          this.flags = 240;
+          this.K = 240;
           let v118 = b.translate;
           let v119 = v118.x;
           let v120 = v118.y;
@@ -484,7 +466,7 @@
           v128.m31 = e.m31 * q + e.m32 * u + e.m33 * B;
           v128.m32 = v126;
           v128.m33 = v127;
-          this.flags = 240;
+          this.K = 240;
           let v129 = b.translate;
           let v130 = v129.x;
           let v131 = v129.y;
@@ -521,7 +503,7 @@
           V.m31 = e.m31 * g + e.m32 * n + e.m33 * v;
           V.m32 = v134;
           V.m33 = v135;
-          this.flags = 240;
+          this.K = 240;
           let v136 = b.translate;
           let v137 = v136.x;
           let v138 = v136.y;
@@ -531,16 +513,16 @@
           this.translate.y = e.m21 * v137 + e.m22 * v138 + e.m23 * v139 + v140.y;
           this.translate.z = e.m31 * v137 + e.m32 * v138 + e.m33 * v139 + v140.z;
         }
-        this.flags = this.flags & -2 | 240;
+        this.K = this.K & -2 | 240;
       }
     }
-    composeMirror(a, b) {
-      var c = a.flags;
-      var d = b.flags;
+    cE(a, b) {
+      var c = a.K;
+      var d = b.K;
       if ((c & 1) > 0) {
-        this.copyFrom2D(b);
+        this.Tw(b);
       } else if ((d & 1) > 0) {
-        this.copyFrom2D(a);
+        this.Tw(a);
       } else if ((c & 12) == 12 && (d & 8) > 0) {
         if ((c & 2) > 0) {
           var e = b.matrix;
@@ -571,7 +553,7 @@
           n.m21 = e.m21 * f + e.m22 * m;
           n.m22 = h;
         }
-        this.flags = this.flags & -4 | 504;
+        this.K = this.K & -4 | 504;
         e = a.scale.x;
         if ((c & 2) > 0) {
           c = a.scale.x;
@@ -589,15 +571,15 @@
           this.translate.x = (f.m11 * m + f.m12 * g) * c + a.x;
           this.translate.y = (f.m21 * m + f.m22 * g) * c + a.y;
         }
-        this.flags = this.flags & -2 | 496;
+        this.K = this.K & -2 | 496;
         if ((d & 4) > 0) {
           this.scale.x = this.scale.y = e * b.scale.x;
-          this.flags = this.flags & -2 | 500;
+          this.K = this.K & -2 | 500;
         } else {
           a = b.scale;
           this.scale.x = a.x * e;
           this.scale.y = a.y * e;
-          this.flags = this.flags & -6 | 496;
+          this.K = this.K & -6 | 496;
         }
       } else {
         if ((c & 8) > 0 && (d & 8) > 0) {
@@ -622,7 +604,7 @@
           q.m12 = d * g + c * h;
           q.m21 = e * m + f * n;
           q.m22 = e * g + f * h;
-          this.flags = this.flags & -16 | 496;
+          this.K = this.K & -16 | 496;
           m = b.translate;
           b = m.x;
           m = m.y;
@@ -648,7 +630,7 @@
           q.m12 = d * g + c * n;
           q.m21 = e * m + f * h;
           q.m22 = e * g + f * n;
-          this.flags = this.flags & -16 | 496;
+          this.K = this.K & -16 | 496;
           m = b.translate;
           b = m.x;
           m = m.y;
@@ -672,7 +654,7 @@
           g.m12 = m;
           g.m21 = d.m21 * c + d.m22 * e;
           g.m22 = f;
-          this.flags = this.flags & -16 | 496;
+          this.K = this.K & -16 | 496;
           c = b.translate;
           b = c.x;
           c = c.y;
@@ -693,7 +675,7 @@
           g.m12 = f;
           g.m21 = d.m21 * c + d.m22 * e;
           g.m22 = m;
-          this.flags = this.flags & -16 | 496;
+          this.K = this.K & -16 | 496;
           c = b.translate;
           b = c.x;
           c = c.y;
@@ -701,14 +683,14 @@
           this.translate.x = d.m11 * b + d.m12 * c + a.x;
           this.translate.y = d.m21 * b + d.m22 * c + a.y;
         }
-        this.flags = this.flags & -2 | 496;
+        this.K = this.K & -2 | 496;
       }
     }
-    transformPoint3D(a, b) {
-      if ((this.flags & 16) > 0) {
-        this.updateComposite();
+    UL(a, b) {
+      if ((this.K & 16) > 0) {
+        this.nt();
       }
-      let c = this.compositeM;
+      let c = this.Ue;
       let d = a.x;
       let e = a.y;
       a = a.z;
@@ -717,29 +699,29 @@
       b.z = c.m31 * d + c.m32 * e + c.m33 * a + c.m34;
       return b;
     }
-    transformPoint2D(a, b) {
-      if ((this.flags & 64) > 0) {
-        this.update2DComposite();
+    Jb(a, b) {
+      if ((this.K & 64) > 0) {
+        this.Tm();
       }
-      let c = this.compositeM;
+      let c = this.Ue;
       let d = c.m21 * a.x + c.m22 * a.y + c.m24;
       b.x = c.m11 * a.x + c.m12 * a.y + c.m14;
       b.y = d;
       return b;
     }
-    inverseTransformPoint2D(a, b) {
-      if ((this.flags & 128) > 0) {
-        this.updateInverse();
+    gg(a, b) {
+      if ((this.K & 128) > 0) {
+        this.nT();
       }
-      let c = this.inverseM;
+      let c = this.qB;
       let d = c.m21 * a.x + c.m22 * a.y + c.m24;
       b.x = c.m11 * a.x + c.m12 * a.y + c.m14;
       b.y = d;
       return b;
     }
-    updateComposite() {
-      let a = this.compositeM;
-      if ((this.flags & 1) > 0) {
+    nt() {
+      let a = this.Ue;
+      if ((this.K & 1) > 0) {
         a.m11 = 1;
         a.m12 = 0;
         a.m13 = 0;
@@ -754,7 +736,7 @@
         a.m34 = 0;
       } else {
         var b = this.matrix;
-        if ((this.flags & 8) > 0) {
+        if ((this.K & 8) > 0) {
           let c = this.scale.x;
           let d = this.scale.y;
           let e = this.scale.z;
@@ -783,11 +765,11 @@
         a.m24 = b.y;
         a.m34 = b.z;
       }
-      this.flags &= -81;
+      this.K &= -81;
     }
-    update2DComposite() {
-      let a = this.compositeM;
-      if ((this.flags & 1) > 0) {
+    Tm() {
+      let a = this.Ue;
+      if ((this.K & 1) > 0) {
         a.m11 = 1;
         a.m12 = 0;
         a.m21 = 0;
@@ -796,7 +778,7 @@
         a.m24 = 0;
       } else {
         let c = this.matrix;
-        if ((this.flags & 8) > 0) {
+        if ((this.K & 8) > 0) {
           var b = this.scale;
           let d = b.x;
           b = b.y;
@@ -813,12 +795,12 @@
         a.m14 = this.translate.x;
         a.m24 = this.translate.y;
       }
-      this.flags &= -65;
+      this.K &= -65;
     }
-    updateInverse() {
-      let a = this.inverseM;
+    nT() {
+      let a = this.qB;
       var b = this.matrix;
-      if ((this.flags & 1) > 0) {
+      if ((this.K & 1) > 0) {
         a.m11 = 1;
         a.m12 = 0;
         a.m21 = 0;
@@ -826,8 +808,8 @@
         a.m14 = 0;
         a.m24 = 0;
       } else {
-        if ((this.flags & 8) > 0) {
-          if ((this.flags & 12) == 12) {
+        if ((this.K & 8) > 0) {
+          if ((this.K & 12) == 12) {
             var c = 1 / this.scale.x;
             var d = b.m12 * c;
             a.m11 = b.m11 * c;
@@ -849,10 +831,10 @@
             a.m22 = c * f;
           }
         } else {
-          if ((this.flags & 64) > 0) {
-            this.update2DComposite();
+          if ((this.K & 64) > 0) {
+            this.Tm();
           }
-          b = this.compositeM;
+          b = this.Ue;
           c = 1 / (b.m11 * b.m22 - b.m12 * b.m21);
           d = b.m11 * c;
           a.m11 = b.m22 * c;
@@ -863,7 +845,7 @@
         a.m14 = -(a.m11 * this.translate.x + a.m12 * this.translate.y);
         a.m24 = -(a.m21 * this.translate.x + a.m22 * this.translate.y);
       }
-      this.flags &= -129;
+      this.K &= -129;
     }
   }
   SceneTransform.i = true;

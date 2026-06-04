@@ -1,84 +1,77 @@
-  // BonusStar - the hidden blue clover (level object name=300). Sits
-  // dormant until om-nom passes it, then activate() spawns the
-  // glow/star/twinkle sprites and starts the spin animation. collect()
-  // fires when the player touches it: plays the SFX, fades sprites
-  // out, shoots 6 sparkle sprites outward along the unit circle, and
-  // marks `collected` so update() can free the container after 1s.
-  // wobbleTime drives the gentle Math.sin(t*3)*3 vertical bob.
   class BonusStar extends MovingEntity {
     constructor(a) {
       super();
-      this.controller = a;
-      this.wobbleTime = this.time = 0;
-      this.container = new Container();
-      this.container.setUniformScale(0.4);
-      a.layer(11).appendChild(this.container.node);
+      this.S = a;
+      this.Ij = this.time = 0;
+      this.j = new Container();
+      this.j.setUniformScale(0.4);
+      a.ma(11).P(this.j.u);
     }
-    activate() {
-      this.container.setVisible(true);
-      this.glowSprite = new Sprite(this.container, Resources.Oa, Keys.nI);
-      this.glowSprite.center();
-      this.glowSprite.setUniformScale(0.4);
+    hT() {
+      this.j.L(true);
+      this.Wc = new Sprite(this.j, Resources.Oa, Keys.nI);
+      this.Wc.center();
+      this.Wc.setUniformScale(0.4);
       var a = new AnimTimeline();
-      a.scaleKey(0.01, 0);
-      a.scaleKey(1, 0.2);
-      a.alphaKey(0, 0);
-      a.alphaKey(1, 0.2);
-      new SpriteAnimator(this.glowSprite).play(a);
-      this.starSprite = new Sprite(this.container, Resources.Oa, Keys.pI);
-      this.starSprite.center();
-      this.starSprite.anim().loop(STAR_IDLE_BLUE_ANIM);
-      this.starSprite.anim().randomize();
+      a.vc(0.01, 0);
+      a.vc(1, 0.2);
+      a.La(0, 0);
+      a.La(1, 0.2);
+      new SpriteAnimator(this.Wc).play(a);
+      this.Oa = new Sprite(this.j, Resources.Oa, Keys.pI);
+      this.Oa.center();
+      this.Oa.pa().loop(STAR_IDLE_BLUE_ANIM);
+      this.Oa.pa().Cw();
       a = new AnimTimeline();
-      a.scaleKey(0, 0);
-      a.scaleKey(1, 0.2);
-      a.alphaKey(0, 0);
-      a.alphaKey(1, 0.2);
-      new SpriteAnimator(this.starSprite).play(a);
-      this.twinkleSprite = new Sprite(this.container, Resources.Oa, Keys.yI);
-      this.twinkleSprite.center();
-      this.twinkleSprite.setUniformScale(0.4);
+      a.vc(0, 0);
+      a.vc(1, 0.2);
+      a.La(0, 0);
+      a.La(1, 0.2);
+      new SpriteAnimator(this.Oa).play(a);
+      this.qx = new Sprite(this.j, Resources.Oa, Keys.yI);
+      this.qx.center();
+      this.qx.setUniformScale(0.4);
       a = new AnimTimeline();
-      a.scaleKey(0.01, 0);
-      a.scaleKey(1, 0.205);
-      a.scaleKey(1.5, 0.505);
-      a.alphaKey(0, 0);
-      a.alphaKey(1, 0.05);
-      a.alphaKey(1, 0.305);
-      a.alphaKey(0, 0.505);
-      new SpriteAnimator(this.twinkleSprite).play(a, function () {});
+      a.vc(0.01, 0);
+      a.vc(1, 0.205);
+      a.vc(1.5, 0.505);
+      a.La(0, 0);
+      a.La(1, 0.05);
+      a.La(1, 0.305);
+      a.La(0, 0.505);
+      new SpriteAnimator(this.qx).play(a, function () {});
     }
-    collect() {
+    Iu() {
       this.time = 0;
-      this.collected = true;
+      this.nM = true;
       SoundFx.play(SoundFx.sp_cloverleaf);
       var a = new AnimTimeline();
-      a.alphaKey(1, 0);
-      a.alphaKey(1, 0.05);
-      a.alphaKey(0, 0.805);
-      a.rotKey(1, 0);
-      a.rotKey(1, 0.05);
-      a.rotKey(360, 0.805);
-      a.scaleKey(1, 0);
-      a.scaleKey(1, 0.05);
-      a.scaleKey(0.01, 0.805);
-      new SpriteAnimator(this.starSprite).play(a);
+      a.La(1, 0);
+      a.La(1, 0.05);
+      a.La(0, 0.805);
+      a.yk(1, 0);
+      a.yk(1, 0.05);
+      a.yk(360, 0.805);
+      a.vc(1, 0);
+      a.vc(1, 0.05);
+      a.vc(0.01, 0.805);
+      new SpriteAnimator(this.Oa).play(a);
       a = new AnimTimeline();
-      a.alphaKey(1, 0);
-      a.alphaKey(1, 0.05);
-      a.alphaKey(0, 0.805);
-      a.scaleKey(1, 0);
-      a.scaleKey(1, 0.05);
-      a.scaleKey(0.01, 0.805);
-      new SpriteAnimator(this.glowSprite).play(a);
+      a.La(1, 0);
+      a.La(1, 0.05);
+      a.La(0, 0.805);
+      a.vc(1, 0);
+      a.vc(1, 0.05);
+      a.vc(0.01, 0.805);
+      new SpriteAnimator(this.Wc).play(a);
       for (a = 0; a < 6;) {
         var b = a++;
         var c = b * TWO_PI / 6;
-        let d = new Sprite(this.container, Resources.Oa, Keys.zI);
+        let d = new Sprite(this.j, Resources.Oa, Keys.zI);
         d.setUniformScale((b & 1) == 0 ? 0.5 : 1);
         d.center();
-        b = Math.cos(c) * Star.radius * 10;
-        c = Math.sin(c) * Star.radius * 10;
+        b = Math.cos(c) * Star.bg * 10;
+        c = Math.sin(c) * Star.bg * 10;
         d.tween().x(b, 1);
         d.tween().y(c, 1);
         d.tween().scale(0, 1);
@@ -87,36 +80,36 @@
       }
     }
     free() {
-      this.container.free();
-      this.container = null;
+      this.j.free();
+      this.j = null;
     }
     update(a) {
       super.update(a);
-      if (this.container != null) {
-        this.wobbleTime += a;
-        var b = Math.sin(this.wobbleTime * 3) * 3;
-        for (var c = 0, d = this.container.childCount(); c < d;) {
-          this.container.childAt(c++).setY(b);
+      if (this.j != null) {
+        this.Ij += a;
+        var b = Math.sin(this.Ij * 3) * 3;
+        for (var c = 0, d = this.j.Mj(); c < d;) {
+          this.j.nb(c++).setY(b);
         }
         this.time += a;
-        if (this.collected && this.time > 1) {
+        if (this.nM && this.time > 1) {
           this.free();
         }
       }
     }
-    collisionSize() {
-      let a = this.localBounds;
-      let b = this.localBounds;
-      return new Vec2((a.right - a.left) * 0.9, (b.bottom - b.top) * 0.9);
+    tg() {
+      let a = this.ea;
+      let b = this.ea;
+      return new Vec2((a.B - a.A) * 0.9, (b.G - b.D) * 0.9);
     }
-    scoreValue() {
+    Yq() {
       return 8;
     }
-    draw() {
-      if (this.container != null) {
-        super.draw();
-        this.container.setX(this.x);
-        this.container.setY(this.y);
+    M() {
+      if (this.j != null) {
+        super.M();
+        this.j.setX(this.x);
+        this.j.setY(this.y);
       }
     }
   }
@@ -125,148 +118,141 @@
   Object.assign(BonusStar.prototype, {
     l: BonusStar
   });
-  // Star - the standard collectible (yellow star). On night levels
-  // (controller.nightMode) the star has an additional "lit" state:
-  // setLit(true) plays the LIGHT_UP animation via lightUpFx and
-  // crossfades from starSpriteOff to starSprite, setLit(false) plays
-  // LIGHT_DOWN via lightDownFx. Stars with a `timeout` show a ring
-  // (timeoutRing) and tick down via the resolver until expiring.
-  // wobbleTime drives the same vertical bob as BonusStar.
   class Star extends MovingEntity {
     constructor(a) {
       super();
-      this.controller = a;
-      this.lit = null;
-      var b = Rect.clone(Star.defaultBounds);
+      this.S = a;
+      this.fe = null;
+      var b = Rect.Zb(Star.iK);
       var c = b.w / 2;
-      b = b.h / 2;
-      c = this.localBounds = new Bounds(0 - c, 0 - b, c, b);
-      this.bounds = new Bounds(c.left, c.top, c.right, c.bottom);
+      b = b.J / 2;
+      c = this.ea = new Bounds(0 - c, 0 - b, c, b);
+      this.sa = new Bounds(c.A, c.D, c.B, c.G);
       this.timeout = 0;
-      this.time = X.next() * 2;
-      this.wobbleTime = 0;
-      this.container = new Container();
-      this.glowSprite = new Sprite(this.container, Resources.Oa, Keys.mI);
-      this.glowSprite.center();
-      this.glowSprite.setUniformScale(0.4);
-      if (a.nightMode) {
-        this.starSpriteOff = new Sprite(this.container, Resources.Oa, Keys.sI);
-        this.starSpriteOff.center();
-        this.starSpriteOff.setUniformScale(0.4);
+      this.time = X.gi() * 2;
+      this.Ij = 0;
+      this.j = new Container();
+      this.Wc = new Sprite(this.j, Resources.Oa, Keys.mI);
+      this.Wc.center();
+      this.Wc.setUniformScale(0.4);
+      if (a.$c) {
+        this.Ik = new Sprite(this.j, Resources.Oa, Keys.sI);
+        this.Ik.center();
+        this.Ik.setUniformScale(0.4);
       }
-      this.starSprite = new Sprite(this.container, Resources.Oa, Keys.oI);
-      this.starSprite.center();
-      this.starSprite.setUniformScale(0.4);
-      this.starSprite.setUniformScale(0.4);
-      this.starSprite.anim().loop(STAR_IDLE_ANIM);
-      this.starSprite.anim().randomize();
-      if (a.nightMode) {
-        this.starSpriteOff.anim().loop(STAR_IDLE_OFF_ANIM);
-        this.starSpriteOff.anim().setTime(0);
-        this.starSpriteOff.setAlpha(0);
-        this.lightUpFx = new Sprite(this.container, Resources.Oa, Keys.wI);
-        this.lightUpFx.center();
-        this.lightUpFx.setUniformScale(0.4);
-        this.lightUpFx.setVisible(false);
-        this.lightUpFx.setBlendMode(3);
-        this.lightDownFx = new Sprite(this.container, Resources.Oa, Keys.uI);
-        this.lightDownFx.center();
-        this.lightDownFx.setUniformScale(0.4);
-        this.lightDownFx.setVisible(false);
+      this.Oa = new Sprite(this.j, Resources.Oa, Keys.oI);
+      this.Oa.center();
+      this.Oa.setUniformScale(0.4);
+      this.Oa.setUniformScale(0.4);
+      this.Oa.pa().loop(STAR_IDLE_ANIM);
+      this.Oa.pa().Cw();
+      if (a.$c) {
+        this.Ik.pa().loop(STAR_IDLE_OFF_ANIM);
+        this.Ik.pa().setTime(0);
+        this.Ik.W(0);
+        this.Ei = new Sprite(this.j, Resources.Oa, Keys.wI);
+        this.Ei.center();
+        this.Ei.setUniformScale(0.4);
+        this.Ei.L(false);
+        this.Ei.Wd(3);
+        this.Zj = new Sprite(this.j, Resources.Oa, Keys.uI);
+        this.Zj.center();
+        this.Zj.setUniformScale(0.4);
+        this.Zj.L(false);
       }
-      a.layer(11).appendChild(this.container.node);
+      a.ma(11).P(this.j.u);
     }
-    setLit(a) {
-      let b = this.lit == null;
-      if (this.lit != a) {
+    Lm(a) {
+      let b = this.fe == null;
+      if (this.fe != a) {
         if (a) {
           if (!b) {
-            this.lightUpFx.setVisible(true);
-            this.lightUpFx.anim().play(STAR_LIGHT_UP_ANIM);
-            this.lightUpFx.anim().onComplete(cachedBind(this, this.onLightUpDone));
-            SoundFx.play(X.bool() ? SoundFx.star_light01 : SoundFx.star_light02);
+            this.Ei.L(true);
+            this.Ei.pa().play(STAR_LIGHT_UP_ANIM);
+            this.Ei.pa().Be(cachedBind(this, this.hQ));
+            SoundFx.play(X.ym() ? SoundFx.star_light01 : SoundFx.star_light02);
           }
         } else if (b) {
-          this.glowSprite.setAlpha(0);
-          this.starSprite.setAlpha(0);
+          this.Wc.W(0);
+          this.Oa.W(0);
         } else {
-          this.lightDownFx.setVisible(true);
-          this.lightDownFx.anim().play(STAR_LIGHT_DOWN_ANIM);
-          this.lightDownFx.anim().onComplete(cachedBind(this, this.onLightDownDone));
+          this.Zj.L(true);
+          this.Zj.pa().play(STAR_LIGHT_DOWN_ANIM);
+          this.Zj.pa().Be(cachedBind(this, this.gQ));
         }
-        this.lit = a;
+        this.fe = a;
       }
     }
     free() {
-      this.container.free();
+      this.j.free();
     }
     setTimeout() {
       this.time = this.timeout;
-      this.timeoutRing = new Sprite(null, Resources.Oa, Keys.AI);
-      this.timeoutRing.setUniformScale(0.4);
-      this.timeoutRing.center();
-      this.container.appendChild(this.timeoutRing);
-      this.container.moveChildTo(this.timeoutRing, 0);
+      this.Fp = new Sprite(null, Resources.Oa, Keys.AI);
+      this.Fp.setUniformScale(0.4);
+      this.Fp.center();
+      this.j.appendChild(this.Fp);
+      this.j.Ww(this.Fp, 0);
     }
-    onLightDownDone() {
-      this.lightDownFx.setVisible(false);
+    gQ() {
+      this.Zj.L(false);
     }
-    onLightUpDone() {
-      this.lightUpFx.setVisible(false);
+    hQ() {
+      this.Ei.L(false);
     }
     update(a) {
       super.update(a);
-      this.wobbleTime += a;
-      if (this.controller.nightMode) {
-        if (this.lit) {
-          var b = this.glowSprite;
-          b.setAlpha(b.alpha + 0.1);
-          b = this.starSpriteOff;
-          b.setAlpha(b.alpha - 0.1);
-          b = this.starSprite;
-          b.setAlpha(b.alpha + 0.1);
+      this.Ij += a;
+      if (this.S.$c) {
+        if (this.fe) {
+          var b = this.Wc;
+          b.W(b.Uc + 0.1);
+          b = this.Ik;
+          b.W(b.Uc - 0.1);
+          b = this.Oa;
+          b.W(b.Uc + 0.1);
         } else {
-          b = this.glowSprite;
-          b.setAlpha(b.alpha - 0.1);
-          b = this.starSpriteOff;
-          b.setAlpha(b.alpha + 0.1);
-          b = this.starSprite;
-          b.setAlpha(b.alpha - 0.1);
+          b = this.Wc;
+          b.W(b.Uc - 0.1);
+          b = this.Ik;
+          b.W(b.Uc + 0.1);
+          b = this.Oa;
+          b.W(b.Uc - 0.1);
         }
       }
-      b = Math.sin(this.wobbleTime * 3) * 3;
-      if (this.isOwned()) {
+      b = Math.sin(this.Ij * 3) * 3;
+      if (this.Sl()) {
         b = 0;
       }
       let c = 0;
-      let d = this.container.childCount();
+      let d = this.j.Mj();
       while (c < d) {
-        this.container.childAt(c++).setY(b);
+        this.j.nb(c++).setY(b);
       }
-      this.bounds.left = this.x + this.localBounds.left;
-      this.bounds.top = this.y + this.localBounds.top;
-      this.bounds.right = this.x + this.localBounds.right;
-      this.bounds.bottom = this.y + this.localBounds.bottom;
-      if (this.timeout > 0 && this.controller.startDelay <= 0) {
-        this.timeoutRing.setFrame(Keys.indexed(Keys.BI, (1 - this.time / this.timeout) * 35 | 0));
+      this.sa.A = this.x + this.ea.A;
+      this.sa.D = this.y + this.ea.D;
+      this.sa.B = this.x + this.ea.B;
+      this.sa.G = this.y + this.ea.G;
+      if (this.timeout > 0 && this.S.di <= 0) {
+        this.Fp.Fb(Keys.jj(Keys.BI, (1 - this.time / this.timeout) * 35 | 0));
         if (this.time > 0) {
-          this.time = PathResolver.rampToward(this.time, 0, 1, a);
+          this.time = PathResolver.dk(this.time, 0, 1, a);
         }
       }
     }
-    collisionSize() {
-      let a = this.localBounds;
-      let b = this.localBounds;
-      return new Vec2((a.right - a.left) * 0.9, (b.bottom - b.top) * 0.9);
+    tg() {
+      let a = this.ea;
+      let b = this.ea;
+      return new Vec2((a.B - a.A) * 0.9, (b.G - b.D) * 0.9);
     }
-    scoreValue() {
+    Yq() {
       return 8;
     }
-    draw() {
-      super.draw();
-      this.container.setX(this.x);
-      this.container.setY(this.y);
-      this.container.setUniformScale(this.visualScale);
+    M() {
+      super.M();
+      this.j.setX(this.x);
+      this.j.setY(this.y);
+      this.j.setUniformScale(this.Dj);
     }
   }
   Star.i = true;
@@ -278,52 +264,52 @@
   class ThreeStarsCollect extends GameObject {
     constructor() {
       super();
-      this.container = new Container();
-      this.container.setAlpha(0.75);
-      this.animators = [];
-      this.stars = [];
+      this.j = new Container();
+      this.j.W(0.75);
+      this.fc = [];
+      this.ab = [];
       let a = 0;
       while (a < 4) {
         ++a;
         let b = new Sprite(null, Resources.Oa, "star_effect");
         b.center();
-        b.setBlendMode(3);
-        b.setVisible(false);
-        this.stars.push(b);
-        this.container.appendChild(b);
+        b.Wd(3);
+        b.L(false);
+        this.ab.push(b);
+        this.j.appendChild(b);
       }
-      this.container.setUniformScale(0.4);
-      this.spriteIdx = 0;
+      this.j.setUniformScale(0.4);
+      this.BC = 0;
       SoundFx.play(SoundFx.magnet_idle, true);
-      this.spinAnim = new AnimTimeline();
-      this.spinAnim.scaleKey(1, 0);
-      this.spinAnim.scaleKey(1, 0);
-      this.spinAnim.scaleKey(0, 2);
-      this.spinAnim.alphaKey(0, 0);
-      this.spinAnim.alphaKey(1, 1);
-      this.spinAnim.alphaKey(0, 2);
+      this.Hk = new AnimTimeline();
+      this.Hk.vc(1, 0);
+      this.Hk.vc(1, 0);
+      this.Hk.vc(0, 2);
+      this.Hk.La(0, 0);
+      this.Hk.La(1, 1);
+      this.Hk.La(0, 2);
       this.time = 1;
     }
     update(a) {
       this.time += a;
-      if (this.spriteIdx < 4 && this.time > 0.5) {
+      if (this.BC < 4 && this.time > 0.5) {
         this.time = 0;
-        var b = this.stars[this.spriteIdx++];
-        b.setVisible(true);
-        new SpriteAnimator(b).loop(this.spinAnim);
+        var b = this.ab[this.BC++];
+        b.L(true);
+        new SpriteAnimator(b).loop(this.Hk);
       }
       for (b = 0; b < 4;) {
-        let c = this.stars[b++];
-        c.setRotation(c.rotation + a * 90);
+        let c = this.ab[b++];
+        c.la(c.Zd + a * 90);
       }
     }
-    draw() {
-      this.container.setX(this.x);
-      this.container.setY(this.y);
+    M() {
+      this.j.setX(this.x);
+      this.j.setY(this.y);
     }
     free() {
       SoundFx.stop(SoundFx.magnet_idle);
-      this.container.free();
+      this.j.free();
     }
   }
   ThreeStarsCollect.i = true;

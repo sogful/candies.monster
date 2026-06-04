@@ -1,29 +1,29 @@
   class Sprite extends DisplayBase {
     constructor(a, b, c) {
       super(new SpriteNode(a != null ? a.node : null));
-      this.frameBounds = new Bounds(0, 0, 0, 0);
-      this.frame = this.texture = null;
-      this.size = new Vec4(0, 0, 0, 1);
+      this.He = new Bounds(0, 0, 0, 0);
+      this.qf = this.Dq = null;
+      this.X = new Vec4(0, 0, 0, 1);
       if (b != null) {
-        this.setTexture(b, c);
+        this.Uf(b, c);
       }
       DisplayBase.count++;
     }
     free() {
-      if (this.node != null) {
-        this.node.free();
-        this.size = this.frame = this.texture = this.frameBounds = null;
+      if (this.u != null) {
+        this.u.free();
+        this.X = this.qf = this.Dq = this.He = null;
         super.free();
       }
     }
     getWidth() {
       if ((this.flags & 1) == 0) {
-        return this.size.x * Math.abs(this.scaleX);
+        return this.X.x * Math.abs(this.Ra);
       }
-      var a = this.size.x * Math.abs(this.scaleX) / 2;
-      let b = this.size.y * Math.abs(this.scaleY) / 2;
-      let c = -Math.sin(this.rotationRad);
-      let d = Math.cos(this.rotationRad);
+      var a = this.X.x * Math.abs(this.Ra) / 2;
+      let b = this.X.y * Math.abs(this.ed) / 2;
+      let c = -Math.sin(this.cg);
+      let d = Math.cos(this.cg);
       let e;
       if (d > 0) {
         e = -(d * a);
@@ -41,17 +41,17 @@
       }
       return a - e;
     }
-    setWidth(a) {
-      this.setScaleX(a / this.size.x);
+    px(a) {
+      this.setScaleX(a / this.X.x);
     }
     getHeight() {
       if ((this.flags & 1) == 0) {
-        return this.size.y * Math.abs(this.scaleY);
+        return this.X.y * Math.abs(this.ed);
       }
-      var a = this.size.x * Math.abs(this.scaleX) / 2;
-      let b = this.size.y * Math.abs(this.scaleY) / 2;
-      let c = Math.sin(this.rotationRad);
-      let d = Math.cos(this.rotationRad);
+      var a = this.X.x * Math.abs(this.Ra) / 2;
+      let b = this.X.y * Math.abs(this.ed) / 2;
+      let c = Math.sin(this.cg);
+      let d = Math.cos(this.cg);
       let e;
       if (c > 0) {
         e = -(c * a);
@@ -69,292 +69,292 @@
       }
       return a - e;
     }
-    setHeight(a) {
-      this.setScaleY(a / this.size.y);
+    nx(a) {
+      this.setScaleY(a / this.X.y);
     }
     centerPivot() {
-      this.setPivot(this.size.x / 2, this.size.y / 2);
+      this.setPivot(this.X.x / 2, this.X.y / 2);
     }
     centerOrigin() {
-      this.setOrigin(this.size.x / 2, this.size.y / 2);
+      this.setOrigin(this.X.x / 2, this.X.y / 2);
     }
     setPivot(a, b) {
       if (a != null && a >= 0 && a <= 1) {
-        a *= this.size.x;
+        a *= this.X.x;
       }
       if (b != null && b >= 0 && b <= 1) {
-        b *= this.size.y;
+        b *= this.X.y;
       }
       super.setPivot(a, b);
     }
     setOrigin(a, b) {
       if (a != null && a >= 0 && a <= 1) {
-        a *= this.size.x;
+        a *= this.X.x;
       }
       if (b != null && b >= 0 && b <= 1) {
-        b *= this.size.y;
+        b *= this.X.y;
       }
       super.setOrigin(a, b);
     }
-    setTexture(a, b) {
-      if (this.texture != a) {
-        this.texture = a;
-        this.frame = null;
-        var c = this.node;
-        c.onFrameChanged = cachedBind(this, this.applyTextureSize);
-        c.setEffect(new TextureDrawEffect(a));
-        this.applyTextureSize();
-        this.invalidateLayout();
+    Uf(a, b) {
+      if (this.Dq != a) {
+        this.Dq = a;
+        this.qf = null;
+        var c = this.u;
+        c.Xo = cachedBind(this, this.SC);
+        c.Rf(new TextureDrawEffect(a));
+        this.SC();
+        this.oc();
       }
       if (b != null) {
-        this.setFrame(b);
+        this.qp(b);
       }
     }
-    applyTextureSize() {
-      var a = this.texture;
-      let b = this.size;
-      b.x = a.size.x * a.scale;
-      b.y = a.size.y * a.scale;
-      this.node.setSize(this.size.x, this.size.y);
-      a = this.frame;
+    SC() {
+      var a = this.Dq;
+      let b = this.X;
+      b.x = a.size.x * a.$e;
+      b.y = a.size.y * a.$e;
+      this.u.Lb(this.X.x, this.X.y);
+      a = this.qf;
       if (a != null) {
-        this.frame = null;
-        this.setFrame(a);
+        this.qf = null;
+        this.qp(a);
       }
     }
-    setFrame(a) {
-      if (this.frame != a) {
-        this.frame = a;
-        var b = this.node;
+    Fb(a) {
+      if (this.qf != a) {
+        this.qf = a;
+        var b = this.u;
         var c = b.effect;
-        var d = c.setFrameByName(a);
-        c = c.texture.scale;
-        a = this.frameBounds;
-        var e = this.size;
-        e.x = d.sourceSize.x * c;
-        e.y = d.sourceSize.y * c;
-        if (d.trimmed) {
-          e = d.trimOrigin;
-          d = d.uvOffset;
+        var d = c.Zw(a);
+        c = c.Hb.$e;
+        a = this.He;
+        var e = this.X;
+        e.x = d.ec.x * c;
+        e.y = d.ec.y * c;
+        if (d.Ip) {
+          e = d.mt;
+          d = d.Od;
           let f = e.x * c;
           e = e.y * c;
-          a.left = f;
-          a.top = e;
-          a.right = f + d.w;
-          a.bottom = e + d.h;
-          b.setSize(d.w * c, d.h * c);
+          a.A = f;
+          a.D = e;
+          a.B = f + d.w;
+          a.G = e + d.J;
+          b.Lb(d.w * c, d.J * c);
         } else {
-          b.setSize(this.size.x, this.size.y);
-          a.left = 0;
-          a.top = 0;
-          a.right = 0;
-          a.bottom = 0;
+          b.Lb(this.X.x, this.X.y);
+          a.A = 0;
+          a.D = 0;
+          a.B = 0;
+          a.G = 0;
         }
-        this.invalidateLayout();
+        this.oc();
       }
     }
-    setFrame(a) {
-      if (this.frame != a) {
-        this.frame = a;
-        var b = this.node;
+    qp(a) {
+      if (this.qf != a) {
+        this.qf = a;
+        var b = this.u;
         var c = b.effect;
-        var d = c.setFrameByName(a);
-        c = c.texture.scale;
-        a = this.frameBounds;
-        var e = this.size;
-        e.x = d.sourceSize.x * c;
-        e.y = d.sourceSize.y * c;
-        if (d.trimmed) {
-          e = d.trimOrigin;
-          d = d.uvOffset;
+        var d = c.Zw(a);
+        c = c.Hb.$e;
+        a = this.He;
+        var e = this.X;
+        e.x = d.ec.x * c;
+        e.y = d.ec.y * c;
+        if (d.Ip) {
+          e = d.mt;
+          d = d.Od;
           let f = e.x * c;
           e = e.y * c;
-          a.left = f;
-          a.top = e;
-          a.right = f + d.w;
-          a.bottom = e + d.h;
-          b.setSize(d.w * c, d.h * c);
+          a.A = f;
+          a.D = e;
+          a.B = f + d.w;
+          a.G = e + d.J;
+          b.Lb(d.w * c, d.J * c);
         } else {
-          b.setSize(this.size.x, this.size.y);
-          a.left = 0;
-          a.top = 0;
-          a.right = 0;
-          a.bottom = 0;
+          b.Lb(this.X.x, this.X.y);
+          a.A = 0;
+          a.D = 0;
+          a.B = 0;
+          a.G = 0;
         }
-        this.invalidateLayout();
+        this.oc();
       }
     }
-    anim() {
+    pa() {
       return new InternKey(this);
     }
     setColor(a, b, c) {
-      let d = this.size;
+      let d = this.X;
       d.x = b;
       d.y = c;
-      b = this.node;
-      b.setSize(this.size.x, this.size.y);
-      b.rebuildGeometry();
-      this.node.setEffect(new ColorRectEffect(a));
+      b = this.u;
+      b.Lb(this.X.x, this.X.y);
+      b.Sc();
+      this.u.Rf(new ColorRectEffect(a));
       return this;
     }
-    hitTest(a, b) {
-      if (!this.isVisible()) {
+    Ub(a, b) {
+      if (!this.ri()) {
         return false;
       }
-      NodeTreeUtil.updateWorldTransforms(this.node);
-      this.node.updateBounds();
-      return this.node.hitTest(a, b);
+      NodeTreeUtil.Yf(this.u);
+      this.u.pe();
+      return this.u.Ub(a, b);
     }
-    boundingBox(a, b) {
+    Re(a, b) {
       if (b == null) {
         b = true;
       }
       let c = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
-      if (this.size.x == 0) {
+      if (this.X.x == 0) {
         return c;
       }
       if (a == this) {
-        c.left = 0;
-        c.top = 0;
-        c.right = this.size.x;
-        c.bottom = this.size.y;
+        c.A = 0;
+        c.D = 0;
+        c.B = this.X.x;
+        c.G = this.X.y;
         return c;
       }
-      var d = this.frameBounds.left;
-      var e = this.frameBounds.top;
-      let f = this.node;
+      var d = this.He.A;
+      var e = this.He.D;
+      let f = this.u;
       var g = f.size;
       let h = g.x;
       g = g.y;
-      var m = this.frameBounds;
-      if (m = m.right - m.left > 0) {
-        var n = this.frameBounds;
-        var q = n.right - n.left;
-        n.left = 0;
-        n.right = q;
-        n = this.frameBounds;
-        q = n.bottom - n.top;
-        n.top = 0;
-        n.bottom = q;
-        f.setSize(this.size.x, this.size.y);
-        this.invalidateLayout();
-        this.node.updateTransforms(false, false);
+      var m = this.He;
+      if (m = m.B - m.A > 0) {
+        var n = this.He;
+        var q = n.B - n.A;
+        n.A = 0;
+        n.B = q;
+        n = this.He;
+        q = n.G - n.D;
+        n.D = 0;
+        n.G = q;
+        f.Lb(this.X.x, this.X.y);
+        this.oc();
+        this.u.Gd(false, false);
       }
       if (b) {
-        NodeTreeUtil.updateWorldTransforms(this.node);
-        if (a != null && !NodeTreeUtil.contains(this.node.parent, a.node)) {
-          NodeTreeUtil.updateWorldTransforms(a.node);
+        NodeTreeUtil.Yf(this.u);
+        if (a != null && !NodeTreeUtil.Ov(this.u.parent, a.u)) {
+          NodeTreeUtil.Yf(a.u);
         }
       }
-      this.node.computeWorldBounds(a == null ? this.node.root() : a.node, c);
+      this.u.Fl(a == null ? this.u.gB() : a.u, c);
       if (m) {
-        a = this.frameBounds;
-        b = a.right - a.left;
-        a.left = d;
-        a.right = d + b;
-        d = this.frameBounds;
-        a = d.bottom - d.top;
-        d.top = e;
-        d.bottom = e + a;
+        a = this.He;
+        b = a.B - a.A;
+        a.A = d;
+        a.B = d + b;
+        d = this.He;
+        a = d.G - d.D;
+        d.D = e;
+        d.G = e + a;
         e = f.size;
         e.x = h;
         e.y = g;
-        f.rebuildGeometry();
-        this.invalidateLayout();
-        this.node.updateTransforms(false, false);
+        f.Sc();
+        this.oc();
+        this.u.Gd(false, false);
       }
       return c;
     }
-    localToWorldFrame(a) {
-      let b = this.frameBounds;
-      var c = b.left;
-      let d = b.top;
-      var e = b.right - b.left > 0;
+    Jx(a) {
+      let b = this.He;
+      var c = b.A;
+      let d = b.D;
+      var e = b.B - b.A > 0;
       if (e) {
-        var f = b.right - b.left;
-        b.left = 0;
-        b.right = f;
-        f = b.bottom - b.top;
-        b.top = 0;
-        b.bottom = f;
-        this.invalidateLayout();
-        this.node.updateTransforms(false, false);
+        var f = b.B - b.A;
+        b.A = 0;
+        b.B = f;
+        f = b.G - b.D;
+        b.D = 0;
+        b.G = f;
+        this.oc();
+        this.u.Gd(false, false);
       }
-      a = super.localToWorld(a);
+      a = super.Jx(a);
       if (e) {
-        e = b.right - b.left;
-        b.left = c;
-        b.right = c + e;
-        c = b.bottom - b.top;
-        b.top = d;
-        b.bottom = d + c;
-        this.invalidateLayout();
-        this.node.updateTransforms(false, false);
+        e = b.B - b.A;
+        b.A = c;
+        b.B = c + e;
+        c = b.G - b.D;
+        b.D = d;
+        b.G = d + c;
+        this.oc();
+        this.u.Gd(false, false);
       }
       return a;
     }
-    worldToLocalFrame(a) {
-      let b = this.frameBounds;
-      var c = b.left;
-      let d = b.top;
-      var e = b.right - b.left > 0;
+    Ix(a) {
+      let b = this.He;
+      var c = b.A;
+      let d = b.D;
+      var e = b.B - b.A > 0;
       if (e) {
-        var f = b.right - b.left;
-        b.left = 0;
-        b.right = f;
-        f = b.bottom - b.top;
-        b.top = 0;
-        b.bottom = f;
-        this.invalidateLayout();
-        this.node.updateTransforms(false, false);
+        var f = b.B - b.A;
+        b.A = 0;
+        b.B = f;
+        f = b.G - b.D;
+        b.D = 0;
+        b.G = f;
+        this.oc();
+        this.u.Gd(false, false);
       }
-      a = super.worldToLocal(a);
+      a = super.Ix(a);
       if (e) {
-        e = b.right - b.left;
-        b.left = c;
-        b.right = c + e;
-        c = b.bottom - b.top;
-        b.top = d;
-        b.bottom = d + c;
-        this.invalidateLayout();
-        this.node.updateTransforms(false, false);
+        e = b.B - b.A;
+        b.A = c;
+        b.B = c + e;
+        c = b.G - b.D;
+        b.D = d;
+        b.G = d + c;
+        this.oc();
+        this.u.Gd(false, false);
       }
       return a;
     }
-    moveToTop() {
-      if (this.parentContainer() != null) {
-        this.parentContainer().moveToTop(this);
-      } else if (this.node.parent != null) {
-        this.node.parent.moveToBack(this.node);
+    Jm() {
+      if (this.mh() != null) {
+        this.mh().Jm(this);
+      } else if (this.u.parent != null) {
+        this.u.parent.bx(this.u);
       }
     }
-    moveToBottom() {
-      if (this.parentContainer() != null) {
-        this.parentContainer().moveToBottom(this);
-      } else if (this.node.parent != null) {
-        this.node.parent.moveToFront(this.node);
+    Es() {
+      if (this.mh() != null) {
+        this.mh().Es(this);
+      } else if (this.u.parent != null) {
+        this.u.parent.Yw(this.u);
       }
     }
-    setOffsetY(a) {
-      this.node.effect.setOffsetY(a);
+    SR(a) {
+      this.u.effect.XR(a);
     }
-    updateLocalTransform() {
-      let a = this.node.localT;
-      let b = this.pivotX;
-      let c = this.pivotY;
-      var d = this.frameBounds;
-      let e = d.left;
-      d = d.top;
-      let f = this.originX;
-      let g = this.originY;
-      let h = this.originYBase - e;
-      let m = this.originXBase - d;
-      let n = this.scaleXSafe;
-      var q = this.scaleYSafe;
+    oc() {
+      let a = this.u.Db;
+      let b = this.Tg;
+      let c = this.Ug;
+      var d = this.He;
+      let e = d.A;
+      d = d.D;
+      let f = this.Rg;
+      let g = this.Sg;
+      let h = this.pn - e;
+      let m = this.qn - d;
+      let n = this.dg;
+      var q = this.eg;
       var p = this.flags;
       if ((p & 1) > 0) {
-        let u = Math.sin(this.rotationRad);
-        let A = Math.cos(this.rotationRad);
+        let u = Math.sin(this.cg);
+        let A = Math.cos(this.cg);
         var v = a.matrix;
         let D = a.matrix;
         D.m11 = A;
@@ -420,11 +420,9 @@
   });
   class Container extends DisplayBase {
     constructor(a, b) {
-      // node aliased twice in the original code (Container kept its own
-      // `node` field separately from DisplayBase's `u`); both now refer
-      // to the same SceneRoot so the alias is redundant.
       super(new SceneRoot(b != null ? b.node : null, null, 512));
-      this.node.name = a;
+      this.node = this.u;
+      this.u.name = a;
     }
     free() {
       if (this.node != null) {
@@ -434,102 +432,102 @@
       }
     }
     appendChild(a) {
-      this.node.appendChild(a.node);
+      this.node.P(a.u);
     }
-    childCount() {
-      return this.node.childCount();
+    Mj() {
+      return this.node.Mj();
     }
-    childAt(a) {
-      return this.node.childAt(a).owner;
+    nb(a) {
+      return this.node.nb(a).Xg;
     }
-    moveChildTo(a, b) {
-      this.node.moveChildTo(a.node, b);
+    Ww(a, b) {
+      this.node.Ww(a.u, b);
     }
-    childByName(a) {
-      a = this.node.childByName(a);
+    fo(a) {
+      a = this.node.fo(a);
       if (a != null) {
-        return a.owner;
+        return a.Xg;
       } else {
         return null;
       }
     }
-    moveToTop(a) {
+    Jm(a) {
       if (a == null) {
-        if (this.parentContainer() != null) {
-          this.node.parent.moveToBack(this.node);
+        if (this.mh() != null) {
+          this.node.parent.bx(this.u);
         }
       } else {
-        this.node.moveToBack(a.node);
+        this.node.bx(a.u);
       }
     }
-    moveToBottom(a) {
+    Es(a) {
       if (a == null) {
-        if (this.parentContainer() != null) {
-          this.node.parent.moveToFront(this.node);
+        if (this.mh() != null) {
+          this.node.parent.Yw(this.u);
         }
       } else {
-        this.node.moveToFront(a.node);
+        this.node.Yw(a.u);
       }
     }
     iterator() {
       let a = this.node.children;
       return {
-        hasNext: function () {
+        fb: function () {
           return a != null;
         },
         next: function () {
-          let b = a.owner;
-          a = a.nextSibling;
+          let b = a.Xg;
+          a = a.Y;
           return b;
         }
       };
     }
-    hitTest(a, b) {
-      NodeTreeUtil.updateWorldTransforms(this.node);
-      this.node.updateTransforms(false, true);
-      return this.node.hitTest(a, b);
+    Ub(a, b) {
+      NodeTreeUtil.Yf(this.u);
+      this.u.Gd(false, true);
+      return this.node.Ub(a, b);
     }
-    boundingBox(a, b) {
+    Re(a, b) {
       if (b == null) {
         b = true;
       }
       if (b) {
-        this.node.updateTransforms(false, false);
-        NodeTreeUtil.updateWorldTransforms(this.node);
-        if (a != null && !NodeTreeUtil.contains(this.node, a.node)) {
-          NodeTreeUtil.updateWorldTransforms(a.node);
+        this.u.Gd(false, false);
+        NodeTreeUtil.Yf(this.u);
+        if (a != null && !NodeTreeUtil.Ov(this.u, a.u)) {
+          NodeTreeUtil.Yf(a.u);
         }
         b = false;
       }
       let c = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
       let d = this.node.children;
       while (d != null) {
-        let e = d.owner;
+        let e = d.Xg;
         if (e != null && e instanceof DisplayBase) {
-          c.add(e.boundingBox(a, b));
+          c.add(e.Re(a, b));
         }
-        d = d.nextSibling;
+        d = d.Y;
       }
       return c;
     }
     getWidth() {
-      let a = this.boundingBox(this.parentContainer());
-      return a.right - a.left;
+      let a = this.Re(this.mh());
+      return a.B - a.A;
     }
     getHeight() {
-      let a = this.boundingBox(this.parentContainer());
-      return a.bottom - a.top;
+      let a = this.Re(this.mh());
+      return a.G - a.D;
     }
     centerOrigin() {
-      if (this.childCount() != 0) {
-        var a = this.boundingBox(this);
-        this.setOrigin((a.left + a.right) / 2, (a.top + a.bottom) / 2);
+      if (this.Mj() != 0) {
+        var a = this.Re(this);
+        this.setOrigin((a.A + a.B) / 2, (a.D + a.G) / 2);
       }
     }
     centerPivot() {
-      if (this.childCount() != 0) {
-        var a = this.boundingBox(this);
-        this.setPivot((a.left + a.right) / 2, (a.top + a.bottom) / 2);
+      if (this.Mj() != 0) {
+        var a = this.Re(this);
+        this.setPivot((a.A + a.B) / 2, (a.D + a.G) / 2);
       }
     }
     typeId() {

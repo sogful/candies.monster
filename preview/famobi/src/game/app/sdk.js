@@ -12,7 +12,7 @@
   class SDK {
     static getInsets() {
       let a = window.CTRC.getOffsets();
-      return new Insets(ObjectAccess.getField(a, "left"), ObjectAccess.getField(a, "right"), ObjectAccess.getField(a, "top"), ObjectAccess.getField(a, "bottom"));
+      return new Insets(ObjectAccess.vf(a, "left"), ObjectAccess.vf(a, "right"), ObjectAccess.vf(a, "top"), ObjectAccess.vf(a, "bottom"));
     }
     static onInsetsChange(a) {
       window.CTRC.onOffsetChange(a);

@@ -1,75 +1,60 @@
-  // LevelCamera - level-scoped camera tracker. Wraps the renderer's
-  // Camera and resizes / centres it based on `bounds` (the world rect
-  // the level wants to show). `pivotBias` is the on-screen pivot
-  // (0..1) used by the scroll logic to lean the camera toward one
-  // side. `target` is the current world-space point the camera
-  // follows.
   class LevelCamera {
     constructor() {
-      this.pivotBias = new Vec4(0.5, 0.5, 0, 1);
-      this.target = new Vec4(0, 0, 0, 1);
-      this.bounds = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
-      this.camera = new Camera();
+      this.Kb = new Vec4(0.5, 0.5, 0, 1);
+      this.g = new Vec4(0, 0, 0, 1);
+      this.Ok = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
+      this.Ab = new Camera();
     }
-    // isOnScreen - culling test. Projects (worldX, worldY) into the
-    // viewport via pk and returns false if the point sits more than
-    // ~400px outside the viewport rect (with asymmetric slack: 400px
-    // top/left, 200px bottom/right to match the original engine).
-    isOnScreen(worldX, worldY) {
-      let win = Application.instance.window;
-      let viewport = win.renderer.viewport;
-      let screenW = win.canvasSize.x;
-      let screenH = win.canvasSize.y;
-      let vpX = viewport.x * screenW | 0;
-      let vpY = viewport.y * screenH | 0;
-      let vpW = viewport.w * screenW | 0;
-      let vpH = viewport.h * screenH | 0;
-      let m = this.camera.worldM;
-      let invW = 1 / (m.m41 * worldX + m.m42 * worldY + m.m43 * 0 + m.m44);
-      let halfW = vpW / 2;
-      let halfH = vpH / 2;
-      let nx = (m.m11 * worldX + m.m12 * worldY + m.m13 * 0 + m.m14) * invW;
-      let ny = (m.m21 * worldX + m.m22 * worldY + m.m23 * 0 + m.m24) * invW;
-      let screenX = halfW * nx + ny * 0 + (halfW + vpX);
-      let screenY = nx * 0 + -halfH * ny + (halfH + vpY);
-      if (screenX + 400 < 0 || screenY + 400 < 0 || screenX - 200 > vpX + vpW || screenY - 200 > vpY + vpH) {
+    PO(a, b) {
+      var c = Application.instance.window;
+      var d = c.V.viewport;
+      var e = c.Hc.x;
+      var f = c.Hc.y;
+      c = d.x * e | 0;
+      let g = d.y * f | 0;
+      e = d.w * e | 0;
+      d = d.J * f | 0;
+      let h = this.Ab.pk;
+      let m = 1 / (h.m41 * a + h.m42 * b + h.m43 * 0 + h.m44);
+      let n = e / 2;
+      f = d / 2;
+      let q = (h.m11 * a + h.m12 * b + h.m13 * 0 + h.m14) * m;
+      a = (h.m21 * a + h.m22 * b + h.m23 * 0 + h.m24) * m;
+      b = n * q + a * 0 + (n + c);
+      a = q * 0 + -f * a + (f + g);
+      if (b + 400 < 0 || a + 400 < 0 || b - 200 > c + e || a - 200 > g + d) {
         return false;
       } else {
         return true;
       }
     }
-    // distToVerticalEdge - distance from a world point to whichever
-    // horizontal viewport edge (top or bottom) is closer, in pixels.
-    // Used by the scroll logic to decide when to scroll vertically.
-    distToVerticalEdge(worldX, worldY) {
-      let viewport = Application.instance.window.viewportRect();
-      let screen = this.camera.projectPoint(new Vec4(worldX, worldY, 0, 1), viewport);
-      return Math.min(screen.y, viewport.y + viewport.h - screen.y);
+    MN(a, b) {
+      let c = Application.instance.window.lo();
+      a = this.Ab.rF(new Vec4(a, b, 0, 1), c);
+      return Math.min(a.y, c.y + c.J - a.y);
     }
-    // distToHorizontalEdge - same as above but for vertical viewport
-    // edges (left / right). Used for horizontal scroll.
-    distToHorizontalEdge(worldX, worldY) {
-      let viewport = Application.instance.window.viewportRect();
-      let screen = this.camera.projectPoint(new Vec4(worldX, worldY, 0, 1), viewport);
-      return Math.min(screen.x, viewport.x + viewport.w - screen.x);
+    NN(a, b) {
+      let c = Application.instance.window.lo();
+      a = this.Ab.rF(new Vec4(a, b, 0, 1), c);
+      return Math.min(a.x, c.x + c.w - a.x);
     }
-    // update - resize the wrapped Camera so `bounds` fits the
-    // viewport, then offset the camera by the pivot bias so the
-    // tracking target sits at the requested screen position.
     update() {
-      let viewportSize = Application.instance.window.viewportSize();
-      let b = this.bounds;
-      let scale = Math.min(viewportSize.x / (b.right - b.left), viewportSize.y / (b.bottom - b.top));
-      this.camera.setSize(new Vec4(viewportSize.x, viewportSize.y, 0, 1));
-      this.camera.setZoom(scale);
-      this.camera.centerPivot();
-      let aspectFitBounds = new Bounds(0, 0, viewportSize.x, viewportSize.y).fitAspect((b.right - b.left) / (b.bottom - b.top));
-      let slackX = (viewportSize.x - (aspectFitBounds.right - aspectFitBounds.left)) / scale / 2;
-      let slackY = (viewportSize.y - (aspectFitBounds.bottom - aspectFitBounds.top)) / scale / 2;
-      let cam = this.camera;
-      cam.position.x = this.target.x + (slackX + (-slackX - slackX) * this.pivotBias.x);
-      cam.position.y = this.target.y + (slackY + (-slackY - slackY) * this.pivotBias.y);
-      cam.rebuild();
+      var a = Application.instance.window.pi();
+      var b = this.Ok;
+      var c = this.Ok;
+      c = Math.min(a.x / (b.B - b.A), a.y / (c.G - c.D));
+      this.Ab.Lb(new Vec4(a.x, a.y, 0, 1));
+      this.Ab.qS(c);
+      this.Ab.centerPivot();
+      var d = b = this.Ok;
+      d = new Bounds(0, 0, a.x, a.y).hi((b.B - b.A) / (d.G - d.D));
+      b = (a.x - (d.B - d.A)) / c / 2;
+      a = (a.y - (d.G - d.D)) / c / 2;
+      c = this.Ab;
+      d = c.position;
+      d.x = this.g.x + (b + (-b - b) * this.Kb.x);
+      d.y = this.g.y + (a + (-a - a) * this.Kb.y);
+      c.Sr();
     }
   }
   LevelCamera.i = true;

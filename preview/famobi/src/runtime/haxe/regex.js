@@ -5,8 +5,8 @@
   // (matched array) + `ID` (the input string). Methods:
   //
   //   match(s)  → boolean, also stashes result for Zc/HP
-  //   matched(i)     → captured group i  (throws 0 if no match)
-  //   matchedRight()      → "matchedRight": substring AFTER the match
+  //   Zc(i)     → captured group i  (throws 0 if no match)
+  //   HP()      → "matchedRight": substring AFTER the match
   //                                (throws 1 if no match)
   //
   // Originally minified as `C2` (and `ma` in ctrrold.js).
@@ -22,13 +22,13 @@
       this.r.ID = a;
       return this.r.bk != null;
     }
-    matched(a) {
+    Zc(a) {
       if (this.r.bk != null && a >= 0 && a < this.r.bk.length) {
         return this.r.bk[a];
       }
       throw 0;
     }
-    matchedRight() {
+    HP() {
       if (this.r.bk == null) {
         throw 1;
       }

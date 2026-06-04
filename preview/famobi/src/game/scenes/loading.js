@@ -4,69 +4,69 @@
     }
     init() {
       super.init();
-      this.background = new Sprite(null, this.createTexture(Loader.loaderBg));
-      this.node.appendChild(this.background.node);
-      this.setSize(750, 750);
+      this.th = new Sprite(null, this.createTexture(Loader.loaderBg));
+      this.node.P(this.th.u);
+      this.Ke(750, 750);
       var a = "logo";
-      if (Loader.getLanguage() == "ru") {
+      if (Loader.qv() == "ru") {
         a = "logo_ru";
       }
-      this.logo = new Sprite(this.layout, Resources.Yl.children[0], a);
-      this.logo.center();
-      this.logo.setX(375);
-      this.logo.setY(200);
-      this.bubble = new Container();
-      this.bubble.setX(375);
-      this.bubble.setY(400);
-      this.layout.appendChild(this.bubble);
-      a = new Sprite(this.bubble, Resources.Yl.children[0], "bubble");
+      this.we = new Sprite(this.ra, Resources.Yl.children[0], a);
+      this.we.center();
+      this.we.setX(375);
+      this.we.setY(200);
+      this.ca = new Container();
+      this.ca.setX(375);
+      this.ca.setY(400);
+      this.ra.appendChild(this.ca);
+      a = new Sprite(this.ca, Resources.Yl.children[0], "bubble");
       a.center();
-      this.text = new TextNode(this.bubble, Resources.Yl.children[1]);
+      this.text = new TextNode(this.ca, Resources.Yl.children[1]);
       this.text.setText("100%");
-      this.text.setBoxSize(a.size.x, a.size.y);
+      this.text.setBoxSize(a.X.x, a.X.y);
       this.text.setAlign(0, 0);
-      this.text.autoFit(false);
+      this.text.setMultiline(false);
       this.text.setText("0%");
-      this.text.setX(-a.size.x / 2);
-      this.text.setY(-a.size.y / 2);
-      this.text.setFontSize(this.text.getFontSize() * 0.7);
-      this.loadProgress = this.app.preloadAssets(this.director.sharedState.sceneToLoad);
-      this.pushedNext = this.percentCache = 0;
-      this.phaseX = Math.random() * PI * 2;
-      this.phaseY = Math.random() * PI * 2;
-      this.speedX = Math.random() * 0.1 - 0.05;
-      this.speedY = Math.random() * 0.1 - 0.05;
+      this.text.setX(-a.X.x / 2);
+      this.text.setY(-a.X.y / 2);
+      this.text.setFontSize(this.text.$q() * 0.7);
+      this.Zl = this.O.Xl(this.fa.Ha.sceneToLoad);
+      this.ak = this.wd = 0;
+      this.tj = Math.random() * PI * 2;
+      this.uj = Math.random() * PI * 2;
+      this.Ek = Math.random() * 0.1 - 0.05;
+      this.Fk = Math.random() * 0.1 - 0.05;
     }
     layout() {
       super.layout();
-      if (this.director.aspectRatio() > 1) {
-        this.background.setRotation(0);
-        this.background.setX(0);
-        this.background.setWidth(this.director.getWidth());
-        this.background.setHeight(this.director.getHeight());
+      if (this.fa.Se() > 1) {
+        this.th.la(0);
+        this.th.setX(0);
+        this.th.px(this.fa.getWidth());
+        this.th.nx(this.fa.getHeight());
       } else {
-        this.background.setRotation(90);
-        this.background.setX(this.director.getWidth());
-        this.background.setWidth(this.director.getHeight());
-        this.background.setHeight(this.director.getWidth());
+        this.th.la(90);
+        this.th.setX(this.fa.getWidth());
+        this.th.px(this.fa.getHeight());
+        this.th.nx(this.fa.getWidth());
       }
     }
     dispose() {
-      this.release(Loader.loaderBg);
+      this.ia(Loader.loaderBg);
       super.dispose();
     }
     update(a) {
       super.update(a);
       this.layout();
-      this.bubble.setX(375);
-      this.bubble.setY(400);
-      var b = Math.cos(this.phaseX) * 50;
-      a = Math.sin(this.phaseY) * 50;
-      this.phaseX += this.speedX;
-      this.phaseY += this.speedY;
-      let c = this.bubble;
+      this.ca.setX(375);
+      this.ca.setY(400);
+      var b = Math.cos(this.tj) * 50;
+      a = Math.sin(this.uj) * 50;
+      this.tj += this.Ek;
+      this.uj += this.Fk;
+      let c = this.ca;
       c.setX(c.getX() + b);
-      b = this.bubble;
+      b = this.ca;
       b.setY(b.getY() + a);
       // Same drop-the-fake-progress treatment as BubbleLoadingOverlay.
       // The `De == "Running"` guard is critical: gk() pushes a new
@@ -75,17 +75,17 @@
       // TransitionPushOver calls transitionIn on an already-disposed
       // scene whose `node` has been nulled, producing
       // `Cannot read properties of null (reading 'li')`.
-      this.percentCache = this.loadProgress.percent() | 0;
-      this.onProgressChanged(this.percentCache);
-      this.text.setText("" + this.percentCache + "%");
-      if (this.loadProgress.isDone() && this.lifecycle == "Running" && this.pushedNext == 0) {
-        this.pushedNext++;
-        this.goToNextScene();
+      this.wd = this.Zl.er() | 0;
+      this.aE(this.wd);
+      this.text.setText("" + this.wd + "%");
+      if (this.Zl.xv() && this.De == "Running" && this.ak == 0) {
+        this.ak++;
+        this.gk();
       }
     }
-    onProgressChanged() {}
-    goToNextScene() {
-      this.push(this.director.sharedState.sceneToLoad);
+    aE() {}
+    gk() {
+      this.$(this.fa.Ha.sceneToLoad);
     }
     getTransitionDuration(a) {
       if (a == null) {
@@ -107,7 +107,7 @@
     constructor() {
       super();
     }
-    onProgressChanged(a) {
+    aE(a) {
       SDK.setPreloadProgress(a);
     }
     getName() {

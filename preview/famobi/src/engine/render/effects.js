@@ -2,15 +2,15 @@
     constructor() {
       this.type = this.typeId();
       this.enabled = true;
-      this.visual = null;
-      this.key = 0;
+      this.va = null;
+      this.cb = 0;
     }
     free() {
-      this.visual = null;
+      this.va = null;
     }
     update() {}
-    attachToVisual(a) {
-      this.visual = a;
+    Dh(a) {
+      this.va = a;
     }
     typeId() {
       return 105;
@@ -24,10 +24,10 @@
   class RingDrawEffect extends DrawEffect {
     constructor() {
       super();
-      this.radius = 0;
+      this.Z = 0;
       this.color = new Vec4(1, 1, 1, 1);
       this.lineWidth = 6;
-      this.opacity = 1;
+      this.Gr = 1;
     }
     typeId() {
       return 905;
@@ -41,76 +41,76 @@
   class TextureDrawEffect extends DrawEffect {
     constructor(a, b) {
       super();
-      this.texture = null;
-      this.uvRect = new TexRect(0, 0, 0, 0);
+      this.Hb = null;
+      this.Ep = new TexRect(0, 0, 0, 0);
       this.frame = null;
-      this.scaleY = this.scaleX = 1;
-      this.textureVersion = this.flags = this.offsetY = this.offsetX = 0;
-      this.setTexture(a, b);
+      this.hp = this.Am = 1;
+      this.Td = this.K = this.offsetY = this.offsetX = 0;
+      this.Uf(a, b);
     }
-    setOffsetY(a) {
+    XR(a) {
       this.offsetX = 0;
       this.offsetY = a;
-      this.flags = a == 0 ? this.flags & -3 : this.flags | 2;
+      this.K = a == 0 ? this.K & -3 : this.K | 2;
     }
-    setTexture(a, b) {
-      this.texture = a;
+    Uf(a, b) {
+      this.Hb = a;
       if (b != null) {
-        this.setFrameByName(b);
+        this.Zw(b);
       } else {
-        b = this.uvRect;
+        b = this.Ep;
         let c = a.size.x;
         let d = a.size.y;
         b.x = 0;
         b.y = 0;
         b.w = c;
-        b.h = d;
+        b.J = d;
         this.frame = null;
       }
-      this.key = a.id;
+      this.cb = a.id;
     }
-    setFrameByName(a) {
-      a = this.texture.frames.findByName(a);
+    Zw(a) {
+      a = this.Hb.hc.yf(a);
       if (this.frame == null || a.id != this.frame.id) {
         this.frame = a;
-        a = this.uvRect;
-        let b = this.frame.uvOffset;
+        a = this.Ep;
+        let b = this.frame.Od;
         a.x = b.x;
         a.y = b.y;
         a.w = b.w;
-        a.h = b.h;
+        a.J = b.J;
       }
       return this.frame;
     }
-    setFrame(a) {
+    qp(a) {
       if (this.frame == null || this.frame.id != a) {
-        this.frame = this.texture.frames.findById(a);
-        a = this.uvRect;
-        let b = this.frame.uvOffset;
+        this.frame = this.Hb.hc.EN(a);
+        a = this.Ep;
+        let b = this.frame.Od;
         a.x = b.x;
         a.y = b.y;
         a.w = b.w;
-        a.h = b.h;
+        a.J = b.J;
       }
     }
     update() {
-      if (this.texture.textureVersion > this.textureVersion) {
-        this.textureVersion = this.texture.textureVersion;
+      if (this.Hb.Td > this.Td) {
+        this.Td = this.Hb.Td;
         if (this.frame == null) {
-          this.setTexture(this.texture);
+          this.Uf(this.Hb);
         } else {
           let a = this.frame;
           this.frame = null;
-          this.setFrame(a.id);
+          this.qp(a.id);
         }
-        if (this.visual.onFrameChanged != null) {
-          this.visual.onFrameChanged();
+        if (this.va.Xo != null) {
+          this.va.Xo();
         }
       }
     }
     free() {
       super.free();
-      this.texture = null;
+      this.Hb = null;
     }
     typeId() {
       return 205;
@@ -124,12 +124,12 @@
   class MeshDrawEffect extends DrawEffect {
     constructor(a) {
       super();
-      this.texture = a;
-      this.mesh = null;
+      this.Hb = a;
+      this.js = null;
     }
     free() {
       super.free();
-      this.texture = null;
+      this.Hb = null;
     }
     typeId() {
       return 405;
@@ -143,41 +143,41 @@
   class ParallaxDrawEffect extends DrawEffect {
     constructor(a, b) {
       super();
-      this.parallaxRatio = new Vec4(1, 1, 0, 1);
-      this.offset = new Vec4(0, 0, 0, 1);
-      a.forEachValue(function () {});
-      this.layerSize = new Size(a.cols * b, a.rows * b);
+      this.Yr = new Vec4(1, 1, 0, 1);
+      this.vk = new Vec4(0, 0, 0, 1);
+      a.zi(function () {});
+      this.Jr = new Size(a.Tb * b, a.Yc * b);
     }
     free() {
       super.free();
     }
-    attachToVisual(a) {
-      super.attachToVisual(a);
-      a.setSize(this.layerSize.x, this.layerSize.y);
-      a.rebuildGeometry();
+    Dh(a) {
+      super.Dh(a);
+      a.Lb(this.Jr.x, this.Jr.y);
+      a.Sc();
     }
     update(a) {
-      var b = a.camera;
+      var b = a.Ab;
       var c = b.position.y;
-      b = b.position.x - a.currentVisual.worldT.translate.x;
-      var d = c - a.currentVisual.worldT.translate.y;
-      c = this.offset;
-      c.x = b * (1 - this.parallaxRatio.x);
-      c.y = d * (1 - this.parallaxRatio.y);
-      b = a.currentVisual;
-      b.setSize(this.layerSize.x, this.layerSize.y);
-      d = (1 - this.parallaxRatio.x) * c.x * 2;
-      a = (1 - this.parallaxRatio.y) * c.y * 2;
-      b.localBounds.center.x = d;
-      b.localBounds.center.y = a;
-      c = b.localBounds.bounds;
-      let e = c.right - c.left;
-      c.left = d;
-      c.right = d + e;
-      c = b.localBounds.bounds;
-      b = c.bottom - c.top;
-      c.top = a;
-      c.bottom = a + b;
+      b = b.position.x - a.rf.Fa.translate.x;
+      var d = c - a.rf.Fa.translate.y;
+      c = this.vk;
+      c.x = b * (1 - this.Yr.x);
+      c.y = d * (1 - this.Yr.y);
+      b = a.rf;
+      b.Lb(this.Jr.x, this.Jr.y);
+      d = (1 - this.Yr.x) * c.x * 2;
+      a = (1 - this.Yr.y) * c.y * 2;
+      b.ea.C.x = d;
+      b.ea.C.y = a;
+      c = b.ea.gb;
+      let e = c.B - c.A;
+      c.A = d;
+      c.B = d + e;
+      c = b.ea.gb;
+      b = c.G - c.D;
+      c.D = a;
+      c.G = a + b;
     }
     typeId() {
       return 1605;
@@ -210,48 +210,48 @@
     constructor() {
       super();
       this.precision = 0.2;
-      this.closed = false;
+      this.AQ = false;
       new Bounds(0, 0, 1024, 1024);
-      this.needsRebuild = false;
-      this.opCount = 0;
-      this.opCapacity = 256;
-      this.ops = Array(this.opCapacity);
-      this.dataCapacity = 1024;
-      this.data = Array(this.dataCapacity);
-      this.lineWidth = this.opacity = 1;
+      this.sM = false;
+      this.Ku = 0;
+      this.qM = 256;
+      this.Ju = Array(this.qM);
+      this.EM = 1024;
+      this.data = Array(this.EM);
+      this.lineWidth = this.Gr = 1;
       this.fillColor = 0;
       this.cursor = new Vec4(0, 0, 0, 1);
-      this.triBuffer = [];
-      this.localBounds = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
+      this.Fd = [];
+      this.to = new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
       this.clear();
     }
     free() {
-      this.triBuffer = this.ops = this.data = null;
+      this.Fd = this.Ju = this.data = null;
       super.free();
     }
-    attachToVisual(a) {
-      super.attachToVisual(a);
-      if (this.needsRebuild) {
-        this.updateBounds();
+    Dh(a) {
+      super.Dh(a);
+      if (this.sM) {
+        this.tM();
       }
     }
     clear() {
-      this.opCount = 0;
-      let a = this.localBounds;
-      a.left = a.top = vInfinity;
-      a.right = a.bottom = vNegInfinity;
+      this.Ku = 0;
+      let a = this.to;
+      a.A = a.D = vInfinity;
+      a.B = a.G = vNegInfinity;
     }
-    updateBounds() {
+    tM() {
       let a = vInfinity;
       let b = vNegInfinity;
       let c = vInfinity;
       let d = vNegInfinity;
-      let e = this.localBounds;
+      let e = this.to;
       let f = this.data;
-      let g = this.ops;
+      let g = this.Ju;
       let h = 0;
       let m = 0;
-      let n = this.opCount;
+      let n = this.Ku;
       while (h < n) {
         var q = g[h++];
         switch (q) {
@@ -285,44 +285,44 @@
           case 8:
             break;
           default:
-            e.left = a;
-            e.top = c;
-            e.right = b;
-            e.bottom = d;
-            m = this.processCmd(q, m, f);
-            a = e.left;
-            c = e.top;
-            b = e.right;
-            d = e.bottom;
+            e.A = a;
+            e.D = c;
+            e.B = b;
+            e.G = d;
+            m = this.Gz(q, m, f);
+            a = e.A;
+            c = e.D;
+            b = e.B;
+            d = e.G;
         }
       }
-      e.left = a;
-      e.top = c;
-      e.right = b;
-      e.bottom = d;
-      if (this.visual != null) {
-        this.rebuildGeometry();
+      e.A = a;
+      e.D = c;
+      e.B = b;
+      e.G = d;
+      if (this.va != null) {
+        this.Sc();
       }
     }
-    processCmd() {
+    Gz() {
       return 0;
     }
-    rebuildGeometry() {
-      let a = this.localBounds;
-      var b = this.visual.localBounds;
-      b.center.x = (a.left + a.right) / 2;
-      b.center.y = (a.top + a.bottom) / 2;
-      let c = (a.right - a.left) / 2;
-      let d = (a.bottom - a.top) / 2;
-      b.radius = Math.sqrt(c * c + d * d);
+    Sc() {
+      let a = this.to;
+      var b = this.va.ea;
+      b.C.x = (a.A + a.B) / 2;
+      b.C.y = (a.D + a.G) / 2;
+      let c = (a.B - a.A) / 2;
+      let d = (a.G - a.D) / 2;
+      b.Z = Math.sqrt(c * c + d * d);
       if (b.type == 302) {
-        b = b.bounds;
-        b.left = a.left;
-        b.top = a.top;
-        b.right = a.right;
-        b.bottom = a.bottom;
+        b = b.gb;
+        b.A = a.A;
+        b.D = a.D;
+        b.B = a.B;
+        b.G = a.G;
       }
-      this.visual.rebuildGeometry();
+      this.va.Sc();
     }
     typeId() {
       return 1005;
@@ -343,7 +343,7 @@
         ++b;
         a.push(new Vec4(0, 0, 0, 1));
       }
-      this.gradientStops = [];
+      this.MD = [];
     }
     typeId() {
       return 1505;
@@ -358,46 +358,46 @@
   class TextDrawEffect extends DrawEffect {
     constructor(a) {
       super();
-      this.texture = a;
-      this.baseScale = a.scale;
-      this.charset = a.frames.charset;
+      this.Hb = a;
+      this.NE = a.$e;
+      this.charset = a.hc.Np;
       this.text = null;
       this.clip = false;
-      this.fontSize = this.charset.fontSize;
-      this.minFontSize = 4;
-      this.maxFontSize = 512;
+      this.fontSize = this.charset.ss;
+      this.mC = 4;
+      this.JP = 512;
       this.size = new Vec4(100, 100, 0, 1);
-      this.kerning = true;
-      this.shadow = false;
-      this.maxChars = 32;
-      this.lineHeightOffset = this.yOffsetPerLine = 0;
-      this.padding = 2;
-      this.alignV = this.alignH = null;
-      this.wrapMode = 0;
-      this.dirty = true;
+      this.Tv = true;
+      this.$B = false;
+      this.qR = 32;
+      this.ZE = this.ZB = 0;
+      this.Sj = 2;
+      this.bl = this.Wg = null;
+      this.mA = 0;
+      this.Ze = true;
       this.overflow = false;
-      this.layout = new TextLayout();
+      this.Og = new TextLayout();
       this.multiline = false;
-      this.textureVersion = 0;
+      this.Td = 0;
     }
-    attachToVisual(a) {
-      super.attachToVisual(a);
-      a.setSize(this.size.x, this.size.y);
+    Dh(a) {
+      super.Dh(a);
+      a.Lb(this.size.x, this.size.y);
     }
     setText(a) {
       if (this.text != a) {
         this.text = a;
         if (this.multiline) {
-          this.reflow();
+          this.Wz();
         }
-        this.dirty = true;
+        this.Ze = true;
       }
     }
-    getFontSize() {
+    $q() {
       return this.fontSize;
     }
-    markDirty() {
-      this.fontSize = this.charset.fontSize;
+    kp() {
+      this.fontSize = this.charset.ss;
     }
     setFontSize(a) {
       var b;
@@ -405,17 +405,17 @@
         if (b < 4) {
           b = 4;
         }
-        this.minFontSize = b;
+        this.mC = b;
       }
-      b = this.minFontSize;
-      let c = this.maxFontSize;
+      b = this.mC;
+      let c = this.JP;
       a = a < b ? b : a > c ? c : a;
       if (a != this.fontSize) {
         this.fontSize = a;
-        this.dirty = true;
+        this.Ze = true;
       }
     }
-    getSize() {
+    ZN() {
       let a = this.size;
       return new Vec4(a.x, a.y, 0, 1);
     }
@@ -423,39 +423,39 @@
       if (this.size.x != a || this.size.y != b) {
         this.size.x = a;
         this.size.y = b;
-        this.visual.setSize(this.size.x, this.size.y);
-        this.dirty = true;
+        this.va.Lb(this.size.x, this.size.y);
+        this.Ze = true;
       }
     }
-    lineCount() {
-      return this.layout.lineCount;
+    uv() {
+      return this.Og.nw;
     }
-    setYOffsetPerLine(a) {
-      this.yOffsetPerLine = a;
-      this.dirty = true;
+    Is(a) {
+      this.ZB = a;
+      this.Ze = true;
     }
-    setLineHeightOffset(a) {
-      this.lineHeightOffset = a;
-      this.dirty = true;
+    kx(a) {
+      this.ZE = a;
+      this.Ze = true;
     }
     setAlign(a, b) {
-      this.alignH = a;
-      this.alignV = b;
-      this.dirty = true;
+      this.Wg = a;
+      this.bl = b;
+      this.Ze = true;
     }
-    autoFit(a) {
+    nN(a) {
       if (a == null) {
         a = true;
       }
       if (this.text != null) {
-        var b = this.padding * 2;
+        var b = this.Sj * 2;
         var c = this.size.x - b;
         var d = this.size.y - b;
-        this.markDirty();
-        b = d / this.charset.base;
-        this.layout.shape(this, true);
-        var e = this.layout.bounds;
-        c = Math.min(c / (e.right - e.left), d / (e.bottom - e.top));
+        this.kp();
+        b = d / this.charset.vj;
+        this.Og.shape(this, true);
+        var e = this.Og.gb;
+        c = Math.min(c / (e.B - e.A), d / (e.G - e.D));
         if (a) {
           c = Math.min(b, c);
         }
@@ -463,56 +463,56 @@
         this.shape();
       }
     }
-    setMultiline(a) {
-      if ((this.multiline = a) && this.parser == null) {
-        this.setParser(new TokenParser());
+    Tf(a) {
+      if ((this.multiline = a) && this.qq == null) {
+        this.UR(new TokenParser());
       }
     }
-    setParser(a) {
-      this.parser = a;
+    UR(a) {
+      this.qq = a;
       if (this.text != null) {
-        this.reflow();
+        this.Wz();
       }
-      this.dirty = true;
+      this.Ze = true;
     }
     shape() {
-      this.layout.shape(this, false);
-      let a = this.layout.bounds;
-      this.overflow = a.right - a.left > this.size.x - this.padding * 2;
-      this.dirty = false;
+      this.Og.shape(this, false);
+      let a = this.Og.gb;
+      this.overflow = a.B - a.A > this.size.x - this.Sj * 2;
+      this.Ze = false;
     }
     update() {
-      if (this.texture.textureVersion > this.textureVersion) {
-        this.textureVersion = this.texture.textureVersion;
-        this.charset = this.texture.frames.charset;
-        let a = this.texture.scale;
-        this.fontSize *= this.baseScale / a;
-        this.baseScale = a;
-        if (this.visual.onFrameChanged != null) {
-          this.visual.onFrameChanged();
+      if (this.Hb.Td > this.Td) {
+        this.Td = this.Hb.Td;
+        this.charset = this.Hb.hc.Np;
+        let a = this.Hb.$e;
+        this.fontSize *= this.NE / a;
+        this.NE = a;
+        if (this.va.Xo != null) {
+          this.va.Xo();
         }
-        this.dirty = true;
+        this.Ze = true;
       }
-      if (this.dirty) {
-        this.dirty = false;
+      if (this.Ze) {
+        this.Ze = false;
         this.shape();
       }
     }
     free() {
       super.free();
-      this.texture = null;
-      this.layout.free();
-      this.layout = null;
+      this.Hb = null;
+      this.Og.free();
+      this.Og = null;
     }
-    reflow() {
-      this.parser.setSource(this.text);
-      this.tokens = [];
+    Wz() {
+      this.qq.mS(this.text);
+      this.Dx = [];
       let a = 0;
-      let b = this.parser.nextToken();
+      let b = this.qq.vC();
       while (b != null) {
-        this.tokens.push(new TextRun(this.text.substring(a, b.position), b.required));
+        this.Dx.push(new TextRun(this.text.substring(a, b.position), b.required));
         a = b.position;
-        b = this.parser.nextToken();
+        b = this.qq.vC();
       }
     }
     typeId() {
@@ -528,18 +528,18 @@
     constructor() {
       super();
       this.points = [];
-      this.colorLists = [];
-      this.alphas = [];
-      this.radius = 10;
+      this.Zh = [];
+      this.vn = [];
+      this.Z = 10;
     }
     free() {
       super.free();
-      this.alphas = this.colorLists = this.points = null;
+      this.vn = this.Zh = this.points = null;
     }
-    clearTrail() {
+    OR() {
       this.points = [];
-      this.colorLists = [];
-      this.alphas = [];
+      this.Zh = [];
+      this.vn = [];
     }
     typeId() {
       return 705;
@@ -554,7 +554,7 @@
     constructor(a) {
       super();
       this.color = a;
-      this.mesh = null;
+      this.js = null;
     }
     typeId() {
       return 305;
@@ -568,14 +568,14 @@
   class MultiLineEffect extends DrawEffect {
     constructor(a) {
       super();
-      this.types = a;
-      this.outputs = [];
+      this.Fj = a;
+      this.lt = [];
     }
     update(a) {
       super.update(a);
-      this.outputs = [];
+      this.lt = [];
       for (a = 0; a < 5;) {
-        var b = this.types[a++];
+        var b = this.Fj[a++];
         var c = b.length;
         if (c == 0) {
           continue;
@@ -599,14 +599,14 @@
           if (g > 1) {
             g = 1;
           }
-          d = Vec2.bezier(e, g);
+          d = Vec2.eM(e, g);
           c.push(d);
           if (g == 1) {
             break;
           }
           g += f;
         }
-        e = MultiLineEffect.WIDTH_SCALE / b;
+        e = MultiLineEffect.WF / b;
         d = [];
         f = 0;
         for (g = b - 1; f < g;) {
@@ -614,20 +614,20 @@
           h = f == b - 1 ? 1 : q + e;
           let p = c[f];
           let v = c[f + 1];
-          var n = Vec2.diff(v, p);
+          var n = Vec2.Ia(v, p);
           n.normalize();
-          let u = Vec2.perpCW(n);
-          n = Vec2.perpCCW(n);
-          let A = Vec2.sum(p, Vec2.scaled(n, m));
-          d.push(Vec2.sum(p, Vec2.scaled(u, m)));
+          let u = Vec2.AL(n);
+          n = Vec2.au(n);
+          let A = Vec2.tb(p, Vec2.Ob(n, m));
+          d.push(Vec2.tb(p, Vec2.Ob(u, m)));
           d.push(A);
-          m = Vec2.sum(v, Vec2.scaled(n, h));
-          d.push(Vec2.sum(v, Vec2.scaled(u, h)));
+          m = Vec2.tb(v, Vec2.Ob(n, h));
+          d.push(Vec2.tb(v, Vec2.Ob(u, h)));
           d.push(m);
           q += e;
           ++f;
         }
-        this.outputs.push(d);
+        this.lt.push(d);
       }
     }
     typeId() {
@@ -642,17 +642,17 @@
   class DashedCircleEffect extends DrawEffect {
     constructor() {
       super();
-      this.center = new Vec4(0, 0, 0, 1);
-      this.radius = 0;
+      this.C = new Vec4(0, 0, 0, 1);
+      this.Z = 0;
       this.color = new Vec4(0, 0, 0, 0);
-      this.segments = 0;
+      this.Uo = 0;
       this.lineWidth = 1.5;
       this.update(null);
     }
     update() {
-      this.segments = Math.max(16, Math.round(this.radius / 0.8));
-      if (this.segments % 2 != 0) {
-        this.segments++;
+      this.Uo = Math.max(16, Math.round(this.Z / 0.8));
+      if (this.Uo % 2 != 0) {
+        this.Uo++;
       }
     }
     typeId() {
@@ -668,34 +668,34 @@
   class TextGridEffect extends DrawEffect {
     constructor(a, b, c) {
       super();
-      this.texture = a;
-      this.charset = a.frames.charset;
+      this.Hb = a;
+      this.charset = a.hc.Np;
       a = [9633, 65533, 63];
       let d = 0;
       while (d < 3) {
         let e = d++;
-        if (this.charset.glyphsById[a[e]] != null) {
+        if (this.charset.nA[a[e]] != null) {
           break;
         }
       }
       this.grid = null;
       this.fillColor = -1;
-      this.gridH = this.gridW = 0;
-      this.setSize(b, c, false);
+      this.gw = this.fw = 0;
+      this.Lb(b, c, false);
     }
-    setSize(a, b, c) {
+    Lb(a, b, c) {
       if (c) {
-        a = a / this.charset.defaultAdvance | 0;
+        a = a / this.charset.HA | 0;
         b = b / this.charset.lineHeight | 0;
-        this.setSize(a, b, false);
+        this.Lb(a, b, false);
       } else {
-        if (this.gridW > 0 && a > this.gridW) {
-          a = this.gridW;
+        if (this.fw > 0 && a > this.fw) {
+          a = this.fw;
         }
-        if (this.gridH > 0 && b > this.gridH) {
-          b = this.gridH;
+        if (this.gw > 0 && b > this.gw) {
+          b = this.gw;
         }
-        if (this.grid == null || a != this.grid.cols || b != this.grid.rows) {
+        if (this.grid == null || a != this.grid.Tb || b != this.grid.Yc) {
           if (this.grid == null) {
             this.grid = new Grid2D(a, b);
           } else {
@@ -708,19 +708,19 @@
               return d;
             }
           });
-          if (this.visual != null) {
-            this.rebuildGeometry();
+          if (this.va != null) {
+            this.Sc();
           }
         }
       }
     }
-    attachToVisual(a) {
-      super.attachToVisual(a);
-      this.rebuildGeometry();
+    Dh(a) {
+      super.Dh(a);
+      this.Sc();
     }
-    rebuildGeometry() {
-      this.visual.setSize(this.charset.defaultAdvance * this.grid.cols, this.charset.lineHeight * this.grid.rows);
-      this.visual.rebuildGeometry();
+    Sc() {
+      this.va.Lb(this.charset.HA * this.grid.Tb, this.charset.lineHeight * this.grid.Yc);
+      this.va.Sc();
     }
     typeId() {
       return 1805;
@@ -748,9 +748,9 @@
   class SpriteShapeEffect extends DrawEffect {
     constructor(a, b) {
       super();
-      this.texture = a;
+      this.Hb = a;
       this.shape = b;
-      this.frames = [];
+      this.ac = [];
     }
     typeId() {
       return 1705;
@@ -765,12 +765,12 @@
     constructor() {
       super();
     }
-    processCmd(a, b, c) {
-      var d = this.localBounds;
-      let e = d.left;
-      let f = d.top;
-      let g = d.right;
-      d = d.bottom;
+    Gz(a, b, c) {
+      var d = this.to;
+      let e = d.A;
+      let f = d.D;
+      let g = d.B;
+      d = d.G;
       switch (a) {
         case 10:
           var h = c[b];
@@ -988,11 +988,11 @@
         case 17:
           b += 1 + (c[b] | 0);
       }
-      c = this.localBounds;
-      c.left = e;
-      c.top = f;
-      c.right = g;
-      c.bottom = d;
+      c = this.to;
+      c.A = e;
+      c.D = f;
+      c.B = g;
+      c.G = d;
       return b;
     }
     typeId() {
@@ -1022,7 +1022,7 @@
       super();
       new MeshData(null, null, null, null);
       new MeshVertices(null, null, null, null, null);
-      this.geometry = new MeshGeometry(null, null, null);
+      this.gv = new MeshGeometry(null, null, null);
     }
     typeId() {
       return 1905;
@@ -1036,7 +1036,7 @@
   class CustomShaderEffect extends DrawEffect {
     constructor(a) {
       super();
-      this.program = a;
+      this.Pi = a;
     }
     free() {}
     typeId() {

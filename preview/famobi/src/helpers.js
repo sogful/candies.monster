@@ -7,9 +7,9 @@
   // --------------------------------------------------------------------
 
   // numToString — Haxe's "use my toString()" trampoline; bound onto
-  // Number.prototype so `(123).toString()` reaches Haxe's StdString.serialize().
+  // Number.prototype so `(123).toString()` reaches Haxe's StdString.on().
   function numToString() {
-    return StdString.serialize(this, "");
+    return StdString.on(this, "");
   }
 
   // currentLevelId — short string id of the active level, used as the
@@ -23,7 +23,7 @@
   // to the Haxe-internal numeric keycodes used by KeyboardInputDevice.
   // Called once during boot.
   function buildKeyboardCodeTable() {
-    function set(code, value) { KEYBOARD_CODES.map[code] = value; }
+    function set(code, value) { KEYBOARD_CODES.J[code] = value; }
     KEYBOARD_CODES = new KeyTable();
     set("Space", 32);
     set("Space", 32);

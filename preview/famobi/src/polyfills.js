@@ -1,76 +1,60 @@
-// Standard Closure-Compiler / Haxe polyfill bootstrap for older
-// runtimes. Lives outside the main IIFE because it patches global
-// prototypes, so anything inside the IIFE can rely on
-// Array.prototype.includes / .values being present.
-
-// safe defineProperty - falls back to direct assignment on
-// Array.prototype / Object.prototype where defineProperty is forbidden
-// in some legacy engines.
-var defineprop = typeof Object.defineProperties == "function" ? Object.defineProperty : function (target, key, descriptor) {
-  if (target == Array.prototype || target == Object.prototype) {
-    return target;
+var v2 = typeof Object.defineProperties == "function" ? Object.defineProperty : function (p2, p3, p4) {
+  if (p2 == Array.prototype || p2 == Object.prototype) {
+    return p2;
   }
-  target[key] = descriptor.value;
-  return target;
+  p2[p3] = p4.value;
+  return p2;
 };
-
-// findGlobal - pick whichever global object the host exposes
-// (globalThis / window / self / global). Identified by Math identity.
-function findGlobal(hint) {
-  hint = [typeof globalThis == "object" && globalThis, hint, typeof window == "object" && window, typeof self == "object" && self, typeof global == "object" && global];
-  for (var i = 0; i < hint.length; ++i) {
-    var candidate = hint[i];
-    if (candidate && candidate.Math == Math) {
-      return candidate;
+function f2(p5) {
+  p5 = [typeof globalThis == "object" && globalThis, p5, typeof window == "object" && window, typeof self == "object" && self, typeof global == "object" && global];
+  for (var vLN0 = 0; vLN0 < p5.length; ++vLN0) {
+    var v3 = p5[vLN0];
+    if (v3 && v3.Math == Math) {
+      return v3;
     }
   }
   throw Error("Cannot find global object");
 }
-var globalRef = findGlobal(this);
-
-// installPolyfill - given a dotted "Type.proto.method" path and a
-// factory(existing) -> replacement, install replacement on the global
-// when factory returns something different / non-null.
-function installPolyfill(path, factory) {
-  if (factory) {
+var vF2 = f2(this);
+function f3(p6, p7) {
+  if (p7) {
     a: {
-      var owner = globalRef;
-      path = path.split(".");
-      for (var i = 0; i < path.length - 1; i++) {
-        var segment = path[i];
-        if (!(segment in owner)) {
+      var vVF2 = vF2;
+      p6 = p6.split(".");
+      for (var vLN02 = 0; vLN02 < p6.length - 1; vLN02++) {
+        var v4 = p6[vLN02];
+        if (!(v4 in vVF2)) {
           break a;
         }
-        owner = owner[segment];
+        vVF2 = vVF2[v4];
       }
-      path = path[path.length - 1];
-      var existing = owner[path];
-      factory = factory(existing);
-      if (factory != existing && factory != null) {
-        defineprop(owner, path, {
+      p6 = p6[p6.length - 1];
+      vLN02 = vVF2[p6];
+      p7 = p7(vLN02);
+      if (p7 != vLN02 && p7 != null) {
+        v2(vVF2, p6, {
           configurable: true,
           writable: true,
-          value: factory
+          value: p7
         });
       }
     }
   }
 }
-
-installPolyfill("Array.prototype.includes", function (existing) {
-  if (existing) {
-    return existing;
+f3("Array.prototype.includes", function (p8) {
+  if (p8) {
+    return p8;
   } else {
-    return function (needle, fromIndex) {
-      var arr = this;
-      if (arr instanceof String) {
-        arr = String(arr);
+    return function (p9, p10) {
+      var vThis = this;
+      if (vThis instanceof String) {
+        vThis = String(vThis);
       }
-      var len = arr.length;
-      fromIndex = fromIndex || 0;
-      for (fromIndex < 0 && (fromIndex = Math.max(fromIndex + len, 0)); fromIndex < len; fromIndex++) {
-        var value = arr[fromIndex];
-        if (value === needle || Object.is(value, needle)) {
+      var v5 = vThis.length;
+      p10 = p10 || 0;
+      for (p10 < 0 && (p10 = Math.max(p10 + v5, 0)); p10 < v5; p10++) {
+        var v6 = vThis[p10];
+        if (v6 === p9 || Object.is(v6, p9)) {
           return true;
         }
       }
@@ -78,44 +62,40 @@ installPolyfill("Array.prototype.includes", function (existing) {
     };
   }
 });
-
-// mappedIterator - shared backing for the .values / .keys / .entries
-// polyfills. Walks src like an array, calls map(index, src[index]) per
-// step.
-function mappedIterator(src, map) {
-  if (src instanceof String) {
-    src += "";
+function f4(p11, p12) {
+  if (p11 instanceof String) {
+    p11 += "";
   }
-  var i = 0;
-  var done = false;
-  var iter = {
+  var vLN03 = 0;
+  var v7 = false;
+  var vO = {
     next: function () {
-      if (!done && i < src.length) {
-        var idx = i++;
+      if (!v7 && vLN03 < p11.length) {
+        var v8 = vLN03++;
         return {
-          value: map(idx, src[idx]),
+          value: p12(v8, p11[v8]),
           done: false
         };
       }
-      done = true;
+      v7 = true;
       return {
         done: true,
         value: undefined
       };
     }
   };
-  iter[Symbol.iterator] = function () {
-    return iter;
+  vO[Symbol.iterator] = function () {
+    return vO;
   };
-  return iter;
+  return vO;
 }
-installPolyfill("Array.prototype.values", function (existing) {
-  if (existing) {
-    return existing;
+f3("Array.prototype.values", function (p13) {
+  if (p13) {
+    return p13;
   } else {
     return function () {
-      return mappedIterator(this, function (idx, value) {
-        return value;
+      return f4(this, function (p14, p15) {
+        return p15;
       });
     };
   }

@@ -7,10 +7,7 @@
   class Build {}
   Build.i = true;
   class Std {
-    // charCode - fast charCodeAt, returns undefined when out of range
-    // (charCodeAt returns NaN and NaN != NaN, so the inner check
-    // discards undefined results). Mirrors Haxe's StringTools.fastCodeAt.
-    static charCode(a, b) {
+    static Eu(a, b) {
       a = a.charCodeAt(b);
       if (a == a) {
         return a;
@@ -46,7 +43,7 @@
       this.min = a;
       this.max = b;
     }
-    hasNext() {
+    fb() {
       return this.min < this.max;
     }
     next() {
@@ -57,32 +54,29 @@
   Object.assign(IntIter.prototype, {
     l: IntIter
   });
-  // Lambda - generic iterable helpers. Mirrors Haxe's haxe.ds.Lambda.
   class Lambda {
-    // exists - true if any element of `a` satisfies predicate `b`.
-    static exists(a, b) {
-      for (a = getIterator(a); a.hasNext();) {
+    static Ej(a, b) {
+      for (a = getIterator(a); a.fb();) {
         if (b(a.next())) {
           return true;
         }
       }
       return false;
     }
-    // forEach - call `b` once per element of `a`.
-    static forEach(a, b) {
-      for (a = getIterator(a); a.hasNext();) {
+    static zi(a, b) {
+      for (a = getIterator(a); a.fb();) {
         b(a.next());
       }
     }
     static count(a, b) {
       let c = 0;
       if (b == null) {
-        for (b = getIterator(a); b.hasNext();) {
+        for (b = getIterator(a); b.fb();) {
           b.next();
           ++c;
         }
       } else {
-        for (a = getIterator(a); a.hasNext();) {
+        for (a = getIterator(a); a.fb();) {
           if (b(a.next())) {
             ++c;
           }
@@ -91,7 +85,7 @@
       return c;
     }
     static find(a, b) {
-      for (a = getIterator(a); a.hasNext();) {
+      for (a = getIterator(a); a.fb();) {
         let c = a.next();
         if (b(c)) {
           return c;
@@ -101,20 +95,15 @@
     }
   }
   Lambda.i = true;
-  // ObjectAccess - dynamic property helpers shared by Haxe's
-  // Reflect.field / Reflect.fields.
   class ObjectAccess {
-    // getField - exception-swallowing a[b], returns null on failure.
-    static getField(a, b) {
+    static vf(a, b) {
       try {
         return a[b];
       } catch (c) {
         return null;
       }
     }
-    // getKeys - own property keys, skipping Haxe-internal bookkeeping
-    // (__id__, hx__closures__).
-    static getKeys(a) {
+    static jN(a) {
       let b = [];
       if (a != null) {
         let d = Object.prototype.hasOwnProperty;
@@ -128,9 +117,8 @@
     }
   }
   ObjectAccess.i = true;
-  // Construct - thin wrapper for Haxe's no-arg `Type.createInstance`.
   class Construct {
-    static create(a) {
+    static qA(a) {
       return new (Function.prototype.bind.apply(a, [null].concat([])))();
     }
   }
@@ -139,7 +127,7 @@
     constructor(a) {
       let b = this;
       this.id = setInterval(function () {
-        b.tick();
+        b.Hg();
       }, a);
     }
     stop() {
@@ -148,10 +136,10 @@
         this.id = null;
       }
     }
-    tick() {}
+    Hg() {}
     static delay(a, b) {
       let c = new DelayedCall(b);
-      c.tick = function () {
+      c.Hg = function () {
         c.stop();
         a();
       };
@@ -163,7 +151,7 @@
     l: DelayedCall
   });
   class StdString {
-    static getClass(a) {
+    static AN(a) {
       if (a == null) {
         return null;
       }
@@ -174,18 +162,14 @@
       if (b != null) {
         return b;
       }
-      a = StdString.tagName(a);
+      a = StdString.wz(a);
       if (a != null) {
-        return StdString.getGlobal(a);
+        return StdString.wL(a);
       } else {
         return null;
       }
     }
-    // serialize - recursive value-to-string. `b` is the current indent
-    // depth (length used as a recursion guard; bails at depth 5 with
-    // "<...>"). Powers Haxe's Std.string + the toString shim wired up
-    // in helpers.js.
-    static serialize(a, b) {
+    static on(a, b) {
       if (a == null) {
         return "null";
       }
@@ -210,7 +194,7 @@
               for (d = d.vL; f < d.length;) {
                 let g = d[f];
                 f += 1;
-                e.push(StdString.serialize(a[g], b));
+                e.push(StdString.on(a[g], b));
               }
               return c + "(" + e.join(",") + ")";
             }
@@ -222,7 +206,7 @@
             e = 0;
             for (f = a.length; e < f;) {
               d = e++;
-              c += (d > 0 ? "," : "") + StdString.serialize(a[d], b);
+              c += (d > 0 ? "," : "") + StdString.on(a[d], b);
             }
             return c + "]";
           }
@@ -243,7 +227,7 @@
               if (c.length != 2) {
                 c += ", \n";
               }
-              c += b + f + " : " + StdString.serialize(a[f], b);
+              c += b + f + " : " + StdString.on(a[f], b);
             }
           }
           b = b.substring(1);
@@ -254,7 +238,7 @@
           return String(a);
       }
     }
-    static extendsOrImplements(a, b) {
+    static vz(a, b) {
       while (true) {
         if (a == null) {
           return false;
@@ -268,7 +252,7 @@
           let e = c.length;
           while (d < e) {
             let f = c[d++];
-            if (f == b || StdString.extendsOrImplements(f, b)) {
+            if (f == b || StdString.vz(f, b)) {
               return true;
             }
           }
@@ -276,12 +260,7 @@
         a = a.s;
       }
     }
-    // isType - Haxe's Std.is / Std.isOfType. `b` is one of the
-    // sentinel ctor refs (Array, vBoolean, vNumber, vO2/3/4/5,
-    // String) or an arbitrary class. Handles interface implements
-    // (`Ib`), prototype chains, and the abstract-friendly `nn`
-    // lookup.
-    static isType(a, b) {
+    static Xt(a, b) {
       if (b == null) {
         return false;
       }
@@ -305,10 +284,10 @@
         default:
           if (a != null) {
             if (typeof b == "function") {
-              if (StdString.isInstance(a, b)) {
+              if (StdString.tL(a, b)) {
                 return true;
               }
-            } else if (typeof b == "object" && StdString.isClass(b) && a instanceof b) {
+            } else if (typeof b == "object" && StdString.uL(b) && a instanceof b) {
               return true;
             }
           } else {
@@ -323,27 +302,27 @@
           }
       }
     }
-    static isInstance(a, b) {
+    static tL(a, b) {
       if (a instanceof b) {
         return true;
       } else if (b.Je) {
-        return StdString.extendsOrImplements(StdString.getClass(a), b);
+        return StdString.vz(StdString.AN(a), b);
       } else {
         return false;
       }
     }
-    static tagName(a) {
-      a = StdString.objectToString.call(a).slice(8, -1);
+    static wz(a) {
+      a = StdString.xL.call(a).slice(8, -1);
       if (a == "Object" || a == "Function" || a == "Math" || a == "JSON") {
         return null;
       } else {
         return a;
       }
     }
-    static isClass(a) {
-      return StdString.tagName(a) != null;
+    static uL(a) {
+      return StdString.wz(a) != null;
     }
-    static getGlobal(a) {
+    static wL(a) {
       return host[a];
     }
   }
@@ -365,9 +344,8 @@
     l: Coord
   });
   class Numeric {
-    // toStr - format a number as a string (delegates to StdString.on).
-    static toStr(a) {
-      return StdString.serialize(a, "");
+    static Ed(a) {
+      return StdString.on(a, "");
     }
     static parseInt(a) {
       a = parseInt(a);
@@ -380,19 +358,15 @@
   }
   Numeric.i = true;
   class StringUtil {
-    // isWhitespace - char at index `b` of `a` is whitespace
-    // (chars 9..13 or space). Mirrors Haxe's StringTools.isSpace.
-    static isWhitespace(a, b) {
-      a = Std.charCode(a, b);
+    static Dr(a, b) {
+      a = Std.Eu(a, b);
       if (a > 8 && a < 14) {
         return true;
       } else {
         return a == 32;
       }
     }
-    // padNumber4 - left-pad `a` with zeros to length 4. Returns
-    // "null0" for null input (matches Haxe behaviour).
-    static padNumber4(a) {
+    static AP(a) {
       var b;
       let c = "";
       for (b = 4 - a.length; c.length < b;) {
@@ -400,8 +374,7 @@
       }
       return c + (a == null ? "null" : "" + a);
     }
-    // toHex - lowercase-free uppercase hex string, min 2 chars.
-    static toHex(a) {
+    static oO(a) {
       let b = "";
       do {
         b = "0123456789ABCDEF".charAt(a & 15) + b;
@@ -418,22 +391,22 @@
     constructor(a) {
       let b = new EReg("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$", "");
       if (b.match(a)) {
-        this.major = Numeric.parseInt(b.matched(1));
-        this.minor = Numeric.parseInt(b.matched(2));
-        this.patch = Numeric.parseInt(b.matched(3));
-        this.prerelease = b.matched(4);
-        this.build = b.matched(5);
+        this.EP = Numeric.parseInt(b.Zc(1));
+        this.MP = Numeric.parseInt(b.Zc(2));
+        this.Zr = Numeric.parseInt(b.Zc(3));
+        this.fD = b.Zc(4);
+        this.$z = b.Zc(5);
       } else {
         throw 23;
       }
     }
     toString() {
-      let a = this.major + "." + this.minor + "." + this.patch;
-      if (this.prerelease != null) {
-        a += "-" + this.prerelease;
+      let a = this.EP + "." + this.MP + "." + this.Zr;
+      if (this.fD != null) {
+        a += "-" + this.fD;
       }
-      if (this.build != null) {
-        a += "+" + this.build;
+      if (this.$z != null) {
+        a += "+" + this.$z;
       }
       return a;
     }
@@ -444,9 +417,7 @@
   });
 
   class Comparator {
-    // compareLower - case-insensitive lexical comparator returning
-    // -1/0/1, suitable for Array.prototype.sort.
-    static compareLower(a, b) {
+    static mM(a, b) {
       a = a.toLowerCase();
       b = b.toLowerCase();
       if (a < b) {
@@ -461,21 +432,16 @@
   Comparator.i = true;
 
   class MathUtil {
-    // sameSign - true if a and b have the same sign (both >= 0 or
-    // both < 0).
-    static sameSign(a, b) {
+    static LD(a, b) {
       return a < 0 == b < 0;
     }
-    // clamp - constrain a into [b, c]. (Note: the original arg order
-    // is value, min, max despite the cryptic name.)
-    static clamp(a, b, c) {
+    static FA(a, b, c) {
       return Math.max(Math.min(a, c), b);
     }
-    // randInt - uniformly random integer in [a..b] inclusive.
-    static randInt(a, b) {
+    static fp(a, b) {
       return Math.floor(Math.random() * (b - a + 1) + a);
     }
-    static randBool() {
+    static eR() {
       return Math.random() > 0.5;
     }
     static aP(a, b, c, d, e, f, g, h) {
@@ -496,9 +462,9 @@
   MathUtil.i = true;
   class Triple3 {
     constructor(a, b, c) {
-      this.startPos = a;
-      this.currentPos = b;
-      this.time = c;
+      this.yr = a;
+      this.Sn = b;
+      this.bt = c;
     }
   }
   Triple3.i = true;
@@ -506,37 +472,28 @@
     l: Triple3
   });
 
-  // RandomGen - base RNG. Subclasses override `next()` with their PRNG
-  // of choice (MathRandom uses Math.random). Higher-level helpers are
-  // shared on the base.
   class RandomGen {
-    constructor(seed) {
-      this.setSeed(seed);
+    constructor(a) {
+      this.jS(a);
     }
-    setSeed(seed) {
-      this.seed = seed;
+    jS(a) {
+      this.seed = a;
     }
-    // bool - coin flip (50/50).
-    bool() {
-      return this.next() < 0.5;
+    ym() {
+      return this.gi() < 0.5;
     }
-    // randInt - integer in [a..b] inclusive.
-    randInt(a, b) {
+    xh(a, b) {
       a -= 0.4999;
-      return Math.round(a + (b + 0.4999 - a) * this.next());
+      return Math.round(a + (b + 0.4999 - a) * this.gi());
     }
-    // randRange - float in [a, b).
-    randRange(a, b) {
-      return a + (b - a) * this.next();
+    Yn(a, b) {
+      return a + (b - a) * this.gi();
     }
-    // randSigned - float in [-a, a).
-    randSigned(a) {
-      return this.randRange(-a, a);
+    BA(a) {
+      return this.Yn(-a, a);
     }
-    // randCentered - sum of two independent samples in [-1, 1]
-    // (triangular distribution centred on 0, used for jitter).
-    randCentered() {
-      return this.next() - this.next();
+    Ac() {
+      return this.gi() - this.gi();
     }
   }
   RandomGen.i = true;
@@ -547,7 +504,7 @@
     constructor() {
       super(0);
     }
-    next() {
+    gi() {
       return Math.random();
     }
   }

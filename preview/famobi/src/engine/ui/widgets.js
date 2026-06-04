@@ -1,80 +1,67 @@
-  // HorizontalScroller - touch / mouse-wheel kinetic scroll container.
-  // The wrapped node `j` slides between offsetX+min and offsetX+max.
-  // State machine:
-  //   vk        - committed scroll position (accumulated past drags)
-  //   ng        - current drag delta (latest finger - press anchor)
-  //   pg        - inertial impulse to apply this tick (wheel ticks
-  //               write here, finger-release computes from velocity)
-  //   vt        - smoothed inertial velocity (damped by Tn each tick)
-  //   ap / $o   - overscroll past min / max respectively (positive)
-  //   Dn / En   - "rubber-banding back" flags after overscroll
-  //   Tn        - damping factor; bigger = more rebound force during
-  //               an overscroll snap-back
-  //   pl / Wv   - last two finger x positions (used to compute throw
-  //               velocity on release)
-  //   Ru        - finger anchor at press-down
   class HorizontalScroller extends Node {
-    constructor(child, minOffset, maxOffset, offsetX) {
+    constructor(a, b, c, d) {
       super();
-      this.container = child;
-      this.min = minOffset;
-      this.max = maxOffset;
-      this.offsetX = offsetX;
-      this.velocity = this.impulse = this.dragDelta = this.scrollX = 0;
-      this.damping = 0.03;
-      this.rebounceLeft = this.rebounceRight = false;
-      this.overshootRight = this.overshootLeft = 0;
-      this.prevLastX = this.lastX = INT16_MIN;
+      this.j = a;
+      this.min = b;
+      this.max = c;
+      this.offsetX = d;
+      this.vt = this.pg = this.ng = this.vk = 0;
+      this.Tn = 0.03;
+      this.Dn = this.En = false;
+      this.$o = this.ap = 0;
+      this.Wv = this.pl = INT16_MIN;
     }
     update() {
-      let input = this.app.pointer();
-      let wheel = this.app.mouseState().wheelDelta();
-      if (wheel != 0) {
-        this.impulse += (wheel > 0 ? 1 : wheel < 0 ? -1 : 0) * -10;
-        this.damping = 0.05;
-        this.rebounceLeft = this.rebounceRight = false;
-      } else if (input.justPressed(0)) {
-        // press-down: reset drag + inertia, anchor finger position
-        this.dragDelta = 0;
-        this.anchorX = this.prevLastX = this.lastX = input.position[0].x;
-        this.impulse = this.velocity = 0;
-        this.rebounceLeft = this.rebounceRight = false;
-        this.damping = 0.03;
+      var a = this.O.hd();
+      let b = this.O.gO().cO();
+      if (b != 0) {
+        this.pg += (b > 0 ? 1 : b < 0 ? -1 : 0) * -10;
+        this.Tn = 0.05;
+        this.Dn = this.En = false;
+      } else if (a.Nb(0)) {
+        this.ng = 0;
+        this.Ru = this.Wv = this.pl = a.position[0].x;
+        this.pg = this.vt = 0;
+        this.Dn = this.En = false;
+        this.Tn = 0.03;
         this.time = 0;
-      } else if (input.justReleased(0)) {
-        // release: commit the drag, convert finger velocity to impulse
-        this.scrollX += this.dragDelta;
-        this.dragDelta = 0;
-        this.impulse = this.lastX - this.prevLastX;
+      } else if (a.qe(0)) {
+        this.vk += this.ng;
+        this.ng = 0;
+        this.pg = this.pl - this.Wv;
       } else {
-        if (input.moved(0)) {
-          // mid-drag: track finger
-          this.prevLastX = this.lastX;
-          this.lastX = input.position[0].x;
-          this.dragDelta = this.lastX - this.anchorX;
+        if (a.zo(0)) {
+          this.Wv = this.pl;
+          this.pl = a.position[0].x;
+          this.ng = this.pl - this.Ru;
         } else {
-          if (this.rebounceRight) {
-            // rubber-banding back from max overshoot
-            if (this.overshootLeft * this.overshootLeft < 0.001) this.rebounceRight = false;
-            else this.impulse += this.overshootLeft * 0.1;
-          } else if (this.rebounceLeft) {
-            if (this.overshootRight * this.overshootRight < 0.001) this.rebounceLeft = false;
-            else this.impulse -= this.overshootRight * 0.1;
-          } else if (this.overshootLeft < 0) {
-            this.rebounceRight = true;
-            this.damping = 0.3;
-          } else if (this.overshootRight < 0) {
-            this.rebounceLeft = true;
-            this.damping = 0.3;
+          if (this.En) {
+            if (this.ap * this.ap < 0.001) {
+              this.En = false;
+            } else {
+              this.pg += this.ap * 0.1;
+            }
+          } else if (this.Dn) {
+            if (this.$o * this.$o < 0.001) {
+              this.Dn = false;
+            } else {
+              this.pg -= this.$o * 0.1;
+            }
+          } else if (this.ap < 0) {
+            this.En = true;
+            this.Tn = 0.3;
+          } else if (this.$o < 0) {
+            this.Dn = true;
+            this.Tn = 0.3;
           }
-          this.velocity = (this.velocity + this.impulse) * (1 - this.damping);
-          this.impulse = 0;
-          this.scrollX += this.velocity;
+          this.vt = (this.vt + this.pg) * (1 - this.Tn);
+          this.pg = 0;
+          this.vk += this.vt;
         }
-        let x = this.offsetX + (this.scrollX + this.dragDelta);
-        this.container.setX(x);
-        this.overshootLeft = this.offsetX - x;
-        this.overshootRight = this.max + x - this.offsetX;
+        a = this.offsetX + (this.vk + this.ng);
+        this.j.setX(a);
+        this.ap = this.offsetX - a;
+        this.$o = this.max + a - this.offsetX;
       }
     }
   }
@@ -83,25 +70,20 @@
   Object.assign(HorizontalScroller.prototype, {
     l: HorizontalScroller
   });
-
-  // UIWidget - shared base for clickable / focusable widgets. `j`
-  // holds the underlying scenegraph Container. SO is the "selected
-  // until next frame" flag toggled by Ad(); ke is a small counter
-  // some widgets use to debounce.
   class UIWidget extends Node {
     constructor() {
       super();
-      this.contentSize = null;
+      this.ec = null;
       this.focused = false;
-      this.debounce = 0;
-      this.container = new Container();
+      this.ke = 0;
+      this.j = new Container();
     }
-    applyHover() {}
-    setActive(active) {
-      this.active = active;
+    $w() {}
+    setActive(a) {
+      this.active = a;
     }
     select() {
-      this.setSelected(true);
+      this.Ad(true);
     }
     focus() {
       this.focused = true;
@@ -109,34 +91,33 @@
     blur() {
       this.focused = false;
     }
-    setSelected(selected) {
-      this.selectedFlag = selected;
+    Ad(a) {
+      this.SO = a;
     }
     getX() {
-      return this.container.getX();
+      return this.j.getX();
     }
-    setX(x) {
-      this.container.setX(x);
-      return x;
+    setX(a) {
+      this.j.setX(a);
+      return a;
     }
     getY() {
-      return this.container.getY();
+      return this.j.getY();
     }
-    setY(y) {
-      this.container.setY(y);
+    setY(a) {
+      this.j.setY(a);
     }
-    // up - right-align: position so the right edge sits at `x`.
-    alignRight(x) {
-      this.container.setX(x - this.container.getWidth());
+    up(a) {
+      this.j.setX(a - this.j.getWidth());
     }
     getHeight() {
-      return this.container.getHeight();
+      return this.j.getHeight();
     }
-    isVisible() {
-      return this.container.isVisible();
+    ri() {
+      return this.j.ri();
     }
-    setVisible(visible) {
-      this.container.setVisible(visible);
+    L(a) {
+      this.j.L(a);
     }
   }
   UIWidget.i = true;
@@ -144,43 +125,35 @@
   Object.assign(UIWidget.prototype, {
     l: UIWidget
   });
-
-  // LevelDot - one of the 25 numbered level icons in the level select
-  // grid. Ci is the 1-based level index. The icon starts unfocused
-  // (default sprite, $p). bS swaps in the played-state sprite (+ a
-  // perfect-clear badge from LevelDot.STAR_FRAMES[4] when `b` is true) and
-  // overlays the level number.
   class LevelDot extends UIWidget {
-    constructor(index) {
+    constructor(a) {
       super();
-      this.index = index;
-      this.container = new Container();
-      this.icon = new Sprite(this.container, Resources.Wa, Keys.OK);
-      this.hitArea = new HitTestRect(this.container.node, new Bounds(20, 10, 170, 160));
+      this.Ci = a;
+      this.j = new Container();
+      this.icon = new Sprite(this.j, Resources.Wa, Keys.OK);
+      this.pO = new HitTestRect(this.j.node, new Bounds(20, 10, 170, 160));
     }
     focus() {}
     blur() {
       super.blur();
-      this.icon.setFrame(Keys.$p);
+      this.icon.Fb(Keys.$p);
     }
-    setStars(stars, perfectClear) {
-      this.icon.setFrame(Keys.$p);
-      let label = new TextNode(this.container, Resources.ic);
-      label.setBoxSize(this.icon.getWidth(), this.icon.getHeight());
-      label.setText(Numeric.toStr(this.index));
-      label.setAlign(0, 0);
-      label.setFontSize(this.icon.getHeight() * 0.5);
-      label.setY(label.getY() - 20);
-      new Sprite(this.container, Resources.Wa, LevelDot.STAR_FRAMES[stars]);
-      if (perfectClear) {
-        new Sprite(this.container, Resources.Wa, LevelDot.STAR_FRAMES[4]);
+    bS(a, b) {
+      this.icon.Fb(Keys.$p);
+      let c = new TextNode(this.j, Resources.ic);
+      c.setBoxSize(this.icon.getWidth(), this.icon.getHeight());
+      c.setText(Numeric.Ed(this.Ci));
+      c.setAlign(0, 0);
+      c.setFontSize(this.icon.getHeight() * 0.5);
+      c.setY(c.getY() - 20);
+      new Sprite(this.j, Resources.Wa, LevelDot.zE[a]);
+      if (b) {
+        new Sprite(this.j, Resources.Wa, LevelDot.zE[4]);
       }
     }
-    hitTest(point) {
-      // only hit-testable if the dot is in the "playable" sprite
-      // (`Keys.$p`) or currently focused.
-      if (this.icon.frame == Keys.$p || this.focused) {
-        return this.hitArea.hitTest(point);
+    Ub(a) {
+      if (this.icon.qf == Keys.$p || this.focused) {
+        return this.pO.Ub(a);
       } else {
         return false;
       }
@@ -192,37 +165,34 @@
     l: LevelDot
   });
 
-  // ScoreLabel - top-right HUD score with a background icon. layout()
-  // sizes the icon as 10% of the smaller viewport dimension and pins
-  // the label inside it.
   class ScoreLabel extends Node {
     constructor() {
       super();
-      this.iconSprite = new Sprite(null, Resources.Wa, Keys.Tt);
+      this.Oa = new Sprite(null, Resources.Wa, Keys.Tt);
       this.label = new TextNode(null, Resources.ic);
     }
-    setText(text) {
-      this.label.setText(text);
+    setText(a) {
+      this.label.setText(a);
       this.layout();
     }
     Qr() {
-      let scene = this.parent;
-      scene.node.appendChild(this.iconSprite.node);
-      scene.node.appendChild(this.label.node);
+      let a = this.parent;
+      a.node.P(this.Oa.u);
+      a.node.P(this.label.u);
     }
     layout() {
-      let scene = this.parent;
-      let width = scene.director.getWidth();
-      let iconSize = Math.min(scene.director.viewportSize().x * 0.1, scene.director.viewportSize().y * 0.1);
-      this.iconSprite.setUniformScale(iconSize / this.iconSprite.size.x);
-      this.iconSprite.setX(width - this.iconSprite.getWidth() - 20);
-      this.iconSprite.setY(20);
-      let pad = this.iconSprite.getHeight() * 0.1;
-      this.label.setBoxSize(300, this.iconSprite.getHeight() - pad * 2);
+      var a = this.parent;
+      var b = a.fa.getWidth();
+      a = Math.min(a.fa.lB().x * 0.1, a.fa.lB().y * 0.1);
+      this.Oa.setUniformScale(a / this.Oa.X.x);
+      this.Oa.setX(b - this.Oa.getWidth() - 20);
+      this.Oa.setY(20);
+      b = this.Oa.getHeight() * 0.1;
+      this.label.setBoxSize(300, this.Oa.getHeight() - b * 2);
       this.label.setAlign(1, 0);
-      this.label.setX(this.iconSprite.getX() - 300);
-      this.label.setY(this.iconSprite.getY() + pad);
-      this.label.autoFit();
+      this.label.setX(this.Oa.getX() - 300);
+      this.label.setY(this.Oa.getY() + b);
+      this.label.setMultiline();
     }
   }
   ScoreLabel.i = true;
@@ -231,22 +201,19 @@
     l: ScoreLabel
   });
 
-  // HitTestRect - invisible rectangular hit area attached to a scene
-  // node so it inherits the same transforms. Ub(point) walks the
-  // node tree to refresh the world transform then tests containment.
   class HitTestRect {
-    constructor(parentNode, bounds) {
-      this.rect = new SpriteNode(parentNode);
-      this.rect.setSize(bounds.right - bounds.left, bounds.bottom - bounds.top);
-      let xform = this.rect.localT;
-      xform.translate.x = bounds.left;
-      xform.translate.y = bounds.top;
-      xform.K = xform.K & -2 | 496;
+    constructor(a, b) {
+      this.rect = new SpriteNode(a);
+      this.rect.Lb(b.B - b.A, b.G - b.D);
+      a = this.rect.Db;
+      a.translate.x = b.A;
+      a.translate.y = b.D;
+      a.K = a.K & -2 | 496;
     }
-    hitTest(point) {
-      NodeTreeUtil.updateWorldTransforms(this.rect);
-      this.rect.makeLocalBounds();
-      return this.rect.hitTest(point);
+    Ub(a) {
+      NodeTreeUtil.Yf(this.rect);
+      this.rect.pe();
+      return this.rect.Ub(a);
     }
   }
   HitTestRect.i = true;

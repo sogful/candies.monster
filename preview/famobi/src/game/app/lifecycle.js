@@ -1,81 +1,81 @@
   class Application {
     constructor() {
-      this.tampered = null;
-      this.postFrameCallbacks = [];
-      this.scenes = [];
-      this.releasedImages = [];
+      this.PS = null;
+      this.LA = [];
+      this.Jv = [];
+      this.Jw = [];
       this.images = new HashMap();
-      this.bootCallback = null;
-      this.fps = new FpsMeter();
+      this.IC = null;
+      this.rN = new FpsMeter();
       this.save = null;
-      this.scriptLoader = new ScriptLoader();
-      this.director = null;
-      this.audio = new NullAudioMixer();
-      this.window = this.renderer = null;
-      this.timestep = new FixedTimestep();
-      this.mainLoop = new MainLoop();
+      this.Fo = new ScriptLoader();
+      this.fa = null;
+      this.Sa = new NullAudioMixer();
+      this.window = this.V = null;
+      this.VS = new FixedTimestep();
+      this.df = new MainLoop();
       Application.instance = this;
     }
-    init(a, b) {
+    ib(a, b) {
       this.config = a;
-      this.bootCallback = b;
-      host.console.info("%c" + a.title.toUpperCase() + " %c" + Build.BUILD_STAMP, "font-weight:bold;", null);
-      if (a.allowZoom) {
-        window.addEventListener("error", cachedBind(this, this.onCrash));
-        window.addEventListener("unhandledrejection", cachedBind(this, this.onCrash));
+      this.IC = b;
+      host.console.info("%c" + a.title.toUpperCase() + " %c" + Build.FG, "font-weight:bold;", null);
+      if (a.mB) {
+        window.addEventListener("error", cachedBind(this, this.Ae));
+        window.addEventListener("unhandledrejection", cachedBind(this, this.Ae));
       }
-      this.isMobile = this.detectMobile();
-      this.isWebOS = window.navigator.userAgent.indexOf("Web0S") != -1;
-      Loader.setMaxResolution(a.pixelRatio);
-      a.language = Loader.setLanguage(a.language);
-      this.mainLoop.tick = cachedBind(this, this.tickFrame);
+      this.Vj = this.SS();
+      this.jd = window.navigator.userAgent.indexOf("Web0S") != -1;
+      Loader.Ls(a.DB);
+      a.language = Loader.Wi(a.language);
+      this.df.Hg = cachedBind(this, this.DP);
       this.window = new Viewport(a.Cu);
-      if (a.useWebGL && this.window.install(a.glOptions)) {
-        this.renderer = new WebGLRenderer();
+      if (a.oo && this.window.yO(a.Hw)) {
+        this.V = new WebGLRenderer();
       }
-      if (this.renderer == null) {
-        this.window.initContext(a.glOptions);
-        this.renderer = new CanvasRenderer();
-        a.useWebGL = false;
+      if (this.V == null) {
+        this.window.sO(a.Hw);
+        this.V = new CanvasRenderer();
+        a.oo = false;
       }
-      if (this.renderer != null) {
-        this.renderer.attachWindow(this.window);
-        this.window.addListener(2, cachedBind(this, this.audioOnBlur));
-        this.window.addListener(1, cachedBind(this, this.audioOnFocus));
+      if (this.V != null) {
+        this.V.tp(this.window);
+        this.window.addListener(2, cachedBind(this, this.dQ));
+        this.window.addListener(1, cachedBind(this, this.QC));
         this.window.update();
-        this.bootSetup();
-        this.scriptLoader.version = Build.VERSION.toString();
-        this.scriptLoader.maxConcurrent = a.maxConcurrent;
-        this.director = new SceneDirector(this);
-        this.showBadge();
-        this.save = this.createSave();
+        this.EB();
+        this.Fo.version = Build.VERSION.toString();
+        this.Fo.Wo = a.Wo;
+        this.fa = new SceneDirector(this);
+        this.vx();
+        this.save = this.vv();
         var c = this;
-        this.testAvif().then(function (d) {
+        this.LS().then(function (d) {
           if (d) {
-            Loader.selectImageFormat();
+            Loader.RR();
           }
         }).then(function () {
           c.preload();
         });
       }
     }
-    isWebView() {
+    SB() {
       let a = window.navigator.userAgent.toLowerCase();
       return new EReg("(WebView|(iPhone|iPod|iPad)(?!.*Safari)|Android.*(;wv)|Linux; U; Android)", "ig").match(a);
     }
     preload() {
       function a(f, g, h) {
-        let m = b.createImageLoader();
-        m.name = Loader.getUrl(f);
-        if (b.images.map.hasOwnProperty(f)) {
-          b.releasedImages.push(b.images.map[f]);
+        let m = b.yM();
+        m.name = Loader.ni(f);
+        if (b.images.J.hasOwnProperty(f)) {
+          b.Jw.push(b.images.J[f]);
         }
-        b.images.map[f] = m;
+        b.images.J[f] = m;
         m.load(g, function () {
-          if (Loader.filterImageRes().includes(f)) {
+          if (Loader.GN().includes(f)) {
             let n = new FileReader();
             n.onload = function (q) {
-              Loader.setMetadata(f, new DataReader(q.target.result));
+              Loader.VR(f, new DataReader(q.target.result));
               h(m.data);
             };
             n.onerror = function () {
@@ -90,16 +90,16 @@
       let b = this;
       for (var c = 0; c < Loader.MAX;) {
         var d = c++;
-        if (Loader.isImageResource(d)) {
-          Loader.setDecoder(d, a);
+        if (Loader.JO(d)) {
+          Loader.Cz(d, a);
         }
       }
-      if (Loader.filterLanguageRes().length > 0) {
-        this.load(Loader.filterLanguageRes(), null, cachedBind(this, this.startLoop));
+      if (Loader.fB().length > 0) {
+        this.load(Loader.fB(), null, cachedBind(this, this.MC));
       } else {
-        this.startLoop();
+        this.MC();
       }
-      if (this.config.fullscreen) {
+      if (this.config.FE) {
         let f = window.document.querySelectorAll("meta[data-hash]").item(0).dataset.hash;
         c = window.document.querySelectorAll("script[src]");
         d = null;
@@ -115,7 +115,7 @@
               try {
                 window.crypto.subtle.digest("SHA-256", e.response).then(function (m) {
                   m = btoa(String.fromCharCode.apply(null, new Uint8Array(m)));
-                  b.tampered = m != f;
+                  b.PS = m != f;
                 }).catch(function () {});
               } catch (m) {}
             }
@@ -124,16 +124,16 @@
         }
       }
     }
-    startLoop() {
+    MC() {
       let a = this;
       DelayedCall.delay(function () {
-        a.mainLoop.start();
-        a.bootCallback(a);
+        a.df.start();
+        a.IC(a);
       }, 1);
     }
-    preloadAssets(a) {
+    Xl(a) {
       a = Object.create(a.prototype);
-      a.app = this;
+      a.O = this;
       a.caller = a;
       return this.load(a.getPreloads(), null, undefined);
     }
@@ -145,9 +145,9 @@
       while (g < a.length) {
         var h = a[g];
         ++g;
-        if (!Loader.isAudioResource(h) || Loader.audioFormats() != null && Loader.getAudioExt() != null) {
+        if (!Loader.Lv(h) || Loader.Xq() != null && Loader.OA() != null) {
           f += 1;
-          Loader.onceLoaded(h, function (m) {
+          Loader.aQ(h, function (m) {
             --f;
             if (b != null) {
               b(m);
@@ -156,45 +156,45 @@
               c();
             }
           });
-          h = Loader.getUrl(h);
-          if (this.scriptLoader.load(h)) {
+          h = Loader.ni(h);
+          if (this.Fo.load(h)) {
             e.push(h);
           }
         }
       }
       while (d.length > 0) {
-        this.scriptLoader.reprioritize(d.pop());
+        this.Fo.$Q(d.pop());
       }
-      return new LoadProgress(this.scriptLoader, e);
+      return new LoadProgress(this.Fo, e);
     }
-    getImage(a) {
-      return this.images.map[a];
+    $A(a) {
+      return this.images.J[a];
     }
-    createImageLoader() {
-      return new ImageLoader(this.config.crossOrigin, this.config.useWebGL);
+    yM() {
+      return new ImageLoader(this.config.CB, this.config.oo);
     }
-    freeTexture(a) {
-      this.getImage(a).dispose();
+    NM(a) {
+      this.$A(a).Px();
       this.images.remove(a);
-      Loader.purge(a);
+      Loader.ps(a);
     }
-    freeReleasedImages() {
+    OM() {
       let a = 0;
-      let b = this.releasedImages;
+      let b = this.Jw;
       while (a < b.length) {
-        b[a++].dispose();
+        b[a++].Px();
       }
-      this.releasedImages = [];
+      this.Jw = [];
     }
     createTexture(a, b, c) {
       function d(n) {
-        if (n.bytes[0] == 84 && n.bytes[1] == 80 && n.bytes[2] == 83) {
-          n = new SheetParser().parseBinary(n);
-          return new FrameCollection(SheetConvert.flatten(n), n.meta.scale);
+        if (n.b[0] == 84 && n.b[1] == 80 && n.b[2] == 83) {
+          n = new SheetParser().nD(n);
+          return new FrameCollection(SheetConvert.Gl(n), n.em.scale);
         }
-        if (n.bytes[0] == 66 && n.bytes[1] == 77 && n.bytes[2] == 70) {
-          n = new BMFontParser().readBytes(n);
-          return new FrameCollection(BMFontConvert.flatten(n), 1, BMFontConvert.buildAtlas(n));
+        if (n.b[0] == 66 && n.b[1] == 77 && n.b[2] == 70) {
+          n = new BMFontParser().zm(n);
+          return new FrameCollection(BMFontConvert.Gl(n), 1, BMFontConvert.SA(n));
         }
         throw 3;
       }
@@ -204,118 +204,118 @@
       if (b == null) {
         b = 0;
       }
-      var e = Loader.getUrl(a);
-      for (var f = 0, g = this.renderer.listTextures(); f < g.length;) {
+      var e = Loader.ni(a);
+      for (var f = 0, g = this.V.$N(); f < g.length;) {
         var h = g[f];
         ++f;
         if (h.name == e) {
           return h;
         }
       }
-      f = this.getImage(a);
-      g = Loader.getMetadata(a);
+      f = this.$A(a);
+      g = Loader.LN(a);
       let m = null;
       if (g == null) {
-        h = Loader.idForExt(a, "dat");
+        h = Loader.Hl(a, "dat");
         if (h != -1) {
-          g = new DataReader(Loader.data.map[h]);
+          g = new DataReader(Loader.data.J[h]);
           if (g.data == null) {
             g = null;
           }
         } else {
-          h = Loader.idForExt(a, "dat", true);
+          h = Loader.Hl(a, "dat", true);
           if (h != -1) {
-            g = new DataReader(Loader.data.map[h]);
+            g = new DataReader(Loader.data.J[h]);
           }
         }
       }
       if (g == null) {
-        h = Loader.idForExt(a, "tps");
+        h = Loader.Hl(a, "tps");
         if (h != -1) {
           try {
-            m = d(Loader.getBytes(h));
+            m = d(Loader.eo(h));
           } catch (n) {}
         }
         if (m == null) {
-          h = Loader.idForExt(a, "json");
+          h = Loader.Hl(a, "json");
           if (h != -1) {
-            h = Loader.getText(h);
-            h = new SheetParser().parseJson(h);
-            m = new FrameCollection(SheetConvert.flatten(h), h.meta.scale);
+            h = Loader.yb(h);
+            h = new SheetParser().hR(h);
+            m = new FrameCollection(SheetConvert.Gl(h), h.em.scale);
           }
         }
         if (m == null) {
-          h = Loader.idForExt(a, "dat");
+          h = Loader.Hl(a, "dat");
           if (h != -1) {
-            h = Loader.getBytes(h);
-            h = new SheetParser().parseBinary(h);
-            m = new FrameCollection(SheetConvert.flatten(h), h.meta.scale);
+            h = Loader.eo(h);
+            h = new SheetParser().nD(h);
+            m = new FrameCollection(SheetConvert.Gl(h), h.em.scale);
           }
         }
         if (m == null) {
-          h = Loader.idForExt(a, "fnt");
+          h = Loader.Hl(a, "fnt");
           if (h != -1) {
-            h = Loader.getBytes(h);
-            h = new BMFontParser().readBytes(h);
-            m = new FrameCollection(BMFontConvert.flatten(h), 1, BMFontConvert.buildAtlas(h));
+            h = Loader.eo(h);
+            h = new BMFontParser().zm(h);
+            m = new FrameCollection(BMFontConvert.Gl(h), 1, BMFontConvert.SA(h));
           }
         }
       }
       h = null;
       if (g == null) {
-        h = this.renderer.createTexture(f, b, m, e);
+        h = this.V.createTexture(f, b, m, e);
       } else {
-        g = g.entries;
-        if (g.length == 1 || Lambda.exists(g, function (n) {
+        g = g.oq;
+        if (g.length == 1 || Lambda.Ej(g, function (n) {
           return n.name != null;
         })) {
-          h = this.renderer.createTexture(f, b, d(g[0].data), e);
+          h = this.V.createTexture(f, b, d(g[0].data), e);
           b = 1;
           e = g.length;
           while (b < e) {
             f = b++;
-            this.renderer.addTextureFrame(h, d(g[f].data), g[f].name);
+            this.V.rA(h, d(g[f].data), g[f].name);
           }
         } else {
-          h = this.renderer.createTexture(f, b, null, e);
+          h = this.V.createTexture(f, b, null, e);
           b = 0;
           e = g.length;
           while (b < e) {
-            this.renderer.addTextureFrame(h, d(g[b++].data), null);
+            this.V.rA(h, d(g[b++].data), null);
           }
         }
       }
       if (c) {
-        h.scale = 1 / Loader.getResolutionLevel(a);
+        h.$e = 1 / Loader.HN(a);
       }
       return h;
     }
-    tickFrame(a) {
+    DP(a) {
       this.window.update();
-      if (this.config.fixedTimestep) {
-        let b = this.timestep;
+      if (this.config.GA) {
+        let b = this.VS;
         let c = cachedBind(this, this.update);
         b.elapsedTime += a;
-        b.accum += a * b.scale;
-        if (b.accum > 0.25) {
-          b.accum = 0.25;
+        b.Th += a * b.Hx;
+        if (b.Th > 0.25) {
+          b.Th = 0.25;
         }
-        while (b.accum >= FixedTimestep.STEP) {
-          c(FixedTimestep.STEP);
-          b.accum -= FixedTimestep.STEP;
+        while (b.Th >= FixedTimestep.Rk) {
+          c(FixedTimestep.Rk);
+          b.Th -= FixedTimestep.Rk;
         }
-        this.render(b.accum / FixedTimestep.STEP);
+        this.render(b.Th / FixedTimestep.Rk);
       } else {
         this.update(a);
         this.render(1);
       }
-      for (this.fps.update(a); this.postFrameCallbacks.length > 0;) {
-        this.postFrameCallbacks.pop()();
+      for (this.rN.update(a); this.LA.length > 0;) {
+        this.LA.pop()();
       }
     }
     update(a) {
       let b = 0;
-      let c = this.scenes;
+      let c = this.Jv;
       while (b < c.length) {
         let d = c[b];
         ++b;
@@ -323,58 +323,58 @@
           d.state.update(a);
         }
       }
-      this.renderer.beginFrame();
-      this.renderer.resetViewport();
-      this.gameLoop();
-      this.director.update(a);
-      this.renderer.endFrame();
+      this.V.Gi();
+      this.V.Bm();
+      this.$O();
+      this.fa.update(a);
+      this.V.fi();
     }
     render(a) {
-      if (this.renderer.beginFrame()) {
-        this.renderer.resetViewport();
-        this.renderer.clear();
-        this.director.render(a);
-        this.renderer.resetViewport();
-        this.renderer.endFrame();
+      if (this.V.Gi()) {
+        this.V.Bm();
+        this.V.clear();
+        this.fa.render(a);
+        this.V.Bm();
+        this.V.fi();
       }
     }
-    gameLoop() {
-      if (this.config.useCanvas) {
+    $O() {
+      if (this.config.aC) {
         var a = this.window;
-        a = a.canvasSize.x / a.canvasSize.y;
-        var b = this.window.canvasSize;
+        a = a.Hc.x / a.Hc.y;
+        var b = this.window.Hc;
         var c = b.x;
         b = b.y;
         if (a > 2.5) {
           a = b / c * 2.5;
           c = (1 - a) / 2;
-          this.renderer.setViewport(c, 0, c + a, 1);
+          this.V.Bk(c, 0, c + a, 1);
         } else if (a < 0.4) {
           a = c / b / 0.4;
           c = (1 - a) / 2;
-          this.renderer.setViewport(0, c, 1, c + a);
+          this.V.Bk(0, c, 1, c + a);
         }
       }
     }
-    bootSetup() {
-      if (this.config.audio && Audio.isSupported()) {
-        if (this.audio != null && this.audio instanceof WebAudioMixer) {
-          var a = this.audio.Yg;
-          var b = this.audio.names;
-          this.audio.free();
-          Audio.init();
-          this.audio = new WebAudioMixer();
-          this.audio.Yg = a;
-          this.audio.names = b;
+    EB() {
+      if (this.config.audio && Audio.MB()) {
+        if (this.Sa != null && this.Sa instanceof WebAudioMixer) {
+          var a = this.Sa.Yg;
+          var b = this.Sa.names;
+          this.Sa.free();
+          Audio.ib();
+          this.Sa = new WebAudioMixer();
+          this.Sa.Yg = a;
+          this.Sa.names = b;
         } else {
-          a = this.config.bootCallback;
-          var c = a ?? Audio.bestFormat();
-          if (Lambda.exists(Loader.audioFormats(), function (f) {
+          a = this.config.Nz;
+          var c = a ?? Audio.LM();
+          if (Lambda.Ej(Loader.Xq(), function (f) {
             return f == c;
           })) {
-            Loader.setAudioExt(c);
+            Loader.JR(c);
           }
-          b = Loader.allUrls();
+          b = Loader.TN();
           a = [];
           for (var d = 0; d < b.length;) {
             let f = b[d];
@@ -384,9 +384,9 @@
             }
           }
           if (a.length != 0) {
-            Audio.init();
-            if (Audio.isSupported()) {
-              this.audio = new WebAudioMixer();
+            Audio.ib();
+            if (Audio.MB()) {
+              this.Sa = new WebAudioMixer();
             }
             var e = this;
             // Music tracks go through the normal `ls()` path (one file =
@@ -394,10 +394,10 @@
             // live as individual files under assets/audio/sfx/, loaded by
             // `loadSfxBundle()` after music registration completes.
             b = function (f, g, h) {
-              e.audio.loadSample(f, g, Loader.isMusic(f), h);
+              e.Sa.ls(f, g, Loader.ug(f), h);
             };
             for (d = 0; d < a.length;) {
-              Loader.setDecoder(Loader.idByName(a[d++]), b);
+              Loader.Cz(Loader.rg(a[d++]), b);
             }
             this.loadSfxBundle();
           }
@@ -412,7 +412,7 @@
       // (1001..1064) - those ids match the SoundFx.* constants in
       // statics.js, so callers like `SoundFx.play(SoundFx.button)` keep
       // working without changes.
-      var mixer = this.audio;
+      var mixer = this.Sa;
       if (mixer == null) return;
       fetch("assets/audio/sfx/manifest.json").then(function (Resources) { return Resources.json(); }).then(function (entries) {
         for (var i = 0; i < entries.length; i++) {
@@ -421,56 +421,56 @@
               .then(function (Resources) { return Resources.arrayBuffer(); })
               .then(function (buf) {
                 mixer.names[entry.id] = entry.name;
-                mixer.loadSample(entry.id, buf, false, function () {});
+                mixer.ls(entry.id, buf, false, function () {});
               });
           })(entries[i]);
         }
       });
     }
-    createSave() {
+    vv() {
       return new NullSave();
     }
-    getScene(a) {
-      return this.scenes[a];
+    pv(a) {
+      return this.Jv[a];
     }
-    registerScene(a) {
-      return this.scenes[a.typeId()] = a;
+    ju(a) {
+      return this.Jv[a.nv()] = a;
     }
-    mouseDevice() {
-      let a = this.getScene(1);
-      return a ?? this.registerScene(new MouseInputDevice(this.window.canvas));
+    fO() {
+      let a = this.pv(1);
+      return a ?? this.ju(new MouseInputDevice(this.window.canvas));
     }
-    mouseState() {
-      return this.mouseDevice().state;
+    gO() {
+      return this.fO().state;
     }
-    keyboardDevice() {
-      let a = this.getScene(0);
-      return a ?? this.registerScene(new KeyboardInputDevice());
+    eO() {
+      let a = this.pv(0);
+      return a ?? this.ju(new KeyboardInputDevice());
     }
-    keyboard() {
-      return this.keyboardDevice().state;
+    lh() {
+      return this.eO().state;
     }
-    touchDevice() {
-      let a = this.getScene(3);
-      return a ?? this.registerScene(new TouchInputDevice(this.window.canvas));
+    Qj() {
+      let a = this.pv(3);
+      return a ?? this.ju(new TouchInputDevice(this.window.canvas));
     }
-    pointer() {
-      return this.touchDevice().state;
+    hd() {
+      return this.Qj().state;
     }
-    createStorage(a) {
+    AM(a) {
       return new LocalStorageStore(a);
     }
-    showBadge() {
+    vx() {
       // was a 10s bottom-left version badge. kept the no-op so the caller
       // chain stays the same.
     }
-    audioOnFocus() {
-      this.audio.setMasterVolume(1, 0);
+    QC() {
+      this.Sa.Lg(1, 0);
     }
-    audioOnBlur() {
-      this.audio.setMasterVolume(0, 0);
+    dQ() {
+      this.Sa.Lg(0, 0);
     }
-    detectMobile() {
+    SS() {
       try {
         return navigator.userAgentData.mobile;
       } catch (a) {
@@ -484,8 +484,8 @@
     reload() {
       window.location.reload();
     }
-    testAvif() {
-      if (this.config.testAvif) {
+    LS() {
+      if (this.config.Oz) {
         return new Promise(function (a) {
           let b = new Image();
           b.onerror = function () {
@@ -504,19 +504,19 @@
         return Promise.resolve(false);
       }
     }
-    browserLanguage() {
+    IN() {
       return host.navigator.language;
     }
-    onCrash(a) {
+    Ae(a) {
       if (a.type != "unhandledrejection" && (a != null ? a.error : null) != null && a.error.stack != null) {
-        Numeric.toStr(a.error.stack);
+        Numeric.Ed(a.error.stack);
       }
-      if (this.mainLoop != null) {
-        this.mainLoop.stop();
+      if (this.df != null) {
+        this.df.stop();
       }
       host.console.log("" + this.config.title + " CRASHED 💀");
-      window.removeEventListener("error", cachedBind(this, this.onCrash));
-      window.removeEventListener("unhandledrejection", cachedBind(this, this.onCrash));
+      window.removeEventListener("error", cachedBind(this, this.Ae));
+      window.removeEventListener("unhandledrejection", cachedBind(this, this.Ae));
     }
   }
   Application.i = true;
@@ -526,52 +526,49 @@
   class WebApplication extends Application {
     constructor(a) {
       super();
-      this.init(new AppConfig("Ctrr", true, a ?? "en", null, null, null, null, {
+      this.ib(new AppConfig("Ctrr", true, a ?? "en", null, null, null, null, {
         alpha: false,
         depth: false,
         antialias: true,
         stencil: true
-      }, false, null, true, null, null, null, null, false, null, null, null, null, false, null), cachedBind(this, this.tick));
+      }, false, null, true, null, null, null, null, false, null, null, null, null, false, null), cachedBind(this, this.Hg));
     }
-    onCrash(a) {
-      super.onCrash(a);
-      if (this.isWebOS) {
+    Ae(a) {
+      super.Ae(a);
+      if (this.jd) {
         this.reload();
       }
     }
-    getNavigatorLanguage() {
-      return host.navigator.language;
-    }
-    createSave() {
-      return new Save(this.createStorage(this.config.title));
+    vv() {
+      return new Save(this.AM(this.config.title));
     }
     preload() {
       super.preload();
-      WebApplication.assetsDownloaded = !this.isWebView() && !this.isWebOS;
-      if (this.isWebOS) {
-        Loader.setMaxResolution(1);
-      } else if (this.isMobile && this.window.pixelRatio() <= 2 && this.window.canvasSize.x < 1000) {
-        Loader.setMaxResolution(1);
+      WebApplication.ds = !this.SB() && !this.jd;
+      if (this.jd) {
+        Loader.Ls(1);
+      } else if (this.Vj && this.window.Pj() <= 2 && this.window.Hc.x < 1000) {
+        Loader.Ls(1);
       } else {
-        Loader.setMaxResolution(2);
+        Loader.Ls(2);
       }
     }
-    pickResolution() {
-      if (this.isWebOS) {
-        if (this.window.canvasSize.x > 5000) {
+    UN() {
+      if (this.jd) {
+        if (this.window.Hc.x > 5000) {
           return 4;
-        } else if (this.window.canvasSize.x > 3000) {
+        } else if (this.window.Hc.x > 3000) {
           return 2;
         } else {
           return 1;
         }
-      } else if (this.isMobile && this.window.pixelRatio() > 2) {
+      } else if (this.Vj && this.window.Pj() > 2) {
         return 2;
       } else {
         return 1;
       }
     }
-    tick() {
+    Hg() {
       window.document.body.addEventListener("touchcancel", function (b) {
         b.preventDefault();
       }, {
@@ -587,59 +584,59 @@
       }, {
         passive: false
       });
-      this.renderer.setClearColor(new Vec4(0, 0, 0, 1));
-      FixedTimestep.STEP = 0.016;
-      this.renderer.disableDepthTest();
-      this.window.setResolution(this.pickResolution());
-      this.touchDevice().setMaxTouches(5);
-      if (this.config.useWebGL) {
-        this.renderer.registerProgram(new GLTiledTextureProgram());
-        this.renderer.registerProgram(new GLTextureProgram());
-        this.renderer.registerProgram(new GLSolidColorProgram());
-        this.renderer.registerProgram(new GLClearProgram());
-        this.renderer.registerProgram(new GLMultiLineProgram());
-        this.renderer.registerProgram(new GLGradientLineProgram());
-        this.renderer.registerProgram(new GLDashedCircleProgram());
-        this.renderer.registerProgram(new GLCircleStrokeProgram());
+      this.V.MR(new Vec4(0, 0, 0, 1));
+      FixedTimestep.Rk = 0.016;
+      this.V.MM();
+      this.window.aS(this.UN());
+      this.Qj().XD(5);
+      if (this.config.oo) {
+        this.V.md(new GLTiledTextureProgram());
+        this.V.md(new GLTextureProgram());
+        this.V.md(new GLSolidColorProgram());
+        this.V.md(new GLClearProgram());
+        this.V.md(new GLMultiLineProgram());
+        this.V.md(new GLGradientLineProgram());
+        this.V.md(new GLDashedCircleProgram());
+        this.V.md(new GLCircleStrokeProgram());
       } else {
-        this.renderer.registerProgram(new RepeatPatternDraw());
-        this.renderer.registerProgram(new CanvasTextRenderer());
-        this.renderer.registerProgram(new CanvasSolidColorRenderer());
-        this.renderer.registerProgram(new CanvasClearRenderer());
-        this.renderer.registerProgram(new CanvasPathRenderer());
-        this.renderer.registerProgram(new CanvasMultiLineRenderer());
-        this.renderer.registerProgram(new CanvasGradientLineRenderer());
-        this.renderer.registerProgram(new CanvasDashedCircleRenderer());
-        this.renderer.registerProgram(new CanvasCircleStrokeRenderer());
+        this.V.md(new RepeatPatternDraw());
+        this.V.md(new CanvasTextRenderer());
+        this.V.md(new CanvasSolidColorRenderer());
+        this.V.md(new CanvasClearRenderer());
+        this.V.md(new CanvasPathRenderer());
+        this.V.md(new CanvasMultiLineRenderer());
+        this.V.md(new CanvasGradientLineRenderer());
+        this.V.md(new CanvasDashedCircleRenderer());
+        this.V.md(new CanvasCircleStrokeRenderer());
       }
       WebApplication.menuMusicId = WebApplication.xmasMode ? Loader.menuMusicXmas : Loader.menuMusic;
       WebApplication.gameMusicId = WebApplication.xmasMode ? Loader.gameMusicXmas : Loader.gameMusic;
       let a = this;
       this.save.load(function () {
-        if (Save.language == null && (Save.setLanguage(a.config.language), a.isWebOS)) {
-          let b = Std.substr(a.getNavigatorLanguage().toLowerCase(), 0, 2);
+        if (Save.language == null && (Save.Yi(a.config.language), a.jd)) {
+          let b = Std.substr(a.IN().toLowerCase(), 0, 2);
           if (new EReg("(" + LANGUAGES.join("|") + ")", "").match(b)) {
-            Save.setLanguage(b);
+            Save.Yi(b);
           }
         }
-        a.setLanguage(Save.language);
-        a.startMainScene();
+        a.Wi(Save.language);
+        a.tE();
       });
     }
-    setLanguage(a) {
-      Loader.setLanguage(a);
+    Wi(a) {
+      Loader.Wi(a);
     }
-    startMainScene() {
-      this.director.sharedState.sceneToLoad = MenuScene;
-      Audio.addListener("EContextBroken", cachedBind(this, this.onAudioContextBroken));
-      this.currentMusicId = -1;
+    tE() {
+      this.fa.Ha.sceneToLoad = MenuScene;
+      Audio.addListener("EContextBroken", cachedBind(this, this.EB));
+      this.Nu = -1;
       let a = this;
       Audio.addListener("EContextResumed", function () {
-        if (!a.audio.isPlaying(a.currentMusicId)) {
-          a.audio.play(a.currentMusicId, true, true);
+        if (!a.Sa.Dc(a.Nu)) {
+          a.Sa.play(a.Nu, true, true);
         }
       });
-      this.director.push(LoadingScene);
+      this.fa.hq(LoadingScene);
     }
   }
   WebApplication.i = true;
@@ -656,100 +653,100 @@
       WebApplication.magnetEnabled = SDK.hasFeature("rewarded");
       WebApplication.telekinesisEnabled = SDK.hasFeature("rewarded");
     }
-    createSave() {
+    vv() {
       let a = new Save(new PortalLocalStorage(Application.instance.config.title));
       if (SDK.hasFeature("force_english")) {
-        Save.setLanguage("en");
+        Save.Yi("en");
       }
       return a;
     }
-    tick(a) {
-      this.updateInsets();
-      SDK.onInsetsChange(cachedBind(this, this.updateInsets));
+    Hg(a) {
+      this.hF();
+      SDK.onInsetsChange(cachedBind(this, this.hF));
       let b = this;
       SDK.onRequest("enableAudio", function () {
         audioDisabled = false;
-        b.audio.setMasterVolume(1);
+        b.Sa.Lg(1);
         try {
-          let c = b.director;
-          let d = c.findNode(CTRCIntroVideoScene, c);
+          let c = b.fa;
+          let d = c.$n(CTRCIntroVideoScene, c);
           if (d != null) {
-            d.onEnableAudio();
+            d.jT();
           }
         } catch (c) {}
       });
       SDK.onRequest("disableAudio", function () {
         audioDisabled = true;
-        b.audio.setMasterVolume(0);
+        b.Sa.Lg(0);
         try {
-          let c = b.director;
-          let d = c.findNode(CTRCIntroVideoScene, c);
+          let c = b.fa;
+          let d = c.$n(CTRCIntroVideoScene, c);
           if (d != null) {
-            d.onDisableAudio();
+            d.TP();
           }
         } catch (c) {}
       });
       SDK.onRequest("pauseGameplay", function () {
         gameplayPaused = true;
-        b.touchDevice().enabled = false;
-        b.mainLoop.stop();
+        b.Qj().enabled = false;
+        b.df.stop();
       });
       SDK.onRequest("resumeGameplay", function () {
         gameplayPaused = false;
-        b.touchDevice().enabled = true;
-        b.pointer().reset();
-        b.mainLoop.start();
+        b.Qj().enabled = true;
+        b.hd().reset();
+        b.df.start();
       });
       SDK.setPauseRequestHandler(function () {
         SDK.adShowing = true;
-        b.audio.setMasterVolume(0);
-        b.touchDevice().enabled = false;
-        b.mainLoop.stop();
+        b.Sa.Lg(0);
+        b.Qj().enabled = false;
+        b.df.stop();
       });
       SDK.setResumeRequestHandler(function () {
         SDK.adShowing = false;
         if (!audioDisabled) {
-          b.audio.setMasterVolume(1);
+          b.Sa.Lg(1);
         }
         if (!gameplayPaused) {
-          b.touchDevice().enabled = true;
-          b.pointer().reset();
-          b.mainLoop.start();
+          b.Qj().enabled = true;
+          b.hd().reset();
+          b.df.start();
         }
       });
-      super.tick(a);
+      super.Hg(a);
     }
-    setLanguage(a) {
+    Wi(a) {
       if (SDK.hasFeature("force_english")) {
-        Save.setLanguage("en");
-        super.setLanguage("en");
+        Save.Yi("en");
+        super.Wi("en");
       } else {
-        super.setLanguage(a);
+        super.Wi(a);
       }
     }
-    startMainScene() {
+    tE() {
       // preview bridge: skip the main menu and load straight into the level
       // scene when a custom level is parked on window.customleveldata.
-      this.director.sharedState.sceneToLoad = window.customleveldata != null ? CTRCLevelScene : CTRCMenuScene;
-      this.director.push(CTRCLoadingScene);
+      this.fa.Ha.sceneToLoad = window.customleveldata != null ? CTRCLevelScene : CTRCMenuScene;
+      this.fa.hq(CTRCLoadingScene);
     }
-    audioOnFocus() {
+    QC() {
       if (!SDK.adShowing && !audioDisabled) {
-        this.audio.setMasterVolume(SDK.getVolume());
+        this.Sa.Lg(SDK.getVolume());
       }
     }
-    showBadge() {
+    vx() {
       if (SDK.hasFeature("version")) {
-        super.showBadge();
+        super.vx();
       }
     }
-    updateInsets() {
+    hF() {
       let a = SDK.getInsets();
       let b = this.window.canvas.style;
-      b.top = "" + a.top + "px";
-      b.left = "" + a.left + "px";
-      b.width = "calc(100% - " + (a.right + a.left) + "px)";
-      b.height = "calc(100% - " + (a.bottom + a.t) + "px)";
+      b.top = "" + a.t + "px";
+      b.left = "" + a.VB + "px";
+      b.width = "calc(100% - " + (a.r + a.VB) + "px)";
+      b.height = "calc(100% - " + (a.b + a.t) + "px)";
     }
   }
   SDKApplication.i = true;
@@ -758,74 +755,74 @@
     l: SDKApplication
   });
   class Entry {
-    static main(a) {
+    static CP(a) {
       new SDKApplication(a);
     }
   }
-  globalScope.Ctrr.main = Entry.main;
+  globalScope.Ctrr.main = Entry.CP;
   Entry.i = true;
   Math.i = true;
   class AppConfig {
     constructor(a, b, c, d, e, f, g, h, m, n, q, p, v, u, A, D, B, K, E, p18, p19, V) {
-      this.allowZoom = false;
-      this.useCanvas = true;
-      this.disableMipmap = false;
-      this.fixedTimestep = this.testAvif = this.audio = this.bootDelay = this.transition = this.crossOrigin = true;
-      this.fullscreen = false;
-      this.bootCallback = this.glOptions = null;
-      this.maxConcurrent = 4;
-      this.canvasId = null;
-      this.pixelRatio = 1;
+      this.mB = false;
+      this.aC = true;
+      this.Fx = false;
+      this.GA = this.Oz = this.audio = this.nF = this.transition = this.CB = true;
+      this.FE = false;
+      this.Nz = this.Hw = null;
+      this.Wo = 4;
+      this.Cu = null;
+      this.DB = 1;
       this.language = "en";
       this.title = a;
-      this.useWebGL = b;
+      this.oo = b;
       if (c != null) {
         this.language = c;
       }
       if (d != null) {
-        this.pixelRatio = d;
+        this.DB = d;
       }
       if (e != null) {
-        this.canvasId = e;
+        this.Cu = e;
       }
       if (f != null) {
-        this.maxConcurrent = f;
+        this.Wo = f;
       }
       if (g != null) {
-        this.bootCallback = g;
+        this.Nz = g;
       }
       if (h != null) {
-        this.glOptions = h;
+        this.Hw = h;
       }
       if (m != null) {
-        this.fullscreen = m;
+        this.FE = m;
       }
       if (n != null) {
-        this.fixedTimestep = n;
+        this.GA = n;
       }
       if (q != null) {
-        this.testAvif = q;
+        this.Oz = q;
       }
       if (p != null) {
         this.audio = p;
       }
       if (v != null) {
-        this.bootDelay = v;
+        this.nF = v;
       }
       if (u != null) {
         this.transition = u;
       }
       if (A != null) {
-        this.crossOrigin = A;
+        this.CB = A;
       }
       if (E != null) {
-        this.disableMipmap = E;
+        this.Fx = E;
       }
       if (p19 != null) {
-        this.useCanvas = p19;
+        this.aC = p19;
       }
       if (V != null) {
-        this.allowZoom = V;
+        this.mB = V;
       }
     }
   }

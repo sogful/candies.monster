@@ -1,71 +1,71 @@
   class MagnetEffect extends GameObject {
     constructor(a, b, c) {
       super();
-      this.endPos = b;
-      this.startPos = c;
-      this.progress = 0;
+      this.hM = b;
+      this.Qi = c;
+      this.yl = 0;
       this.isActive = false;
-      this.container = new Container();
-      a.layer(0).appendChild(this.container.node);
-      this.inner = new MagnetInner(a.layer(12));
-      this.outer = new MagnetOuter(a.layer(12));
+      this.j = new Container();
+      a.ma(0).P(this.j.u);
+      this.qk = new MagnetInner(a.ma(12));
+      this.rk = new MagnetOuter(a.ma(12));
       a = new AnimTimeline();
-      a.scaleKey(0.27999999999999997, 0);
-      a.scaleKey(0.4, 0.5);
-      a.scaleKey(0.27999999999999997, 1);
-      a.rotKey(0, 0);
-      a.rotKey(360, 1);
-      this.glowSprite = new Sprite(null, Resources.Kd, Keys.gI);
-      this.glowSprite.center();
-      this.glowSprite.setBlendMode(3);
-      this.glowSprite.setVisible(false);
-      this.container.appendChild(this.glowSprite);
-      new SpriteAnimator(this.glowSprite).loop(a);
+      a.vc(0.27999999999999997, 0);
+      a.vc(0.4, 0.5);
+      a.vc(0.27999999999999997, 1);
+      a.yk(0, 0);
+      a.yk(360, 1);
+      this.Di = new Sprite(null, Resources.Kd, Keys.gI);
+      this.Di.center();
+      this.Di.Wd(3);
+      this.Di.L(false);
+      this.j.appendChild(this.Di);
+      new SpriteAnimator(this.Di).loop(a);
     }
     free() {
-      this.container.free();
-      this.container = null;
-      this.inner.free();
-      this.outer.free();
+      this.j.free();
+      this.j = null;
+      this.qk.free();
+      this.rk.free();
       SoundFx.stop(SoundFx.sp_telekinesis);
     }
-    setEnabled(a) {
+    TD(a) {
       if (a && !this.isActive) {
-        this.outer.reset();
-        this.progress = 0;
+        this.rk.reset();
+        this.yl = 0;
         this.state = 1;
         SoundFx.play(SoundFx.sp_telekinesis, true);
       }
       if (!a && this.isActive) {
         this.state = 0;
-        this.progress = vLN01;
+        this.yl = vLN01;
         SoundFx.stop(SoundFx.sp_telekinesis);
       }
-      this.inner.setSegmentsVisible(a);
-      this.outer.setSegmentsVisible(a);
-      this.glowSprite.setVisible(a);
+      this.qk.Os(a);
+      this.rk.Os(a);
+      this.Di.L(a);
       this.isActive = a;
     }
     update(a) {
-      if (this.container != null && (super.update(a), this.progress = PathResolver.rampToward(this.progress, this.state == 0 ? 0 : 0.3, 1, a), this.isActive)) {
-        let b = this.state == 1 ? this.progress / 0.3 : this.progress / vLN01;
-        this.inner.x = this.startPos.x;
-        this.inner.y = this.startPos.y;
-        this.inner.update(a);
-        this.inner.alpha = b;
-        this.outer.alpha = b * 0.5;
-        this.outer.updateLine(this.startPos, this.endPos);
-        this.outer.update(a);
+      if (this.j != null && (super.update(a), this.yl = PathResolver.dk(this.yl, this.state == 0 ? 0 : 0.3, 1, a), this.isActive)) {
+        let b = this.state == 1 ? this.yl / 0.3 : this.yl / vLN01;
+        this.qk.x = this.Qi.x;
+        this.qk.y = this.Qi.y;
+        this.qk.update(a);
+        this.qk.alpha = b;
+        this.rk.alpha = b * 0.5;
+        this.rk.qT(this.Qi, this.hM);
+        this.rk.update(a);
       }
     }
-    draw() {
-      if (this.container != null) {
-        super.draw();
+    M() {
+      if (this.j != null) {
+        super.M();
         if (this.isActive) {
-          this.glowSprite.setX(this.startPos.x);
-          this.glowSprite.setY(this.startPos.y);
-          this.inner.draw();
-          this.outer.draw();
+          this.Di.setX(this.Qi.x);
+          this.Di.setY(this.Qi.y);
+          this.qk.M();
+          this.rk.M();
         }
       }
     }
@@ -78,64 +78,64 @@
   class MagnetInner extends GameObject {
     constructor(a) {
       super();
-      this.container = new Container();
-      a.appendChild(this.container.node);
-      this.count = 4;
-      this.speed = 2;
-      this.sprites = [];
+      this.j = new Container();
+      a.P(this.j.u);
+      this.xt = 4;
+      this.xT = 2;
+      this.pF = [];
       a = 0;
-      let b = this.count;
+      let b = this.xt;
       while (a < b) {
         ++a;
-        let c = new Sprite(this.container, Resources.Kd, Keys.jI);
+        let c = new Sprite(this.j, Resources.Kd, Keys.jI);
         c.center();
-        c.setBlendMode(3);
-        this.sprites.push(c);
+        c.Wd(3);
+        this.pF.push(c);
       }
-      this.maxScale = 1.25;
-      this.rotMult = 2;
-      this.alphaMax = 0.7;
-      this.phase = 0;
-      this.setSegmentsVisible(false);
+      this.mD = 1.25;
+      this.HD = 2;
+      this.RL = 0.7;
+      this.uc = 0;
+      this.Os(false);
     }
     free() {
-      this.container.free();
-      this.container = null;
+      this.j.free();
+      this.j = null;
     }
-    setSegmentsVisible(a) {
-      this.container.setVisible(a);
+    Os(a) {
+      this.j.L(a);
     }
-    setPhase(a) {
-      this.phase = a > HALF_PI ? 0 : a;
+    $R(a) {
+      this.uc = a > HALF_PI ? 0 : a;
     }
     update(a) {
-      this.setPhase(this.phase + a / this.speed);
+      this.$R(this.uc + a / this.xT);
     }
-    draw() {
-      if (this.container != null) {
+    M() {
+      if (this.j != null) {
         var a = Array(4);
-        for (var b = 0, c = this.count; b < c;) {
+        for (var b = 0, c = this.xt; b < c;) {
           var d = b++;
-          a[d] = this.phase + d * HALF_PI / this.count;
+          a[d] = this.uc + d * HALF_PI / this.xt;
         }
         b = 0;
-        for (c = this.count; b < c;) {
+        for (c = this.xt; b < c;) {
           d = b++;
-          let e = this.sprites[d];
+          let e = this.pF[d];
           if (a[d] > HALF_PI) {
             a[d] -= HALF_PI;
           }
-          let f = this.alphaMax * Math.cos(a[d]) * this.alpha;
+          let f = this.RL * Math.cos(a[d]) * this.alpha;
           if (d % 2 != 0) {
-            e.setRotation(this.rotMult * 360 * a[d] / PI);
+            e.la(this.HD * 360 * a[d] / PI);
           } else {
-            e.setRotation(-this.rotMult * 360 * a[d] / PI);
+            e.la(-this.HD * 360 * a[d] / PI);
           }
-          e.setScaleX(this.maxScale * Math.sin(a[d]) * 0.4);
-          e.setScaleY(this.maxScale * Math.sin(a[d]) * 0.4);
+          e.setScaleX(this.mD * Math.sin(a[d]) * 0.4);
+          e.setScaleY(this.mD * Math.sin(a[d]) * 0.4);
           e.setX(this.x);
           e.setY(this.y);
-          e.setAlpha(f);
+          e.W(f);
         }
       }
     }
@@ -148,68 +148,68 @@
   class MagnetOuter extends GameObject {
     constructor(a) {
       super();
-      this.startVec = new Vec2(0, 0);
-      this.phase = this.length = 0;
-      this.container = new Container();
-      a.appendChild(this.container.node);
-      this.sprites = [];
+      this.Xs = new Vec2(0, 0);
+      this.uc = this.length = 0;
+      this.j = new Container();
+      a.P(this.j.u);
+      this.wb = [];
       for (a = 0; a < 4;) {
         ++a;
-        let b = new Sprite(this.container, Resources.Kd, "ray");
-        b.setBlendMode(3);
-        b.setAlpha(0.3);
-        b.setVisible(false);
-        this.sprites.push(b);
+        let b = new Sprite(this.j, Resources.Kd, "ray");
+        b.Wd(3);
+        b.W(0.3);
+        b.L(false);
+        this.wb.push(b);
       }
     }
     free() {
-      this.container.free();
-      this.container = null;
+      this.j.free();
+      this.j = null;
     }
-    setSegmentsVisible(a) {
-      if (this.container != null) {
-        this.container.setVisible(a);
+    Os(a) {
+      if (this.j != null) {
+        this.j.L(a);
       }
     }
-    updateLine(a, b) {
-      b = Vec2.diff(b, a);
-      this.length = b.length();
+    qT(a, b) {
+      b = Vec2.Ia(b, a);
+      this.length = b.Rb();
       this.rotation = Math.atan2(b.y, b.x) * RAD2DEG - 90;
-      this.startVec.x = a.x;
-      this.startVec.y = a.y;
+      this.Xs.x = a.x;
+      this.Xs.y = a.y;
     }
     reset() {
-      this.phase = 0;
+      this.uc = 0;
     }
     update() {
-      this.phase += 0.05;
+      this.uc += 0.05;
       let a = 0;
       while (a < 4) {
-        this.sprites[a++].setOffsetY(this.phase);
+        this.wb[a++].SR(this.uc);
       }
     }
-    draw() {
-      if (this.container != null) {
-        var a = Math.ceil(this.length / (this.sprites[0].size.y / 4));
+    M() {
+      if (this.j != null) {
+        var a = Math.ceil(this.length / (this.wb[0].X.y / 4));
         if (a > 4) {
           a = 4;
         }
         for (var b = 0; b < 4;) {
-          this.sprites[b++].setVisible(false);
+          this.wb[b++].L(false);
         }
         for (var c = b = 0; c < a;) {
           let d = c++;
-          let e = this.sprites[d];
-          b += e.size.y;
-          e.setX(-e.size.x / 2);
-          e.setY(d * e.size.y);
-          e.setVisible(true);
+          let e = this.wb[d];
+          b += e.X.y;
+          e.setX(-e.X.x / 2);
+          e.setY(d * e.X.y);
+          e.L(true);
         }
-        this.container.setScaleX(0.27999999999999997);
-        this.container.setScaleY(this.length / b);
-        this.container.setX(this.startVec.x);
-        this.container.setY(this.startVec.y);
-        this.container.setRotation(this.rotation);
+        this.j.setScaleX(0.27999999999999997);
+        this.j.setScaleY(this.length / b);
+        this.j.setX(this.Xs.x);
+        this.j.setY(this.Xs.y);
+        this.j.la(this.rotation);
       }
     }
   }
@@ -222,61 +222,61 @@
   class MagnetGlowFlash extends GameObject {
     constructor(a, b) {
       super();
-      this.controller = a;
-      this.magnet = b;
-      this.container = new Container();
-      a.layer(0).appendChild(this.container.node);
-      this.glow = new Sprite(this.container, Resources.Kd, Keys.bI);
-      this.glow.center();
-      this.glow.setVisible(false);
-      this.glow.setRotation(0);
-      this.glow.setUniformScale(0.5);
-      this.glow.setBlendMode(4);
-      this.phase = this.cooldown = 0;
-      this.smoke = new SmokeEmitter(a, 10);
+      this.S = a;
+      this.I = b;
+      this.j = new Container();
+      a.ma(0).P(this.j.u);
+      this.Nc = new Sprite(this.j, Resources.Kd, Keys.bI);
+      this.Nc.center();
+      this.Nc.L(false);
+      this.Nc.la(0);
+      this.Nc.setUniformScale(0.5);
+      this.Nc.Wd(4);
+      this.uc = this.Aq = 0;
+      this.Wf = new SmokeEmitter(a, 10);
     }
     free() {
-      this.glow.free();
-      this.smoke.free();
-      this.container.free();
-      this.container = null;
+      this.Nc.free();
+      this.Wf.free();
+      this.j.free();
+      this.j = null;
     }
-    flashAt(a, b) {
-      if (!(this.cooldown > 0)) {
-        this.cooldown = 0.064;
-        this.glow.setX(a.x);
-        this.glow.setY(a.y);
-        this.glow.setVisible(true);
-        this.glow.setAlpha(1);
-        this.glow.setRotation(90 - b);
-        this.phase = 0;
-        this.smoke.x = a.x;
-        this.smoke.y = a.y;
-        this.smoke.angle = -b;
+    IA(a, b) {
+      if (!(this.Aq > 0)) {
+        this.Aq = 0.064;
+        this.Nc.setX(a.x);
+        this.Nc.setY(a.y);
+        this.Nc.L(true);
+        this.Nc.W(1);
+        this.Nc.la(90 - b);
+        this.uc = 0;
+        this.Wf.x = a.x;
+        this.Wf.y = a.y;
+        this.Wf.angle = -b;
         a = new Vec2(1, 0);
         a.rotate(-b * PI / 180);
-        b = Vec2.scaled(a, 15);
-        this.smoke.x -= b.x;
-        this.smoke.y -= b.y;
-        this.smoke.start(10);
-        this.magnet.showMagnetHit();
+        b = Vec2.Ob(a, 15);
+        this.Wf.x -= b.x;
+        this.Wf.y -= b.y;
+        this.Wf.Qm(10);
+        this.I.XC();
         SoundFx.play(SoundFx.sp_field_bounce);
       }
     }
     update(a) {
-      if (this.container != null) {
-        this.cooldown -= a;
-        this.phase += a * 15;
-        if (this.phase >= PI) {
-          this.glow.setVisible(false);
+      if (this.j != null) {
+        this.Aq -= a;
+        this.uc += a * 15;
+        if (this.uc >= PI) {
+          this.Nc.L(false);
         }
-        this.glow.setAlpha(Math.sin(this.phase));
-        this.smoke.update(a);
+        this.Nc.W(Math.sin(this.uc));
+        this.Wf.update(a);
       }
     }
-    draw() {
-      super.draw();
-      this.smoke.draw();
+    M() {
+      super.M();
+      this.Wf.M();
     }
   }
   MagnetGlowFlash.i = true;

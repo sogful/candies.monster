@@ -1,188 +1,177 @@
-  // RGBA - 32-bit colour with r, g, b, a channels in 0..1.
   class RGBA {
-    constructor(r, g, b, a) {
-      this.r = r;
-      this.g = g;
-      this.b = b;
-      this.a = a;
+    constructor(a, b, c, d) {
+      this.r = a;
+      this.ue = b;
+      this.b = c;
+      this.a = d;
     }
-    clone() {
-      return new RGBA(this.r, this.g, this.b, this.a);
+    Zb() {
+      return new RGBA(this.r, this.ue, this.b, this.a);
     }
   }
   RGBA.i = true;
   Object.assign(RGBA.prototype, {
     l: RGBA
   });
-
-  // Vec2 - 2-d vector. Instance methods mutate in place; statics
-  // return new vectors.
   class Vec2 {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
+    constructor(a, b) {
+      this.x = a;
+      this.y = b;
     }
-    add(v) {
-      this.x += v.x;
-      this.y += v.y;
+    add(a) {
+      this.x += a.x;
+      this.y += a.y;
     }
-    sub(v) {
-      this.x -= v.x;
-      this.y -= v.y;
+    Ax(a) {
+      this.x -= a.x;
+      this.y -= a.y;
     }
-    multiply(s) {
-      this.x *= s;
-      this.y *= s;
+    multiply(a) {
+      this.x *= a;
+      this.y *= a;
     }
-    div(s) {
-      this.x /= s;
-      this.y /= s;
+    xA(a) {
+      this.x /= a;
+      this.y /= a;
     }
-    distTo(v) {
-      let dx = this.x - v.x;
-      let dy = this.y - v.y;
-      return Math.sqrt(dx * dx + dy * dy);
+    sf(a) {
+      let b = this.x - a.x;
+      a = this.y - a.y;
+      return Math.sqrt(b * b + a * a);
     }
-    length() {
+    Rb() {
       return Math.sqrt(this.x * this.x + this.y * this.y);
     }
-    lengthSq() {
+    io() {
       return this.x * this.x + this.y * this.y;
     }
-    isZero() {
-      if (this.x == 0) return this.y == 0;
-      return false;
+    TO() {
+      if (this.x == 0) {
+        return this.y == 0;
+      } else {
+        return false;
+      }
     }
-    equals(v) {
-      if (this.x == v.x) return this.y == v.y;
-      return false;
+    gN(a) {
+      if (this.x == a.x) {
+        return this.y == a.y;
+      } else {
+        return false;
+      }
     }
     normalize() {
-      this.multiply(1 / this.length());
+      this.multiply(1 / this.Rb());
     }
     angle() {
       return Math.atan(this.y / this.x);
     }
-    // direction - full-circle angle (Math.atan2). Distinct from angle()
-    // which is Math.atan(y/x) and only covers half the plane.
-    direction() {
+    km() {
       return Math.atan2(this.y, this.x);
     }
-    clone() {
+    Zb() {
       return new Vec2(this.x, this.y);
     }
-    copyFrom(v) {
-      this.x = v.x;
-      this.y = v.y;
+    Pb(a) {
+      this.x = a.x;
+      this.y = a.y;
     }
-    // rotate around origin by `rad` radians.
-    rotate(rad) {
-      let c = Math.cos(rad);
-      let s = Math.sin(rad);
-      let newY = this.x * s + this.y * c;
-      this.x = this.x * c - this.y * s;
-      this.y = newY;
+    rotate(a) {
+      let b = Math.cos(a);
+      a = Math.sin(a);
+      let c = this.x * a + this.y * b;
+      this.x = this.x * b - this.y * a;
+      this.y = c;
       return this;
     }
-    // $a - rotate around pivot (px, py).
-    rotateAround(rad, px, py) {
-      this.x -= px;
-      this.y -= py;
-      this.rotate(rad);
-      this.x += px;
-      this.y += py;
+    $a(a, b, c) {
+      this.x -= b;
+      this.y -= c;
+      this.rotate(a);
+      this.x += b;
+      this.y += c;
     }
-    static zero() {
+    static sc() {
       return new Vec2(0, 0);
     }
-    static MAX() {
+    static UP() {
       return new Vec2(2147483647, 2147483647);
     }
-    static sum(a, b) {
+    static tb(a, b) {
       return new Vec2(a.x + b.x, a.y + b.y);
     }
-    static diff(a, b) {
+    static Ia(a, b) {
       return new Vec2(a.x - b.x, a.y - b.y);
     }
-    static scaled(v, s) {
-      return new Vec2(v.x * s, v.y * s);
+    static Ob(a, b) {
+      return new Vec2(a.x * b, a.y * b);
     }
-    static divided(v, s) {
-      return new Vec2(v.x / s, v.y / s);
+    static bq(a, b) {
+      return new Vec2(a.x / b, a.y / b);
     }
-    static distance(x1, y1, x2, y2) {
-      x1 -= x2;
-      y1 -= y2;
-      return Math.sqrt(x1 * x1 + y1 * y1);
+    static nd(a, b, c, d) {
+      a -= c;
+      b -= d;
+      return Math.sqrt(a * a + b * b);
     }
-    static dot(a, b) {
+    static yz(a, b) {
       return a.x * b.x + a.y * b.y;
     }
-    // perpCCW / perpCW - perpendicular variants (counter-clockwise /
-    // clockwise).
-    static perpCCW(v) {
-      return new Vec2(-v.y, v.x);
+    static au(a) {
+      return new Vec2(-a.y, a.x);
     }
-    static perpCW(v) {
-      return new Vec2(v.y, -v.x);
+    static AL(a) {
+      return new Vec2(a.y, -a.x);
     }
-    static normalized(v) {
-      return Vec2.scaled(v, 1 / v.length());
+    static cq(a) {
+      return Vec2.Ob(a, 1 / a.Rb());
     }
-    // bezier / bezierInto - de Casteljau evaluation of a Bezier control
-    // polygon at parameter t. bezier allocates; bezierInto writes into
-    // the supplied out vec.
-    static bezier(controls, t) {
-      let out = new Vec2(0, 0);
-      Vec2.bezierInto(controls, t, out);
-      return out;
+    static eM(a, b) {
+      let c = new Vec2(0, 0);
+      Vec2.OD(a, b, c);
+      return c;
     }
-    static bezierInto(controls, t, out) {
-      let n = controls.length;
-      if (n <= 1) {
-        out.x = out.y = 0;
+    static OD(a, b, c) {
+      var d = a.length;
+      if (d <= 1) {
+        c.x = c.y = 0;
       } else {
-        let xs = Vec2.BEZIER_XS;
-        let ys = Vec2.BEZIER_YS;
-        let oneMinusT = 1 - t;
-        for (let i = 0; i < n;) {
-          let k = i++;
-          let p = controls[k];
-          xs[k] = p.x;
-          ys[k] = p.y;
+        var e = Vec2.BL;
+        var f = Vec2.CL;
+        var g = 1 - b;
+        for (var h = 0; h < d;) {
+          let m = h++;
+          let n = a[m];
+          e[m] = n.x;
+          f[m] = n.y;
         }
-        // collapse the polygon one level at a time
-        for (let level = n - 1; level > 0;) {
-          let i = 0;
-          for (let j = 1; i < level;) {
-            xs[i] = xs[i] * oneMinusT + xs[j] * t;
-            ys[i] = ys[i] * oneMinusT + ys[j] * t;
-            ++i;
-            ++j;
+        for (a = d - 1; a > 0;) {
+          d = 0;
+          for (h = 1; d < a;) {
+            e[d] = e[d] * g + e[h] * b;
+            f[d] = f[d] * g + f[h] * b;
+            ++d;
+            ++h;
           }
-          --level;
+          --a;
         }
-        out.x = xs[0];
-        out.y = ys[0];
+        c.x = e[0];
+        c.y = f[0];
       }
     }
-    static fromAngle(angle) {
-      return new Vec2(Math.cos(angle), Math.sin(angle));
+    static KA(a) {
+      return new Vec2(Math.cos(a), Math.sin(a));
     }
   }
   Vec2.i = true;
   Object.assign(Vec2.prototype, {
     l: Vec2
   });
-
-  // Vec4 - 4-element vector (homogeneous coords / colour quad). Used
-  // mainly as a point with w=1 in 2-d scene math.
   class Vec4 {
-    constructor(x, y, z, w) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.w = w;
+    constructor(a, b, c, d) {
+      this.x = a;
+      this.y = b;
+      this.z = c;
+      this.w = d;
     }
   }
   Vec4.i = true;
@@ -191,7 +180,7 @@
   });
 
   class Vec4Clone {
-    static clone(v) {
-      return new Vec4(v.x, v.y, v.z, v.w);
+    static clone(a) {
+      return new Vec4(a.x, a.y, a.z, a.w);
     }
   }

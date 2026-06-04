@@ -2,196 +2,194 @@
     constructor(a) {
       this.name = a;
       this.info = new RendererInfo(this);
-      this.currentVisual = null;
-      this.quadCap = 256;
-      this.alphaEpsilon = 0.001;
-      this.camera = this.window = null;
-      this.cameraStack = [];
+      this.rf = null;
+      this.IP = 256;
+      this.YO = 0.001;
+      this.Ab = this.Wb = null;
+      this.gA = [];
       this.clearColor = new Vec4(0, 0, 0, 1);
-      this.invViewProjM = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-      this.viewProjM = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      this.sA = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      this.CM = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
       this.viewport = new TexRect(0, 0, 1, 1);
-      this.activeTextureSlots = Array(1056);
-      this.textureDirty = Array(1056);
-      this.batchingEnabled = true;
-      this.activeStates = Array(7);
-      this.defaultStates = Array(7);
-      this.stateMask = BitMaskTable.LOW_BITS[7];
-      this.renderFlags = 0;
-      this.textures = [];
-      this.drawList = new ArrayList();
-      this.defaultStates[0] = new BlendModeState(1, true);
-      this.defaultStates[1] = new ClipState();
-      this.defaultStates[2] = new ColorTransformState();
-      this.defaultStates[3] = new CullFaceState(true, true);
-      this.defaultStates[4] = new DepthTestState(false, 1);
-      this.defaultStates[5] = new AlphaState(1);
-      this.defaultStates[6] = new PassThroughState();
+      this.Jq = Array(1056);
+      this.vl = Array(1056);
+      this.wT = true;
+      this.rs = Array(7);
+      this.dh = Array(7);
+      this.un = BitMaskTable.zG[7];
+      this.od = 0;
+      this.Ex = [];
+      this.Wx = new ArrayList();
+      this.dh[0] = new BlendModeState(1, true);
+      this.dh[1] = new ClipState();
+      this.dh[2] = new ColorTransformState();
+      this.dh[3] = new DepthTestState(true, true);
+      this.dh[4] = new ScissorState(false, 1);
+      this.dh[5] = new AlphaState(1);
+      this.dh[6] = new PassThroughState();
     }
-    attachWindow(a) {
-      if (this.window != null) {
-        this.window.setRenderer(null);
+    tp(a) {
+      if (this.Wb != null) {
+        this.Wb.dE(null);
       }
-      this.window = a;
-      this.window.setRenderer(this);
+      this.Wb = a;
+      this.Wb.dE(this);
     }
-    setClearColor(a) {
+    MR(a) {
       let b = this.clearColor;
       b.x = a.x;
       b.y = a.y;
       b.z = a.z;
       b.w = a.w;
     }
-    setCamera(a) {
-      this.camera = a;
+    wk(a) {
+      this.Ab = a;
     }
-    pushCamera(a) {
-      this.cameraStack.push(this.camera);
-      this.setCamera(a);
+    cR(a) {
+      this.gA.push(this.Ab);
+      this.wk(a);
     }
-    popCamera() {
-      this.setCamera(this.cameraStack.pop());
+    WQ() {
+      this.wk(this.gA.pop());
     }
-    resetViewport() {
-      this.setViewport(0, 0, 1, 1);
+    Bm() {
+      this.Bk(0, 0, 1, 1);
     }
-    setViewport(a, b, c, d) {
+    Bk(a, b, c, d) {
       let e = this.viewport;
       e.x = a;
       e.y = b;
       e.w = c - a;
-      e.h = d - b;
+      e.J = d - b;
     }
-    beginFrame() {
-      if (this.window == null || this.window.getContext() == null || this.window.size.x * this.window.size.y == 0) {
+    Gi() {
+      if (this.Wb == null || this.Wb.getContext() == null || this.Wb.size.x * this.Wb.size.y == 0) {
         return false;
       }
-      this.applyDefaultStates();
+      this.uR();
       return true;
     }
-    endFrame() {}
-    // drawScene - flatten the scene rooted at `a` into the draw list
-    // and submit it to the GPU pipeline.
-    drawScene(a) {
-      let b = this.drawList;
+    fi() {}
+    Iq(a) {
+      let b = this.Wx;
       b.clear();
       b.reserve(SceneNode.count);
-      NodeTreeUtil.collectVisuals(a, b);
-      if (b.count > 0) {
-        this.submitBatch(b);
+      NodeTreeUtil.CN(a, b);
+      if (b.ba > 0) {
+        this.Uu(b);
       }
     }
     clear() {}
-    applyDefaultStates() {
-      this.renderFlags = 0;
-      let a = this.stateMask;
+    uR() {
+      this.od = 0;
+      let a = this.un;
       let b = 0;
       while (b < 7) {
         let c = b++;
-        this.activeStates[c] = this.defaultStates[c];
+        this.rs[c] = this.dh[c];
         if ((a & 1 << c) != 0) {
-          this.activeStates[c].set(this);
+          this.rs[c].set(this);
         }
       }
     }
-    submitBatch(a) {
-      let b = a.array;
+    Uu(a) {
+      let b = a.N;
       let c = 0;
-      for (a = a.count; c < a;) {
-        this.drawVisual(b[c++]);
+      for (a = a.ba; c < a;) {
+        this.ul(b[c++]);
       }
     }
-    drawVisual(a) {
+    ul(a) {
       let b = a.effect;
-      if (b != null && b.enabled && a.visibility != 1) {
-        this.currentVisual = a;
-        this.setRenderState(a);
-        this.drawEffect(b);
+      if (b != null && b.enabled && a.Ne != 1) {
+        this.rf = a;
+        this.Bh(a);
+        this.Wn(b);
       }
     }
-    listTextures() {
-      return this.textures.slice();
+    $N() {
+      return this.Ex.slice();
     }
     createTexture(a, b, c, d) {
       if (b == null) {
         b = 0;
       }
-      b = this.createNativeTexture(b);
-      this.textures.push(b);
+      b = this.Iv(b);
+      this.Ex.push(b);
       b.name = d;
-      b.setImage(a);
+      b.ax(a);
       if (c != null) {
-        b.setFrames(c);
+        b.IR(c);
       }
       return b;
     }
-    addTextureFrame(a, b, c) {
-      let d = this.createNativeTexture(a.flags);
+    rA(a, b, c) {
+      let d = this.Iv(a.flags);
       d.name = c == null ? "-" : c;
-      a.addChild(d, b.clone());
+      a.oa(d, b.clone());
       if (c != null) {
-        a = a.frames.findByName(c);
-        d.frames.offset(a.uvOffset.x, a.uvOffset.y);
+        a = a.hc.yf(c);
+        d.hc.offset(a.Od.x, a.Od.y);
       }
     }
-    release(a) {
+    ia(a) {
       a.free();
-      Std.remove(this.textures, a);
+      Std.remove(this.Ex, a);
     }
-    programFor(a, b) {
+    WA(a, b) {
       a = (b / 100 | 0) * 32 + (a / 100 | 0);
-      b = this.activeTextureSlots[a];
-      if (b != null && !this.textureDirty[a]) {
-        this.textureDirty[a] = true;
-        b.init(this);
+      b = this.Jq[a];
+      if (b != null && !this.vl[a]) {
+        this.vl[a] = true;
+        b.ib(this);
       }
       return b;
     }
-    programForFlipped(a, b) {
+    XA(a, b) {
       a = 512 + (b / 100 | 0) * 32 + (a / 100 | 0);
-      b = this.activeTextureSlots[a];
-      if (b != null && !this.textureDirty[a]) {
-        this.textureDirty[a] = true;
-        b.init(this);
+      b = this.Jq[a];
+      if (b != null && !this.vl[a]) {
+        this.vl[a] = true;
+        b.ib(this);
       }
       return b;
     }
-    registerProgram(a) {
+    md(a) {
       var b;
       if (b == null) {
         b = false;
       }
-      let c = a.effectType / 100 | 0;
-      var d = a.visualType / 100 | 0;
+      let c = a.AA / 100 | 0;
+      var d = a.Xx / 100 | 0;
       d = (b ? 1 : 0) * 512 + d * 32 + c;
-      this.activeTextureSlots[d] = a;
-      let e = a.visualType == 201;
+      this.Jq[d] = a;
+      let e = a.Xx == 201;
       if (e) {
         let f = 0;
         while (f < 16) {
           d = f++ + 1;
           d = (b ? 1 : 0) * 512 + d * 32 + c;
-          this.activeTextureSlots[d] = a;
+          this.Jq[d] = a;
         }
       }
-      if (this.batchingEnabled && (a.init(this), this.textureDirty[d] = true, e)) {
+      if (this.wT && (a.ib(this), this.vl[d] = true, e)) {
         for (a = 0; a < 16;) {
           d = a++ + 1;
           d = (b ? 1 : 0) * 512 + d * 32 + c;
-          this.textureDirty[d] = true;
+          this.vl[d] = true;
         }
       }
     }
-    disableDepthTest() {
-      this.stateMask &= -9;
+    MM() {
+      this.un &= -9;
     }
-    computeClipMatrix(a) {
-      let b = this.invViewProjM;
-      let c = this.camera.worldM;
-      if ((a.flags & 240) > 0) {
-        a.updateComposite();
+    ko(a) {
+      let b = this.sA;
+      let c = this.Ab.pk;
+      if ((a.K & 240) > 0) {
+        a.nt();
       }
-      var d = a.compositeM;
+      var d = a.Ue;
       a = d.m11;
       var e = d.m12;
       var f = d.m13;
@@ -238,11 +236,11 @@
       b.m44 = g;
       return b;
     }
-    compute2DTransform(a) {
-      if ((a.flags & 64) > 0) {
-        a.update2DComposite();
+    oi(a) {
+      if ((a.K & 64) > 0) {
+        a.Tm();
       }
-      var b = a.compositeM;
+      var b = a.Ue;
       a = b.m11;
       var c = b.m12;
       var d = b.m14;
@@ -250,7 +248,7 @@
       let f = b.m22;
       let g = b.m24;
       b = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-      let h = this.camera.worldM;
+      let h = this.Ab.pk;
       let m = h.m11 * c + h.m12 * f;
       let n = h.m11 * d + h.m12 * g + h.m14;
       c = h.m21 * c + h.m22 * f;
@@ -263,52 +261,52 @@
       b.m24 = d;
       return b;
     }
-    drawEffect(a) {
+    Wn(a) {
       a.update(this);
-      let b = this.programFor(a.type, this.currentVisual.type);
+      let b = this.WA(a.type, this.rf.type);
       if (b != null) {
         this.info.effect = a;
-        this.info.visual = this.currentVisual;
-        b.render(this.info);
+        this.info.va = this.rf;
+        b.M(this.info);
       }
     }
-    getRenderState(a) {
-      return this.activeStates[a];
+    li(a) {
+      return this.rs[a];
     }
-    setRenderState(a) {
-      if (this.stateMask != 0) {
-        var b = this.activeStates;
-        for (var c = 0, d = this.stateMask, e = this.renderFlags; c < 7;) {
+    Bh(a) {
+      if (this.un != 0) {
+        var b = this.rs;
+        for (var c = 0, d = this.un, e = this.od; c < 7;) {
           if ((d & 1 << c) == 0) {
             ++c;
             continue;
           }
-          let f = a.stateSlots[c];
+          let f = a.Jk[c];
           if (f != null) {
-            if (f.key != b[c].key) {
+            if (f.cb != b[c].cb) {
               b[c] = f;
               e |= 1 << c;
               f.set(this);
             }
           } else if ((e & 1 << c) > 0) {
-            f = this.defaultStates[c];
+            f = this.dh[c];
             b[c] = f;
             f.set(this);
             e &= ~(1 << c);
           }
           ++c;
         }
-        this.renderFlags = e;
+        this.od = e;
       }
     }
-    applyAlpha() {}
-    applyCullFace() {}
-    applyDepth() {}
-    applyBlend() {}
-    applyColorTransform() {}
-    applyClip() {}
-    depthOf(a) {
-      return a.localT.translate.z * -0.001;
+    jx() {}
+    QD() {}
+    PD() {}
+    Uw() {}
+    Xw() {}
+    hx() {}
+    jB(a) {
+      return a.Db.translate.z * -0.001;
     }
   }
   Renderer.i = true;
@@ -327,138 +325,138 @@
         return c;
       }
       super("2d");
-      this.pixelPadding = 0;
-      this.currentCtx = this.context = null;
-      this.colorTransformValue = new ColorTransform();
+      this.TL = 0;
+      this.bb = this.context = null;
+      this.ai = new ColorTransform();
       this.globalAlpha = 1;
-      this.currentClip = this.mode = null;
-      this.clipInvert = false;
-      this.clipDepth = 0;
-      this.scratchM = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      this.Kr = this.Zg = null;
+      this.LB = false;
+      this.Bj = 0;
+      this.Tx = new Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
       this.globalCompositeOperation = null;
-      var b = this.blendModeMap = Array(5);
+      var b = this.rM = Array(5);
       b[0] = "source-over";
       b[1] = "source-over";
       b[2] = "multiply";
       b[3] = "lighter";
       b[4] = "screen";
-      this.ctxPool = [null];
+      this.Lu = [null];
       for (b = 0; b < 3;) {
         ++b;
         let c = a();
-        this.ctxPool.push(c);
+        this.Lu.push(c);
       }
-      this.clipOffscreen = a();
+      this.GP = a();
       new Bounds(vInfinity, vInfinity, vNegInfinity, vNegInfinity);
     }
-    attachWindow(a) {
-      super.attachWindow(a);
+    tp(a) {
+      super.tp(a);
       this.context = a.getContext();
-      this.ctxPool[0] = this.context;
+      this.Lu[0] = this.context;
     }
     clear(a) {
       super.clear();
       if (a == null) {
         a = this.clearColor;
       }
-      var b = this.window;
+      var b = this.Wb;
       let c = this.viewport;
       let d = b.size.x * c.x | 0;
       let e = b.size.y * c.y | 0;
       let f = b.size.x * c.w | 0;
-      b = b.size.y * c.h | 0;
+      b = b.size.y * c.J | 0;
       this.clearRect(d, e, f, b);
       if (a.w != 0) {
-        this.setFillStyle("rgba(" + ((a.x * 255 | 0) & 255) + "," + ((a.y * 255 | 0) & 255) + "," + ((a.z * 255 | 0) & 255) + "," + a.w.toFixed(2) + ")");
+        this.Vi("rgba(" + ((a.x * 255 | 0) & 255) + "," + ((a.y * 255 | 0) & 255) + "," + ((a.z * 255 | 0) & 255) + "," + a.w.toFixed(2) + ")");
         this.fillRect(d, e, f, b);
       }
     }
-    beginFrame() {
-      if (!super.beginFrame()) {
+    Gi() {
+      if (!super.Gi()) {
         return false;
       }
-      this.currentCtx = this.context;
+      this.bb = this.context;
       try {
         this.context.reset();
       } catch (a) {}
-      this.currentCtx.fillStyle = "#000000";
+      this.bb.fillStyle = "#000000";
       this.globalAlpha = 1;
-      this.resetViewport();
+      this.Bm();
       this.context.save();
-      this.resetContextDefaults();
+      this.Qx();
       return true;
     }
-    endFrame() {
-      for (super.endFrame(); this.clipDepth > 0;) {
-        this.currentCtx.restore();
-        this.clipDepth--;
+    fi() {
+      for (super.fi(); this.Bj > 0;) {
+        this.bb.restore();
+        this.Bj--;
       }
       this.context.restore();
     }
-    setViewport(a, b, c, d) {
-      super.setViewport(a, b, c, d);
-      for (this.resetContextDefaults(); this.clipDepth > 0;) {
-        this.currentCtx.restore();
-        this.clipDepth--;
+    Bk(a, b, c, d) {
+      super.Bk(a, b, c, d);
+      for (this.Qx(); this.Bj > 0;) {
+        this.bb.restore();
+        this.Bj--;
       }
       this.resetTransform();
       if (a != 0 || b != 0 || c != 1 || d != 1) {
         a = new Path2D();
-        b = this.window;
+        b = this.Wb;
         c = this.viewport;
-        a.rect(b.size.x * c.x | 0, b.size.y * c.y | 0, b.size.x * c.w | 0, b.size.y * c.h | 0);
-        this.currentCtx.save();
-        this.currentCtx.clip(a);
-        this.clipDepth++;
+        a.rect(b.size.x * c.x | 0, b.size.y * c.y | 0, b.size.x * c.w | 0, b.size.y * c.J | 0);
+        this.bb.save();
+        this.bb.clip(a);
+        this.Bj++;
       }
     }
-    setCamera(a) {
-      super.setCamera(a);
-      this.resetContextDefaults();
+    wk(a) {
+      super.wk(a);
+      this.Qx();
     }
-    drawVisual(a) {
+    ul(a) {
       var b = a.effect;
-      if (b != null && b.enabled && a.visibility != 1) {
+      if (b != null && b.enabled && a.Ne != 1) {
         if ((a.flags & 4) > 0) {
-          this.currentVisual = a;
+          this.rf = a;
           a = this.globalAlpha;
           this.globalAlpha = 0.75;
-          this.drawEffect(b);
+          this.Wn(b);
           this.globalAlpha = a;
         } else {
-          this.currentVisual = a;
-          this.setRenderState(a);
-          if (this.currentClip == null) {
-            this.drawEffect(b);
+          this.rf = a;
+          this.Bh(a);
+          if (this.Kr == null) {
+            this.Wn(b);
           } else {
-            this.programFor(a.effect.type, a.type);
-            a = this.window.size.x;
-            var c = this.window.size.y;
-            this.currentCtx = this.clipOffscreen;
-            this.resizeOffscreen(a, c);
-            this.drawEffect(b);
-            this.setCompositeOp(this.clipInvert ? "destination-out" : "destination-in");
-            b = this.renderFlags;
-            this.renderFlags = 0;
-            var d = this.currentVisual;
-            this.currentVisual = this.currentClip;
-            this.drawEffect(this.currentClip.effect);
-            this.renderFlags = b;
-            this.currentVisual = d;
-            b = this.currentCtx.canvas;
-            this.currentCtx = this.context;
-            this.setCompositeOp("source-over");
+            this.WA(a.effect.type, a.type);
+            a = this.Wb.size.x;
+            var c = this.Wb.size.y;
+            this.bb = this.GP;
+            this.ex(a, c);
+            this.Wn(b);
+            this.Km(this.LB ? "destination-out" : "destination-in");
+            b = this.od;
+            this.od = 0;
+            var d = this.rf;
+            this.rf = this.Kr;
+            this.Wn(this.Kr.effect);
+            this.od = b;
+            this.rf = d;
+            b = this.bb.canvas;
+            this.bb = this.context;
+            this.Km("source-over");
             this.resetTransform();
-            this.currentCtx.drawImage(b, 0, 0, a, c, 0, 0, a, c);
+            this.bb.drawImage(b, 0, 0, a, c, 0, 0, a, c);
           }
         }
       }
     }
-    computeClipMatrix(a) {
-      if ((a.flags & 240) > 0) {
-        a.updateComposite();
+    ko(a) {
+      if ((a.K & 240) > 0) {
+        a.nt();
       }
-      var b = a.compositeM;
+      var b = a.Ue;
       a = b.m11;
       let c = b.m12;
       let d = b.m13;
@@ -475,9 +473,9 @@
       let A = b.m42;
       let D = b.m43;
       b = b.m44;
-      var B = this.camera.worldM;
-      let K = this.invViewProjM;
-      let E = this.scratchM;
+      var B = this.Ab.pk;
+      let K = this.sA;
+      let E = this.Tx;
       let v62 = E.m11 * B.m11 + E.m12 * B.m21 + E.m13 * B.m31 + E.m14 * B.m41;
       let v63 = E.m11 * B.m12 + E.m12 * B.m22 + E.m13 * B.m32 + E.m14 * B.m42;
       let V = E.m11 * B.m13 + E.m12 * B.m23 + E.m13 * B.m33 + E.m14 * B.m43;
@@ -512,20 +510,20 @@
       K.m44 = v73 * e + v74 * m + v75 * v + B * b;
       return K;
     }
-    compute2DTransform(a) {
-      if ((a.flags & 64) > 0) {
-        a.update2DComposite();
+    oi(a) {
+      if ((a.K & 64) > 0) {
+        a.Tm();
       }
-      var b = a.compositeM;
+      var b = a.Ue;
       a = b.m11;
       let c = b.m12;
       var d = b.m14;
       let e = b.m21;
       let f = b.m22;
       let g = b.m24;
-      b = this.viewProjM;
-      let h = this.scratchM;
-      let m = this.camera.worldM;
+      b = this.CM;
+      let h = this.Tx;
+      let m = this.Ab.pk;
       let n = h.m11 * m.m11 + h.m12 * m.m21;
       let q = h.m11 * m.m12 + h.m12 * m.m22;
       let p = h.m21 * m.m11 + h.m22 * m.m21;
@@ -540,25 +538,25 @@
       b.m24 = d;
       return b;
     }
-    applyAlpha(a) {
-      this.setGlobalAlpha(a.alpha);
+    jx(a) {
+      this.La(a.Xk);
     }
-    applyBlend(a) {
-      this.mode = a.mode;
-      this.context.globalCompositeOperation = this.blendModeMap[this.mode];
+    Uw(a) {
+      this.Zg = a.Zg;
+      this.context.globalCompositeOperation = this.rM[this.Zg];
     }
-    applyColorTransform(a) {
-      this.colorTransformValue = a.transform;
+    Xw(a) {
+      this.ai = a.transform;
     }
-    applyClip(a) {
-      this.currentClip = a.visual;
-      this.clipInvert = a.invert;
-      let b = a.corners;
+    hx(a) {
+      this.Kr = a.va;
+      this.LB = a.FO;
+      let b = a.Gu;
       if (b != null) {
-        this.currentCtx.save();
+        this.bb.save();
         this.resetTransform();
-        this.clipDepth++;
-        a = this.compute2DTransform(a.owner.worldT);
+        this.Bj++;
+        a = this.oi(a.Xr.Fa);
         let e = new Path2D();
         var c = b[0];
         var d = new Vec4(a.m11 * c.x + a.m12 * c.y + a.m14, a.m21 * c.x + a.m22 * c.y + a.m24, 0, 1);
@@ -570,21 +568,21 @@
           e.lineTo(d.x, d.y);
         }
         e.closePath();
-        this.currentCtx.clip(e);
-      } else if (this.clipDepth > 0) {
-        this.currentCtx.restore();
+        this.bb.clip(e);
+      } else if (this.Bj > 0) {
+        this.bb.restore();
       }
     }
-    resetContextDefaults() {
-      let a = this.window;
+    Qx() {
+      let a = this.Wb;
       let b = this.viewport;
       let c = (a.size.x * b.w | 0) / 2;
-      let d = (a.size.y * b.h | 0) / 2;
-      if (this.window.BS) {
+      let d = (a.size.y * b.J | 0) / 2;
+      if (this.Wb.BS) {
         c |= 0;
         d |= 0;
       }
-      let e = this.scratchM;
+      let e = this.Tx;
       e.m11 = c;
       e.m12 = 0;
       e.m13 = 0;
@@ -594,22 +592,22 @@
       e.m23 = 0;
       e.m24 = d + (a.size.y * b.y | 0);
     }
-    createNativeTexture(a) {
+    Iv(a) {
       return new TextureWrapper(this, a);
     }
-    setGlobalAlpha(a) {
+    La(a) {
       this.globalAlpha = a;
       this.context.globalAlpha = a;
     }
-    selectCtx(a) {
-      this.currentCtx = this.ctxPool[a];
+    rp(a) {
+      this.bb = this.Lu[a];
     }
-    resizeOffscreen(a, b) {
-      let c = this.currentCtx.canvas;
+    ex(a, b) {
+      let c = this.bb.canvas;
       let d = c.width;
       let e = c.height;
       let f = false;
-      let g = this.window.size;
+      let g = this.Wb.size;
       if (d > g.x || e > g.y) {
         c.width = g.x;
         c.height = g.y;
@@ -618,7 +616,7 @@
         f = true;
       } else {
         try {
-          this.currentCtx.reset();
+          this.bb.reset();
         } catch (h) {
           f = true;
         }
@@ -629,57 +627,57 @@
       }
     }
     drawImage(a, b, c, d, e, f, g, h, m) {
-      this.currentCtx.drawImage(a, b, c, d, e, f, g, h, m);
+      this.bb.drawImage(a, b, c, d, e, f, g, h, m);
     }
-    setFillStyle(a) {
-      this.currentCtx.fillStyle = a;
+    Vi(a) {
+      this.bb.fillStyle = a;
     }
-    setStrokeStyle(a) {
-      this.currentCtx.strokeStyle = a;
+    fE(a) {
+      this.bb.strokeStyle = a;
     }
-    setCompositeOp(a) {
-      let b = this.currentCtx;
+    Km(a) {
+      let b = this.bb;
       if (b.globalCompositeOperation != a) {
         b.globalCompositeOperation = a;
       }
     }
     resetTransform() {
-      this.currentCtx.setTransform(1, 0, 0, 1, 0, 0);
+      this.bb.setTransform(1, 0, 0, 1, 0, 0);
     }
-    setTransformFromNode(a) {
-      a = this.compute2DTransform(a);
-      this.currentCtx.setTransform(a.m11, a.m21, a.m12, a.m22, a.m14, a.m24);
+    xk(a) {
+      a = this.oi(a);
+      this.bb.setTransform(a.m11, a.m21, a.m12, a.m22, a.m14, a.m24);
     }
     clearRect(a, b, c, d) {
-      this.currentCtx.clearRect(a, b, c, d);
+      this.bb.clearRect(a, b, c, d);
     }
     fillRect(a, b, c, d) {
-      this.currentCtx.fillRect(a, b, c, d);
+      this.bb.fillRect(a, b, c, d);
     }
-    composeColorTransformLayer(a, b, c, d, e) {
-      this.currentCtx.globalAlpha = 1;
-      var f = this.getRenderState(2);
-      this.selectCtx(1);
-      this.resizeOffscreen(d, e);
-      this.setCompositeOp("copy");
+    Lz(a, b, c, d, e) {
+      this.bb.globalAlpha = 1;
+      var f = this.li(2);
+      this.rp(1);
+      this.ex(d, e);
+      this.Km("copy");
       var g = f.transform;
-      var h = g.mul;
+      var h = g.$b;
       f = g.offset;
       switch (g.hint) {
         case 0:
           this.drawImage(a, b, c, d, e, 0, 0, d, e);
-          this.applyColorTransformPixels(this.currentCtx, g, d, e);
+          this.PL(this.bb, g, d, e);
           break;
         case 1:
-          this.currentCtx.globalAlpha = g.mul.w;
+          this.bb.globalAlpha = g.$b.w;
           this.drawImage(a, b, c, d, e, 0, 0, d, e);
           break;
         case 2:
           var m = 1 - h.x;
           f = f.x == 0 ? h = g = 0 : h = g = 1;
-          this.setFillStyle("rgba(" + ((g * 255 | 0) & 255) + "," + ((h * 255 | 0) & 255) + "," + ((f * 255 | 0) & 255) + "," + m.toFixed(2) + ")");
+          this.Vi("rgba(" + ((g * 255 | 0) & 255) + "," + ((h * 255 | 0) & 255) + "," + ((f * 255 | 0) & 255) + "," + m.toFixed(2) + ")");
           this.fillRect(0, 0, d, e);
-          this.setCompositeOp("destination-atop");
+          this.Km("destination-atop");
           this.drawImage(a, b, c, d, e, 0, 0, d, e);
           break;
         case 3:
@@ -687,34 +685,34 @@
           g = f.x / m;
           h = f.y / m;
           f = f.z / m;
-          this.setFillStyle("rgba(" + ((g * 255 | 0) & 255) + "," + ((h * 255 | 0) & 255) + "," + ((f * 255 | 0) & 255) + "," + m.toFixed(2) + ")");
+          this.Vi("rgba(" + ((g * 255 | 0) & 255) + "," + ((h * 255 | 0) & 255) + "," + ((f * 255 | 0) & 255) + "," + m.toFixed(2) + ")");
           this.fillRect(0, 0, d, e);
-          this.setCompositeOp("destination-atop");
+          this.Km("destination-atop");
           this.drawImage(a, b, c, d, e, 0, 0, d, e);
       }
-      a = this.currentCtx.canvas;
-      this.selectCtx(0);
+      a = this.bb.canvas;
+      this.rp(0);
       return a;
     }
-    composeMultiplyLayer(a, b, c, d, e) {
-      this.selectCtx(2);
-      this.resizeOffscreen(d, e);
-      this.setFillStyle(vLS000000);
+    Kz(a, b, c, d, e) {
+      this.rp(2);
+      this.ex(d, e);
+      this.Vi(vLS000000);
       this.fillRect(0, 0, d, e);
-      this.currentCtx.globalAlpha = this.globalAlpha;
-      this.setCompositeOp("screen");
+      this.bb.globalAlpha = this.globalAlpha;
+      this.Km("screen");
       this.drawImage(a, b, c, d, e, 0, 0, d, e);
       this.fillRect(0, 0, d, e);
-      a = this.currentCtx.canvas;
-      this.selectCtx(0);
+      a = this.bb.canvas;
+      this.rp(0);
       return a;
     }
-    applyColorTransformPixels(a, b, c, d) {
+    PL(a, b, c, d) {
       c = a.getImageData(0, 0, c, d);
       d = c.data;
       let e = 0;
       let f = d.length;
-      var g = b.mul;
+      var g = b.$b;
       var h = b.offset;
       b = g.x;
       let m = g.y;
@@ -738,8 +736,8 @@
       }
       a.putImageData(c, 0, 0);
     }
-    setSmoothing(a) {
-      this.currentCtx.imageSmoothingEnabled = a;
+    SD(a) {
+      this.bb.imageSmoothingEnabled = a;
     }
   }
   CanvasRenderer.i = true;
@@ -750,78 +748,78 @@
   class WebGLRenderer extends Renderer {
     constructor() {
       super("webgl");
-      this.gl = null;
-      this.currentAlpha = 1;
-      this.colorTransformValue = new ColorTransform();
-      this.stencilState = this.stencilMask = this.currentProgram = null;
-      this.programsList = new ArrayList();
+      this.R = null;
+      this.ql = 1;
+      this.ai = new ColorTransform();
+      this.iu = this.stencilMask = this.tA = null;
+      this.BM = new ArrayList();
     }
-    attachWindow(a) {
-      super.attachWindow(a);
-      this.gl = a.getContext();
-      this.resetViewport();
+    tp(a) {
+      super.tp(a);
+      this.R = a.getContext();
+      this.Bm();
     }
     clear(a) {
       super.clear();
       if (a == null) {
         a = this.clearColor;
       }
-      this.gl.clearColor(a.x, a.y, a.z, a.w);
-      this.gl.clear(17664);
+      this.R.clearColor(a.x, a.y, a.z, a.w);
+      this.R.clear(17664);
     }
-    beginFrame() {
-      if (!super.beginFrame() || this.gl == null) {
+    Gi() {
+      if (!super.Gi() || this.R == null) {
         return false;
       }
-      this.resetViewport();
+      this.Bm();
       return true;
     }
-    endFrame() {
-      super.endFrame();
+    fi() {
+      super.fi();
     }
-    setViewport(a, b, c, d) {
-      super.setViewport(a, b, c, d);
+    Bk(a, b, c, d) {
+      super.Bk(a, b, c, d);
       if (a == 0 && b == 0 && c == 1 && d == 1) {
-        this.gl.viewport(0, 0, this.window.size.x, this.window.size.y);
-        this.gl.disable(3089);
+        this.R.viewport(0, 0, this.Wb.size.x, this.Wb.size.y);
+        this.R.disable(3089);
       } else {
-        d = this.window;
+        d = this.Wb;
         var e = this.viewport;
         a = d.size.x * e.x | 0;
         b = d.size.x * e.w | 0;
-        c = d.size.y * e.h | 0;
-        d = (this.window.size.y | 0) - c - (d.size.y * e.y | 0);
-        this.gl.viewport(a, d, b, c);
-        this.gl.enable(3089);
-        this.gl.scissor(a, d, b, c);
+        c = d.size.y * e.J | 0;
+        d = (this.Wb.size.y | 0) - c - (d.size.y * e.y | 0);
+        this.R.viewport(a, d, b, c);
+        this.R.enable(3089);
+        this.R.scissor(a, d, b, c);
       }
     }
-    applyAlpha(a) {
-      this.currentAlpha = a.alpha;
+    jx(a) {
+      this.ql = a.Xk;
     }
-    applyCullFace(a) {
-      if (a.enabled) {
-        this.gl.enable(2884);
-        this.gl.frontFace(a.frontCCW ? 2305 : 2304);
-        this.gl.cullFace(1029);
+    QD(a) {
+      if (a.rn) {
+        this.R.enable(2884);
+        this.R.frontFace(a.yL ? 2305 : 2304);
+        this.R.cullFace(1029);
       } else {
-        this.gl.disable(2884);
+        this.R.disable(2884);
       }
     }
-    applyDepth(a) {
-      if (a.enabled) {
-        this.gl.enable(2929);
-        this.gl.depthFunc(WebGLRenderer.DEPTH_FUNCS[a.compareFunc]);
+    PD(a) {
+      if (a.rn) {
+        this.R.enable(2929);
+        this.R.depthFunc(WebGLRenderer.JM[a.zz]);
       } else {
-        this.gl.disable(2929);
-        this.gl.depthFunc(513);
+        this.R.disable(2929);
+        this.R.depthFunc(513);
       }
     }
-    applyBlend(a) {
+    Uw(a) {
       let b = 0;
       let c = 0;
-      if (a.premultiplied) {
-        switch (a.mode) {
+      if (a.QQ) {
+        switch (a.Zg) {
           case 0:
             b = 1;
             c = 0;
@@ -843,11 +841,11 @@
             c = 769;
             break;
           case 5:
-            b = WebGLRenderer.BLEND_FUNCS[a.factorDst];
-            c = WebGLRenderer.BLEND_FUNCS[a.factorSrc];
+            b = WebGLRenderer.nq[a.kE];
+            c = WebGLRenderer.nq[a.wA];
         }
       } else {
-        switch (a.mode) {
+        switch (a.Zg) {
           case 0:
             b = 1;
             c = 0;
@@ -868,12 +866,12 @@
             c = 1;
             break;
           case 5:
-            b = WebGLRenderer.BLEND_FUNCS[a.factorDst];
-            c = WebGLRenderer.BLEND_FUNCS[a.factorSrc];
+            b = WebGLRenderer.nq[a.kE];
+            c = WebGLRenderer.nq[a.wA];
         }
       }
-      this.gl.enable(3042);
-      this.gl.blendFunc(b, c);
+      this.R.enable(3042);
+      this.R.blendFunc(b, c);
       let d;
       switch (a.blendEquation) {
         case 1:
@@ -885,93 +883,93 @@
         case 3:
           d = 32779;
       }
-      this.gl.blendEquation(d);
+      this.R.blendEquation(d);
     }
-    applyColorTransform(a) {
-      this.colorTransformValue = a.transform;
+    Xw(a) {
+      this.ai = a.transform;
     }
-    applyClip(a) {
-      a = a.corners;
-      if (this.stencilState != null && a == null) {
-        this.gl.disable(2960);
+    hx(a) {
+      a = a.Gu;
+      if (this.iu != null && a == null) {
+        this.R.disable(2960);
       }
-      if (this.stencilState == null && a != null) {
-        this.gl.clearStencil(0);
-        this.gl.enable(2960);
+      if (this.iu == null && a != null) {
+        this.R.clearStencil(0);
+        this.R.enable(2960);
         if (this.stencilMask == null) {
           this.stencilMask = new GLFillProgram(this);
         }
-        this.stencilMask.uploadStencil(a);
+        this.stencilMask.ZM(a);
       }
-      this.stencilState = a;
+      this.iu = a;
     }
-    submitBatch(a) {
-      if (this.quadCap == 0) {
-        super.submitBatch(a);
+    Uu(a) {
+      if (this.IP == 0) {
+        super.Uu(a);
       } else {
         var b = a.iterator();
-        var c = b.array[b.idx++];
-        var d = this.programsList;
-        d.reserve(a.count);
+        var c = b.N[b.xe++];
+        var d = this.BM;
+        d.reserve(a.ba);
         d.clear();
-        var e = d.array[d.count++] = c;
-        a = c.stateMaskBits;
+        var e = d.N[d.ba++] = c;
+        a = c.hr;
         var f = c.effect;
         f.update(this);
         this.info.effect = f;
-        for (this.info.spriteData = d; b.idx < b.end;) {
-          c = b.array[b.idx++];
+        for (this.info.Rz = d; b.xe < b.yg;) {
+          c = b.N[b.xe++];
           c.effect.update(this);
           let g = f.type == c.effect.type;
-          if (g = (g = (g = (g = g && f.key == c.effect.key) && (a & 3) == (c.stateMaskBits & 3)) && ((a & 1) > 0 ? e.stateSlots[0].key == c.stateSlots[0].key : true)) && ((a & 2) > 0 ? e.stateSlots[1].key == c.stateSlots[1].key : true)) {
-            d.array[d.count++] = c;
+          if (g = (g = (g = (g = g && f.cb == c.effect.cb) && (a & 3) == (c.hr & 3)) && ((a & 1) > 0 ? e.Jk[0].cb == c.Jk[0].cb : true)) && ((a & 2) > 0 ? e.Jk[1].cb == c.Jk[1].cb : true)) {
+            d.N[d.ba++] = c;
           } else {
-            if (d.count == 1) {
-              this.drawVisual(d.front());
+            if (d.ba == 1) {
+              this.ul(d.front());
             } else {
-              a = d.array[0];
-              a = this.programForFlipped(a.effect.type, a.type);
+              a = d.N[0];
+              a = this.XA(a.effect.type, a.type);
               if (a != null) {
-                a.render(this.info);
+                a.M(this.info);
               } else {
-                a = d.array;
+                a = d.N;
                 f = 0;
-                e = d.count;
+                e = d.ba;
                 while (f < e) {
-                  this.drawVisual(a[f++]);
+                  this.ul(a[f++]);
                 }
               }
             }
             d.clear();
-            e = d.array[d.count++] = c;
-            a = c.stateMaskBits;
+            e = d.N[d.ba++] = c;
+            a = c.hr;
             f = c.effect;
             f.update(this);
             this.info.effect = f;
-            this.info.spriteData = d;
+            this.info.Rz = d;
           }
         }
-        if (d.count > 0) {
-          if (d.count == 1) {
-            this.drawVisual(d.front());
+        if (d.ba > 0) {
+          if (d.ba == 1) {
+            this.ul(d.front());
           } else {
-            b = d.array[0];
-            b = this.programForFlipped(b.effect.type, b.type);
+            b = d.N[0];
+            b = this.XA(b.effect.type, b.type);
             if (b != null) {
-              b.render(this.info);
+              b.M(this.info);
             } else {
-              b = d.array;
+              b = d.N;
               c = 0;
-              d = d.count;
+              d = d.ba;
               while (c < d) {
-                this.drawVisual(b[c++]);
+                this.ul(b[c++]);
               }
             }
           }
         }
       }
     }
-    createNativeTexture(a) {
+    Iv(a) {
       return new WebGLTexture(this, a);
     }
   }
@@ -989,14 +987,14 @@
   });
   class C227 {
     constructor() {
-      this.visualType = this.getVisualType();
-      this.effectType = this.getEffectType();
+      this.Xx = this.kh();
+      this.AA = this.Bc();
     }
-    init() {}
-    getVisualType() {
+    ib() {}
+    kh() {
       return 201;
     }
-    getEffectType() {
+    Bc() {
       throw 8;
     }
   }
@@ -1010,26 +1008,26 @@
     constructor() {
       super();
     }
-    render(a) {
-      var b = a.renderer;
+    M(a) {
+      var b = a.V;
       let c = a.effect;
-      this.ctx2d = a.renderer.window.getContext();
-      this.ctx2d.lineWidth = 1;
-      b.setTransformFromNode(a.visual.worldT);
+      this.$h = a.V.Wb.getContext();
+      this.$h.lineWidth = 1;
+      b.xk(a.va.Fa);
       a = 0;
       for (b = c.points.length; a < b;) {
         var d = a++;
-        this.ctx2d.globalAlpha = c.alphas[d];
-        this.ctx2d.lineWidth = c.radius * 2;
+        this.$h.globalAlpha = c.vn[d];
+        this.$h.lineWidth = c.Z * 2;
         let f = new Path2D();
         let g = c.points[d];
-        d = c.colorLists[d];
+        d = c.Zh[d];
         let h = 0;
         let m = g.length;
         while (h < m) {
           let n = h++;
           var e = d[n];
-          this.ctx2d.strokeStyle = "rgba(" + ((e.x * 255 | 0) & 255) + "," + ((e.y * 255 | 0) & 255) + "," + ((e.z * 255 | 0) & 255) + "," + e.w.toFixed(2) + ")";
+          this.$h.strokeStyle = "rgba(" + ((e.x * 255 | 0) & 255) + "," + ((e.y * 255 | 0) & 255) + "," + ((e.z * 255 | 0) & 255) + "," + e.w.toFixed(2) + ")";
           e = g[n].x;
           let q = g[n].y;
           if (n == 0) {
@@ -1038,10 +1036,10 @@
             f.lineTo(e, q);
           }
         }
-        this.ctx2d.stroke(f);
+        this.$h.stroke(f);
       }
     }
-    getEffectType() {
+    Bc() {
       return 705;
     }
   }
@@ -1054,16 +1052,16 @@
     constructor() {
       super();
     }
-    render(a) {
-      let b = a.renderer;
+    M(a) {
+      let b = a.V;
       var c = a.effect;
-      var d = a.visual;
-      b.setTransformFromNode(a.visual.worldT);
+      var d = a.va;
+      b.xk(a.va.Fa);
       a = c.color;
-      if ((b.renderFlags & 4) > 0) {
-        var e = b.colorTransformValue;
+      if ((b.od & 4) > 0) {
+        var e = b.ai;
         c = c.color;
-        a = e.mul;
+        a = e.$b;
         let f = e.offset;
         e = c.x * a.x + f.x;
         let g = c.y * a.y + f.y;
@@ -1071,15 +1069,15 @@
         c = c.w * a.w + f.w;
         a = new Vec4(e < 0 ? 0 : e > 1 ? 1 : e, g < 0 ? 0 : g > 1 ? 1 : g, h < 0 ? 0 : h > 1 ? 1 : h, c < 0 ? 0 : c > 1 ? 1 : c);
       }
-      b.setGlobalAlpha(b.globalAlpha);
-      b.setFillStyle("rgba(" + ((a.x * 255 | 0) & 255) + "," + ((a.y * 255 | 0) & 255) + "," + ((a.z * 255 | 0) & 255) + "," + a.w.toFixed(2) + ")");
+      b.La(b.globalAlpha);
+      b.Vi("rgba(" + ((a.x * 255 | 0) & 255) + "," + ((a.y * 255 | 0) & 255) + "," + ((a.z * 255 | 0) & 255) + "," + a.w.toFixed(2) + ")");
       d = d.size;
       b.fillRect(0, 0, d.x, d.y);
     }
-    getEffectType() {
+    Bc() {
       return 1205;
     }
-    getVisualType() {
+    kh() {
       return 401;
     }
   }
@@ -1092,28 +1090,28 @@
     constructor() {
       super();
     }
-    render(a) {
-      let b = a.renderer;
+    M(a) {
+      let b = a.V;
       var c = a.effect;
-      var d = b.window.size;
+      var d = b.Wb.size;
       a = d.x;
       d = d.y;
       b.resetTransform();
-      b.setGlobalAlpha(b.globalAlpha);
+      b.La(b.globalAlpha);
       let e = 0;
       let f = 0;
-      let g = c.mesh;
+      let g = c.js;
       if (g != null) {
-        e = g.left;
-        f = g.top;
-        a = g.right - g.left;
-        d = g.bottom - g.top;
+        e = g.A;
+        f = g.D;
+        a = g.B - g.A;
+        d = g.G - g.D;
       }
       c = c.color;
-      b.setFillStyle("rgba(" + ((c.x * 255 | 0) & 255) + "," + ((c.y * 255 | 0) & 255) + "," + ((c.z * 255 | 0) & 255) + "," + c.w.toFixed(2) + ")");
+      b.Vi("rgba(" + ((c.x * 255 | 0) & 255) + "," + ((c.y * 255 | 0) & 255) + "," + ((c.z * 255 | 0) & 255) + "," + c.w.toFixed(2) + ")");
       b.fillRect(e, f, a, d);
     }
-    getEffectType() {
+    Bc() {
       return 305;
     }
   }
@@ -1126,20 +1124,20 @@
     constructor() {
       super();
     }
-    init(a) {
-      super.init(a);
+    ib(a) {
+      super.ib(a);
     }
-    render(a) {
-      let b = a.renderer;
+    M(a) {
+      let b = a.V;
       var c = a.effect;
-      this.ctx2d = a.renderer.window.getContext();
-      b.setTransformFromNode(a.visual.worldT);
+      this.$h = a.V.Wb.getContext();
+      b.xk(a.va.Fa);
       a = 0;
       for (c = c.lt; a < c.length;) {
-        this.drawPathStrip(c[a++]);
+        this.kN(c[a++]);
       }
     }
-    drawPathStrip(a) {
+    kN(a) {
       let b = a[0];
       if (a.length != 0) {
         var c = new Path2D();
@@ -1155,11 +1153,11 @@
           d -= 2;
         }
         c.closePath();
-        this.ctx2d.fillStyle = "#ffffffff";
-        this.ctx2d.fill(c);
+        this.$h.fillStyle = "#ffffffff";
+        this.$h.fill(c);
       }
     }
-    getEffectType() {
+    Bc() {
       return 1105;
     }
   }
@@ -1172,10 +1170,10 @@
     constructor() {
       super();
     }
-    render(a) {
+    M(a) {
       var b = a.effect;
-      a.renderer.setTransformFromNode(a.visual.worldT);
-      a = a.renderer.window.getContext();
+      a.V.xk(a.va.Fa);
+      a = a.V.Wb.getContext();
       a.lineWidth = b.lineWidth;
       a.globalAlpha = 1;
       var c = b.color;
@@ -1183,9 +1181,9 @@
       c = b.Uo;
       let d = Math.PI * 2;
       let e = d / c;
-      let f = b.center.x;
-      let g = b.center.y;
-      b = b.radius;
+      let f = b.C.x;
+      let g = b.C.y;
+      b = b.Z;
       let h = 0;
       while (h < c) {
         var m = h++;
@@ -1198,7 +1196,7 @@
         }
       }
     }
-    getEffectType() {
+    Bc() {
       return 605;
     }
   }
@@ -1211,19 +1209,19 @@
     constructor() {
       super();
     }
-    render(a) {
+    M(a) {
       let b = a.effect;
-      a.renderer.setTransformFromNode(a.visual.worldT);
-      a = a.renderer.window.getContext();
+      a.V.xk(a.va.Fa);
+      a = a.V.Wb.getContext();
       a.lineWidth = b.lineWidth;
-      a.globalAlpha = b.opacity;
+      a.globalAlpha = b.Gr;
       a.strokeStyle = "#ffffff";
       a.beginPath();
-      a.arc(0, 0, b.radius + b.lineWidth / 2, 0, Math.PI * 2, false);
+      a.arc(0, 0, b.Z + b.lineWidth / 2, 0, Math.PI * 2, false);
       a.stroke();
       a.closePath();
     }
-    getEffectType() {
+    Bc() {
       return 905;
     }
   }
@@ -1237,40 +1235,40 @@
     constructor() {
       super();
     }
-    render(a) {
-      let b = a.renderer;
+    M(a) {
+      let b = a.V;
       let c = a.effect;
-      var d = c.texture;
-      if (d.isReady()) {
+      var d = c.Hb;
+      if (d.fr()) {
         var e = d.image.data;
         var f = d.size.x;
         var g = d.size.y;
         var h = b.globalAlpha;
-        b.setSmoothing((d.flags & 8) > 0);
-        if ((b.renderFlags & 4) > 0) {
-          e = b.composeColorTransformLayer(e, 0, 0, f, g);
+        b.SD((d.flags & 8) > 0);
+        if ((b.od & 4) > 0) {
+          e = b.Lz(e, 0, 0, f, g);
         }
-        if ((b.renderFlags & 1) > 0 && b.mode == 0) {
-          e = b.composeMultiplyLayer(e, 0, 0, f, g);
+        if ((b.od & 1) > 0 && b.Zg == 0) {
+          e = b.Kz(e, 0, 0, f, g);
           h = 1;
         }
-        b.setGlobalAlpha(h);
-        b.selectCtx(0);
-        b.setTransformFromNode(a.visual.worldT);
-        g = c.layout.vertices;
-        a = c.texture.frames.byId;
-        d = g.array;
+        b.La(h);
+        b.rp(0);
+        b.xk(a.va.Fa);
+        g = c.Og.Te;
+        a = c.Hb.hc.Bl;
+        d = g.N;
         f = 0;
-        g = (g.count / 5 | 0) * 5;
+        g = (g.ba / 5 | 0) * 5;
         h = c.size;
         var m = h.x;
         var n = h.y;
-        h = c.padding;
+        h = c.Sj;
         var q = m - h;
         var p = n - h;
         var v = null;
         if (c.clip) {
-          v = b.currentCtx;
+          v = b.bb;
           v.save();
           v.rect(h, h, m - h * 2, n - h * 2);
           v.clip();
@@ -1281,7 +1279,7 @@
           let A = d[f++];
           let D = d[f++];
           let B = f++;
-          u = a[u].uvOffset;
+          u = a[u].Od;
           if (m) {
             if (A > p) {
               break;
@@ -1290,7 +1288,7 @@
             break;
           }
           if (n + D > h) {
-            b.drawImage(e, u.x, u.y, u.w, u.h, n, A, D, d[B]);
+            b.drawImage(e, u.x, u.y, u.w, u.J, n, A, D, d[B]);
           }
         }
         if (c.clip) {
@@ -1298,10 +1296,10 @@
         }
       }
     }
-    getEffectType() {
+    Bc() {
       return 505;
     }
-    getVisualType() {
+    kh() {
       return 401;
     }
   }
@@ -1313,14 +1311,14 @@
   class CanvasPathRenderer extends C227 {
     constructor() {
       super();
-      this.tmpColor = new Vec4(0, 0, 0, 0);
-      this.smoothing = false;
+      this.HR = new Vec4(0, 0, 0, 0);
+      this.zS = false;
     }
-    render(a) {
+    M(a) {
       var b = a.effect;
-      let c = a.renderer;
-      let d = (c.renderFlags & 1) > 0 && c.mode == 0 ? 1 : 0;
-      let e = (c.renderFlags & 4) > 0 ? c.colorTransformValue : null;
+      let c = a.V;
+      let d = (c.od & 1) > 0 && c.Zg == 0 ? 1 : 0;
+      let e = (c.od & 4) > 0 ? c.ai : null;
       let f = b.AQ;
       let g = false;
       let h = false;
@@ -1333,11 +1331,11 @@
       let A;
       b = b.Ku;
       if (b != 0) {
-        var D = c.currentCtx;
-        if (this.smoothing) {
+        var D = c.bb;
+        if (this.zS) {
           c.resetTransform();
         } else {
-          a = c.compute2DTransform(a.visual.worldT);
+          a = c.oi(a.va.Fa);
           D.setTransform(a.m11, a.m21, a.m12, a.m22, a.m14, a.m24);
         }
         a = false;
@@ -1359,25 +1357,25 @@
               B.closePath();
               break;
             case 4:
-              c.setStrokeStyle(this.formatColor(p[u++], Math.min(p[u++] + d, 1), e));
+              c.fE(this.TA(p[u++], Math.min(p[u++] + d, 1), e));
               n = p[u++] | 0;
               D.lineWidth = n;
               m = h == 0;
               g = true;
               break;
             case 5:
-              c.setFillStyle(this.formatColor(p[u++], Math.min(p[u++] + d, 1), e));
+              c.Vi(this.TA(p[u++], Math.min(p[u++] + d, 1), e));
               m = g;
               h = true;
               break;
             case 6:
               g = false;
-              c.setStrokeStyle(vLS000000);
+              c.fE(vLS000000);
               D.lineWidth = 1;
               break;
             case 7:
               h = false;
-              c.setFillStyle(vLS000000);
+              c.Vi(vLS000000);
               break;
             case 8:
               K = g && f && (n & 1) == 1;
@@ -1413,17 +1411,17 @@
         }
       }
     }
-    getEffectType() {
+    Bc() {
       return 1005;
     }
-    formatColor(a, b, c) {
+    TA(a, b, c) {
       if (c != null) {
-        var d = this.tmpColor;
+        var d = this.HR;
         d.x = (a >> 16 & 255) / 255;
         d.y = (a >> 8 & 255) / 255;
         d.z = (a & 255) / 255;
         d.w = b;
-        a = c.mul;
+        a = c.$b;
         c = c.offset;
         let e = d;
         d = e.x * a.x + c.x;
@@ -1434,7 +1432,7 @@
         return "rgba(" + ((d.x * 255 | 0) & 255) + "," + ((d.y * 255 | 0) & 255) + "," + ((d.z * 255 | 0) & 255) + "," + d.w.toFixed(2) + ")";
       }
       a |= (b * 255 | 0) << 24;
-      c = HexLookup.BYTES;
+      c = HexLookup.Dy;
       return "#" + c[a >> 16 & 255] + c[a >> 8 & 255] + c[a & 255] + c[a >>> 24];
     }
   }

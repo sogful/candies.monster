@@ -10,39 +10,39 @@
   });
   class AnimSequence {
     constructor(a, b) {
-      this.frameCount = a.length;
-      this.data = Array(this.frameCount);
+      this.ef = a.length;
+      this.data = Array(this.ef);
       let c = 0;
-      while (c < this.frameCount) {
+      while (c < this.ef) {
         this.data[c] = a[c].data;
         ++c;
       }
       switch (b) {
         case 0:
-          this.timestamps = Array(this.frameCount + 1);
-          this.totalDuration = 0;
-          this.uniformDuration = a[0].time;
+          this.Va = Array(this.ef + 1);
+          this.dj = 0;
+          this.zq = a[0].time;
           c = 2;
-          for (b = a[1].time; c < this.frameCount;) {
+          for (b = a[1].time; c < this.ef;) {
             if (a[c++].time != b) {
-              this.uniformDuration = 0;
+              this.zq = 0;
               break;
             }
           }
-          for (c = 0; c < this.frameCount;) {
-            this.timestamps[c] = this.totalDuration;
-            this.totalDuration += a[c].time;
+          for (c = 0; c < this.ef;) {
+            this.Va[c] = this.dj;
+            this.dj += a[c].time;
             ++c;
           }
-          this.timestamps[c] = this.totalDuration;
+          this.Va[c] = this.dj;
           break;
         case 1:
-          this.timestamps = Array(this.frameCount);
-          this.totalDuration = a[this.frameCount - 1].time;
-          this.uniformDuration = null;
+          this.Va = Array(this.ef);
+          this.dj = a[this.ef - 1].time;
+          this.zq = null;
           c = 0;
-          while (c < this.frameCount) {
-            this.timestamps[c] = a[c].time;
+          while (c < this.ef) {
+            this.Va[c] = a[c].time;
             ++c;
           }
       }
@@ -54,48 +54,48 @@
   });
   class AnimComponent {
     constructor() {
-      this.playing = false;
+      this.Yt = false;
       this.object = null;
-      this.paused = false;
-      this.alive = true;
-      this.dying = false;
-      this.time = 0;
-      this.rate = 1;
-      this.startTime = this.endTime = this.timeOffset = 0;
-      this.loopMode = 1;
+      this.UB = false;
+      this.Iz = true;
+      this.sl = false;
+      this.vd = 0;
+      this.Hx = 1;
+      this.he = this.Bg = this.uc = 0;
+      this.yh = 1;
       this.next = null;
       this.type = this.typeId();
-      AnimComponent.ACTIVE++;
+      AnimComponent.ty++;
     }
-    setPlaying(a) {
-      this.playing = a;
+    Mm(a) {
+      this.Yt = a;
     }
     free() {
       if (this.object != null) {
         this.object.detach(this);
         this.object = null;
       }
-      this.alive = false;
-      AnimComponent.ACTIVE--;
+      this.Iz = false;
+      AnimComponent.ty--;
     }
-    stopAlive() {
-      if (!this.paused) {
-        this.setPlaying(false);
-        this.dying = true;
-        this.time = 0;
+    Bp() {
+      if (!this.UB) {
+        this.Mm(false);
+        this.sl = true;
+        this.vd = 0;
       }
     }
     update(a) {
-      if (this.playing) {
-        this.time += a * this.rate;
+      if (this.Yt) {
+        this.vd += a * this.Hx;
         if (this.object == null) {
           return false;
         } else {
-          return this.tick(this.time);
+          return this.om(this.vd);
         }
-      } else if (this.dying) {
-        this.time += a;
-        if (this.time > AnimComponent.$F) {
+      } else if (this.sl) {
+        this.vd += a;
+        if (this.vd > AnimComponent.$F) {
           this.free();
         }
         return true;
@@ -103,11 +103,11 @@
         return false;
       }
     }
-    computeWrappedTime() {
-      var a = this.time + this.timeOffset;
-      if (this.loopMode == 0) {
-        var b = this.startTime;
-        var c = this.endTime;
+    lv() {
+      var a = this.vd + this.uc;
+      if (this.yh == 0) {
+        var b = this.he;
+        var c = this.Bg;
         if (a < b) {
           return b;
         } else if (a > c) {
@@ -116,20 +116,20 @@
           return a;
         }
       }
-      b = this.endTime - this.startTime;
+      b = this.Bg - this.he;
       if (b > 0) {
-        c = (a - this.startTime) / b;
+        c = (a - this.he) / b;
         a = Math.floor(c);
         c -= a;
-        if (this.loopMode == 1) {
-          return this.startTime + c * b;
+        if (this.yh == 1) {
+          return this.he + c * b;
         } else if ((a & 1) == 0) {
-          return this.startTime + c * b;
+          return this.he + c * b;
         } else {
-          return this.endTime - c * b;
+          return this.Bg - c * b;
         }
       } else {
-        return this.startTime;
+        return this.he;
       }
     }
     typeId() {
@@ -145,65 +145,65 @@
   class AnimController extends AnimComponent {
     constructor() {
       super();
-      this.anim = null;
+      this.Xa = null;
       this.frame = -1;
-      this.endIndex = this.startIndex = this.repeatsLeft = 0;
-      this.frameCache = -1;
-      this.onCompleteCb = this.onFrameCb = null;
+      this.Oo = this.fm = this.Iw = 0;
+      this.Bi = -1;
+      this.Sq = this.Rq = null;
     }
     free() {
-      this.onCompleteCb = this.onFrameCb = this.anim = null;
+      this.Sq = this.Rq = this.Xa = null;
       super.free();
     }
     play(a, b, c) {
       if (b == null) {
         b = 0;
       }
-      this.anim = a;
+      this.Xa = a;
       if (c == null) {
-        c = a.frameCount - 1;
+        c = a.ef - 1;
       }
-      this.startIndex = b;
-      this.endIndex = c;
-      this.startTime = a.timestamps[this.startIndex];
-      this.endTime = a.timestamps[this.endIndex + 1];
-      this.time = this.startTime;
-      this.setPlaying(true);
-      this.dying = false;
+      this.fm = b;
+      this.Oo = c;
+      this.he = a.Va[this.fm];
+      this.Bg = a.Va[this.Oo + 1];
+      this.vd = this.he;
+      this.Mm(true);
+      this.sl = false;
       this.frame = -1;
-      this.frameCache = this.startIndex;
-      this.tick(this.time);
+      this.Bi = this.fm;
+      this.om(this.vd);
       return this;
     }
-    onFrame(a) {
-      this.onFrameCb = a;
+    YR(a) {
+      this.Rq = a;
     }
-    onComplete(a) {
-      this.onCompleteCb = a;
+    ZR(a) {
+      this.Sq = a;
     }
     stop() {
-      this.anim = null;
-      this.setPlaying(false);
-      this.repeatsLeft = 0;
-      this.stopAlive();
+      this.Xa = null;
+      this.Mm(false);
+      this.Iw = 0;
+      this.Bp();
       return this;
     }
-    tick() {
-      var a = this.computeWrappedTime();
+    om() {
+      var a = this.lv();
       let b;
-      let c = this.anim.frameCount;
+      let c = this.Xa.ef;
       if (c == 1) {
-        b = this.frameCache = 0;
-      } else if (a >= this.anim.totalDuration) {
-        b = this.frameCache = c - 1;
+        b = this.Bi = 0;
+      } else if (a >= this.Xa.dj) {
+        b = this.Bi = c - 1;
       } else {
-        if (this.anim.uniformDuration > 0) {
-          b = a / this.anim.uniformDuration | 0;
+        if (this.Xa.zq > 0) {
+          b = a / this.Xa.zq | 0;
         } else {
           b = 0;
-          let d = this.anim.timestamps;
-          if (a >= d[this.frameCache] && a <= d[this.frameCache + 1]) {
-            b = this.frameCache;
+          let d = this.Xa.Va;
+          if (a >= d[this.Bi] && a <= d[this.Bi + 1]) {
+            b = this.Bi;
           } else if (c < 16) {
             let e = 0;
             while (e <= c) {
@@ -214,47 +214,47 @@
               ++e;
             }
           } else {
-            b = NativeArray.binarySearch(d, a, c - 1);
+            b = NativeArray.WL(d, a, c - 1);
             if (b < 0) {
               b = ~b;
               --b;
             }
           }
         }
-        this.frameCache = b;
+        this.Bi = b;
       }
-      if (b < this.startIndex) {
-        b = this.startIndex;
-      } else if (b > this.endIndex) {
-        b = this.endIndex;
+      if (b < this.fm) {
+        b = this.fm;
+      } else if (b > this.Oo) {
+        b = this.Oo;
       }
       if (b != this.frame) {
         this.frame = b;
-        this.emitFrame(this.anim.data[b]);
-        if (b >= this.endIndex && this.loopMode == 0) {
-          if (--this.repeatsLeft > 0) {
-            this.time = this.startTime;
+        this.bQ(this.Xa.data[b]);
+        if (b >= this.Oo && this.yh == 0) {
+          if (--this.Iw > 0) {
+            this.vd = this.he;
             this.frame = -1;
-            this.frameCache = this.startIndex;
-            this.tick(this.time);
+            this.Bi = this.fm;
+            this.om(this.vd);
           } else {
-            this.stopAlive();
-            a = this.anim;
-            this.anim = null;
-            this.emitComplete(a);
+            this.Bp();
+            a = this.Xa;
+            this.Xa = null;
+            this.cQ(a);
           }
         }
       }
       return true;
     }
-    emitFrame(a) {
-      if (this.onFrameCb != null) {
-        this.onFrameCb(this.anim, a, this.frame);
+    bQ(a) {
+      if (this.Rq != null) {
+        this.Rq(this.Xa, a, this.frame);
       }
     }
-    emitComplete(a) {
-      if (this.onCompleteCb != null) {
-        this.onCompleteCb(a);
+    cQ(a) {
+      if (this.Sq != null) {
+        this.Sq(a);
       }
     }
     typeId() {
@@ -268,7 +268,7 @@
   });
   class SpriteAnimator {
     constructor(a) {
-      this.sprite = a;
+      this.U = a;
       this.controllers = Array(6);
       for (a = 0; a < 6;) {
         this.controllers[a++] = null;
@@ -283,7 +283,7 @@
             c.free();
           }
         }
-        this.sprite = this.controllers = null;
+        this.U = this.controllers = null;
       }
     }
     play(a, b) {
@@ -295,8 +295,8 @@
       }
       this.start(a, b ? 2 : 1);
     }
-    isPlaying() {
-      return this.current.anim != null;
+    Dc() {
+      return this.current.Xa != null;
     }
     stop() {
       let a = 0;
@@ -315,7 +315,7 @@
       let e = 0;
       while (e < 6) {
         let f = e++;
-        let g = a.compileFrames();
+        let g = a.WN();
         if (g[f] == null) {
           continue;
         }
@@ -325,29 +325,29 @@
           let n;
           switch (f) {
             case 0:
-              n = cachedBind(this, this.applyScaleX);
+              n = cachedBind(this, this.hS);
               break;
             case 1:
-              n = cachedBind(this, this.applyScaleY);
+              n = cachedBind(this, this.iS);
               break;
             case 2:
-              n = cachedBind(this, this.rotKey);
+              n = cachedBind(this, this.yk);
               break;
             case 3:
-              n = cachedBind(this, this.applyX);
+              n = cachedBind(this, this.cS);
               break;
             case 4:
-              n = cachedBind(this, this.applyY);
+              n = cachedBind(this, this.dS);
               break;
             case 5:
-              n = cachedBind(this, this.alphaKey);
+              n = cachedBind(this, this.La);
           }
-          h.onFrameCb = n;
-          h.paused = true;
-          this.sprite.node.attachAnim(h);
+          h.Yo = n;
+          h.UB = true;
+          this.U.u.lq(h);
           this.controllers[f] = h;
         }
-        let m = g[f].totalDuration;
+        let m = g[f].dj;
         if (m > d) {
           d = m;
           this.current = h;
@@ -355,31 +355,31 @@
         h.play(g[f], b);
       }
       if (c != null) {
-        this.current.onDoneCb = function () {
+        this.current.ik = function () {
           c(a);
         };
       }
     }
-    applyScaleX(a, b, c) {
-      this.sprite.setScaleX(this.lerp(a, b, c));
+    hS(a, b, c) {
+      this.U.setScaleX(this.Nl(a, b, c));
     }
-    applyScaleY(a, b, c) {
-      this.sprite.setScaleY(this.lerp(a, b, c));
+    iS(a, b, c) {
+      this.U.setScaleY(this.Nl(a, b, c));
     }
-    rotKey(a, b, c) {
-      this.sprite.setRotation(this.lerp(a, b, c));
+    yk(a, b, c) {
+      this.U.la(this.Nl(a, b, c));
     }
-    applyX(a, b, c) {
-      this.sprite.setX(this.lerp(a, b, c));
+    cS(a, b, c) {
+      this.U.setX(this.Nl(a, b, c));
     }
-    applyY(a, b, c) {
-      this.sprite.setY(this.lerp(a, b, c));
+    dS(a, b, c) {
+      this.U.setY(this.Nl(a, b, c));
     }
-    alphaKey(a, b, c) {
-      this.sprite.setAlpha(this.lerp(a, b, c));
+    La(a, b, c) {
+      this.U.W(this.Nl(a, b, c));
     }
-    lerp(a, b, c) {
-      c = Easing.poly(a.easingFactor * 100)(c);
+    Nl(a, b, c) {
+      c = Easing.poly(a.aN * 100)(c);
       a = a.value;
       return a + (b.value - a) * c;
     }
@@ -390,116 +390,116 @@
   });
   class AnimTimeline {
     constructor() {
-      this.compiledChannels = null;
+      this.fc = null;
       let a = [];
       let b = 0;
       while (b < 6) {
         ++b;
         a.push(0);
       }
-      this.timestamps = a;
+      this.Va = a;
       this.frames = [];
     }
-    scaleXKey(a, b, c) {
+    Ms(a, b, c) {
       if (c == null) {
         c = 0;
       }
-      this.pushKey(0, a, b, c);
+      this.qj(0, a, b, c);
     }
-    scaleYKey(a, b, c) {
+    Ns(a, b, c) {
       if (c == null) {
         c = 0;
       }
-      this.pushKey(1, a, b, c);
+      this.qj(1, a, b, c);
     }
     setScale(a, b, c, d) {
       if (d == null) {
         d = 0;
       }
-      this.scaleXKey(a, c, d);
-      this.scaleYKey(b, c, d);
+      this.Ms(a, c, d);
+      this.Ns(b, c, d);
     }
-    scaleKey(a, b) {
+    vc(a, b) {
       var c;
       if (c == null) {
         c = 0;
       }
-      this.scaleXKey(a, b, c);
-      this.scaleYKey(a, b, c);
+      this.Ms(a, b, c);
+      this.Ns(a, b, c);
     }
-    rotKey(a, b, c) {
+    yk(a, b, c) {
       if (c == null) {
         c = 0;
       }
-      this.pushKey(2, a, b, c);
+      this.qj(2, a, b, c);
     }
-    xKey(a, b, c) {
+    hE(a, b, c) {
       if (c == null) {
         c = 0;
       }
-      this.pushKey(3, a, b, c);
+      this.qj(3, a, b, c);
     }
-    yKey(a, b, c) {
+    iE(a, b, c) {
       if (c == null) {
         c = 0;
       }
-      this.pushKey(4, a, b, c);
+      this.qj(4, a, b, c);
     }
-    posKey(a, b, c, d) {
+    Ch(a, b, c, d) {
       if (d == null) {
         d = 0;
       }
-      this.xKey(a, c, d);
-      this.yKey(b, c, d);
+      this.hE(a, c, d);
+      this.iE(b, c, d);
     }
-    alphaKey(a, b, c) {
+    La(a, b, c) {
       if (c == null) {
         c = 0;
       }
-      this.pushKey(5, a, b, c);
+      this.qj(5, a, b, c);
     }
-    relScaleKey(a, b, c) {
+    gq(a, b, c) {
       var d;
       if (d == null) {
         d = 0;
       }
-      let e = this.timestamps[0];
-      this.scaleXKey(a, e, d);
-      this.timestamps[0] += c;
-      e = this.timestamps[1];
-      this.scaleYKey(b, e, d);
-      this.timestamps[1] += c;
+      let e = this.Va[0];
+      this.Ms(a, e, d);
+      this.Va[0] += c;
+      e = this.Va[1];
+      this.Ns(b, e, d);
+      this.Va[1] += c;
     }
-    relScaleUniKey(a, b, c) {
+    tn(a, b, c) {
       if (c == null) {
         c = 0;
       }
-      let d = this.timestamps[0];
-      this.scaleXKey(a, d, c);
-      this.timestamps[0] += b;
-      d = this.timestamps[1];
-      this.scaleYKey(a, d, c);
-      this.timestamps[1] += b;
+      let d = this.Va[0];
+      this.Ms(a, d, c);
+      this.Va[0] += b;
+      d = this.Va[1];
+      this.Ns(a, d, c);
+      this.Va[1] += b;
     }
-    relPosKey(a, b) {
+    lu(a, b) {
       var c;
       if (c == null) {
         c = 0;
       }
-      let d = this.timestamps[3];
-      this.xKey(0, d, c);
-      this.timestamps[3] += b;
-      d = this.timestamps[4];
-      this.yKey(a, d, c);
-      this.timestamps[4] += b;
+      let d = this.Va[3];
+      this.hE(0, d, c);
+      this.Va[3] += b;
+      d = this.Va[4];
+      this.iE(a, d, c);
+      this.Va[4] += b;
     }
-    pushKey(a, b, c, d) {
+    qj(a, b, c, d) {
       this.frames.push(new TimelineEvent(a, c, new KeyValueAN(b, d)));
-      this.compiledChannels = null;
+      this.fc = null;
     }
-    compileFrames() {
-      if (this.compiledChannels == null) {
-        this.compiledChannels = [];
+    WN() {
+      if (this.fc == null) {
+        this.fc = [];
         let d = 0;
         while (d < 6) {
           let e = d++;
@@ -508,12 +508,12 @@
           for (var b = 0; b < a.length;) {
             var c = a[b];
             ++b;
-            if (c.channel == e) {
+            if (c.aR == e) {
               f.push(c);
             }
           }
           if (f.length == 0) {
-            this.compiledChannels[e] = null;
+            this.fc[e] = null;
           } else {
             f.sort(function (g, h) {
               return g.time * 100000 - h.time * 100000 | 0;
@@ -535,13 +535,13 @@
             for (c = f.length; b < c;) {
               let g = b++;
               let h = f[g];
-              a[g] = new AnimFrameRef(h.keyValue, h.time);
+              a[g] = new AnimFrameRef(h.WO, h.time);
             }
-            this.compiledChannels[e] = new AnimSequence(a, 1);
+            this.fc[e] = new AnimSequence(a, 1);
           }
         }
       }
-      return this.compiledChannels;
+      return this.fc;
     }
     static parse(a) {
       a = a.replace(RegExp("\\s", "g"), "");
@@ -565,9 +565,9 @@
         let q = false;
         while (d.match(n)) {
           q = true;
-          n = d.matched(1);
-          let p = parseFloat(d.matched(2));
-          let v = d.matched(3);
+          n = d.Zc(1);
+          let p = parseFloat(d.Zc(2));
+          let v = d.Zc(3);
           switch (n) {
             case "p":
               m.push(4);
@@ -581,13 +581,13 @@
               m.push(c[n]);
           }
           while (m.length > 0) {
-            b.pushKey(m.pop(), p, h, v == "<" ? -100 : v == ">" ? 100 : 0);
+            b.qj(m.pop(), p, h, v == "<" ? -100 : v == ">" ? 100 : 0);
           }
-          n = d.matchedRight();
+          n = d.HP();
         }
         if (!q) {
           e.match(n);
-          h = parseFloat(e.matched(1));
+          h = parseFloat(e.Zc(1));
         }
       }
       return b;
@@ -601,42 +601,42 @@
   class AnimSequenceCtl extends AnimComponent {
     constructor() {
       super();
-      this.onFrameCb = this.onDoneCb = null;
+      this.Yo = this.ik = null;
       this.lastIndex = 0;
-      this.anim = null;
+      this.Xa = null;
     }
     free() {
-      this.onFrameCb = this.onDoneCb = null;
+      this.Yo = this.ik = null;
       super.free();
     }
     play(a, b) {
       if (b == null) {
         b = 0;
       }
-      this.anim = a;
-      this.loopMode = b;
-      this.startTime = this.time = this.lastIndex = 0;
-      this.endTime = a.totalDuration;
-      this.setPlaying(true);
-      this.dying = false;
-      this.tick(0);
+      this.Xa = a;
+      this.yh = b;
+      this.he = this.vd = this.lastIndex = 0;
+      this.Bg = a.dj;
+      this.Mm(true);
+      this.sl = false;
+      this.om(0);
     }
     stop() {
-      this.onDoneCb = null;
-      this.setPlaying(false);
-      this.anim = null;
-      this.stopAlive();
+      this.ik = null;
+      this.Mm(false);
+      this.Xa = null;
+      this.Bp();
     }
-    tick(a) {
-      var b = this.computeWrappedTime();
-      let c = this.anim.timestamps;
+    om(a) {
+      var b = this.lv();
+      let c = this.Xa.Va;
       let d;
       var e;
       if (b <= c[0]) {
         d = e = this.lastIndex = b = 0;
-      } else if (b >= c[this.anim.frameCount - 1]) {
+      } else if (b >= c[this.Xa.ef - 1]) {
         b = 0;
-        d = e = this.lastIndex = this.anim.frameCount - 1;
+        d = e = this.lastIndex = this.Xa.ef - 1;
       } else if (b > c[this.lastIndex]) {
         for (e = this.lastIndex + 1; b >= c[e];) {
           this.lastIndex = e;
@@ -656,11 +656,11 @@
         b = 0;
         d = e = this.lastIndex;
       }
-      if (this.onFrameCb != null) {
-        this.onFrameCb(this.anim.data[d], this.anim.data[e], b);
+      if (this.Yo != null) {
+        this.Yo(this.Xa.data[d], this.Xa.data[e], b);
       }
-      if (a > this.endTime && this.loopMode == 0) {
-        a = this.onDoneCb;
+      if (a > this.Bg && this.yh == 0) {
+        a = this.ik;
         this.stop();
         if (a != null) {
           a();
@@ -682,33 +682,33 @@
       super();
     }
     free() {
-      this.onComplete = this.onProgress = this.easing = null;
+      this.uh = this.Cg = this.easing = null;
       super.free();
     }
-    addTween(a, b, c, d, e) {
+    Ih(a, b, c, d, e) {
       this.key = a;
-      this.startValue = b;
-      this.endValue = c;
+      this.FS = b;
+      this.zA = c;
       this.easing = e;
-      this.startTime = this.time = 0;
-      this.endTime = d;
-      this.setPlaying(true);
-      this.dying = false;
+      this.he = this.vd = 0;
+      this.Bg = d;
+      this.Mm(true);
+      this.sl = false;
     }
     stop() {
-      this.onProgress = this.onComplete = null;
-      this.stopAlive();
+      this.Cg = this.uh = null;
+      this.Bp();
     }
-    tick(a) {
-      if (a >= this.endTime && this.loopMode == 0) {
-        this.stopAlive();
-        this.onProgress(this.key, this.endValue);
-        this.onComplete(this.key);
+    om(a) {
+      if (a >= this.Bg && this.yh == 0) {
+        this.Bp();
+        this.Cg(this.key, this.zA);
+        this.uh(this.key);
         return false;
       }
-      a = this.startValue;
-      a += (this.endValue - a) * this.easing((this.computeWrappedTime() - this.startTime) / (this.endTime - this.startTime));
-      this.onProgress(this.key, a);
+      a = this.FS;
+      a += (this.zA - a) * this.easing((this.lv() - this.he) / (this.Bg - this.he));
+      this.Cg(this.key, a);
       return true;
     }
     typeId() {
@@ -731,57 +731,57 @@
     constructor() {
       super();
     }
-    setSource(a) {
-      this.source = a;
-      this.state = StringUtil.isWhitespace(this.source, 0) ? 1 : 0;
-      this.tokenStart = this.pos = 0;
-      this.done = this.source.length == 0;
+    mS(a) {
+      this.Ed = a;
+      this.state = StringUtil.Dr(this.Ed, 0) ? 1 : 0;
+      this.Vl = this.g = 0;
+      this.Wu = this.Ed.length == 0;
     }
-    nextToken() {
-      if (this.done) {
+    vC() {
+      if (this.Wu) {
         return null;
       }
-      let a = this.source.length;
+      let a = this.Ed.length;
       let b;
-      while (this.pos < a) {
-        if (b = this.source.charAt(this.pos) == "\n") {
-          this.pos++;
-          this.tokenStart = this.pos;
-          this.state = StringUtil.isWhitespace(this.source, 0) ? 1 : 0;
+      while (this.g < a) {
+        if (b = this.Ed.charAt(this.g) == "\n") {
+          this.g++;
+          this.Vl = this.g;
+          this.state = StringUtil.Dr(this.Ed, 0) ? 1 : 0;
           return {
-            position: this.tokenStart,
-            required: this.pos != a
+            position: this.Vl,
+            required: this.g != a
           };
         }
         switch (this.state) {
           case 0:
-            if (StringUtil.isWhitespace(this.source, this.pos)) {
+            if (StringUtil.Dr(this.Ed, this.g)) {
               this.state = 1;
             }
-            this.pos++;
+            this.g++;
             break;
           case 1:
-            if (StringUtil.isWhitespace(this.source, this.pos)) {
-              this.pos++;
+            if (StringUtil.Dr(this.Ed, this.g)) {
+              this.g++;
             } else {
-              this.tokenStart = this.pos;
+              this.Vl = this.g;
               this.state = 0;
               return {
-                position: this.tokenStart,
+                position: this.Vl,
                 required: false
               };
             }
         }
-        if (this.pos == a) {
-          this.done = true;
-          this.tokenStart = this.pos;
+        if (this.g == a) {
+          this.Wu = true;
+          this.Vl = this.g;
           return {
-            position: this.tokenStart,
+            position: this.Vl,
             required: false
           };
         }
       }
-      this.done = true;
+      this.Wu = true;
       return null;
     }
   }
@@ -794,7 +794,7 @@
   class KeyValueAN {
     constructor(a, b) {
       this.value = a;
-      this.easingFactor = b;
+      this.aN = b;
     }
   }
   KeyValueAN.i = true;
@@ -803,9 +803,9 @@
   });
   class TimelineEvent {
     constructor(a, b, c) {
-      this.channel = a;
+      this.aR = a;
       this.time = b;
-      this.keyValue = c;
+      this.WO = c;
     }
   }
   TimelineEvent.i = true;
@@ -814,38 +814,38 @@
   });
   class SpriteTween {
     constructor(a) {
-      this.sprite = a;
+      this.U = a;
       this.channels = 0;
-      this.callbacks = [];
+      this.Xu = [];
       this.repeat = 0;
       this.easing = Easing.linear();
     }
     x(a, b, c, d, e) {
-      this.addTween(0, a, b, c, d, e);
+      this.Ih(0, a, b, c, d, e);
       return this;
     }
     y(a, b, c, d, e) {
-      this.addTween(1, a, b, c, d, e);
+      this.Ih(1, a, b, c, d, e);
       return this;
     }
-    xy(a, b) {
-      this.addTween(0, a, 0.1, undefined, null);
-      this.addTween(1, b, 0.1, undefined, null);
+    tF(a, b) {
+      this.Ih(0, a, 0.1, undefined, null);
+      this.Ih(1, b, 0.1, undefined, null);
     }
     scale(a, b, c, d, e) {
-      this.addTween(4, a, b, c, d, e);
+      this.Ih(4, a, b, c, d, e);
       return this;
     }
     rotation(a, b, c, d, e) {
-      this.addTween(5, a, b, c, d, e);
+      this.Ih(5, a, b, c, d, e);
       return this;
     }
     alpha(a, b, c, d, e) {
-      this.addTween(6, a, b, c, d, e);
+      this.Ih(6, a, b, c, d, e);
       return this;
     }
-    stopAll() {
-      let a = this.sprite.node.controllers;
+    IS() {
+      let a = this.U.u.controllers;
       while (a != null) {
         let b = a.next;
         if (a.type == 203) {
@@ -855,55 +855,55 @@
       }
       this.channels = 0;
     }
-    addTween(a, b, c, d, e, f) {
+    Ih(a, b, c, d, e, f) {
       let g;
       switch (a) {
         case 0:
-          g = this.sprite.getX();
+          g = this.U.getX();
           break;
         case 1:
-          g = this.sprite.getY();
+          g = this.U.getY();
           break;
         case 2:
-          g = this.sprite.scaleX;
+          g = this.U.Ra;
           break;
         case 3:
-          g = this.sprite.scaleY;
+          g = this.U.ed;
           break;
         case 4:
-          g = this.sprite.scaleX;
+          g = this.U.Ra;
           break;
         case 5:
-          g = this.sprite.rotation;
+          g = this.U.Zd;
           break;
         case 6:
-          g = this.sprite.alpha;
+          g = this.U.Uc;
       }
-      let h = this.getOrCreateTrack(a);
-      h.addTween(a, g, b, c, d == null ? Easing.linear() : d);
-      h.loopMode = e == null ? 0 : e;
-      this.callbacks[a] = f;
+      let h = this.mv(a);
+      h.Ih(a, g, b, c, d == null ? Easing.linear() : d);
+      h.yh = e == null ? 0 : e;
+      this.Xu[a] = f;
       this.channels |= 1 << a;
     }
-    getOrCreateTrack(a) {
+    mv(a) {
       let b;
-      let c = this.sprite.node.controllers;
+      let c = this.U.u.controllers;
       if (c != null) {
         if ((this.channels & 1 << a) > 0) {
           while (c != null) {
             if (c.type == 203 && (b = c, b.key == a)) {
-              b.onComplete = cachedBind(this, this.fireCallback);
-              b.onProgress = cachedBind(this, this.applyChannel);
+              b.uh = cachedBind(this, this.uh);
+              b.Cg = cachedBind(this, this.Cg);
               return b;
             }
             c = c.next;
           }
         } else {
           while (c != null) {
-            if (c.type == 203 && c.dying) {
+            if (c.type == 203 && c.sl) {
               b = c;
-              b.onComplete = cachedBind(this, this.fireCallback);
-              b.onProgress = cachedBind(this, this.applyChannel);
+              b.uh = cachedBind(this, this.uh);
+              b.Cg = cachedBind(this, this.Cg);
               return b;
             }
             c = c.next;
@@ -911,13 +911,13 @@
         }
       }
       b = new TweenTrack();
-      b.onProgress = cachedBind(this, this.applyChannel);
-      b.onComplete = cachedBind(this, this.fireCallback);
-      this.sprite.node.attachAnim(b);
+      b.uh = cachedBind(this, this.uh);
+      b.Cg = cachedBind(this, this.Cg);
+      this.U.u.lq(b);
       return b;
     }
-    applyChannel(a, b) {
-      let c = this.sprite;
+    Cg(a, b) {
+      let c = this.U;
       switch (a) {
         case 0:
           c.setX(b);
@@ -935,16 +935,16 @@
           c.setUniformScale(b);
           break;
         case 5:
-          c.setRotation(b);
+          c.la(b);
           break;
         case 6:
-          c.setAlpha(b);
+          c.W(b);
       }
     }
-    fireCallback(a) {
-      let b = this.callbacks[a];
+    uh(a) {
+      let b = this.Xu[a];
       if (b != null) {
-        this.callbacks[a] = null;
+        this.Xu[a] = null;
         b();
       }
     }

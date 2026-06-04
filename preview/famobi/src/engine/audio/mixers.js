@@ -1,40 +1,40 @@
   class AudioMixerBase {
     constructor() {
-      this.throttleDefault = 0.05;
+      this.TS = 0.05;
       this.enabled = true;
-      this.musicChannels = 2;
-      this.sfxChannels = 16;
-      this.peakInFlight = this.channelMask = 0;
-      this.sfxVolume = this.musicVolume = this.masterVolume = 1;
-      this.pan = 0;
-      this.nextId = 10000;
-      this.instances = [];
-      this.samples = new HashMap();
-      this.throttle = new HashMap();
+      this.jC = 2;
+      this.LP = 16;
+      this.iC = this.Uh = 0;
+      this.cw = this.bw = this.dw = 1;
+      this.hC = 0;
+      this.XP = 10000;
+      this.dd = [];
+      this.Yg = new HashMap();
+      this.US = new HashMap();
       this.names = [];
     }
     free() {
-      if (this.musicVolume != 1) {
-        this.setMusicVolume(1);
+      if (this.bw != 1) {
+        this.Sf(1);
       }
-      if (this.sfxVolume != 1) {
-        this.setSfxVolume(1);
+      if (this.cw != 1) {
+        this.ix(1);
       }
-      if (this.masterVolume != 1) {
-        this.setMasterVolume(1);
+      if (this.dw != 1) {
+        this.Lg(1);
       }
-      if (this.pan != 0) {
-        this.setPan(0);
+      if (this.hC != 0) {
+        this.Js(0);
       }
       let a = 0;
-      let b = this.instances;
+      let b = this.dd;
       while (a < b.length) {
         b[a++].free();
       }
-      this.names = this.samples = this.instances = null;
+      this.names = this.Yg = this.dd = null;
     }
-    loadSample() {}
-    loadSliced(a) {
+    ls() {}
+    ms(a) {
       let b = 0;
       while (b < a.length) {
         let c = a[b];
@@ -55,13 +55,13 @@
       if (a < 10000) {
         var c = false;
         let d = 0;
-        let e = this.instances;
+        let e = this.dd;
         let f = [];
         let g = 0;
         while (g < e.length) {
           let h = e[g];
           ++g;
-          if (h.sample.id == a) {
+          if (h.Le.id == a) {
             f.push(h);
           }
         }
@@ -71,7 +71,7 @@
         }
         return c;
       }
-      c = Lambda.find(this.instances, function (d) {
+      c = Lambda.find(this.dd, function (d) {
         return d.id == a;
       });
       if (c != null) {
@@ -81,23 +81,22 @@
         return false;
       }
     }
-    // isPlaying - is sound id `a` currently in-flight?
-    isPlaying(a) {
+    Dc(a) {
       if (a < 0) {
         return false;
       } else if (a < 10000) {
-        return Lambda.exists(this.instances, function (b) {
-          return b.sample.id == a;
+        return Lambda.Ej(this.dd, function (b) {
+          return b.Le.id == a;
         });
       } else {
-        return Lambda.exists(this.instances, function (b) {
+        return Lambda.Ej(this.dd, function (b) {
           return b.id == a;
         });
       }
     }
-    activeIdFor(a) {
-      let b = Lambda.find(this.instances, function (c) {
-        return c.sample.id == a;
+    rg(a) {
+      let b = Lambda.find(this.dd, function (c) {
+        return c.Le.id == a;
       });
       if (b != null) {
         return b.id;
@@ -105,133 +104,131 @@
         return -1;
       }
     }
-    findInstance(a) {
+    YN(a) {
       if (a < 10000) {
-        return Lambda.find(this.instances, function (b) {
-          return b.sample.id == a;
+        return Lambda.find(this.dd, function (b) {
+          return b.Le.id == a;
         });
       } else {
-        return Lambda.find(this.instances, function (b) {
+        return Lambda.find(this.dd, function (b) {
           return b.id == a;
         });
       }
     }
-    hasSample(a) {
-      return this.samples.map[a] != null;
+    QO(a) {
+      return this.Yg.J[a] != null;
     }
-    // setActiveVolume - retarget a currently-playing sound's volume.
-    setActiveVolume(a, b) {
+    kS(a, b) {
       if (a == null) {
-        Lambda.forEach(this.instances, function (c) {
-          if (!c.sample.isMusic) {
-            c.setVolumeInstant(b);
+        Lambda.zi(this.dd, function (c) {
+          if (!c.Le.ug) {
+            c.Xi(b);
           }
         });
       } else {
-        Lambda.forEach(this.instances, function (c) {
-          if (!c.sample.isMusic && (a < 10000 ? c.sample.id : c.id) == a) {
-            c.setVolumeInstant(b);
+        Lambda.zi(this.dd, function (c) {
+          if (!c.Le.ug && (a < 10000 ? c.Le.id : c.id) == a) {
+            c.Xi(b);
           }
         });
       }
     }
-    setMasterVolume(a) {
-      this.masterVolume = a < 0 ? 0 : a > 1 ? 1 : a;
-      this.applyMusicVolume();
-      this.applySfxVolume();
+    Lg(a) {
+      this.dw = a < 0 ? 0 : a > 1 ? 1 : a;
+      this.ot();
+      this.qt();
     }
-    setSfxVolume(a) {
-      this.sfxVolume = a < 0 ? 0 : a > 1 ? 1 : a;
-      this.applySfxVolume();
+    ix(a) {
+      this.cw = a < 0 ? 0 : a > 1 ? 1 : a;
+      this.qt();
     }
-    setMusicVolume(a) {
-      this.musicVolume = a < 0 ? 0 : a > 1 ? 1 : a;
-      this.applyMusicVolume();
+    Sf(a) {
+      this.bw = a < 0 ? 0 : a > 1 ? 1 : a;
+      this.ot();
     }
-    setPan(a) {
-      this.pan = a < -1 ? -1 : a > 1 ? 1 : a;
+    Js(a) {
+      this.hC = a < -1 ? -1 : a > 1 ? 1 : a;
     }
-    // fadeStop - fade volume to zero over `b` seconds, then stop.
-    fadeStop(a, b, c) {
+    Zn(a, b, c) {
       if (c == null) {
         c = true;
       }
-      this.rampTo(a, 0, b);
+      this.xm(a, 0, b);
       if (c) {
         this.stop(a, b);
       }
     }
-    rampTo(a, b, c) {
+    xm(a, b, c) {
       var d;
       if (d == null) {
         d = -1;
       }
-      let e = this.findInstance(a);
-      if (e != null && this.isPlaying(a)) {
+      let e = this.YN(a);
+      if (e != null && this.Dc(a)) {
         if (d != -1) {
-          e.setVolumeInstant(d);
+          e.Xi(d);
         }
-        a = e.getVolume() - b;
+        a = e.mo() - b;
         if (!(a > 0 ? a < 0.01 : -a < 0.01)) {
-          e.rampTo(b, c);
+          e.xm(b, c);
         }
       }
     }
-    acquireChannel(a, b, c) {
-      if (!this.enabled || !this.hasSample(a)) {
+    tR(a, b, c) {
+      if (!this.enabled || !this.QO(a)) {
         return -1;
       }
-      if (b && this.isPlaying(a)) {
-        return this.activeIdFor(a);
+      if (b && this.Dc(a)) {
+        return this.rg(a);
       }
       if (b) {
         c = true;
       }
-      if (!c && this.isThrottled(a)) {
+      if (!c && this.Fx(a)) {
         return -1;
       }
-      a = this.pickChannel(this.samples.map[a].isMusic, c);
+      a = this.ON(this.Yg.J[a].ug, c);
       if (a < 0) {
         return -1;
       } else {
         return a;
       }
     }
-    addInstance(a) {
-      this.instances.push(a);
-      if (this.instances.length > this.peakInFlight) {
-        this.peakInFlight = this.instances.length;
+    pQ(a) {
+      this.dd.push(a);
+      if (this.dd.length > this.iC) {
+        this.iC = this.dd.length;
       }
     }
-    returnToPool(a) {
-      this.channelMask &= ~(1 << a.channel);
-      Std.remove(this.instances, a);
-      if (a.onDone != null) {
-        a.onDone();
-        a.onDone = null;
+    oQ(a) {
+      this.Uh &= ~(1 << a.channel);
+      Std.remove(this.dd, a);
+      if (a.Hi != null) {
+        a.Hi();
+        a.Hi = null;
       }
     }
-    isThrottled(a) {
-      let b = this.samples.map[a];
-      if (b.isMusic) {
+    Fx(a) {
+      let b = this.Yg.J[a];
+      if (b.ug) {
         return false;
       }
       let c = Std.now() / 1000;
-      a = this.throttle.map[a];
+      a = this.US.J[a];
       if (a == null) {
-        a = this.throttleDefault;
+        a = this.TS;
       }
-      if (c - b.lastPlayTime < a) {
+      if (c - b.XB < a) {
         return true;
       }
-      b.lastPlayTime = c;
+      b.XB = c;
       return false;
     }
-    pickChannel(a, b) {
+    ON(a, b) {
       if (a) {
-        for (b = 0; b < this.musicChannels;) {
-          if ((this.channelMask & 1 << b) == 0) {
-            this.channelMask |= 1 << b;
+        for (b = 0; b < this.jC;) {
+          if ((this.Uh & 1 << b) == 0) {
+            this.Uh |= 1 << b;
             return b;
           }
           ++b;
@@ -239,9 +236,9 @@
         return -1;
       }
       a = -1;
-      for (var c = this.musicChannels, d = c + this.sfxChannels; c < d;) {
-        if ((this.channelMask & 1 << c) == 0) {
-          this.channelMask |= 1 << c;
+      for (var c = this.jC, d = c + this.LP; c < d;) {
+        if ((this.Uh & 1 << c) == 0) {
+          this.Uh |= 1 << c;
           a = c;
           break;
         }
@@ -250,11 +247,11 @@
       if (b && a < 0) {
         b = null;
         c = a = 0;
-        for (d = this.instances; c < d.length;) {
+        for (d = this.dd; c < d.length;) {
           let e = d[c];
           ++c;
-          if (!e.sample.isMusic && !e.loop && e.progress() > a) {
-            a = e.progress();
+          if (!e.Le.ug && !e.loop && e.jo() > a) {
+            a = e.jo();
             b = e;
           }
         }
@@ -266,17 +263,17 @@
       }
       return a;
     }
-    applyMusicVolume() {
-      Lambda.forEach(this.instances, function (a) {
-        if (a.sample.isMusic) {
-          a.setVolumeInstant(a.getVolume());
+    ot() {
+      Lambda.zi(this.dd, function (a) {
+        if (a.Le.ug) {
+          a.Xi(a.mo());
         }
       });
     }
-    applySfxVolume() {
-      Lambda.forEach(this.instances, function (a) {
-        if (!a.sample.isMusic) {
-          a.setVolumeInstant(a.getVolume());
+    qt() {
+      Lambda.zi(this.dd, function (a) {
+        if (!a.Le.ug) {
+          a.Xi(a.mo());
         }
       });
     }
@@ -289,17 +286,17 @@
     constructor() {
       super();
     }
-    loadSample() {}
-    loadSliced() {}
+    ls() {}
+    ms() {}
     play() {
       return -1;
     }
-    setMasterVolume() {}
-    setMusicVolume() {}
-    setSfxVolume() {}
-    setPan() {}
-    applyMusicVolume() {}
-    applySfxVolume() {}
+    Lg() {}
+    Sf() {}
+    ix() {}
+    Js() {}
+    ot() {}
+    qt() {}
   }
   NullAudioMixer.i = true;
   NullAudioMixer.s = AudioMixerBase;
@@ -312,25 +309,25 @@
     }
     free() {
       super.free();
-      this.panner = this.musicGain = this.sfxGain = this.masterGain = null;
+      this.Mo = this.Lo = this.No = this.Ko = null;
     }
-    loadSample(a, b, c, d, e) {
+    ls(a, b, c, d, e) {
       if (c == null) {
         c = false;
       }
-      super.loadSample(a, b, c, d, e);
+      super.ls(a, b, c, d, e);
       let f = this;
       this.decode(b, function (g) {
         if (g == null) {
           d(null);
         } else {
-          f.samples.map[a] = new AudioSample(a, g, c);
+          f.Yg.J[a] = new AudioSample(a, g, c);
           d(g);
         }
       });
     }
-    loadSliced(a, b, c) {
-      super.loadSliced(a, b, c);
+    ms(a, b, c) {
+      super.ms(a, b, c);
       let d = this;
       this.decode(b, function (e) {
         if (e == null) {
@@ -344,7 +341,7 @@
               let m = g++;
               let n = a[m].id;
               d.names[n] = a[m].name;
-              d.samples.map[n] = new AudioSample(n, f[m], false);
+              d.Yg.J[n] = new AudioSample(n, f[m], false);
             }
             c(e);
           } catch (f) {}
@@ -361,56 +358,56 @@
       if (b == null) {
         b = false;
       }
-      if (Audio.context == null || !Audio.isRunning()) {
+      if (Audio.context == null || !Audio.no()) {
         return -1;
       }
-      c = this.acquireChannel(a, b, c);
+      c = this.tR(a, b, c);
       if (c < 0) {
         return -1;
       }
-      a = new WebAudioInstance(this, this.samples.map[a]);
-      a.id = this.nextId++;
+      a = new WebAudioInstance(this, this.Yg.J[a]);
+      a.id = this.XP++;
       a.channel = c;
       a.loop = b;
       a.offset = d;
       a.play();
-      this.addInstance(a);
+      this.pQ(a);
       return a.id;
     }
-    setMasterVolume(a, b) {
+    Lg(a, b) {
       if (b == null) {
         b = 0;
       }
       if (Audio.context != null) {
-        this.masterVolume = a < 0 ? 0 : a > 1 ? 1 : a;
-        var c = this.masterBus();
+        this.dw = a < 0 ? 0 : a > 1 ? 1 : a;
+        var c = this.ar();
         if (b > 0) {
-          c.rampTo(a, b);
+          c.xm(a, b);
         } else {
-          c.setValue(a);
+          c.Gs(a);
         }
       }
     }
-    setMusicVolume(a) {
+    Sf(a) {
       if (Audio.context != null) {
-        this.musicVolume = a < 0 ? 0 : a > 1 ? 1 : a;
-        this.musicBus().setValue(a);
+        this.bw = a < 0 ? 0 : a > 1 ? 1 : a;
+        this.cB().Gs(a);
       }
     }
-    setSfxVolume(a) {
+    ix(a) {
       if (Audio.context != null) {
-        this.sfxVolume = a < 0 ? 0 : a > 1 ? 1 : a;
-        this.sfxBus().setValue(a);
+        this.cw = a < 0 ? 0 : a > 1 ? 1 : a;
+        this.dB().Gs(a);
       }
     }
-    setPan(a) {
+    Js(a) {
       if (Audio.context != null) {
-        super.setPan(a);
-        this.pannerBus().setPan(a);
+        super.Js(a);
+        this.JN().pS(a);
       }
     }
-    applyMusicVolume() {}
-    applySfxVolume() {}
+    ot() {}
+    qt() {}
     decode(a, b) {
       new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(2, 13230000, 44100).decodeAudioData(a, function (c) {
         b(c);
@@ -418,39 +415,39 @@
         b(null);
       });
     }
-    masterBus() {
-      if (this.masterGain == null) {
-        this.masterGain = new AudioGainNode();
-        this.masterGain.type = 5;
-        this.masterGain.connect(new AudioDestinationNode());
+    ar() {
+      if (this.Ko == null) {
+        this.Ko = new AudioGainNode();
+        this.Ko.type = 5;
+        this.Ko.connect(new AudioDestinationNode());
       }
-      return this.masterGain;
+      return this.Ko;
     }
-    sfxBus() {
-      if (this.sfxGain == null) {
-        this.sfxGain = new AudioGainNode();
-        this.sfxGain.type = 3;
-        this.sfxGain.connect(this.masterBus());
+    dB() {
+      if (this.No == null) {
+        this.No = new AudioGainNode();
+        this.No.type = 3;
+        this.No.connect(this.ar());
       }
-      return this.sfxGain;
+      return this.No;
     }
-    musicBus() {
-      if (this.musicGain == null) {
-        this.musicGain = new AudioGainNode();
-        this.musicGain.type = 4;
-        this.musicGain.connect(this.masterBus());
+    cB() {
+      if (this.Lo == null) {
+        this.Lo = new AudioGainNode();
+        this.Lo.type = 4;
+        this.Lo.connect(this.ar());
       }
-      return this.musicGain;
+      return this.Lo;
     }
-    pannerBus() {
-      if (this.panner == null) {
-        this.panner = new AudioPannerNode();
-        this.panner.type = 6;
-        this.masterBus().append(this.panner);
+    JN() {
+      if (this.Mo == null) {
+        this.Mo = new AudioPannerNode();
+        this.Mo.type = 6;
+        this.ar().append(this.Mo);
       }
-      return this.panner;
+      return this.Mo;
     }
-    makeOfflineCtx(a) {
+    zM(a) {
       let b = window.OfflineAudioContext;
       if (b == null) {
         b = window.webkitOfflineAudioContext;
@@ -458,7 +455,7 @@
       return new b(2, a * 44100, 44100);
     }
     split(a, b) {
-      let c = this.makeOfflineCtx(Math.ceil(b[b.length - 1].max * 2 / 1000));
+      let c = this.zM(Math.ceil(b[b.length - 1].max * 2 / 1000));
       let d = a.sampleRate;
       let e = [];
       let f = 0;

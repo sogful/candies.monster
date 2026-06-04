@@ -1,129 +1,111 @@
-  // SceneDirector - top-level scene host. Owns the back/front layers
-  // (sandwiching the active scene stack), the shared shared-state
-  // object `Ha` that travels with each scene push, and a Camera. Every
-  // frame it sets the camera's viewport to the current window size,
-  // hands it to the renderer, then walks the scene tree.
   class SceneDirector extends Node {
-    constructor(application) {
+    constructor(a) {
       super();
-      this.app = application;
-      this.sharedState = {};
+      this.O = a;
+      this.Ha = {};
       this.back = new SceneRoot();
       this.front = new SceneRoot();
-      this.camera = new Camera();
+      this.Ab = new Camera();
     }
     getWidth() {
-      return this.app.window.viewportSize().x;
+      return this.O.window.pi().x;
     }
     getHeight() {
-      return this.app.window.viewportSize().y;
+      return this.O.window.pi().y;
     }
-    viewportSize() {
-      return this.app.window.viewportSize();
+    lB() {
+      return this.O.window.pi();
     }
-    viewportRect() {
-      let size = this.app.window.viewportSize();
-      return new Bounds(0, 0, size.x, size.y);
+    dr() {
+      let a = this.O.window.pi();
+      return new Bounds(0, 0, a.x, a.y);
     }
-    aspectRatio() {
-      return this.app.window.aspectRatio();
+    Se() {
+      return this.O.window.bo();
     }
-    update(dt) {
-      this.camera.setSize(new Vec4(this.getWidth(), this.getHeight(), 0, 1));
-      this.app.renderer.setCamera(this.camera);
-      this.back.tickAnims(dt);
-      super.update(dt);
-      this.front.tickAnims(dt);
+    update(a) {
+      this.Ab.Lb(new Vec4(this.getWidth(), this.getHeight(), 0, 1));
+      this.O.V.wk(this.Ab);
+      this.back.tickAnims(a);
+      super.update(a);
+      this.front.tickAnims(a);
     }
-    render(target) {
-      let renderer = this.app.renderer;
-      this.camera.setSize(new Vec4(this.getWidth(), this.getHeight(), 0, 1));
-      renderer.setCamera(this.camera);
-      this.back.updateTransforms();
-      this.back.collectRenderStates();
-      renderer.drawScene(this.back);
-      super.render(target);
-      this.front.updateTransforms();
-      this.front.collectRenderStates();
-      renderer.drawScene(this.front);
+    render(a) {
+      let b = this.O.V;
+      this.Ab.Lb(new Vec4(this.getWidth(), this.getHeight(), 0, 1));
+      b.wk(this.Ab);
+      this.back.Gd();
+      this.back.Um();
+      b.Iq(this.back);
+      super.render(a);
+      this.front.Gd();
+      this.front.Um();
+      b.Iq(this.front);
     }
-    // push - push scene class `sceneClass`. `caller` is the source scene
-    // (null for the very first push). `pushOver` if true keeps the
-    // caller mounted underneath (e.g. modal pause overlay).
-    //
-    // Flow: instantiate the scene, ask it for its preload set; if
-    // anything still has to be fetched, mount a CTRCLoadingScene (or
-    // its bubble overlay variant for pushOver) and run the real push
-    // only after the loader scene's xv() reports done.
-    push(sceneClass, caller, pushOver) {
-      function performPush() {
-        if (pushOver) {
-          caller.wrapper.addChild(new SceneWrapper(target));
-          return director.addChild(new TransitionPushOver(caller, target));
+    hq(a, b, c) {
+      function d() {
+        if (c) {
+          b.ud.oa(new SceneWrapper(e));
+          return g.oa(new TransitionPushOver(b, e));
         }
-        let wrapper = new SceneWrapper(target);
-        director.addChild(wrapper);
-        if (currentWrapper == null) {
-          return director.addChild(new TransitionPush(target));
+        let h = new SceneWrapper(e);
+        g.oa(h);
+        if (f == null) {
+          return g.oa(new TransitionPush(e));
         } else {
-          return director.addChild(new TransitionReplace(caller, target));
+          return g.oa(new TransitionReplace(b, e));
         }
       }
-      let target = Construct.create(sceneClass);
-      target.director = this;
-      target.app = this.app;
-      target.caller = caller;
-      if (caller == null) {
-        target.sharedState = this.sharedState;
+      let e = Construct.qA(a);
+      e.fa = this;
+      e.O = this.O;
+      e.caller = b;
+      if (b == null) {
+        e.Ha = this.Ha;
       }
-      let currentWrapper = this.topWrapper();
-      let director = this;
-      if (target.preloadSet().length > 0) {
-        let loader = target.makeLoader(performPush);
-        loader.director = this;
-        loader.app = this.app;
+      let f = this.mN();
+      let g = this;
+      if (e.eB().length > 0) {
+        a = e.aB(d);
+        a.fa = this;
+        a.O = this.O;
         // Skip the bubble loading overlay entirely if every preload
         // was already cached. eB() drops fully-loaded ids, but if any
         // remain unfetched ScriptDownload still hits the network. In
         // the common warmed-up case xv() reports done at construction
         // and the only thing the overlay would contribute is a ~0.5s
         // fade in + fade out - which is exactly what looks "fake".
-        if (loader.Zl != null && loader.Zl.isDone()) {
-          performPush();
+        if (a.Zl != null && a.Zl.xv()) {
+          d();
         } else {
-          let wrapper = new SceneWrapper(loader);
-          if (currentWrapper == null) {
-            this.addChild(wrapper);
-            this.addChild(new TransitionPush(loader));
+          let h = new SceneWrapper(a);
+          if (f == null) {
+            this.oa(h);
+            this.oa(new TransitionPush(a));
           } else {
-            caller.wrapper.addChild(wrapper);
-            this.addChild(new TransitionPushOver(caller, loader));
+            b.ud.oa(h);
+            this.oa(new TransitionPushOver(b, a));
           }
         }
       } else {
-        performPush();
+        d();
       }
     }
-    // pop - pop scene `scene`. If it has no parent above the director
-    // it's a clean exit; otherwise pop back to its parent and propagate
-    // `caller` so the destination scene knows who returned to it.
-    pop(scene) {
-      if ((scene.wrapper.parent instanceof SceneDirector ? null : scene.wrapper.parent) == null) {
-        this.addChild(new TransitionExit(scene));
+    Kf(a) {
+      if ((a.ud.parent instanceof SceneDirector ? null : a.ud.parent) == null) {
+        this.oa(new TransitionExit(a));
       } else {
-        scene.wrapper.parent.scene.caller = scene;
-        this.addChild(new TransitionPopBack(scene));
+        a.ud.parent.Pf.caller = a;
+        this.oa(new TransitionPopBack(a));
       }
     }
-    // topWrapper - find the topmost mounted SceneWrapper in the
-    // director's animation/queue list (Me is the head, Y the link).
-    topWrapper() {
-      let cursor = this.firstChild;
-      while (cursor != null) {
-        if (cursor instanceof SceneWrapper) {
-          return cursor;
+    mN() {
+      let a = this.Me;
+      while (a != null) {
+        if (a instanceof SceneWrapper) {
+          return a;
         }
-        cursor = cursor.nextSibling;
+        a = a.Y;
       }
       return null;
     }

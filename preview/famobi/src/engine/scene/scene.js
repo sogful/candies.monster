@@ -2,40 +2,36 @@
     constructor() {
       super();
       this.name = this.getName();
-      this.sharedState = {};
+      this.Ha = {};
       this.caller = null;
-      this.lifecycle = "New";
-      this.setLifecycle("New");
+      this.De = "New";
+      this.xb("New");
       this.node = new SceneRoot();
-      this.node.visibility = 1;
-      this.wrapper = null;
+      this.node.Ne = 1;
+      this.ud = null;
     }
-    isRunning() {
-      return this.lifecycle == "Running";
+    dO() {
+      return this.De == "Running";
     }
-    // push - replace this scene with `a`, marking `this` as the caller
-    // so the new scene can find its way back via pop.
-    push(a) {
-      this.director.push(a, this, false);
+    $(a) {
+      this.fa.hq(a, this, false);
     }
-    // pushOver - modal-style push: `this` stays mounted underneath
-    // `a` (used for pause / results overlays).
-    pushOver(a) {
-      this.director.push(a, this, true);
+    Dg(a) {
+      this.fa.hq(a, this, true);
     }
-    pop(a) {
+    Kf(a) {
       let b = this;
       if (a != null) {
         let c = this.iterator();
         while (c.top > 0) {
           let d = c.stack[--c.top];
           c.push(d);
-          if (StdString.isType(d, a)) {
+          if (StdString.Xt(d, a)) {
             b = d;
           }
         }
       }
-      this.director.pop(b);
+      this.fa.Kf(b);
     }
     replacesPrevious() {
       return true;
@@ -43,23 +39,23 @@
     getPreloads() {
       return [];
     }
-    preloadSet() {
+    eB() {
       let a = [];
       let b = 0;
       let c = this.getPreloads();
       while (b < c.length) {
         let d = c[b];
         ++b;
-        if ((!Loader.isAudioResource(d) || Loader.getAudioExt() != null) && !Loader.isLoaded(d)) {
+        if ((!Loader.Lv(d) || Loader.OA() != null) && !Loader.ob(d)) {
           a.push(d);
         }
       }
       return a;
     }
-    makeLoader(a) {
+    aB(a) {
       return new ScenePreloadState(this, a);
     }
-    bootMode() {
+    Oj() {
       return 0;
     }
     getTransitionDuration() {
@@ -67,7 +63,7 @@
     }
     dispose() {
       super.dispose();
-      this.setLifecycle("Destroyed");
+      this.xb("Destroyed");
       if (this.node != null) {
         this.node.free();
       }
@@ -79,48 +75,48 @@
     }
     render(a) {
       super.render(a);
-      this.node.updateTransforms();
-      this.node.collectRenderStates();
-      this.app.renderer.drawScene(this.node);
+      this.node.Gd();
+      this.node.Um();
+      this.O.V.Iq(this.node);
     }
     init() {}
     onShown() {}
     start() {}
-    onStop() {}
+    Oc() {}
     layout() {}
     transitionIn(a) {
-      this.setFadeAlpha(Easing.quadOut()(a));
+      this.Ks(Easing.quadOut()(a));
     }
     transitionOut(a) {
-      this.setFadeAlpha(1 - a);
+      this.Ks(1 - a);
     }
-    setLifecycle(a) {
+    xb(a) {
       switch (a) {
         case "Created":
-          this.node.visibility = 0;
-          this.setFadeAlpha(0);
+          this.node.Ne = 0;
+          this.Ks(0);
           break;
         case "Stopped":
-          this.node.visibility = 1;
+          this.node.Ne = 1;
       }
-      this.lifecycle = a;
+      this.De = a;
     }
-    setFadeAlpha(a) {
-      this.fadeState().setAlpha(a);
+    Ks(a) {
+      this.mi().bf(a);
     }
-    fadeState() {
-      let a = this.node.getRenderState(5);
+    mi() {
+      let a = this.node.li(5);
       if (a == null) {
         a = new AlphaState(0);
       }
-      this.node.setRenderState(a);
+      this.node.Bh(a);
       return a;
     }
-    previousScene() {
-      if (this.wrapper.parent instanceof SceneDirector) {
+    SN() {
+      if (this.ud.parent instanceof SceneDirector) {
         return null;
       } else {
-        return this.wrapper.parent.scene;
+        return this.ud.parent.Pf;
       }
     }
     getName() {
@@ -137,139 +133,139 @@
       super();
       this.buttons = [null];
       this.pointer = new ButtonInputState();
-      this.cursor = this.fade = this.designSize = this.viewportBounds = this.layout = null;
+      this.cd = this.fh = this.rd = this.ih = this.ra = null;
     }
     createTexture(a) {
-      if (Resources.textureCache[a] != null) {
-        return Resources.textureCache[a];
+      if (Resources.bm[a] != null) {
+        return Resources.bm[a];
       }
-      let b = this.app.createTexture(a, 8);
-      return Resources.textureCache[a] = b;
+      let b = this.O.createTexture(a, 8);
+      return Resources.bm[a] = b;
     }
-    release(a) {
-      let b = Resources.textureCache[a];
+    ia(a) {
+      let b = Resources.bm[a];
       if (b != null) {
-        Application.instance.renderer.release(b);
-        Application.instance.freeTexture(a);
-        Resources.textureCache[a] = null;
+        Application.instance.V.ia(b);
+        Application.instance.NM(a);
+        Resources.bm[a] = null;
       }
     }
-    addBackButton() {
+    $k() {
       let a = ButtonBase.create(null, Keys.tK, Keys.uK);
-      this.node.appendChild(a.container.node);
+      this.node.P(a.j.u);
       this.buttons[0] = a;
     }
-    setSize(a, b) {
-      this.designSize = new Vec4(a, b, 0, 1);
-      this.layout = new Container("fix");
-      this.node.appendChild(this.layout.node);
+    Ke(a, b) {
+      this.rd = new Vec4(a, b, 0, 1);
+      this.ra = new Container("fix");
+      this.node.P(this.ra.u);
     }
-    addCursor() {
-      if (Resources.cursor == null) {
-        Resources.cursor = this.createTexture(Loader.menuShadow);
+    sj() {
+      if (Resources.cd == null) {
+        Resources.cd = this.createTexture(Loader.menuShadow);
       }
-      this.cursor = new Sprite(null, Resources.cursor);
-      this.node.appendChild(this.cursor.node);
-      this.cursor.setRotation(X.randRange(0, 360));
+      this.cd = new Sprite(null, Resources.cd);
+      this.node.P(this.cd.u);
+      this.cd.la(X.Yn(0, 360));
     }
-    addBackground() {
-      this.background = new Sprite(null, Resources.background);
-      this.node.appendChild(this.background.node);
+    Vg() {
+      this.Ea = new Sprite(null, Resources.Ea);
+      this.node.P(this.Ea.u);
     }
-    loadTextures() {
-      if (Loader.isLoaded(Loader.fontImg)) {
+    Nd() {
+      if (Loader.ob(Loader.fontImg)) {
         Resources.ki = this.createTexture(Loader.fontImg);
-        var a = Resources.langIndex(Save.language, Save.language);
+        var a = Resources.ov(Save.language, Save.language);
         Resources.ic = Resources.ki.children[a];
         Resources.ji = Resources.ki.children[a + 1];
       }
-      if (Loader.isLoaded(Loader.loaderImg)) {
+      if (Loader.ob(Loader.loaderImg)) {
         Resources.Yl = this.createTexture(Loader.loaderImg);
       }
       a = WebApplication.xmasMode ? Loader.menuBgXmas : Loader.menuBg;
-      if (Loader.isLoaded(a)) {
-        Resources.background = this.createTexture(a);
+      if (Loader.ob(a)) {
+        Resources.Ea = this.createTexture(a);
       }
-      if (Loader.isLoaded(Loader.menuUi)) {
+      if (Loader.ob(Loader.menuUi)) {
         Resources.Wa = this.createTexture(Loader.menuUi);
       }
-      if (Loader.isLoaded(Loader.menuCut)) {
+      if (Loader.ob(Loader.menuCut)) {
         Resources.yc = this.createTexture(Loader.menuCut);
       }
     }
-    makeLoader(a) {
+    aB(a) {
       return new BubbleLoadingOverlay(this, a);
     }
     init() {
-      this.loadTextures();
+      this.Nd();
       if (Scene.Zt == null) {
         Scene.Zt = new ColorRectShape(null, new Vec4(0, 0, 0, 1));
-        this.director.front.appendChild(Scene.Zt.node);
+        this.fa.front.P(Scene.Zt.u);
       }
-      this.fade = Scene.Zt;
+      this.fh = Scene.Zt;
     }
     onShown() {
       super.onShown();
       this.layout();
     }
     layout() {
-      var a = this.director.getWidth();
-      var b = this.director.getHeight();
-      let c = this.director.viewportRect();
-      if (this.designSize != null) {
-        this.viewportBounds = c.fitAspect(this.designSize.x / this.designSize.y);
-        this.layout.setX(this.viewportBounds.left);
-        this.layout.setY(this.viewportBounds.top);
-        var d = this.viewportBounds;
-        this.layout.setUniformScale((d.right - d.left) / this.designSize.x);
+      var a = this.fa.getWidth();
+      var b = this.fa.getHeight();
+      let c = this.fa.dr();
+      if (this.rd != null) {
+        this.ih = c.hi(this.rd.x / this.rd.y);
+        this.ra.setX(this.ih.A);
+        this.ra.setY(this.ih.D);
+        var d = this.ih;
+        this.ra.setUniformScale((d.B - d.A) / this.rd.x);
       }
-      if (this.salute != null) {
-        this.salute.setX(this.director.getWidth() - this.salute.getWidth());
-        this.salute.setY(this.director.getHeight() - this.salute.getHeight());
+      if (this.If != null) {
+        this.If.setX(this.fa.getWidth() - this.If.getWidth());
+        this.If.setY(this.fa.getHeight() - this.If.getHeight());
       }
       d = this.buttons[0];
       if (d != null) {
-        var e = c.fitAspect(this.designSize.x / this.designSize.y);
-        d.container.setUniformScale((e.right - e.left) * 0.2 / d.sourceSize.x);
+        var e = c.hi(this.rd.x / this.rd.y);
+        d.j.setUniformScale((e.B - e.A) * 0.2 / d.ec.x);
         d.setX(10);
-        d.setY(this.director.getHeight() - d.container.getHeight() - 10);
+        d.setY(this.fa.getHeight() - d.j.getHeight() - 10);
       }
-      if (this.background != null) {
-        e = Resources.background.size;
+      if (this.Ea != null) {
+        e = Resources.Ea.size;
         d = a / e.x;
         e = b / e.y;
-        this.isPortrait = d > e;
-        this.background.setUniformScale(Math.max(d, e));
-        this.background.setX(this.director.getWidth() / 2);
-        d = this.background;
-        d.setX(d.getX() - this.background.getWidth() / 2);
-        this.background.setY(0);
+        this.oN = d > e;
+        this.Ea.setUniformScale(Math.max(d, e));
+        this.Ea.setX(this.fa.getWidth() / 2);
+        d = this.Ea;
+        d.setX(d.getX() - this.Ea.getWidth() / 2);
+        this.Ea.setY(0);
       }
-      if (this.cursor != null) {
-        this.cursor.center();
-        this.cursor.setOriginXY(new Vec4((c.left + c.right) / 2, (c.top + c.bottom) / 2, 0, 1));
-        this.cursor.setUniformScale((c.right - c.left) / 260);
+      if (this.cd != null) {
+        this.cd.center();
+        this.cd.uS(new Vec4((c.A + c.B) / 2, (c.D + c.G) / 2, 0, 1));
+        this.cd.setUniformScale((c.B - c.A) / 260);
         a = Math.max(a, b) / 2;
-        a = Math.sqrt(a * 2 * a) * 2 / Resources.cursor.size.x;
-        if (this.cursor.scaleX < a) {
-          this.cursor.setUniformScale(a);
+        a = Math.sqrt(a * 2 * a) * 2 / Resources.cd.size.x;
+        if (this.cd.Ra < a) {
+          this.cd.setUniformScale(a);
         }
-        a = 1 / this.director.aspectRatio();
+        a = 1 / this.fa.Se();
         if (a < 1) {
-          b = this.cursor;
-          b.setUniformScale(b.scaleX * a);
+          b = this.cd;
+          b.setUniformScale(b.Ra * a);
         }
-        a = this.cursor;
-        a.setUniformScale(a.scaleX * 2);
+        a = this.cd;
+        a.setUniformScale(a.Ra * 2);
       }
     }
     update(a) {
       super.update(a);
-      if (this.isRunning()) {
+      if (this.dO()) {
         this.pointer.resetHover();
-        this.syncPointer();
-        this.handleInput(a);
-        this.pointer.endFrame();
+        this.PR();
+        this.Pd(a);
+        this.pointer.fi();
         let b = 0;
         let c = this.buttons;
         while (b < c.length) {
@@ -280,32 +276,32 @@
           }
         }
       }
-      if (this.cursor != null) {
-        a = this.cursor;
-        a.setRotation(a.rotation + 0.1);
+      if (this.cd != null) {
+        a = this.cd;
+        a.la(a.Zd + 0.1);
       }
     }
     getTransitionDuration() {
       return 0.5;
     }
     transitionIn(a) {
-      this.fade.setAlpha(1 - a);
+      this.fh.W(1 - a);
     }
     transitionOut(a) {
-      this.fade.setAlpha(a);
+      this.fh.W(a);
     }
-    syncPointer() {
-      var a = this.app.pointer();
-      this.pointer.pressed = a.justPressed(0);
-      this.pointer.released = a.justReleased(0);
+    PR() {
+      var a = this.O.hd();
+      this.pointer.pressed = a.Nb(0);
+      this.pointer.released = a.qe(0);
       a = a.position[0];
       var b = a.x;
       var c = a.y;
-      a = this.app.renderer.camera;
-      let d = this.app.window.viewportRect();
+      a = this.O.V.Ab;
+      let d = this.O.window.lo();
       b = -1 + (b - d.x) * 2 / d.w;
-      c = -1 + (d.y - c) * 2 / d.h;
-      a = a.screenToWorldM;
+      c = -1 + (d.y - c) * 2 / d.J;
+      a = a.Kv;
       a = new Vec4(a.m11 * b + a.m12 * c + a.m14, a.m21 * b + a.m22 * c + a.m24, 0, 1);
       if (a != null) {
         b = this.pointer.pos;
@@ -313,38 +309,38 @@
         b.y = a.y;
       }
     }
-    hideButtons() {
+    Jl() {
       let a = 0;
       let b = this.buttons;
       while (a < b.length) {
         let c = b[a];
         ++a;
         if (c != null) {
-          c.container.setVisible(false);
+          c.j.L(false);
         }
       }
     }
-    showButtons() {
+    wS() {
       let a = 0;
       let b = this.buttons;
       while (a < b.length) {
         let c = b[a];
         ++a;
         if (c != null) {
-          c.container.setVisible(true);
+          c.j.L(true);
         }
       }
     }
-    handleInput() {}
-    consumeClick(a) {
+    Pd() {}
+    hb(a) {
       let b = this.buttons[a];
-      if (b == null || this.lifecycle != "Running" || b.selectedFlag || !b.isVisible()) {
+      if (b == null || this.De != "Running" || b.SO || !b.ri()) {
         return false;
       }
       let c = false;
       if (a == 0) {
-        var d = this.app.isWebOS ? 461 : -1;
-        d = this.app.keyboard().justPressed(d);
+        var d = this.O.jd ? 461 : -1;
+        d = this.O.lh().Nb(d);
       } else {
         d = false;
       }
@@ -352,21 +348,18 @@
         b.select();
         c = true;
       }
-      b.applyHover(this.pointer.isHovered(a));
+      b.$w(this.pointer.isHovered(a));
       b.setActive(this.pointer.isActive(a));
       if (c) {
         SoundFx.play(SoundFx.button);
       }
       return c;
     }
-    setFadeAlpha() {}
-    // tr - localized string lookup with optional positional args. Thin
-    // wrapper over Strings.get; scene subclasses call `this.tr("KEY")`
-    // to fetch a translated UI label.
-    tr(a, ...b) {
+    Ks() {}
+    yb(a, ...b) {
       return Strings.get(a, b.length > 0 ? b.slice() : null);
     }
-    trAll(...a) {
+    cr(...a) {
       let b = [];
       let c = 0;
       while (c < a.length) {
@@ -374,171 +367,171 @@
       }
       return b;
     }
-    startMenuMusic() {
-      this.app.audio.stop(WebApplication.gameMusicId);
-      this.playMusicLoop(WebApplication.menuMusicId);
+    sm() {
+      this.O.Sa.stop(WebApplication.gameMusicId);
+      this.ZC(WebApplication.menuMusicId);
     }
-    startGameMusic() {
-      this.app.audio.stop(WebApplication.menuMusicId);
-      this.playMusicLoop(WebApplication.gameMusicId);
+    FQ() {
+      this.O.Sa.stop(WebApplication.menuMusicId);
+      this.ZC(WebApplication.gameMusicId);
     }
-    playMusicLoop(a) {
-      let b = this.app.audio;
-      b.setMusicVolume(Save.musicOn ? 1 : 0);
-      if (!b.isPlaying(a)) {
+    ZC(a) {
+      let b = this.O.Sa;
+      b.Sf(Save.Ec ? 1 : 0);
+      if (!b.Dc(a)) {
         b.play(a, true);
-        this.app.Nu = a;
+        this.O.Nu = a;
       }
     }
-    stopAllMusic() {
-      let a = this.app.audio;
-      if (a.isPlaying(WebApplication.menuMusicId)) {
-        a.fadeStop(WebApplication.menuMusicId, 0.5, true);
+    Uq() {
+      let a = this.O.Sa;
+      if (a.Dc(WebApplication.menuMusicId)) {
+        a.Zn(WebApplication.menuMusicId, 0.5, true);
       }
-      if (a.isPlaying(WebApplication.gameMusicId)) {
-        a.fadeStop(WebApplication.gameMusicId, 0.5, true);
+      if (a.Dc(WebApplication.gameMusicId)) {
+        a.Zn(WebApplication.gameMusicId, 0.5, true);
       }
     }
-    playSalute() {
+    JD() {
       let a = this;
-      if (Audio.isRunning() && !Scene.salutePlayed && Loader.isLoaded(Loader.menuSalute)) {
-        this.salute = new Sprite(null, this.createTexture(Loader.menuSalute), "0000");
-        this.salute.setUniformScale(this.app.window.bp);
-        if (!this.app.isMobile) {
-          this.salute.setUniformScale(this.app.window.pixelRatio());
+      if (Audio.no() && !Scene.salutePlayed && Loader.ob(Loader.menuSalute)) {
+        this.If = new Sprite(null, this.createTexture(Loader.menuSalute), "0000");
+        this.If.setUniformScale(this.O.window.bp);
+        if (!this.O.Vj) {
+          this.If.setUniformScale(this.O.window.Pj());
         }
-        this.director.front.appendChild(this.salute.node);
-        this.salute.anim().play(Keys.range(null, 0, 53, 30)).onComplete(function () {
-          a.salute.free();
-          a.salute = null;
-          a.release(Loader.menuSalute);
+        this.fa.front.P(this.If.u);
+        this.If.pa().play(Keys.Pa(null, 0, 53, 30)).Be(function () {
+          a.If.free();
+          a.If = null;
+          a.ia(Loader.menuSalute);
         });
         SoundFx.play(SoundFx.salute);
         Scene.salutePlayed = true;
         this.layout();
       }
     }
-    releaseAllTextures() {
+    eF() {
       let a = 0;
       while (a < 17) {
         let b = a++;
-        this.release([194, 189, 184, 179, 174, 169, 164, 158, 153, 148, 143, 138, 133, 128, 123, 118, 113][b]);
-        this.release([196, 191, 186, 181, 176, 171, 166, 161, 155, 150, 145, 140, 135, 130, 125, 120, 115][b]);
-        this.release([198, 193, 188, 183, 178, 173, 168, 163, 157, 152, 147, 142, 137, 132, 127, 122, 117][b]);
+        this.ia([194, 189, 184, 179, 174, 169, 164, 158, 153, 148, 143, 138, 133, 128, 123, 118, 113][b]);
+        this.ia([196, 191, 186, 181, 176, 171, 166, 161, 155, 150, 145, 140, 135, 130, 125, 120, 115][b]);
+        this.ia([198, 193, 188, 183, 178, 173, 168, 163, 157, 152, 147, 142, 137, 132, 127, 122, 117][b]);
       }
       Resources.wq = null;
       Resources.xj = null;
       Resources.uu = null;
-      this.release(Loader.objBubble);
+      this.ia(Loader.objBubble);
       Resources.ca = null;
-      this.release(Loader.objSpikes);
+      this.ia(Loader.objSpikes);
       Resources.Dd = null;
-      this.release(Loader.objPump);
+      this.ia(Loader.objPump);
       Resources.wm = null;
-      this.release(Loader.objSpider);
+      this.ia(Loader.objSpider);
       Resources.mc = null;
-      this.release(Loader.objElectro);
+      this.ia(Loader.objElectro);
       Resources.ce = null;
-      this.release(Loader.objSock);
+      this.ia(Loader.objSock);
       Resources.Dk = null;
-      this.release(Loader.objBouncer);
+      this.ia(Loader.objBouncer);
       Resources.fd = null;
-      this.release(Loader.objGravity);
+      this.ia(Loader.objGravity);
       Resources.Kb = null;
-      this.release(Loader.objGravity);
+      this.ia(Loader.objGravity);
       Resources.gl = null;
-      this.release(Loader.objVinyl);
+      this.ia(Loader.objVinyl);
       Resources.Tc = null;
-      this.release(Loader.objSteam);
+      this.ia(Loader.objSteam);
       Resources.Kk = null;
-      this.release(Loader.objLantern);
+      this.ia(Loader.objLantern);
       Resources.Ai = null;
-      this.release(Loader.objGap);
+      this.ia(Loader.objGap);
       Resources.wf = null;
-      this.release(Loader.objLighter);
+      this.ia(Loader.objLighter);
       Resources.Ef = null;
-      this.release(Loader.objTransporter);
+      this.ia(Loader.objTransporter);
       Resources.Rc = null;
-      this.release(Loader.objLighter);
+      this.ia(Loader.objLighter);
       Resources.Ef = null;
-      this.release(Loader.char3);
+      this.ia(Loader.char3);
       Resources.ml = null;
     }
-    releaseBoxTextures(a) {
+    Mp(a) {
       function b(d) {
         return (BOX_OBJECT_FLAGS[a - 1] & d) == 0;
       }
       let c = a - 1;
-      this.release([194, 189, 184, 179, 174, 169, 164, 158, 153, 148, 143, 138, 133, 128, 123, 118, 113][c]);
-      this.release([196, 191, 186, 181, 176, 171, 166, 161, 155, 150, 145, 140, 135, 130, 125, 120, 115][c]);
-      this.release([198, 193, 188, 183, 178, 173, 168, 163, 157, 152, 147, 142, 137, 132, 127, 122, 117][c]);
+      this.ia([194, 189, 184, 179, 174, 169, 164, 158, 153, 148, 143, 138, 133, 128, 123, 118, 113][c]);
+      this.ia([196, 191, 186, 181, 176, 171, 166, 161, 155, 150, 145, 140, 135, 130, 125, 120, 115][c]);
+      this.ia([198, 193, 188, 183, 178, 173, 168, 163, 157, 152, 147, 142, 137, 132, 127, 122, 117][c]);
       Resources.wq = null;
       Resources.xj = null;
       Resources.uu = null;
       if (Resources.ca != null && b(1)) {
-        this.release(Loader.objBubble);
+        this.ia(Loader.objBubble);
         Resources.ca = null;
       }
       if (Resources.Dd != null && b(2)) {
-        this.release(Loader.objSpikes);
+        this.ia(Loader.objSpikes);
         Resources.Dd = null;
       }
       if (Resources.wm != null && b(4)) {
-        this.release(Loader.objPump);
+        this.ia(Loader.objPump);
         Resources.wm = null;
       }
       if (Resources.mc != null && b(8)) {
-        this.release(Loader.objSpider);
+        this.ia(Loader.objSpider);
         Resources.mc = null;
       }
       if (Resources.ce != null && b(64)) {
-        this.release(Loader.objElectro);
+        this.ia(Loader.objElectro);
         Resources.ce = null;
       }
       if (Resources.Dk != null && b(128)) {
-        this.release(Loader.objSock);
+        this.ia(Loader.objSock);
         Resources.Dk = null;
       }
       if (Resources.fd != null && b(512)) {
-        this.release(Loader.objBouncer);
+        this.ia(Loader.objBouncer);
         Resources.fd = null;
       }
       if (Resources.Kb != null && b(2048)) {
-        this.release(Loader.objGravity);
+        this.ia(Loader.objGravity);
         Resources.Kb = null;
       }
       if (Resources.gl != null && b(4096)) {
-        this.release(Loader.objGravity);
+        this.ia(Loader.objGravity);
         Resources.gl = null;
       }
       if (Resources.Tc != null && b(16384)) {
-        this.release(Loader.objVinyl);
+        this.ia(Loader.objVinyl);
         Resources.Tc = null;
       }
       if (Resources.Kk != null && b(65536)) {
-        this.release(Loader.objSteam);
+        this.ia(Loader.objSteam);
         Resources.Kk = null;
       }
       if (Resources.Ai != null && b(131072)) {
-        this.release(Loader.objLantern);
+        this.ia(Loader.objLantern);
         Resources.Ai = null;
       }
       if (Resources.wf != null && b(262144)) {
-        this.release(Loader.objGap);
+        this.ia(Loader.objGap);
         Resources.wf = null;
       }
       if (Resources.Ef != null && b(524288)) {
-        this.release(Loader.objLighter);
+        this.ia(Loader.objLighter);
         Resources.Ef = null;
       }
       if (Resources.Rc != null && b(1048576)) {
-        this.release(Loader.objTransporter);
+        this.ia(Loader.objTransporter);
         Resources.Rc = null;
       }
       if (Resources.Ef != null && b(524288)) {
-        this.release(Loader.objLighter);
+        this.ia(Loader.objLighter);
         Resources.Ef = null;
-        this.release(Loader.char3);
+        this.ia(Loader.char3);
         Resources.ml = null;
       }
     }
@@ -554,14 +547,14 @@
   class SceneWrapper extends Node {
     constructor(a) {
       super();
-      this.scene = a;
-      a.wrapper = this;
-      a.pausedUpdate = true;
-      a.hiddenRender = true;
-      this.addChild(a);
+      this.Pf = a;
+      a.ud = this;
+      a.zC = true;
+      a.yC = true;
+      this.oa(a);
     }
     update(a) {
-      switch (this.scene.lifecycle) {
+      switch (this.Pf.De) {
         case "Paused":
         case "Running":
         case "Started":
@@ -569,20 +562,20 @@
         default:
           return;
       }
-      if (this.app.window.lostContextFlag) {
-        this.scene.layout();
+      if (this.O.window.Nw) {
+        this.Pf.layout();
       }
-      this.scene.update(a);
-      this.scene.lateUpdate(a);
+      this.Pf.update(a);
+      this.Pf.iq(a);
       super.update(a);
     }
     render(a) {
-      if (this.scene.ticked) {
-        switch (this.scene.lifecycle) {
+      if (this.Pf.Sx) {
+        switch (this.Pf.De) {
           case "Paused":
           case "Running":
           case "Started":
-            this.scene.render(a);
+            this.Pf.render(a);
         }
       }
       super.render(a);
@@ -596,38 +589,38 @@
   class SceneTransition extends Node {
     constructor(a, b) {
       super();
-      this.from = a;
-      this.to = b;
+      this.a = a;
+      this.b = b;
       this.state = 0;
     }
-    forEachAncestorScene(a, b) {
-      for (a = a.wrapper.parent; a != null && !(a instanceof SceneDirector);) {
-        b(a.scene);
+    qN(a, b) {
+      for (a = a.ud.parent; a != null && !(a instanceof SceneDirector);) {
+        b(a.Pf);
         a = a.parent;
       }
     }
-    topWrapperFor(a) {
-      if (a.wrapper.parent == a.director) {
+    Il(a) {
+      if (a.ud.parent == a.fa) {
         return a;
       }
-      let b = a.wrapper.parent;
+      let b = a.ud.parent;
       while (b != null) {
-        if (b.parent == a.director) {
-          return b.scene;
+        if (b.parent == a.fa) {
+          return b.Pf;
         }
         b = b.parent;
       }
       return null;
     }
-    bootMode(a) {
-      if (a.app.config.bootDelay) {
-        return a.bootMode();
+    Oj(a) {
+      if (a.O.config.nF) {
+        return a.Oj();
       } else {
         return 0;
       }
     }
     getTransitionDuration(a, b) {
-      if (a.app.config.transition) {
+      if (a.O.config.transition) {
         return a.getTransitionDuration(b);
       } else {
         return 0;
@@ -647,24 +640,24 @@
   class ScenePreloadState extends SceneState {
     constructor(a, b) {
       super();
-      this.onDoneCb = b;
-      this.preloadIds = a.preloadSet();
-      this.loadProgress = this.app.load(this.preloadIds);
+      this.mm = b;
+      this.NP = a.eB();
+      this.Zl = this.O.load(this.NP);
     }
-    percent() {
-      return this.loadProgress.percent();
+    er() {
+      return this.Zl.er();
     }
     update(a) {
       super.update(a);
-      if (this.loadProgress.isDone() && this.lifecycle == "Running") {
-        this.onPreloadDone();
+      if (this.Zl.xv() && this.De == "Running") {
+        this.gx();
       }
     }
     replacesPrevious() {
       return false;
     }
-    onPreloadDone() {
-      this.director.addChild(new TransitionPopBack(this, false, this.onDoneCb));
+    gx() {
+      this.fa.oa(new TransitionPopBack(this, false, this.mm));
     }
     getName() {
       return "LoadingOverlay";
@@ -683,40 +676,40 @@
     init() {
       super.init();
       Resources.Yl = Application.instance.createTexture(Loader.loaderImg, 8);
-      this.bubble = new Container();
-      this.node.appendChild(this.bubble.node);
+      this.ca = new Container();
+      this.node.P(this.ca.u);
       let a = new Sprite(null, Resources.Yl.children[0], "bubble");
-      let b = Math.min(this.director.getWidth(), this.director.getHeight()) / a.size.x * 0.25;
-      this.bubble.setUniformScale(b);
-      this.bubble.appendChild(a);
+      let b = Math.min(this.fa.getWidth(), this.fa.getHeight()) / a.X.x * 0.25;
+      this.ca.setUniformScale(b);
+      this.ca.appendChild(a);
       a.center();
-      this.text = new TextNode(this.bubble, Resources.Yl.children[1]);
+      this.text = new TextNode(this.ca, Resources.Yl.children[1]);
       this.text.setText("100%");
-      this.text.setBoxSize(a.size.x, a.size.y);
+      this.text.setBoxSize(a.X.x, a.X.y);
       this.text.setAlign(0, 0);
-      this.text.autoFit(false);
+      this.text.setMultiline(false);
       this.text.setText("0%");
-      this.text.setX(-a.size.x / 2);
-      this.text.setY(-a.size.y / 2);
-      this.text.setFontSize(this.text.getFontSize() * 0.7);
-      this.pushedNext = this.percentCache = 0;
-      this.phaseX = Math.random() * PI * 2;
-      this.phaseY = Math.random() * PI * 2;
-      this.speedX = Math.random() * 0.1 - 0.05;
-      this.speedY = Math.random() * 0.1 - 0.05;
+      this.text.setX(-a.X.x / 2);
+      this.text.setY(-a.X.y / 2);
+      this.text.setFontSize(this.text.$q() * 0.7);
+      this.ak = this.wd = 0;
+      this.tj = Math.random() * PI * 2;
+      this.uj = Math.random() * PI * 2;
+      this.Ek = Math.random() * 0.1 - 0.05;
+      this.Fk = Math.random() * 0.1 - 0.05;
     }
     update(a) {
       super.update(a);
       this.time += a;
-      this.bubble.setX(this.director.getWidth() / 2);
-      this.bubble.setY(this.director.getHeight() / 2);
-      var b = Math.cos(this.phaseX) * 50;
-      a = Math.sin(this.phaseY) * 50;
-      this.phaseX += this.speedX;
-      this.phaseY += this.speedY;
-      let c = this.bubble;
+      this.ca.setX(this.fa.getWidth() / 2);
+      this.ca.setY(this.fa.getHeight() / 2);
+      var b = Math.cos(this.tj) * 50;
+      a = Math.sin(this.uj) * 50;
+      this.tj += this.Ek;
+      this.uj += this.Fk;
+      let c = this.ca;
       c.setX(c.getX() + b);
-      b = this.bubble;
+      b = this.ca;
       b.setY(b.getY() + a);
       // Loading overlay used to crawl a fake % counter (5 per frame)
       // and then sit on 100% for an extra half-second before dismissing.
@@ -725,8 +718,8 @@
       // pushed in (De == "Running") AND loading is done - see
       // ScenePreloadState.update. We no longer override gx() to a
       // no-op, so the inherited TransitionPopBack fires automatically.
-      this.percentCache = this.percent() | 0;
-      this.text.setText("" + this.percentCache + "%");
+      this.wd = this.er() | 0;
+      this.text.setText("" + this.wd + "%");
     }
     getTransitionDuration() {
       return 0.25;

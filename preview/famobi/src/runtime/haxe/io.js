@@ -1,14 +1,12 @@
   class Bytes {
     constructor(a) {
       this.length = a.byteLength;
-      this.bytes = new Uint8Array(a);
-      a.wrapper = this;
-      a.view = this.bytes;
+      this.b = new Uint8Array(a);
+      this.b.aM = a;
+      a.qO = this;
+      a.bA = this.b;
     }
-    // decodeString - decode `b` bytes starting at offset `a` as a
-    // string, using encoding `c` (defaults to UTF-8). Encoding 0 =
-    // UTF-8 (early-terminates on NUL byte), encoding 1 = UTF-16 LE.
-    decodeString(a, b, c) {
+    yb(a, b, c) {
       if (a < 0 || b < 0 || a + b > this.length) {
         throw 12;
       }
@@ -16,7 +14,7 @@
         c = v141.Ut;
       }
       let d = "";
-      let e = this.bytes;
+      let e = this.b;
       let f = a;
       a += b;
       switch (c.$t) {
@@ -49,12 +47,9 @@
       return d;
     }
     toString() {
-      return this.decodeString(0, this.length);
+      return this.yb(0, this.length);
     }
-    // fromString - encode a JS string into a Bytes wrapping a fresh
-    // ArrayBuffer (UTF-8 for non-Wy encoding, UTF-16 LE-byte-pair for
-    // Wy mode).
-    static fromString(a) {
+    static EC(a) {
       if (v141.Wy == undefined) {
         var b = new Uint8Array(a.length << 1);
         for (var c = 0, d = a.length; c < d;) {
@@ -90,11 +85,8 @@
       }
       return new Bytes(new Uint8Array(b).buffer);
     }
-    // fromBuffer - wrap an existing ArrayBuffer. Returns the
-    // pre-cached Bytes if one was stamped on the buffer's `qO` slot,
-    // otherwise constructs a fresh wrapper.
-    static fromBuffer(a) {
-      let b = a.wrapper;
+    static hk(a) {
+      let b = a.qO;
       return b ?? new Bytes(a);
     }
   }
@@ -124,7 +116,7 @@
       if (b == null) {
         b = true;
       }
-      let c = new BaseN(Base64.ALPHABET).encode(a).toString();
+      let c = new BaseN(Base64.jy).eN(a).toString();
       if (b) {
         switch (a.length % 3) {
           case 1:
@@ -141,11 +133,11 @@
         b = true;
       }
       if (b) {
-        while (Std.charCode(a, a.length - 1) == 61) {
+        while (Std.Eu(a, a.length - 1) == 61) {
           a = Std.substr(a, 0, -1);
         }
       }
-      return new BaseN(Base64.ALPHABET).decode(Bytes.fromString(a));
+      return new BaseN(Base64.jy).GM(Bytes.EC(a));
     }
   }
   Base64.i = true;
@@ -159,12 +151,12 @@
       if (c > 8 || b != 1 << c) {
         throw 13;
       }
-      this.alphabet = a;
-      this.bitsPerSymbol = c;
+      this.vj = a;
+      this.rC = c;
     }
-    encode(a) {
-      let b = this.bitsPerSymbol;
-      let c = this.alphabet;
+    eN(a) {
+      let b = this.rC;
+      let c = this.vj;
       let d = a.length * 8 / b | 0;
       let e = new Bytes(new ArrayBuffer(d + (a.length * 8 % b == 0 ? 0 : 1)));
       let f = 0;
@@ -176,35 +168,35 @@
         while (g < b) {
           g += 8;
           f <<= 8;
-          f |= a.bytes[m++];
+          f |= a.b[m++];
         }
         g -= b;
-        e.bytes[n++] = c.bytes[f >> g & h];
+        e.b[n++] = c.b[f >> g & h];
       }
       if (g > 0) {
-        e.bytes[n++] = c.bytes[f << b - g & h];
+        e.b[n++] = c.b[f << b - g & h];
       }
       return e;
     }
-    buildDecodeTable() {
+    vO() {
       let a = [];
       for (var b = 0; b < 256;) {
         a[b++] = -1;
       }
       b = 0;
-      let c = this.alphabet.length;
+      let c = this.vj.length;
       while (b < c) {
         let d = b++;
-        a[this.alphabet.bytes[d]] = d;
+        a[this.vj.b[d]] = d;
       }
-      this.decodeTable = a;
+      this.JE = a;
     }
-    decode(a) {
-      let b = this.bitsPerSymbol;
-      if (this.decodeTable == null) {
-        this.buildDecodeTable();
+    GM(a) {
+      let b = this.rC;
+      if (this.JE == null) {
+        this.vO();
       }
-      let c = this.decodeTable;
+      let c = this.JE;
       let d = a.length * b >> 3;
       let e = new Bytes(new ArrayBuffer(d));
       let f = 0;
@@ -215,14 +207,14 @@
         while (g < 8) {
           g += b;
           f <<= b;
-          let n = c[a.bytes[h++]];
+          let n = c[a.b[h++]];
           if (n == -1) {
             throw 14;
           }
           f |= n;
         }
         g -= 8;
-        e.bytes[m++] = f >> g & 255;
+        e.b[m++] = f >> g & 255;
       }
       return e;
     }
@@ -233,18 +225,18 @@
   });
 
   class BinaryReader {
-    readByte() {
+    ta() {
       throw 26;
     }
-    readBytes(a, b, c) {
+    zm(a, b, c) {
       let d = c;
-      let e = a.bytes;
+      let e = a.b;
       if (b < 0 || c < 0 || b + c > a.length) {
         throw 15;
       }
       try {
         while (d > 0) {
-          e[b] = this.readByte();
+          e[b] = this.ta();
           ++b;
           --d;
         }
@@ -255,10 +247,10 @@
       }
       return c - d;
     }
-    readBytesExact(a, b) {
+    gR(a, b) {
       var c = 0;
       for (; b > 0;) {
-        let d = this.readBytes(a, c, b);
+        let d = this.zm(a, c, b);
         if (d == 0) {
           throw 16;
         }
@@ -266,71 +258,71 @@
         b -= d;
       }
     }
-    readCString() {
+    pD() {
       let a = new BytesBuilder();
       let b;
       while (true) {
-        b = this.readByte();
+        b = this.ta();
         if (b == 0) {
           break;
         }
-        a.addByte(b);
+        a.LL(b);
       }
-      a.getBytes();
+      a.eo();
     }
-    readFloat32() {
-      let a = this.readInt32();
-      let b = this.readInt32();
-      if (this.bigEndian) {
-        return Float64Cast.fromInt32Pair(b, a);
+    fR() {
+      let a = this.Eg();
+      let b = this.Eg();
+      if (this.mq) {
+        return Float64Cast.zB(b, a);
       } else {
-        return Float64Cast.fromInt32Pair(a, b);
+        return Float64Cast.zB(a, b);
       }
     }
-    readInt16() {
-      var a = this.readByte();
-      let b = this.readByte();
-      a = this.bigEndian ? b | a << 8 : a | b << 8;
+    kc() {
+      var a = this.ta();
+      let b = this.ta();
+      a = this.mq ? b | a << 8 : a | b << 8;
       if ((a & 32768) != 0) {
         return a - 65536;
       } else {
         return a;
       }
     }
-    readUInt16() {
-      let a = this.readByte();
-      let b = this.readByte();
-      if (this.bigEndian) {
+    zd() {
+      let a = this.ta();
+      let b = this.ta();
+      if (this.mq) {
         return b | a << 8;
       } else {
         return a | b << 8;
       }
     }
-    readUInt24() {
-      let a = this.readByte();
-      let b = this.readByte();
-      let c = this.readByte();
-      if (this.bigEndian) {
+    oD() {
+      let a = this.ta();
+      let b = this.ta();
+      let c = this.ta();
+      if (this.mq) {
         return c | b << 8 | a << 16;
       } else {
         return a | b << 8 | c << 16;
       }
     }
-    readInt32() {
-      let a = this.readByte();
-      let b = this.readByte();
-      let c = this.readByte();
-      let d = this.readByte();
-      if (this.bigEndian) {
+    Eg() {
+      let a = this.ta();
+      let b = this.ta();
+      let c = this.ta();
+      let d = this.ta();
+      if (this.mq) {
         return d | c << 8 | b << 16 | a << 24;
       } else {
         return a | b << 8 | c << 16 | d << 24;
       }
     }
-    readString(a, b) {
+    hs(a, b) {
       let c = new Bytes(new ArrayBuffer(a));
-      this.readBytesExact(c, a);
-      return c.decodeString(0, a, b);
+      this.gR(c, a);
+      return c.yb(0, a, b);
     }
   }
   BinaryReader.i = true;
@@ -349,37 +341,37 @@
       if (b < 0 || c < 0 || b + c > a.length) {
         throw 17;
       }
-      this.bytes = a.bytes;
-      this.pos = b;
-      this.end = this.remaining = c;
+      this.b = a.b;
+      this.g = b;
+      this.UE = this.Yj = c;
     }
-    readByte() {
-      if (this.remaining == 0) {
+    ta() {
+      if (this.Yj == 0) {
         throw 18;
       }
-      this.remaining--;
-      return this.bytes[this.pos++];
+      this.Yj--;
+      return this.b[this.g++];
     }
-    readBytes(a, b, c) {
+    zm(a, b, c) {
       if (b < 0 || c < 0 || b + c > a.length) {
         throw 19;
       }
-      if (this.remaining == 0 && c > 0) {
+      if (this.Yj == 0 && c > 0) {
         throw 20;
       }
-      if (this.remaining < c) {
-        c = this.remaining;
+      if (this.Yj < c) {
+        c = this.Yj;
       }
-      let d = this.bytes;
-      a = a.bytes;
+      let d = this.b;
+      a = a.b;
       let e = 0;
       let f = c;
       while (e < f) {
         let g = e++;
-        a[b + g] = d[this.pos + g];
+        a[b + g] = d[this.g + g];
       }
-      this.pos += c;
-      this.remaining -= c;
+      this.g += c;
+      this.Yj -= c;
       return c;
     }
   }
@@ -389,10 +381,10 @@
     l: BytesReader
   });
   class Float64Cast {
-    static fromInt32Pair(a, b) {
-      Float64Cast.view.setInt32(0, a, true);
-      Float64Cast.view.setInt32(4, b, true);
-      return Float64Cast.view.getFloat64(0, true);
+    static zB(a, b) {
+      Float64Cast.Ev.setInt32(0, a, true);
+      Float64Cast.Ev.setInt32(4, b, true);
+      return Float64Cast.Ev.getFloat64(0, true);
     }
   }
   Float64Cast.i = true;
@@ -401,7 +393,7 @@
     constructor() {
       this.size = this.g = 0;
     }
-    addByte(a) {
+    LL(a) {
       if (this.g == this.size) {
         this.grow(1);
       }
@@ -415,14 +407,14 @@
       b = new ArrayBuffer(a);
       let c = new Uint8Array(b);
       if (this.size > 0) {
-        c.set(this.arr);
+        c.set(this.fT);
       }
       this.size = a;
       this.buffer = b;
-      this.arr = c;
+      this.fT = c;
       this.view = new DataView(this.buffer);
     }
-    getBytes() {
+    eo() {
       if (this.size == 0) {
         return new Bytes(new ArrayBuffer(0));
       }
@@ -449,7 +441,7 @@
           f[h >> 2] = g.charCodeAt(h) + (g.charCodeAt(h + 1) << 8) + (g.charCodeAt(h + 2) << 16) + (g.charCodeAt(h + 3) << 24);
           h += 4;
         }
-        MD5.processBlock(c, f);
+        MD5.hw(c, f);
         d += 64;
       }
       a = a.substring(d - 64);
@@ -461,7 +453,7 @@
       }
       f[d >> 2] |= 128 << (d % 4 << 3);
       if (d > 55) {
-        MD5.processBlock(c, f);
+        MD5.hw(c, f);
         d = 0;
         while (d < 16) {
           f[d] = 0;
@@ -469,8 +461,8 @@
         }
       }
       f[14] = b * 8;
-      MD5.processBlock(c, f);
-      b = MD5.HEX_CHARS;
+      MD5.hw(c, f);
+      b = MD5.yG;
       f = "";
       d = 0;
       for (e = c.length; d < e;) {
@@ -483,7 +475,7 @@
       }
       return f;
     }
-    static processBlock(a, b) {
+    static hw(a, b) {
       let c = a[0];
       let d = a[1];
       let e = a[2];

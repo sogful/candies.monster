@@ -1,7 +1,7 @@
   class PointLink {
     constructor(a, b, c) {
-      this.other = a;
-      this.restLen = b;
+      this.Cj = a;
+      this.zh = b;
       this.type = c;
     }
   }
@@ -11,25 +11,25 @@
   });
   class Particle {
     constructor() {
-      this.pinned = false;
-      this.setWeight(1);
-      this.reset();
+      this.Vn = false;
+      this.Ng(1);
+      this.ts();
     }
-    setWeight(a) {
+    Ng(a) {
       this.weight = a;
-      this.invMass = 1 / a;
-      this.gravity = new Vec2(0, PhysicsConfig.GRAVITY * a);
+      this.zr = 1 / a;
+      this.Kb = new Vec2(0, PhysicsConfig.wy * a);
     }
-    reset() {
-      this.velocity = Vec2.zero();
-      this.accel = Vec2.zero();
-      this.g = Vec2.zero();
-      this.delta = Vec2.zero();
-      this.forceVec = Vec2.zero();
+    ts() {
+      this.sb = Vec2.sc();
+      this.a = Vec2.sc();
+      this.g = Vec2.sc();
+      this.xd = Vec2.sc();
+      this.ft = Vec2.sc();
     }
-    applyImpulse(a, b) {
-      if (!a.isZero()) {
-        this.g.add(Vec2.scaled(a, b / 1));
+    Vh(a, b) {
+      if (!a.TO()) {
+        this.g.add(Vec2.Ob(a, b / 1));
       }
     }
   }
@@ -40,114 +40,114 @@
   class VerletPoint extends Particle {
     constructor() {
       super();
-      this.prev = new Vec2(INT32_MAX, INT32_MAX);
-      this.pinPos = new Vec2(-1, -1);
-      this.links = [];
-      this.forceVec = Vec2.zero();
-      this.reset();
+      this.ha = new Vec2(INT32_MAX, INT32_MAX);
+      this.vh = new Vec2(-1, -1);
+      this.jg = [];
+      this.ft = Vec2.sc();
+      this.ts();
     }
-    reset() {
-      super.reset();
-      this.prev = new Vec2(INT32_MAX, INT32_MAX);
-      this.prev.x = INT32_MAX;
-      this.prev.y = INT32_MAX;
-      this.clearLinks();
+    ts() {
+      super.ts();
+      this.ha = new Vec2(INT32_MAX, INT32_MAX);
+      this.ha.x = INT32_MAX;
+      this.ha.y = INT32_MAX;
+      this.vD();
     }
-    clearLinks() {
-      this.links = [];
+    vD() {
+      this.jg = [];
     }
-    addLink(a, b, c) {
-      this.links.push(new PointLink(a, b, c));
+    al(a, b, c) {
+      this.jg.push(new PointLink(a, b, c));
     }
-    removeLinkAt(a) {
-      this.links.splice(a, 1);
+    mR(a) {
+      this.jg.splice(a, 1);
     }
-    hasLink(a) {
-      let b = this.links;
+    lO(a) {
+      let b = this.jg;
       let c = b.length;
       let d = 0;
       while (d < c) {
-        if (b[d++].other == a) {
+        if (b[d++].Cj == a) {
           return true;
         }
       }
       return false;
     }
-    setLinkDistance(a, b) {
-      let c = this.links;
+    vq(a, b) {
+      let c = this.jg;
       let d = c.length;
       let e = 0;
       while (e < d) {
         let f = c[e++];
-        if (f.other == a) {
-          f.restLen = b;
+        if (f.Cj == a) {
+          f.zh = b;
           break;
         }
       }
     }
-    replaceLinkTarget(a, b, c) {
-      let d = this.links;
+    lA(a, b, c) {
+      let d = this.jg;
       let e = d.length;
       let f = 0;
       while (f < e) {
         let g = d[f++];
-        if (g.other == a) {
-          g.other = b;
-          g.restLen = c;
+        if (g.Cj == a) {
+          g.Cj = b;
+          g.zh = c;
           break;
         }
       }
     }
-    restLenTo(a) {
-      let b = this.links;
+    zh(a) {
+      let b = this.jg;
       let c = b.length;
       let d = 0;
       while (d < c) {
         let e = b[d++];
-        if (e.other == a) {
-          return e.restLen;
+        if (e.Cj == a) {
+          return e.zh;
         }
       }
       return -1;
     }
     update(a) {
       if (a != 0) {
-        var b = this.forceVec;
+        var b = this.ft;
         var c = PhysicsConfig.current;
-        if (this.pinned) {
+        if (this.Vn) {
           b.x = 0;
           b.y = 0;
         } else if (c.y != 0 || c.x != 0) {
           b.x = c.x;
           b.y = c.y;
         } else {
-          b.x = this.gravity.x * this.invMass;
-          b.y = this.gravity.y * this.invMass;
+          b.x = this.Kb.x * this.zr;
+          b.y = this.Kb.y * this.zr;
         }
         b = a / 1 * a;
-        this.accel.x = this.forceVec.x * b;
-        this.accel.y = this.forceVec.y * b;
-        if (this.prev.x == INT32_MAX) {
-          this.prev.x = this.g.x;
-          this.prev.y = this.g.y;
+        this.a.x = this.ft.x * b;
+        this.a.y = this.ft.y * b;
+        if (this.ha.x == INT32_MAX) {
+          this.ha.x = this.g.x;
+          this.ha.y = this.g.y;
         }
-        this.delta.x = this.g.x - this.prev.x + this.accel.x;
-        this.delta.y = this.g.y - this.prev.y + this.accel.y;
+        this.xd.x = this.g.x - this.ha.x + this.a.x;
+        this.xd.y = this.g.y - this.ha.y + this.a.y;
         if (a > 0) {
           a = 1 / a;
-          this.velocity.x = this.delta.x * a;
-          this.velocity.y = this.delta.y * a;
+          this.sb.x = this.xd.x * a;
+          this.sb.y = this.xd.y * a;
         }
-        this.prev.x = this.g.x;
-        this.prev.y = this.g.y;
-        this.g.x += this.delta.x;
-        this.g.y += this.delta.y;
+        this.ha.x = this.g.x;
+        this.ha.y = this.g.y;
+        this.g.x += this.xd.x;
+        this.g.y += this.xd.y;
       }
     }
-    applyConstraints() {
-      var a = this.pinPos;
+    As() {
+      var a = this.vh;
       let b = this.g;
-      let c = this.invMass;
+      let c = this.zr;
       let d;
       let e = 0;
       let f = 0;
@@ -155,10 +155,10 @@
         b.x = a.x;
         b.y = a.y;
       } else {
-        a = this.links;
+        a = this.jg;
         for (var g = a.length, h = 0; h < g;) {
           var m = a[h++];
-          var n = m.other;
+          var n = m.Cj;
           let u = n.g;
           var q = u.x - b.x;
           d = u.y - b.y;
@@ -166,7 +166,7 @@
             d = q = 1;
           }
           var p = Math.sqrt(q * q + d * d);
-          var v = m.restLen;
+          var v = m.zh;
           m = m.type;
           if (m == 1) {
             if (p <= v) {
@@ -175,8 +175,8 @@
           } else if (m == 2 && p >= v) {
             continue;
           }
-          m = n.pinPos.x == -1;
-          n = n.invMass;
+          m = n.vh.x == -1;
+          n = n.zr;
           p = (p - v) / ((p > 1 ? p : 1) * (c + n));
           if (m) {
             e = q;
@@ -205,8 +205,8 @@
     static toggle() {
       PhysicsConfig.current.y = -PhysicsConfig.current.y;
     }
-    static isNormal() {
-      if (PhysicsConfig.current.y == PhysicsConfig.GRAVITY) {
+    static NO() {
+      if (PhysicsConfig.current.y == PhysicsConfig.wy) {
         return PhysicsConfig.current.x == 0;
       } else {
         return false;
@@ -214,7 +214,7 @@
     }
     static reset() {
       PhysicsConfig.current.x = 0;
-      PhysicsConfig.current.y = PhysicsConfig.GRAVITY;
+      PhysicsConfig.current.y = PhysicsConfig.Et;
     }
   }
   PhysicsConfig.i = true;
@@ -222,62 +222,62 @@
   class SmokeEmitter extends ParticleEmitter {
     constructor(a, b) {
       super(b);
-      this.controller = a;
-      this.sprites = [];
+      this.S = a;
+      this.wb = [];
       this.angle = 0;
-      this.angleVar = 50;
-      this.life = 0.5;
-      this.lifeVar = 0.3;
+      this.wn = 50;
+      this.Xc = 0.5;
+      this.Xv = 0.3;
       this.duration = 1.5;
       this.speed = 80;
-      this.speedVar = 10;
+      this.yp = 10;
     }
     free() {
       let a = 0;
-      let b = this.sprites;
+      let b = this.wb;
       while (a < b.length) {
         b[a++].free();
       }
     }
-    initParticle(a) {
-      super.initParticle(a);
+    qh(a) {
+      super.qh(a);
       a = new Sprite(null, Resources.Kd, Keys.hI);
       a.center();
       a.setUniformScale(0.2 + Math.random() * 0.1);
-      this.controller.layer(5).appendChild(a.node);
-      a.setBlendMode(3);
-      this.sprites.push(a);
+      this.S.ma(5).P(a.u);
+      a.Wd(3);
+      this.wb.push(a);
     }
-    writeOutput(a, b, c) {
-      a.g.add(Vec2.scaled(a.dir, c));
-      super.writeOutput(a, b, c);
+    Kh(a, b, c) {
+      a.g.add(Vec2.Ob(a.dir, c));
+      super.Kh(a, b, c);
     }
-    removeAt(a) {
-      super.removeAt(a);
-      let b = this.sprites[a];
-      this.sprites.splice(a, 1);
+    Fg(a) {
+      super.Fg(a);
+      let b = this.wb[a];
+      this.wb.splice(a, 1);
       b.free();
     }
-    draw() {
-      super.draw();
+    M() {
+      super.M();
       let a = 0;
-      let b = this.particles.length;
+      let b = this.ac.length;
       while (a < b) {
         var c = a++;
-        let d = this.particles[c];
-        c = this.sprites[c];
+        let d = this.ac[c];
+        c = this.wb[c];
         c.setX(d.g.x);
         c.setY(d.g.y);
-        c.setRotation(d.angle);
-        c.setAlpha(d.life / d.lifeStart);
+        c.la(d.angle);
+        c.W(d.Xc / d.Fr);
       }
     }
     update(a) {
       super.update(a);
       a = 0;
-      let b = this.particles.length;
+      let b = this.ac.length;
       while (a < b) {
-        let c = this.particles[a++];
+        let c = this.ac[a++];
         c.angle = 52 + Math.atan2(c.dir.y, c.dir.x) * RAD2DEG;
       }
     }
@@ -291,70 +291,70 @@
   class PollenEmitter extends ParticleEmitter {
     constructor(a, b) {
       super(b);
-      this.controller = a;
-      this.sprites = [];
+      this.S = a;
+      this.wb = [];
       this.size = 0.6;
-      this.sizeVar = 0.2;
-      this.angle = X.next() * 360;
-      this.angleVar = 15;
-      this.angularVelVar = 30;
-      this.life = 0.8;
-      this.lifeVar = 0.3;
+      this.wx = 0.2;
+      this.angle = X.gi() * 360;
+      this.wn = 15;
+      this.xs = 30;
+      this.Xc = 0.8;
+      this.Xv = 0.3;
       this.duration = 1.5;
       this.speed = 140;
-      this.speedVar = 35;
+      this.yp = 35;
     }
-    start(a) {
-      super.start(a);
+    Qm(a) {
+      super.Qm(a);
     }
-    initParticle(a) {
-      super.initParticle(a);
-      this.angle += 360 / this.capacity;
-      let b = this.size + X.randCentered() * this.sizeVar;
-      let c = Keys.indexed(Keys.Wp, X.randInt(0, 2));
-      let d = Resources.de.frames.findByName(c).sourceSize;
+    qh(a) {
+      super.qh(a);
+      this.angle += 360 / this.Kx;
+      let b = this.size + X.Ac() * this.wx;
+      let c = Keys.jj(Keys.Wp, X.xh(0, 2));
+      let d = Resources.de.hc.yf(c).ec;
       a.width = d.x * b;
       a.height = d.y * b;
-      a.angSpeed = this.angularVel + this.angularVelVar * X.randCentered();
+      a.Eq = this.Fm + this.xs * X.Ac();
       a = new Sprite(null, Resources.de, c);
       a.center();
-      this.controller.layer(5).appendChild(a.node);
-      this.sprites.push(a);
+      this.S.ma(5).P(a.u);
+      this.wb.push(a);
     }
-    writeOutput(a, b, c) {
-      a.angle += a.angSpeed * c;
-      super.writeOutput(a, b, c);
+    Kh(a, b, c) {
+      a.angle += a.Eq * c;
+      super.Kh(a, b, c);
     }
-    removeAt(a) {
-      super.removeAt(a);
-      let b = this.sprites[a];
-      this.sprites.splice(a, 1);
+    Fg(a) {
+      super.Fg(a);
+      let b = this.wb[a];
+      this.wb.splice(a, 1);
       b.free();
     }
-    draw() {
-      super.draw();
+    M() {
+      super.M();
       let a = 0;
-      let b = this.particles.length;
+      let b = this.ac.length;
       while (a < b) {
         var c = a++;
-        let d = this.particles[c];
-        c = this.sprites[c];
-        c.setRotation(d.angle);
-        c.setUniformScale(d.width / c.size.x * 0.4);
+        let d = this.ac[c];
+        c = this.wb[c];
+        c.la(d.angle);
+        c.setUniformScale(d.width / c.X.x * 0.4);
         c.setX(d.g.x);
         c.setY(d.g.y);
-        c.setAlpha(d.alpha);
+        c.W(d.alpha);
       }
     }
     update(a) {
       super.update(a);
       a = 0;
-      let b = this.particles.length;
+      let b = this.ac.length;
       while (a < b) {
-        let c = this.particles[a++];
-        if (c.life > 0) {
-          if (c.life < c.lifeStart * 0.7) {
-            c.alpha = c.life / (c.lifeStart * 0.7);
+        let c = this.ac[a++];
+        if (c.Xc > 0) {
+          if (c.Xc < c.Fr * 0.7) {
+            c.alpha = c.Xc / (c.Fr * 0.7);
           }
           c.dir.x *= 0.9;
           c.dir.y *= 0.9;
@@ -372,57 +372,57 @@
   class DirectionalSpray extends ParticleEmitter {
     constructor(a, b) {
       super(5);
-      this.controller = a;
+      this.S = a;
       this.angle = b;
-      this.angleVar = 10;
+      this.wn = 10;
       this.speed = 500;
-      this.speedVar = 100;
-      this.life = 0.6;
+      this.yp = 100;
+      this.Xc = 0.6;
       this.size = 12;
-      this.emitRate = 100;
-      this.colorStart.r = 1;
-      this.colorStart.g = 1;
-      this.colorStart.b = 1;
-      this.colorStart.a = 0.6;
-      this.colorEnd.r = 1;
-      this.colorEnd.g = 1;
-      this.colorEnd.b = 1;
-      this.colorEnd.a = 0;
-      this.sprites = [];
+      this.Lq = 100;
+      this.aj.r = 1;
+      this.aj.ue = 1;
+      this.aj.b = 1;
+      this.aj.a = 0.6;
+      this.ei.r = 1;
+      this.ei.ue = 1;
+      this.ei.b = 1;
+      this.ei.a = 0;
+      this.wb = [];
     }
-    initParticle(a) {
-      super.initParticle(a);
-      a = new Sprite(null, Resources.wm, Keys.padNum(6 + X.randInt(0, 2)));
+    qh(a) {
+      super.qh(a);
+      a = new Sprite(null, Resources.wm, Keys.VC(6 + X.xh(0, 2)));
       a.setUniformScale(0.4);
       a.center();
-      a.setBlendMode(3);
-      this.controller.layer(5).appendChild(a.node);
-      this.sprites.push(a);
+      a.Wd(3);
+      this.S.ma(5).P(a.u);
+      this.wb.push(a);
     }
-    writeOutput(a, b, c) {
-      super.writeOutput(a, b, c);
+    Kh(a, b, c) {
+      super.Kh(a, b, c);
       a.dir.multiply(0.9);
-      b = Vec2.scaled(a.dir, c);
-      b.add(this.gravity);
+      b = Vec2.Ob(a.dir, c);
+      b.add(this.Kb);
       a.g.add(b);
     }
-    removeAt(a) {
-      super.removeAt(a);
-      let b = this.sprites[a];
-      this.sprites.splice(a, 1);
+    Fg(a) {
+      super.Fg(a);
+      let b = this.wb[a];
+      this.wb.splice(a, 1);
       b.free();
     }
-    draw() {
-      super.draw();
+    M() {
+      super.M();
       let a = 0;
-      let b = this.particles.length;
+      let b = this.ac.length;
       while (a < b) {
         var c = a++;
-        let d = this.particles[c];
-        c = this.sprites[c];
+        let d = this.ac[c];
+        c = this.wb[c];
         c.setX(d.g.x);
         c.setY(d.g.y);
-        c.setAlpha(d.color.a);
+        c.W(d.color.a);
       }
     }
   }
@@ -435,48 +435,48 @@
   class SwarmManager extends GameObject {
     constructor(a) {
       super();
-      this.particles = [];
-      this.container = new Container();
-      a.layer(0).appendChild(this.container.node);
+      this.zw = [];
+      this.bD = new Container();
+      a.ma(0).P(this.bD.u);
     }
-    addParticle(a, b) {
+    NL(a, b) {
       var c = [0.3, 0.3, 0.5, 0.5, 0.6];
-      var d = c = c[MathUtil.randInt(0, c.length - 1)];
-      if (MathUtil.randBool()) {
-        c *= 1 + MathUtil.randInt(0, 1) / 10;
+      var d = c = c[MathUtil.fp(0, c.length - 1)];
+      if (MathUtil.eR()) {
+        c *= 1 + MathUtil.fp(0, 1) / 10;
       } else {
-        d *= 1 + MathUtil.randInt(0, 1) / 10;
+        d *= 1 + MathUtil.fp(0, 1) / 10;
       }
       let e = Math.min(1 - c, 1 - d);
       let f = Math.random();
       let g = new SwarmParticle();
-      this.container.appendChild(g.sprite);
-      g.pathIdx = b;
+      this.bD.appendChild(g.U);
+      g.yQ = b;
       g.x = a.x;
       g.y = a.y;
-      g.scaleXA = e + c;
-      g.scaleYA = e + d;
-      g.scaleX = g.scaleXA * f;
-      g.scaleY = g.scaleYA * f;
-      g.scaleXB = c;
-      g.scaleYB = d;
-      g.alphaB = 0.3;
-      g.alphaA = 1;
+      g.Ys = e + c;
+      g.Zs = e + d;
+      g.Hm = g.Ys * f;
+      g.Im = g.Zs * f;
+      g.Oq = c;
+      g.Pq = d;
+      g.Mq = 0.3;
+      g.zx = 1;
       g.alpha = f * 0.7 + 0.3;
-      this.particles.push(g);
+      this.zw.push(g);
     }
-    addAlongLine(a, b, c) {
-      let d = c.motion.path[a];
-      b = Vec2.diff(c.motion.path[b], d);
-      c = b.length();
+    DA(a, b, c) {
+      let d = c.pb.path[a];
+      b = Vec2.Ia(c.pb.path[b], d);
+      c = b.Rb();
       if (!(c < EPSILON)) {
         c = Math.floor(c / 17.6);
         b.normalize();
         for (var e = 0; e <= c;) {
-          var f = Vec2.sum(d, Vec2.scaled(b, e * 17.6));
-          f.x += MathUtil.randInt(-1.6, 1.6);
-          f.y += MathUtil.randInt(-1.6, 1.6);
-          this.addParticle(f, a);
+          var f = Vec2.tb(d, Vec2.Ob(b, e * 17.6));
+          f.x += MathUtil.fp(-1.6, 1.6);
+          f.y += MathUtil.fp(-1.6, 1.6);
+          this.NL(f, a);
           ++e;
         }
       }
@@ -484,41 +484,41 @@
     update(a) {
       super.update(a);
       let b = 0;
-      let c = this.particles;
+      let c = this.zw;
       while (b < c.length) {
         let e = c[b];
         ++b;
-        var d = PathResolver.rampTowardStep(e.scaleX, e.scaleXB, 1, a);
-        e.scaleX = d.value;
-        if (d.reached) {
-          d = e.scaleXA;
-          e.scaleXA = e.scaleXB;
-          e.scaleXB = d;
+        var d = PathResolver.ek(e.Hm, e.Oq, 1, a);
+        e.Hm = d.value;
+        if (d.sk) {
+          d = e.Ys;
+          e.Ys = e.Oq;
+          e.Oq = d;
         }
-        d = PathResolver.rampTowardStep(e.scaleY, e.scaleYB, 1, a);
-        e.scaleY = d.value;
-        if (d.reached) {
-          d = e.scaleYA;
-          e.scaleYA = e.scaleYB;
-          e.scaleYB = d;
+        d = PathResolver.ek(e.Im, e.Pq, 1, a);
+        e.Im = d.value;
+        if (d.sk) {
+          d = e.Zs;
+          e.Zs = e.Pq;
+          e.Pq = d;
         }
-        d = PathResolver.rampTowardStep(e.alpha, e.alphaB, 1, a);
+        d = PathResolver.ek(e.alpha, e.Mq, 1, a);
         e.alpha = d.value;
-        if (d.reached) {
-          d = e.alphaA;
-          e.alphaA = e.alphaB;
-          e.alphaB = d;
+        if (d.sk) {
+          d = e.zx;
+          e.zx = e.Mq;
+          e.Mq = d;
         }
       }
     }
-    draw() {
+    M() {
       let a = 0;
-      let b = this.particles;
+      let b = this.zw;
       while (a < b.length) {
         let c = b[a];
         ++a;
-        c.sprite.setTransform(c.x, c.y, c.scaleX * 0.4, c.scaleY * 0.4);
-        c.sprite.setAlpha(c.alpha);
+        c.U.gS(c.x, c.y, c.Hm * 0.4, c.Im * 0.4);
+        c.U.W(c.alpha);
       }
     }
   }
@@ -529,10 +529,10 @@
   });
   class SwarmParticle {
     constructor() {
-      this.scaleX = this.scaleXA = this.scaleXB = this.scaleY = this.scaleYA = this.scaleYB = this.alpha = this.alphaA = this.alphaB = 1;
-      this.pathIdx = this.x = this.y = 0;
-      this.sprite = new Sprite(null, Resources.Ld, Keys.JG);
-      this.sprite.center();
+      this.Hm = this.Ys = this.Oq = this.Im = this.Zs = this.Pq = this.alpha = this.zx = this.Mq = 1;
+      this.yQ = this.x = this.y = 0;
+      this.U = new Sprite(null, Resources.Ld, Keys.JG);
+      this.U.center();
     }
   }
   SwarmParticle.i = true;
@@ -540,22 +540,15 @@
     l: SwarmParticle
   });
 
-  // ParticleData - one live particle. `g` is the current position,
-  // `prev` last frame position (verlet style), `dir` velocity vector.
-  // `life` ticks down to 0 (recycled then), `lifeStart` is the
-  // initial value used to drive `colorRate` (per-second color delta).
-  // radial/tangential accel act along/perpendicular to position
-  // vector. angSpeed is degrees-per-second rotation; alpha/scale/
-  // width/height are subclass driven render hints.
   class ParticleData {
     constructor() {
-      this.prev = new Vec2(0, 0);
+      this.bj = new Vec2(0, 0);
       this.g = new Vec2(0, 0);
       this.dir = new Vec2(0, 0);
-      this.tangentialAccel = this.radialAccel = 0;
+      this.$s = this.fs = 0;
       this.color = new RGBA(0, 0, 0, 0);
-      this.colorRate = new RGBA(0, 0, 0, 0);
-      this.angle = this.angSpeed = this.lifeStart = this.life = this.size = 0;
+      this.bi = new RGBA(0, 0, 0, 0);
+      this.angle = this.Eq = this.Fr = this.Xc = this.size = 0;
       this.scale = this.alpha = 1;
       this.height = this.width = 0;
     }
