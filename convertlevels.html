@@ -217,10 +217,16 @@
 
                 <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.25em;">
                     <a class="title">XML</a>
-                    <label class="button clickable loadxmllink">
-                        <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
-                        <span>Load XML</span>
-                    </label>
+                    <div style="display:flex; align-items: center; gap: 0.25em;">
+                        <label class="button clickable loadxmllink">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <span>Load XML</span>
+                        </label>
+                        <label class="button clickable savexmllink">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <span>Save XML</span>
+                        </label>
+                    </div>
                 </div>
 				<div class="xml thexml language-xml" contenteditable="true" placeholder="<map>
 <layer name=&quot;settings&quot;>
@@ -240,10 +246,16 @@
 			<div class="paste">
                 <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.25em;">
                     <a class="title">JSON</a>
-                    <label class="button clickable loadjsonlink">
-                        <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
-                        <span>Load JSON</span>
-                    </label>
+                    <div style="display:flex; align-items: center; gap: 0.25em;">
+                        <label class="button clickable loadjsonlink">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <span>Load JSON</span>
+                        </label>
+                        <label class="button clickable savejsonlink">
+                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <span>Save JSON</span>
+                        </label>
+                    </div>
                 </div>
 				<div class="xml thejson language-json" contenteditable="true" placeholder='{
   "settings": [
@@ -774,6 +786,35 @@
                     reader.readAsText(f);
                 }
                 e.target.value = "";
+            });
+        }
+
+        /*//////////////////////////////////////////////////////////////////////*/
+
+        function savefile(content, filename, mime) {
+            const blob = new Blob([content], {type: mime});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = filename;
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        const savexmllink = document.querySelector(".savexmllink");
+        const savejsonlink = document.querySelector(".savejsonlink");
+        if (savexmllink) {
+            savexmllink.addEventListener("click", function(e) {
+                e.preventDefault();
+                const content = (xmleditor.textContent || "").trim();
+                if (content) savefile(content, "level.xml", "application/xml");
+            });
+        }
+        if (savejsonlink) {
+            savejsonlink.addEventListener("click", function(e) {
+                e.preventDefault();
+                const content = (jsoneditor.textContent || "").trim();
+                if (content) savefile(content, "level.json", "application/json");
             });
         }
 
