@@ -1423,7 +1423,7 @@
             const URLBYTELIMIT = 16384;
             let opengameseq = 0;
 
-            function looksLikeTooLong(doc) {
+            function probablytoolong(doc) {
                 if (!doc) return false;
                 try {
                     const title = (doc.title || "").toLowerCase();
@@ -1470,29 +1470,21 @@
                     return;
                 }
 
-                let probefailed = false;
+                let toolong = false;
                 try {
                     const resp = await fetch(url, {method: "GET", cache: "no-store", credentials: "same-origin"});
-                    if (!resp.ok) probefailed = true;
-                } catch (_) {
-                    probefailed = true;
-                }
+                    if (resp.status === 414 || resp.status === 431) toolong = true;
+                } catch (_) {}
                 if (seq !== opengameseq) return;
-                if (probefailed) {
+                if (toolong) {
                     showtoolong();
                     return;
                 }
 
-                let loadfired = false;
                 const onframeload = () => {
-                    loadfired = true;
                     if (seq !== opengameseq) return;
                     try {
-                        const doc = frame.contentDocument;
-                        const txt = (doc?.title || "") + " " + (doc?.body?.innerText || "");
-                        if (looksLikeTooLong(doc) || txt.trim().length === 0) {
-                            showtoolong();
-                        }
+                        if (probablytoolong(frame.contentDocument)) showtoolong();
                     } catch (_) {}
                 };
                 if (frame._toolongcheck) {
@@ -1500,11 +1492,6 @@
                 }
                 frame._toolongcheck = onframeload;
                 frame.addEventListener("load", onframeload);
-
-                window.setTimeout(() => {
-                    if (seq !== opengameseq) return;
-                    if (!loadfired) showtoolong();
-                }, 8000);
 
                 YOURTOOLONG?.classList.remove("active");
                 frame.src = url;
