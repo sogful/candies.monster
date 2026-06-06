@@ -537,16 +537,16 @@
         function convertjsontoxml(jsonobj) {
             try {
                 let xml = "<map>\n";
-                
+
                 // settings layer
-                xml += "<layer name=\"settings\">\n";
+                xml += "  <layer name=\"settings\">\n";
                 const mapsettings = jsonobj.settings?.find(s => s.name === 0);
                 if (mapsettings) {
-                    xml += `<map gridSize="${mapsettings.gridSize || 32}" width="${mapsettings.width || 320}" height="${mapsettings.height || 480}" />\n`;
+                    xml += `    <map gridSize="${mapsettings.gridSize || 32}" width="${mapsettings.width || 320}" height="${mapsettings.height || 480}" />\n`;
                 } else {
-                    xml += "<map gridSize=\"32\" width=\"320\" height=\"480\" />\n";
+                    xml += "    <map gridSize=\"32\" width=\"320\" height=\"480\" />\n";
                 }
-                
+
                 const gamedesign = jsonobj.settings?.find(s => s.name === 1);
                 if (gamedesign) {
                     let gdattrs = `ropePhysicsSpeed="${gamedesign.ropePhysicsSpeed || 1.0}" special="${gamedesign.special || 1}"`;
@@ -554,14 +554,14 @@
                     if (gamedesign.nightLevel !== undefined) gdattrs += ` nightLevel="${gamedesign.nightLevel}"`;
                     if (gamedesign.water !== undefined) gdattrs += ` water="${gamedesign.water}"`;
                     if (gamedesign.waterSpeed !== undefined) gdattrs += ` waterSpeed="${gamedesign.waterSpeed}"`;
-                    xml += `<gameDesign ${gdattrs} />\n`;
+                    xml += `    <gameDesign ${gdattrs} />\n`;
                 } else {
-                    xml += "<gameDesign ropePhysicsSpeed=\"1.0\" special=\"1\" twoParts=\"false\" />\n";
+                    xml += "    <gameDesign ropePhysicsSpeed=\"1.0\" special=\"1\" twoParts=\"false\" />\n";
                 }
-                xml += "</layer>\n";
-                
+                xml += "  </layer>\n";
+
                 // objects layer
-                xml += "<layer name=\"Objects\">\n";
+                xml += "  <layer name=\"Objects\">\n";
                 if (jsonobj.objects) {
                     jsonobj.objects.forEach(obj => {
                         const jsontoxml = window.ctrconversion?.getidmapping?.()?.jsontoxml;
@@ -614,10 +614,10 @@
                         if (obj.locale !== undefined) attrs += ` locale="${obj.locale}"`;
                         if (obj.special !== undefined) attrs += ` special="${obj.special}"`;
                         
-                        xml += `<${tagname} ${attrs} />\n`;
+                        xml += `    <${tagname} ${attrs} />\n`;
                     });
                 }
-                xml += "</layer>\n";
+                xml += "  </layer>\n";
                 xml += "</map>";
                 
                 return xml;
