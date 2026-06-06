@@ -552,7 +552,7 @@
                 xml += "<layer name=\"Objects\">\n";
                 if (jsonobj.objects) {
                     jsonobj.objects.forEach(obj => {
-                        const jsontoxml = window.ctrconversion?.getjsontoxml?.();
+                        const jsontoxml = window.ctrconversion?.getidmapping?.()?.jsontoxml;
                         const tagname = jsontoxml?.[String(obj.name)];
                         if (!tagname) return;
                         
