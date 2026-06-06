@@ -1,7 +1,7 @@
-/preview/h5dx/node_modules
+/preview/h5dx/node_modules/
 /versions/scriptsyay/
 
-/preview/workers
+/preview/workers/
 /preview/examplelevel.json
 /preview/examplelevel.xml
 
@@ -10,6 +10,6 @@
 /convert/assets/static/__pycache__
 
 /template.html
-.vscode
-.unused
+.vscode/
+.unused/
 404old.html
