@@ -1422,6 +1422,7 @@
             const YOURTOOLONG = document.querySelector(".YOURTOOLONG");
             const URLBYTELIMIT = 16384;
             let opengameseq = 0;
+            let gameopening = false;
 
             function probablytoolong(doc) {
                 if (!doc) return false;
@@ -1445,6 +1446,7 @@
                 };
                 const path = sources[game];
                 if (!path) return;
+                gameopening = true;
                 try {
                     localStorage.setItem(game_version_key, game);
                 } catch (storageerror) {
@@ -1499,6 +1501,7 @@
             }
 
             function closegame() {
+                gameopening = false;
                 frame.classList.remove("active");
                 closebtn.classList.remove("active");
                 YOURTOOLONG?.classList.remove("active");
@@ -1719,7 +1722,7 @@
             updatedetails();
             updatelink();
             if (levelbase64) {
-                if (!frame.classList.contains("active")) {
+                if (!frame.classList.contains("active") && !gameopening) {
                     if (nopicker) {opengame("h5dx")}
                     else {showchoicepanel()}
                 }
