@@ -534,99 +534,6 @@
             }
         }
 
-        function convertjsontoxml(jsonobj) {
-            try {
-                let xml = "<map>\n";
-
-                // settings layer
-                xml += "  <layer name=\"settings\">\n";
-                const mapsettings = jsonobj.settings?.find(s => s.name === 0);
-                if (mapsettings) {
-                    xml += `    <map gridSize="${mapsettings.gridSize || 32}" width="${mapsettings.width || 320}" height="${mapsettings.height || 480}" />\n`;
-                } else {
-                    xml += "    <map gridSize=\"32\" width=\"320\" height=\"480\" />\n";
-                }
-
-                const gamedesign = jsonobj.settings?.find(s => s.name === 1);
-                if (gamedesign) {
-                    let gdattrs = `ropePhysicsSpeed="${gamedesign.ropePhysicsSpeed || 1.0}" special="${gamedesign.special || 1}"`;
-                    if (gamedesign.twoParts !== undefined) gdattrs += ` twoParts="${gamedesign.twoParts}"`;
-                    if (gamedesign.nightLevel !== undefined) gdattrs += ` nightLevel="${gamedesign.nightLevel}"`;
-                    if (gamedesign.water !== undefined) gdattrs += ` water="${gamedesign.water}"`;
-                    if (gamedesign.waterSpeed !== undefined) gdattrs += ` waterSpeed="${gamedesign.waterSpeed}"`;
-                    xml += `    <gameDesign ${gdattrs} />\n`;
-                } else {
-                    xml += "    <gameDesign ropePhysicsSpeed=\"1.0\" special=\"1\" twoParts=\"false\" />\n";
-                }
-                xml += "  </layer>\n";
-
-                // objects layer
-                xml += "  <layer name=\"Objects\">\n";
-                if (jsonobj.objects) {
-                    jsonobj.objects.forEach(obj => {
-                        const jsontoxml = window.ctrconversion?.getidmapping?.()?.jsontoxml;
-                        const tagname = jsontoxml?.[String(obj.name)];
-                        if (!tagname) return;
-                        
-                        let attrs = `x="${obj.x || 0}" y="${obj.y || 0}"`;
-                        if (obj.timeout !== undefined) attrs += ` timeout="${obj.timeout}"`;
-                        if (obj.angle !== undefined) attrs += ` angle="${obj.angle}"`;
-                        if (obj.size !== undefined) attrs += ` size="${obj.size}"`;
-                        if (obj.group !== undefined) attrs += ` group="${obj.group}"`;
-                        if (obj.radius !== undefined) attrs += ` radius="${obj.radius}"`;
-                        if (obj.path !== undefined) attrs += ` path="${obj.path}"`;
-                        if (obj.moveSpeed !== undefined) attrs += ` moveSpeed="${obj.moveSpeed}"`;
-                        if (obj.initialDelay !== undefined) attrs += ` initialDelay="${obj.initialDelay}"`;
-                        if (obj.offTime !== undefined) attrs += ` offTime="${obj.offTime}"`;
-                        if (obj.onTime !== undefined) attrs += ` onTime="${obj.onTime}"`;
-                        if (obj.toggled !== undefined) attrs += ` toggled="${obj.toggled}"`;
-                        if (obj.rotateSpeed !== undefined) attrs += ` rotateSpeed="${obj.rotateSpeed}"`;
-                        if (obj.oneHandle !== undefined) attrs += ` oneHandle="${obj.oneHandle}"`;
-                        if (obj.handleAngle !== undefined) attrs += ` handleAngle="${obj.handleAngle}"`;
-                        if (obj.bouncer !== undefined) attrs += ` bouncer="${obj.bouncer}"`;
-                        if (obj.bubble !== undefined) attrs += ` bubble="${obj.bubble}"`;
-                        if (obj.grab !== undefined) attrs += ` grab="${obj.grab}"`;
-                        if (obj.candyCaptured !== undefined) attrs += ` candyCaptured="${obj.candyCaptured}"`;
-                        if (obj.activeTime !== undefined) attrs += ` activeTime="${obj.activeTime}"`;
-                        if (obj.index !== undefined) attrs += ` index="${obj.index}"`;
-                        if (obj.litRadius !== undefined) attrs += ` litRadius="${obj.litRadius}"`;
-                        if (obj.bulbNumber !== undefined) attrs += ` bulbNumber="${obj.bulbNumber}"`;
-                        if (obj.direction !== undefined) attrs += ` direction="${obj.direction}"`;
-                        if (obj.type !== undefined) attrs += ` type="${obj.type}"`;
-                        if (obj.width !== undefined) attrs += ` width="${obj.width}"`;
-                        if (obj.length !== undefined) attrs += ` length="${obj.length}"`;
-                        if (obj.velocity !== undefined) attrs += ` velocity="${obj.velocity}"`;
-                        if (obj.spider !== undefined) attrs += ` spider="${obj.spider}"`;
-                        if (obj.gun !== undefined) attrs += ` gun="${obj.gun}"`;
-                        if (obj.wheel !== undefined) attrs += ` wheel="${obj.wheel}"`;
-                        if (obj.part !== undefined) attrs += ` part="${obj.part}"`;
-                        if (obj.hidePath !== undefined) attrs += ` hidePath="${obj.hidePath}"`;
-                        if (obj.moveOffset !== undefined) attrs += ` moveOffset="${obj.moveOffset}"`;
-                        if (obj.moveVertical !== undefined) attrs += ` moveVertical="${obj.moveVertical}"`;
-                        if (obj.moveLength !== undefined) attrs += ` moveLength="${obj.moveLength}"`;
-                        if (obj.kickable !== undefined) attrs += ` kickable="${obj.kickable}"`;
-                        if (obj.kicked !== undefined) attrs += ` kicked="${obj.kicked}"`;
-                        if (obj.invisible !== undefined) attrs += ` invisible="${obj.invisible}"`;
-                        if (obj.helicopter !== undefined) attrs += ` helicopter="${obj.helicopter}"`;
-                        if (obj.bindBulb !== undefined) attrs += ` bindBulb="${obj.bindBulb}"`;
-                        if (obj.text !== undefined) attrs += ` text="${obj.text}"`;
-                        if (obj.height !== undefined) attrs += ` height="${obj.height}"`;
-                        if (obj.locale !== undefined) attrs += ` locale="${obj.locale}"`;
-                        if (obj.special !== undefined) attrs += ` special="${obj.special}"`;
-                        
-                        xml += `    <${tagname} ${attrs} />\n`;
-                    });
-                }
-                xml += "  </layer>\n";
-                xml += "</map>";
-                
-                return xml;
-            } catch (error) {
-                console.error("error while converting JSON to XML:", error);
-                throw error;
-            }
-        }
-
         let converting = false;
         
         const xmleditor = document.querySelector(".thexml");
@@ -687,7 +594,7 @@
                             const jsontext = this.textContent.trim();
                             if (jsontext) {
                                 const jsonobj = JSON.parse(jsontext);
-                                const xmlstr = convertjsontoxml(jsonobj);
+                                const xmlstr = window.ctrconversion.jsonleveltoxml(jsonobj);
                                 xmleditor.textContent = xmlstr;
                                 highlight(xmleditor);
                             }
@@ -707,7 +614,7 @@
                             const jsontext = this.textContent.trim();
                             if (jsontext) {
                                 const jsonobj = JSON.parse(jsontext);
-                                const xmlstr = convertjsontoxml(jsonobj);
+                                const xmlstr = window.ctrconversion.jsonleveltoxml(jsonobj);
                                 xmleditor.textContent = xmlstr;
                                 highlight(xmleditor);
                             }
@@ -772,7 +679,7 @@
                             try {
                                 const jsonobj = JSON.parse(content);
                                 const jsonstr = JSON.stringify(jsonobj, null, 2);
-                                const xmlstr = convertjsontoxml(jsonobj);
+                                const xmlstr = window.ctrconversion.jsonleveltoxml(jsonobj);
                                 jsoneditor.textContent = jsonstr;
                                 xmleditor.textContent = xmlstr;
                                 highlightjson(jsoneditor);
