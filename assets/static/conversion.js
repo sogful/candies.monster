@@ -18,6 +18,7 @@
             "spike4": 60,
             "electro": 80,
             "bouncer1": 81,
+            "bouncer2": 82,
             "rotatedcircle": 120,
             "ghost": 130,
             "steamtube": 131,
@@ -70,6 +71,7 @@
             "53": "gravityswitch",
             "60": "spike4",
             "81": "bouncer1",
+            "82": "bouncer2",
             "120": "rotatedcircle",
             "130": "ghost",
             "131": "steamtube",
@@ -118,7 +120,7 @@
             ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
             ctrobject.group = parseInt(obj.getAttribute("group")) || 0;
         }
-        if (tagname === "spike2" || tagname === "spike" || tagname === "spike1" || tagname === "spike4" || tagname === "bouncer1") {
+        if (tagname === "spike2" || tagname === "spike" || tagname === "spike1" || tagname === "spike4" || tagname === "bouncer1" || tagname === "bouncer2") {
             ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
             ctrobject.size = parseInt(obj.getAttribute("size")) || 1;
         }
@@ -241,11 +243,65 @@
         }
         if (obj.getAttribute("path")) ctrobject.path = obj.getAttribute("path");
         if (obj.getAttribute("moveSpeed")) ctrobject.moveSpeed = parseInt(obj.getAttribute("moveSpeed"));
+        if (obj.getAttribute("rotateSpeed") != null) ctrobject.rotateSpeed = parseInt(obj.getAttribute("rotateSpeed")) || 0;
+        if (obj.getAttribute("angle") != null && ctrobject.angle == null) ctrobject.angle = parseInt(obj.getAttribute("angle")) || 0;
     }
+
+    function escapeattr(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+    }
+
+    function jsonleveltoxml(jsonobj) {
+        if (Array.isArray(jsonobj)) jsonobj = jsonobj[0] || {};
+
+        const settings = Array.isArray(jsonobj.settings) ? jsonobj.settings : [];
+        const objects = Array.isArray(jsonobj.objects) ? jsonobj.objects : [];
+
+        let xml = "<map>\n  <layer name=\"settings\">\n";
+
+        const mapsettings = settings.find(s => s.name === 0);
+        xml += `    <map gridSize="${mapsettings?.gridSize ?? 32}" width="${mapsettings?.width ?? 320}" height="${mapsettings?.height ?? 480}" />\n`;
+
+        const gamedesign = settings.find(s => s.name === 1);
+        if (gamedesign) {
+            let gd = `ropePhysicsSpeed="${gamedesign.ropePhysicsSpeed ?? 1}" special="${gamedesign.special ?? 1}"`;
+            if (gamedesign.twoParts !== undefined) gd += ` twoParts="${gamedesign.twoParts}"`;
+            if (gamedesign.nightLevel !== undefined) gd += ` nightLevel="${gamedesign.nightLevel}"`;
+            if (gamedesign.water !== undefined) gd += ` water="${gamedesign.water}"`;
+            if (gamedesign.waterSpeed !== undefined) gd += ` waterSpeed="${gamedesign.waterSpeed}"`;
+            xml += `    <gameDesign ${gd} />\n`;
+        } else {
+            xml += "    <gameDesign ropePhysicsSpeed=\"1\" special=\"1\" twoParts=\"false\" />\n";
+        }
+
+        xml += "  </layer>\n  <layer name=\"Objects\">\n";
+        for (const obj of objects) {
+            const tagname = idmapping.jsontoxml[String(obj.name)];
+            if (!tagname) continue;
+
+            let attrs = `x="${obj.x || 0}" y="${obj.y || 0}"`;
+            for (const key of Object.keys(obj)) {
+                if (key === "name" || key === "x" || key === "y") continue;
+                const val = obj[key];
+                if (val === undefined || val === null || typeof val === "object") continue;
+                attrs += ` ${key}="${escapeattr(val)}"`;
+            }
+            xml += `    <${tagname} ${attrs} />\n`;
+        }
+        xml += "  </layer>\n</map>";
+
+        return xml;
+    }
+
     window.ctrconversion = {
         getidmapping: () => idmapping,
         objectid: objectid,
-        specialattributes: specialattributes
+        specialattributes: specialattributes,
+        jsonleveltoxml: jsonleveltoxml
     };
 })();
 

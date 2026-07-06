@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script defer src="/assets/static/slash.js"></script>
     <script src="/assets/static/fflate.js"></script>
+    <script src="/assets/static/conversion.js"></script>
 
     <script src="/assets/static/prism.js"></script>
     <link href="/assets/static/prism.css" rel="stylesheet" />
@@ -473,7 +474,7 @@
     <div class="bg"></div>
 
     <div class="drag">Drop here!</div>
-    <input type="file" class="fileinput" accept=".xml" style="display:none">
+    <input type="file" class="fileinput" accept=".xml,.json,.txt" style="display:none">
     
     <div class="loading">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
@@ -1110,6 +1111,29 @@
                 }
             }
 
+            function normalizetoxml(text) {
+                let t = (text || "").trim();
+                if (!t) return t;
+                const fromjson = (str) => {
+                    const obj = JSON.parse(str);
+                    if (window.ctrconversion?.jsonleveltoxml) {
+                        return window.ctrconversion.jsonleveltoxml(obj);
+                    }
+                    return str;
+                };
+                if (t[0] === "<") return t;
+                if (t[0] === "{" || t[0] === "[") {
+                    try {return fromjson(t)} catch (_) {return t}
+                }
+                try {
+                    const decoded = decodebase64utf8(t).trim();
+                    if (decoded[0] === "{" || decoded[0] === "[") {
+                        try {return fromjson(decoded)} catch (_) {return decoded}
+                    }
+                    return decoded;
+                } catch (_) {return t}
+            }
+
             // the NEW(tm)(tm) level code system to fix 16kb errors from github pages
             async function fetchlevelbycode(code) {
                 try {
@@ -1373,9 +1397,10 @@
                 const file = event.target.files?.[0];
                 if (!file) return;
                 void file.text().then((text) => {
-                    inputbox.textContent = text.trim();
+                    const xml = normalizetoxml(text);
+                    inputbox.textContent = xml;
                     highlight(inputbox);
-                    setlevelfromxml(text.trim());
+                    setlevelfromxml(xml);
                 });
                 event.target.value = "";
             });
@@ -1399,9 +1424,10 @@
                 const file = event.dataTransfer?.files?.[0];
                 if (file) {
                     void file.text().then((text) => {
-                        inputbox.textContent = text.trim();
+                        const xml = normalizetoxml(text);
+                        inputbox.textContent = xml;
                         highlight(inputbox);
-                        setlevelfromxml(text.trim());
+                        setlevelfromxml(xml);
                     });
                 }
             });
