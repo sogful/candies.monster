@@ -1,6 +1,85 @@
+// font fallback
+(function () {
+    var applied = false;
+
+    function ring(cx, cy, radii, dirs) {
+        var parts = [];
+        for (var k = 0; k < radii.length; k++)
+            for (var i = 0; i < dirs; i++) {
+                var a = (i / dirs) * 2 * Math.PI, r = radii[k];
+                parts.push((cx + Math.cos(a) * r).toFixed(3) + "em " + (cy + Math.sin(a) * r).toFixed(3) + "em 0 #000");
+            }
+        return parts;
+    }
+    function strokewidth(r) {
+        var m = (r.style.webkitTextStrokeWidth || "").match(/([\d.]+)em/) ||
+                r.cssText.match(/text-stroke(?:-width)?:\s*([\d.]+)em/);
+        return m ? parseFloat(m[1]) : 0.175;
+    }
+
+    function apply() {
+        if (applied) return true;
+        var out = [];
+        function walk(rules) {
+            for (var i = 0; i < rules.length; i++) {
+                var r = rules[i];
+                if (r.cssRules && r.cssRules.length) {walk(r.cssRules); continue}
+                if (!r.selectorText || !r.style || r.cssText.indexOf("text-stroke") === -1) continue;
+                var w = strokewidth(r), radii = [w * 0.26, w * 0.52]; // visible outline ~= stroke width / 2
+                var drop = r.style.textShadow, ox = 0, oy = 0.15, ems = drop && drop.match(/-?\d*\.?\d+em/g);
+                if (ems && ems.length >= 2) {ox = parseFloat(ems[0]); oy = parseFloat(ems[1])}
+                else if (ems && ems.length === 1) {oy = parseFloat(ems[0])}
+                oy -= 0.02;
+                var parts = ring(0, 0, radii, 16);
+                if (drop) {
+                    parts = parts.concat(ring(ox, oy, radii, 12));
+                    parts.push(ox.toFixed(3) + "em " + oy.toFixed(3) + "em 0 #000");
+                }
+                out.push(r.selectorText + "{paint-order:normal!important;-webkit-text-stroke:0!important;text-shadow:" + parts.join(",") + "!important}");
+            }
+        }
+        for (var s = 0; s < document.styleSheets.length; s++) {
+            var rules;
+            try {rules = document.styleSheets[s].cssRules} catch (e) {continue}
+            if (rules) walk(rules);
+        }
+        if (!out.length) return false;
+        var style = document.createElement("style");
+        style.textContent = out.join("\n");
+        (document.head || document.documentElement).appendChild(style);
+        applied = true;
+        return true;
+    }
+
+    function fix() {
+        if (!apply() && document.readyState === "loading")
+            document.addEventListener("DOMContentLoaded", apply, {once: true});
+    }
+    var svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">' +
+        '<text x="20" y="30" font-size="34" font-family="Arial" font-weight="bold" ' +
+        'text-anchor="middle" fill="#fff" stroke="#000" stroke-width="9" paint-order="stroke">H</text></svg>';
+    var img = new Image();
+    img.onload = function () {
+        var honored = false;
+        try {
+            var c = document.createElement("canvas");
+            c.width = 40; c.height = 40;
+            var ctx = c.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            var p = ctx.getImageData(20, 20, 1, 1).data;
+            honored = p[0] > 150 && p[1] > 150 && p[2] > 150;
+        } catch (e) {honored = false}
+        if (!honored) fix();
+    };
+    img.onerror = fix;
+    img.src = "data:image/svg+xml;base64," + btoa(svg);
+})();
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 // coool cursor.........
 // a bunch of "sl" to avoid conflicts
-
 class slslasheffect {
     constructor(slcanvas) {
         this.slcanvas = slcanvas; this.slctx = slcanvas.getContext('2d');
@@ -92,15 +171,17 @@ class slslasheffect {
     slsetcolor(slcolor) {this.slcolor = slcolor}
     slsetlinewidth(slw) {this.sllinewidth = slw}
 }
-(function () {
+function slinit() {
     const slslashcanvas = document.createElement('canvas');
     slslashcanvas.id = 'slashcanvas'; slslashcanvas.style.position = 'fixed';
     slslashcanvas.style.top = '0'; slslashcanvas.style.left = '0';
-    slslashcanvas.style.width = '100vw'; slslashcanvas.style.height = '100vh'; 
+    slslashcanvas.style.width = '100vw'; slslashcanvas.style.height = '100vh';
     slslashcanvas.style.zIndex = '2147483647'; slslashcanvas.style.pointerEvents = 'none';
     document.body.appendChild(slslashcanvas);
 
     function slresize() {slslashcanvas.width = window.innerWidth; slslashcanvas.height = window.innerHeight}
     slresize(); window.addEventListener('resize', slresize);
     window.slslasheffect = new slslasheffect(slslashcanvas);
-})();
+}
+if (document.body) slinit();
+else document.addEventListener("DOMContentLoaded", slinit, {once: true});

@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script defer src="/assets/static/slash.js"></script>
+    <script async src="/assets/static/global.js"></script>
 
     <meta property="og:image" content="/assets/images/embeds/music.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -359,24 +359,6 @@
     </div>
 
     <script>
-        
-        var haspaintorder = false;
-        var haswebkitstroke = false;
-        if (window.CSS && CSS.supports) {
-            haspaintorder = CSS.supports("paint-order", "stroke fill");
-            haswebkitstroke = CSS.supports("-webkit-text-stroke", "1px black");
-        }
-        if (!haspaintorder || !haswebkitstroke) {
-            var style = document.createElement("style");
-            style.textContent = `h1, h2, h3, h4, h5, h6, a, span, div {
-                paint-order: unset !important;
-                -webkit-text-stroke: 0 !important;
-                text-shadow: -0.1em 0 black, 0 0.1em black, 0.1em 0 black, 0 -0.1em black,
-                -0.07em 0.07em black, 0.07em 0.07em black, -0.07em -0.07em black,
-                0.07em -0.07em black, 0 0.15em 0 black !important;
-            }`;
-            document.head.appendChild(style);
-        }
 
         // click sfx
         document.querySelectorAll(".clickable").forEach(function(element) {
