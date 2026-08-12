@@ -13,6 +13,11 @@ await AudioInterop.ImportAsync();
 await StorageInterop.ImportAsync();
 await BrowserCursorService.ImportAsync();
 await BrowserVideoPlayer.ImportAsync();
+await LevelQueryInterop.ImportAsync();
+
+// Level-editor preview hook: a `data` query param carrying a base64 level XML boots straight
+// into that level instead of the normal menu, mirroring the desktop build's `--level` switch.
+CustomLevelBridge.TryActivateFromQuery();
 
 int fbo = GLContextInterop.CreateContext("game");
 int[] size = GLContextInterop.CanvasSize("game");

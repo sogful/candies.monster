@@ -1,8 +1,0 @@
-Package: {{APP_NAME}}
-Version: {{VERSION}}
-Section: games
-Priority: optional
-Architecture: {{ARCHITECTURE}}
-Maintainer: {{MAINTAINER}}
-Description: {{DESCRIPTION}}
- Project website: https://github.com/yell0wsuit/cuttherope-dx

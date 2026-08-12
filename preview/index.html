@@ -560,11 +560,11 @@
 
         <div class="panel choicepanel hidden">
             <a>choose the version to test on:</a>
-            <div class="choice" data-game="h5dx">
-                <img src="assets/images/h5dxbanner.png">
+            <div class="choice" data-game="dx">
+                <img src="assets/images/dxbanner.svg">
                 <div class="creditwhereitsdue">
                     <a>by yell0wsuit •&nbsp;</a>
-                    <a href="https://github.com/yell0wsuit/cuttherope-h5dx/tree/main" target="_blank" rel="noopener">github</a>
+                    <a href="https://github.com/yell0wsuit/cuttherope-dx" target="_blank" rel="noopener">github</a>
                     <a>&nbsp;•&nbsp;</a>
                     <a href="https://github.com/sponsors/yell0wsuit" target="_blank" rel="noopener">sponsor</a>
                 </div>
@@ -734,7 +734,7 @@
             const clickaudio = document.querySelector(".click");
             const loading = document.querySelector(".loading");
 
-            // autoselects h5dx, enabling this only when it's the only working choice
+            // autoselects dx, enabling this only when it's the only working choice
             const nopicker = false;
             
             const hasurldata = urlparam.has("data") || urlparam.has("code");
@@ -1062,7 +1062,7 @@
                     showerror(`Failed to decode level: ${error}`);
                 }
                 toggleeditor(true);
-                if (nopicker) {opengame("h5dx")}
+                if (nopicker) {opengame("dx")}
                 else if (showchoice) {showchoicepanel()}
                 resetbutton.disabled = false;
                 updatelink();
@@ -1201,7 +1201,7 @@
                         if (!nopicker) {
                             try {
                                 const savedgame = localStorage.getItem(game_version_key);
-                                if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
+                                if (savedgame && (savedgame === "dx" || savedgame === "famobi")) {
                                     opengame(savedgame);
                                 }
                             } catch (_) {}
@@ -1259,7 +1259,7 @@
                     if (!nopicker) {
                         try {
                             const savedgame = localStorage.getItem(game_version_key);
-                            if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
+                            if (savedgame && (savedgame === "dx" || savedgame === "famobi")) {
                                 opengame(savedgame);
                             }
                         } catch (_) {}
@@ -1273,7 +1273,7 @@
                     if (!nopicker) {
                         try {
                             const savedgame = localStorage.getItem(game_version_key);
-                            if (savedgame && (savedgame === "h5dx" || savedgame === "famobi")) {
+                            if (savedgame && (savedgame === "dx" || savedgame === "famobi")) {
                                 opengame(savedgame);
                             }
                         } catch (_) {}
@@ -1467,7 +1467,7 @@
                 }
                 // in case paths need to be changed the index list is here
                 const sources = {
-                    h5dx: "/preview/h5dx/dist/index.html",
+                    dx: "/preview/dx/dist/wwwroot/index.html",
                     famobi: "/preview/famobi/index.html",
                 };
                 const path = sources[game];
@@ -1749,7 +1749,7 @@
             updatelink();
             if (levelbase64) {
                 if (!frame.classList.contains("active") && !gameopening) {
-                    if (nopicker) {opengame("h5dx")}
+                    if (nopicker) {opengame("dx")}
                     else {showchoicepanel()}
                 }
                 resetbutton.disabled = false;
