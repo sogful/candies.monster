@@ -1,13 +1,13 @@
 self.assetsManifest = {
-  "version": "qm/uAFrL",
+  "version": "ddyMIf2U",
   "assets": [
     {
-      "hash": "sha256-KBT1sowTpGMsQrkfhgVVWVi+Sk5Js9wouXdaYtvVdJQ=",
-      "url": "_framework/CutTheRopeDX.Browser.snhjsyl6ax.wasm"
+      "hash": "sha256-mkgsw8hR6Jp/H/G6f7XoFnmvkUekCAVbrx+a/NpJeso=",
+      "url": "_framework/CutTheRopeDX.Browser.q8ix27r8qh.wasm"
     },
     {
-      "hash": "sha256-pai9CwHSZybAYfM0NT0GFQKYLFJO9crsyGmTJitY+WE=",
-      "url": "_framework/CutTheRopeDX.Core.vbffol1fs0.wasm"
+      "hash": "sha256-hb9CxQeoYt+o0Gw0FPZNhJzZ4zF3tL/dVdgJHNEW8QY=",
+      "url": "_framework/CutTheRopeDX.Core.7xl2pfxkto.wasm"
     },
     {
       "hash": "sha256-jVuD1bbtOdjaDdalbXasM9IzZ9cBW7nl+nNM8OYJKSE=",
@@ -114,7 +114,7 @@ self.assetsManifest = {
       "url": "_framework/System.Xml.Linq.224i7l5jfb.wasm"
     },
     {
-      "hash": "sha256-Z5fvA6cEQa2yjdVTZD/i76AuiF3co0JtNewRj8Ld23o=",
+      "hash": "sha256-sN+13IZiSBJBrs5OMZSkfxelBSLoJr8v7uSaLCsUPaM=",
       "url": "_framework/dotnet.js"
     },
     {
@@ -122,8 +122,8 @@ self.assetsManifest = {
       "url": "_framework/dotnet.native.4x6f28qcm7.js"
     },
     {
-      "hash": "sha256-ST64bbwdzBkZ8jiAdBQbBQ3LBw28eqJm1MK2A45l8wY=",
-      "url": "_framework/dotnet.native.tv9pk3sg46.wasm"
+      "hash": "sha256-PifPz70i4UudFLVIIFEhUjom1YuF+2xmM2jJAyjVXfg=",
+      "url": "_framework/dotnet.native.iopfxyepr3.wasm"
     },
     {
       "hash": "sha256-MZMguyke9CroSQl+L/SHIGFkPTD+LtYGXkXjAvwWx40=",
@@ -1750,7 +1750,7 @@ self.assetsManifest = {
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-V7+DF98XQ7l74EM3oBEfB4aQKiwgaIlcroWQ311xhm8=",
+      "hash": "sha256-KVRYazcus5WA/fGyPN8QR/mb1KW8IOBCyvroJ9wRa10=",
       "url": "index.html"
     },
     {
@@ -1782,11 +1782,11 @@ self.assetsManifest = {
       "url": "pwa.js"
     },
     {
-      "hash": "sha256-pFgVqCji/xPcL6oP88AZq42bBrKGrctAj+5wTO1nBVQ=",
+      "hash": "sha256-WykKjZXv/AxSYUbLVYZhGv9Wuo59PflFwuXevgrOXyA=",
       "url": "service-worker.js"
     },
     {
-      "hash": "sha256-7RvREg4ErlgfVOEUh2tHJWyfTnnwQqyVEPsG3feA9bc=",
+      "hash": "sha256-WykKjZXv/AxSYUbLVYZhGv9Wuo59PflFwuXevgrOXyA=",
       "url": "service-worker.published.js"
     },
     {
