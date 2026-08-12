@@ -25,27 +25,25 @@
                 touch-action: none;
                 overscroll-behavior: none;
             }
-            /* Centered explicitly: width/height alone leave the box pinned to the top-left
-               corner once either max-width or max-height clamps it off the full viewport. */
+            /* No top/left/transform here on purpose: glcontext.js's resizeViewportSurfaces()
+               already computes pixel-perfect centering (fitCanvasToViewport) and sets it as
+               inline style.left/top on this element every resize - CSS centering on top of that
+               would double-offset it, since the inline styles win over the stylesheet but a
+               stylesheet transform still applies on top of them. */
             #game {
                 display: block;
                 position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
                 width: 100vw;
                 height: calc(100vw * 9 / 16);
                 max-width: calc(100vh * 16 / 9);
                 max-height: 100vh;
             }
-            /* Shares the canvas's letterboxed box. z-index puts it over the game but
-               under the splash, so a cutscene can never show through the loading screen. */
+            /* Shares the canvas's letterboxed box (same caveat: positioned by glcontext.js, not
+               CSS). z-index puts it over the game but under the splash, so a cutscene can never
+               show through the loading screen. */
             #movie {
                 display: block;
                 position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
                 width: 100vw;
                 height: calc(100vw * 9 / 16);
                 max-width: calc(100vh * 16 / 9);

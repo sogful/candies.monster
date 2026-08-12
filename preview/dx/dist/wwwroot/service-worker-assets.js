@@ -1,13 +1,13 @@
 self.assetsManifest = {
-  "version": "kNosoFtg",
+  "version": "Y9N0PpTO",
   "assets": [
     {
-      "hash": "sha256-k5ObhJ/t58K9Sefn5Z6w869CofZ0ffB3I4+MO3Frp5I=",
-      "url": "_framework/CutTheRopeDX.Browser.l210vmh3ls.wasm"
+      "hash": "sha256-jgoBZc8g3Z+WwOaACUW/ouIHnvJdDbaGoEdwxXfu5n0=",
+      "url": "_framework/CutTheRopeDX.Browser.aa86u6tsem.wasm"
     },
     {
-      "hash": "sha256-75LZBNyKMfznBuzmJnnael7CSvxWqJmyrVO9syW+eUU=",
-      "url": "_framework/CutTheRopeDX.Core.tduxlowred.wasm"
+      "hash": "sha256-1ZS+BgCReGtywSHGpcc7zFGbTSbbA32/HBxSY7AhVEc=",
+      "url": "_framework/CutTheRopeDX.Core.tynq9o9cri.wasm"
     },
     {
       "hash": "sha256-jVuD1bbtOdjaDdalbXasM9IzZ9cBW7nl+nNM8OYJKSE=",
@@ -114,7 +114,7 @@ self.assetsManifest = {
       "url": "_framework/System.Xml.Linq.224i7l5jfb.wasm"
     },
     {
-      "hash": "sha256-g+tT6MfHU4sN4D1jSpGh78+FACKVDxZQMqhQrwGPntA=",
+      "hash": "sha256-b6mqPLYb3H27e+vkSXCXBWbMA/kLkg0e5jSUBXk4pUg=",
       "url": "_framework/dotnet.js"
     },
     {
@@ -122,8 +122,8 @@ self.assetsManifest = {
       "url": "_framework/dotnet.native.4x6f28qcm7.js"
     },
     {
-      "hash": "sha256-SlsalhVogHJJDkA7lvb3BTIIx0XGlSKNUPzoJRaDunk=",
-      "url": "_framework/dotnet.native.mpze3bodv3.wasm"
+      "hash": "sha256-iRT9Zvuq7BBY4LoPcUC1IdzPvxMs/Ozg1kUzslfBQe4=",
+      "url": "_framework/dotnet.native.psc7s78lku.wasm"
     },
     {
       "hash": "sha256-MZMguyke9CroSQl+L/SHIGFkPTD+LtYGXkXjAvwWx40=",
@@ -1730,7 +1730,7 @@ self.assetsManifest = {
       "url": "content/video_hd/ctr_outro.webm"
     },
     {
-      "hash": "sha256-A/ZQEPAKOOsb4l06/w1MO7IUj3q/A5ZKwizcat80EYE=",
+      "hash": "sha256-ZKbxo4nxucQv/8MnLB2MyJDoOD2g6D1VTLS8oc2kMCg=",
       "url": "cursor.js"
     },
     {
@@ -1750,7 +1750,7 @@ self.assetsManifest = {
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-frTUcz8YjaTaWERv+vHcvyda/BN1iw2ojS9VqjZlboQ=",
+      "hash": "sha256-7I8X58lfacTzA4Ikn5i0bbmgyj/As4CofqjwPw6IKxo=",
       "url": "index.html"
     },
     {
