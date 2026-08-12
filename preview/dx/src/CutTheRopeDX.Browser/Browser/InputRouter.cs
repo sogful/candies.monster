@@ -104,8 +104,12 @@ namespace CutTheRopeDX.Browser
             {
                 // Q and R stand in for Escape and F5: a browser keeps both of those for itself,
                 // leaving fullscreen on one and reloading the page on the other, and neither can
-                // be reliably taken back from it.
+                // be reliably taken back from it. This build never requests fullscreen, so the
+                // real Escape key is mapped too (plus P, never browser-reserved) as more
+                // discoverable alternatives for opening/closing the pause menu - Q still works.
                 "KeyQ" => KeyCode.Escape,
+                "Escape" => KeyCode.Escape,
+                "KeyP" => KeyCode.Escape,
                 "KeyR" => KeyCode.F5,
                 "Space" => KeyCode.Space,
                 "Enter" => KeyCode.Enter,

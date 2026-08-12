@@ -26,6 +26,27 @@ namespace CutTheRopeDX.Browser
             {
                 SpecialEvents.SetXmasOverride(true);
             }
+
+            // 1-based on the URL (matches h5dx MOD's ?candy=), 0-based internally.
+            if (TryGetQueryInt("candy", out int candyNumber) && candyNumber is >= 1 and <= 52)
+            {
+                CandySkinHelper.SetIndexOverride(candyNumber - 1);
+            }
+
+            // Also 1-based; selects which pack's background art to borrow, regardless of which
+            // pack the custom level actually loads as (always pack 0 - see CustomLevelBridge).
+            if (TryGetQueryInt("background", out int packNumber)
+                && packNumber >= 1
+                && packNumber <= PackConfig.Packs.Count)
+            {
+                PackConfig.SetBackgroundPackOverride(packNumber - 1);
+            }
+        }
+
+        private static bool TryGetQueryInt(string name, out int value)
+        {
+            string raw = LevelQueryInterop.GetParam(name);
+            return int.TryParse(raw, out value);
         }
     }
 }

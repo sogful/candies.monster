@@ -5,6 +5,20 @@ namespace CutTheRopeDX.GameMain
     /// </summary>
     internal static class CandySkinHelper
     {
+        private static int? indexOverride;
+
+        /// <summary>
+        /// Forces every candy skin lookup to a fixed index regardless of the caller's own
+        /// selection, or clears the override (pass <see langword="null"/>). Used by the browser
+        /// preview build's `?candy=` query param - kept separate from the persisted
+        /// `PREFS_SELECTED_CANDY` preference so a preview run's override never gets written to
+        /// storage the next time anything commits a preference save.
+        /// </summary>
+        public static void SetIndexOverride(int? skinIndex)
+        {
+            indexOverride = skinIndex;
+        }
+
         /// <summary>
         /// Gets the candy resource name for a given skin index (0-50).
         /// </summary>
@@ -12,7 +26,7 @@ namespace CutTheRopeDX.GameMain
         /// <returns>The resource name for the candy skin</returns>
         public static string GetCandyResource(int skinIndex)
         {
-            return skinIndex switch
+            return (indexOverride ?? skinIndex) switch
             {
                 0 => Resources.Img.ObjCandy01New,
                 1 => Resources.Img.ObjCandy02,

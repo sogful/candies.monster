@@ -107,15 +107,12 @@ syncActive();
 // inactive first.
 globalThis.addEventListener("pagehide", () => loop.Flush());
 
-let started = false;
+// No Play button gating this: the loading screen hides itself and gameplay starts ticking the
+// moment the runtime and assets are ready. Audio unlocks separately on the player's first
+// gesture (see audio.js) - browsers won't allow it any earlier regardless.
 const frame = (timestamp) => {
     loop.Tick(timestamp);
     requestAnimationFrame(frame);
 };
-globalThis.ctrdxStart = () => {
-    if (!started) {
-        started = true;
-        requestAnimationFrame(frame);
-    }
-};
+requestAnimationFrame(frame);
 globalThis.ctrdxReady?.();

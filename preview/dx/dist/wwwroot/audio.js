@@ -2,6 +2,12 @@
 // voice gets an integer handle the managed side uses to stop it or change its volume.
 
 let context = null;
+// Every voice routes through this instead of straight to destination, held at 0 gain until the
+// player's first gesture, then ramped up - the game boots and starts playing with no Play
+// button to wait on, so whatever was already queued to play would otherwise snap in at full
+// volume the instant audio unblocks, rather than fading in.
+let masterGain = null;
+const FADE_IN_SECONDS = 0.5;
 const buffers = new Map();
 const decodes = new Map();
 const voices = new Map();
@@ -12,6 +18,9 @@ function ensureContext() {
         context = new (
             globalThis.AudioContext || globalThis.webkitAudioContext
         )();
+        masterGain = context.createGain();
+        masterGain.gain.value = 0;
+        masterGain.connect(context.destination);
     }
     return context;
 }
@@ -67,7 +76,7 @@ function startVoice(handle, buffer) {
     source.buffer = buffer;
     source.loop = voice.loop;
     gain.gain.value = voice.volume;
-    source.connect(gain).connect(ctx.destination);
+    source.connect(gain).connect(masterGain);
 
     source.onended = () => {
         if (voices.get(handle)?.source === source) {
@@ -193,6 +202,12 @@ export function durationOf(key) {
 
 function resumeFromGesture() {
     void resume();
+    if (masterGain !== null) {
+        const now = context.currentTime;
+        masterGain.gain.cancelScheduledValues(now);
+        masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+        masterGain.gain.linearRampToValueAtTime(1, now + FADE_IN_SECONDS);
+    }
 }
 
 globalThis.addEventListener("pointerdown", resumeFromGesture, {

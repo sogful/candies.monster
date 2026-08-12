@@ -193,6 +193,20 @@ namespace CutTheRopeDX.GameMain
             return pack >= 0 && pack < packs.Count ? packs[pack].SaveSlot : 0;
         }
 
+        private static int? backgroundPackOverride;
+
+        /// <summary>
+        /// Forces every background lookup to borrow another pack's art regardless of which pack
+        /// is actually loaded, or clears the override (pass <see langword="null"/>). Used by the
+        /// browser preview build's `?background=` query param - a custom-level run always loads
+        /// as pack 0 (see <c>CTRRootController</c>), so without this every custom level would be
+        /// stuck with pack 0's background no matter which pack the level was designed for.
+        /// </summary>
+        public static void SetBackgroundPackOverride(int? pack)
+        {
+            backgroundPackOverride = pack;
+        }
+
         /// <summary>
         /// Gets the background resource names for a pack.
         /// </summary>
@@ -200,7 +214,8 @@ namespace CutTheRopeDX.GameMain
         /// <returns>The pack background resource names, or the empty resource sentinel when <paramref name="pack"/> is out of range.</returns>
         public static string[] GetBoxBackgrounds(int pack)
         {
-            return pack >= 0 && pack < packs.Count ? packs[pack].BoxBackgrounds : EmptyResourceNames;
+            int effectivePack = backgroundPackOverride ?? pack;
+            return effectivePack >= 0 && effectivePack < packs.Count ? packs[effectivePack].BoxBackgrounds : EmptyResourceNames;
         }
 
         /// <summary>

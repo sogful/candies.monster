@@ -1,13 +1,13 @@
 self.assetsManifest = {
-  "version": "yu8/98ik",
+  "version": "vY0+OKD/",
   "assets": [
     {
-      "hash": "sha256-oRNRZHJhy/pEw8qp643W2SJRrVG2WsZAzqck3pgNyYY=",
-      "url": "_framework/CutTheRopeDX.Browser.14pyw08jla.wasm"
+      "hash": "sha256-VW78dwevRUsNzocsn2sxPWHIXlqswy0WWdJau0Qp0WE=",
+      "url": "_framework/CutTheRopeDX.Browser.hxub1vsflk.wasm"
     },
     {
-      "hash": "sha256-waaYnl7nJhZxSjVWM3h3M42N8MSKR/oWVHiBryX01aQ=",
-      "url": "_framework/CutTheRopeDX.Core.ljoevtm78m.wasm"
+      "hash": "sha256-lllOMiRNelDk92PC+VHSh8Z2N9jvvgHlkCGSGrSy2Zg=",
+      "url": "_framework/CutTheRopeDX.Core.uf7754xf7t.wasm"
     },
     {
       "hash": "sha256-jVuD1bbtOdjaDdalbXasM9IzZ9cBW7nl+nNM8OYJKSE=",
@@ -114,7 +114,7 @@ self.assetsManifest = {
       "url": "_framework/System.Xml.Linq.224i7l5jfb.wasm"
     },
     {
-      "hash": "sha256-MgDVoNjSB4bjhYxOoC3TJqjDBMyk8K99IxbHaPalHJE=",
+      "hash": "sha256-b4oVK13DGe2hX68fVewofSNlq5VedH8PCdfQgpqN5gY=",
       "url": "_framework/dotnet.js"
     },
     {
@@ -122,15 +122,15 @@ self.assetsManifest = {
       "url": "_framework/dotnet.native.4x6f28qcm7.js"
     },
     {
-      "hash": "sha256-1rPa9IQjX+1eTAaBV6gIcYMiN80By5qWEcOA+KPbmmk=",
-      "url": "_framework/dotnet.native.qj5ngmxsqv.wasm"
+      "hash": "sha256-2Kjq6/Hqtsy911JQQHk3/lP1/tbydt0JFrmkz3Tvq3E=",
+      "url": "_framework/dotnet.native.cnyj9eo8ch.wasm"
     },
     {
       "hash": "sha256-MZMguyke9CroSQl+L/SHIGFkPTD+LtYGXkXjAvwWx40=",
       "url": "_framework/dotnet.runtime.zbexyp8zrs.js"
     },
     {
-      "hash": "sha256-Om3KNn7yG+Ml+25R3jJVJwdnqBvBmkCYFZYWw8pc+UI=",
+      "hash": "sha256-gdB8wh2RjIh792xOMei2jqrgMltPfawoyTRBkwl03aM=",
       "url": "audio.js"
     },
     {
@@ -1750,7 +1750,7 @@ self.assetsManifest = {
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-DMqKCU5WhTEP9KXH+fzmsae332now5huVyURjtJCQw4=",
+      "hash": "sha256-ARpRLj6hNV5GJdYcMbdJoIX6D4Awbb1fszh84wAlF4M=",
       "url": "index.html"
     },
     {
@@ -1758,11 +1758,19 @@ self.assetsManifest = {
       "url": "levelquery.js"
     },
     {
-      "hash": "sha256-3WTe4Nnj2EpnzBlznO1whmj+vNW16nxvwnBKlbVaOKs=",
+      "hash": "sha256-mpLN+qvifivJMZm++SmhJBLbqKli6CVKU0X5BXlwxzs=",
       "url": "loading-progress.js"
     },
     {
-      "hash": "sha256-rmhJ3iv5MjWTknVX7QpNnabuIu3RQC2aerqLyxaUYQY=",
+      "hash": "sha256-Kbwozvp7e5BUzflEbluHZFmLGRMHIVpiMDj+ubGfmow=",
+      "url": "loading/load-repeat.webp"
+    },
+    {
+      "hash": "sha256-HjQYlQwx5SdGWSPi/1QDlOAPf4RmQOFNMQT2II4YGXI=",
+      "url": "loading/loader-logo.webp"
+    },
+    {
+      "hash": "sha256-9KrxajLQN5lMrsgiRsiTrS2HklPpvj0qVKQHZYQUF5Y=",
       "url": "main.js"
     },
     {
