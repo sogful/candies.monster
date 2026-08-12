@@ -71,7 +71,7 @@
                 height: calc(100vw * 9 / 16);
                 max-width: calc(100vh * 16 / 9);
                 max-height: 100vh;
-                background: url("./loading/loader-logo.webp") center / cover no-repeat;
+                background: #fff url("./loading/loader-logo.png") center / cover no-repeat;
                 z-index: 10;
                 transition: opacity 0.25s ease-out;
             }
@@ -79,14 +79,19 @@
                 opacity: 0;
                 pointer-events: none;
             }
+            /* Positioned to sit exactly over the empty bar already drawn into loader-logo.png
+               (measured from the source image: pixel rect [691,982]-[1227,1034] of 1920x1080).
+               The image also bakes in its own "this might take a bit" caption just below the
+               bar, so there's no separate hint element here - it'd have nowhere to go in that
+               same tight margin without overlapping, and would just repeat what the image
+               already says. */
             #track {
                 position: absolute;
-                left: 36.15%;
-                top: 91.67%;
-                width: 27.08%;
-                height: 3.24%;
+                left: 35.99%;
+                top: 90.93%;
+                width: 27.92%;
+                height: 4.81%;
                 border-radius: 20px;
-                background: linear-gradient(to bottom, #c6c6c6 0%, #d6d6d6 100%);
                 overflow: hidden;
             }
             #progress {
@@ -97,29 +102,6 @@
                 border-radius: 18px;
                 transition: width 0.3s ease-out;
             }
-            #splash-hint {
-                position: absolute;
-                left: 50%;
-                bottom: 6%;
-                transform: translateX(-50%);
-                max-width: 320px;
-                padding: 0 24px;
-                margin: 0;
-                text-align: center;
-                font-size: 0.8rem;
-                line-height: 1.45;
-                color: #e6e6e6;
-                font-family:
-                    system-ui,
-                    -apple-system,
-                    "Segoe UI",
-                    Roboto,
-                    sans-serif;
-                opacity: 0.75;
-            }
-            #splash-hint[hidden] {
-                display: none;
-            }
         </style>
     </head>
     <body>
@@ -127,10 +109,6 @@
         <video id="movie" playsinline hidden></video>
         <div id="betterLoader">
             <div id="track"><div id="progress"></div></div>
-            <p id="splash-hint" role="status" hidden>
-                Taking too long? You might want to check your internet speed, or
-                reload the page.
-            </p>
         </div>
         <script type="module">
             // No PWA/service-worker here - this build is a level-editor preview embed, not an
@@ -145,23 +123,11 @@
                 for (const reg of regs) reg.unregister();
             });
 
-            // Loading has two stretches with no reporting of their own - compiling what was
-            // downloaded, and decoding the audio - so a slow device and a wedged one look alike
-            // from here. The advice waits out a comfortably slow start rather than accusing
-            // every one of them of being broken.
-            const HINT_DELAY_MS = 30000;
-
-            const hint = document.getElementById("splash-hint");
-            const hintTimer = setTimeout(() => {
-                hint.hidden = false;
-            }, HINT_DELAY_MS);
-
             // No Play button: the game boots straight in once ready. Audio unlocks itself on
             // the player's first click/keypress anywhere on the page (see audio.js), fading in
             // rather than snapping to full volume, since that first gesture can land well after
             // gameplay is already visible.
             globalThis.ctrdxReady = () => {
-                clearTimeout(hintTimer);
                 document.getElementById("betterLoader")?.classList.add("hidden");
             };
         </script>

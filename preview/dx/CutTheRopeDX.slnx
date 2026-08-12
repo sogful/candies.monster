@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="src/CutTheRopeDX.Core/CutTheRopeDX.Core.csproj" />
-  <Project Path="src/CutTheRopeDX.Browser/CutTheRopeDX.Browser.csproj" />
-</Solution>

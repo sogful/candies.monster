@@ -1,13 +1,13 @@
 self.assetsManifest = {
-  "version": "Y9N0PpTO",
+  "version": "qm/uAFrL",
   "assets": [
     {
-      "hash": "sha256-jgoBZc8g3Z+WwOaACUW/ouIHnvJdDbaGoEdwxXfu5n0=",
-      "url": "_framework/CutTheRopeDX.Browser.aa86u6tsem.wasm"
+      "hash": "sha256-KBT1sowTpGMsQrkfhgVVWVi+Sk5Js9wouXdaYtvVdJQ=",
+      "url": "_framework/CutTheRopeDX.Browser.snhjsyl6ax.wasm"
     },
     {
-      "hash": "sha256-1ZS+BgCReGtywSHGpcc7zFGbTSbbA32/HBxSY7AhVEc=",
-      "url": "_framework/CutTheRopeDX.Core.tynq9o9cri.wasm"
+      "hash": "sha256-pai9CwHSZybAYfM0NT0GFQKYLFJO9crsyGmTJitY+WE=",
+      "url": "_framework/CutTheRopeDX.Core.vbffol1fs0.wasm"
     },
     {
       "hash": "sha256-jVuD1bbtOdjaDdalbXasM9IzZ9cBW7nl+nNM8OYJKSE=",
@@ -114,7 +114,7 @@ self.assetsManifest = {
       "url": "_framework/System.Xml.Linq.224i7l5jfb.wasm"
     },
     {
-      "hash": "sha256-b6mqPLYb3H27e+vkSXCXBWbMA/kLkg0e5jSUBXk4pUg=",
+      "hash": "sha256-Z5fvA6cEQa2yjdVTZD/i76AuiF3co0JtNewRj8Ld23o=",
       "url": "_framework/dotnet.js"
     },
     {
@@ -122,8 +122,8 @@ self.assetsManifest = {
       "url": "_framework/dotnet.native.4x6f28qcm7.js"
     },
     {
-      "hash": "sha256-iRT9Zvuq7BBY4LoPcUC1IdzPvxMs/Ozg1kUzslfBQe4=",
-      "url": "_framework/dotnet.native.psc7s78lku.wasm"
+      "hash": "sha256-ST64bbwdzBkZ8jiAdBQbBQ3LBw28eqJm1MK2A45l8wY=",
+      "url": "_framework/dotnet.native.tv9pk3sg46.wasm"
     },
     {
       "hash": "sha256-MZMguyke9CroSQl+L/SHIGFkPTD+LtYGXkXjAvwWx40=",
@@ -1750,7 +1750,7 @@ self.assetsManifest = {
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-7I8X58lfacTzA4Ikn5i0bbmgyj/As4CofqjwPw6IKxo=",
+      "hash": "sha256-V7+DF98XQ7l74EM3oBEfB4aQKiwgaIlcroWQ311xhm8=",
       "url": "index.html"
     },
     {
@@ -1766,8 +1766,8 @@ self.assetsManifest = {
       "url": "loading/load-repeat.webp"
     },
     {
-      "hash": "sha256-HjQYlQwx5SdGWSPi/1QDlOAPf4RmQOFNMQT2II4YGXI=",
-      "url": "loading/loader-logo.webp"
+      "hash": "sha256-uuxSgGXTZtVhq3l4SPuMYOryHf+eDCeWt9IiJpKp1tY=",
+      "url": "loading/loader-logo.png"
     },
     {
       "hash": "sha256-9KrxajLQN5lMrsgiRsiTrS2HklPpvj0qVKQHZYQUF5Y=",

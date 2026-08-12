@@ -5,6 +5,11 @@
 /preview/examplelevel.json
 /preview/examplelevel.xml
 
+# dx: vendored source is reproducible via .claude/dx-mod-patches/update-dx.ps1 against the
+# public cuttherope-dx repo - only the published static build needs to be in here.
+/preview/dx/*
+!/preview/dx/dist/
+
 /webtile
 /convert/__pycache__
 /convert/assets/static/__pycache__
