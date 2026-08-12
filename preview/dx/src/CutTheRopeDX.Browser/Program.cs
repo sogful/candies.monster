@@ -44,6 +44,10 @@ ScreenPresentation.Instance = new ScreenPresentation(2560, 1440);
 ScreenPresentation.Instance.SetSurfaceSize(size[0], size[1]);
 CutTheRopeDX.CtrBootstrap.Initialize(assets, audio, size[0], size[1], LanguageHelper.Current);
 
+// Must run after Initialize: it calls Preferences.LoadPreferences(), which would clobber a
+// preference this sets any earlier.
+PreviewOptions.ApplyFromQuery();
+
 GameLoop.Surface = surface;
 GameLoop.Host = host;
 InputRouter.Host = host;

@@ -111,6 +111,7 @@ namespace CutTheRopeDX.Browser
                 "Enter" => KeyCode.Enter,
                 "ArrowLeft" => KeyCode.Left,
                 "ArrowRight" => KeyCode.Right,
+                "KeyM" => KeyCode.M,
                 _ => null,
             };
         }

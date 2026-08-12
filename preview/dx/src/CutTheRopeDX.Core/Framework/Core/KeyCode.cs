@@ -23,6 +23,9 @@ namespace CutTheRopeDX.Framework.Core
         Right = 39,
 
         /// <summary>F5. XNA <c>Keys.F5</c> = 116.</summary>
-        F5 = 116
+        F5 = 116,
+
+        /// <summary>M. XNA <c>Keys.M</c> = 77.</summary>
+        M = 77
     }
 }

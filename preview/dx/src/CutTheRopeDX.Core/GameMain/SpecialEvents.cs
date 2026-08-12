@@ -10,6 +10,8 @@ namespace CutTheRopeDX.GameMain
     {
         #region Christmas event
 
+        private static bool? xmasOverride;
+
         /// <summary>
         /// Gets a value indicating whether the current month is January.
         /// </summary>
@@ -17,9 +19,19 @@ namespace CutTheRopeDX.GameMain
 
         /// <summary>
         /// Gets a value indicating whether the Christmas event period is active.
-        /// Includes December and January.
+        /// Includes December and January, unless overridden via <see cref="SetXmasOverride"/>.
         /// </summary>
-        public static bool IsXmas => DateTime.Now.Month is 12 or 1;
+        public static bool IsXmas => xmasOverride ?? (DateTime.Now.Month is 12 or 1);
+
+        /// <summary>
+        /// Forces <see cref="IsXmas"/> to a fixed value regardless of the calendar, or clears the
+        /// override (pass <see langword="null"/>) to restore the calendar-based default. Used by
+        /// the browser preview build's `?jolly` query param.
+        /// </summary>
+        public static void SetXmasOverride(bool? enabled)
+        {
+            xmasOverride = enabled;
+        }
 
         #endregion
     }

@@ -23,12 +23,21 @@ namespace CutTheRopeDX.GameMain
             {
                 OnButtonPressed(GameControllerButtonId.Restart);
             }
+            if (PlatformServices.Host?.IsKeyPressed(KeyCode.M) == true)
+            {
+                OnButtonPressed(GameControllerButtonId.ToggleSound);
+                OnButtonPressed(GameControllerButtonId.ToggleMusic);
+            }
             base.Update(t);
 
             GameScene gameScene = (GameScene)GetView(0)?.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
             if (gameScene?.AcceptsVisualOnlyPointerInput == true && !gameScene.updateable)
             {
                 gameScene.UpdatePointerGestureVisuals(t);
+            }
+            if (overlayMode == GameControllerOverlayMode.Gameplay && PlatformServices.Host?.IsKeyPressed(KeyCode.Space) == true)
+            {
+                gameScene?.OnButtonPressed(GameSceneButtonId.GravityToggle);
             }
 
             if (levelWatcher != null && levelWatcher.TryConsumeChange(DateTime.UtcNow))
@@ -176,10 +185,12 @@ namespace CutTheRopeDX.GameMain
                 _ = vBox.AddChild(c2);
                 Button c3 = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("LEVEL_SELECT"), GameControllerButtonId.LevelSelect, this);
                 _ = vBox.AddChild(c3);
+                // A custom-level (preview) run has nowhere for this button to go - Host.Exit() is
+                // a no-op in the browser build, so it'd just sit there looking clickable and doing
+                // nothing. Only offer it when there's an actual main menu behind it to return to.
+                Button c4 = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("MAIN_MENU"), GameControllerButtonId.MainMenu, this);
+                _ = vBox.AddChild(c4);
             }
-            string exitLabel = CustomLevelSession.IsActive ? "QUIT_BUTTON" : "MAIN_MENU";
-            Button c4 = MenuController.CreateButtonWithTextIDDelegate(Application.GetString(exitLabel), GameControllerButtonId.MainMenu, this);
-            _ = vBox.AddChild(c4);
             vBox.anchor = vBox.parentAnchor = 10;
             ToggleButton toggleButton = MenuController.CreateAudioButtonWithQuadDelegateIDiconOffset(3, this, GameControllerButtonId.ToggleMusic);
             ToggleButton toggleButton2 = MenuController.CreateAudioButtonWithQuadDelegateIDiconOffset(2, this, GameControllerButtonId.ToggleSound);
@@ -344,6 +355,23 @@ namespace CutTheRopeDX.GameMain
             View view = GetView(0);
             GameScene gameScene = (GameScene)view.GetChild(0);
             BoxOpenClose boxOpenClose = (BoxOpenClose)view.GetChild(4);
+
+            if (CustomLevelSession.IsActive)
+            {
+                // Playtest preview: a custom-level run never shows results UI, win or lose (loss
+                // already auto-restarts via GameScene's own restart-dim flow) - skip the
+                // star/confetti/score-countdown screen entirely and go straight back into the
+                // same level, mirroring h5dx MOD's auto-restart-on-win behavior.
+                if (overlayMode != GameControllerOverlayMode.Gameplay)
+                {
+                    LevelStart();
+                }
+                gameScene.animateRestartDim = false;
+                gameScene.Reload();
+                EnterOverlayMode(GameControllerOverlayMode.Gameplay);
+                return;
+            }
+
             Image image = (Image)boxOpenClose.result.GetChildWithName("star1");
             Image image2 = (Image)boxOpenClose.result.GetChildWithName("star2");
             Image image3 = (Image)boxOpenClose.result.GetChildWithName("star3");
