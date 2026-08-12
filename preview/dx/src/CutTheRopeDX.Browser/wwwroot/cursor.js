@@ -3,11 +3,10 @@
 // The desktop host swaps a native cursor between two bitmaps rather than drawing one into the
 // scene, so the CSS equivalent is the faithful port: same two images, same top-left hotspot,
 // and the pointer keeps the responsiveness of a real cursor instead of trailing a frame behind.
-
-const GAME_WIDTH = 2560;
-
-// Below this the resize is not worth redrawing for.
-const SCALE_EPSILON = 0.01;
+//
+// Applied at native bitmap size regardless of the canvas's CSS size - this build's canvas is
+// often shown much smaller than its 2560px-wide internal resolution (embedded in a preview
+// tool), and a cursor scaled down to match would shrink to barely visible along with it.
 
 const canvas = document.getElementById("game");
 // The cutscene overlay covers the canvas, so a cursor set only there would be invisible
@@ -18,11 +17,8 @@ const sources = {
     pressed: "./content/images/cursor_active.webp",
 };
 
-const bitmaps = {};
-const scaled = {};
 let enabled = true;
 let pressed = false;
-let appliedScale = 0;
 
 /** Applies the cursor the current state calls for. */
 function apply() {
@@ -32,53 +28,13 @@ function apply() {
         }
         return;
     }
-    const url = scaled[pressed ? "pressed" : "idle"];
-    // Until the bitmaps load there is nothing to show, so the pointer stays the system one.
-    const value = url ? `url("${url}") 0 0, auto` : "auto";
+    const url = sources[pressed ? "pressed" : "idle"];
     for (const surface of surfaces) {
-        surface.style.cursor = value;
+        surface.style.cursor = `url("${url}") 0 0, auto`;
     }
 }
 
-/** Redraws both bitmaps for the canvas's current size, if that size changed enough. */
-function rescale() {
-    const width = canvas.clientWidth;
-    if (width === 0) {
-        return;
-    }
-
-    const scale = width / GAME_WIDTH;
-    if (Math.abs(scale - appliedScale) < SCALE_EPSILON) {
-        return;
-    }
-    appliedScale = scale;
-
-    for (const [name, image] of Object.entries(bitmaps)) {
-        const target = document.createElement("canvas");
-        target.width = Math.max(1, Math.round(image.naturalWidth * scale));
-        target.height = Math.max(1, Math.round(image.naturalHeight * scale));
-        target
-            .getContext("2d")
-            .drawImage(image, 0, 0, target.width, target.height);
-        scaled[name] = target.toDataURL("image/png");
-    }
-
-    apply();
-}
-
-for (const [name, src] of Object.entries(sources)) {
-    const image = new Image();
-    image.decoding = "async";
-    image.addEventListener("load", () => {
-        bitmaps[name] = image;
-        // A load invalidates whatever scale was applied without this bitmap.
-        appliedScale = 0;
-        rescale();
-    });
-    image.src = src;
-}
-
-new ResizeObserver(rescale).observe(canvas);
+apply();
 
 /**
  * Shows or hides the cursor over the canvas. Core hides it while a cutscene plays.
