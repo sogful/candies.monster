@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<map>
+    <layer name="settings">
+        <map gridSize="32" width="640" height="480" />
+        <gameDesign ropePhysicsSpeed="1.0" special="1" twoParts="false" />
+    </layer>
+    <layer name="Objects">
+        <candy x="224" y="199" />
+        <grab x="223" y="113" length="40" wheel="false" gun="false" radius="-1" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
+        <target x="385" y="436" />
+        <star x="384" y="349" timeout="17" />
+        <star x="222" y="64" timeout="4" />
+        <star x="388" y="165" timeout="9" />
+        <bubble x="222" y="348" />
+        <pump x="225" y="442" angle="-90" />
+        <grab x="304" y="66" length="100" wheel="false" gun="false" radius="70" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
+        <tutorialText x="176" y="215" locale="en" text="TUTORIAL_LVL_2_17_01" width="250" />
+        <tutorial09 x="167" y="252" locale="en" moveSpeed="100" rotateSpeed="100" />
+    </layer>
+    <layer name="Ru">
+        <tutorial09 x="65" y="259" locale="ru" moveSpeed="100" rotateSpeed="100" />
+        <tutorialText x="80" y="213" locale="ru" text="TUTORIAL_LVL_2_17_01" width="200" />
+    </layer>
+    <layer name="Fr">
+        <tutorialText x="46" y="213" locale="fr" text="TUTORIAL_LVL_2_17_01" width="240" />
+        <tutorial09 x="40" y="256" locale="fr" moveSpeed="100" rotateSpeed="100" />
+    </layer>
+    <layer name="De">
+        <tutorialText x="60" y="207" locale="de" text="TUTORIAL_LVL_2_17_01" width="250" />
+        <tutorial09 x="43" y="251" locale="de" moveSpeed="100" rotateSpeed="100" />
+    </layer>
+    <layer name="It">
+        <tutorial09 x="65" y="259" locale="it" moveSpeed="100" rotateSpeed="100" />
+        <tutorialText x="80" y="213" locale="it" text="TUTORIAL_LVL_2_17_01" width="200" />
+    </layer>
+    <layer name="Ja">
+        <tutorial09 x="63" y="247" locale="ja" moveSpeed="100" rotateSpeed="100" />
+        <tutorialText x="80" y="213" locale="ja" text="TUTORIAL_LVL_2_17_01" width="200" />
+    </layer>
+    <layer name="Es">
+        <tutorial09 x="65" y="259" locale="es" moveSpeed="100" rotateSpeed="100" />
+        <tutorialText x="80" y="213" locale="es" text="TUTORIAL_LVL_2_17_01" width="200" />
+    </layer>
+    <layer name="Zh">
+        <tutorial09 x="177" y="199" locale="zh" moveSpeed="100" rotateSpeed="100" />
+        <tutorialText x="80" y="213" locale="zh" text="TUTORIAL_LVL_2_17_01" width="200" />
+    </layer>
+    <layer name="Ko">
+        <tutorial09 x="65" y="259" locale="ko" moveSpeed="100" rotateSpeed="100" />
+        <tutorialText x="83" y="224" locale="ko" text="TUTORIAL_LVL_2_17_01" width="200" />
+    </layer>
+    <layer name="Br">
+        <tutorial09 x="55" y="254" locale="pt_br" moveSpeed="100" rotateSpeed="100" />
+        <tutorialText x="80" y="213" locale="pt_br" text="TUTORIAL_LVL_2_17_01" width="200" />
+    </layer>
+    <layer name="Nl">
+        <tutorial09 x="65" y="259" locale="nl" moveSpeed="100" rotateSpeed="100" />
+        <tutorialText x="80" y="213" locale="nl" text="TUTORIAL_LVL_2_17_01" width="200" />
+    </layer>
+</map>
