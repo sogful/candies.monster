@@ -573,6 +573,15 @@
                     <a href="https://github.com/sponsors/yell0wsuit" target="_blank" rel="noopener">sponsor</a>
                 </div>
             </div>
+            <div class="choice" data-game="h5dx">
+                <img src="assets/images/h5dxbanner.png">
+                <div class="creditwhereitsdue">
+                    <a>by yell0wsuit •&nbsp;</a>
+                    <a href="https://github.com/yell0wsuit/cuttherope-h5dx/tree/main" target="_blank" rel="noopener">github</a>
+                    <a>&nbsp;•&nbsp;</a>
+                    <a href="https://github.com/sponsors/yell0wsuit" target="_blank" rel="noopener">sponsor</a>
+                </div>
+            </div>
             <div class="choice" data-game="famobi">
                 <img src="assets/images/famobibanner.png">
                 <div class="creditwhereitsdue">
@@ -1231,7 +1240,7 @@
                         if (!nopicker) {
                             try {
                                 const savedgame = localStorage.getItem(game_version_key);
-                                if (savedgame && (savedgame === "dx" || savedgame === "famobi")) {
+                                if (savedgame && (savedgame === "dx" || savedgame === "famobi" || savedgame === "h5dx")) {
                                     opengame(savedgame);
                                 }
                             } catch (_) {}
@@ -1289,7 +1298,7 @@
                     if (!nopicker) {
                         try {
                             const savedgame = localStorage.getItem(game_version_key);
-                            if (savedgame && (savedgame === "dx" || savedgame === "famobi")) {
+                            if (savedgame && (savedgame === "dx" || savedgame === "famobi" || savedgame === "h5dx")) {
                                 opengame(savedgame);
                             }
                         } catch (_) {}
@@ -1303,7 +1312,7 @@
                     if (!nopicker) {
                         try {
                             const savedgame = localStorage.getItem(game_version_key);
-                            if (savedgame && (savedgame === "dx" || savedgame === "famobi")) {
+                            if (savedgame && (savedgame === "dx" || savedgame === "famobi" || savedgame === "h5dx")) {
                                 opengame(savedgame);
                             }
                         } catch (_) {}
@@ -1498,6 +1507,7 @@
                 // in case paths need to be changed the index list is here
                 const sources = {
                     dx: "/preview/dx/dist/wwwroot/index.html",
+                    h5dx: "/preview/h5dx/dist/index.html",
                     famobi: "/preview/famobi/index.html",
                 };
                 const path = sources[game];

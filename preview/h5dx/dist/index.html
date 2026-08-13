@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Cut the Rope</title>
+        <script src="/assets/static/conversion.js"></script>
+
+        <link rel="shortcut icon" href="/preview/h5dx/dist/favicon.ico" type="image/x-icon" />
+
+        <meta property="og:title" content="Cut the Rope" />
+        <meta property="og:type" content="game" />
+        <meta property="og:site_name" content="Cut the Rope" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link href="css/ctr.css" rel="stylesheet" type="text/css" />
+
+        <style>
+            html,
+            body,
+            #lang,
+            #gameContainer {
+                background: transparent !important;
+            }
+        </style>
+
+        <script>
+            (function () {
+                function convertxmltojson(xmlstring) {
+                    try {
+                        const parser = new DOMParser();
+                        const xmldoc = parser.parseFromString(xmlstring, "text/xml");
+                        const mapelement = xmldoc.querySelector("map");
+                    
+                        if (!mapelement) {
+                            throw new Error("No <map> element found in XML");
+                        }
+                        const level = {
+                        settings: [],
+                        objects: []
+                    };
+
+                        const objectid = window.ctrconversion?.objectid || ((value, fallback) => {
+                            if (value == null || value === "") {
+                                return fallback;
+                            }
+                            const parsed = parseInt(value, 10);
+                            return Number.isNaN(parsed) ? fallback : parsed;
+                        });
+                    
+                        const settingslayer = mapelement.querySelector("layer[name='settings']");
+                        if (settingslayer) {
+                            const mapsettings = settingslayer.querySelector("map");
+                            if (mapsettings) {
+                                level.settings.push({
+                            name: 0,
+                                    height: parseInt(mapsettings.getAttribute("height")) || 480,
+                                    gridSize: parseInt(mapsettings.getAttribute("gridSize")) || 32,
+                                    width: parseInt(mapsettings.getAttribute("width")) || 320
+                                });
+                            }
+                            
+                            const gamedesign = settingslayer.querySelector("gameDesign");
+                            if (gamedesign) {
+                            const gamedesignsettings = {
+                            name: 1,
+                                ropePhysicsSpeed: parseFloat(gamedesign.getAttribute("ropePhysicsSpeed")) || 1,
+                                special: parseInt(gamedesign.getAttribute("special")) || 1,
+                                twoParts: gamedesign.getAttribute("twoParts") === "true"
+                            };
+                            
+                            // still no idea what this does btw. take a gamble buddy
+                            gamedesignsettings.special = 2;
+                                
+                                if (gamedesign.getAttribute("twoParts") !== "true") {
+                                    delete gamedesignsettings.twoParts;
+                                }
+                                
+                                if (gamedesign.getAttribute("nightLevel")) gamedesignsettings.nightLevel = gamedesign.getAttribute("nightLevel") === "true";
+                                if (gamedesign.getAttribute("water")) gamedesignsettings.water = parseInt(gamedesign.getAttribute("water"));
+                                if (gamedesign.getAttribute("waterSpeed")) gamedesignsettings.waterSpeed = parseInt(gamedesign.getAttribute("waterSpeed"));
+                                
+                                level.settings.push(gamedesignsettings);
+                            }
+                        }
+                        
+                        const objectlayer = mapelement.querySelector("layer[name='Objects']");
+                        if (objectlayer) {
+                            const objects = objectlayer.querySelectorAll("*");
+                            let objectcount = 0;
+                            
+                            objects.forEach(obj => {
+                                const tagname = obj.tagName.toLowerCase();
+                                const x = parseInt(obj.getAttribute("x")) || 0;
+                                const y = parseInt(obj.getAttribute("y")) || 0;
+                                
+                                let ctrobject = { name: 0, x: x, y: y };
+                                
+                                const idmapping = window.ctrconversion?.getidmapping();
+                                const jsonid = idmapping?.xmltojson?.[tagname];
+                                if (jsonid === undefined) {
+                                    console.warn("undefined object type, skipping:", tagname);
+                                    return;
+                                }
+                                ctrobject.name = jsonid;
+                                
+                                if (window.ctrconversion?.specialattributes) {
+                                    window.ctrconversion.specialattributes(ctrobject, tagname, obj);
+                                }
+                                
+                                level.objects.push(ctrobject); objectcount++;
+                            }); console.log(`loaded ${objectcount} objects`);
+                        }
+                        
+                        if (level.settings.length === 0) {
+                            console.warn("no settings? adding default ones");
+                            level.settings = [
+                                { name: 0, height: 480, gridSize: 32, width: 320 },
+                                { name: 1, ropePhysicsSpeed: 1, special: 1, twoParts: false }
+                            ];
+                        }
+                        
+                        console.log(JSON.stringify(level, null, 2));
+                        
+                        try {const testjson = JSON.stringify(level)}
+                        catch (jsonerror) {console.error("json validation failed:", jsonerror)}
+                        
+                        return level;
+                    } catch (error) {
+                        console.error("error while converting:", error); throw error;
+                    }
+                }
+
+                function decodebase64utf8(str) {
+                    let cleaned = str.replace(/\s/g, "");
+                    cleaned = cleaned.replace(/-/g, "+").replace(/_/g, "/");
+                    while (cleaned.length % 4 !== 0) {
+                        cleaned += "=";
+                    }
+                    const binarystring = atob(cleaned);
+
+                    const bytes = new Uint8Array(binarystring.length);
+                    for (let i = 0; i < binarystring.length; i++) {
+                        bytes[i] = binarystring.charCodeAt(i);
+                    }
+
+                    const decoder = new TextDecoder("utf-8");
+                    return decoder.decode(bytes);
+                }
+
+                function cleanurl() {
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete("data");
+                    window.history.replaceState({}, "", url.toString());
+                }
+
+                function tryloadcustomlevel() {
+                    const dataparam = new URLSearchParams(window.location.search).get("data");
+                    if (!dataparam) {
+                        return;
+                    }
+
+                    try {
+                        const xmldata = decodebase64utf8(dataparam);
+                        const customlevel = convertxmltojson(xmldata);
+                        if (customlevel) {
+                            window.__CTR_CUSTOM_LEVEL__ = customlevel;
+                        }
+                    } catch (error) {
+                        console.error("failed to load custom level:", error);
+                    } finally {
+                        cleanurl();
+                    }
+                }
+
+                function postpreviewmessages(kind, message) {
+                    try {
+                        if (window.parent && window.parent !== window) {
+                            window.parent.postMessage(
+                                {
+                                    source: "preview-game",
+                                    kind,
+                                    game: "h5dx",
+                                    message,
+                                },
+                                "*"
+                            );
+                        }
+                    } catch (error) {
+                        console.warn("preview message error:", error);
+                    }
+                }
+
+                function formaterrorarguments(args) {
+                    return args
+                        .map((arg) => {
+                            if (typeof arg === "string") return arg;
+                            try {
+                                return JSON.stringify(arg);
+                            } catch (_) {
+                                return String(arg);
+                            }
+                        })
+                        .join(" ");
+                }
+
+                tryloadcustomlevel();
+
+                const ogerror = console.error;
+                console.error = function (...args) {
+                    ogerror.apply(console, args);
+                    postpreviewmessages("console-error", formaterrorarguments(args));
+                };
+
+                window.addEventListener("error", function (event) {
+                    const shownerror = `${event.error?.name || "Error"}: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`;
+                    postpreviewmessages("window-error", shownerror);
+                });
+
+                window.addEventListener("unhandledrejection", function (event) {
+                    const shownerror = `Unhandled Promise Rejection: ${event.reason}`;
+                    postpreviewmessages("unhandled-rejection", shownerror);
+                });
+            })();
+        </script>
+      <script type="module" crossorigin src="/preview/h5dx/dist/assets/index-CVhjeKF4.js"></script>
+      <link rel="modulepreload" crossorigin href="/preview/h5dx/dist/assets/Doors-CrA13KQl.js">
+      <link rel="modulepreload" crossorigin href="/preview/h5dx/dist/assets/GameScene-w9OY6z77.js">
+      <link rel="modulepreload" crossorigin href="/preview/h5dx/dist/assets/app-Dkf13eSk.js">
+      <link rel="modulepreload" crossorigin href="/preview/h5dx/dist/assets/ctr-DMsSC1-e.js">
+    <link rel="manifest" href="/preview/h5dx/dist/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/preview/h5dx/dist/registerSW.js"></script></head>
+
+    <body class="ctrCursor">
+        <div id="lang">
+            <div id="fb-root"></div>
+
+            <style type="text/css">
+                .hideBeforeLoad,
+                #loaderWindow,
+                #popupWindow {
+                    display: none;
+                }
+            </style>
+            <div id="gameContainer">
+                <div id="betterLoader">
+                    <div id="track">
+                        <div id="progress"></div>
+                    </div>
+                </div>
+                <div id="gameArea" class="hideBeforeLoad">
+                    <div id="canvasBackground" class="panel"></div>
+                    <canvas id="c"></canvas>
+
+                    <div id="loadingPanel" class="panel"></div>
+
+                    <div id="startBackground" class="panel"></div>
+                    <div id="menuBackground" class="panel"></div>
+                    <div id="levelBackground" class="panel">
+                        <canvas id="levelCanvasLeft"></canvas>
+                        <canvas id="levelCanvasRight"></canvas>
+                        <div id="levelTape" class="levelTape"></div>
+                    </div>
+                    <div id="shadowPanel" class="panel">
+                        <canvas id="shadowCanvas"></canvas>
+                    </div>
+                    <div id="menuPanel" class="panel seethrough">
+                        <div class="panelContent">
+                            <div id="menuLogo"></div>
+                            <div id="menuBtnVbox" class="fBtnVBox">
+                                <div id="playBtn" class="fBtn"><img src="" /></div>
+                                <div id="optionsBtn" class="fBtn"><img src="" /></div>
+                            </div>
+                        </div>
+                        <div id="miniOptionsMenu">
+                            <div id="optionSd" style="display: none"></div>
+                            <div id="optionHd" style="display: none"></div>
+                            <div id="optionSound" class="ctrPointer"></div>
+                            <div id="optionMsg"></div>
+                        </div>
+                    </div>
+
+                    <div id="boxPanel" class="panel seethrough">
+                        <canvas id="boxCanvas"></canvas>
+
+                        <div id="boxScore" class="hideFromMouse floatTop"><img src="" /></div>
+
+                        <div id="boxNavBack">
+                            <div class="boxNavDisabled"></div>
+                        </div>
+                        <div id="boxNavForward">
+                            <div></div>
+                        </div>
+                        <div id="boxBack" class="bBtn floatBottom"></div>
+                    </div>
+                    <div id="levelPanel" class="panel">
+                        <div id="levelScore" class="floatTop">
+                            <img src="" />
+                        </div>
+                        <div id="levelBack" class="bBtn floatBottom"></div>
+                        <div id="levelNavBack">
+                            <div class="boxNavDisabled"></div>
+                        </div>
+                        <div id="levelNavForward">
+                            <div></div>
+                        </div>
+                        <div id="levelOptions"></div>
+                        <div id="levelResults">
+                            <div id="resultStatus" class=""><canvas></canvas></div>
+                            <div class="starCase">
+                                <div id="resultStar1" class=""></div>
+                                <div id="resultStar2" class=""></div>
+                                <div id="resultStar3" class=""></div>
+                            </div>
+                            <div id="resultTicker" class="">
+                                <canvas id="resultTickerLabel"></canvas>
+                                <canvas id="resultTickerValue"></canvas>
+                                <canvas id="resultTickerMessage"></canvas>
+                            </div>
+                            <div class="line"></div>
+                            <div id="resultScore" class=""></div>
+                            <div class="btnCase">
+                                <div id="replayBtn" class="sBtn"><img src="" /></div>
+                                <div id="lrMenuBtn" class="sBtn"><img src="" /></div>
+                                <div id="nextBtn" class="sBtn"><img src="" /></div>
+                            </div>
+                            <div id="resultImproved"></div>
+                        </div>
+                    </div>
+
+                    <div id="gameCompletePanel" class="panel">
+                        <div id="congrats"></div>
+                        <div id="finalScore"><img src="" /></div>
+                        <!--<a
+                            href="http://www.cuttherope.net/"
+                            id="finalFunBtn"
+                            class="lBtn"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="" />
+                            <div id="funOmNom"></div>
+                        </a>-->
+                        <div id="gameCompleteBack" class="bBtn"></div>
+                    </div>
+
+                    <div id="optionsPanel" class="panel">
+                        <div class="fBtnVBox">
+                            <div id="optionsTitle"><img src="" /></div>
+                            <div id="soundBtn" class="mini-button ctrCursor">
+                                <div id="options-speaker"></div>
+                                <div class="options-x"></div>
+                            </div>
+                            <div id="musicBtn" class="mini-button ctrCursor">
+                                <div id="options-note"></div>
+                                <div class="options-x"></div>
+                            </div>
+                            <div id="langBtn" class="fBtn">
+                                <img src="" />
+                                <div id="flag"></div>
+                            </div>
+                            <div id="xmasToggleBtn" class="fBtn"><img src="" /></div>
+                            <div id="creditsBtn" class="fBtn"><img src="" /></div>
+                            <div id="dragBtn">
+                                <img id="dragText" />
+                                <div class="options-check-disabled"></div>
+                            </div>
+                            <div id="cutBtn" class="ctrCursor">
+                                <img id="cutText" />
+                                <div class="options-check"></div>
+                            </div>
+                        </div>
+                        <div id="optionsBack" class="bBtn"></div>
+                    </div>
+
+                    <div id="d" class="panel ctrPointer">
+                        <img id="dmsg" />
+                        <div id="dframe">
+                            <div id="dpic"></div>
+                        </div>
+                        <div id="dshareBtn" class="fBtn">
+                            <img src="" />
+                            <div id="dfb"></div>
+                        </div>
+                    </div>
+                    <div id="gameBtnTray" class="floatTop">
+                        <div id="gameMsg" class="allSound"></div>
+                        <div id="gameSound" class="ctrPointer allSound"></div>
+                        <div id="gameRestartBtn" class="ctrPointer"></div>
+                        <div id="gameMenuBtn" class="ctrPointer"></div>
+                    </div>
+                    <div id="levelMenu">
+                        <div class="fBtnVBox">
+                            <div id="continueBtn" class="fBtn"><img src="" /></div>
+                            <div id="settingsBtn" class="fBtn"><img src="" /></div>
+                        </div>
+                    </div>
+
+                    <div id="boxCutter"></div>
+                    <div id="tapeRoll"></div>
+                    <div id="video"></div>
+                    <div id="fadeToBlack" class="panel"></div>
+                </div>
+                <canvas id="e"></canvas>
+
+                <div id="loaderWindow">
+                    <div id="loaderBubbles">
+                        <img id="loaderLogo" src="/preview/h5dx/dist/images/page/loader-logo.png" />
+                        <div id="loaderCanvasHost">
+                            <canvas id="loaderCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="popupWindow">
+                    <div class="popupOuterFrame">
+                        <div class="popupInnerFrame" id="missingStars">
+                            <div id="missingLine1"></div>
+                            <div id="missingCount">
+                                <div id="missingStar"></div>
+                            </div>
+                            <div id="missingLine2"></div>
+                            <div id="missingLine3"></div>
+                            <div class="mBtn" id="missingOkBtn"></div>
+                        </div>
+                        <div class="popupInnerFrame" id="holidayUnavailable">
+                            <div id="holidayLine1"></div>
+                            <div id="holidayLine2"></div>
+                            <div class="mBtn" id="holidayOkBtn"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="upgrade">
+                    <div id="upgrade-header"></div>
+                    <a id="upgrade-button" href="http://windows.microsoft.com/ie"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

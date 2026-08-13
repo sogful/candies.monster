@@ -1,4 +1,3 @@
-/preview/h5dx/node_modules/
 /versions/scriptsyay/
 
 /preview/workers/
@@ -7,6 +6,8 @@
 
 /preview/dx/*
 !/preview/dx/dist/
+/preview/h5dx/*
+!/preview/h5dx/dist/
 
 /webtile
 /convert/__pycache__
