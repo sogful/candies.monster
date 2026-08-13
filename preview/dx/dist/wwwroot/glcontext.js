@@ -10,17 +10,19 @@ function getGL() {
     return gl;
 }
 
+// Fills the viewport exactly, at any aspect ratio - no letterboxing at this layer. Core's own
+// ScreenPresentation (see ScreenPresentation.cs) already does "cover"-style scaling once it sees
+// a non-16:9 surface (ScreenPresentation.FullScreenCropWidth, on by default): it fills the full
+// height or width and crops the other axis rather than showing black bars, and every HUD element
+// anchors off the resulting scaled-view edges (Canvas.xOffsetScaled) rather than a fixed 2560px
+// reference, so this doesn't need to reproduce any of that letterboxing math here - just hand
+// Core the real surface size and let it do what it already knows how to do.
 export function fitCanvasToViewport(viewportWidth, viewportHeight) {
-    const nativeWidth = 2560;
-    const nativeHeight = 1440;
-    const scale = Math.min(viewportWidth / nativeWidth, viewportHeight / nativeHeight);
-    const width = Math.max(1, Math.round(nativeWidth * scale));
-    const height = Math.max(1, Math.round(nativeHeight * scale));
     return {
-        width,
-        height,
-        left: Math.round((viewportWidth - width) / 2),
-        top: Math.round((viewportHeight - height) / 2),
+        width: Math.max(1, Math.round(viewportWidth)),
+        height: Math.max(1, Math.round(viewportHeight)),
+        left: 0,
+        top: 0,
     };
 }
 

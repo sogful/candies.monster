@@ -175,6 +175,7 @@
             position: fixed; display: flex;
             bottom: 0.5em; right: 0.5em;
             gap: 0.3em; align-items: center !important;
+            transition: opacity 0.4s ease;
         }
         .details img {
             height: 1.25em;
@@ -222,6 +223,8 @@
 
         body.noui .details, body.noui .close, body.noui .link.clickable {display: none !important}
         body.shareonly .details {display: none !important}
+
+        body.uiidle .close, body.uiidle .link, body.uiidle .details {opacity: 0.1}
 
         .link {
             position: fixed;
@@ -761,6 +764,22 @@
             window.addEventListener("load", () => {
                 hideloading();
             });
+
+            // dims the floating close/link/details chrome after a period with no mouse
+            // movement, back at the next movement. pointer/hover-gated: a touch device has no
+            // way to "move the mouse" to bring faded controls back, so it never fades them.
+            const pointercapable = matchMedia("(hover: hover) and (pointer: fine)");
+            const uiidledelay = 3000;
+            let uiidletimer = null;
+            function scheduleuiidle() {
+                clearTimeout(uiidletimer);
+                document.body.classList.remove("uiidle");
+                if (!pointercapable.matches) return;
+                uiidletimer = setTimeout(() => document.body.classList.add("uiidle"), uiidledelay);
+            }
+            pointercapable.addEventListener("change", scheduleuiidle);
+            document.addEventListener("mousemove", scheduleuiidle, {passive: true});
+            scheduleuiidle();
 
             /*//////////////////////////////////////////////////////////////////////*/
 

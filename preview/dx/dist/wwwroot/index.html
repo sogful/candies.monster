@@ -25,29 +25,27 @@
                 touch-action: none;
                 overscroll-behavior: none;
             }
-            /* No top/left/transform here on purpose: glcontext.js's resizeViewportSurfaces()
-               already computes pixel-perfect centering (fitCanvasToViewport) and sets it as
-               inline style.left/top on this element every resize - CSS centering on top of that
-               would double-offset it, since the inline styles win over the stylesheet but a
-               stylesheet transform still applies on top of them. */
+            /* Full viewport, no aspect clamp: glcontext.js's fitCanvasToViewport() hands Core
+               the real surface size at any aspect ratio and Core's own ScreenPresentation does
+               "cover"-style scaling from there (crops rather than letterboxes) - see the comment
+               on fitCanvasToViewport in glcontext.js. No top/left/transform here on purpose:
+               resizeViewportSurfaces() sets inline style.left/top every resize (always 0,0 now
+               that this fills the viewport), and a stylesheet transform would apply on top of
+               that and shift things again. */
             #game {
                 display: block;
                 position: absolute;
                 width: 100vw;
-                height: calc(100vw * 9 / 16);
-                max-width: calc(100vh * 16 / 9);
-                max-height: 100vh;
+                height: 100vh;
             }
-            /* Shares the canvas's letterboxed box (same caveat: positioned by glcontext.js, not
-               CSS). z-index puts it over the game but under the splash, so a cutscene can never
-               show through the loading screen. */
+            /* Same sizing as #game (positioned by glcontext.js, not CSS). z-index puts it over
+               the game but under the splash, so a cutscene can never show through the loading
+               screen. */
             #movie {
                 display: block;
                 position: absolute;
                 width: 100vw;
-                height: calc(100vw * 9 / 16);
-                max-width: calc(100vh * 16 / 9);
-                max-height: 100vh;
+                height: 100vh;
                 z-index: 5;
                 background: #000;
                 object-fit: contain;
@@ -55,22 +53,19 @@
             #movie[hidden] {
                 display: none;
             }
-            /* Shares the canvas's letterboxed box, same as #movie above - the loading art sits
-               exactly where the game will. Faded rather than removed on ready, so the canvas
-               underneath is already painted when it goes; pointer-events keeps the invisible
-               overlay from eating taps. Transparent outside the loader-logo image itself, same
-               as html/body, so an embedding page shows through anywhere the game isn't actually
-               drawing something - everything except gameplay itself, once it starts. */
+            /* Same full-viewport sizing as #game/#movie above, so there's no jarring resize the
+               moment loading finishes - the loading art sits exactly where the game will, at
+               whatever size that ends up being. Faded rather than removed on ready, so the
+               canvas underneath is already painted when it goes; pointer-events keeps the
+               invisible overlay from eating taps. Transparent outside the loader-logo image
+               itself, same as html/body, so an embedding page shows through anywhere the game
+               isn't actually drawing something - everything except gameplay itself, once it
+               starts. */
             #betterLoader {
                 display: block;
                 position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
                 width: 100vw;
-                height: calc(100vw * 9 / 16);
-                max-width: calc(100vh * 16 / 9);
-                max-height: 100vh;
+                height: 100vh;
                 background: url("./loading/loader-logo.png") center / cover no-repeat;
                 z-index: 10;
                 transition: opacity 0.25s ease-out;
