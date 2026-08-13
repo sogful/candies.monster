@@ -29,6 +29,13 @@
             "hiddenelement": 300,
             "grab": 100,
 
+            "axe": 136,
+            "pipe": 137,
+            "ants": 138,
+            "rocket": 139,
+            "hand": 140,
+            "load": 141,
+
             "tutorialtext": 4,
             "tutorial01": 5,
             "tutorial1": 5,
@@ -81,6 +88,13 @@
             "135": "transporter",
             "300": "hiddenelement",
             "100": "grab",
+
+            "136": "axe",
+            "137": "pipe",
+            "138": "ants",
+            "139": "rocket",
+            "140": "hand",
+            "141": "load",
 
             "4": "tutorialtext",
             "5": "tutorial01",
@@ -176,6 +190,27 @@
         }
         if (tagname === "hiddenelement") {
             ctrobject.radius = parseInt(obj.getAttribute("radius")) || 30;
+        }
+        if (tagname === "axe") {
+            ctrobject.axeNumber = obj.getAttribute("axeNumber") || "";
+        }
+        if (tagname === "rocket") {
+            ctrobject.impulse = parseFloat(obj.getAttribute("impulse")) || 0;
+            ctrobject.impulseFactor = parseFloat(obj.getAttribute("impulseFactor")) || 0.6;
+            ctrobject.time = parseFloat(obj.getAttribute("time")) || 0;
+            ctrobject.isRotatable = obj.getAttribute("isRotatable") === "true";
+        }
+        if (tagname === "hand") {
+            const segmentscount = parseInt(obj.getAttribute("segmentsCount")) || 0;
+            ctrobject.segmentsCount = segmentscount;
+            for (let i = 1; i <= segmentscount; i++) {
+                const angleattr = obj.getAttribute(`segment${i}Angle`);
+                if (angleattr != null) ctrobject[`segment${i}Angle`] = parseFloat(angleattr) || 0;
+                const lengthattr = obj.getAttribute(`segment${i}Length`);
+                if (lengthattr != null) ctrobject[`segment${i}Length`] = parseFloat(lengthattr) || 0;
+                const rotatableattr = obj.getAttribute(`segment${i}Rotatable`);
+                if (rotatableattr != null) ctrobject[`segment${i}Rotatable`] = rotatableattr === "true";
+            }
         }
         if (tagname === "grab") {
             ctrobject.spider = obj.getAttribute("spider") === "true";
