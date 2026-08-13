@@ -223,7 +223,7 @@
         body.shareonly .details {display: none !important}
 
         .close, .link, .details {
-            opacity: 0;
+            opacity: 0.1;
             transition: opacity 0.35s ease;
         }
         body.uinear .close, body.uinear .link, body.uinear .details {opacity: 1}
@@ -784,6 +784,13 @@
             }
             pointercapable.addEventListener("change", syncuiedgelistener);
             syncuiedgelistener();
+
+            window.addEventListener("message", (event) => {
+                if (event.origin !== window.location.origin) return;
+                if (event.data?.type === "idfkman" && pointercapable.matches) {
+                    document.body.classList.toggle("uinear", !!event.data.near);
+                }
+            });
 
             /*//////////////////////////////////////////////////////////////////////*/
 

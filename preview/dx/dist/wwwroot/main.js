@@ -105,6 +105,31 @@ syncActive();
 // inactive first.
 globalThis.addEventListener("pagehide", () => loop.Flush());
 
+// Relays pointer-near-edge proximity to an embedding page (candies.monster's preview tool),
+// which fades its own floating close/link/details chrome in near the edges of the page, out
+// otherwise. That page's own `mousemove` listener never fires while the pointer is over this
+// iframe - separate browsing contexts don't bubble pointer events across the boundary - so
+// without this, once its chrome faded in it had no way to find out the pointer had moved on and
+// never faded back out. Harmless (posts to nobody) when this page isn't actually embedded.
+if (globalThis.parent !== globalThis) {
+    const EDGE_THRESHOLD = 140;
+    globalThis.addEventListener(
+        "pointermove",
+        (event) => {
+            const near =
+                event.clientX <= EDGE_THRESHOLD ||
+                event.clientX >= globalThis.innerWidth - EDGE_THRESHOLD ||
+                event.clientY <= EDGE_THRESHOLD ||
+                event.clientY >= globalThis.innerHeight - EDGE_THRESHOLD;
+            globalThis.parent.postMessage(
+                { type: "ctrdx-edge-proximity", near },
+                globalThis.location.origin,
+            );
+        },
+        { passive: true },
+    );
+}
+
 // No Play button gating this: the loading screen hides itself and gameplay starts ticking the
 // moment the runtime and assets are ready. Audio unlocks separately on the player's first
 // gesture (see audio.js) - browsers won't allow it any earlier regardless.
