@@ -91,15 +91,13 @@ const sendKey = (event, down) => {
 globalThis.addEventListener("keydown", (event) => sendKey(event, true));
 globalThis.addEventListener("keyup", (event) => sendKey(event, false));
 
-// Focus and visibility are separate losses and either one must freeze the game: a hidden
-// tab stops getting animation frames but keeps its audio, while a window merely pushed
-// behind another stays visible and keeps ticking at full speed.
-const syncActive = () =>
-    loop.SetActive(
-        document.visibilityState === "visible" && document.hasFocus(),
-    );
-globalThis.addEventListener("focus", syncActive);
-globalThis.addEventListener("blur", syncActive);
+// Visibility alone gates the loop - not focus. A standalone window losing focus while still
+// visible is a real case (see the removed hasFocus() check's original reasoning below), but
+// this build boots inside a level-editor preview embed, which frequently has neither focus nor
+// a click yet on its very first load - gating the initial state on hasFocus() left it frozen
+// until the player happened to click it, for no benefit here. A hidden tab still stops getting
+// animation frames on its own regardless of this flag.
+const syncActive = () => loop.SetActive(document.visibilityState === "visible");
 document.addEventListener("visibilitychange", syncActive);
 syncActive();
 

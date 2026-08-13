@@ -175,7 +175,6 @@
             position: fixed; display: flex;
             bottom: 0.5em; right: 0.5em;
             gap: 0.3em; align-items: center !important;
-            transition: opacity 0.4s ease;
         }
         .details img {
             height: 1.25em;
@@ -214,9 +213,8 @@
             z-index: 999999999; border: none;
             border-radius: 0.5em; color: white;
             font-family: "Good Dog"; font-size: 1.25em;
-            display: none; transition: opacity 1s ease-in
+            display: none;
         }
-        .close:hover {opacity: 0.1}
         .close.active {display: inline-flex}
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -224,7 +222,11 @@
         body.noui .details, body.noui .close, body.noui .link.clickable {display: none !important}
         body.shareonly .details {display: none !important}
 
-        body.uiidle .close, body.uiidle .link, body.uiidle .details {opacity: 0.1}
+        .close, .link, .details {
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+        body.uinear .close, body.uinear .link, body.uinear .details {opacity: 1}
 
         .link {
             position: fixed;
@@ -232,9 +234,8 @@
             z-index: 99999999; border: none;
             border-radius: 0.5em; color: white;
             font-family: "Good Dog"; font-size: 1.25em;
-            display: none; transition: opacity 1s ease-in
+            display: none;
         }
-        .link:hover {opacity: 0.1}
         .link.active {display: inline-flex}
 
         .linkpopup {
@@ -345,7 +346,7 @@
 
             color: #ff7d7d; font-size: 0.75em;
             -webkit-text-stroke: 0.175em black;
-            paint-order: stroke fill; z-index: 676767676767; /* is shakespeare really dead? */
+            paint-order: stroke fill; z-index: 676767676767; /* is shakespeare really dead? */ /* <- YES HE IS FUCK YOU */
         }
         .errors div {
             margin-bottom: 0.5em;
@@ -765,21 +766,24 @@
                 hideloading();
             });
 
-            // dims the floating close/link/details chrome after a period with no mouse
-            // movement, back at the next movement. pointer/hover-gated: a touch device has no
-            // way to "move the mouse" to bring faded controls back, so it never fades them.
             const pointercapable = matchMedia("(hover: hover) and (pointer: fine)");
-            const uiidledelay = 3000;
-            let uiidletimer = null;
-            function scheduleuiidle() {
-                clearTimeout(uiidletimer);
-                document.body.classList.remove("uiidle");
-                if (!pointercapable.matches) return;
-                uiidletimer = setTimeout(() => document.body.classList.add("uiidle"), uiidledelay);
+            const uiedgethreshold = 140;
+            function checkuiedge(event) {
+                const nearedge = event.clientX <= uiedgethreshold
+                    || event.clientX >= window.innerWidth - uiedgethreshold
+                    || event.clientY <= uiedgethreshold
+                    || event.clientY >= window.innerHeight - uiedgethreshold;
+                document.body.classList.toggle("uinear", nearedge);
             }
-            pointercapable.addEventListener("change", scheduleuiidle);
-            document.addEventListener("mousemove", scheduleuiidle, {passive: true});
-            scheduleuiidle();
+            function syncuiedgelistener() {
+                document.removeEventListener("mousemove", checkuiedge);
+                document.body.classList.remove("uinear");
+                if (pointercapable.matches) {
+                    document.addEventListener("mousemove", checkuiedge, {passive: true});
+                }
+            }
+            pointercapable.addEventListener("change", syncuiedgelistener);
+            syncuiedgelistener();
 
             /*//////////////////////////////////////////////////////////////////////*/
 
