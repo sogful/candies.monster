@@ -174,7 +174,7 @@
 
     window.addEventListener("message", (event) => {
         if (event.origin !== window.location.origin) return;
-        if (event.data?.type === "idfkman" && pointercapable.matches) {
+        if (event.data?.type === "ctrdx-edge-proximity" && pointercapable.matches) {
             document.body.classList.toggle("uinear", !!event.data.near);
         }
     });
