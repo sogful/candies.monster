@@ -170,14 +170,21 @@
             -webkit-text-stroke: 0.125em black;
             text-shadow: 0 0.1em 0 black;
             paint-order: stroke fill; z-index: 9999999;
-            font-size: 0.75em; line-height: 0.7;
+            font-size: 0.75em; line-height: 1.15;
 
             position: fixed; display: flex;
-            bottom: 0.5em; right: 0.5em;
-            gap: 0.3em; align-items: center !important;
+            bottom: 0.5em; right: 0;
+            gap: 0.5em; align-items: center !important;
+            background: rgba(0,0,0,0.5);
+            border-radius: 0.6em 0 0 0.6em;
+            padding: 0.4em 0.6em 0.4em 0.8em;
+        }
+        .detailsgzip {
+            font-size: 0.8em;
+            opacity: 0.85;
         }
         .details img {
-            height: 1.25em;
+            height: 2.2em;
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -209,17 +216,20 @@
 
         .close {
             position: fixed;
-            bottom: 2.5em; left: 0.5em; height: 2em;
+            bottom: 3.6em; left: 0;
             z-index: 999999999; border: none;
-            border-radius: 0.5em; color: white;
-            font-family: "Good Dog"; font-size: 1.25em;
+            color: white; cursor: pointer; white-space: nowrap;
+            font-family: "Good Dog"; font-size: 1.1em;
+            background: rgba(0,0,0,0.5);
+            border-radius: 0 0.6em 0.6em 0;
+            padding: 0.5em 0.9em 0.5em 0.7em;
             display: none;
         }
         .close.active {display: inline-flex}
 
         /*//////////////////////////////////////////////////////////////////////*/
 
-        body.noui .details, body.noui .close, body.noui .link.clickable {display: none !important}
+        body.noui .details, body.noui .link.clickable {display: none !important}
         body.shareonly .details {display: none !important}
 
         .close, .link, .details {
@@ -230,10 +240,11 @@
 
         .link {
             position: fixed;
-            bottom: 0.5em; left: 0.5em; height: 2em;
+            bottom: 0.5em; left: 0; height: 2em;
             z-index: 99999999; border: none;
-            border-radius: 0.5em; color: white;
-            font-family: "Good Dog"; font-size: 1.25em;
+            background: rgba(0,0,0,0.5);
+            border-radius: 0 0.6em 0.6em 0;
+            padding: 0.4em 0.7em 0.4em 0.5em;
             display: none;
         }
         .link.active {display: inline-flex}
@@ -600,7 +611,7 @@
         </a>
     </div>
 
-    <img class="close" src="assets/images/back.png"></img>
+    <a type="button" class="close clickable">Change Version</a>
     <img class="link clickable" src="assets/images/share.png">
     <div class="linkpopup">
         <div class="linkitem">
@@ -686,6 +697,7 @@
                 candy: ["candy", "ca", "c"],
                 jolly: ["jolly", "jl", "j"],
                 background: ["background", "bg", "b"],
+                version: ["version", "ver", "v"],
             };
 
             function getrawparam(logicalname) {
@@ -725,6 +737,22 @@
                 (levelbackgroundraw >= 1 && levelbackgroundraw <= 11) || levelbackgroundraw === 16
             ) ? levelbackgroundraw : null;
 
+            const levelversionraw = getstringparam("version");
+            const levelversion = ["dx", "h5dx", "famobi"].includes(levelversionraw) ? levelversionraw : null;
+
+            function autoopenversion() {
+                if (levelversion) {
+                    opengame(levelversion);
+                    return;
+                }
+                try {
+                    const savedgame = localStorage.getItem(game_version_key);
+                    if (savedgame === "dx" || savedgame === "famobi" || savedgame === "h5dx") {
+                        opengame(savedgame);
+                    }
+                } catch (_) {}
+            }
+
             const storage_key = "leveldata";
             const game_version_key = "gameselected";
             const shortcode_cache_key = "yourlevels";
@@ -747,7 +775,7 @@
             const clickaudio = document.querySelector(".click");
             const loading = document.querySelector(".loading");
 
-            // autoselects dx, enabling this only when it's the only working choice
+            // there's more than one version now so no need for this
             const nopicker = false;
             
             const hasurldata = urlparam.has("data") || urlparam.has("code");
@@ -1072,11 +1100,16 @@
                     return;
                 }
                 details?.classList.remove("hidden");
-                const base = `${lateststats.objectcount} obj // ${lateststats.charcount} chars`;
+                detailstext.textContent = "";
+                const mainline = document.createElement("span");
+                mainline.textContent = `${lateststats.objectcount} obj // ${lateststats.charcount} chars`;
+                detailstext.appendChild(mainline);
                 if (lateststats.gzippedBytes != null && Number.isFinite(lateststats.gzippedBytes)) {
-                    detailstext.textContent = `${base} (${lateststats.gzippedBytes.toLocaleString()} gzipped)`;
-                } else {
-                    detailstext.textContent = base;
+                    detailstext.appendChild(document.createElement("br"));
+                    const gzipline = document.createElement("span");
+                    gzipline.className = "detailsgzip";
+                    gzipline.textContent = `${lateststats.gzippedBytes.toLocaleString()} gzipped`;
+                    detailstext.appendChild(gzipline);
                 }
             }
 
@@ -1101,7 +1134,7 @@
                     showerror(`Failed to decode level: ${error}`);
                 }
                 toggleeditor(true);
-                if (nopicker) {opengame("dx")}
+                if (nopicker) {opengame(levelversion || "dx")}
                 else if (showchoice) {showchoicepanel()}
                 resetbutton.disabled = false;
                 updatelink();
@@ -1237,14 +1270,7 @@
                             setleveldata(trimmed, !nopicker);
                         }
                         cleanurl();
-                        if (!nopicker) {
-                            try {
-                                const savedgame = localStorage.getItem(game_version_key);
-                                if (savedgame && (savedgame === "dx" || savedgame === "famobi" || savedgame === "h5dx")) {
-                                    opengame(savedgame);
-                                }
-                            } catch (_) {}
-                        }
+                        if (!nopicker) {autoopenversion()}
                         hideloading();
                         return;
                     }
@@ -1295,28 +1321,14 @@
                         }
                     }
                     cleanurl();
-                    if (!nopicker) {
-                        try {
-                            const savedgame = localStorage.getItem(game_version_key);
-                            if (savedgame && (savedgame === "dx" || savedgame === "famobi" || savedgame === "h5dx")) {
-                                opengame(savedgame);
-                            }
-                        } catch (_) {}
-                    }
+                    if (!nopicker) {autoopenversion()}
                     hideloading();
                     return;
                 }
                 const stored = localStorage.getItem(storage_key);
                 if (stored) {
                     setleveldata(stored, !nopicker);
-                    if (!nopicker) {
-                        try {
-                            const savedgame = localStorage.getItem(game_version_key);
-                            if (savedgame && (savedgame === "dx" || savedgame === "famobi" || savedgame === "h5dx")) {
-                                opengame(savedgame);
-                            }
-                        } catch (_) {}
-                    }
+                    if (!nopicker) {autoopenversion()}
                 } else {
                     resetbutton.disabled = true;
                     toggleeditor(false);
@@ -1789,7 +1801,7 @@
             updatelink();
             if (levelbase64) {
                 if (!frame.classList.contains("active") && !gameopening) {
-                    if (nopicker) {opengame("dx")}
+                    if (nopicker) {opengame(levelversion || "dx")}
                     else {showchoicepanel()}
                 }
                 resetbutton.disabled = false;
