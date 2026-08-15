@@ -1,0 +1,451 @@
+@font-face {
+    font-family: "Good Dog";
+    src: /*universal*/ url("/assets/fonts/gooddog.woff");
+}
+@font-face {
+    font-family: "JetBrains Mono";
+    src: /*universal*/ url("/assets/fonts/jetbrainsmono.woff");
+}
+
+body {
+    font-family: "Good Dog";
+    position: relative; z-index: 1;
+    display: flex; justify-content: center; align-items: flex-start;
+    min-height: 100vh; min-width: 100vw; overflow-y: auto;
+    user-select: none; padding: 0; margin: 0;
+    -webkit-user-drag: none;
+
+    background-color: black;
+
+    cursor: url("/assets/static/cursors/idle.cur"), default !important;
+}
+body.playing {overflow: hidden}
+body:active, body:focus, body:focus-within, body:target, body:active * {
+    cursor: url("/assets/static/cursors/active.cur"), default !important;
+}
+:any-link {
+    color: #8feeff; text-decoration: none !important;
+    cursor: url("/assets/static/cursors/link.cur"), default !important;
+}
+* {
+    cursor: inherit !important; 
+    scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
+}
+*::-webkit-scrollbar {width: 0px}
+
+.loading {
+    display: flex; position: fixed; 
+    justify-content: center; align-items: center;
+    width: 100vw; height: 100vh; z-index: 9999999999999999999999999;
+    background-color: rgba(0,0,0,0.5);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+    transition: opacity 0.5s;
+}
+.loading svg {
+    width: 100px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,/*0.55*/0.33));
+    animation: rotate 2s linear infinite;
+}
+@keyframes rotate {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+}
+
+.bg {
+    position: fixed; display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100%; height: 100vh;
+    background-image: url("assets/images/tile.webp");
+    background-repeat: repeat; background-size: auto;
+    opacity: 0.25; z-index: -1;
+    top: 0; left: 0; right: 0; bottom: 0;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.page {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    width: min(90vw, 700px); height: 90vh;
+    color: white; font-size: 1.5em;
+}
+
+a, .button {
+    -webkit-text-stroke: 0.175em black;
+    text-shadow: 0 0.15em 0 black;
+    paint-order: stroke fill;
+}
+.button {
+    display: flex; position: relative;
+    flex-direction: column; align-items: center;
+    cursor: pointer; background: none;
+    border: none; margin-top: 0.5em;
+}
+.button img {height: 2.5em}
+.button span {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff; font-size: 1em;
+    pointer-events: none;
+    white-space: nowrap; user-select: none;
+}
+.title {
+    font-size: 3em; 
+    -webkit-text-stroke: 0.125em black;
+    text-shadow: 0 0.1em 0 black;
+    paint-order: stroke fill;
+}
+.subtitle {
+    font-size: 1.5em;
+    -webkit-text-stroke: 0.15em black;
+    text-shadow: 0 0.1em 0 black;
+    paint-order: stroke fill;
+}
+.tiny {
+    font-size: 0.5em !important;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.choice {
+    max-width: 90%; max-width: 600px;
+    object-fit: contain; display: flex;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0.2em;
+    cursor: pointer;
+}
+.choice img {
+    width: 50%; margin: 0.6em;
+    border-radius: 1em;
+    outline: 0.25em solid black;
+    outline-offset: -0.1em;
+    box-shadow: 0 0 0 0.4em white;
+    transition: filter 0.2s ease;
+}
+.choice img:hover {
+    filter: brightness(1.25)
+}
+.creditwhereitsdue {
+    font-size: 0.75em;
+    display: flex; flex-direction: row;
+    align-items: center; justify-content: center;
+    flex-wrap: nowrap; white-space: nowrap;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.details {
+    color: white; text-align: right;
+    -webkit-text-stroke: 0.125em black;
+    text-shadow: 0 0.1em 0 black;
+    paint-order: stroke fill; z-index: 9999999;
+    font-size: 0.75em; line-height: 1.15;
+
+    position: fixed; display: flex;
+    bottom: 0em; right: 0;
+    gap: 0.5em; align-items: center !important;
+    background: rgba(0,0,0,0.25);
+    border-radius: 0.6em 0 0 0;
+    padding: 0.4em 0.6em 0.4em 0.8em;
+}
+.detailsgzip {
+    font-size: 0.8em;
+    opacity: 0.85;
+}
+.details img {
+    height: 2.2em;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.hidden {display: none !important}
+.datapanel {display: none !important}
+.datapanel.show {display: flex !important}
+
+.datapanel {margin-bottom: 2em}
+.choicepanel {gap: 0.5em}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.gameframe {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    border: none; background: transparent;
+    z-index: 3000; display: none;
+}
+.gameframe.active {display: block}
+
+.close {
+    position: fixed;
+    top: 0em; left: 0;
+    z-index: 999999999; border: none;
+    color: white; cursor: pointer; white-space: nowrap;
+    font-family: "Good Dog"; font-size: 1.1em;
+    background: rgba(0,0,0,0.25);
+    border-radius: 0 0 0.6em 0;
+    padding: 0.5em 0.5em 0.5em 0.3em;
+    display: none; line-height: 0.9;
+}
+.close.active {display: inline-flex}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+body.noui .details, body.noui .link.clickable {display: none !important}
+body.shareonly .details {display: none !important}
+
+.close, .link, .details {
+    opacity: 0.1;
+    transition: opacity 0.35s ease;
+}
+body.uinear .close, body.uinear .link, body.uinear .details {opacity: 1}
+
+.link {
+    position: fixed;
+    bottom: 0em; left: 0; height: 2em;
+    z-index: 99999999; border: none;
+    background: rgba(0,0,0,0.25);
+    border-radius: 0 0.6em 0 0;
+    padding: 0.4em 0.7em 0.4em 0.5em;
+    display: none;
+}
+.link.active {display: inline-flex}
+
+.linkpopup {
+    position: fixed; display: none;
+    bottom: 3.5em; left: 0.5em;
+    z-index: 9999999999;
+    flex-direction: column; background: rgba(0,0,0,0.5);
+    border-radius: 1em; padding: 0.75em;
+    min-width: 300px; max-width: 90vw;
+}
+.linkpopup.active {display: flex}
+.linkpopup .linkitem {
+    display: flex;
+    flex-direction: column;
+}
+.linkpopup .linkitem .linklabel {
+    font-size: 0.8em;
+    color: white
+}
+.linkpopup .linkitem .linkrow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+}
+.linkpopup .linkitem a {
+    color: #8feeff;
+    font-size: 0.75em;
+    word-break: break-all;
+    text-decoration: underline;
+    flex: 1;
+    min-width: 0;
+}
+.linkpopup .copybtn {
+    display: flex; position: relative;
+    flex-direction: column; align-items: center;
+    cursor: pointer; background: none;
+    border: none;
+    flex-shrink: 0;
+}
+.linkpopup .copybtn img {height: 2em}
+.linkpopup .copybtn span {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff; font-size: 1em;
+    pointer-events: none;
+    white-space: nowrap; user-select: none;
+}
+.linkcharcount {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.5em;
+    margin-top: 0.25em;
+    text-align: left;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.toolong {
+    display: none; flex-direction: column;
+    max-width: 300px; padding: 0.5em; margin-top: 0.5em;
+    background-color: rgba(255,125,125,0.1);
+    border-radius: 1em; font-size: 0.75em;
+
+    color: white; text-align: left;
+    -webkit-text-stroke: 0.125em black;
+    text-shadow: 0 0.1em 0 black;
+}
+.toolong div {
+    display: flex; flex-direction: row; 
+    align-items: center; justify-content: center;
+    gap: 0.25em; height: 2em;
+}
+.toolong div a {font-size: 1.2em !important;}
+.toolong div img {
+    height: 1.25em; width: 1.25em;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+/* .yetanothernotice {
+    position: fixed; display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    width: 100vw; height: 100vh; z-index: 655356553565535;
+    background-color: rgba(0,0,0,0.5);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+    transition: opacity 0.5s;
+
+    color: white;
+    -webkit-text-stroke: 0.125em black;
+    text-shadow: 0 0.1em 0 black;
+    paint-order: stroke fill;
+}
+.noticestuff {
+    text-align: center;
+    max-width: min(500px, 90vw);
+} */
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+/* error stuff */
+.errors {
+    position: fixed; display: flex; flex-direction: column;
+    justify-content: flex-start; align-items: flex-start;
+    bottom: 1em; left: 1em; text-align: left;
+    z-index: 6000; pointer-events: none; user-select: none;
+    max-width: 50%; max-height: 50vh; overflow-y: auto;
+    white-space: pre-wrap;
+
+    color: #ff7d7d; font-size: 0.75em;
+    -webkit-text-stroke: 0.175em black;
+    paint-order: stroke fill; z-index: 676767676767; /* is shakespeare really dead? */ /* <- YES HE IS FUCK YOU */
+}
+.errors div {
+    margin-bottom: 0.5em;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+.errors div.fading {opacity: 0}
+
+.fatal {
+    position: fixed; display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+    width: 100vw; height: 100vh; 
+    top: 0; left: 0; text-align: center;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 5000; pointer-events: none;
+}
+.fatal.active {display: flex}
+.fatal a {
+    text-align: center;
+    color: #ff7d7d; font-size: 3em;
+    -webkit-text-stroke: 0.175em black;
+    text-shadow: 0 0.15em 0 black;
+    paint-order: stroke fill;
+}
+.fatal sup {
+    text-align: center;
+    color: #ff7d7d; font-size: 1.25em;
+    -webkit-text-stroke: 0.175em black;
+    text-shadow: 0 0.15em 0 black;
+    paint-order: stroke fill;
+}
+.fatal img {
+    position: fixed; width: 10em;
+    right: 1em; bottom: 1em;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.YOURTOOLONG {
+    display: flex; flex-direction: column;
+    position: fixed; display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+    top: 0; left: 0; width: 100vw; height: 100vh; z-index: 4000;
+    text-align: center; padding: 1em; box-sizing: border-box;
+
+    color: #ff7d7d;
+    -webkit-text-stroke: 0.125em black;
+    text-shadow: 0 0.1em 0 black;
+    paint-order: stroke fill;
+}
+.YOURTOOLONG.active {display: flex}
+.YOURTOOLONG .YOURTOOLONGtitle {
+    font-size: 3em;
+}
+.YOURTOOLONG .YOURTOOLONGbody {
+    font-size: 1.25em; max-width: min(90vw, 600px);
+    margin-top: 0.5em; color: white;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.multi {
+    display: flex; flex-direction: row;
+    width: min(90vw, 700px); 
+    gap: 1em; justify-content: center;
+}
+.input {
+    background: rgba(0,0,0,0.75); color: #fff;
+    font-size: 0.5em; font-family: "JetBrains Mono";
+    overflow: auto; width: 100%; max-width: 350px; height: 300px;
+    text-shadow: none; padding: 1em; margin: 0.5em 0;
+    min-height: 10vh; max-height: 30vh; text-align: left !important;
+    white-space: pre-wrap; border-radius: 1em;
+    border: none; outline: none;
+}
+.paste, .upload {
+    display: flex; flex-direction: column;
+    justify-content: flex-start; align-items: center;
+    flex: 1; min-width: 0;
+}
+.paste {margin-right: 0.5em}
+.upload {margin-left: 0.5em}
+.uploadinput {
+    display: flex; align-items: center; justify-content: center;
+    text-align: center !important; font-family: "Good Dog";
+    height: 100%; width: 100%;
+}
+.uploadinput a {font-size: 2em; padding: 1em}
+
+.xml {
+    background: rgba(0,0,0,0.75); color: #fff;
+    font-size: 0.5em; font-family: "JetBrains Mono";
+    overflow: auto; width: 100%; max-width: 350px; height: 300px;
+    text-shadow: none; padding: 1em; margin: 0.5em 0;
+    min-height: 10vh; max-height: 30vh; text-align: left !important;
+    white-space: pre-wrap; border-radius: 1em;
+    border: none; outline: none; resize: none;
+}
+.xml:focus {outline: none !important; box-shadow: none !important}
+.xml::selection {background-color: #264f78 !important; color: inherit !important}
+.xml:empty:before {
+    content: attr(placeholder);
+    color: rgba(255,255,255,0.4);
+    pointer-events: none;
+}
+
+
+.drag {
+    position: fixed; display: none;
+    justify-content: center; align-items: center; text-align: center;
+    width: 100vw; height: 100vh; z-index: 65535;
+    background-color: rgba(0,0,0,0.5); 
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+    transition: opacity 0.3s ease;
+    color: white; margin-left: 20%; margin-right: 20%;
+    -webkit-text-stroke: 0.175em black;
+    text-shadow: 0 0.15em 0 black;
+    paint-order: stroke fill; font-size: 4em;
+}
+.drag.visible {display: flex}
