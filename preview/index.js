@@ -42,7 +42,7 @@
     // url parameter aliases!
     const paramaliases = {
         noui: ["noui", "nu", "u"],
-        shareonly: ["shareonly", "so", "s"],
+        shareonly: ["embed", "shareonly", "so", "s"],
         nomusic: ["nomusic", "nm", "m"],
         candy: ["candy", "ca", "c"],
         jolly: ["jolly", "jl", "j"],
@@ -119,7 +119,8 @@
     const dragoverlay = document.querySelector(".drag");
     const errorsel = document.querySelector(".errors");
     const fatalel = document.querySelector(".fatal");
-    const closebtn = document.querySelector(".close");
+    const changeverbtn = document.querySelector(".changever");
+    const backbtn = document.querySelector(".back");
     const frame = document.querySelector(".gameframe");
     const oopsaudio = document.querySelector(".oopsaudio");
     const clickaudio = document.querySelector(".click");
@@ -491,11 +492,11 @@
     }
 
     function updatelink() {
-        const link = document.querySelector(".link");
+        const linkbar = document.querySelector(".linkbar");
         if (levelbase64) {
-            link?.classList.add("active");
+            linkbar?.classList.add("active");
         } else {
-            link?.classList.remove("active");
+            linkbar?.classList.remove("active");
             document.querySelector(".linkpopup")?.classList.remove("active");
         }
     }
@@ -882,7 +883,7 @@
         }
         const url = buildgameurl(path);
         const urlbytes = new TextEncoder().encode(url).length;
-        closebtn.classList.add("active");
+        changeverbtn.classList.add("active");
         document.body.classList.add("playing");
         choicepanel?.classList.add("hidden");
         datapanel?.classList.remove("show");
@@ -931,7 +932,7 @@
     function closegame() {
         gameopening = false;
         frame.classList.remove("active");
-        closebtn.classList.remove("active");
+        changeverbtn.classList.remove("active");
         YOURTOOLONG?.classList.remove("active");
         document.body.classList.remove("playing");
         if (levelbase64) {
@@ -950,7 +951,9 @@
         } catch (_) {}
     }
 
-    closebtn.addEventListener("click", () => {
+    changeverbtn.addEventListener("click", () => {closegame()});
+
+    backbtn?.addEventListener("click", () => {
         if (document.body.classList.contains("shareonly")) {
             window.parent.postMessage("exitpreview", "*");
         } else {closegame()}

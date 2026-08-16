@@ -185,7 +185,7 @@ a, .button {
 }
 .gameframe.active {display: block}
 
-.close {
+.changever {
     position: fixed;
     top: 0em; left: 0;
     z-index: 999999999; border: none;
@@ -196,29 +196,37 @@ a, .button {
     padding: 0.5em 0.5em 0.5em 0.3em;
     display: none; line-height: 0.9;
 }
-.close.active {display: inline-flex}
+.changever.active {display: inline-flex}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-body.noui .details, body.noui .link.clickable {display: none !important}
-body.shareonly .details {display: none !important}
+body.noui > *:not(.gameframe):not(.bg) {display: none !important}
+body.shareonly .details .resetdata {display: none !important}
 
-.close, .link, .details {
+.changever, .linkbar, .details {
     opacity: 0.1;
     transition: opacity 0.35s ease;
 }
-body.uinear .close, body.uinear .link, body.uinear .details {opacity: 1}
+body.uinear .changever, body.uinear .linkbar, body.uinear .details {opacity: 1}
 
-.link {
+.linkbar {
     position: fixed;
-    bottom: 0em; left: 0; height: 2em;
-    z-index: 99999999; border: none;
+    bottom: 0; left: 0;
+    z-index: 99999999;
+    display: none; align-items: center;
+    gap: 0.4em;
     background: rgba(0,0,0,0.25);
     border-radius: 0 0.6em 0 0;
     padding: 0.4em 0.7em 0.4em 0.5em;
-    display: none;
 }
-.link.active {display: inline-flex}
+.linkbar.active {display: flex}
+.back, .link {
+    height: 2em;
+    border: none;
+    cursor: pointer;
+}
+.back {display: none}
+body.shareonly .back {display: inline}
 
 .linkpopup {
     position: fixed; display: none;
