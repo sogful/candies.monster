@@ -615,7 +615,17 @@
         "background": "remastered.webp"
       },
       {
+        "path": "remastered/music_Chapter01_WM.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
         "path": "remastered/music_Chapter02.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Chapter02_WM.ogg",
         "formats": ["mp3", "ogg"],
         "background": "remastered.webp"
       },
@@ -625,12 +635,27 @@
         "background": "remastered.webp"
       },
       {
+        "path": "remastered/music_Chapter03_WM.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
         "path": "remastered/music_Chapter04.ogg",
         "formats": ["mp3", "ogg"],
         "background": "remastered.webp"
       },
       {
+        "path": "remastered/music_Chapter04_WM.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
         "path": "remastered/music_Chapter05.ogg",
+        "formats": ["mp3", "ogg"],
+        "background": "remastered.webp"
+      },
+      {
+        "path": "remastered/music_Chapter05_WM.ogg",
         "formats": ["mp3", "ogg"],
         "background": "remastered.webp"
       },
