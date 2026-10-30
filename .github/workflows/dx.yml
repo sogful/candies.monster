@@ -1,0 +1,84 @@
+name: Check DX preview update
+
+on:
+  workflow_dispatch:
+    inputs:
+      reference:
+        description: Upstream branch or revision
+        default: main
+        required: true
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dxpreview
+  cancel-in-progress: false
+
+jobs:
+  candidate:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for a new upstream revision
+        id: upstream
+        shell: pwsh
+        run: |
+          $changed = "true"
+          if ($env:GITHUB_EVENT_NAME -eq "schedule") {
+            $remote = git ls-remote https://github.com/yell0wsuit/cuttherope-dx.git refs/heads/main
+            if ($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+            $revision = ($remote -split "\s+")[0]
+            $pinned = (Get-Content .github/actions/dx/upstream.json -Raw | ConvertFrom-Json).revision
+            if ($revision -eq $pinned) {$changed = "false"}
+          }
+          "changed=$changed" >> $env:GITHUB_OUTPUT
+      - uses: actions/setup-python@v5
+        if: steps.upstream.outputs.changed == 'true'
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        if: steps.upstream.outputs.changed == 'true'
+        with:
+          node-version: "22"
+      - name: Prepare upstream and apply preview patches
+        if: steps.upstream.outputs.changed == 'true'
+        id: prepare
+        uses: ./.github/actions/dx
+        with:
+          reference: ${{ inputs.reference || 'main' }}
+      - uses: actions/setup-dotnet@v4
+        if: steps.upstream.outputs.changed == 'true'
+        with:
+          global-json-file: ${{ steps.prepare.outputs.globaljson }}
+      - name: Install build dependencies
+        if: steps.upstream.outputs.changed == 'true'
+        shell: pwsh
+        run: |
+          dotnet workload install wasm-tools --skip-manifest-update
+          if ($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+          python -m pip install pillow fonttools
+      - name: Check preview transport
+        if: steps.upstream.outputs.changed == 'true'
+        env:
+          CTRDX_SOURCE: ${{ steps.prepare.outputs.stage }}/source
+        run: |
+          node --test .github/actions/dx/tests/playtest.mjs
+          if ($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+          python .github/actions/dx/tests/update.py
+      - name: Build candidate
+        if: steps.upstream.outputs.changed == 'true'
+        shell: pwsh
+        env:
+          DX_STAGE: ${{ steps.prepare.outputs.stage }}
+        run: python .github/actions/dx/update.py --stage $env:DX_STAGE --build
+      - uses: actions/upload-artifact@v4
+        if: steps.upstream.outputs.changed == 'true'
+        with:
+          name: dxpreview-${{ steps.prepare.outputs.revision }}
+          path: ${{ steps.prepare.outputs.stage }}/publish/wwwroot
+          include-hidden-files: true
+          if-no-files-found: error
