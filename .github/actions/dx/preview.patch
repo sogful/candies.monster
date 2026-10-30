@@ -1,0 +1,1145 @@
+diff --git a/src/CutTheRopeDX.Browser/Browser/HostEventRing.cs b/src/CutTheRopeDX.Browser/Browser/HostEventRing.cs
+index 675e175..091314e 100644
+--- a/src/CutTheRopeDX.Browser/Browser/HostEventRing.cs
++++ b/src/CutTheRopeDX.Browser/Browser/HostEventRing.cs
+@@ -28,6 +28,7 @@ namespace CutTheRopeDX.Browser
+ 
+         /// <summary>Right arrow.</summary>
+         Right = 6,
++        mute = 7,
+     }
+ 
+     /// <summary>What a host event carries.</summary>
+diff --git a/src/CutTheRopeDX.Browser/Browser/InputRouter.cs b/src/CutTheRopeDX.Browser/Browser/InputRouter.cs
+index f646c3a..bfbde91 100644
+--- a/src/CutTheRopeDX.Browser/Browser/InputRouter.cs
++++ b/src/CutTheRopeDX.Browser/Browser/InputRouter.cs
+@@ -127,6 +127,7 @@ namespace CutTheRopeDX.Browser
+                 HostKey.Enter => KeyCode.Enter,
+                 HostKey.Left => KeyCode.Left,
+                 HostKey.Right => KeyCode.Right,
++                HostKey.mute => KeyCode.M,
+                 HostKey.None => null,
+                 _ => null,
+             };
+diff --git a/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs b/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
+index d27ce9e..ace414e 100644
+--- a/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
++++ b/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
+@@ -3,6 +3,7 @@ using System.Threading.Tasks;
+ 
+ using CutTheRopeDX.Framework.Diagnostics;
+ using CutTheRopeDX.GameMain;
++using CutTheRopeDX.Framework.Core;
+ 
+ using Microsoft.Extensions.Logging;
+ 
+@@ -36,6 +37,29 @@ namespace CutTheRopeDX.Browser
+             MenuTheme.Current = style;
+         }
+ 
++        public static void applypreview()
++        {
++            if (queryparam("nomusic") != null)
++            {
++                Preferences.SetBooleanForKey(false, "MUSIC_ON", true);
++            }
++            if (queryparam("jolly") != null)
++            {
++                SpecialEvents.setxmasoverride(true);
++            }
++            if (int.TryParse(queryparam("candy"), out int candy) && candy is >= 1 and <= 52)
++            {
++                CandySkinHelper.setindexoverride(candy - 1);
++            }
++            if (int.TryParse(queryparam("background"), out int background) && background >= 1 && background <= PackConfig.Packs.Count)
++            {
++                PackConfig.setbackgroundpackoverride(background - 1);
++            }
++        }
++
++        [JSImport("queryparam", "launch-options")]
++        private static partial string queryparam(string name);
++
+         [JSImport("menuFromQuery", "launch-options")]
+         private static partial string MenuFromQuery();
+     }
+diff --git a/src/CutTheRopeDX.Browser/Program.cs b/src/CutTheRopeDX.Browser/Program.cs
+index 2e5cd1e..54f5b78 100644
+--- a/src/CutTheRopeDX.Browser/Program.cs
++++ b/src/CutTheRopeDX.Browser/Program.cs
+@@ -109,6 +109,8 @@ CutTheRopeDX.GameBootstrap.Initialize(
+     LanguageHelper.Current,
+     devicePixelRatio);
+ 
++LaunchOptions.applypreview();
++
+ GameLoop.Surface = surface;
+ GameLoop.Host = host;
+ InputRouter.Host = host;
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/audio.js b/src/CutTheRopeDX.Browser/wwwroot/audio.js
+index fe621d0..f175868 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/audio.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/audio.js
+@@ -2,6 +2,9 @@
+ // voice gets an integer handle the managed side uses to stop it or change its volume.
+ 
+ let context = null;
++let unlocked = false;
++let mastergain = null;
++const fadeduration = 0.5;
+ const buffers = new Map();
+ const decodes = new Map();
+ const voices = new Map();
+@@ -12,6 +15,9 @@ function ensureContext() {
+         context = new (
+             globalThis.AudioContext || globalThis.webkitAudioContext
+         )();
++        mastergain = context.createGain();
++        mastergain.gain.value = 0;
++        mastergain.connect(context.destination);
+     }
+     return context;
+ }
+@@ -67,7 +73,7 @@ function startVoice(handle, buffer) {
+     source.buffer = buffer;
+     source.loop = voice.loop;
+     gain.gain.value = voice.volume;
+-    source.connect(gain).connect(ctx.destination);
++    source.connect(gain).connect(mastergain);
+ 
+     source.onended = () => {
+         if (voices.get(handle)?.source === source) {
+@@ -207,6 +213,12 @@ function resumeIfSuspended() {
+ }
+ 
+ function resumeFromGesture() {
++    if (!unlocked) {
++        unlocked = true;
++        const ctx = ensureContext();
++        mastergain.gain.setValueAtTime(0, ctx.currentTime);
++        mastergain.gain.linearRampToValueAtTime(1, ctx.currentTime + fadeduration);
++    }
+     if (context !== null && context.state === "running") {
+         globalThis.removeEventListener("pointerdown", resumeFromGesture);
+         globalThis.removeEventListener("keydown", resumeFromGesture);
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/coi-sw.js b/src/CutTheRopeDX.Browser/wwwroot/coi-sw.js
+index 2cda1fd..d5c4195 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/coi-sw.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/coi-sw.js
+@@ -1,39 +1,12 @@
+-// Service worker that adds the cross-origin isolation headers a static host
+-// cannot send.
+-//
+-// From https://github.com/yell0wsuit/coi-sw. Licensed under the MIT License;
+-// see coi-sw.LICENSE.txt. The published build replaces this development worker
+-// with the cache-aware worker in service-worker.published.js.
+-
+-self.addEventListener("install", () => {
+-    self.skipWaiting();
+-});
+-
++self.addEventListener("install", () => self.skipWaiting());
+ self.addEventListener("activate", (event) => {
+-    event.waitUntil(self.clients.claim());
+-});
+-
+-self.addEventListener("fetch", (event) => {
+-    const request = event.request;
+-    if (request.cache === "only-if-cached" && request.mode !== "same-origin") {
+-        return;
+-    }
+-
+-    event.respondWith(
+-        fetch(request).then((response) => {
+-            if (response.status === 0) {
+-                return response;
+-            }
+-
+-            const headers = new Headers(response.headers);
+-            headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+-            headers.set("Cross-Origin-Opener-Policy", "same-origin");
+-            headers.set("Cross-Origin-Resource-Policy", "same-origin");
+-            return new Response(response.body, {
+-                status: response.status,
+-                statusText: response.statusText,
+-                headers,
+-            });
+-        }),
+-    );
++    event.waitUntil((async () => {
++        const registration = self.registration;
++        const scope = registration.scope;
++        await registration.unregister();
++        const clients = await self.clients.matchAll({type: "window"});
++        for (const client of clients) {
++            if (client.url.startsWith(scope)) await client.navigate(client.url);
++        }
++    })());
+ });
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/cursor.js b/src/CutTheRopeDX.Browser/wwwroot/cursor.js
+index 176f532..26f941f 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/cursor.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/cursor.js
+@@ -7,7 +7,7 @@
+ // CSS pixels per art pixel, matching SdlCursorService.BaseScale. The size is fixed rather than
+ // following the canvas: a cursor shrunk with the art turns unreadable in a small window. The
+ // art itself is authored at twice this, so it doubles as the high-density image.
+-const BASE_SCALE = 0.5;
++const BASE_SCALE = 0.4;
+ 
+ const canvas = document.getElementById("game");
+ // The cutscene overlay covers the canvas, so a cursor set only there would be invisible
+@@ -97,3 +97,9 @@ export function setPressed(value) {
+     pressed = value;
+     apply();
+ }
++
++/*//////////////////////////////////////////////////////////////////////*/
++
++for (const surface of surfaces) {
++    surface.addEventListener("contextmenu", (event) => event.preventDefault());
++}
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/host-events.js b/src/CutTheRopeDX.Browser/wwwroot/host-events.js
+index 0f7420a..bde2923 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/host-events.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/host-events.js
+@@ -29,6 +29,9 @@ const KEY_IDS = {
+     // Q and R stand in for Escape and F5: a browser keeps both of those for
+     // itself, and neither can be reliably taken back from it.
+     KeyQ: 1,
++    Escape: 1,
++    KeyP: 1,
++    KeyM: 7,
+     KeyR: 2,
+     Space: 3,
+     Enter: 4,
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/index.html b/src/CutTheRopeDX.Browser/wwwroot/index.html
+index 6facf5d..6171457 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/index.html
++++ b/src/CutTheRopeDX.Browser/wwwroot/index.html
+@@ -3,7 +3,7 @@
+     <head>
+         <meta charset="utf-8" />
+         <script src="./console-capture.js"></script>
+-        <script src="./coi.js"></script>
++        <script>globalThis.ctrdxIsolationReady = Promise.resolve(false);</script>
+ 
+         <!-- Resolves to the directory this page is served from, so the app works from a domain
+              root and from a GitHub Pages project subpath alike. It lives here rather than being
+@@ -105,7 +105,7 @@
+             body {
+                 height: 100%;
+                 margin: 0;
+-                background: #000;
++                background: transparent;
+                 overflow: hidden;
+                 -webkit-user-select: none;
+                 user-select: none;
+@@ -171,7 +171,7 @@
+                     calc(16px + env(safe-area-inset-right, 0px))
+                     calc(24px + env(safe-area-inset-bottom, 0px))
+                     calc(16px + env(safe-area-inset-left, 0px));
+-                background: #e2e2e2 url("./splash/tilebg.webp") repeat;
++                background: transparent;
+                 color: var(--ink);
+                 font-family:
+                     "GoodDog New",
+@@ -428,11 +428,12 @@
+                 cursor: pointer;
+             }
+         </style>
++        <link rel="stylesheet" href="./preview.css">
+     </head>
+     <body>
+-        <canvas id="game"></canvas>
+-        <video id="movie" playsinline hidden></video>
+-        <div id="splash">
++        <canvas class="previewgame" id="game"></canvas>
++        <video class="previewmovie" id="movie" playsinline hidden></video>
++        <div class="previewloader" id="splash"><div class="previewart"><div class="previewtrack"><div class="previewprogress"></div></div></div>
+             <canvas id="splash-bubbles" aria-hidden="true"></canvas>
+             <img
+                 id="splash-logo"
+@@ -488,8 +489,8 @@
+                 <button id="update-now">Update</button>
+             </div>
+         </dialog>
+-        <script type="module" src="./pwa.js"></script>
+-        <script type="module" src="./splash-bubbles.js"></script>
++
++
+         <script type="module">
+             // Loading has two stretches with no reporting of their own — compiling what was
+             // downloaded, and decoding the audio — so a slow device and a wedged one look alike
+@@ -516,7 +517,9 @@
+             globalThis.ctrdxReady = () => {
+                 globalThis.ctrdxStopHint();
+                 bubble.hidden = true;
+-                start.hidden = false;
++                start.hidden = true;
++                globalThis.ctrdxStart();
++                splash.classList.add("hidden");
+             };
+             // The failure seam lives here, not in main.js, because main.js reaches its own
+             // first statement only after its static imports have been fetched and evaluated.
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/launch-options.js b/src/CutTheRopeDX.Browser/wwwroot/launch-options.js
+index 6e4c7e8..481bad3 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/launch-options.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/launch-options.js
+@@ -4,3 +4,9 @@
+ export function menuFromQuery() {
+     return new URLSearchParams(globalThis.location.search).get("menu") ?? "";
+ }
++
++/*//////////////////////////////////////////////////////////////////////*/
++
++export function queryparam(name) {
++    return new URLSearchParams(globalThis.location.search).get(name);
++}
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/loading-progress.js b/src/CutTheRopeDX.Browser/wwwroot/loading-progress.js
+index f990653..6a51905 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/loading-progress.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/loading-progress.js
+@@ -1,13 +1,21 @@
+-// Two short lines, to fit the splash bubble: the stage, and how far into it the count is.
+-// The stages run one after another, so naming each is what tells a restarted count from a
+-// stalled one.
+-export function formatLoadingProgress(type, loaded, total) {
+-    return `Loading ${type}:\n${loaded} of ${total}`;
+-}
++const stagebands = [
++    { type: "runtime", from: 0, to: 30 },
++    { type: "metadata", from: 30, to: 35 },
++    { type: "images", from: 35, to: 75 },
++    { type: "sounds", from: 75, to: 95 },
++];
++const fallbackband = { from: 95, to: 100 };
++
++let highwatermark = 0;
+ 
+ export function setLoadingProgress(type, loaded, total) {
+-    const progress = document.getElementById("splash-progress");
+-    if (progress !== null) {
+-        progress.textContent = formatLoadingProgress(type, loaded, total);
++    const band = stagebands.find((b) => b.type === type) ?? fallbackband;
++    const stagefraction = total > 0 ? loaded / total : 0;
++    const overall = band.from + stagefraction * (band.to - band.from);
++    highwatermark = Math.max(highwatermark, overall);
++
++    const bar = document.querySelector(".previewprogress");
++    if (bar !== null) {
++        bar.style.width = `${highwatermark}%`;
+     }
+ }
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/main.js b/src/CutTheRopeDX.Browser/wwwroot/main.js
+index a05c64d..a3d6f76 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/main.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/main.js
+@@ -23,7 +23,7 @@ if (requested.raw !== null && requested.mode === null) {
+         `ctrdx: ignoring ?mode=${requested.raw}; expected single or multi`,
+     );
+ }
+-const choice = selectRuntime(probeEnvironment(), requested.mode);
++const choice = selectRuntime(probeEnvironment(), "single");
+ if (requested.mode !== null && requested.mode !== choice.mode) {
+     console.warn(
+         `ctrdx: ?mode=${requested.raw} cannot run here; using ${choice.mode}`,
+@@ -159,7 +159,7 @@ globalThis.addEventListener("keyup", (event) => sendKey(event, false));
+ // behind another stays visible and keeps ticking at full speed.
+ const syncActive = () => {
+     const visible = document.visibilityState === "visible";
+-    hostEvents.active(visible && document.hasFocus(), !visible);
++    hostEvents.active(visible, !visible);
+ };
+ globalThis.addEventListener("focus", syncActive);
+ globalThis.addEventListener("blur", syncActive);
+@@ -184,3 +184,12 @@ globalThis.ctrdxReady?.();
+ // Last, so the error boundary still covers ctrdxReady itself. Boot is not over until the
+ // thing that announces boot is over has run.
+ globalThis.ctrdxBootComplete?.();
++
++/*//////////////////////////////////////////////////////////////////////*/
++
++globalThis.addEventListener("pointermove", (event) => {
++    if (globalThis.parent === globalThis) return;
++    const near = event.clientX <= 140 || event.clientX >= innerWidth - 140
++        || event.clientY <= 140 || event.clientY >= innerHeight - 140;
++    globalThis.parent.postMessage({type: "ctrdx-edge-proximity", near}, location.origin);
++}, {passive: true});
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/playtest.js b/src/CutTheRopeDX.Browser/wwwroot/playtest.js
+index 2728635..3ca5130 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/playtest.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/playtest.js
+@@ -20,7 +20,11 @@ export function open() {
+     if (channel) {
+         return;
+     }
+-    channel = new BroadcastChannel(CHANNEL);
++    try {
++        channel = new BroadcastChannel(CHANNEL);
++    } catch {
++        return;
++    }
+     channel.onmessage = (event) => {
+         // Everything on this channel is a JSON string; anything else is not ours.
+         if (typeof event.data === "string") {
+@@ -64,5 +68,9 @@ export function drain() {
+  * navigated to themselves ignores this, which is why the caller falls back to doing nothing.
+  */
+ export function closeWindow() {
++    if (globalThis.parent !== globalThis) {
++        globalThis.parent.postMessage({type: "ctrdx-exit", nonce: nonceFromQuery()}, globalThis.location.origin);
++        return;
++    }
+     globalThis.close();
+ }
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/runtime-mode.js b/src/CutTheRopeDX.Browser/wwwroot/runtime-mode.js
+index 6628ead..8ff53c9 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/runtime-mode.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/runtime-mode.js
+@@ -18,7 +18,7 @@
+ export const THREADED_RUNTIME = "./_framework/dotnet.js";
+ 
+ /** The single-threaded runtime, published beside it. */
+-export const SINGLE_RUNTIME = "./_framework-single/dotnet.js";
++export const SINGLE_RUNTIME = "./_framework/dotnet.js";
+ 
+ const NO_GRAPHICS =
+     "This browser cannot draw the 3D graphics the game needs. " +
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/service-worker.js b/src/CutTheRopeDX.Browser/wwwroot/service-worker.js
+index bf3667f..d5c4195 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/service-worker.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/service-worker.js
+@@ -1,8 +1,12 @@
+-// Migration bridge for clients whose existing registration still checks this
+-// URL. New documents register coi-sw.js directly, but removing this script would
+-// strand an old worker behind its cached index forever.
+-importScripts("./coi-sw.js");
+-
+-self.addEventListener("install", () => {
+-    self.skipWaiting();
++self.addEventListener("install", () => self.skipWaiting());
++self.addEventListener("activate", (event) => {
++    event.waitUntil((async () => {
++        const registration = self.registration;
++        const scope = registration.scope;
++        await registration.unregister();
++        const clients = await self.clients.matchAll({type: "window"});
++        for (const client of clients) {
++            if (client.url.startsWith(scope)) await client.navigate(client.url);
++        }
++    })());
+ });
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/service-worker.published.js b/src/CutTheRopeDX.Browser/wwwroot/service-worker.published.js
+index fbb1327..d5c4195 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/service-worker.published.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/service-worker.published.js
+@@ -1,419 +1,12 @@
+-// Offline cache for the published game. Cross-origin isolation handling is
+-// adapted from https://github.com/yell0wsuit/coi-sw under the MIT License; see
+-// coi-sw.LICENSE.txt.
+-//
+-// service-worker-assets.js is generated at publish by the static web assets SDK: every asset
+-// with its integrity hash, plus a version derived from those hashes.
+-//
+-// Storage is split in two, because the runtime and the game content age differently.
+-//
+-//   Shell cache   — the .NET runtime and the page shell, named after the manifest version and
+-//                   replaced wholesale when it changes. The runtime files are fingerprinted, so
+-//                   a new build requests new URLs for those regardless; index.html and the loose
+-//                   .js files are not, and the version in the cache name is what retires them.
+-//                   Two runtimes are published and a visit runs one, so the framework trees are
+-//                   filled by the fetch path as the page asks for them rather than at install.
+-//   Content cache — the ~36MB under content/, kept across versions. These URLs are stable, so
+-//                   a cached entry stays valid until its bytes actually change. Each entry
+-//                   records the manifest hash it was stored from, and activation drops only
+-//                   the entries whose hash no longer matches. A publish that touches nothing
+-//                   but code therefore re-downloads nothing here.
+-//
+-// The worker and the web manifest are deliberately absent from both. The browser revalidates
+-// this file on every navigation, which is the only thing that notices a new deployment;
+-// serving it from a cache it controls would leave it unable to replace itself.
+-
+-self.importScripts("./service-worker-assets.js");
+-
+-const cachePrefix = "ctrdx-";
+-const shellCacheName = `${cachePrefix}shell-${self.assetsManifest.version}`;
+-const contentCacheName = `${cachePrefix}content`;
+-
+-// Records on each cached content entry the manifest hash it was stored from, so a later
+-// activation can tell a still-current file from a changed one without rehashing 36MB.
+-const hashHeader = "x-ctrdx-asset-hash";
+-
+-// Relative to the worker, so the app works from a domain root or a project subpath alike.
+-const scopeUrl = new URL("./", self.location.href);
+-
+-// What the shell cache may hold. Content is not here: the game requests all of it during its
+-// own loading screen, and precaching would download it a second time in parallel with that.
+-const shellExclude = [
+-    /^content\//,
+-    /^service-worker(-assets)?\.js$/,
+-    /^coi(-sw)?\.js$/,
+-    /^manifest\.webmanifest$/,
+-    // Install-dialog artwork. The browser fetches these when offering to install the game; the
+-    // game itself never asks for them, so caching most of a megabyte of them offline buys
+-    // nothing.
+-    /^screenshots\//,
+-    /\.pdb$/,
+-    /\.map$/,
+-];
+-
+-const shellAssets = self.assetsManifest.assets.filter(
+-    (asset) => !shellExclude.some((pattern) => pattern.test(asset.url)),
+-);
+-const shellHashes = new Map(
+-    shellAssets.map((asset) => [new URL(asset.url, scopeUrl).href, asset.hash]),
+-);
+-
+-// Both runtimes are published and a visit runs exactly one of them - which one is settled by
+-// runtime-mode.js, in the page, after this worker has installed. Precaching the pair would
+-// download two whole runtimes to use half of that, so they are left to the fetch path, which
+-// stores what it serves: the page asks for its runtime immediately, so the offline copy is
+-// complete by the time the first boot is.
+-const runtimeTree = /^_framework(-single)?\//;
+-const installAssets = shellAssets.filter(
+-    (asset) => !runtimeTree.test(asset.url),
+-);
+-const contentHashes = new Map(
+-    self.assetsManifest.assets
+-        .filter((asset) => asset.url.startsWith("content/"))
+-        .map((asset) => [new URL(asset.url, scopeUrl).href, asset.hash]),
+-);
+-
+-self.addEventListener("install", (event) => event.waitUntil(onInstall()));
+-self.addEventListener("activate", (event) => event.waitUntil(onActivate()));
+-self.addEventListener("fetch", (event) => {
+-    const request = event.request;
+-    if (request.cache === "only-if-cached" && request.mode !== "same-origin") {
+-        return;
+-    }
+-    event.respondWith(withIsolationHeaders(onFetch(event)));
++self.addEventListener("install", () => self.skipWaiting());
++self.addEventListener("activate", (event) => {
++    event.waitUntil((async () => {
++        const registration = self.registration;
++        const scope = registration.scope;
++        await registration.unregister();
++        const clients = await self.clients.matchAll({type: "window"});
++        for (const client of clients) {
++            if (client.url.startsWith(scope)) await client.navigate(client.url);
++        }
++    })());
+ });
+-
+-// The page asks for this once the player accepts the update prompt. Until then a new worker
+-// waits, so a version never changes underneath a session in progress.
+-self.addEventListener("message", (event) => {
+-    if (event.data?.type === "skip-waiting") {
+-        self.skipWaiting();
+-    }
+-});
+-
+-// The shell is dozens of runtime files. cache.addAll fetches them all at once; so would a
+-// plain map over cache.add. A bounded pool keeps the connection saturated without asking a
+-// phone to hold that many response bodies in flight, and matches the concurrency the content
+-// preload already runs at.
+-const SHELL_CONCURRENCY = 6;
+-const RETRY_DELAY_MS = 250;
+-
+-/**
+- * Fetches and stores one shell asset, retrying once after a short pause.
+- *
+- * Every asset here is needed before anything can run, so there is nothing to be tolerant
+- * about - a missing one has to fail the install. The retry buys the difference between a
+- * connection that dropped a single request and a build that is genuinely unreachable: without
+- * it, one stalled request costs the visit its service worker, and with no service worker there
+- * are no COOP and COEP headers and the game refuses to start at all.
+- *
+- * @param {Cache} cache
+- * @param {{url: string, hash: string}} asset
+- */
+-async function addShellAsset(cache, asset) {
+-    const request = () =>
+-        new Request(new URL(asset.url, scopeUrl), {
+-            integrity: asset.hash,
+-            cache: "no-cache",
+-        });
+-    try {
+-        await cache.add(request());
+-    } catch {
+-        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+-        // A fresh Request, because the first one has been consumed by the failed attempt.
+-        await cache.add(request());
+-    }
+-}
+-
+-async function onInstall() {
+-    const cache = await caches.open(shellCacheName);
+-    const failed = [];
+-    let next = 0;
+-
+-    // Each worker takes the next asset rather than a fixed slice, so a slow file does not
+-    // leave its share of the list waiting behind it.
+-    async function run() {
+-        for (let index = next++; index < installAssets.length; index = next++) {
+-            try {
+-                await addShellAsset(cache, installAssets[index]);
+-            } catch {
+-                failed.push(installAssets[index].url);
+-            }
+-        }
+-    }
+-
+-    await Promise.all(
+-        Array.from(
+-            { length: Math.min(SHELL_CONCURRENCY, installAssets.length) },
+-            run,
+-        ),
+-    );
+-
+-    if (failed.length !== 0) {
+-        // cache.addAll is one atomic batch; a sequence of cache.add calls is not, and the
+-        // successful ones have already been written. This worker will not activate, so the
+-        // activation cleanup that drops stale caches never runs, and the half-filled cache
+-        // would sit in the origin's quota until some later version activated. Dropping it
+-        // here makes the install all-or-nothing in storage as well as in outcome.
+-        await caches.delete(shellCacheName);
+-
+-        // addAll reports only that something failed, never what, which leaves a failed
+-        // install - and so a game that will not start - with nothing to go on.
+-        throw new Error(`could not cache shell assets: ${failed.join(", ")}`);
+-    }
+-}
+-
+-async function onActivate() {
+-    const keys = await caches.keys();
+-    await Promise.all(
+-        keys
+-            .filter(
+-                (key) =>
+-                    key.startsWith(cachePrefix) &&
+-                    key !== shellCacheName &&
+-                    key !== contentCacheName,
+-            )
+-            .map((key) => caches.delete(key)),
+-    );
+-
+-    await pruneChangedContent();
+-
+-    // Claim the page that registered this worker so its content requests are cached during the
+-    // very first visit rather than only from the second one onwards.
+-    await self.clients.claim();
+-}
+-
+-/**
+- * Drops content entries this publish changed or no longer ships, keeping the rest.
+- */
+-async function pruneChangedContent() {
+-    const cache = await caches.open(contentCacheName);
+-    const requests = await cache.keys();
+-    await Promise.all(
+-        requests.map(async (request) => {
+-            const expected = contentHashes.get(request.url);
+-            const cached = await cache.match(request);
+-            // An entry with no recorded hash predates this scheme, so its bytes cannot be
+-            // vouched for and it goes too.
+-            if (
+-                expected === undefined ||
+-                cached?.headers.get(hashHeader) !== expected
+-            ) {
+-                await cache.delete(request);
+-            }
+-        }),
+-    );
+-}
+-
+-async function onFetch(event) {
+-    const request = event.request;
+-    if (request.method !== "GET") {
+-        return fetch(request);
+-    }
+-
+-    // Assets answer for themselves even when they are what the address bar was pointed at, so
+-    // opening one directly still shows that file rather than the page.
+-    const contentHash = contentHashes.get(request.url);
+-    if (contentHash !== undefined) {
+-        return serveContent(request, contentHash);
+-    }
+-
+-    const shellHash = shellHashes.get(request.url);
+-    if (shellHash !== undefined) {
+-        return serveShell(request, shellHash);
+-    }
+-
+-    if (request.mode === "navigate") {
+-        // index.html carries <base href="./">, which resolves against the URL it was navigated
+-        // to rather than the one it is stored at. Serving it under a deeper path would point
+-        // every relative asset at a directory that does not exist, so anything below the scope
+-        // root goes back to the start URL instead of being answered with a shell that cannot
+-        // load. There are no routes here for such a URL to have meant.
+-        if (new URL(request.url).pathname !== scopeUrl.pathname) {
+-            return Response.redirect(scopeUrl.href, 302);
+-        }
+-        const cached = await caches.match(new URL("index.html", scopeUrl));
+-        return cached ?? fetch(request);
+-    }
+-
+-    return fetch(request);
+-}
+-
+-/** Adds the document policy required by shared WebAssembly memory to every response. */
+-async function withIsolationHeaders(responseResult) {
+-    const response = await responseResult;
+-    if (response.status === 0) {
+-        return response;
+-    }
+-    const headers = new Headers(response.headers);
+-    headers.set("Cross-Origin-Opener-Policy", "same-origin");
+-    headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+-    headers.set("Cross-Origin-Resource-Policy", "same-origin");
+-    return new Response(response.body, {
+-        status: response.status,
+-        statusText: response.statusText,
+-        headers,
+-    });
+-}
+-
+-/**
+- * Serves a content asset, filling the long-lived content cache on the way through.
+- *
+- * @param {Request} request
+- * @param {string} hash Manifest hash to record against the stored entry.
+- */
+-async function serveContent(request, hash) {
+-    const cache = await caches.open(contentCacheName);
+-    let response = await cache.match(request);
+-    if (!response) {
+-        // A range response can be stored in neither Cache Storage nor an integrity check, both
+-        // of which want a whole body. The full asset is fetched once and every later range is
+-        // served out of those same cached bytes, including offline.
+-        const fetchRequest = requestWithoutRange(request);
+-        const { response: fetched, verified } = await fetchVerified(
+-            fetchRequest,
+-            hash,
+-        );
+-        response = fetched;
+-        if (verified && response.ok && response.status === 200) {
+-            await cache.put(fetchRequest, withHash(response.clone(), hash));
+-        }
+-    }
+-
+-    const range = request.headers.get("range");
+-    if (range && response.ok && response.status === 200) {
+-        return serveByteRange(response, range);
+-    }
+-    return response;
+-}
+-
+-/**
+- * Fetches an asset and reports whether it is the one this publish expects.
+- *
+- * Content URLs are stable across versions, so a max-age still counting down from the previous
+- * publish would otherwise answer with the previous publish's bytes. "no-cache" revalidates with
+- * the origin instead of trusting that copy, and the integrity check is what keeps bytes that
+- * are stale anyway from being stored under the current hash — an entry no later activation
+- * could tell apart from a genuinely current one, which is how a stale asset becomes permanent.
+- *
+- * @param {Request} request
+- * @param {string} hash Manifest hash the response has to match.
+- * @returns {Promise<{response: Response, verified: boolean}>}
+- */
+-async function fetchVerified(request, hash) {
+-    try {
+-        const response = await fetch(
+-            new Request(request, { integrity: hash, cache: "no-cache" }),
+-        );
+-        return { response, verified: true };
+-    } catch {
+-        // Either the network is gone, in which case the retry fails the same way and the
+-        // caller sees the rejection it would have seen anyway, or the origin is still mid
+-        // rollout. Serving unverified bytes uncached keeps the game playable now and leaves
+-        // the next load free to pick up the real ones.
+-        return { response: await fetch(request), verified: false };
+-    }
+-}
+-
+-/**
+- * Copies a request without its Range header, if it carries one, so the network answers with a
+- * whole cacheable 200.
+- *
+- * @param {Request} request
+- */
+-function requestWithoutRange(request) {
+-    const headers = new Headers(request.headers);
+-    headers.delete("range");
+-    return new Request(request, { headers });
+-}
+-
+-/**
+- * Returns the requested slice of a full response as a media-compatible 206 response.
+- *
+- * @param {Response} response
+- * @param {string} rangeHeader
+- */
+-async function serveByteRange(response, rangeHeader) {
+-    const bytes = await response.arrayBuffer();
+-    const length = bytes.byteLength;
+-    const match = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader);
+-    if (!match) {
+-        return rangeNotSatisfiable(length);
+-    }
+-
+-    let start = match[1] === "" ? undefined : Number(match[1]);
+-    let end = match[2] === "" ? undefined : Number(match[2]);
+-    if (start === undefined) {
+-        const suffixLength = end;
+-        if (!suffixLength) {
+-            return rangeNotSatisfiable(length);
+-        }
+-        start = Math.max(0, length - suffixLength);
+-        end = length - 1;
+-    } else {
+-        end = end === undefined ? length - 1 : Math.min(end, length - 1);
+-        if (start >= length || start > end) {
+-            return rangeNotSatisfiable(length);
+-        }
+-    }
+-
+-    const headers = new Headers(response.headers);
+-    headers.set("accept-ranges", "bytes");
+-    headers.set("content-length", String(end - start + 1));
+-    headers.set("content-range", `bytes ${start}-${end}/${length}`);
+-    return new Response(bytes.slice(start, end + 1), {
+-        status: 206,
+-        statusText: "Partial Content",
+-        headers,
+-    });
+-}
+-
+-/** Returns a 416 response describing the available byte length. */
+-function rangeNotSatisfiable(length) {
+-    return new Response(null, {
+-        status: 416,
+-        statusText: "Range Not Satisfiable",
+-        headers: {
+-            "accept-ranges": "bytes",
+-            "content-range": `bytes */${length}`,
+-        },
+-    });
+-}
+-
+-/**
+- * Serves a shell asset, storing it if it was not already held. The runtime trees arrive
+- * this way by design, and everything else covers a failed install, which is all-or-nothing
+- * and would otherwise leave the cache empty for good.
+- *
+- * @param {Request} request
+- * @param {string} hash Manifest hash the response has to match.
+- */
+-async function serveShell(request, hash) {
+-    const cache = await caches.open(shellCacheName);
+-    const cached = await cache.match(request);
+-    if (cached) {
+-        return cached;
+-    }
+-
+-    const { response, verified } = await fetchVerified(request, hash);
+-    if (verified && response.ok && response.status === 200) {
+-        await cache.put(request, response.clone());
+-    }
+-    return response;
+-}
+-
+-/**
+- * Copies a response, tagging it with the manifest hash its bytes came from.
+- *
+- * @param {Response} response
+- * @param {string} hash
+- */
+-function withHash(response, hash) {
+-    const headers = new Headers(response.headers);
+-    headers.set(hashHeader, hash);
+-    return new Response(response.body, {
+-        status: response.status,
+-        statusText: response.statusText,
+-        headers,
+-    });
+-}
+diff --git a/src/CutTheRopeDX.Core/Framework/Core/KeyCode.cs b/src/CutTheRopeDX.Core/Framework/Core/KeyCode.cs
+index f245964..6cadd39 100644
+--- a/src/CutTheRopeDX.Core/Framework/Core/KeyCode.cs
++++ b/src/CutTheRopeDX.Core/Framework/Core/KeyCode.cs
+@@ -23,6 +23,8 @@ namespace CutTheRopeDX.Framework.Core
+         Right = 39,
+ 
+         /// <summary>F5. XNA <c>Keys.F5</c> = 116.</summary>
+-        F5 = 116
++        F5 = 116,
++
++        M = 77
+     }
+ }
+diff --git a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs b/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
+index 597afdd..68750f7 100644
+--- a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
++++ b/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
+@@ -5,14 +5,21 @@ namespace CutTheRopeDX.GameMain
+     /// </summary>
+     internal static class CandySkinHelper
+     {
++        private static int? indexoverride;
++
++        public static void setindexoverride(int? skinindex)
++        {
++            indexoverride = skinindex;
++        }
++
+         /// <summary>
+         /// Gets the candy resource name for a given skin index (0-50).
+         /// </summary>
+-        /// <param name="skinIndex">The candy skin index (0 for candy_01, 1 for candy_02, etc.)</param>
++        /// <param name="skinindex">The candy skin index (0 for candy_01, 1 for candy_02, etc.)</param>
+         /// <returns>The resource name for the candy skin</returns>
+-        public static string GetCandyResource(int skinIndex)
++        public static string GetCandyResource(int skinindex)
+         {
+-            return skinIndex switch
++            return (indexoverride ?? skinindex) switch
+             {
+                 0 => Resources.Img.ObjCandy01New,
+                 1 => Resources.Img.ObjCandy02,
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameController.cs b/src/CutTheRopeDX.Core/GameMain/GameController.cs
+index bc8a2d7..fb4a7a4 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameController.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameController.cs
+@@ -26,6 +26,12 @@ namespace CutTheRopeDX.GameMain
+             {
+                 OnButtonPressed(GameControllerButtonId.Restart);
+             }
++            if (PlatformServices.Host?.IsKeyPressed(KeyCode.M) == true)
++            {
++                bool muteall = Preferences.GetBooleanForKey("MUSIC_ON") || Preferences.GetBooleanForKey("SOUND_ON");
++                setmusicenabled(!muteall);
++                setsoundenabled(!muteall);
++            }
+             base.Update(t);
+ 
+             GameScene gameScene = (GameScene)GetView(0)?.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
+@@ -33,6 +39,10 @@ namespace CutTheRopeDX.GameMain
+             {
+                 gameScene.UpdatePointerGestureVisuals(t);
+             }
++            if (overlayMode == GameControllerOverlayMode.Gameplay && PlatformServices.Host?.IsKeyPressed(KeyCode.Space) == true)
++            {
++                gameScene?.OnButtonPressed(GameSceneButtonId.GravityToggle);
++            }
+ 
+             if (levelWatcher != null && levelWatcher.TryConsumeChange(DateTime.UtcNow))
+             {
+@@ -187,17 +197,17 @@ namespace CutTheRopeDX.GameMain
+                 Button levelSelectButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("LEVEL_SELECT"), GameControllerButtonId.LevelSelect, this);
+                 _ = vBox.AddChild(levelSelectButton);
+             }
+-            string exitLabel = CustomLevelSession.IsActive
+-                ? PlatformServices.Host?.CustomLevelExitLabelKey ?? "QUIT_BUTTON"
+-                : "MAIN_MENU";
+-            Button exitButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString(exitLabel), GameControllerButtonId.MainMenu, this);
+-            _ = vBox.AddChild(exitButton);
++            if (!CustomLevelSession.IsActive)
++            {
++                Button exitbutton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("MAIN_MENU"), GameControllerButtonId.MainMenu, this);
++                _ = vBox.AddChild(exitbutton);
++            }
+             vBox.anchor = vBox.parentAnchor = 10;
+-            ToggleButton musicToggle = MenuController.CreateAudioButtonWithQuadDelegateIDiconOffset(3, this, GameControllerButtonId.ToggleMusic);
+-            ToggleButton soundToggle = MenuController.CreateAudioButtonWithQuadDelegateIDiconOffset(2, this, GameControllerButtonId.ToggleSound);
+-            HBox hBox = new HBox().InitWithOffsetAlignHeight(-10f, 16, musicToggle.height);
+-            _ = hBox.AddChild(soundToggle);
+-            _ = hBox.AddChild(musicToggle);
++            musictoggle = MenuController.CreateAudioButtonWithQuadDelegateIDiconOffset(3, this, GameControllerButtonId.ToggleMusic);
++            soundtoggle = MenuController.CreateAudioButtonWithQuadDelegateIDiconOffset(2, this, GameControllerButtonId.ToggleSound);
++            HBox hBox = new HBox().InitWithOffsetAlignHeight(-10f, 16, musictoggle.height);
++            _ = hBox.AddChild(soundtoggle);
++            _ = hBox.AddChild(musictoggle);
+             if (MenuTheme.IsExperiments)
+             {
+                 ToggleButton voiceToggle = MenuController.CreateExperimentsVoiceToggle(this, GameControllerButtonId.ToggleVoice);
+@@ -213,11 +223,11 @@ namespace CutTheRopeDX.GameMain
+             bool musicOn = Preferences.GetBooleanForKey("MUSIC_ON");
+             if (!soundOn)
+             {
+-                soundToggle.Toggle();
++                soundtoggle.Toggle();
+             }
+             if (!musicOn)
+             {
+-                musicToggle.Toggle();
++                musictoggle.Toggle();
+             }
+             _ = gameView.AddChildwithID(image, 3);
+ 
+@@ -367,6 +377,17 @@ namespace CutTheRopeDX.GameMain
+             View view = GetView(0);
+             GameScene gameScene = (GameScene)view.GetChild(0);
+             BoxOpenClose boxOpenClose = (BoxOpenClose)view.GetChild(4);
++            if (CustomLevelSession.IsActive)
++            {
++                if (overlayMode != GameControllerOverlayMode.Gameplay)
++                {
++                    LevelStart();
++                }
++                gameScene.animateRestartDim = false;
++                gameScene.Reload();
++                EnterOverlayMode(GameControllerOverlayMode.Gameplay);
++                return;
++            }
+             Image star1 = (Image)boxOpenClose.result.GetChildWithName("star1");
+             Image star2 = (Image)boxOpenClose.result.GetChildWithName("star2");
+             Image star3 = (Image)boxOpenClose.result.GetChildWithName("star3");
+@@ -596,33 +617,11 @@ namespace CutTheRopeDX.GameMain
+                     ExperimentsVoice.Toggle();
+                     return;
+                 case var id when id == GameControllerButtonId.ToggleMusic:
+-                    {
+-                        bool musicOn = Preferences.GetBooleanForKey("MUSIC_ON");
+-                        Preferences.SetBooleanForKey(!musicOn, "MUSIC_ON", true);
+-                        if (musicOn)
+-                        {
+-                            RootController.LogEvent("IM_MUSIC_OFF_PRESSED");
+-                            SoundMgr.StopMusic();
+-                            return;
+-                        }
+-                        RootController.LogEvent("IM_MUSIC_ON_PRESSED");
+-                        MusicTracks.PlayGameMusic(Application.SharedRootController().Pack);
+-                        return;
+-                    }
++                    setmusicenabled(!Preferences.GetBooleanForKey("MUSIC_ON"));
++                    return;
+                 case var id when id == GameControllerButtonId.ToggleSound:
+-                    {
+-                        bool soundOn = Preferences.GetBooleanForKey("SOUND_ON");
+-                        Preferences.SetBooleanForKey(!soundOn, "SOUND_ON", true);
+-                        if (soundOn)
+-                        {
+-                            SoundMgr.SuspendSoundEffects();
+-                            RootController.LogEvent("IM_SOUND_OFF_PRESSED");
+-                            return;
+-                        }
+-                        SoundMgr.RestoreSoundEffects();
+-                        RootController.LogEvent("IM_SOUND_ON_PRESSED");
+-                        return;
+-                    }
++                    setsoundenabled(!Preferences.GetBooleanForKey("SOUND_ON"));
++                    return;
+                 default:
+                     return;
+             }
+@@ -637,6 +636,50 @@ namespace CutTheRopeDX.GameMain
+             RootController.LogEvent(n != GameControllerButtonId.ExitFromLose ? "IG_REPLAY_PRESSED" : "LC_REPLAY_PRESSED");
+         }
+ 
++        private void setmusicenabled(bool on)
++        {
++            bool was = Preferences.GetBooleanForKey("MUSIC_ON");
++            Preferences.SetBooleanForKey(on, "MUSIC_ON", true);
++            if (musictoggle != null && musictoggle.On() == on)
++            {
++                musictoggle.Toggle();
++            }
++            if (on)
++            {
++                MusicTracks.PlayGameMusic(Application.SharedRootController().Pack);
++            }
++            else
++            {
++                SoundMgr.StopMusic();
++            }
++            if (was != on)
++            {
++                RootController.LogEvent(on ? "IM_MUSIC_ON_PRESSED" : "IM_MUSIC_OFF_PRESSED");
++            }
++        }
++
++        private void setsoundenabled(bool on)
++        {
++            bool was = Preferences.GetBooleanForKey("SOUND_ON");
++            Preferences.SetBooleanForKey(on, "SOUND_ON", true);
++            if (soundtoggle != null && soundtoggle.On() == on)
++            {
++                soundtoggle.Toggle();
++            }
++            if (on)
++            {
++                SoundMgr.RestoreSoundEffects();
++            }
++            else
++            {
++                SoundMgr.SuspendSoundEffects();
++            }
++            if (was != on)
++            {
++                RootController.LogEvent(on ? "IM_SOUND_ON_PRESSED" : "IM_SOUND_OFF_PRESSED");
++            }
++        }
++
+         /// <summary>Resolves an input source against the authoritative controller and level-flow state.</summary>
+         /// <param name="input">Input source to resolve.</param>
+         /// <returns>The semantic command allowed in the current state.</returns>
+@@ -1264,6 +1307,8 @@ namespace CutTheRopeDX.GameMain
+ 
+         /// <summary>Pause-menu label that displays the active map or best score.</summary>
+         private Text mapNameLabel;
++        private ToggleButton musictoggle;
++        private ToggleButton soundtoggle;
+ 
+         /// <summary>The plate the pause menu is drawn on; the best-score label hangs off its edge.</summary>
+         private Image pauseMenuPlate;
+diff --git a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
+index 0fa574a..1335a82 100644
+--- a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
++++ b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
+@@ -234,6 +234,13 @@ namespace CutTheRopeDX.GameMain
+             return pack >= 0 && pack < packs.Count ? packs[pack].SaveSlot : 0;
+         }
+ 
++        private static int? backgroundoverride;
++
++        public static void setbackgroundpackoverride(int? pack)
++        {
++            backgroundoverride = pack;
++        }
++
+         /// <summary>
+         /// Gets the background resource names for a pack.
+         /// </summary>
+@@ -241,7 +248,8 @@ namespace CutTheRopeDX.GameMain
+         /// <returns>The pack background resource names, or the empty resource sentinel when <paramref name="pack"/> is out of range.</returns>
+         public static string[] GetBoxBackgrounds(int pack)
+         {
+-            return pack >= 0 && pack < packs.Count ? packs[pack].BoxBackgrounds : EmptyResourceNames;
++            int effectivepack = backgroundoverride ?? pack;
++            return effectivepack >= 0 && effectivepack < packs.Count ? packs[effectivepack].BoxBackgrounds : EmptyResourceNames;
+         }
+ 
+         /// <summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
+index b36d49e..99d8739 100644
+--- a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
++++ b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
+@@ -29,7 +29,14 @@ namespace CutTheRopeDX.GameMain
+         /// Gets a value indicating whether the Christmas event period is active.
+         /// Includes December and January.
+         /// </summary>
+-        public static bool IsXmas => Today.Month is 12 or 1;
++        private static bool? xmasoverride;
++
++        public static void setxmasoverride(bool? value)
++        {
++            xmasoverride = value;
++        }
++
++        public static bool IsXmas => xmasoverride ?? (Today.Month is 12 or 1);
+ 
+         #endregion
+ 

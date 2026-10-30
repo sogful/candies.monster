@@ -1,0 +1,44 @@
+.previewgame,
+.previewmovie {
+    max-width: calc(100vh * 16 / 9); max-height: calc(100vw * 9 / 16);
+    margin: auto;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.previewloader {
+    pointer-events: none;
+}
+
+.previewloader:not(.failed) > :not(.previewart) {
+    visibility: hidden;
+}
+
+.previewloader.failed .previewart {
+    display: none;
+}
+
+.previewloader.failed {
+    pointer-events: auto;
+}
+
+.previewart {
+    position: absolute; top: 50%;
+    left: 50%; transform: translate(-50%,-50%);
+    width: 100vw; height: calc(100vw * 9 / 16);
+    max-width: calc(100vh * 16 / 9); max-height: 100vh;
+    background: url("./loading/loader-logo.png") center / contain no-repeat;
+}
+
+.previewtrack {
+    position: absolute; left: 35.99%;
+    top: 90.93%; width: 27.92%;
+    height: 4.81%; border-radius: 20px;
+    overflow: hidden;
+}
+
+.previewprogress {
+    width: 0%; height: 100%;
+    background: url("./loading/load-repeat.webp") repeat-x; background-size: auto 100%;
+    border-radius: 18px; transition: width 0.3s ease-out;
+}

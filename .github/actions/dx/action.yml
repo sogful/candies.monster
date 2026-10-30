@@ -1,0 +1,24 @@
+name: Prepare DX preview
+description: Fetch upstream source and apply the preview patches
+inputs:
+  reference:
+    description: Upstream branch or revision
+    required: true
+outputs:
+  stage:
+    description: Prepared build directory
+    value: ${{ steps.prepare.outputs.stage }}
+  revision:
+    description: Resolved upstream revision
+    value: ${{ steps.prepare.outputs.revision }}
+  globaljson:
+    description: Upstream SDK configuration
+    value: ${{ steps.prepare.outputs.globaljson }}
+runs:
+  using: composite
+  steps:
+    - id: prepare
+      shell: pwsh
+      env:
+        DX_REFERENCE: ${{ inputs.reference }}
+      run: python "${{ github.action_path }}/update.py" --ref $env:DX_REFERENCE
