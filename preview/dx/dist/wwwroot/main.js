@@ -1,46 +1,109 @@
-import { dotnet } from "./_framework/dotnet.js";
+import * as hostEvents from "./host-events.js";
 import { setLoadingProgress } from "./loading-progress.js";
+import {
+    parseModeQuery,
+    probeEnvironment,
+    selectRuntime,
+} from "./runtime-mode.js";
 
-const reportDownloadProgress = (loaded, total) => {
-    setLoadingProgress("runtime", loaded, total);
-};
+// The failure seam is installed by the inline module in index.html rather than here, because
+// this module's static imports are fetched and evaluated before its first statement runs: an
+// import that fails would take this file down before anything it installed could exist. This
+// is only the local alias; index.html owns the handlers and the report-once guard.
+const fail = (id, detail) => globalThis.ctrdxFail?.(id, detail);
 
-const builder = dotnet
-    .withDiagnosticTracing(false)
-    .withApplicationArgumentsFromQuery();
+await globalThis.ctrdxIsolationReady;
 
-// Probed rather than called outright: losing the counter is cosmetic, but throwing
-// here would cost the whole app its boot.
-if (typeof builder.withModuleConfig === "function") {
-    builder.withModuleConfig({
-        onDownloadResourceProgress: reportDownloadProgress,
-    });
+// Both runtimes are published; this picks the one this browser can actually run, before
+// either is fetched and before anything irreversible happens to the canvas. `?mode=single`
+// or `?mode=multi` asks for one of them, for comparing the two on the same browser.
+const requested = parseModeQuery(globalThis.location.search);
+if (requested.raw !== null && requested.mode === null) {
+    console.warn(
+        `ctrdx: ignoring ?mode=${requested.raw}; expected single or multi`,
+    );
+}
+const choice = selectRuntime(probeEnvironment(), "single");
+if (requested.mode !== null && requested.mode !== choice.mode) {
+    console.warn(
+        `ctrdx: ?mode=${requested.raw} cannot run here; using ${choice.mode}`,
+    );
+}
+console.info(
+    `ctrdx-wasm-env: crossOriginIsolated=${globalThis.crossOriginIsolated === true} runtime=${choice.mode} requested=${requested.mode ?? "auto"}`,
+);
+
+if (choice.mode === "unsupported") {
+    // The probe knows more about which capability was missing than the markup's fallback
+    // wording does, so it replaces it.
+    const element = document.getElementById("unsupported-error");
+    if (element !== null) {
+        element.textContent = choice.reason;
+    }
+    fail("unsupported-error", choice.reason);
+    throw new Error(choice.reason);
 }
 
-const runtime = await builder.create();
-const config = runtime.getConfig();
-globalThis.ctrdxWasmModule = runtime.Module;
-await runtime.runMain(config.mainAssemblyName, []);
+try {
+    // The specifier is the choice, not a constant: importing the threaded runtime
+    // evaluates code that requires SharedArrayBuffer, so a page without it must never
+    // reach that module at all.
+    const { dotnet } = await import(choice.runtime);
+    const reportDownloadProgress = (loaded, total) => {
+        setLoadingProgress("runtime", loaded, total);
+    };
 
-const exports = await runtime.getAssemblyExports(config.mainAssemblyName);
+    const builder = dotnet
+        .withDiagnosticTracing(false)
+        .withApplicationArgumentsFromQuery();
+
+    // Probed rather than called outright: losing the counter is cosmetic, but throwing
+    // here would cost the whole app its boot.
+    if (typeof builder.withModuleConfig === "function") {
+        builder.withModuleConfig({
+            onDownloadResourceProgress: reportDownloadProgress,
+        });
+    }
+
+    const runtime = await builder.create();
+    const config = runtime.getConfig();
+    globalThis.ctrdxWasmModule = runtime.Module;
+    await runtime.runMain(config.mainAssemblyName, []);
+} catch (error) {
+    // Content preload failures land here too, not just runtime ones: a phone that loses its
+    // connection partway through the asset catalog throws from managed code, and without
+    // this the player watches the spinner for as long as they are willing to.
+    fail("boot-error", error);
+    throw error;
+}
+
 const canvas = document.getElementById("game");
-const input = exports.CutTheRopeDX.Browser.InputRouter;
-const loop = exports.CutTheRopeDX.Browser.GameLoop;
 
-const toBacking = (event) => {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    return [
-        (event.clientX - rect.left) * scaleX,
-        (event.clientY - rect.top) * scaleY,
-    ];
+// getBoundingClientRect forces the browser to settle layout before it answers, and a drag
+// asks once per pointermove. The rectangle only moves when the canvas box does, so it is
+// measured then and reused for every event in between.
+let canvasRect = null;
+const invalidateCanvasRect = () => {
+    canvasRect = null;
 };
+new ResizeObserver(invalidateCanvasRect).observe(canvas);
+globalThis.addEventListener("resize", invalidateCanvasRect);
+globalThis.addEventListener("scroll", invalidateCanvasRect, {
+    capture: true,
+    passive: true,
+});
 
 const sendPointer = (event, phase) => {
     event.preventDefault();
-    const [x, y] = toBacking(event);
-    input.OnPointer(x, y, phase);
+    canvasRect ??= canvas.getBoundingClientRect();
+    const rect = canvasRect;
+    hostEvents.pointer(
+        phase,
+        event.clientX - rect.left,
+        event.clientY - rect.top,
+        rect.width,
+        rect.height,
+    );
 };
 
 canvas.addEventListener("pointerdown", (event) => {
@@ -75,7 +138,7 @@ canvas.addEventListener(
             (-event.deltaY * scale * UNITS_PER_NOTCH) / PIXELS_PER_NOTCH;
         const rounded = Math.round(units);
         if (rounded !== 0) {
-            input.OnWheel(rounded);
+            hostEvents.wheel(rounded);
         }
     },
     // preventDefault needs a non-passive listener, which wheel handlers default to.
@@ -83,59 +146,50 @@ canvas.addEventListener(
 );
 
 const sendKey = (event, down) => {
-    if (["Space", "ArrowLeft", "ArrowRight"].includes(event.code)) {
+    if (hostEvents.reservedKey(event.code)) {
         event.preventDefault();
     }
-    input.OnKey(event.code, down);
+    hostEvents.key(event.code, down);
 };
 globalThis.addEventListener("keydown", (event) => sendKey(event, true));
 globalThis.addEventListener("keyup", (event) => sendKey(event, false));
 
-// Visibility alone gates the loop - not focus. A standalone window losing focus while still
-// visible is a real case (see the removed hasFocus() check's original reasoning below), but
-// this build boots inside a level-editor preview embed, which frequently has neither focus nor
-// a click yet on its very first load - gating the initial state on hasFocus() left it frozen
-// until the player happened to click it, for no benefit here. A hidden tab still stops getting
-// animation frames on its own regardless of this flag.
-const syncActive = () => loop.SetActive(document.visibilityState === "visible");
+// Focus and visibility are separate losses and either one must freeze the game: a hidden
+// tab stops getting animation frames but keeps its audio, while a window merely pushed
+// behind another stays visible and keeps ticking at full speed.
+const syncActive = () => {
+    const visible = document.visibilityState === "visible";
+    hostEvents.active(visible, !visible);
+};
+globalThis.addEventListener("focus", syncActive);
+globalThis.addEventListener("blur", syncActive);
 document.addEventListener("visibilitychange", syncActive);
+
+// A mobile browser can discard a backgrounded page without giving it another
+// visibilitychange, and pagehide is the last callback such a page receives. Treating it as a
+// deactivation is a best-effort request for the pending save, not an assurance of one:
+// nothing here can hold the page open until the owner thread has drained the ring. pageshow
+// covers the other direction, since a back/forward-cache restore fires no visibilitychange.
+globalThis.addEventListener("pagehide", () => hostEvents.active(false, true));
+globalThis.addEventListener("pageshow", syncActive);
+
 syncActive();
 
-// Pausing already flushes the save, but a page can be discarded without ever going
-// inactive first.
-globalThis.addEventListener("pagehide", () => loop.Flush());
-
-// Relays pointer-near-edge proximity to an embedding page (candies.monster's preview tool),
-// which fades its own floating close/link/details chrome in near the edges of the page, out
-// otherwise. That page's own `mousemove` listener never fires while the pointer is over this
-// iframe - separate browsing contexts don't bubble pointer events across the boundary - so
-// without this, once its chrome faded in it had no way to find out the pointer had moved on and
-// never faded back out. Harmless (posts to nobody) when this page isn't actually embedded.
-if (globalThis.parent !== globalThis) {
-    const EDGE_THRESHOLD = 140;
-    globalThis.addEventListener(
-        "pointermove",
-        (event) => {
-            const near =
-                event.clientX <= EDGE_THRESHOLD ||
-                event.clientX >= globalThis.innerWidth - EDGE_THRESHOLD ||
-                event.clientY <= EDGE_THRESHOLD ||
-                event.clientY >= globalThis.innerHeight - EDGE_THRESHOLD;
-            globalThis.parent.postMessage(
-                { type: "ctrdx-edge-proximity", near },
-                globalThis.location.origin,
-            );
-        },
-        { passive: true },
-    );
-}
-
-// No Play button gating this: the loading screen hides itself and gameplay starts ticking the
-// moment the runtime and assets are ready. Audio unlocks separately on the player's first
-// gesture (see audio.js) - browsers won't allow it any earlier regardless.
-const frame = (timestamp) => {
-    loop.Tick(timestamp);
-    requestAnimationFrame(frame);
-};
-requestAnimationFrame(frame);
+// Booting only gets as far as a game standing ready; this is what lets it move. Until the
+// player presses Play the loop runs but the game does not, so nothing simulates and no sound
+// plays behind the splash.
+globalThis.ctrdxStart = () => hostEvents.start();
 globalThis.ctrdxReady?.();
+
+// Last, so the error boundary still covers ctrdxReady itself. Boot is not over until the
+// thing that announces boot is over has run.
+globalThis.ctrdxBootComplete?.();
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+globalThis.addEventListener("pointermove", (event) => {
+    if (globalThis.parent === globalThis) return;
+    const near = event.clientX <= 140 || event.clientX >= innerWidth - 140
+        || event.clientY <= 140 || event.clientY >= innerHeight - 140;
+    globalThis.parent.postMessage({type: "ctrdx-edge-proximity", near}, location.origin);
+}, {passive: true});

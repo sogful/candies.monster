@@ -1,21 +1,23 @@
-// Service worker registration and the update prompt.
+// Service worker registration, the update prompt, and the request for persistent storage.
 //
 // A worker that finds new assets installs alongside the running one and then waits, so a
 // version never swaps in underneath a session in progress. The dialog is how the player asks
 // for it: the waiting worker takes over and the page reloads onto the new build.
 
 const UPDATE_CHECK_INTERVAL_MS = 15 * 60 * 1000;
+requestPersistentStorage();
 
-if ("serviceWorker" in navigator) {
-    // updateViaCache: "none" keeps the HTTP cache away from the worker script itself. It is
-    // the one file whose freshness decides whether an update is ever noticed.
-    navigator.serviceWorker
-        .register("./service-worker.js", { updateViaCache: "none" })
-        .then(watch)
-        .catch((error) =>
-            console.warn("service worker registration failed:", error),
-        );
-}
+globalThis.ctrdxServiceWorkerRegistration
+    ?.then((registration) => {
+        // Truthy rather than a null check: getRegistration resolves to undefined when there
+        // is none, which slipped past the old comparison and threw on registration.waiting.
+        if (registration) {
+            watch(registration);
+        }
+    })
+    .catch((error) =>
+        console.warn("service worker registration failed:", error),
+    );
 
 /**
  * Watches a registration for a worker that has installed and is waiting to take over.
@@ -27,22 +29,21 @@ function watch(registration) {
         promptForUpdate(registration.waiting);
     }
 
+    // The browser's own check on navigation can have found a new version before this ran, in
+    // which case updatefound has already fired and the worker is part way through installing.
+    if (registration.installing) {
+        followInstall(registration.installing);
+    }
     registration.addEventListener("updatefound", () => {
-        const installing = registration.installing;
-        if (installing === null) {
-            return;
+        if (registration.installing) {
+            followInstall(registration.installing);
         }
-        installing.addEventListener("statechange", () => {
-            // Without a controller this is the first install rather than an update, and it
-            // activates on its own — there is nothing for the player to decide.
-            if (
-                installing.state === "installed" &&
-                navigator.serviceWorker.controller
-            ) {
-                promptForUpdate(installing);
-            }
-        });
     });
+
+    // Asked for now rather than left to the browser, which schedules its navigation check on its
+    // own terms. A new version then has the whole load to download in, and the prompt can be up
+    // before the player is.
+    registration.update().catch(() => {});
 
     // The browser only checks for a new worker on navigation, and this page is meant to be
     // left open. Checking when the tab comes back into view covers the long sessions.
@@ -56,6 +57,26 @@ function watch(registration) {
             registration.update().catch(() => {});
         }
     });
+}
+
+/**
+ * Offers an installing worker to the player once it has finished installing.
+ *
+ * @param {ServiceWorker} installing
+ */
+function followInstall(installing) {
+    const offer = () => {
+        // Without a controller this is the first install rather than an update, and it
+        // activates on its own — there is nothing for the player to decide.
+        if (
+            installing.state === "installed" &&
+            navigator.serviceWorker.controller
+        ) {
+            promptForUpdate(installing);
+        }
+    };
+    offer();
+    installing.addEventListener("statechange", offer);
 }
 
 /**
@@ -85,4 +106,37 @@ function promptForUpdate(waiting) {
     };
 
     dialog.showModal();
+}
+
+/**
+ * Asks the browser not to evict this origin's storage.
+ *
+ * The offline caches and the player's save share one evictable pool, which a browser is free
+ * to clear when the device runs short of room. Losing it costs the player their progress and
+ * costs the next visit a fresh download of the content. Chromium grants persistence silently
+ * to an app that has been installed or used enough; the browsers that ask instead raise a
+ * permission prompt on the call, so this waits for the first gesture rather than firing at
+ * page load, where such a prompt would arrive out of nowhere.
+ */
+function requestPersistentStorage() {
+    if (typeof navigator.storage?.persist !== "function") {
+        return;
+    }
+
+    const ask = async () => {
+        globalThis.removeEventListener("pointerdown", ask);
+        globalThis.removeEventListener("keydown", ask);
+        try {
+            if (!(await navigator.storage.persisted())) {
+                await navigator.storage.persist();
+            }
+        } catch (error) {
+            // A refusal is the expected outcome on a browser that declines, and eviction is a
+            // risk rather than a failure there is anything to recover from here.
+            console.warn("persistent storage request failed:", error);
+        }
+    };
+
+    globalThis.addEventListener("pointerdown", ask, { passive: true });
+    globalThis.addEventListener("keydown", ask);
 }

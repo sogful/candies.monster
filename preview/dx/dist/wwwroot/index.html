@@ -2,16 +2,104 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <script src="./console-capture.js"></script>
+        <script>globalThis.ctrdxIsolationReady = Promise.resolve(false);</script>
+
+        <!-- Resolves to the directory this page is served from, so the app works from a domain
+             root and from a GitHub Pages project subpath alike. It lives here rather than being
+             injected at deploy time because publish hashes index.html into
+             service-worker-assets.js, and a later edit would leave the shipped file failing the
+             integrity check the service worker installs it with. -->
+        <base href="./" />
+
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
         />
-        <title>Cut the Rope: DX - Web Edition</title>
+
+        <title>Cut the Rope DX - Web Edition</title>
+
+        <meta
+            name="description"
+            content="Play Cut the Rope DX directly in your browser. A fan-made enhanced edition of Cut the Rope with improved gameplay and features, available online with no installation required."
+        />
+
+        <meta
+            name="keywords"
+            content="Cut the Rope, Cut the Rope DX, Cut the Rope web, Cut the Rope browser, Om Nom, Cut the Rope fan game"
+        />
+
+        <meta name="author" content="yell0wsuit" />
+        <meta name="robots" content="index, follow" />
+
+        <link
+            rel="canonical"
+            href="https://yell0wsuit.github.io/cuttherope-dx/"
+        />
+
         <link rel="icon" type="image/x-icon" href="./favicon.ico" />
         <link rel="apple-touch-icon" href="./icon-512.png" />
         <link rel="manifest" href="./manifest.webmanifest" />
-        <meta name="theme-color" content="#202329" />
+
+        <meta name="theme-color" content="#e2e2e2" />
         <meta name="mobile-web-app-capable" content="yes" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:title"
+            content="Cut the Rope DX Web Edition - Play Online"
+        />
+        <meta
+            property="og:description"
+            content="Play Cut the Rope DX directly in your browser. No installation required."
+        />
+        <meta
+            property="og:url"
+            content="https://yell0wsuit.github.io/cuttherope-dx/"
+        />
+        <meta
+            property="og:image"
+            content="https://yell0wsuit.github.io/cuttherope-dx/og-image.png"
+        />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="600" />
+        <meta
+            property="og:image:alt"
+            content="Cut the Rope DX product card image"
+        />
+        <meta property="og:site_name" content="Cut the Rope DX" />
+
+        <!-- Twitter / X -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+            name="twitter:title"
+            content="Cut the Rope DX Web Edition - Play Online"
+        />
+        <meta
+            name="twitter:description"
+            content="Play Cut the Rope DX directly in your browser. No installation required."
+        />
+        <meta
+            name="twitter:image"
+            content="https://yell0wsuit.github.io/cuttherope-dx/og-image.png"
+        />
+
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "Cut the Rope DX",
+                "alternateName": "Cut the Rope DX - Web Edition",
+                "url": "https://yell0wsuit.github.io/cuttherope-dx/",
+                "image": "https://yell0wsuit.github.io/cuttherope-dx/og-image.png",
+                "description": "A fan-made enhanced edition of Cut the Rope that can be played directly in a web browser.",
+                "applicationCategory": "GameApplication",
+                "operatingSystem": "Web browser",
+                "isAccessibleForFree": true
+            }
+        </script>
         <style>
             html,
             body {
@@ -25,33 +113,26 @@
                 touch-action: none;
                 overscroll-behavior: none;
             }
-            /* No top/left/transform here on purpose: glcontext.js's resizeViewportSurfaces()
-               already computes pixel-perfect centering (fitCanvasToViewport) and sets it as
-               inline style.left/top on this element every resize - CSS centering on top of that
-               would double-offset it, since the inline styles win over the stylesheet but a
-               stylesheet transform still applies on top of them.
-               Locked to 16:9 (letterboxed/pillarboxed, not filled) - tried a full-viewport
-               "cover" fit (Core's ScreenPresentation.FullScreenCropWidth actually supports this
-               natively), but in real testing it showed opaque black borders rather than the
-               transparent ones this build otherwise has everywhere else, so reverted. */
+            /* The canvas is the viewport. The game reads this box back and lays itself out to
+               whatever shape it is, so constraining it here would be constraining the game.
+               Fixed positioning rather than viewport units because a mobile browser collapsing
+               its URL bar changes the visible area without changing 100vh. */
             #game {
                 display: block;
-                position: absolute;
-                width: 100vw;
-                height: calc(100vw * 9 / 16);
-                max-width: calc(100vh * 16 / 9);
-                max-height: 100vh;
+                position: fixed;
+                inset: 0;
+                width: 100%;
+                height: 100%;
             }
-            /* Shares the canvas's letterboxed box (same caveat: positioned by glcontext.js, not
-               CSS). z-index puts it over the game but under the splash, so a cutscene can never
-               show through the loading screen. */
+            /* Shares the canvas's box. A cutscene is genuinely fixed-aspect, so it keeps
+               object-fit rather than stretching. z-index puts it over the game but under the
+               splash, so a cutscene can never show through the loading screen. */
             #movie {
                 display: block;
-                position: absolute;
-                width: 100vw;
-                height: calc(100vw * 9 / 16);
-                max-width: calc(100vh * 16 / 9);
-                max-height: 100vh;
+                position: fixed;
+                inset: 0;
+                width: 100%;
+                height: 100%;
                 z-index: 5;
                 background: #000;
                 object-fit: contain;
@@ -59,82 +140,509 @@
             #movie[hidden] {
                 display: none;
             }
-            /* Shares the canvas's letterboxed box, same as #movie above - the loading art sits
-               exactly where the game will. Faded rather than removed on ready, so the canvas
-               underneath is already painted when it goes; pointer-events keeps the invisible
-               overlay from eating taps. Transparent outside the loader-logo image itself, same
-               as html/body, so an embedding page shows through anywhere the game isn't actually
-               drawing something - everything except gameplay itself, once it starts. */
-            #betterLoader {
-                display: block;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 100vw;
-                height: calc(100vw * 9 / 16);
-                max-width: calc(100vh * 16 / 9);
-                max-height: 100vh;
-                background: url("./loading/loader-logo.png") center / cover no-repeat;
+            /* The game's own handwriting face. It arrives with the content download, so the
+               first visit may show the fallback for a moment; swap keeps the text readable
+               throughout instead of invisible until the font lands. */
+            @font-face {
+                font-family: "GoodDog New";
+                src: url("./content/fonts/gooddog_new-webfont.ttf")
+                    format("truetype");
+                font-display: swap;
+            }
+            /* Contrast was measured against the artwork rather than its average color: ink
+               holds 9.8:1 on the darkest pixel of the tile and 7.4:1 on the pink highlight
+               inside the bubble, and ink-soft 7.1:1 on the tile. Button labels carry their own
+               black outline, so they hold 21:1 whatever the pill behind them looks like. */
+            #splash {
+                --ink: #19130c;
+                --ink-soft: #3d2b1f;
+                --bubble: min(228px, 56vw, 34vh);
+                position: fixed;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 16px;
+                overflow-y: auto;
+                touch-action: pan-y;
+                box-sizing: border-box;
+                padding: calc(24px + env(safe-area-inset-top, 0px))
+                    calc(16px + env(safe-area-inset-right, 0px))
+                    calc(24px + env(safe-area-inset-bottom, 0px))
+                    calc(16px + env(safe-area-inset-left, 0px));
+                background: transparent;
+                color: var(--ink);
+                font-family:
+                    "GoodDog New",
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    Roboto,
+                    sans-serif;
                 z-index: 10;
                 transition: opacity 0.25s ease-out;
             }
-            #betterLoader.hidden {
+            /* Behind everything else on the splash, and fixed so it stays put while a long
+               error message scrolls over it. */
+            #splash-bubbles {
+                position: fixed;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+            #splash > :not(#splash-bubbles) {
+                position: relative;
+            }
+            /* Faded rather than removed, so the canvas underneath is already painted when the
+               splash goes; pointer-events keeps the invisible overlay from eating taps. */
+            #splash.hidden {
                 opacity: 0;
                 pointer-events: none;
             }
-            /* Positioned to sit exactly over the empty bar already drawn into loader-logo.png
-               (measured from the source image: pixel rect [691,982]-[1227,1034] of 1920x1080).
-               The image also bakes in its own "this might take a bit" caption just below the
-               bar, so there's no separate hint element here - it'd have nowhere to go in that
-               same tight margin without overlapping, and would just repeat what the image
-               already says. */
-            #track {
-                position: absolute;
-                left: 35.99%;
-                top: 90.93%;
-                width: 27.92%;
-                height: 4.81%;
-                border-radius: 20px;
-                overflow: hidden;
+            #splash > * {
+                flex-shrink: 0;
             }
-            #progress {
-                width: 0%;
-                height: 100%;
-                background: url("./loading/load-repeat.webp") repeat-x;
-                background-size: auto 100%;
-                border-radius: 18px;
-                transition: width 0.3s ease-out;
+            #splash::before,
+            #splash::after {
+                content: "";
+                margin: auto;
+            }
+            #splash-logo {
+                width: min(300px, 72vw);
+                height: auto;
+                max-height: 30vh;
+                object-fit: contain;
+            }
+            /* On an error screen Om Nom stands in for both the logo and the progress bubble.
+               The sprite is drawn at 1x, so it is never stretched past its own size. */
+            #splash-error-art {
+                display: none;
+                width: min(197px, 50vw);
+                height: auto;
+                max-height: 30vh;
+                object-fit: contain;
+            }
+            #splash.failed #splash-logo {
+                display: none;
+            }
+            #splash.failed #splash-error-art {
+                display: block;
+            }
+            /* The original bobbed its bubble 150px across and 60px down, eased in and out
+               on 2.8s and 1.3s cycles that drift in and out of step. The sideways reach
+               narrows on a phone so the bubble never leaves the screen, and the vertical
+               padding is the bob's reach, so the bubble never rides over the title. */
+            #splash-bubble {
+                --bob-x: max(
+                    0px,
+                    min(
+                        calc(var(--bubble) * 0.33),
+                        calc((100vw - var(--bubble)) / 2 - 16px)
+                    )
+                );
+                --bob-y: calc(var(--bubble) * 0.13);
+                padding: var(--bob-y) 0;
+                animation: splash-bob-x 2.8s
+                    cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite alternate;
+            }
+            #splash-bubble[hidden] {
+                display: none;
+            }
+            #splash-bubble > div {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: var(--bubble);
+                height: var(--bubble);
+                background: url("./splash/bubble.webp") center / contain
+                    no-repeat;
+                animation: splash-bob-y 1.3s
+                    cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite alternate;
+            }
+            @keyframes splash-bob-x {
+                from {
+                    transform: translateX(calc(-1 * var(--bob-x)));
+                }
+                to {
+                    transform: translateX(var(--bob-x));
+                }
+            }
+            @keyframes splash-bob-y {
+                from {
+                    transform: translateY(calc(-1 * var(--bob-y)));
+                }
+                to {
+                    transform: translateY(var(--bob-y));
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                #splash-bubble,
+                #splash-bubble > div {
+                    animation: none;
+                }
+            }
+            #splash #splash-progress {
+                margin: 0;
+                padding-top: 4%;
+                font-size: calc(var(--bubble) * 0.105);
+                line-height: 1.1;
+                white-space: pre-line;
+            }
+            #splash p,
+            #splash h1 {
+                margin: 0;
+                max-width: min(100%, 40rem);
+                overflow-wrap: anywhere;
+                text-align: center;
+            }
+            #splash h1 {
+                font-size: 1.6rem;
+                font-weight: 400;
+            }
+            #splash [role="alert"] {
+                font-size: 1.3rem;
+                line-height: 1.3;
+            }
+            #splash #splash-hint {
+                max-width: min(100%, 360px);
+                font-size: 1.1rem;
+                line-height: 1.35;
+                color: var(--ink-soft);
+            }
+            #start,
+            #reload,
+            #resume {
+                min-width: 190px;
+                height: 66px;
+                padding: 0 40px 4px;
+                font: inherit;
+                /* BigFont's effects on its 100-unit glyphs: a black outline reaching 3 units
+                   past the glyph and a hard black copy of the outlined glyph 2 across and 3
+                   down (SkiaFont.EffectPaint). In em, both follow the label's size. */
+                font-size: 1.8rem;
+                line-height: 1;
+                color: #fff;
+                text-shadow:
+                    0.03em 0 #000,
+                    -0.03em 0 #000,
+                    0 0.03em #000,
+                    0 -0.03em #000,
+                    0.0212em 0.0212em #000,
+                    -0.0212em 0.0212em #000,
+                    0.0212em -0.0212em #000,
+                    -0.0212em -0.0212em #000,
+                    0.05em 0.03em #000,
+                    -0.01em 0.03em #000,
+                    0.02em 0.06em #000,
+                    0.02em 0 #000,
+                    0.0412em 0.0512em #000,
+                    -0.0012em 0.0512em #000,
+                    0.0412em 0.0088em #000,
+                    -0.0012em 0.0088em #000;
+                border-style: solid;
+                border-width: 0;
+                border-image: url("./splash/button.webp") 0 96 fill / 0 36px
+                    stretch;
+                background: url("./splash/button-pressed.webp") 0 0 / 0 0
+                    no-repeat;
+                cursor: pointer;
+            }
+            #start:hover,
+            #reload:hover,
+            #resume:hover {
+                filter: brightness(1.06);
+            }
+            #start:active,
+            #reload:active,
+            #resume:active {
+                border-image-source: url("./splash/button-pressed.webp");
+                filter: none;
+            }
+            #start:focus-visible,
+            #reload:focus-visible,
+            #resume:focus-visible,
+            #export-log:focus-visible {
+                outline: 3px solid var(--ink);
+                outline-offset: 3px;
+            }
+            #start[hidden],
+            #reload[hidden],
+            #resume[hidden] {
+                display: none;
+            }
+            #export-log {
+                padding: 6px 18px;
+                font: inherit;
+                font-size: 1.05rem;
+                border: 2px solid var(--ink-soft);
+                border-radius: 10px;
+                background: rgb(255 255 255 / 45%);
+                color: var(--ink-soft);
+                cursor: pointer;
+            }
+            #export-log:hover {
+                background: rgb(255 255 255 / 75%);
+                color: var(--ink);
+            }
+            #export-log[hidden],
+            #export-log-status[hidden] {
+                display: none;
+            }
+            #splash #export-log-status {
+                font-size: 1rem;
+                color: var(--ink-soft);
+            }
+            #update {
+                padding: 20px 24px;
+                border: 0;
+                border-radius: 10px;
+                background: #202329;
+                color: #e6e6e6;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    Roboto,
+                    sans-serif;
+                box-shadow: 0 8px 32px rgb(0 0 0 / 50%);
+            }
+            #update::backdrop {
+                background: rgb(0 0 0 / 50%);
+            }
+            #update p {
+                margin: 0 0 16px;
+            }
+            #update-actions {
+                display: flex;
+                gap: 8px;
+                justify-content: flex-end;
+            }
+            #update button {
+                padding: 8px 18px;
+                font-family: inherit;
+                font-size: 0.95rem;
+                border: 0;
+                border-radius: 6px;
+                cursor: pointer;
             }
         </style>
+        <link rel="stylesheet" href="./preview.css">
     </head>
     <body>
-        <canvas id="game"></canvas>
-        <video id="movie" playsinline hidden></video>
-        <div id="betterLoader">
-            <div id="track"><div id="progress"></div></div>
+        <canvas class="previewgame" id="game"></canvas>
+        <video class="previewmovie" id="movie" playsinline hidden></video>
+        <div class="previewloader" id="splash"><div class="previewart"><div class="previewtrack"><div class="previewprogress"></div></div></div>
+            <canvas id="splash-bubbles" aria-hidden="true"></canvas>
+            <img
+                id="splash-logo"
+                src="./splash/logo.webp"
+                width="346"
+                height="302"
+                alt="Cut the Rope DX logo"
+                decoding="async"
+            />
+            <!-- Loaded up front rather than when an error needs it: the commonest failure is a
+                 connection that dropped, and by then it would be too late to fetch. -->
+            <img
+                id="splash-error-art"
+                src="./splash/error.webp"
+                width="197"
+                height="215"
+                alt="Sad Om Nom"
+                decoding="async"
+            />
+            <div id="splash-bubble">
+                <div>
+                    <p id="splash-progress">Loading…</p>
+                </div>
+            </div>
+            <h1>Cut the Rope DX - Web Edition</h1>
+            <button id="start" hidden>Play</button>
+            <p id="splash-hint" role="status" hidden>
+                Taking too long? You might want to check your internet speed, or
+                reload the page.
+            </p>
+            <p id="unsupported-error" role="alert" hidden>
+                This browser is too old to run the game. iOS and iPadOS need
+                version 15 or newer.
+            </p>
+            <p id="boot-error" role="alert" hidden>
+                The game could not start. Check your connection and reload the
+                page.
+            </p>
+            <button id="reload" hidden>Reload</button>
+            <p id="context-lost-error" role="alert" hidden>
+                The browser reset the game's graphics. Reload to continue -
+                previously saved progress should still be there, but the current
+                level will restart.
+            </p>
+            <button id="resume" hidden>Resume</button>
+            <button id="export-log">Export log</button>
+            <p id="export-log-status" role="status" hidden></p>
         </div>
+        <dialog id="update">
+            <p>A new version of the game is ready.</p>
+            <div id="update-actions">
+                <button id="update-later">Later</button>
+                <button id="update-now">Update</button>
+            </div>
+        </dialog>
+
+
         <script type="module">
-            // No PWA/service-worker here - this build is a level-editor preview embed, not an
-            // installable app: each load is a different `?data=` level, there is nothing sane
-            // to precache for "offline", and the worker's asset-integrity checks are exactly
-            // what breaks under any dev proxy that rewrites the HTML in flight (e.g. VS Code's
-            // Live Preview injecting its live-reload script changes index.html's bytes, so its
-            // hash no longer matches what the worker recorded at publish time - SRI then blocks
-            // the fetch outright). Unregistering covers a worker installed by an earlier build
-            // that did register one, since a registration outlives the page that made it.
-            navigator.serviceWorker?.getRegistrations().then((regs) => {
-                for (const reg of regs) reg.unregister();
+            // Loading has two stretches with no reporting of their own — compiling what was
+            // downloaded, and decoding the audio — so a slow device and a wedged one look alike
+            // from here. The advice waits out a comfortably slow start rather than accusing
+            // every one of them of being broken.
+            const HINT_DELAY_MS = 30000;
+
+            const start = document.getElementById("start");
+            const splash = document.getElementById("splash");
+            const bubble = document.getElementById("splash-bubble");
+            const hint = document.getElementById("splash-hint");
+            const reload = document.getElementById("reload");
+            const hintTimer = setTimeout(() => {
+                hint.hidden = false;
+            }, HINT_DELAY_MS);
+
+            // The advice is for a slow start, not a stopped one. A boot that has already
+            // failed says so on the splash, and this arriving half a minute later would talk
+            // over it with a suggestion that no longer applies.
+            globalThis.ctrdxStopHint = () => {
+                clearTimeout(hintTimer);
+                hint.hidden = true;
+            };
+            globalThis.ctrdxReady = () => {
+                globalThis.ctrdxStopHint();
+                bubble.hidden = true;
+                start.hidden = true;
+                globalThis.ctrdxStart();
+                splash.classList.add("hidden");
+            };
+            // The failure seam lives here, not in main.js, because main.js reaches its own
+            // first statement only after its static imports have been fetched and evaluated.
+            // An import that fails takes main.js down before anything it installs exists.
+            // This module imports nothing and runs first, so it is the earliest point that
+            // can still speak. The first failure wins: a failed boot knocks over what follows
+            // it, and the cascade is noise once the cause is on screen.
+            let reported = false;
+            globalThis.ctrdxFail = (id, detail) => {
+                if (reported) {
+                    return;
+                }
+                reported = true;
+
+                console.error(`ctrdx-boot-failure: ${id}`, detail ?? "");
+                globalThis.ctrdxStopHint();
+                bubble.hidden = true;
+                start.hidden = true;
+                splash.classList.remove("hidden");
+                splash.classList.add("failed");
+                document.getElementById(id)?.removeAttribute("hidden");
+                // Only a failed boot is cured by trying again. An unsupported browser would
+                // fail the same way on every reload.
+                reload.hidden = id !== "boot-error";
+            };
+            reload.addEventListener("click", () =>
+                globalThis.location.reload(),
+            );
+
+            const onBootRejection = (event) =>
+                globalThis.ctrdxFail("boot-error", event.reason);
+            const onBootError = (event) =>
+                globalThis.ctrdxFail(
+                    "boot-error",
+                    event.error ?? event.message,
+                );
+            globalThis.addEventListener("unhandledrejection", onBootRejection);
+            globalThis.addEventListener("error", onBootError);
+
+            // Called once the game is running. After boot a rejection belongs to the running
+            // game, and covering a playable session with the boot error screen would cost the
+            // player more than the rejection did.
+            globalThis.ctrdxBootComplete = () => {
+                globalThis.removeEventListener(
+                    "unhandledrejection",
+                    onBootRejection,
+                );
+                globalThis.removeEventListener("error", onBootError);
+                // Only now, on a page that was already isolated without it: the worker claims
+                // the page when it activates, and a controller swap during startup lands in
+                // the middle of the runtime fetching its own worker scripts.
+                globalThis.ctrdxInstallWorker?.();
+            };
+
+            start.addEventListener("click", async () => {
+                await globalThis.ctrdxStart();
+                splash.classList.add("hidden");
             });
 
-            // No Play button: the game boots straight in once ready. Audio unlocks itself on
-            // the player's first click/keypress anywhere on the page (see audio.js), fading in
-            // rather than snapping to full volume, since that first gesture can land well after
-            // gameplay is already visible.
-            globalThis.ctrdxReady = () => {
-                document.getElementById("betterLoader")?.classList.add("hidden");
-            };
+            // The page owns this rather than the game: a run that never reached the game is
+            // exactly the run whose log is worth having, and the worker that would have served
+            // the request is the thing that did not start. Reading the database directly leaves
+            // the button working whatever happened behind it.
+            const exportLog = document.getElementById("export-log");
+            const exportStatus = document.getElementById("export-log-status");
+
+            // The splash is what a player looks at while waiting, so an outcome that stayed there
+            // would still be sitting under the Play button on the next launch.
+            const STATUS_LINGER_MS = 5000;
+            let statusTimer = null;
+
+            function showExportStatus(text, linger) {
+                clearTimeout(statusTimer);
+                statusTimer = null;
+                exportStatus.textContent = text;
+                exportStatus.hidden = false;
+                if (linger) {
+                    statusTimer = setTimeout(() => {
+                        exportStatus.hidden = true;
+                        statusTimer = null;
+                    }, STATUS_LINGER_MS);
+                }
+            }
+
+            exportLog.addEventListener("click", async () => {
+                exportLog.disabled = true;
+                // Not timed: the export replaces it as soon as it knows the outcome, and a
+                // progress note that cleared itself mid-export would read as a failure.
+                showExportStatus("Collecting…", false);
+                try {
+                    const { exportZip } = await import("./log.js");
+                    // console-capture.js may still be handing its first entries to the store.
+                    await globalThis.ctrdxCaptureSettled?.();
+                    const saved = await exportZip();
+                    showExportStatus(
+                        saved === 0
+                            ? "No logs recorded yet."
+                            : `Exported ${saved} ${saved === 1 ? "log" : "logs"}.`,
+                        true,
+                    );
+                } catch (error) {
+                    showExportStatus(
+                        `Could not export the log: ${error}`,
+                        true,
+                    );
+                } finally {
+                    exportLog.disabled = false;
+                }
+            });
+
+            // The application is imported here rather than through its own script tag so that
+            // this bootstrap owns the promise for its whole module graph. A module that fails
+            // to *download* raises an error event at its script element, and that event does
+            // not bubble - so a plain window listener never sees it, and the page would sit on
+            // its loading screen with nothing reported. Verified in Chromium: with a separate
+            // script tag a 404 on one of main.js's static imports reached no handler at all,
+            // while this form reports it. Listening in the capture phase would also catch it,
+            // but it catches every failed resource with it - a broken splash image would then
+            // report a boot failure over a game that started perfectly well, which was
+            // likewise confirmed. A rejection here is precise about what actually failed.
+            import("./main.js").catch((error) =>
+                globalThis.ctrdxFail("boot-error", error),
+            );
         </script>
-        <script type="module" src="./main.js"></script>
     </body>
 </html>

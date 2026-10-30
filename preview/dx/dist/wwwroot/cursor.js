@@ -3,30 +3,22 @@
 // The desktop host swaps a native cursor between two bitmaps rather than drawing one into the
 // scene, so the CSS equivalent is the faithful port: same two images, same top-left hotspot,
 // and the pointer keeps the responsiveness of a real cursor instead of trailing a frame behind.
-//
-// Rendered once at a fixed target size rather than either the raw source bitmap (62x71 native -
-// disproportionately huge in an embed shown much smaller than the game's 2560px-wide internal
-// resolution) or scaled to match the canvas's CSS size (the opposite problem - shrinks toward
-// invisible in that same small embed). A typical OS cursor is roughly this tall; this just keeps
-// it there regardless of how big or small the game itself is shown.
 
-const TARGET_HEIGHT = 32;
+// CSS pixels per art pixel, matching SdlCursorService.BaseScale. The size is fixed rather than
+// following the canvas: a cursor shrunk with the art turns unreadable in a small window. The
+// art itself is authored at twice this, so it doubles as the high-density image.
+const BASE_SCALE = 0.4;
 
 const canvas = document.getElementById("game");
-// The cutscene overlay and the loading screen both cover the canvas at one time or another, so
-// a cursor set only there would be invisible during a cutscene (including the paused state,
-// where Core asks for it back) or before the game has finished loading.
-const surfaces = [
-    canvas,
-    document.getElementById("movie"),
-    document.getElementById("betterLoader"),
-];
+// The cutscene overlay covers the canvas, so a cursor set only there would be invisible
+// for the whole of a cutscene - including the paused state, where Core asks for it back.
+const surfaces = [canvas, document.getElementById("movie")];
 const sources = {
     idle: "./content/images/cursor.webp",
     pressed: "./content/images/cursor_active.webp",
 };
 
-const rendered = {};
+const values = {};
 let enabled = true;
 let pressed = false;
 
@@ -38,26 +30,49 @@ function apply() {
         }
         return;
     }
-    const url = rendered[pressed ? "pressed" : "idle"];
-    // Until the bitmap is rendered there is nothing to show, so the pointer stays the system one.
-    const value = url ? `url("${url}") 0 0, auto` : "auto";
+    // Until the bitmaps load there is nothing to show, so the pointer stays the system one.
+    const value = values[pressed ? "pressed" : "idle"] ?? "auto";
     for (const surface of surfaces) {
         surface.style.cursor = value;
     }
+}
+
+/**
+ * Builds the cursor declaration for one loaded bitmap.
+ *
+ * @param {HTMLImageElement} image
+ * @param {string} src
+ * @returns {string}
+ */
+function build(image, src) {
+    const target = document.createElement("canvas");
+    target.width = Math.max(1, Math.round(image.naturalWidth * BASE_SCALE));
+    target.height = Math.max(1, Math.round(image.naturalHeight * BASE_SCALE));
+    const context = target.getContext("2d");
+    // The default low-quality filter drops the thin dark outline when halving.
+    context.imageSmoothingQuality = "high";
+    context.drawImage(image, 0, 0, target.width, target.height);
+    const base = target.toDataURL("image/png");
+
+    // The first form the browser accepts wins; image-set in cursor is still uneven, and an
+    // unsupported value would otherwise throw the whole declaration away.
+    const set = `url("${base}") 1x, url("${src}") 2x`;
+    const candidates = [
+        `image-set(${set}) 0 0, auto`,
+        `-webkit-image-set(${set}) 0 0, auto`,
+        `url("${base}") 0 0, auto`,
+    ];
+    return (
+        candidates.find((value) => CSS.supports("cursor", value)) ??
+        candidates.at(-1)
+    );
 }
 
 for (const [name, src] of Object.entries(sources)) {
     const image = new Image();
     image.decoding = "async";
     image.addEventListener("load", () => {
-        const scale = TARGET_HEIGHT / image.naturalHeight;
-        const target = document.createElement("canvas");
-        target.width = Math.max(1, Math.round(image.naturalWidth * scale));
-        target.height = Math.max(1, Math.round(image.naturalHeight * scale));
-        target
-            .getContext("2d")
-            .drawImage(image, 0, 0, target.width, target.height);
-        rendered[name] = target.toDataURL("image/png");
+        values[name] = build(image, src);
         apply();
     });
     image.src = src;
@@ -81,4 +96,10 @@ export function setEnabled(value) {
 export function setPressed(value) {
     pressed = value;
     apply();
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+for (const surface of surfaces) {
+    surface.addEventListener("contextmenu", (event) => event.preventDefault());
 }

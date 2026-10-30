@@ -2,12 +2,9 @@
 // voice gets an integer handle the managed side uses to stop it or change its volume.
 
 let context = null;
-// Every voice routes through this instead of straight to destination, held at 0 gain until the
-// player's first gesture, then ramped up - the game boots and starts playing with no Play
-// button to wait on, so whatever was already queued to play would otherwise snap in at full
-// volume the instant audio unblocks, rather than fading in.
-let masterGain = null;
-const FADE_IN_SECONDS = 0.5;
+let unlocked = false;
+let mastergain = null;
+const fadeduration = 0.5;
 const buffers = new Map();
 const decodes = new Map();
 const voices = new Map();
@@ -18,9 +15,9 @@ function ensureContext() {
         context = new (
             globalThis.AudioContext || globalThis.webkitAudioContext
         )();
-        masterGain = context.createGain();
-        masterGain.gain.value = 0;
-        masterGain.connect(context.destination);
+        mastergain = context.createGain();
+        mastergain.gain.value = 0;
+        mastergain.connect(context.destination);
     }
     return context;
 }
@@ -76,7 +73,7 @@ function startVoice(handle, buffer) {
     source.buffer = buffer;
     source.loop = voice.loop;
     gain.gain.value = voice.volume;
-    source.connect(gain).connect(masterGain);
+    source.connect(gain).connect(mastergain);
 
     source.onended = () => {
         if (voices.get(handle)?.source === source) {
@@ -91,9 +88,8 @@ function startVoice(handle, buffer) {
 
 export function play(key, loop, volume) {
     const buffer = buffers.get(key);
-    const pending =
-        buffer === undefined ? decodes.get(key) : Promise.resolve(buffer);
-    if (pending === undefined) {
+    const pending = buffer === undefined ? decodes.get(key) : undefined;
+    if (buffer === undefined && pending === undefined) {
         return 0;
     }
 
@@ -108,12 +104,16 @@ export function play(key, loop, volume) {
         offset: 0,
         startedAt: 0,
     });
-    void ensureContext()
-        .resume()
-        .catch(() => {
-            // Browsers reject resume outside a user gesture. The global gesture handlers
-            // below will retry while this queued voice remains ready to start.
-        });
+    resumeIfSuspended();
+
+    // Everything the game plays during a level is already decoded, and going through a promise
+    // for those would put a microtask between the cut and its sound for no reason. Only a
+    // buffer still in flight has to wait.
+    if (buffer !== undefined) {
+        startVoice(handle, buffer);
+        return handle;
+    }
+
     void pending.then((decoded) => {
         if (decoded === null) {
             voices.delete(handle);
@@ -200,17 +200,54 @@ export function durationOf(key) {
     return buffer === undefined ? 0 : buffer.duration;
 }
 
-function resumeFromGesture() {
-    void resume();
-    if (masterGain !== null) {
-        const now = context.currentTime;
-        masterGain.gain.cancelScheduledValues(now);
-        masterGain.gain.setValueAtTime(masterGain.gain.value, now);
-        masterGain.gain.linearRampToValueAtTime(1, now + FADE_IN_SECONDS);
+// A running context needs no resuming, so neither the play path nor a gesture pays for a
+// promise once the browser has let the graph start.
+function resumeIfSuspended() {
+    if (ensureContext().state === "running") {
+        return;
     }
+    void resume().catch(() => {
+        // Browsers reject resume outside a user gesture. The gesture handlers below retry
+        // while any queued voice remains ready to start.
+    });
 }
 
-globalThis.addEventListener("pointerdown", resumeFromGesture, {
-    passive: true,
+function resumeFromGesture() {
+    if (!unlocked) {
+        unlocked = true;
+        const ctx = ensureContext();
+        mastergain.gain.setValueAtTime(0, ctx.currentTime);
+        mastergain.gain.linearRampToValueAtTime(1, ctx.currentTime + fadeduration);
+    }
+    if (context !== null && context.state === "running") {
+        globalThis.removeEventListener("pointerdown", resumeFromGesture);
+        globalThis.removeEventListener("keydown", resumeFromGesture);
+        return;
+    }
+    void resume().catch(() => {
+        // The gesture was not one the browser accepts as user activation; the next one will be.
+    });
+}
+
+function armGestureResume() {
+    globalThis.addEventListener("pointerdown", resumeFromGesture, {
+        passive: true,
+    });
+    globalThis.addEventListener("keydown", resumeFromGesture, { passive: true });
+}
+armGestureResume();
+
+// Safari suspends the graph while the page is in the background, and has an "interrupted"
+// state of its own that a phone call or another app taking the audio device puts it in.
+// Either way the context stops being "running" long after resumeFromGesture removed itself,
+// so coming back to a visible page re-arms the listeners it took off. Registering a listener
+// that is already attached is a no-op, so this cannot stack duplicates.
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") {
+        return;
+    }
+    if (context !== null && context.state !== "running") {
+        resumeIfSuspended();
+        armGestureResume();
+    }
 });
-globalThis.addEventListener("keydown", resumeFromGesture, { passive: true });
