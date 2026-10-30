@@ -1,15 +1,10 @@
 /versions/scriptsyay/
 
-/preview/workers/
-/preview/examplelevel.json
-/preview/examplelevel.xml
-
 /preview/dx/*
 !/preview/dx/dist/
 /preview/h5dx/*
 !/preview/h5dx/dist/
 
-/webtile
 /convert/__pycache__
 /convert/assets/static/__pycache__
 
@@ -18,5 +13,3 @@
 .unused/
 404old.html
 .DS_Store
-
-/preview/tools/

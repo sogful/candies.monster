@@ -1,0 +1,67 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - >
+ 
+    Created using Cut the Rope Level Editor:
+    https://adriandrummis.github.io/CutTheRopeEditor/
+ 
+<- - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+ 
+<map>
+ 
+    <layer name="settings">
+        <map gridSize="32" width="320" height="480" />
+        <gameDesign ropePhysicsSpeed="1" twoParts="true" nightLevel="true" />
+    </layer>
+ 
+    <layer name="Objects">
+        <target x="164" y="392" />
+        <candyL x="154" y="72" />
+        <candyR x="184" y="71" />
+        <pump x="235" y="130" angle="180" />
+        <star x="170" y="127" timeout="-1" />
+        <star x="107" y="125" timeout="5" />
+        <hiddenElement x="245" y="301" radius="100" />
+        <star x="390" y="201" timeout="15" />
+        <grab x="169" y="41" length="50" wheel="false" gun="false" radius="-1" moveLength="0" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" kickable="false" kicked="false" />
+        <bouncer1 x="168" y="185" angle="0" size="1" />
+        <sock x="64" y="128" group="0" angle="-5" />
+        <sock x="317" y="81" group="0" angle="90" />
+        <electro x="42" y="323" initialDelay="0" offTime="2" onTime="2" angle="90" size="5" />
+        <bubble x="167" y="130" />
+        <spike2 x="3" y="444" angle="180" size="1" />
+        <spike2 x="-123" y="445" angle="180" size="3" />
+        <spike2 x="-227" y="349" angle="90" size="4" />
+        <gravitySwitch x="170" y="212" />
+        <grab x="202" y="52" length="50" wheel="false" gun="false" radius="-1" moveLength="100" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" kickable="false" kicked="false" />
+        <grab x="115" y="39" length="50" wheel="true" gun="false" radius="-1" moveLength="0" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" kickable="false" kicked="false" />
+        <spike4 x="551" y="108" angle="90" size="3" toggled="1" />
+        <spike4 x="551" y="361" angle="90" size="3" toggled="0" />
+        <rotatedCircle x="386" y="278" size="50" handleAngle="-165" oneHandle="false"  />
+        <tutorialText x="-97" y="186" locale="en" text="hello!" width="160" />
+        <ghost x="384" y="281" bouncer="true" bubble="true" grab="true" radius="50" angle="-90" />
+        <steamTube x="460" y="371" angle="-1" />
+        <lantern x="246" y="368" candyCaptured="false" />
+        <lantern x="164" y="306" candyCaptured="false" />
+        <gap x="388" y="137" angle="0" activeTime="1" radius="50" index="1" />
+        <gap x="320" y="137" angle="0" activeTime="1" radius="50" index="2" />
+        <gap x="454" y="136" angle="0" activeTime="1" radius="50" index="3" />
+        <lightBulb x="78" y="310" litRadius="50" bulbNumber="1" />
+        <transporter x="242" y="163" angle="-90" direction="forward" type="manual" width="50" length="100" />
+        <hidden01 x="329" y="380" angle="90" drawing="1" />
+        <tutorial02 x="388" locale="en" y="187" angle="90" />
+        <tutorial01 x="163" locale="en" y="45" />
+        <tutorial03 x="305" locale="en" y="282" angle="90" />
+        <tutorial04 x="65" locale="en" y="185" angle="90" />
+        <tutorial05 x="166" locale="en" y="125" />
+        <tutorial06 x="-160" locale="en" y="385" />
+        <spike4 x="551" y="233" angle="90" size="1" toggled="2" />
+        <tutorial07 x="134" locale="en" y="46" />
+        <tutorial08 x="387" locale="en" y="427" />
+        <spike2 x="387" y="457" angle="0" size="2" />
+        <bouncer1 x="-73" y="215" angle="90" size="2" />
+        <bubble x="242" y="239" />
+        <pump x="244" y="191" angle="90" />
+        <bouncer1 x="100" y="430" angle="0" size="1" />
+        <lightBulb x="121" y="310" litRadius="50" bulbNumber="2" />
+    </layer>
+ 
+</map>
