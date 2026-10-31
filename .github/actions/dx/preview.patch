@@ -396,7 +396,7 @@ index f990653..6a51905 100644
      }
  }
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/main.js b/src/CutTheRopeDX.Browser/wwwroot/main.js
-index a05c64d..1dd68f9 100644
+index a05c64d..3de9809 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/main.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/main.js
 @@ -1,4 +1,5 @@
@@ -414,15 +414,20 @@ index a05c64d..1dd68f9 100644
  if (requested.mode !== null && requested.mode !== choice.mode) {
      console.warn(
          `ctrdx: ?mode=${requested.raw} cannot run here; using ${choice.mode}`,
-@@ -107,6 +108,7 @@ const sendPointer = (event, phase) => {
+@@ -107,9 +108,12 @@ const sendPointer = (event, phase) => {
  };
  
  canvas.addEventListener("pointerdown", (event) => {
++    canvas.classList.add("previewpointer");
 +    canvas.focus({preventScroll: true});
      canvas.setPointerCapture(event.pointerId);
      sendPointer(event, 0);
  });
-@@ -146,10 +148,11 @@ canvas.addEventListener(
++canvas.addEventListener("blur", () => canvas.classList.remove("previewpointer"));
+ canvas.addEventListener("pointermove", (event) => sendPointer(event, 1));
+ canvas.addEventListener("pointerup", (event) => sendPointer(event, 2));
+ canvas.addEventListener("pointercancel", (event) => sendPointer(event, 2));
+@@ -146,10 +150,11 @@ canvas.addEventListener(
  );
  
  const sendKey = (event, down) => {
@@ -435,7 +440,7 @@ index a05c64d..1dd68f9 100644
  };
  globalThis.addEventListener("keydown", (event) => sendKey(event, true));
  globalThis.addEventListener("keyup", (event) => sendKey(event, false));
-@@ -159,7 +162,7 @@ globalThis.addEventListener("keyup", (event) => sendKey(event, false));
+@@ -159,7 +164,7 @@ globalThis.addEventListener("keyup", (event) => sendKey(event, false));
  // behind another stays visible and keeps ticking at full speed.
  const syncActive = () => {
      const visible = document.visibilityState === "visible";
@@ -444,7 +449,7 @@ index a05c64d..1dd68f9 100644
  };
  globalThis.addEventListener("focus", syncActive);
  globalThis.addEventListener("blur", syncActive);
-@@ -179,8 +182,23 @@ syncActive();
+@@ -179,8 +184,23 @@ syncActive();
  // player presses Play the loop runs but the game does not, so nothing simulates and no sound
  // plays behind the splash.
  globalThis.ctrdxStart = () => hostEvents.start();

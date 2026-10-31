@@ -4,6 +4,8 @@
     margin: auto;
 }
 
+.previewpointer:focus {outline: none}
+
 /*//////////////////////////////////////////////////////////////////////*/
 
 .previewloader {

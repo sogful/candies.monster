@@ -108,10 +108,12 @@ const sendPointer = (event, phase) => {
 };
 
 canvas.addEventListener("pointerdown", (event) => {
+    canvas.classList.add("previewpointer");
     canvas.focus({preventScroll: true});
     canvas.setPointerCapture(event.pointerId);
     sendPointer(event, 0);
 });
+canvas.addEventListener("blur", () => canvas.classList.remove("previewpointer"));
 canvas.addEventListener("pointermove", (event) => sendPointer(event, 1));
 canvas.addEventListener("pointerup", (event) => sendPointer(event, 2));
 canvas.addEventListener("pointercancel", (event) => sendPointer(event, 2));
