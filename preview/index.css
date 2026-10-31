@@ -20,6 +20,13 @@ body {
     cursor: url("/assets/static/cursors/idle.cur"), default !important;
 }
 body.playing {overflow: hidden}
+.previewroot:has(.playing) {overflow: clip}
+.previewpage.playing {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    min-width: 0; min-height: 0;
+    overflow: clip;
+}
 body:active, body:focus, body:focus-within, body:target, body:active * {
     cursor: url("/assets/static/cursors/active.cur"), default !important;
 }

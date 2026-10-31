@@ -6,8 +6,32 @@ export function createcontroller({frame, onerror, onclose, ontoolong}) {
     const session = createsession({onerror, onclose});
     let sequence = 0;
     let nonce = null;
+    const keys = new Set(["KeyQ", "Escape", "KeyP", "KeyM", "KeyR", "Space", "Enter", "ArrowLeft", "ArrowRight"]);
+    const held = new Set();
+
+    function forward(event, down) {
+        if (!nonce || !frame.classList.contains("active") || !keys.has(event.code)
+            || event.ctrlKey || event.metaKey || event.altKey || event.repeat) return;
+        const target = event.target;
+        if (target?.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName)) return;
+        if (typeof frame.contentWindow.ctrdxPreviewKey !== "function") return;
+        event.preventDefault();
+        if (down) held.add(event.code);
+        else held.delete(event.code);
+        frame.contentWindow.ctrdxPreviewKey(event.code, down);
+    }
+
+    function release() {
+        for (const code of held) frame.contentWindow.ctrdxPreviewKey?.(code, false);
+        held.clear();
+    }
+
+    window.addEventListener("keydown", (event) => forward(event, true));
+    window.addEventListener("keyup", (event) => forward(event, false));
+    window.addEventListener("blur", release);
 
     function close() {
+        release();
         sequence++;
         session.close();
         nonce = null;
