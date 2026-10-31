@@ -122,7 +122,8 @@ function parsegamescsv(text) {
             const grouped = c0.startsWith("+ ");
             const gameimp = parseInt(c4, 10);
             const pkg = c1;
-            const verkey = pkg || `__empty_${r}`;
+            let verkey = pkg || `__empty_${r}`;
+            if (bypackage.has(verkey)) verkey = `${verkey}#${r}`;
             const extras = parsepackageiconcolumns(line, pkg);
             const entry = {
                 name: grouped ? c0.slice(2).trim() : c0,
@@ -142,7 +143,8 @@ function parsegamescsv(text) {
                 parsedgames.push(entry);
                 currentgame = entry;
             }
-            bypackage.set(verkey, bypackage.get(verkey) || []);
+            bypackage.set(verkey, []);
+            currentversion = null;
             continue;
         }
 
@@ -150,7 +152,7 @@ function parsegamescsv(text) {
         const vk = currentgame.verkey;
         const versions = bypackage.get(vk) || [];
         if (c1) {
-            const normalizedversion = /^v/i.test(c1) ? c1 : `v${c1}`;
+            const normalizedversion = `v${c1.replace(/^v/i, "")}`;
             let entry = versions.find(v => (v.version || "").toLowerCase() === normalizedversion.toLowerCase());
             if (!entry) {
                 entry = {version: normalizedversion, icon: resolveiconpath(c2), details: "", downloads: []};
