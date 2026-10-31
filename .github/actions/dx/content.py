@@ -4,7 +4,7 @@ import shutil
 import subprocess
 
 keepmenus = {
-    "menu_buttons", "menu_level_ui", "menu_pause", "menu_results",
+    "menu_buttons", "menu_level_ui", "menu_pause", "menu_results", "menu_options_packed",
     "menu_result_screen_halloween",
 }
 discard = {
