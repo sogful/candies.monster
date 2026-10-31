@@ -2,9 +2,7 @@
 // voice gets an integer handle the managed side uses to stop it or change its volume.
 
 let context = null;
-let unlocked = false;
 let mastergain = null;
-const fadeduration = 0.5;
 const buffers = new Map();
 const decodes = new Map();
 const unavailable = new Set();
@@ -17,7 +15,7 @@ function ensureContext() {
             globalThis.AudioContext || globalThis.webkitAudioContext
         )();
         mastergain = context.createGain();
-        mastergain.gain.value = 0;
+        mastergain.gain.value = 1;
         mastergain.connect(context.destination);
     }
     return context;
@@ -232,12 +230,6 @@ function resumeIfSuspended() {
 }
 
 function resumeFromGesture() {
-    if (!unlocked) {
-        unlocked = true;
-        const ctx = ensureContext();
-        mastergain.gain.setValueAtTime(0, ctx.currentTime);
-        mastergain.gain.linearRampToValueAtTime(1, ctx.currentTime + fadeduration);
-    }
     if (context !== null && context.state === "running") {
         globalThis.removeEventListener("pointerdown", resumeFromGesture);
         globalThis.removeEventListener("keydown", resumeFromGesture);
@@ -250,9 +242,9 @@ function resumeFromGesture() {
 
 function armGestureResume() {
     globalThis.addEventListener("pointerdown", resumeFromGesture, {
-        passive: true,
+        passive: true, capture: true,
     });
-    globalThis.addEventListener("keydown", resumeFromGesture, { passive: true });
+    globalThis.addEventListener("keydown", resumeFromGesture, {passive: true, capture: true});
 }
 armGestureResume();
 

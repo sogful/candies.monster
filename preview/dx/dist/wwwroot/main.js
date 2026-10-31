@@ -1,4 +1,5 @@
 import * as hostEvents from "./host-events.js";
+import * as audio from "./audio.js";
 import { setLoadingProgress } from "./loading-progress.js";
 import {
     parseModeQuery,
@@ -107,6 +108,7 @@ const sendPointer = (event, phase) => {
 };
 
 canvas.addEventListener("pointerdown", (event) => {
+    canvas.focus({preventScroll: true});
     canvas.setPointerCapture(event.pointerId);
     sendPointer(event, 0);
 });
@@ -146,10 +148,11 @@ canvas.addEventListener(
 );
 
 const sendKey = (event, down) => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
     if (hostEvents.reservedKey(event.code)) {
         event.preventDefault();
     }
-    hostEvents.key(event.code, down);
+    if (!event.repeat) hostEvents.key(event.code, down);
 };
 globalThis.addEventListener("keydown", (event) => sendKey(event, true));
 globalThis.addEventListener("keyup", (event) => sendKey(event, false));
@@ -179,6 +182,12 @@ syncActive();
 // player presses Play the loop runs but the game does not, so nothing simulates and no sound
 // plays behind the splash.
 globalThis.ctrdxStart = () => hostEvents.start();
+
+canvas.tabIndex = 0;
+globalThis.ctrdxPreviewKey = (code, down) => {
+    hostEvents.key(code, down);
+    if (down) void audio.resume().catch(() => {});
+};
 globalThis.ctrdxReady?.();
 
 // Last, so the error boundary still covers ctrdxReady itself. Boot is not over until the

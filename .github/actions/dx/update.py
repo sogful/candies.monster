@@ -120,7 +120,8 @@ def build(stage):
          "-c", "Release", "-p:CtrdxSingleThreaded=true", "-p:RunAOTCompilation=true",
          "-p:EnableDefaultCompressionFormats=false", "-p:DisableBuildCompression=true",
          "-o", str(stage / "publish")], source, timeout=3600)
-    if record["patch"] != hashlib.sha256((bundle / "preview.patch").read_bytes()).hexdigest() or record["overlay"] != overlayhash():
+    if (record["patch"] != hashlib.sha256((bundle / "preview.patch").read_bytes()).hexdigest()
+            or record["overlay"] != overlayhash() or record.get("content") != contenthash()):
         raise RuntimeError("The preview patches changed during the build. Prepare a fresh stage.")
     site = stage / "publish/wwwroot"
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%H%M%S%f")

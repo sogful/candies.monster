@@ -176,5 +176,5 @@ export function start() {
 }
 
 export function reservedKey(code) {
-    return code === "Space" || code === "ArrowLeft" || code === "ArrowRight";
+    return Object.hasOwn(KEY_IDS, code);
 }

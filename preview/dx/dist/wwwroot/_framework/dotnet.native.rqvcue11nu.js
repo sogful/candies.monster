@@ -815,13 +815,13 @@ function createWasm() {
 // === Body ===
 
 var ASM_CONSTS = {
-  3822948: () => { globalThis.ctrdxFrameToken = (globalThis.ctrdxFrameToken | 0) + 1; _ctrdx_frame_entry(performance.now()); },  
- 3823058: () => { var token = (globalThis.ctrdxFrameToken | 0) + 1; globalThis.ctrdxFrameToken = token; requestAnimationFrame(function (timestamp) { if (globalThis.ctrdxFrameToken !== token) { return; } _ctrdx_frame_entry(timestamp); }); },  
- 3823282: () => { globalThis.ctrdxCanvas = document.getElementById('game'); return globalThis.ctrdxCanvas ? 1 : 0; },  
- 3823383: () => { return globalThis.ctrdxCanvas ? 1 : 0; },  
- 3823426: ($0, $1) => { var surface = globalThis.ctrdxCanvas; if (!surface) { return 0; } surface.width = $0; surface.height = $1; var context = surface.getContext('webgl2', { alpha: true, depth: true, stencil: true, antialias: false, premultipliedAlpha: true, preserveDrawingBuffer: false }); if (!context) { return 0; } var handle = GL.registerContext(context, { majorVersion: 2, minorVersion: 0, enableExtensionsByDefault: 1, alpha: 1, depth: 1, stencil: 8, antialias: 0, premultipliedAlpha: 1, preserveDrawingBuffer: 0 }); if (!handle) { return 0; } GL.makeContextCurrent(handle); globalThis.ctrdxContextLost = 0; surface.addEventListener('webglcontextlost', function (event) { event.preventDefault(); globalThis.ctrdxContextLost = 1; globalThis.ctrdxReportContextLost(); }); return handle; },  
- 3824201: ($0, $1) => { var surface = globalThis.ctrdxCanvas; if (!surface) { return 0; } surface.width = $0; surface.height = $1; return 1; },  
- 3824322: () => { return globalThis.ctrdxContextLost | 0; }
+  3822980: () => { globalThis.ctrdxFrameToken = (globalThis.ctrdxFrameToken | 0) + 1; _ctrdx_frame_entry(performance.now()); },  
+ 3823090: () => { var token = (globalThis.ctrdxFrameToken | 0) + 1; globalThis.ctrdxFrameToken = token; requestAnimationFrame(function (timestamp) { if (globalThis.ctrdxFrameToken !== token) { return; } _ctrdx_frame_entry(timestamp); }); },  
+ 3823314: () => { globalThis.ctrdxCanvas = document.getElementById('game'); return globalThis.ctrdxCanvas ? 1 : 0; },  
+ 3823415: () => { return globalThis.ctrdxCanvas ? 1 : 0; },  
+ 3823458: ($0, $1) => { var surface = globalThis.ctrdxCanvas; if (!surface) { return 0; } surface.width = $0; surface.height = $1; var context = surface.getContext('webgl2', { alpha: true, depth: true, stencil: true, antialias: false, premultipliedAlpha: true, preserveDrawingBuffer: false }); if (!context) { return 0; } var handle = GL.registerContext(context, { majorVersion: 2, minorVersion: 0, enableExtensionsByDefault: 1, alpha: 1, depth: 1, stencil: 8, antialias: 0, premultipliedAlpha: 1, preserveDrawingBuffer: 0 }); if (!handle) { return 0; } GL.makeContextCurrent(handle); globalThis.ctrdxContextLost = 0; surface.addEventListener('webglcontextlost', function (event) { event.preventDefault(); globalThis.ctrdxContextLost = 1; globalThis.ctrdxReportContextLost(); }); return handle; },  
+ 3824233: ($0, $1) => { var surface = globalThis.ctrdxCanvas; if (!surface) { return 0; } surface.width = $0; surface.height = $1; return 1; },  
+ 3824354: () => { return globalThis.ctrdxContextLost | 0; }
 };
 
 // end include: preamble.js
