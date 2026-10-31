@@ -66,7 +66,7 @@ jobs:
         env:
           CTRDX_SOURCE: ${{ steps.prepare.outputs.stage }}/source
         run: |
-          node --test .github/actions/dx/tests/playtest.mjs
+          node --test .github/actions/dx/tests/*.mjs
           if ($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
           python .github/actions/dx/tests/update.py
       - name: Build candidate

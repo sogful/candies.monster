@@ -1,7 +1,7 @@
 {
     "repository": "https://github.com/yell0wsuit/cuttherope-dx.git",
     "revision": "3fb70e70a92dc13da263cee0db5f4ef19c686bc6",
-    "patch": "2290075e6a742494342a551a7108c41219253303396490f8fdea01745e81811c",
+    "patch": "93ee54dba9749cd41291a3e01c62c9002f6ca2a18dc9072b90843802c39876dc",
     "runtime": "single",
     "aot": true,
     "overlay": "dd57862a708e6851248e1bf65bdaac79863754251d6a6d93b9f8397350460fd3"

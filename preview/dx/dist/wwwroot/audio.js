@@ -7,6 +7,7 @@ let mastergain = null;
 const fadeduration = 0.5;
 const buffers = new Map();
 const decodes = new Map();
+const unavailable = new Set();
 const voices = new Map();
 let nextVoice = 1;
 
@@ -27,6 +28,9 @@ export async function resume() {
 }
 
 async function loadBuffer(key, url) {
+    if (unavailable.has(key)) {
+        return null;
+    }
     if (buffers.has(key)) {
         return buffers.get(key);
     }
@@ -35,14 +39,28 @@ async function loadBuffer(key, url) {
     }
 
     const pending = (async () => {
-        const response = await fetch(url);
-        if (!response.ok) {
-            return null;
+        for (let attempt = 0; attempt < 2; attempt++) {
+            const response = await fetch(url, attempt === 0 ? undefined : {cache: "reload"});
+            if (!response.ok) {
+                return null;
+            }
+            const bytes = await response.arrayBuffer();
+            try {
+                const buffer = await ensureContext().decodeAudioData(bytes);
+                buffers.set(key, buffer);
+                return buffer;
+            } catch (error) {
+                if (error.name !== "EncodingError") {
+                    throw new Error(`Could not decode audio '${url}': ${error.message}`, {cause: error});
+                }
+                if (attempt === 0) {
+                    continue;
+                }
+                unavailable.add(key);
+                console.warn(`ctrdx-audio-unavailable: ${url} (${bytes.byteLength} bytes, ${response.headers.get("content-type") ?? "unknown type"}): ${error.message}`);
+                return null;
+            }
         }
-        const bytes = await response.arrayBuffer();
-        const buffer = await ensureContext().decodeAudioData(bytes);
-        buffers.set(key, buffer);
-        return buffer;
     })();
 
     decodes.set(key, pending);
@@ -54,7 +72,8 @@ async function loadBuffer(key, url) {
 }
 
 export async function decode(key, url) {
-    return (await loadBuffer(key, url)) === null ? 0 : 1;
+    const buffer = await loadBuffer(key, url);
+    return buffer !== null || unavailable.has(key) ? 1 : 0;
 }
 
 function startVoice(handle, buffer) {
