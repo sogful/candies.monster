@@ -7,6 +7,7 @@ const debugshowapks = false;
 const buttonmap = [
     {domain: "apkmirror.com", icon: "apkmirror.png"},
     {domain: "apkpure.com", icon: "apkpure.png"},
+    {domain: "apkpure.net", icon: "apkpure.png"},
     {domain: "uptodown.com", icon: "uptodown.png"},
     {domain: "pdalife.to", icon: "pdalife.png"},
     {domain: "archive.org", icon: "internetarchive.png"},
@@ -331,7 +332,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, vcache,
         document.querySelectorAll(".clickable").forEach(function(e) {
             e.addEventListener("click", function() {
                 document.querySelector(".click").currentTime = 0;
-                document.querySelector(".click").play();
+                document.querySelector(".click").play().catch(() => {});
             });
         });
     } catch (e) {
