@@ -78,33 +78,31 @@ index 2e5cd1e..54f5b78 100644
  GameLoop.Host = host;
  InputRouter.Host = host;
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/audio.js b/src/CutTheRopeDX.Browser/wwwroot/audio.js
-index fe621d0..c2e15bf 100644
+index fe621d0..07e1163 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/audio.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/audio.js
-@@ -2,8 +2,12 @@
+@@ -2,8 +2,10 @@
  // voice gets an integer handle the managed side uses to stop it or change its volume.
  
  let context = null;
-+let unlocked = false;
 +let mastergain = null;
-+const fadeduration = 0.5;
  const buffers = new Map();
  const decodes = new Map();
 +const unavailable = new Set();
  const voices = new Map();
  let nextVoice = 1;
  
-@@ -12,6 +16,9 @@ function ensureContext() {
+@@ -12,6 +14,9 @@ function ensureContext() {
          context = new (
              globalThis.AudioContext || globalThis.webkitAudioContext
          )();
 +        mastergain = context.createGain();
-+        mastergain.gain.value = 0;
++        mastergain.gain.value = 1;
 +        mastergain.connect(context.destination);
      }
      return context;
  }
-@@ -21,6 +28,9 @@ export async function resume() {
+@@ -21,6 +26,9 @@ export async function resume() {
  }
  
  async function loadBuffer(key, url) {
@@ -114,7 +112,7 @@ index fe621d0..c2e15bf 100644
      if (buffers.has(key)) {
          return buffers.get(key);
      }
-@@ -29,14 +39,28 @@ async function loadBuffer(key, url) {
+@@ -29,14 +37,28 @@ async function loadBuffer(key, url) {
      }
  
      const pending = (async () => {
@@ -150,7 +148,7 @@ index fe621d0..c2e15bf 100644
      })();
  
      decodes.set(key, pending);
-@@ -48,7 +72,8 @@ async function loadBuffer(key, url) {
+@@ -48,7 +70,8 @@ async function loadBuffer(key, url) {
  }
  
  export async function decode(key, url) {
@@ -160,7 +158,7 @@ index fe621d0..c2e15bf 100644
  }
  
  function startVoice(handle, buffer) {
-@@ -67,7 +92,7 @@ function startVoice(handle, buffer) {
+@@ -67,7 +90,7 @@ function startVoice(handle, buffer) {
      source.buffer = buffer;
      source.loop = voice.loop;
      gain.gain.value = voice.volume;
@@ -169,19 +167,18 @@ index fe621d0..c2e15bf 100644
  
      source.onended = () => {
          if (voices.get(handle)?.source === source) {
-@@ -207,6 +232,12 @@ function resumeIfSuspended() {
- }
+@@ -219,9 +242,9 @@ function resumeFromGesture() {
  
- function resumeFromGesture() {
-+    if (!unlocked) {
-+        unlocked = true;
-+        const ctx = ensureContext();
-+        mastergain.gain.setValueAtTime(0, ctx.currentTime);
-+        mastergain.gain.linearRampToValueAtTime(1, ctx.currentTime + fadeduration);
-+    }
-     if (context !== null && context.state === "running") {
-         globalThis.removeEventListener("pointerdown", resumeFromGesture);
-         globalThis.removeEventListener("keydown", resumeFromGesture);
+ function armGestureResume() {
+     globalThis.addEventListener("pointerdown", resumeFromGesture, {
+-        passive: true,
++        passive: true, capture: true,
+     });
+-    globalThis.addEventListener("keydown", resumeFromGesture, { passive: true });
++    globalThis.addEventListener("keydown", resumeFromGesture, {passive: true, capture: true});
+ }
+ armGestureResume();
+ 
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/coi-sw.js b/src/CutTheRopeDX.Browser/wwwroot/coi-sw.js
 index 2cda1fd..d5c4195 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/coi-sw.js
@@ -260,7 +257,7 @@ index 176f532..26f941f 100644
 +    surface.addEventListener("contextmenu", (event) => event.preventDefault());
 +}
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/host-events.js b/src/CutTheRopeDX.Browser/wwwroot/host-events.js
-index 0f7420a..bde2923 100644
+index 0f7420a..e27d240 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/host-events.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/host-events.js
 @@ -29,6 +29,9 @@ const KEY_IDS = {
@@ -273,6 +270,13 @@ index 0f7420a..bde2923 100644
      KeyR: 2,
      Space: 3,
      Enter: 4,
+@@ -173,5 +176,5 @@ export function start() {
+ }
+ 
+ export function reservedKey(code) {
+-    return code === "Space" || code === "ArrowLeft" || code === "ArrowRight";
++    return Object.hasOwn(KEY_IDS, code);
+ }
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/index.html b/src/CutTheRopeDX.Browser/wwwroot/index.html
 index 6facf5d..6171457 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/index.html
@@ -392,10 +396,16 @@ index f990653..6a51905 100644
      }
  }
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/main.js b/src/CutTheRopeDX.Browser/wwwroot/main.js
-index a05c64d..a3d6f76 100644
+index a05c64d..1dd68f9 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/main.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/main.js
-@@ -23,7 +23,7 @@ if (requested.raw !== null && requested.mode === null) {
+@@ -1,4 +1,5 @@
+ import * as hostEvents from "./host-events.js";
++import * as audio from "./audio.js";
+ import { setLoadingProgress } from "./loading-progress.js";
+ import {
+     parseModeQuery,
+@@ -23,7 +24,7 @@ if (requested.raw !== null && requested.mode === null) {
          `ctrdx: ignoring ?mode=${requested.raw}; expected single or multi`,
      );
  }
@@ -404,7 +414,28 @@ index a05c64d..a3d6f76 100644
  if (requested.mode !== null && requested.mode !== choice.mode) {
      console.warn(
          `ctrdx: ?mode=${requested.raw} cannot run here; using ${choice.mode}`,
-@@ -159,7 +159,7 @@ globalThis.addEventListener("keyup", (event) => sendKey(event, false));
+@@ -107,6 +108,7 @@ const sendPointer = (event, phase) => {
+ };
+ 
+ canvas.addEventListener("pointerdown", (event) => {
++    canvas.focus({preventScroll: true});
+     canvas.setPointerCapture(event.pointerId);
+     sendPointer(event, 0);
+ });
+@@ -146,10 +148,11 @@ canvas.addEventListener(
+ );
+ 
+ const sendKey = (event, down) => {
++    if (event.ctrlKey || event.metaKey || event.altKey) return;
+     if (hostEvents.reservedKey(event.code)) {
+         event.preventDefault();
+     }
+-    hostEvents.key(event.code, down);
++    if (!event.repeat) hostEvents.key(event.code, down);
+ };
+ globalThis.addEventListener("keydown", (event) => sendKey(event, true));
+ globalThis.addEventListener("keyup", (event) => sendKey(event, false));
+@@ -159,7 +162,7 @@ globalThis.addEventListener("keyup", (event) => sendKey(event, false));
  // behind another stays visible and keeps ticking at full speed.
  const syncActive = () => {
      const visible = document.visibilityState === "visible";
@@ -413,7 +444,18 @@ index a05c64d..a3d6f76 100644
  };
  globalThis.addEventListener("focus", syncActive);
  globalThis.addEventListener("blur", syncActive);
-@@ -184,3 +184,12 @@ globalThis.ctrdxReady?.();
+@@ -179,8 +182,23 @@ syncActive();
+ // player presses Play the loop runs but the game does not, so nothing simulates and no sound
+ // plays behind the splash.
+ globalThis.ctrdxStart = () => hostEvents.start();
++
++canvas.tabIndex = 0;
++globalThis.ctrdxPreviewKey = (code, down) => {
++    hostEvents.key(code, down);
++    if (down) void audio.resume().catch(() => {});
++};
+ globalThis.ctrdxReady?.();
+ 
  // Last, so the error boundary still covers ctrdxReady itself. Boot is not over until the
  // thing that announces boot is over has run.
  globalThis.ctrdxBootComplete?.();
@@ -939,6 +981,18 @@ index f245964..6cadd39 100644
 +        M = 77
      }
  }
+diff --git a/src/CutTheRopeDX.Core/Framework/Core/RootController.Game.cs b/src/CutTheRopeDX.Core/Framework/Core/RootController.Game.cs
+index 33ffd1c..00caeb0 100644
+--- a/src/CutTheRopeDX.Core/Framework/Core/RootController.Game.cs
++++ b/src/CutTheRopeDX.Core/Framework/Core/RootController.Game.cs
+@@ -577,6 +577,7 @@ namespace CutTheRopeDX.Framework.Core
+         /// </summary>
+         private void StartBoxResourceScanIfNeeded()
+         {
++            if (CustomLevelSession.IsActive) return;
+             if (Pack < 0)
+             {
+                 return;
 diff --git a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs b/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
 index 597afdd..68750f7 100644
 --- a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
@@ -1154,6 +1208,26 @@ index bc8a2d7..fb4a7a4 100644
  
          /// <summary>The plate the pause menu is drawn on; the best-score label hangs off its edge.</summary>
          private Image pauseMenuPlate;
+diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
+index 3f5f05f..de0bfa3 100644
+--- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
++++ b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
+@@ -58,6 +58,7 @@ namespace CutTheRopeDX.GameMain
+         /// <returns>The candidate music resource names, empty when the pack names none.</returns>
+         public static string[] Game(int pack)
+         {
++            if (CustomLevelSession.IsActive) return [Resources.Music.GameMusic];
+             MusicOverride active = ActiveOverride();
+             if (active?.Game != null)
+             {
+@@ -87,6 +88,7 @@ namespace CutTheRopeDX.GameMain
+         /// </summary>
+         public static void PlayMenuMusic()
+         {
++            if (CustomLevelSession.IsActive) return;
+             SoundMgr.PlayMusic(Menu());
+         }
+ 
 diff --git a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
 index 0fa574a..1335a82 100644
 --- a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs

@@ -13,10 +13,15 @@ async function fixture(run) {
     const names = ["AudioContext", "fetch", "document", "addEventListener", "removeEventListener"];
     const previous = names.map((name) => Object.getOwnPropertyDescriptor(globalThis, name));
     const warnings = [];
+    const gains = [];
     const warn = console.warn;
     try {
         globalThis.AudioContext = class {
-            createGain() {return {gain: {value: 0}, connect() {}}}
+            createGain() {
+                const node = {gain: {value: 0}, connect() {}};
+                gains.push(node);
+                return node;
+            }
             async decodeAudioData(bytes) {
                 if (new Uint8Array(bytes)[0] === 0) {
                     throw new DOMException("Unable to decode audio data", "EncodingError");
@@ -29,7 +34,7 @@ async function fixture(run) {
         globalThis.removeEventListener = () => {};
         console.warn = (message) => warnings.push(message);
         const audio = await import("data:text/javascript;base64," + Buffer.from(source).toString("base64") + "#" + ++sequence);
-        await run(audio, warnings);
+        await run(audio, warnings, gains);
     } finally {
         console.warn = warn;
         names.forEach((name, index) => {
@@ -42,7 +47,7 @@ async function fixture(run) {
 /*//////////////////////////////////////////////////////////////////////*/
 
 test("a failed audio decode retries with a fresh download and retains the recovered sound", async () => {
-    await fixture(async (audio, warnings) => {
+    await fixture(async (audio, warnings, gains) => {
         const caches = [];
         globalThis.fetch = async (url, options) => {
             caches.push(options?.cache ?? "default");
@@ -51,6 +56,7 @@ test("a failed audio decode retries with a fresh download and retains the recove
         assert.equal(await audio.decode("sound", "/sound.ogg"), 1);
         assert.deepEqual(caches, ["default", "reload"]);
         assert.equal(audio.durationOf("sound"), 2);
+        assert.equal(gains[0].gain.value, 1);
         assert.equal(await audio.decode("sound", "/sound.ogg"), 1);
         assert.equal(caches.length, 2);
         assert.deepEqual(warnings, []);

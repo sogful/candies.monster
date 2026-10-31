@@ -7,7 +7,8 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 .previewloader {
-    pointer-events: none;
+    pointer-events: none; overflow: hidden !important;
+    touch-action: none !important; padding: 0 !important;
 }
 
 .previewloader:not(.failed) > :not(.previewart) {
@@ -19,11 +20,12 @@
 }
 
 .previewloader.failed {
-    pointer-events: auto;
+    pointer-events: auto; overflow: auto !important;
+    touch-action: pan-y !important;
 }
 
 .previewart {
-    position: absolute; top: 50%;
+    position: absolute !important; top: 50%;
     left: 50%; transform: translate(-50%,-50%);
     width: 100vw; height: calc(100vw * 9 / 16);
     max-width: calc(100vh * 16 / 9); max-height: 100vh;

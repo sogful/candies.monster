@@ -7,6 +7,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+from content import slim
 
 bundle = Path(__file__).resolve().parent
 repository = bundle.parents[2]
@@ -41,6 +42,10 @@ def overlayhash():
     return digest.hexdigest()
 
 
+def contenthash():
+    return hashlib.sha256((bundle / "content.py").read_bytes()).hexdigest()
+
+
 def dotnet(source):
     candidates = [os.environ.get("CTRDX_DOTNET"), shutil.which("dotnet"), str(Path.home() / ".dotnet/dotnet.exe")]
     for candidate in candidates:
@@ -70,6 +75,7 @@ def prepare(reference):
         "repository": settings["repository"], "revision": revision,
         "patch": hashlib.sha256(patch.read_bytes()).hexdigest(),
         "overlay": overlayhash(),
+        "content": contenthash(),
         "runtime": "single", "aot": True,
     })
     for name in ["main.js", "playtest.js", "host-events.js", "audio.js"]:
@@ -105,6 +111,8 @@ def build(stage):
         raise RuntimeError("The patch changed after staging. Prepare a fresh stage.")
     if record["overlay"] != overlayhash():
         raise RuntimeError("The overlay changed after staging. Prepare a fresh stage.")
+    if record.get("content") != contenthash():
+        raise RuntimeError("The preview content recipe changed. Prepare a fresh stage.")
     executable = dotnet(source)
     run([executable, "run", "--project", "content/Builder", "--", "fetch"], source, timeout=1800)
     run([sys.executable, "scripts/build_web_content.py", "--skip-video", "--no-progress"], source, timeout=1800)
@@ -115,9 +123,10 @@ def build(stage):
     if record["patch"] != hashlib.sha256((bundle / "preview.patch").read_bytes()).hexdigest() or record["overlay"] != overlayhash():
         raise RuntimeError("The preview patches changed during the build. Prepare a fresh stage.")
     site = stage / "publish/wwwroot"
-    validate(site)
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%H%M%S%f")
     excluded = stage / "excluded" / stamp
+    slim(site, excluded, source)
+    validate(site)
     for path in list(site.rglob("*")):
         if path.is_file() and (path.suffix in (".br", ".gz", ".pdb", ".xml", ".rej") or path.name.startswith("service-worker-assets")):
             target = excluded / path.relative_to(site)
