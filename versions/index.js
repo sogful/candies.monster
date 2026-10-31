@@ -66,7 +66,10 @@ const buttonmap = [
     {domain: "uptodown.com", icon: "uptodown.png"},
     {domain: "apkcombo.com", icon: "apkcombo.png"},
     {domain: "pdalife.to", icon: "pdalife.png"},
-    {domain: "archive.org", icon: "internetarchive.png"}
+    {domain: "archive.org", icon: "internetarchive.png"},
+    {domain: "github.com", icon: "ctrhome.png"},
+    {domain: "githubusercontent.com", icon: "ctrhome.png"},
+    {domain: "github.io", icon: "ctrhome.png"}
 ];
 
 function packageiconhtml(game, pkgIndex) {
@@ -114,8 +117,9 @@ function renderdownloadbutton(d) {
         </a>`;
     }
     const button = d.button || autobutton(d.url);
+    const label = button.replace(/\.[^.]+$/, "");
     return `<a href="${d.url}" target="_blank" class="clickable">
-        <img src="/assets/images/dlbuttons/${button}" draggable="false">
+        <img src="/assets/images/dlbuttons/${button}" alt="${label}" draggable="false">
     </a>`;
 }
 
