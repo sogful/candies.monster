@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="document">
 <head>
 
     <title>Credits</title>
@@ -25,10 +25,16 @@
             src: url("/assets/fonts/gooddog.woff"); font-display: swap;
         }
 
+        .document {scrollbar-width: none}
+        .document::-webkit-scrollbar {
+            width: 0; height: 0;
+        }
+
         .viewport {
             font-family: "Good Dog";
             position: relative; z-index: 1;
             display: flex; justify-content: center;
+            align-items: flex-start;
             min-height: 100vh; min-width: 100vw;
             overflow-y: visible !important; overflow-x: hidden !important;
             user-select: auto; padding: 0;
@@ -70,12 +76,12 @@
 
         .page {
             display: flex; flex-direction: column;
-            width: min(90vw, 700px); min-height: 90vh;
+            width: min(90vw, 700px);
             color: #ffffff; font-size: 1em;
             -webkit-text-stroke: 0.175em #000000;
             text-shadow: 0 0.15em 0 #000000;
             paint-order: stroke fill;
-            margin-top: 1em; margin-bottom: 20em;
+            margin-top: 1em; margin-bottom: 1em;
         }
 
         .title {
