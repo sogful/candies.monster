@@ -115,7 +115,7 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v2.7.3,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Original%20HD/Cut%20the%20Rope%20HD%20v2.7.3%20%28iOS%206.0%2B%29.ipa,
 ,v2.7.3,,https://archive.org/download/Cut_the_Rope_HD_2.7.3_ios_6.0/Cut_the_Rope_HD_2.7.3_ios_6.0.ipa,
 + Cut the Rope,com.chillingo.cuttheropehdlite,free.webp,ipad hd lite and free releases,8
-,v1.0,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Original%20HD/Cut%20the%20Rope%20HD%20Free%20v2.3.1%20%28iOS%204.3%2B%29.ipa,
+,v2.3.1,icons/com.chillingo.cuttheropehdlite/launcherec866d66598d.png,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Original%20HD/Cut%20the%20Rope%20HD%20Free%20v2.3.1%20%28iOS%204.3%2B%29.ipa,
 ,,,https://archive.org/download/cut-the-rope-original-hd-free-lite-ios-old-versions-1.0-1.2.2/Cut%20the%20Rope%20Original%20HD%20Free%20-%20Lite%201.0.ipa,
 ,v2.4.5,icons/com.chillingo.cuttheropehdlite/ios26.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%205/Cut%20The%20Rope%20HD%20Lite%202.4.5.ipa,
 ,v2.6,icons/com.chillingo.cuttheropehdlite/ios26.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%205/Cut%20The%20Rope%20HD%20Lite%202.6.0.ipa,
@@ -128,6 +128,24 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v1.2.2,,https://archive.org/download/cut-the-rope-original-hd-free-lite-ios-old-versions-1.0-1.2.2/Cut%20the%20Rope%20Original%20HD%20Free%20-%20Lite%201.2.2.ipa,
 ,v1.2.2,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Original%20HD/Cut%20the%20Rope%20HD%20Lite%20v1.2.2%20%28iOS%203.2%2B%29.ipa,
 ,v1.2.2,,https://archive.org/download/Cut_the_Rope_HD_Lite_1.2.2_ios_3.2/Cut_the_Rope_HD_Lite_1.2.2_ios_3.2.ipa,
++ 割绳子 (Cut the Rope),com.zeptolab.cuttheropehdlite,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,chinese app store releases; earlier versions named Cut the Rope,10,launcher1b01cbeb462a.png,launcherca3ce801a7b1.png,launcher297b165d39fb.png,launcher68d616f19cec.png,launcheradc8b98230fa.png,launcher014b40c92129.png,launcherd720451b38a4.png,launcher653e77e7474e.png
+,v2.7,icons/com.zeptolab.cuttheropehdlite/launcher1b01cbeb462a.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v2.7%20%28iOS%206.0%29.ipa,
+,v2.7.1,icons/com.zeptolab.cuttheropehdlite/launcher1b01cbeb462a.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v2.7.1%20%28iOS%206.0%29.ipa,
+,v3.0.0,icons/com.zeptolab.cuttheropehdlite/launcherca3ce801a7b1.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.0.0%20%28iOS%207.0%29.ipa,
+,v3.1.1,icons/com.zeptolab.cuttheropehdlite/launcher297b165d39fb.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.1.1%20%28iOS%207.0%29.ipa,
+,v3.1.2,icons/com.zeptolab.cuttheropehdlite/launcher297b165d39fb.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.1.2%20%28iOS%207.0%29.ipa,
+,v3.1.3,icons/com.zeptolab.cuttheropehdlite/launcher297b165d39fb.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.1.3%20%28iOS%207.0%29.ipa,
+,v3.1.4,icons/com.zeptolab.cuttheropehdlite/launcher297b165d39fb.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.1.4%20%28iOS%207.0%29.ipa,
+,v3.2.0,icons/com.zeptolab.cuttheropehdlite/launcher297b165d39fb.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.2.0%20%28iOS%207.0%29.ipa,
+,v3.3.1,icons/com.zeptolab.cuttheropehdlite/launcher68d616f19cec.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.3.1%20%28iOS%207.0%29.ipa,
+,v3.4.0,icons/com.zeptolab.cuttheropehdlite/launcheradc8b98230fa.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.4.0%20%28iOS%208.0%29.ipa,
+,v3.6.0,icons/com.zeptolab.cuttheropehdlite/launcher014b40c92129.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.6.0%20%28iOS%208.0%29.ipa,
+,v3.6.1,icons/com.zeptolab.cuttheropehdlite/launcher68d616f19cec.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.6.1%20%28iOS%208.0%29.ipa,
+,v3.7.0,icons/com.zeptolab.cuttheropehdlite/launcherd720451b38a4.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.7.0%20%28iOS%208.0%29.ipa,
+,v3.26.1,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.26.1%20%28iOS%209.0%29.ipa,
+,v3.26.2,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.26.2%20%28iOS%209.0%29.ipa,
+,v3.32.0,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.32.0%20%28iOS%209.0%29.ipa,
+,v3.33.0,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.33.0%20%28iOS%209.0%29.ipa,
 Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
 ,v1.0,,https://archive.org/download/iOSObscura/iPhoneOS%203/com.zeptolab.ctrexperiments/Cut%20the%20Rope-%28com.zeptolab.ctrexperiments%29-1.0-%28iOS_3.0%29-37e7e4e478f51dc824642665e68f8177.ipa,
 ,v1.6.1,,https://archive.org/download/Cut_the_Rope_1.6.1_ios_4.3/Cut_the_Rope_1.6.1_ios_4.3.ipa,
@@ -188,6 +206,8 @@ Cut the Rope,com.zeptolab.ctr2,ctr2.webp,cut the rope 2 paid,10
 ,v1.6.9,,https://pdalife.com/dwn/3ef89c23.html?lang=en,
 + Cut the Rope,com.zeptolab.ctr2.f2p,ctr2.webp,cut the rope 2 free,9
 ,v1.19.3,,https://archive.org/download/cut-the-rope-2-v-1.19.3-hs/Cut%20The%20Rope%202%20v1.19.3%20HS.ipa,
++ 割绳子2,com.yodo1.cuttherope2,icons/com.yodo1.cuttherope2/launcher8612cb550e13.png,chinese release (yodo1),10,launcher8612cb550e13.png
+,v1.5.21,icons/com.yodo1.cuttherope2/launcher8612cb550e13.png,https://mega.nz/file/LQ0gXbpA#vEnS42aL63Qqf-So2IH1SodOBMwnMzTOba3bRm-yKuw,
 Cut the Rope,com.zeptolab.timetravel,timetravel.webp,time travel,10
 ,v1.15.0,,https://archive.org/download/Cut_the_Rope_1.15.0_ios_12.0/Cut_the_Rope_1.15.0_ios_12.0.ipa,
 ,v1.1,icons/com.zeptolab.timetravel/ios11.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collection%20Part%203/Cut%20The%20Rope%20Time%20Travel%201.1.0.ipa,
@@ -336,6 +356,8 @@ Candy Flick,com.zeptolab.candyflick,candyflick.webp,,5
 ,,,https://archive.org/download/cut-the-rope_202301/Om%2BNom%2BCandy%2BFlick-1.0%2B%28appifan%29.ipa,
 ,v1.1,,https://archive.org/download/om-nom-candy-flick/Om%20Nom%20Candy%20Flick%201.1.ipa,
 ,v2.2,,https://archive.org/download/om-nom-candy-flick/Om%20Nom%20Candy%20Flick%202.2.ipa,
+,v2.6,icons/com.zeptolab.candyflick/launcherf39ffb6d079b.png,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/OmNomCandyFlick_2.6-iOS7.0.ipa,
+,v2.5,icons/com.zeptolab.candyflick/launcherf39ffb6d079b.png,https://theawesomeblue.github.io/ctrfiles/download/candyflick/com.zeptolab.candyflick-2.5-iOS6.0.ipa,
 My Om Nom,com.zeptolab.myomnom.paid,myomnom.webp,,5
 ,v1.1.1,,https://archive.org/download/my-om-nom/My%20Om%20Nom%201.1.1.ipa,
 ,v1.1.3,,https://archive.org/download/my-om-nom/My%20Om%20Nom%201.1.3.ipa,
