@@ -58,6 +58,10 @@
         }
         *::-webkit-scrollbar {width: 0px}
 
+        .clickable, .clickable *, .scrollnav, .scrollnav * {
+            cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+        }
+
         p {margin: 0; z-index: 99; overflow: hidden; max-height: 5em}
 
         .tiny {
@@ -94,6 +98,7 @@
         }
         .scrollnav.right {right: 0.5em}
         .scrollnav.left {left: 0.5em}
+        .gameopen .scrollnav {display: none !important}
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -141,6 +146,7 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
+        .gameopen .container {overflow-x: hidden}
 
         .gamepanels {
             display: flex; flex-direction: row;
@@ -224,18 +230,21 @@
             height: 100vh; padding: 1em;
             overflow-y: auto; overflow-x: hidden;
             pointer-events: none; box-sizing: border-box;
-            background-color: rgba(0,0,0,0); opacity: 0;
-            transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;
+            background-color: rgba(0,0,0,0.5); opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
         
         @media (max-width: 650px) {
             .versionscreen {
                 left: 0; right: 0; width: 100vw;
+                background-color: #74542b;
+                background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), var(--bg);
+                background-position: center; background-size: cover;
+                transition: none;
             }
         }
         .versionscreen.active {
             pointer-events: auto;
-            background-color: rgba(0,0,0,0.5);
             opacity: 1;
         }
 
@@ -268,13 +277,10 @@
         .versionslist {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 0.5em; padding-right: 0.5em; padding-bottom: 3em;
+            padding-right: 0.5em; padding-bottom: 3em;
             width: 100%; box-sizing: border-box;
         }
-        .versionslist.multipackage {
-            grid-template-columns: 1fr;
-            gap: 2em;
-        }
+        .versionslist.multipackage {grid-template-columns: 1fr}
         .packagecolumn {
             display: flex;
             flex-direction: column;
@@ -282,9 +288,8 @@
         .packagecolumn .packageversions {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 0.5em;
             padding-right: 0.5em;
-            padding-bottom: 3em;
+            padding-bottom: 1em;
             width: 100%;
             box-sizing: border-box;
         }
@@ -298,9 +303,9 @@
         }
 
         .versionicon {
-            width: 60px; height: 60px;
+            width: 50px; height: 50px;
             flex-shrink: 0; border-radius: 20%;
-            overflow: hidden; margin-right: 10px;
+            overflow: hidden; margin-right: 5px;
         }
         .versionicon img {
             width: 100%; height: 100%;
@@ -339,7 +344,7 @@
         .versionbuttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.3em;
+            gap: 0em;
             margin-top: 0.25em;
         }
         .versionbuttons img {

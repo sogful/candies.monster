@@ -22,7 +22,7 @@ function platformstatus(platform, failed = false) {
     status.className = "platformstatus";
     const message = document.createElement("p");
     message.setAttribute("role", failed ? "alert" : "status");
-    message.textContent = failed ? `Unable to load ${platform.label} games.` : `Loading ${platform.label} games...`;
+    // message.textContent = failed ? `Unable to load ${platform.label} games.` : `Loading ${platform.label} games...`;
     status.appendChild(message);
     if (failed) {
         const retry = document.createElement("button");
@@ -226,6 +226,7 @@ function containerscroll(game) {
 }
 
 function activateplatform(platform, scroll = true) {
+    if (currentgame) return;
     activeplatform = platform;
     document.querySelector("#navios").style.display = platform.name === "ios" ? "none" : "flex";
     document.querySelector("#navandroid").style.display = platform.name === "ios" ? "flex" : "none";
@@ -235,8 +236,10 @@ function activateplatform(platform, scroll = true) {
 
 async function selectgame(game) {
     const loadid = ++currentloadid;
-    currentgame = game;
     const platform = platforms[game.iosstuff ? 1 : 0];
+    activeplatform = platform;
+    currentgame = game;
+    document.body.classList.add("gameopen");
     const alreadyshown = document.querySelector("#versionscreen").classList.contains("active");
     const packages = Array.isArray(game.package) ? game.package : [game.package];
     await loadversions(packages, game, loadid, alreadyshown, platform.cache, id => id === currentloadid, containerscroll);
@@ -249,8 +252,10 @@ function goback() {
     document.querySelector("#versionscreen").classList.remove("active");
     document.querySelector(".backbutton").classList.remove("active");
     currentgame = null;
+    activateplatform(game ? platforms[game.iosstuff ? 1 : 0] : activeplatform, false);
     layoutplatform(activeplatform);
     if (game) containerscroll(game);
+    document.body.classList.remove("gameopen");
 }
 
 document.addEventListener("click", event => {
@@ -276,6 +281,7 @@ document.addEventListener("click", event => {
 });
 
 container.addEventListener("scroll", () => {
+    if (currentgame) return;
     const platform = platforms[container.scrollLeft >= platforms[1].screen.offsetLeft / 2 ? 1 : 0];
     if (platform !== activeplatform) activateplatform(platform, false);
 }, {passive: true});
