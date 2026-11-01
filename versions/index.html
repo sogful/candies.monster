@@ -58,10 +58,6 @@
         }
         *::-webkit-scrollbar {width: 0px}
 
-        .clickable, .clickable *, .scrollnav, .scrollnav * {
-            cursor: url("/assets/static/cursors/link.cur"), pointer !important;
-        }
-
         p {margin: 0; z-index: 99; overflow: hidden; max-height: 5em}
 
         .tiny {
@@ -98,7 +94,6 @@
         }
         .scrollnav.right {right: 0.5em}
         .scrollnav.left {left: 0.5em}
-        .gameopen .scrollnav {display: none !important}
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -146,7 +141,6 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
-        .gameopen .container {overflow-x: hidden}
 
         .gamepanels {
             display: flex; flex-direction: row;
@@ -230,21 +224,16 @@
             height: 100vh; padding: 1em;
             overflow-y: auto; overflow-x: hidden;
             pointer-events: none; box-sizing: border-box;
-            background-color: rgba(0,0,0,0.5); opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            background-color: rgba(0,0,0,0); opacity: 0;
+            transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;
         }
         
         @media (max-width: 650px) {
-            .versionscreen {
-                left: 0; right: 0; width: 100vw;
-                background-color: #74542b;
-                background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), var(--bg);
-                background-position: center; background-size: cover;
-                transition: none;
-            }
+            .versionscreen {left: 0; right: 0; width: 100vw}
         }
         .versionscreen.active {
             pointer-events: auto;
+            background-color: rgba(0,0,0,0.5);
             opacity: 1;
         }
 
