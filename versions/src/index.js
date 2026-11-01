@@ -1,363 +1,291 @@
 import {parsegamescsv, resolveiconpath} from "./load.js";
 import {loadversions} from "./versions.js";
+import "/assets/static/favicon.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
-(function() {
-    let spritejson = null; let sheetloaded = false;
-    let favicons = []; let index = 0; const delay = 300;
-    let sheetimg = null;
 
-    fetch("/assets/images/icon.json")
-        .then(response => response.json()).then(data => {
-            spritejson = data.frames; sheetimg = new Image();
-            sheetimg.onload = () => {
-                sheetloaded = true;
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-                favicons = spritejson.map(frame => {
-                    canvas.width = frame.frame.w;
-                    canvas.height = frame.frame.h;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(
-                        sheetimg,
-                        frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h,
-                        0, 0, frame.frame.w, frame.frame.h
-                    ); return canvas.toDataURL("image/png");
-                }); favicongif();
-            }; sheetimg.src = "/assets/images/icon.webp";
-        });
-    function favicongif() {
-        if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
-        const link = document.querySelector("link[rel='icon']") || document.createElement("link");
-        link.rel = "icon"; link.href = favicons[index];
-        document.head.appendChild(link);
-        index = (index + 1) % favicons.length;
-        setTimeout(favicongif, delay);
+const platforms = [
+    {name: "android", label: "Android", url: "android.csv", circle: document.querySelector("#gamecircle"), screen: document.querySelector("#gamescreen")},
+    {name: "ios", label: "iOS", url: "ios.csv", circle: document.querySelector("#gamecircle-ios"), screen: document.querySelector("#gamescreenios")}
+];
+const container = document.querySelector(".container");
+const elements = new WeakMap();
+let activeplatform = platforms[0];
+let currentgame = null;
+let currentloadid = 0;
+let resizeframe = 0;
+
+document.querySelector(".loading")?.remove();
+
+function platformstatus(platform, failed = false) {
+    const status = document.createElement("div");
+    status.className = "platformstatus";
+    const message = document.createElement("p");
+    message.setAttribute("role", failed ? "alert" : "status");
+    message.textContent = failed ? `Unable to load ${platform.label} games.` : `Loading ${platform.label} games...`;
+    status.appendChild(message);
+    if (failed) {
+        const retry = document.createElement("button");
+        retry.className = "retryplatform clickable";
+        retry.type = "button";
+        retry.dataset.platform = platform.name;
+        retry.textContent = "Retry";
+        status.appendChild(retry);
     }
-})();
-function hideloading() {
-    const loading = document.querySelector(".loading");
-    if (loading) {
-        loading.style.opacity = "0";
-        loading.style.pointerEvents = "none";
-    }
+    platform.circle.replaceChildren(status);
 }
-if (document.readyState === "complete") hideloading();
-else window.addEventListener("load", hideloading);
-document.querySelectorAll(".clickable").forEach(function(element) {
-    if (element.classList.contains("backbutton")) return;
-    element.addEventListener("click", function() {
-        const clicksfx = document.querySelector(".click");
-        if (clicksfx) {
-            clicksfx.currentTime = 0;
-            clicksfx.play().catch(() => {});
+
+function platformfailure(platform, error) {
+    platform.text = null;
+    platform.games = null;
+    platform.nodes = null;
+    platform.stamp = null;
+    platform.error = error;
+    console.error(`Unable to load ${platform.url}`, error);
+    if (platform === activeplatform) platformstatus(platform, true);
+}
+
+function prepareplatform(platform) {
+    if (platform.games || platform.text == null) return;
+    const parsed = parsegamescsv(platform.text);
+    if (!parsed.games.length) throw new Error(`No games in ${platform.url}`);
+    platform.games = parsed.games.map(game => ({...game, iosstuff: platform.name === "ios"}));
+    platform.games.sort((first, second) => second.importance - first.importance);
+    platform.cache = parsed.versionscache;
+    platform.text = null;
+}
+
+function mountplatform(platform) {
+    prepareplatform(platform);
+    if (!platform.games) return;
+    if (!platform.nodes) {
+        const fragment = document.createDocumentFragment();
+        platform.nodes = platform.games.map((game, index) => {
+            const icon = document.createElement("div");
+            icon.className = "gameicon clickable";
+            const key = game.verkey ?? game.package;
+            icon.dataset.gameid = Array.isArray(key) ? key[0] : key;
+            const image = document.createElement("img");
+            image.loading = "lazy";
+            image.decoding = "async";
+            image.fetchPriority = index === 0 ? "high" : "low";
+            image.draggable = false;
+            image.alt = Array.isArray(game.name) ? game.name[0] : game.name;
+            image.addEventListener("error", () => {
+                image.src = "/assets/images/gameicons/idk.webp";
+            }, {once: true});
+            image.src = resolveiconpath(Array.isArray(game.icon) ? game.icon[0] : game.icon);
+            icon.appendChild(image);
+            elements.set(icon, game);
+            fragment.appendChild(icon);
+            return icon;
+        });
+        platform.circle.replaceChildren(fragment);
+        platform.circle.classList.remove("rendering");
+    }
+    layoutplatform(platform);
+}
+
+function fetchplatform(platform) {
+    if (platform.promise) return platform.promise;
+    if (platform.games || platform.text != null) {
+        try {
+            if (platform === activeplatform) mountplatform(platform);
+        } catch (error) {
+            platformfailure(platform, error);
         }
+        return Promise.resolve();
+    }
+    if (platform === activeplatform) platformstatus(platform);
+    platform.promise = (async () => {
+        const response = await fetch(platform.url);
+        if (!response.ok) throw new Error(`${platform.url}: HTTP ${response.status}`);
+        platform.text = await response.text();
+        platform.error = null;
+        if (platform === activeplatform) mountplatform(platform);
+    })().catch(error => platformfailure(platform, error)).finally(() => {
+        platform.promise = null;
     });
-});
+    return platform.promise;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+function packcircle(games, width, height) {
+    const placed = [];
+    const centerx = width / 2;
+    const centery = height / 2;
+    const importance = games.length ? games[0].importance - games[games.length - 1].importance : 0;
+
+    for (let index = 0; index < games.length; index++) {
+        const game = games[index];
+        const size = 50 + (game.importance - 3) * 5.7;
+        let x = centerx - size / 2;
+        let y = centery - size / 2;
+        if (index) {
+            const weight = importance > 0 ? (game.importance - games[games.length - 1].importance) / importance : 1 - index / Math.max(1, games.length - 1);
+            const minimum = size * 0.65;
+            const maximumradius = Math.min(size * 2, Math.min(width, height) * 0.4);
+            const radius = minimum + (1 - weight) * (maximumradius - minimum);
+            const angle = (index - 1) * Math.PI * (3 - Math.sqrt(5));
+            let targetx = centerx + Math.cos(angle) * radius;
+            let targety = centery + Math.sin(angle) * radius;
+            let overlapping = true;
+            let attempt = 0;
+            while (overlapping && attempt < 50) {
+                overlapping = false;
+                for (const other of placed) {
+                    const differencex = targetx - other.x;
+                    const differencey = targety - other.y;
+                    const squared = differencex * differencex + differencey * differencey;
+                    const distance = (size + other.size) / 2 + 12;
+                    if (squared < distance * distance) {
+                        overlapping = true;
+                        if (squared > 0) {
+                            const actual = Math.sqrt(squared);
+                            const push = distance - actual + 1;
+                            const direction = Math.atan2(differencey, differencex);
+                            targetx += Math.cos(direction) * push;
+                            targety += Math.sin(direction) * push;
+                        } else {
+                            const direction = Math.random() * Math.PI * 2;
+                            targetx += Math.cos(direction) * (distance + 1);
+                            targety += Math.sin(direction) * (distance + 1);
+                        }
+                        targetx = Math.max(size / 2, Math.min(width - size / 2, targetx));
+                        targety = Math.max(size / 2, Math.min(height - size / 2, targety));
+                        break;
+                    }
+                }
+                attempt++;
+            }
+            if (overlapping) {
+                outer:
+                for (let radius = minimum; radius <= Math.min(width, height) * 0.5; radius += size * 0.4) {
+                    for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 12) {
+                        const candidatex = centerx + Math.cos(angle) * radius;
+                        const candidatey = centery + Math.sin(angle) * radius;
+                        let colliding = false;
+                        for (const other of placed) {
+                            const differencex = candidatex - other.x;
+                            const differencey = candidatey - other.y;
+                            const distance = (size + other.size) / 2 + 12;
+                            if (differencex * differencex + differencey * differencey < distance * distance) {
+                                colliding = true;
+                                break;
+                            }
+                        }
+                        if (!colliding) {
+                            targetx = candidatex;
+                            targety = candidatey;
+                            break outer;
+                        }
+                    }
+                }
+            }
+            x = targetx - size / 2;
+            y = targety - size / 2;
+        }
+        x = Math.max(0, Math.min(width - size, x));
+        y = Math.max(0, Math.min(height - size, y));
+        const item = {x: x + size / 2, y: y + size / 2, size, index, left: x, top: y};
+        placed.push(item);
+    }
+    return placed;
+}
+
+function layoutplatform(platform) {
+    if (!platform.nodes) return;
+    const mobile = window.innerWidth < 650;
+    const bounds = platform.circle.getBoundingClientRect();
+    const width = bounds.width || Math.min(window.innerWidth * 0.9, 800);
+    const height = bounds.height || Math.max(Math.min(window.innerHeight * 0.9, 800), 600);
+    const stamp = mobile ? "mobile" : `${width},${height}`;
+    if (platform.stamp === stamp) return;
+    platform.stamp = stamp;
+    if (mobile) {
+        platform.nodes.forEach(node => node.removeAttribute("style"));
+        return;
+    }
+    const positions = packcircle(platform.games, width, height);
+    platform.nodes.forEach((node, index) => {
+        const position = positions[index];
+        node.style.width = `${position.size}px`;
+        node.style.height = `${position.size}px`;
+        node.style.left = `${position.left}px`;
+        node.style.top = `${position.top}px`;
+        node.style.position = "absolute";
+    });
+}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 function containerscroll(game) {
-    const cont = document.querySelector(".container");
-    if (!cont) return;
-    const id = game && game.iosstuff ? "gamescreenios" : "gamescreen";
-    const gs = document.querySelector(`#${id}`);
-    if (!gs) return;
-    cont.scrollTo({left: gs.offsetLeft, behavior: "smooth"});
+    const platform = platforms[game?.iosstuff ? 1 : 0];
+    container.scrollTo({left: platform.screen.offsetLeft, behavior: "smooth"});
 }
 
-let games = [];
-let iosgames = [];
-let currentgame = null;
-let currentloadid = 0;
-let versionscache = new Map();
-let iosversionscache = new Map();
-
-async function loadgames() {
-    try {
-        const res = await fetch("android.csv");
-        const text = await res.text();
-        const parsed = parsegamescsv(text);
-        games = parsed.games;
-        versionscache = parsed.versionscache;
-        requestAnimationFrame(() => {setTimeout(() => {rendergamecircle()}, 50)});
-    } catch (e) {}
-    try {
-        const res2 = await fetch("ios.csv");
-        const text2 = await res2.text();
-        const parsed2 = parsegamescsv(text2);
-        iosgames = parsed2.games.map(g => ({...g, iosstuff: true}));
-        iosversionscache = parsed2.versionscache;
-        requestAnimationFrame(() => {setTimeout(() => {rendergamecircle(true)}, 80)});
-    } catch (e) {}
-}
-function rendergamecircle(isios) {
-    const circleid = isios ? "gamecircle-ios" : "gamecircle";
-    const gamelist = isios ? iosgames : games;
-    const circle = document.querySelector(`#${circleid}`);
-    if (!circle) return;
-    circle.classList.add("rendering");
-    circle.innerHTML = "";
-    const sorted = [...gamelist].sort((a, b) => b.importance - a.importance);
-    const tinyscreen = window.innerWidth < 650;
-    
-    if (tinyscreen) {
-        sorted.forEach((g) => {
-            const ic = document.createElement("div");
-            ic.className = "gameicon clickable";
-            ic.dataset.gameid = (() => {
-                const vk = g.verkey;
-                if (vk != null) return Array.isArray(vk) ? vk[0] : vk;
-                return Array.isArray(g.package) ? g.package[0] : g.package;
-            })();
-            const im = document.createElement("img");
-            im.src = resolveiconpath(Array.isArray(g.icon) ? g.icon[0] : g.icon);
-            im.draggable = false;
-            im.onerror = function() {this.src = "/assets/images/gameicons/idk.webp"};
-            ic.appendChild(im);
-            ic.addEventListener("click", () => {
-                const s = document.querySelector(".click");
-                if (s) {
-                    s.currentTime = 0;
-                    s.play().catch(() => {});
-                } selectgame(g);
-            });
-            circle.appendChild(ic);
-        });
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                circle.classList.remove("rendering");
-            });
-        });
-    } else {
-        const circlerect = circle.getBoundingClientRect();
-        const w = circlerect.width > 0 ? circlerect.width : Math.min(window.innerWidth * 0.9, 800);
-        const h = circlerect.height > 0 ? circlerect.height : Math.max(Math.min(window.innerHeight * 0.9, 800), 600);
-        const cx = w / 2, cy = h / 2;
-        const placed = [];
-        sorted.forEach((g, i) => {
-            const ic = document.createElement("div");
-            ic.className = "gameicon clickable";
-            ic.dataset.gameid = (() => {
-                const vk = g.verkey;
-                if (vk != null) return Array.isArray(vk) ? vk[0] : vk;
-                return Array.isArray(g.package) ? g.package[0] : g.package;
-            })();
-            const sz = 50 + (g.importance - 3) * 5.7;
-            ic.style.width = `${sz}px`;
-            ic.style.height = `${sz}px`;
-            let x, y;
-            if (i === 0) {
-                x = cx - sz / 2;
-                y = cy - sz / 2;
-            } else {
-                const maximp = sorted[0].importance;
-                const minimp = sorted[sorted.length - 1].importance;
-                const imgrange = maximp - minimp;
-                let normimp;
-                if (imgrange <= 0) {
-                    const denom = Math.max(1, sorted.length - 1);
-                    normimp = 1 - (i / denom);
-                } else {
-                    normimp = (g.importance - minimp) / imgrange;
-                }
-                const saferad = Math.min(w, h) * 0.4;
-                const minrad = sz * 0.65;
-                const maxrad = Math.min(sz * 2, saferad);
-                const rad = minrad + (1 - normimp) * (maxrad - minrad);
-                const gold = Math.PI * (3 - Math.sqrt(5));
-                const ang = (i - 1) * gold;
-                let tx = cx + Math.cos(ang) * rad;
-                let ty = cy + Math.sin(ang) * rad;
-                let ov = true, att = 0, maxatt = 50, pad = 12;
-                while (ov && att < maxatt) {
-                    ov = false;
-                    for (const pl of placed) {
-                        const dx = tx - pl.x, dy = ty - pl.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        const mindist = (sz + pl.size) / 2 + pad;
-                        if (dist < mindist) {
-                            ov = true;
-                            if (dist > 0) {
-                                const pdist = (mindist - dist) + 1;
-                                const pang = Math.atan2(dy, dx);
-                                tx += Math.cos(pang) * pdist;
-                                ty += Math.sin(pang) * pdist;
-                            } else {
-                                const ran = Math.random() * Math.PI * 2;
-                                tx += Math.cos(ran) * (mindist + 1);
-                                ty += Math.sin(ran) * (mindist + 1);
-                            }
-                            const half = sz / 2;
-                            tx = Math.max(half, Math.min(w - half, tx));
-                            ty = Math.max(half, Math.min(h - half, ty));
-                            break;
-                        }
-                    } att++;
-                }
-                if (ov) {
-                    const pad = 12;
-                    const maxsr = Math.min(w, h) * 0.5;
-                    const rstep = sz * 0.4;
-                    const astep = Math.PI / 12;
-                    outer:
-                    for (let r = minrad; r <= maxsr; r += rstep) {
-                        for (let a = 0; a < Math.PI * 2; a += astep) {
-                            const cx2 = cx + Math.cos(a) * r;
-                            const cy2 = cy + Math.sin(a) * r;
-                            let cov = false;
-                            for (const pl of placed) {
-                                const dx = cx2 - pl.x, dy = cy2 - pl.y;
-                                const dist = Math.sqrt(dx * dx + dy * dy);
-                                const mindist = (sz + pl.size) / 2 + pad;
-                                if (dist < mindist) {cov = true; break}
-                            }
-                            if (!cov) {
-                                tx = cx2;
-                                ty = cy2;
-                                ov = false;
-                                break outer;
-                            }
-                        }
-                    }
-                } x = tx - sz / 2; y = ty - sz / 2;
-            }
-            x = Math.max(0, Math.min(w - sz, x));
-            y = Math.max(0, Math.min(h - sz, y));
-            ic.style.left = `${x}px`;
-            ic.style.top = `${y}px`;
-            ic.style.position = "absolute";
-            placed.push({x: x + sz / 2, y: y + sz / 2, size: sz});
-            const im = document.createElement("img");
-            im.src = resolveiconpath(Array.isArray(g.icon) ? g.icon[0] : g.icon);
-            im.draggable = false;
-            im.onerror = function() {this.src = "/assets/images/gameicons/idk.webp"};
-            ic.appendChild(im);
-            ic.addEventListener("click", () => {
-                const s = document.querySelector(".click");
-                if (s) {
-                    s.currentTime = 0;
-                    s.play().catch(() => {});
-                } selectgame(g);
-            }); circle.appendChild(ic);
-        });
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                circle.classList.remove("rendering");
-            });
-        });
-    }
+function activateplatform(platform, scroll = true) {
+    activeplatform = platform;
+    document.querySelector("#navios").style.display = platform.name === "ios" ? "none" : "flex";
+    document.querySelector("#navandroid").style.display = platform.name === "ios" ? "flex" : "none";
+    void fetchplatform(platform);
+    if (scroll) container.scrollTo({left: platform.screen.offsetLeft, behavior: "smooth"});
 }
 
-async function selectgame(g) {
-    currentloadid++;
-    const thisloadid = currentloadid;
-    
-    currentgame = g;
-    const vs = document.querySelector("#versionscreen");
-    
-    const alreadyshown = vs.classList.contains("active");
-    
-    const packages = Array.isArray(g.package) ? g.package : [g.package];
-    const vcache = g.iosstuff ? iosversionscache : versionscache;
-    await loadversions(packages, g, thisloadid, alreadyshown, vcache, (id) => id === currentloadid, containerscroll);
+async function selectgame(game) {
+    const loadid = ++currentloadid;
+    currentgame = game;
+    const platform = platforms[game.iosstuff ? 1 : 0];
+    const alreadyshown = document.querySelector("#versionscreen").classList.contains("active");
+    const packages = Array.isArray(game.package) ? game.package : [game.package];
+    await loadversions(packages, game, loadid, alreadyshown, platform.cache, id => id === currentloadid, containerscroll);
 }
 
 function goback() {
     currentloadid++;
-    const gsid = currentgame && currentgame.iosstuff ? "gamescreenios" : "gamescreen";
-    const gs = document.querySelector(`#${gsid}`);
-    const vs = document.querySelector("#versionscreen");
-    const bb = document.querySelector(".backbutton");
-    const cg = currentgame;
-    if (gs) gs.classList.remove("slideleft");
-    vs.classList.remove("active");
-    bb.classList.remove("active");
+    const game = currentgame;
+    platforms.forEach(platform => platform.screen.classList.remove("slideleft"));
+    document.querySelector("#versionscreen").classList.remove("active");
+    document.querySelector(".backbutton").classList.remove("active");
     currentgame = null;
-    if (cg) containerscroll(cg);
+    layoutplatform(activeplatform);
+    if (game) containerscroll(game);
 }
 
-function setupbackbutton() {
-    const bb = document.querySelector(".backbutton");
-    if (bb) {
-        bb.addEventListener("click", function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const c = document.querySelector(".click");
-            if (c) {c.currentTime = 0; c.play().catch(() => {})} goback();
-        });
+document.addEventListener("click", event => {
+    const control = event.target.closest?.(".clickable, .scrollnav");
+    if (!control) return;
+    const sound = document.querySelector(".click");
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
     }
-}
-
-function setupscrollnav() {
-    const navios = document.querySelector("#navios");
-    const navand = document.querySelector("#navandroid");
-    const gsios = document.querySelector("#gamescreenios");
-    const gs = document.querySelector("#gamescreen");
-    const cont = document.querySelector(".container");
-    if (navios && gsios && cont) {
-        navios.addEventListener("click", () => {
-            const c = document.querySelector(".click");
-            if (c) {c.currentTime = 0; c.play().catch(() => {})}
-            cont.scrollTo({left: gsios.offsetLeft, behavior: "smooth"});
-            navios.style.display = "none";
-            if (navand) navand.style.display = "flex";
-        });
+    if (control.classList.contains("gameicon")) {
+        const game = elements.get(control);
+        if (game) void selectgame(game);
+    } else if (control.classList.contains("backbutton")) {
+        event.preventDefault();
+        goback();
+    } else if (control.classList.contains("retryplatform")) {
+        const platform = platforms.find(item => item.name === control.dataset.platform);
+        if (platform) void fetchplatform(platform);
+    } else if (control.classList.contains("scrollnav")) {
+        activateplatform(platforms[control.id === "navios" ? 1 : 0]);
     }
-    if (navand && gs && cont) {
-        navand.addEventListener("click", () => {
-            const c = document.querySelector(".click");
-            if (c) {c.currentTime = 0; c.play().catch(() => {})}
-            cont.scrollTo({left: gs.offsetLeft, behavior: "smooth"});
-            navand.style.display = "none";
-            if (navios) navios.style.display = "flex";
-        });
-    }
-}
+});
 
-if (document.readyState === "loading") {document.addEventListener("DOMContentLoaded", () => {setupbackbutton(); setupscrollnav()})}
-else {setupbackbutton(); setupscrollnav()}
-loadgames();
-
-let resizet;
-let currentlaymode = window.innerWidth < 650 ? "mobile" : "desktop";
+container.addEventListener("scroll", () => {
+    const platform = platforms[container.scrollLeft >= platforms[1].screen.offsetLeft / 2 ? 1 : 0];
+    if (platform !== activeplatform) activateplatform(platform, false);
+}, {passive: true});
 
 window.addEventListener("resize", () => {
-    clearTimeout(resizet);
-    const laymode = window.innerWidth < 650 ? "mobile" : "desktop";
-    const loading = document.querySelector(".loading");
-    const gamecircle = document.querySelector("#gamecircle");
-    
-    if (laymode !== currentlaymode && !currentgame && loading && gamecircle) {
-        loading.style.opacity = "1";
-        loading.style.pointerEvents = "auto";
-        gamecircle.style.visibility = "hidden";
-    }
-    
-    resizet = setTimeout(() => {
-        if (!currentgame) {
-            rendergamecircle();
-            rendergamecircle(true);
-            currentlaymode = laymode;
-            if (loading && gamecircle) {
-                setTimeout(() => {
-                    loading.style.opacity = "0";
-                    loading.style.pointerEvents = "none";
-                    gamecircle.style.visibility = "";
-                }, 750);
-            }
-        } else if (loading && gamecircle) {
-            loading.style.opacity = "0";
-            loading.style.pointerEvents = "none";
-            gamecircle.style.visibility = "";
-        }
-    }, 250);
-});
-window.addEventListener("load", () => {
-    requestAnimationFrame(() => {
-        setTimeout(() => {
-            if (!currentgame && games.length > 0) {rendergamecircle()}
-            if (!currentgame && iosgames.length > 0) {rendergamecircle(true)}
-        }, 150);
+    if (resizeframe) return;
+    resizeframe = requestAnimationFrame(() => {
+        resizeframe = 0;
+        if (!currentgame) layoutplatform(activeplatform);
     });
 });
+
+platforms.forEach(platform => {void fetchplatform(platform)});
