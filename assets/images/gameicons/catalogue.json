@@ -4747,5 +4747,77 @@
     "packages": [
       "com.momzikov.omnompoolparty"
     ]
+  },
+  {
+    "game": "runduel",
+    "variant": "iosv02",
+    "raw": "/assets/images/gameicons/runduel/iosv02/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "a8d8d932bd4f431c2d9bfc5d601e77a4a4bf1059d3299cd05f005c24c540709c",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.zeptolab.runduel",
+        "file": "https://assets.appmeme.com/com.zeptolab.runduel--ipa-0_2-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.runduel"
+    ]
+  },
+  {
+    "game": "racing",
+    "variant": "iosv05",
+    "raw": "/assets/images/gameicons/racing/iosv05/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "d21244cb804207ef99c2e93c62296bd62d38f7ae015fa6b548436708435d7fa3",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.zeptolab.omnomracing",
+        "file": "https://assets.appmeme.com/com.zeptolab.omnomracing--ipa-0_5-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.omnomracing"
+    ]
+  },
+  {
+    "game": "quiz",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/quiz/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "cf0982905a8a5aaabc5f9dfbd17f290ce006fda6f49eccbb1a9172ce22b7a075",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.zeptolab.omnomquiz",
+        "file": "https://assets.appmeme.com/com.zeptolab.omnomquiz--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.omnomquiz"
+    ]
+  },
+  {
+    "game": "dash",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/dash/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "c0fda68ac98cab1a4fce8ef1bcad4c5598fa7fdcc9100bcddb6dc012dcc145b1",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.zeptolab.omnomhero",
+        "file": "https://assets.appmeme.com/com.zeptolab.omnomhero--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.omnomhero"
+    ]
   }
 ]
