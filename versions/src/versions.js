@@ -30,7 +30,7 @@ function packageiconhtml(game, index) {
 function isdownloadbuttonvisible(download) {
     if (download.arch && download.size) {
         if (download.url.includes("cdn.candies.monster/leaks/") && !debugshowleaks) return false;
-        if (download.url.includes("cdn.candies.monster/apks/") && !debugshowapks) return false;
+        if (download.url.includes("cdn.candies.monster/apks/") && !debugshowapks && download.kind !== "archive") return false;
     }
     return true;
 }
