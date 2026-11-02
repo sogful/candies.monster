@@ -4513,5 +4513,23 @@
     "packages": [
       "com.zeptolab.monsters.free.amazon"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidorange3300",
+    "raw": "/assets/images/gameicons/ctr/androidorange3300/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "4ae8f5158cb6ffcc9d899923618bbf38c17720b0195f25d6fb1309cd49832ed8",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/orange/3.30.0-2354652.apk",
+        "file": "res/drawable-xxxhdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctror.subscr.tier"
+    ]
   }
 ]
