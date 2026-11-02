@@ -4369,5 +4369,149 @@
     "packages": [
       "com.zeptolab.monsters.paid.google"
     ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidpaidv10",
+    "raw": "/assets/images/gameicons/ctrexp/androidpaidv10/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "ebe11b10718913ec44555bd21c31576e9058891a100b4c712bce3dec7ff3f224",
+    "sources": [
+      {
+        "url": "https://www.mediafire.com/file/6cy1k8b1nfq46b5/Cut+the+Rope+Experiments+v1.0-por_manu201035.apk",
+        "file": "res/drawable-hdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperiments.google.paid"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidv14",
+    "raw": "/assets/images/gameicons/ctr2/androidv14/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "e4177923360a14b3c0aca4001632e8902459010d4bb4fea4dbee921e01f8bb68",
+    "sources": [
+      {
+        "url": "https://www.mediafire.com/file/lengumz71s2xt5s/com.zeptolab.ctr2.f2p.google_1.4.apk/file",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidv140",
+    "raw": "/assets/images/gameicons/ctrmagic/androidv140/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "7435c73ea29b8124e8a3a599334a8f3dfe6c9b7ab97e868789cd9a917cdca1d5",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1.4.0-1509763.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "pudding",
+    "variant": "androidgamebase132",
+    "raw": "/assets/images/gameicons/pudding/androidgamebase132/raw.png",
+    "width": 100,
+    "height": 100,
+    "format": "png",
+    "sha256": "58eaf149bfee04be13bc73a483d35e777ae7c6408cc7d3954f0a27a8f60de24c",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.monsters.free.china.gamebase/1.3.2-15.apk",
+        "file": "res/drawable-xhdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.monsters.free.china.gamebase"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidchinav2393",
+    "raw": "/assets/images/gameicons/ctr2/androidchinav2393/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "b61ed32da6f8e15d2ef017d5b4b360447bf9b3ff8d2791cc342f2593de72b842",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1.ctr2.YODO1_01/2.3.9.3-23930.apk",
+        "file": "res/drawable-xxxhdpi-v4/app_icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.ctr2.YODO1_01"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidtelecom220",
+    "raw": "/assets/images/gameicons/ctr2/androidtelecom220/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "a44321dd8f8695b070b4eb462a08f98568827b13f52b94d9f9e01d81fcf8312f",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.2.0-2021.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1tier1.ctr2.telecom"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidchinav232",
+    "raw": "/assets/images/gameicons/ctrexp/androidchinav232/raw.png",
+    "width": 100,
+    "height": 100,
+    "format": "png",
+    "sha256": "eb34147463254cfad0705799456952c5d1613f5cd3dd6044d18dbbc3890e874b",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/china/2.3.2-1345294437.apk",
+        "file": "res/drawable-mdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperiments.google.paid"
+    ]
+  },
+  {
+    "game": "pudding",
+    "variant": "androidamazon124",
+    "raw": "/assets/images/gameicons/pudding/androidamazon124/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "d38a18df3e8e208a5a1838bb1bc403477ba7c25476aab9371c688d3298ca9a24",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.monsters.free.amazon/1.2.4-734124.apk",
+        "file": "res/drawable-xhdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.monsters.free.amazon"
+    ]
   }
 ]
