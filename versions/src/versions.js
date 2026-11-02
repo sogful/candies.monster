@@ -35,10 +35,14 @@ function isdownloadbuttonvisible(download) {
     return true;
 }
 
+function downloadattribute(value) {
+    return String(value || "").replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+
 function renderdownloadbutton(download) {
     if (download.kind === "symbols") {
-        const label = download.label || "debug symbols";
-        const details = [label, download.arch, download.size].filter(Boolean).join(" | ");
+        const label = downloadattribute(download.label || "debug symbols");
+        const details = downloadattribute([download.label || "debug symbols", download.arch, download.size].filter(Boolean).join(" | "));
         return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" aria-label="symbols: ${details}" title="${details}">
             <img src="/assets/images/dlbuttons/other.png" alt="" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div>symbols</div><div>${label}</div></div>
@@ -51,7 +55,8 @@ function renderdownloadbutton(download) {
         </a>`;
     }
     const button = download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.png";
-    return `<a href="${download.url}" target="_blank" class="clickable">
+    const label = download.label ? ` title="${downloadattribute(download.label)}" aria-label="${downloadattribute(download.label)}"` : "";
+    return `<a href="${download.url}" target="_blank" class="clickable"${label}>
         <img src="/assets/images/dlbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
     </a>`;
 }
@@ -61,7 +66,8 @@ function uniquedownloads(downloads) {
     return (downloads || []).filter(download => {
         if (!download?.url) return false;
         const iscdn = (download.arch && download.size) || download.url.includes("cdn.candies.monster");
-        const key = `${download.kind || "app"}|${iscdn ? `${download.url}|${download.arch || ""}|${download.size || ""}` : download.url}`;
+        const sourcekey = iscdn ? `${download.url}|${download.arch || ""}|${download.size || ""}` : download.url;
+        const key = `${download.kind || "app"}|${sourcekey}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
