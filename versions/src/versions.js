@@ -99,9 +99,10 @@ function versionsfor(cache, key) {
     }
     const versions = Array.from(merged.values()).map(version => ({
         ...version,
+        recordonly: !version.downloads?.length,
         downloads: uniquedownloads(version.downloads).filter(isdownloadbuttonvisible),
         order: version.version.replace(/^v/i, "").split(".").map(value => parseInt(value) || 0)
-    })).filter(version => version.downloads.length);
+    })).filter(version => version.downloads.length || version.recordonly);
     versions.sort((first, second) => {
         for (let index = 0; index < Math.max(first.order.length, second.order.length); index++) {
             const difference = (second.order[index] || 0) - (first.order[index] || 0);
