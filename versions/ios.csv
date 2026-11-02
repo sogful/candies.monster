@@ -74,15 +74,15 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v2.3.8,,https://archive.org/download/com-chillingo-cuttheropelite-ios5-0-clutch-2-0-4-ipa/com.chillingo.cuttheropelite-iOS5.0-%28Clutch-2.0.4%29.ipa,
 ,v1.1,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://archive.org/download/fruit-ninja-hd-lenovo-le-pad-all-version/02%20Cut%20the%20Rope%20Lite%201.1%20%283173591%29.ipa,
 ,v1.2.1,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://archive.org/download/fruit-ninja-hd-lenovo-le-pad-all-version/04%20Cut%20the%20Rope%20Lite%201.2%20%281.2.1%29%20%284325574%29.ipa,
-,v1.0,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.0.zip,,"armv6, armv7",0.85 MB,symbols,STABS
-,v1.1,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.1.zip,,"armv6, armv7",1.40 MB,symbols,STABS
-,v1.1.2,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.1.2.zip,,"armv6, armv7",1.41 MB,symbols,STABS
-,v1.2.1,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.2.1.zip,,"armv6, armv7",1.75 MB,symbols,STABS
-,v1.2.2,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.2.2.zip,,"armv6, armv7",1.82 MB,symbols,STABS
-,v1.3,/assets/images/gameicons/versions/25/launcher25ff5a9344bb.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.3.zip,,armv6,1.71 MB,symbols,STABS
-,v1.3.1,/assets/images/gameicons/versions/25/launcher25ff5a9344bb.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.3.1.zip,,"armv6, armv7",3.46 MB,symbols,STABS
-,v1.4.1,/assets/images/gameicons/versions/25/launcher25ff5a9344bb.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.4.1.zip,,"armv6, armv7",3.64 MB,symbols,STABS
-,v1.4.2,/assets/images/gameicons/versions/25/launcher25ff5a9344bb.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.4.2.zip,,armv7,1.78 MB,symbols,STABS
+,v1.0,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.0.zip,,"armv6, armv7",0.85 MB,symbols,(stabs)
+,v1.1,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.1.zip,,"armv6, armv7",1.40 MB,symbols,(stabs)
+,v1.1.2,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.1.2.zip,,"armv6, armv7",1.41 MB,symbols,(stabs)
+,v1.2.1,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.2.1.zip,,"armv6, armv7",1.75 MB,symbols,(stabs)
+,v1.2.2,/assets/images/gameicons/versions/2a/launcher2a2507b24b5d.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.2.2.zip,,"armv6, armv7",1.82 MB,symbols,(stabs)
+,v1.3,/assets/images/gameicons/versions/25/launcher25ff5a9344bb.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.3.zip,,armv6,1.71 MB,symbols,(stabs)
+,v1.3.1,/assets/images/gameicons/versions/25/launcher25ff5a9344bb.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.3.1.zip,,"armv6, armv7",3.46 MB,symbols,(stabs)
+,v1.4.1,/assets/images/gameicons/versions/25/launcher25ff5a9344bb.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.4.1.zip,,"armv6, armv7",3.64 MB,symbols,(stabs)
+,v1.4.2,/assets/images/gameicons/versions/25/launcher25ff5a9344bb.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.4.2.zip,,armv7,1.78 MB,symbols,(stabs)
 + Cut the Rope,com.zeptolab.cuttheropelite,free.webp,free releases,10
 ,v3.3.0,,https://archive.org/download/cut-the-rope-3.3.0-app-only/Cut%20the%20Rope_3.3.0_AppOnly.ipa,
 ,v3.24.1,,https://archive.org/download/Cut_the_Rope_3.24.1_ios_8.0/Cut_the_Rope_3.24.1_ios_8.0.ipa,
@@ -90,8 +90,8 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v3.33.0,,https://archive.org/download/cut-the-rope-3.33.0/Cut%20the%20Rope%203.33.0.ipa,
 ,v2.7,/assets/images/gameicons/versions/bf/launcherbf021c9f13c6.webp,https://archive.org/download/cut-the-rope-lite-zeptolab-iphone/1%20Cut%20the%20Rope%20Lite%202.7.ipa,
 ,v2.7.1,/assets/images/gameicons/versions/bf/launcherbf021c9f13c6.webp,https://archive.org/download/cut-the-rope-lite-zeptolab-iphone/2%20Cut%20the%20Rope%20Lite%202.7.1.ipa,
-,v2.7,/assets/images/gameicons/versions/bf/launcherbf021c9f13c6.webp,https://cdn.candies.monster/symbols/com.zeptolab.cuttheropelite/2.7.zip,,armv7,5.48 MB,symbols,STABS
-,v2.7.1,/assets/images/gameicons/versions/bf/launcherbf021c9f13c6.webp,https://cdn.candies.monster/symbols/com.zeptolab.cuttheropelite/2.7.1.zip,,armv7,5.58 MB,symbols,STABS
+,v2.7,/assets/images/gameicons/versions/bf/launcherbf021c9f13c6.webp,https://cdn.candies.monster/symbols/com.zeptolab.cuttheropelite/2.7.zip,,armv7,5.48 MB,symbols,(stabs)
+,v2.7.1,/assets/images/gameicons/versions/bf/launcherbf021c9f13c6.webp,https://cdn.candies.monster/symbols/com.zeptolab.cuttheropelite/2.7.1.zip,,armv7,5.58 MB,symbols,(stabs)
 + Cut the Rope,com.zeptolab.cuttherope,free.webp,gold (ad free),10
 ,v3.10.3,,https://archive.org/download/cut-the-rope-3.10.3-64-bit/Cut%20the%20Rope%203.10.3%2064%20Bit.ipa,
 ,v2.7,,https://archive.org/download/cut-the-rope-collection/Cut%20the%20Rope%20GOLD%202.7.0.ipa,
@@ -132,13 +132,13 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v2.3.1,/assets/images/gameicons/versions/b6/launcherb60f691753cd.webp,https://archive.org/download/fruit-ninja-thd-android-all-version/14%20Cut%20the%20Rope%20HD%202.3.1%20%2815644948%29.ipa,
 ,v2.4,/assets/images/gameicons/versions/7c/launcher7c3635dcb05f.webp,https://archive.org/download/fruit-ninja-thd-android-all-version/16%20Cut%20the%20Rope%20HD%202.4%20%28595182960%29.ipa,
 ,v2.4.1,/assets/images/gameicons/versions/7c/launcher7c3635dcb05f.webp,https://archive.org/download/fruit-ninja-thd-android-all-version/17%20Cut%20the%20Rope%20HD%202.4.1%20%28642532714%29.ipa,
-,v1.3,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.3.7z,,armv7,0.61 MB,symbols,STABS
-,v1.0,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.0.zip,,armv7,0.42 MB,symbols,STABS
-,v1.1,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.1.zip,,armv7,0.70 MB,symbols,STABS
-,v1.1.2,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.1.2.zip,,armv7,0.71 MB,symbols,STABS
-,v1.2.1,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.2.1.zip,,armv7,0.73 MB,symbols,STABS
-,v1.6,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.6.zip,,armv7,0.89 MB,symbols,STABS
-,v1.7,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.7.zip,,armv6,0.91 MB,symbols,STABS
+,v1.3,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.3.7z,,armv7,0.61 MB,symbols,(stabs)
+,v1.0,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.0.zip,,armv7,0.42 MB,symbols,(stabs)
+,v1.1,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.1.zip,,armv7,0.70 MB,symbols,(stabs)
+,v1.1.2,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.1.2.zip,,armv7,0.71 MB,symbols,(stabs)
+,v1.2.1,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.2.1.zip,,armv7,0.73 MB,symbols,(stabs)
+,v1.6,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.6.zip,,armv7,0.89 MB,symbols,(stabs)
+,v1.7,/assets/images/gameicons/versions/8b/launcher8b290cb50a54.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehd/1.7.zip,,armv6,0.91 MB,symbols,(stabs)
 + Cut the Rope,com.zeptolab.cuttheropehd1,free.webp,ipad hd releases,8
 ,v2.7.3,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Original%20HD/Cut%20the%20Rope%20HD%20v2.7.3%20%28iOS%206.0%2B%29.ipa,
 ,v2.7.3,,https://archive.org/download/Cut_the_Rope_HD_2.7.3_ios_6.0/Cut_the_Rope_HD_2.7.3_ios_6.0.ipa,
@@ -166,11 +166,11 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v2.4,/assets/images/gameicons/versions/fe/launcherfe47e6d68183.webp,https://archive.org/download/toilet-bathroom-rush-all-version/06%20Cut%20the%20Rope%20HD%20Free%202.4.ipa,
 ,v2.4.4,/assets/images/gameicons/versions/fe/launcherfe47e6d68183.webp,https://archive.org/download/toilet-bathroom-rush-all-version/07%20Cut%20the%20Rope%20HD%20Free%202.4.4.ipa,
 ,v2.4.5,/assets/images/gameicons/versions/fe/launcherfe47e6d68183.webp,https://archive.org/download/toilet-bathroom-rush-all-version/08%20Cut%20the%20Rope%20HD%20Free%202.5.ipa,
-,v1.0,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.0.zip,,armv7,0.42 MB,symbols,STABS
-,v1.1,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.1.zip,,armv7,0.70 MB,symbols,STABS
-,v1.1.2,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.1.2.zip,,armv7,0.70 MB,symbols,STABS
-,v1.2.1,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.2.1.zip,,armv7,0.87 MB,symbols,STABS
-,v1.2.2,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.2.2.zip,,armv7,0.88 MB,symbols,STABS
+,v1.0,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.0.zip,,armv7,0.42 MB,symbols,(stabs)
+,v1.1,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.1.zip,,armv7,0.70 MB,symbols,(stabs)
+,v1.1.2,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.1.2.zip,,armv7,0.70 MB,symbols,(stabs)
+,v1.2.1,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.2.1.zip,,armv7,0.87 MB,symbols,(stabs)
+,v1.2.2,/assets/images/gameicons/versions/10/launcher10a92b3a8261.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropehdlite/1.2.2.zip,,armv7,0.88 MB,symbols,(stabs)
 + 割绳子 (Cut the Rope),com.zeptolab.cuttheropehdlite,/assets/images/gameicons/versions/65/launcher653e77e7474e.webp,chinese app store releases,10,launcher1b01cbeb462a.png,launcherca3ce801a7b1.png,launcher297b165d39fb.png,launcher68d616f19cec.png,launcheradc8b98230fa.png,launcher014b40c92129.png,launcherd720451b38a4.png,launcher653e77e7474e.png
 ,v2.7,/assets/images/gameicons/versions/1b/launcher1b01cbeb462a.webp,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v2.7%20%28iOS%206.0%29.ipa,
 ,v2.7.1,/assets/images/gameicons/versions/1b/launcher1b01cbeb462a.webp,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v2.7.1%20%28iOS%206.0%29.ipa,
@@ -191,7 +191,7 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v3.33.0,/assets/images/gameicons/versions/65/launcher653e77e7474e.webp,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.33.0%20%28iOS%209.0%29.ipa,
 ,v3.3.0,/assets/images/gameicons/versions/0d/launcher0d3c80e15b8c.webp,https://archive.org/download/cut-the-rope-original-ctrhome/event/com.zeptolab.cuttheropehdlite_3.3.0.ipa,
 + Cut the Rope,com.zeptolab.cuttherope,free.webp,testflight,10
-,v1.7.1,/assets/images/gameicons/versions/cf/launchercf40402a2b9c.webp,https://cdn.candies.monster/symbols/com.zeptolab.cuttherope/1.7.1.7z,,"armv6, armv7",1.67 MB,symbols,STABS
+,v1.7.1,/assets/images/gameicons/versions/cf/launchercf40402a2b9c.webp,https://cdn.candies.monster/symbols/com.zeptolab.cuttherope/1.7.1.7z,,"armv6, armv7",1.67 MB,symbols,(stabs)
 ,v1.7.1,/assets/images/gameicons/versions/cf/launchercf40402a2b9c.webp,https://archive.org/download/zeptolab-testflight-ctrhome/CuttheRopeTestflight2.ipa,
 ,v2.0.1,/assets/images/gameicons/versions/cf/launchercf40402a2b9c.webp,https://archive.org/download/zeptolab-testflight-ctrhome/CutTheRopeTestflight.ipa,
 Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
@@ -237,10 +237,10 @@ Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
 ,v1.2,/assets/images/gameicons/versions/58/launcher581b71a82121.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Experiments%20HD%201.2.0.ipa,
 ,v1.4,/assets/images/gameicons/versions/10/launcher1028701c78f2.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Experiments%20HD%201.4.0.ipa,
 ,v1.7,/assets/images/gameicons/versions/d6/launcherd6b04373df6a.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Experiments%20HD%201.7.0.ipa,
-,v1.2,/assets/images/gameicons/versions/58/launcher581b71a82121.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshd/1.2.zip,,armv7,0.53 MB,symbols,STABS
-,v1.2.1,/assets/images/gameicons/versions/58/launcher581b71a82121.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshd/1.2.1.zip,,armv7,0.53 MB,symbols,STABS
-,v1.4,/assets/images/gameicons/versions/10/launcher1028701c78f2.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshd/1.4.zip,,armv7,0.64 MB,symbols,STABS
-,v1.7,/assets/images/gameicons/versions/d6/launcherd6b04373df6a.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshd/1.7.zip,,armv7,0.83 MB,symbols,STABS
+,v1.2,/assets/images/gameicons/versions/58/launcher581b71a82121.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshd/1.2.zip,,armv7,0.53 MB,symbols,(stabs)
+,v1.2.1,/assets/images/gameicons/versions/58/launcher581b71a82121.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshd/1.2.1.zip,,armv7,0.53 MB,symbols,(stabs)
+,v1.4,/assets/images/gameicons/versions/10/launcher1028701c78f2.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshd/1.4.zip,,armv7,0.64 MB,symbols,(stabs)
+,v1.7,/assets/images/gameicons/versions/d6/launcherd6b04373df6a.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshd/1.7.zip,,armv7,0.83 MB,symbols,(stabs)
 + Cut the Rope,com.zeptolab.ctrexperimentshdlite,experimentsfree.webp,experiments hd lite,6
 ,v1.7,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20the%20Rope%20Experiments%20HD%20Free%20v1.7%20%28iOS%204.3%2B%29.ipa,
 ,v1.8.2,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20The%20Rope%20Experiments%20HD%20Free%20v1.8.2%20%28iOS%206.0%2B%29%20%5B64-bit%20support%5D.ipa,
@@ -258,20 +258,20 @@ Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
 ,v1.7.8,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%204/Cut%20The%20Rope%20Experiments%20HD%20Lite%201.7.8.ipa,
 ,v1.7.9,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%204/Cut%20The%20Rope%20Experiments%20HD%20Lite%201.7.9.ipa,
 ,v1.8,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%204/Cut%20The%20Rope%20Experiments%20HD%20Lite%201.8.0.ipa,
-,v1.0.1,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.0.1.zip,,armv7,1.53 MB,symbols,STABS
-,v1.5,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.5.zip,,armv7,1.59 MB,symbols,STABS
-,v1.5.1,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.5.1.zip,,armv7,1.59 MB,symbols,STABS
-,v1.6,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.6.zip,,armv7,1.71 MB,symbols,STABS
-,v1.6.1,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.6.1.zip,,armv7,1.71 MB,symbols,STABS
-,v1.7.1,/assets/images/gameicons/versions/1f/launcher1f60969bd201.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.1.zip,,armv7,2.80 MB,symbols,STABS
-,v1.7.2,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.2.zip,,armv7,2.83 MB,symbols,STABS
-,v1.7.3,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.3.zip,,armv7,3.49 MB,symbols,STABS
-,v1.7.4,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.4.zip,,armv7,3.50 MB,symbols,STABS
-,v1.7.6,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.6.zip,,armv7,2.09 MB,symbols,STABS
-,v1.7.7,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.7.zip,,armv7,2.03 MB,symbols,STABS
-,v1.7.8,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.8.zip,,armv7,4.21 MB,symbols,STABS
-,v1.7.9,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.9.zip,,armv7,5.69 MB,symbols,STABS
-,v1.8,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.8.zip,,armv7,5.70 MB,symbols,STABS
+,v1.0.1,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.0.1.zip,,armv7,1.53 MB,symbols,(stabs)
+,v1.5,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.5.zip,,armv7,1.59 MB,symbols,(stabs)
+,v1.5.1,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.5.1.zip,,armv7,1.59 MB,symbols,(stabs)
+,v1.6,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.6.zip,,armv7,1.71 MB,symbols,(stabs)
+,v1.6.1,/assets/images/gameicons/versions/de/launcherde77a62ddbf0.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.6.1.zip,,armv7,1.71 MB,symbols,(stabs)
+,v1.7.1,/assets/images/gameicons/versions/1f/launcher1f60969bd201.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.1.zip,,armv7,2.80 MB,symbols,(stabs)
+,v1.7.2,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.2.zip,,armv7,2.83 MB,symbols,(stabs)
+,v1.7.3,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.3.zip,,armv7,3.49 MB,symbols,(stabs)
+,v1.7.4,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.4.zip,,armv7,3.50 MB,symbols,(stabs)
+,v1.7.6,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.6.zip,,armv7,2.09 MB,symbols,(stabs)
+,v1.7.7,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.7.zip,,armv7,2.03 MB,symbols,(stabs)
+,v1.7.8,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.8.zip,,armv7,4.21 MB,symbols,(stabs)
+,v1.7.9,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.7.9.zip,,armv7,5.69 MB,symbols,(stabs)
+,v1.8,/assets/images/gameicons/versions/4d/launcher4d18c1e21e2f.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperimentshdlite/1.8.zip,,armv7,5.70 MB,symbols,(stabs)
 + Cut the Rope,com.zeptolab.ctrexperimentslite,experimentsfree.webp,experiments lite,6
 ,v1.0.1,/assets/images/gameicons/versions/2a/launcher2ad9d11278f1.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%20Experiments%20Lite%201.0.1.ipa,
 ,v1.5,/assets/images/gameicons/versions/2a/launcher2ad9d11278f1.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%20Experiments%20Lite%201.5.0.ipa,
@@ -294,7 +294,7 @@ Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
 ,v1.9.1,/assets/images/gameicons/versions/8c/launcher8c315b4e60a1.webp,https://archive.org/download/cut-the-rope-experiments-v-1.9.1-hs/Cut%20The%20Rope%20Experiments%20v1.9.1%20HS.ipa,
 + Cut the Rope,com.zeptolab.ctrexperiments,/assets/images/gameicons/versions/b4/launcherb4c1d537bddc.webp,experiments testflight debug prototype,8,launcherb4c1d537bddc.png
 ,v1.3,/assets/images/gameicons/versions/b4/launcherb4c1d537bddc.webp,https://archive.org/download/ctr-experiments-1-3/eeea01f3379467b19651a34d444678b0.ipa,
-,v1.3,/assets/images/gameicons/versions/b4/launcherb4c1d537bddc.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperiments/1.3.7z,,"armv6, armv7",1.08 MB,symbols,STABS
+,v1.3,/assets/images/gameicons/versions/b4/launcherb4c1d537bddc.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperiments/1.3.7z,,"armv6, armv7",1.08 MB,symbols,(stabs)
 Cut the Rope,com.zeptolab.ctr2,ctr2.webp,cut the rope 2 paid,10
 ,V1.17.2,,https://archive.org/download/Cut_the_Rope_1.17.2_ios_12.2/Cut_the_Rope_1.17.2_ios_12.2.ipa,
 ,v1.0,/assets/images/gameicons/versions/a5/launchera55fa056cb28.webp,https://archive.org/download/cut-the-rope-2-v-1.0/Cut%20the%20Rope%202-v1.0-Thomas_xxxxx.ipa,
@@ -328,12 +328,12 @@ Cut the Rope,com.zeptolab.timetravel,timetravel.webp,time travel,10
 ,v1.3.2,/assets/images/gameicons/versions/38/launcher38fd9e3d73c3.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/Cut%20The%20Rope%20Time%20Travel%201.3.2.ipa,
 ,v1.4.2,/assets/images/gameicons/versions/2a/launcher2a90f9ec9038.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/Cut%20The%20Rope%20Time%20Travel%201.4.2.ipa,
 ,v1.5.0,/assets/images/gameicons/versions/df/launcherdfb50cdd48b1.webp,https://archive.org/download/cut-the-rope-time-travel-ctrhome/Cut_the_Rope_Time_Travel_1.5.0.ipa,
-,v1.1.2,/assets/images/gameicons/versions/d0/launcherd0eea16a039a.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.1.2.zip,,"armv7, armv7s",1.65 MB,symbols,STABS
-,v1.2,/assets/images/gameicons/versions/38/launcher38fd9e3d73c3.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.2.zip,,"armv7, armv7s",2.04 MB,symbols,STABS
-,v1.3,/assets/images/gameicons/versions/38/launcher38fd9e3d73c3.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.3.zip,,"armv7, armv7s",2.19 MB,symbols,STABS
-,v1.3.2,/assets/images/gameicons/versions/38/launcher38fd9e3d73c3.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.3.2.zip,,"armv7, armv7s",2.19 MB,symbols,STABS
-,v1.4.2,/assets/images/gameicons/versions/2a/launcher2a90f9ec9038.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.4.2.zip,,armv7,1.24 MB,symbols,STABS
-,v1.5.0,/assets/images/gameicons/versions/df/launcherdfb50cdd48b1.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.5.0.zip,,"arm64, armv7",5.52 MB,symbols,STABS
+,v1.1.2,/assets/images/gameicons/versions/d0/launcherd0eea16a039a.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.1.2.zip,,"armv7, armv7s",1.65 MB,symbols,(stabs)
+,v1.2,/assets/images/gameicons/versions/38/launcher38fd9e3d73c3.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.2.zip,,"armv7, armv7s",2.04 MB,symbols,(stabs)
+,v1.3,/assets/images/gameicons/versions/38/launcher38fd9e3d73c3.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.3.zip,,"armv7, armv7s",2.19 MB,symbols,(stabs)
+,v1.3.2,/assets/images/gameicons/versions/38/launcher38fd9e3d73c3.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.3.2.zip,,"armv7, armv7s",2.19 MB,symbols,(stabs)
+,v1.4.2,/assets/images/gameicons/versions/2a/launcher2a90f9ec9038.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.4.2.zip,,armv7,1.24 MB,symbols,(stabs)
+,v1.5.0,/assets/images/gameicons/versions/df/launcherdfb50cdd48b1.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel/1.5.0.zip,,"arm64, armv7",5.52 MB,symbols,(stabs)
 + Time Travel,com.zeptolab.timetravelhd,timetravel.webp,hd,7
 ,v1.0,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Time%20Travel%20HD/Cut%20the%20Rope%20Time%20Travel%20HD%20v1.0%20%28iOS%204.3%2B%29.ipa,
 ,v1.1.1,/assets/images/gameicons/versions/84/launcher8437b1a07dc8.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20(2)/Cut%20The%20Rope%20Time%20Travel%20HD%201.1.1.ipa,
@@ -352,8 +352,8 @@ Cut the Rope,com.zeptolab.timetravel,timetravel.webp,time travel,10
 ,v1.5.0,,https://archive.org/download/Cut_the_Rope__Time_Travel_HD_1.5.0_ios_6.0/Cut_the_Rope__Time_Travel_HD_1.5.0_ios_6.0.ipa,
 ,v1.1,/assets/images/gameicons/versions/84/launcher8437b1a07dc8.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Time%20Travel%20HD%201.1.0.ipa,
 ,v1.2,/assets/images/gameicons/versions/c0/launcherc0ef853093af.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Time%20Travel%20HD%201.2.0.ipa,
-,v1.1,/assets/images/gameicons/versions/84/launcher8437b1a07dc8.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravelhd/1.1.zip,,armv7,0.78 MB,symbols,STABS
-,v1.2,/assets/images/gameicons/versions/c0/launcherc0ef853093af.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravelhd/1.2.zip,,armv7,1.02 MB,symbols,STABS
+,v1.1,/assets/images/gameicons/versions/84/launcher8437b1a07dc8.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravelhd/1.1.zip,,armv7,0.78 MB,symbols,(stabs)
+,v1.2,/assets/images/gameicons/versions/c0/launcherc0ef853093af.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravelhd/1.2.zip,,armv7,1.02 MB,symbols,(stabs)
 + Cut the Rope: Time Travel,com.zeptolab.timetravel.free,timetravel.webp,,7
 ,v1.9.0,,https://archive.org/download/cut-the-rope-time-travel-v-1.9.0-hs/Cut%20The%20Rope%20TimeTravel%20v1.9.0%20HS.ipa,
 ,v1.9.0,,https://archive.org/download/Cut_the_Rope_1.9.0_ios_8.0/Cut_the_Rope_1.9.0_ios_8.0.ipa,
@@ -364,11 +364,11 @@ Cut the Rope,com.zeptolab.timetravel,timetravel.webp,time travel,10
 ,v1.0.3,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/Cut%20The%20Rope%20Time%20Travel%20FREE%201.0.3.ipa,
 ,v1.0.4,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/Cut%20The%20Rope%20Time%20Travel%20FREE%201.0.4.ipa,
 ,v1.0.7,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%204/Cut%20The%20Rope%20Time%20Travel%20Free%201.0.7.ipa,
-,v1.0.1,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.1.zip,,"armv7, armv7s",4.87 MB,symbols,STABS
-,v1.0.2,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.2.zip,,"armv7, armv7s",4.12 MB,symbols,STABS
-,v1.0.3,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.3.zip,,armv7,1.79 MB,symbols,STABS
-,v1.0.4,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.4.zip,,armv7,2.44 MB,symbols,STABS
-,v1.0.7,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.7.zip,,armv7,4.47 MB,symbols,STABS
+,v1.0.1,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.1.zip,,"armv7, armv7s",4.87 MB,symbols,(stabs)
+,v1.0.2,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.2.zip,,"armv7, armv7s",4.12 MB,symbols,(stabs)
+,v1.0.3,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.3.zip,,armv7,1.79 MB,symbols,(stabs)
+,v1.0.4,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.4.zip,,armv7,2.44 MB,symbols,(stabs)
+,v1.0.7,/assets/images/gameicons/versions/09/launcher094361e4cc54.webp,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.7.zip,,armv7,4.47 MB,symbols,(stabs)
 + Time Travel,com.zeptolab.timetravel,/assets/images/gameicons/versions/78/launcher78eaf568ec43.webp,testflight prototype,10,launcher78eaf568ec43.png
 ,v1.0,/assets/images/gameicons/versions/78/launcher78eaf568ec43.webp,https://archive.org/download/com.zeptolab.timetravel/94ca6c772af660be444a82082abc4e4f.ipa,
 Cut the Rope,com.zeptolab.ctrm,magic.webp,paid releases,7
@@ -482,7 +482,7 @@ Cut the Rope,com.chillingo.cuttheropexmas,holidaygift.webp,holiday gift,5
 ,v1.7,,https://archive.org/download/cut-the-rope-holiday-gift-all-versions/Cut%20the%20Rope%20Holiday%20Gift%201.7.ipa,
 ,v1.7,,https://archive.org/download/Cut_the_Rope_1.7_ios_4.3/Cut_the_Rope_1.7_ios_4.3.ipa,
 ,v1.7,,https://archive.org/download/cut-the-rope_202301/Cut%20the%20Rope%20-%20%28v1.7%29%20-%20iOS4.3.ipa,
-,v1.1,/assets/images/gameicons/versions/1f/launcher1f4470ca9069.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropexmas/1.1.zip,,"armv6, armv7",1.74 MB,symbols,STABS
+,v1.1,/assets/images/gameicons/versions/1f/launcher1f4470ca9069.webp,https://cdn.candies.monster/symbols/com.chillingo.cuttheropexmas/1.1.zip,,"armv6, armv7",1.74 MB,symbols,(stabs)
 Candy Flick,com.zeptolab.candyflick,candyflick.webp,,5
 ,v1.0,,https://archive.org/download/om-nom-candy-flick/Om%20Nom%20Candy%20Flick%201.0.ipa,
 ,,,https://archive.org/download/cut-the-rope_202301/Om%2BNom%2BCandy%2BFlick-1.0%2B%28appifan%29.ipa,
@@ -508,10 +508,10 @@ Om Nom Toons,com.zeptolab.toonplayer,toons.webp,,4
 ,v1.0.1,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://archive.org/download/om-nom-toons_ios/com.zeptolab.toonplayer_1.0.1_102277.ipa,
 ,v1.1.0,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://archive.org/download/om-nom-toons_ios/com.zeptolab.toonplayer_1.1.0_112240.ipa,
 ,v1.1.1,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://archive.org/download/om-nom-toons_ios/com.zeptolab.toonplayer_1.1.1_113081.ipa,
-,v1.0,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://cdn.candies.monster/symbols/com.zeptolab.toonplayer/1.0.zip,,"arm64, armv7",8.02 MB,symbols,STABS
-,v1.0.1,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://cdn.candies.monster/symbols/com.zeptolab.toonplayer/1.0.1.zip,,"arm64, armv7",8.02 MB,symbols,STABS
-,v1.1.0,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://cdn.candies.monster/symbols/com.zeptolab.toonplayer/1.1.0.zip,,"arm64, armv7",8.53 MB,symbols,STABS
-,v1.1.1,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://cdn.candies.monster/symbols/com.zeptolab.toonplayer/1.1.1.zip,,"arm64, armv7",8.53 MB,symbols,STABS
+,v1.0,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://cdn.candies.monster/symbols/com.zeptolab.toonplayer/1.0.zip,,"arm64, armv7",8.02 MB,symbols,(stabs)
+,v1.0.1,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://cdn.candies.monster/symbols/com.zeptolab.toonplayer/1.0.1.zip,,"arm64, armv7",8.02 MB,symbols,(stabs)
+,v1.1.0,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://cdn.candies.monster/symbols/com.zeptolab.toonplayer/1.1.0.zip,,"arm64, armv7",8.53 MB,symbols,(stabs)
+,v1.1.1,/assets/images/gameicons/versions/f3/launcherf3463cd6e10e.webp,https://cdn.candies.monster/symbols/com.zeptolab.toonplayer/1.1.1.zip,,"arm64, armv7",8.53 MB,symbols,(stabs)
 Bubbles,com.zeptolab.hff,bubbles.webp,,3
 ,v1.0,,https://archive.org/download/om-nom-bubbles/OmNomBubbles%201.0.ipa,
 dreams,com.zeptolab.dreams,/assets/images/gameicons/versions/74/launcher74b2cddfbabc.webp,2012 om nom virtual pet proto (kind of like my om nom),3,launcher74b2cddfbabc.png
@@ -528,4 +528,4 @@ CyberNom,com.zeptolab.cybernom,/assets/images/gameicons/versions/67/launcher6778
 Comic,com.zeptolab.ctrcomic,/assets/images/gameicons/versions/1a/launcher1a829bf3d427.webp,cut the rope comic,4,launcher1a829bf3d427.png
 ,v1.0.0,/assets/images/gameicons/versions/1a/launcher1a829bf3d427.webp,https://archive.org/download/cut-the-rope-comic/Cut%20the%20Rope%20Comic%201.0.ipa,
 ,v1.0.0,/assets/images/gameicons/versions/1a/launcher1a829bf3d427.webp,https://archive.org/download/ctr-comic-app-full/Cut%20the%20Rope%20Comic-%28com.zeptolab.ctrcomic%29-1-%28iOS_3.0%29.ipa,
-,v1.0.0,/assets/images/gameicons/versions/1a/launcher1a829bf3d427.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrcomic/1.0.0.zip,,"armv6, armv7",1.40 MB,symbols,STABS
+,v1.0.0,/assets/images/gameicons/versions/1a/launcher1a829bf3d427.webp,https://cdn.candies.monster/symbols/com.zeptolab.ctrcomic/1.0.0.zip,,"armv6, armv7",1.40 MB,symbols,(stabs)
