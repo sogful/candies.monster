@@ -4657,5 +4657,95 @@
     "packages": [
       "com.netflix.NGP.CutTheRopeDaily"
     ]
+  },
+  {
+    "game": "party",
+    "variant": "iosv01",
+    "raw": "/assets/images/gameicons/party/iosv01/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "c4f4ace2631946bfb9f6ff445cb2242719e5283657aa27fe1730a38f67e3edfb",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.zeptolab.omnomparty",
+        "file": "https://assets.appmeme.com/com.zeptolab.omnomparty--ipa-0_1-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.omnomparty"
+    ]
+  },
+  {
+    "game": "knockout",
+    "variant": "iosv1010",
+    "raw": "/assets/images/gameicons/knockout/iosv1010/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "a85effbb5c21fa3f6a2638f37e20ce19e1535c19e97ff39ae7253243485ab825",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.zeptolab.omnomknockout",
+        "file": "https://assets.appmeme.com/com.zeptolab.omnomknockout--ipa-1_0_10-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.omnomknockout"
+    ]
+  },
+  {
+    "game": "maze",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/maze/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "c3b0ecac68a05b3e40d22e664c2a5f47da45cd4f24fe230a3fd1aa89b28adcf4",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.omnommaze",
+        "file": "https://assets.appmeme.com/com.momzikov.omnommaze--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.omnommaze"
+    ]
+  },
+  {
+    "game": "popsicles",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/popsicles/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "23fed460adc53d38062dd3b37ebed70a7382e21a705c757ea94246f11082a1b7",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.omnompopsicles",
+        "file": "https://assets.appmeme.com/com.momzikov.omnompopsicles--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.omnompopsicles"
+    ]
+  },
+  {
+    "game": "poolparty",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/poolparty/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "f37182475900fd1dda014bc42672dd02214237e18790aed08bcd55a1f0e424a9",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.omnompoolparty",
+        "file": "https://assets.appmeme.com/com.momzikov.omnompoolparty--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.omnompoolparty"
+    ]
   }
 ]
