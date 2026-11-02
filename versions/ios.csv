@@ -223,7 +223,7 @@ Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
 ,v1.6.1,icons/com.zeptolab.ctrexperimentshd/ios161.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20(2)/Cut%20The%20Rope%20Experiments%20HD%201.6.1.ipa,
 ,v1.7.1,icons/com.zeptolab.ctrexperimentshd/ios171.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20(2)/Cut%20The%20Rope%20Experiments%20HD%201.7.1.ipa,
 ,v1.7.2,icons/com.zeptolab.ctrexperimentshd/ios172.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20(2)/Cut%20The%20Rope%20Experiments%20HD%201.7.2.ipa,
-,v1.2.1,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20the%20Rope%20Experiments%20HD%20v1.2.1%20%28iOS%203.2%2B%29.ipa,
+,v1.2.1,icons/com.zeptolab.ctrexperimentshd/launcher581b71a82121.png,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20the%20Rope%20Experiments%20HD%20v1.2.1%20%28iOS%203.2%2B%29.ipa,
 ,v1.2.1,,https://archive.org/download/ctrex/Cut%20the%20Rope%20Experiments%20HD%201.2.1.ipa,
 ,v1.3,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20the%20Rope%20Experiments%20HD%20v1.3%20%28iOS%203.2%2B%29.ipa,
 ,v1.4.1,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20the%20Rope%20Experiments%20HD%20v1.4.1%20%28iOS%203.2%2B%29.ipa,
@@ -237,6 +237,10 @@ Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
 ,v1.2,icons/com.zeptolab.ctrexperimentshd/launcher581b71a82121.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Experiments%20HD%201.2.0.ipa,
 ,v1.4,icons/com.zeptolab.ctrexperimentshd/launcher1028701c78f2.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Experiments%20HD%201.4.0.ipa,
 ,v1.7,icons/com.zeptolab.ctrexperimentshd/launcherd6b04373df6a.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Experiments%20HD%201.7.0.ipa,
+,v1.2,icons/com.zeptolab.ctrexperimentshd/launcher581b71a82121.png,symbols/com.zeptolab.ctrexperimentshd/1.2.zip,,armv7,0.53 MB,symbols,STABS
+,v1.2.1,icons/com.zeptolab.ctrexperimentshd/launcher581b71a82121.png,symbols/com.zeptolab.ctrexperimentshd/1.2.1.zip,,armv7,0.53 MB,symbols,STABS
+,v1.4,icons/com.zeptolab.ctrexperimentshd/launcher1028701c78f2.png,symbols/com.zeptolab.ctrexperimentshd/1.4.zip,,armv7,0.64 MB,symbols,STABS
+,v1.7,icons/com.zeptolab.ctrexperimentshd/launcherd6b04373df6a.png,symbols/com.zeptolab.ctrexperimentshd/1.7.zip,,armv7,0.83 MB,symbols,STABS
 + Cut the Rope,com.zeptolab.ctrexperimentshdlite,experimentsfree.webp,experiments hd lite,6
 ,v1.7,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20the%20Rope%20Experiments%20HD%20Free%20v1.7%20%28iOS%204.3%2B%29.ipa,
 ,v1.8.2,,https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20The%20Rope%20Experiments%20HD%20Free%20v1.8.2%20%28iOS%206.0%2B%29%20%5B64-bit%20support%5D.ipa,
@@ -254,6 +258,20 @@ Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
 ,v1.7.8,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%204/Cut%20The%20Rope%20Experiments%20HD%20Lite%201.7.8.ipa,
 ,v1.7.9,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%204/Cut%20The%20Rope%20Experiments%20HD%20Lite%201.7.9.ipa,
 ,v1.8,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%204/Cut%20The%20Rope%20Experiments%20HD%20Lite%201.8.0.ipa,
+,v1.0.1,icons/com.zeptolab.ctrexperimentshdlite/launcherde77a62ddbf0.png,symbols/com.zeptolab.ctrexperimentshdlite/1.0.1.zip,,armv7,1.53 MB,symbols,STABS
+,v1.5,icons/com.zeptolab.ctrexperimentshdlite/launcherde77a62ddbf0.png,symbols/com.zeptolab.ctrexperimentshdlite/1.5.zip,,armv7,1.59 MB,symbols,STABS
+,v1.5.1,icons/com.zeptolab.ctrexperimentshdlite/launcherde77a62ddbf0.png,symbols/com.zeptolab.ctrexperimentshdlite/1.5.1.zip,,armv7,1.59 MB,symbols,STABS
+,v1.6,icons/com.zeptolab.ctrexperimentshdlite/launcherde77a62ddbf0.png,symbols/com.zeptolab.ctrexperimentshdlite/1.6.zip,,armv7,1.71 MB,symbols,STABS
+,v1.6.1,icons/com.zeptolab.ctrexperimentshdlite/launcherde77a62ddbf0.png,symbols/com.zeptolab.ctrexperimentshdlite/1.6.1.zip,,armv7,1.71 MB,symbols,STABS
+,v1.7.1,icons/com.zeptolab.ctrexperimentshdlite/launcher1f60969bd201.png,symbols/com.zeptolab.ctrexperimentshdlite/1.7.1.zip,,armv7,2.80 MB,symbols,STABS
+,v1.7.2,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,symbols/com.zeptolab.ctrexperimentshdlite/1.7.2.zip,,armv7,2.83 MB,symbols,STABS
+,v1.7.3,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,symbols/com.zeptolab.ctrexperimentshdlite/1.7.3.zip,,armv7,3.49 MB,symbols,STABS
+,v1.7.4,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,symbols/com.zeptolab.ctrexperimentshdlite/1.7.4.zip,,armv7,3.50 MB,symbols,STABS
+,v1.7.6,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,symbols/com.zeptolab.ctrexperimentshdlite/1.7.6.zip,,armv7,2.09 MB,symbols,STABS
+,v1.7.7,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,symbols/com.zeptolab.ctrexperimentshdlite/1.7.7.zip,,armv7,2.03 MB,symbols,STABS
+,v1.7.8,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,symbols/com.zeptolab.ctrexperimentshdlite/1.7.8.zip,,armv7,4.21 MB,symbols,STABS
+,v1.7.9,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,symbols/com.zeptolab.ctrexperimentshdlite/1.7.9.zip,,armv7,5.69 MB,symbols,STABS
+,v1.8,icons/com.zeptolab.ctrexperimentshdlite/launcher4d18c1e21e2f.png,symbols/com.zeptolab.ctrexperimentshdlite/1.8.zip,,armv7,5.70 MB,symbols,STABS
 + Cut the Rope,com.zeptolab.ctrexperimentslite,experimentsfree.webp,experiments lite,6
 ,v1.0.1,icons/com.zeptolab.ctrexperimentslite/ios101.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%20Experiments%20Lite%201.0.1.ipa,
 ,v1.5,icons/com.zeptolab.ctrexperimentslite/ios101.png,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%20Experiments%20Lite%201.5.0.ipa,
