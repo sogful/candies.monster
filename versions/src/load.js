@@ -35,37 +35,31 @@ function cleanvalue(v) {
     return (v || "").trim();
 }
 
-function resolveiconpath(p) {
+function resolveiconpath(p, size = 128) {
     const value = cleanvalue(p);
     if (!value) return "";
-    if (value.startsWith("/")) return value;
     if (value.startsWith("http://") || value.startsWith("https://")) return value;
-    if (value.startsWith("assets/images/gameicons/")) return `/${value}`;
-    if (value.includes("/")) return value;
-    return `/assets/images/gameicons/${value}`;
+    const base = "/assets/images/gameicons/";
+    if (value.startsWith("/") && !value.startsWith(base)) return value;
+    const relative = value.replace(/^\/?assets\/images\/gameicons\//, "");
+    const key = relative.replace(/\/(128|256)\.webp$/, "");
+    return `${base}${key}/${size === 256 ? 256 : 128}.webp`;
+}
+
+function resolveiconsrcset(p) {
+    if (!cleanvalue(p)) return "";
+    return `${resolveiconpath(p)} 1x, ${resolveiconpath(p, 256)} 2x`;
 }
 
 function resolvepackageicon(pkg, filename) {
     const f = cleanvalue(filename);
     if (!f || !pkg) return "";
-    if (/^https?:\/\//i.test(f)) return f;
-    if (f.startsWith("/")) return f;
-    if (f.toLowerCase().endsWith(".png") && !f.includes("/")) {
-        return `icons/${pkg}/${f}`;
-    }
+    if (/\.(png|jpe?g|webp)$/i.test(f) && (f.startsWith("/assets/images/gameicons/") || /^https?:\/\//i.test(f))) return f;
     return "";
 }
 
 function resolvegameicon(pkg, p) {
-    const value = cleanvalue(p);
-    if (!value) return "";
-    if (value.startsWith("icons/")) return value;
-    if (value.startsWith("/")) return value;
-    if (value.startsWith("http://") || value.startsWith("https://")) return value;
-    if (value.toLowerCase().endsWith(".png") && !value.includes("/")) {
-        return `icons/${pkg}/${value}`;
-    }
-    return resolveiconpath(value);
+    return resolveiconpath(p);
 }
 
 function parsepackageiconcolumns(line, pkg) {
@@ -73,9 +67,8 @@ function parsepackageiconcolumns(line, pkg) {
     for (let i = 5; i < line.length; i++) {
         const v = cleanvalue(line[i]);
         if (!v) continue;
-        if (!v.toLowerCase().endsWith(".png")) continue;
         const url = resolvepackageicon(pkg, v);
-        if (url) out.push(url);
+        if (url && !out.includes(url)) out.push(url);
     }
     return out;
 }
@@ -185,10 +178,10 @@ function parsegamescsv(text) {
 }
 
 window.csvthing = {
-    parsegamescsv, resolveiconpath,
+    parsegamescsv, resolveiconpath, resolveiconsrcset,
     resolvegameicon, resolvepackageicon
 };
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export {parsegamescsv, resolveiconpath, resolvegameicon, resolvepackageicon};
+export {parsegamescsv, resolveiconpath, resolveiconsrcset, resolvegameicon, resolvepackageicon};

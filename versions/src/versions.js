@@ -1,4 +1,4 @@
-import {resolveiconpath} from "./load.js";
+import {resolveiconpath, resolveiconsrcset} from "./load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -136,7 +136,10 @@ function updatelegacyicons(list) {
     if (!legacyicons) return;
     list.querySelectorAll("[data-legacyversion]").forEach(image => {
         const icon = legacyicons[image.dataset.legacyversion];
-        if (icon) image.src = resolveiconpath(icon);
+        if (icon) {
+            image.srcset = resolveiconsrcset(icon);
+            image.src = resolveiconpath(icon);
+        }
     });
 }
 
@@ -171,10 +174,12 @@ function versionpanel(version, fallback, legacy) {
     const panel = document.createElement("div");
     panel.className = "versionpanel";
     const historical = !version.icon && legacy;
-    const icon = resolveiconpath(version.icon || (historical && legacyicons?.[version.version]) || fallback || "/assets/images/gameicons/free.webp");
+    const source = version.icon || (historical && legacyicons?.[version.version]) || fallback || "ctr/free";
+    const icon = resolveiconpath(source);
+    const srcset = resolveiconsrcset(source);
     panel.innerHTML = `
         <div class="versionicon">
-            <img src="${icon}" alt="" draggable="false" loading="lazy" decoding="async" width="60" height="60"${historical ? ` data-legacyversion="${version.version}"` : ""}>
+            <img src="${icon}" srcset="${srcset}" alt="" draggable="false" loading="lazy" decoding="async" width="60" height="60"${historical ? ` data-legacyversion="${version.version}"` : ""}>
         </div>
         <div class="versioninfo">
             <div class="version">${version.version}</div>

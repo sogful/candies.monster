@@ -1,4 +1,4 @@
-import {parsegamescsv, resolveiconpath} from "./load.js";
+import {parsegamescsv, resolveiconpath, resolveiconsrcset} from "./load.js";
 import {loadversions} from "./versions.js";
 import "/assets/static/favicon.js";
 
@@ -72,9 +72,12 @@ function mountplatform(platform) {
             image.draggable = false;
             image.alt = Array.isArray(game.name) ? game.name[0] : game.name;
             image.addEventListener("error", () => {
-                image.src = "/assets/images/gameicons/idk.webp";
+                image.srcset = resolveiconsrcset("unknown/default");
+                image.src = resolveiconpath("unknown/default");
             }, {once: true});
-            image.src = resolveiconpath(Array.isArray(game.icon) ? game.icon[0] : game.icon);
+            const source = (Array.isArray(game.icon) ? game.icon[0] : game.icon) || "unknown/default";
+            image.srcset = resolveiconsrcset(source);
+            image.src = resolveiconpath(source);
             icon.appendChild(image);
             elements.set(icon, game);
             fragment.appendChild(icon);

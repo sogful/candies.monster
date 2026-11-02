@@ -501,8 +501,8 @@
                     header.className = "songblockheader";
                     const icon = document.createElement("div");
                     icon.className = "songblockicon";
-                    const iconPath = category.icon.startsWith("/") ? category.icon : `/assets/images/gameicons/${category.icon}`;
-                    icon.style.backgroundImage = `url(${iconPath})`;
+                    const iconpath = category.icon.startsWith("/") ? category.icon : `/assets/images/gameicons/${category.icon}/128.webp`;
+                    icon.style.backgroundImage = `url(${iconpath})`;
                     icon.style.backgroundSize = "cover";
                     
                     const title = document.createElement("div");
