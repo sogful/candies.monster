@@ -4819,5 +4819,131 @@
     "packages": [
       "com.zeptolab.omnomhero"
     ]
+  },
+  {
+    "game": "strike",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/strike/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "31974c98988e9195fbc0b728414bff89ae40d427f9c8cd17271d423cd267f818",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.omnomstrike",
+        "file": "https://assets.appmeme.com/com.momzikov.omnomstrike--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.omnomstrike"
+    ]
+  },
+  {
+    "game": "hop",
+    "variant": "iosv11",
+    "raw": "/assets/images/gameicons/hop/iosv11/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "e3bbd690d095aa088492133095d98e51b45829c9ca21fb6440859b6f1b35aae0",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.omnomhop",
+        "file": "https://assets.appmeme.com/com.momzikov.omnomhop--ipa-1_1-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.omnomhop"
+    ]
+  },
+  {
+    "game": "influencer",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/influencer/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "3c48f745073be2cb8acb2f379d17e93fe07d1a1fcfba53909d79a077014ff271",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.nominfluencer",
+        "file": "https://assets.appmeme.com/com.momzikov.nominfluencer--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.nominfluencer"
+    ]
+  },
+  {
+    "game": "fruitrun",
+    "variant": "iosv20",
+    "raw": "/assets/images/gameicons/fruitrun/iosv20/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "c895afb9760686059342cd86f0ea3a625ca94f21ef993b6741d1cea959ee43b9",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.fruitrun",
+        "file": "https://assets.appmeme.com/com.momzikov.fruitrun--ipa-2_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.fruitrun"
+    ]
+  },
+  {
+    "game": "archernom",
+    "variant": "iosv4",
+    "raw": "/assets/images/gameicons/archernom/iosv4/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "fb2c57813ee10701b04effdd534feeabd180702d8d5af7f7ed32a1b4f68b66df",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.archernom",
+        "file": "https://assets.appmeme.com/com.momzikov.archernom--ipa-4-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.archernom"
+    ]
+  },
+  {
+    "game": "karts",
+    "variant": "iosmomzikovv112",
+    "raw": "/assets/images/gameicons/karts/iosmomzikovv112/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "ecec2a643becd1b56075afa4134b928a87be1883a47aaac10e485e1bfb8a887f",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.momzikov.omnomkart",
+        "file": "https://assets.appmeme.com/com.momzikov.omnomkart--ipa-1_1_2-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.momzikov.omnomkart"
+    ]
+  },
+  {
+    "game": "space",
+    "variant": "iosv02",
+    "raw": "/assets/images/gameicons/space/iosv02/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "d4764a36222c17a7ef2606b410228dbd478c03a596728914ecf75c640d84adb7",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/on.in.space",
+        "file": "https://assets.appmeme.com/on.in.space--ipa-0_2-icon.webp"
+      }
+    ],
+    "packages": [
+      "on.in.space"
+    ]
   }
 ]
