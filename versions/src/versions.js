@@ -44,7 +44,7 @@ function renderdownloadbutton(download) {
         const label = downloadattribute(download.label || "debug symbols");
         const details = downloadattribute([download.label || "debug symbols", download.arch, download.size].filter(Boolean).join(" | "));
         return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" aria-label="symbols: ${details}" title="${details}">
-            <img src="/assets/images/dlbuttons/other.png" alt="" draggable="false" loading="lazy" decoding="async">
+            <img src="/assets/images/dlbuttons/symbols.png" alt="" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div>symbols</div><div>${label}</div></div>
         </a>`;
     }
