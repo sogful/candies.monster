@@ -4531,5 +4531,41 @@
     "packages": [
       "com.zeptolab.ctror.subscr.tier"
     ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "ioschinav130",
+    "raw": "/assets/images/gameicons/ctr2/ioschinav130/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "1e4f39b4e8c1f64a3e7a7e55e93a34c19d42686f74dc7f589ad89737765ec8a6",
+    "sources": [
+      {
+        "url": "https://www.mediafire.com/file/tvdqlu9l7l685kf/com.yodo1.cuttherope2_811147316.ipa/file",
+        "file": "Payload/ctr2.app/Icon-152x152.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.cuttherope2"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "ioschinav1180",
+    "raw": "/assets/images/gameicons/ctrtt/ioschinav1180/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "a20fba0b660dd95a8b24e44799ab7b0a694fd9c54c04f53f4a04bd3ba174badc",
+    "sources": [
+      {
+        "url": "https://www.mediafire.com/file/yvitrakq9q7u0p6/Cut_the_Rope_Time_Travel_Chinese_1.18.0.ipa/file",
+        "file": "Payload/ctr-tt.app/DisplayIcon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravelhd"
+    ]
   }
 ]

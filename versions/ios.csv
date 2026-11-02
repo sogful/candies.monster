@@ -337,6 +337,7 @@ Cut the Rope,com.zeptolab.ctr2,ctr2/classic,cut the rope 2 paid,10,/assets/image
 ,v1.19.3,,https://archive.org/download/cut-the-rope-2-v-1.19.3-hs/Cut%20The%20Rope%202%20v1.19.3%20HS.ipa,
 + 割绳子2,com.yodo1.cuttherope2,ctr2/ioschinav1521,chinese release (yodo1),10,/assets/images/gameicons/ctr2/ioschinav1521/raw.png
 ,v1.5.21,ctr2/ioschinav1521,https://mega.nz/file/LQ0gXbpA#vEnS42aL63Qqf-So2IH1SodOBMwnMzTOba3bRm-yKuw,
+,v1.3.0,ctr2/ioschinav130,https://www.mediafire.com/file/tvdqlu9l7l685kf/com.yodo1.cuttherope2_811147316.ipa/file,,armv7,113.55 MB
 Cut the Rope,com.zeptolab.timetravel,ctrtt/classic,time travel,10
 ,v1.15.0,,https://archive.org/download/Cut_the_Rope_1.15.0_ios_12.0/Cut_the_Rope_1.15.0_ios_12.0.ipa,
 ,v1.1,ctrtt/androidgallery2,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collection%20Part%203/Cut%20The%20Rope%20Time%20Travel%201.1.0.ipa,
@@ -397,6 +398,9 @@ Cut the Rope,com.zeptolab.timetravel,ctrtt/classic,time travel,10
 ,v1.0.7,ctrtt/iosv102,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free/1.0.7.zip,,armv7,4.47 MB,symbols,(stabs)
 + Time Travel,com.zeptolab.timetravel,ctrtt/iosv10,testflight prototype,10,/assets/images/gameicons/ctrtt/iosv10/raw.png
 ,v1.0,ctrtt/iosv10,https://archive.org/download/com.zeptolab.timetravel/94ca6c772af660be444a82082abc4e4f.ipa,
++ 割绳子：时间旅行 (Cut the Rope: Time Travel),com.zeptolab.timetravelhd,ctrtt/ioschinav1180,chinese app store release,10,/assets/images/gameicons/ctrtt/ioschinav1180/raw.png
+
+,v1.18.0,ctrtt/ioschinav1180,https://www.mediafire.com/file/yvitrakq9q7u0p6/Cut_the_Rope_Time_Travel_Chinese_1.18.0.ipa/file,,arm64,94.66 MB
 Cut the Rope,com.zeptolab.ctrm,ctrmagic/classic,paid releases,7
 ,v1.0.0,,https://archive.org/download/Cut_the_Rope__Magic_1.0.0_ios_7.0/Cut_the_Rope__Magic_1.0.0_ios_7.0.ipa,
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.0.0.zip,,"arm64, armv7",7.43 MB,symbols,STABS
