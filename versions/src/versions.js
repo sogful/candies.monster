@@ -36,6 +36,14 @@ function isdownloadbuttonvisible(download) {
 }
 
 function renderdownloadbutton(download) {
+    if (download.kind === "symbols") {
+        const label = download.label || "debug symbols";
+        const details = [label, download.arch, download.size].filter(Boolean).join(" | ");
+        return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" aria-label="symbols: ${details}" title="${details}">
+            <img src="/assets/images/dlbuttons/other.png" alt="" draggable="false" loading="lazy" decoding="async">
+            <div class="cdntext"><div>symbols</div><div>${label}</div></div>
+        </a>`;
+    }
     if (download.arch && download.size) {
         return `<a href="${download.url}" target="_blank" class="clickable cdnbutton">
             <img src="/assets/images/dlbuttons/cdn.png" draggable="false" loading="lazy" decoding="async">
@@ -53,7 +61,7 @@ function uniquedownloads(downloads) {
     return (downloads || []).filter(download => {
         if (!download?.url) return false;
         const iscdn = (download.arch && download.size) || download.url.includes("cdn.candies.monster");
-        const key = iscdn ? `${download.url}|${download.arch || ""}|${download.size || ""}` : download.url;
+        const key = `${download.kind || "app"}|${iscdn ? `${download.url}|${download.arch || ""}|${download.size || ""}` : download.url}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;

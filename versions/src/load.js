@@ -116,6 +116,8 @@ function parsegamescsv(text) {
         const c4 = cleanvalue(line[4]);
         const c5 = cleanvalue(line[5]);
         const c6 = cleanvalue(line[6]);
+        const c7 = cleanvalue(line[7]);
+        const c8 = cleanvalue(line[8]);
 
         if (!c0 && !c1 && !c2 && !c3 && !c4 && !c5 && !c6) continue;
         if (c0) {
@@ -171,12 +173,12 @@ function parsegamescsv(text) {
                 }
             }
             if (c3) {
-                currentversion.downloads.push({url: c3, arch: c5, size: c6});
+                currentversion.downloads.push({url: c3, arch: c5, size: c6, kind: c7, label: c8});
             }
             continue;
         }
         if (currentversion && c3) {
-            currentversion.downloads.push({url: c3, arch: c5, size: c6});
+            currentversion.downloads.push({url: c3, arch: c5, size: c6, kind: c7, label: c8});
         }
     }
     return {games: parsedgames, versionscache: bypackage};
