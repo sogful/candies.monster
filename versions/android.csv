@@ -671,7 +671,7 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 
 ,v2.3.9.3,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.YODO1_01/2.3.9.3-23930.apk,,armeabi,44.29 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.YODO1_01/2.3.9.3.zip,,armeabi,13.31 MB,symbols,DWARF/SYMTAB
-+ 割绳子2,com.yodo1tier1.ctr2.telecom,ctr2/androidtelecom220,"chinese telecom, test-key signed sources",9,/assets/images/gameicons/ctr2/androidtelecom220/raw.png
++ 割绳子2,com.yodo1tier1.ctr2.telecom,ctr2/androidtelecom220,"chinese telecom (signed with test keys)",9,/assets/images/gameicons/ctr2/androidtelecom220/raw.png
 
 ,v2.2.0,ctr2/androidtelecom220,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.2.0-2021.apk,,armeabi,31.90 MB,archive
 ,v2.3.4,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.3.4-2021.apk,,"armeabi, armeabi-v7a, x86",35.95 MB,archive

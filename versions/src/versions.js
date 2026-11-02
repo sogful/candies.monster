@@ -10,7 +10,15 @@ const buttonmap = [
     {domain: "apkpure.net", icon: "apkpure.png"},
     {domain: "uptodown.com", icon: "uptodown.png"},
     {domain: "pdalife.to", icon: "pdalife.png"},
+    {domain: "apkbe.com", icon: "apkbe.png"},
+    {domain: "downzen.com", icon: "downzen.png"},
+
+    {domain: "mega.io", icon: "mega.png"},
+    {domain: "mega.nz", icon: "mega.png"},
+    {domain: "mediafire.com", icon: "mediafire.png"},
     {domain: "archive.org", icon: "internetarchive.png"},
+
+    // i know this is dumb but i haven't seen anyone besides me and blue putting this many apks and ipas onto github
     {domain: "github.com", icon: "ctrhome.png"},
     {domain: "githubusercontent.com", icon: "ctrhome.png"},
     {domain: "github.io", icon: "ctrhome.png"}

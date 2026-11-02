@@ -107,6 +107,7 @@ function parsegamescsv(text) {
 
     for (let r = 0; r < rows.length; r++) {
         const line = rows[r];
+
         const c0 = cleanvalue(line[0]);
         const c1 = cleanvalue(line[1]);
         const c2 = cleanvalue(line[2]);
@@ -114,6 +115,7 @@ function parsegamescsv(text) {
         const c4 = cleanvalue(line[4]);
         const c5 = cleanvalue(line[5]);
         const c6 = cleanvalue(line[6]);
+
         const kind = cleanvalue(line[7]);
         const label = cleanvalue(line[8]);
 
