@@ -43,6 +43,7 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v2.5,,https://archive.org/download/cut-the-rope-collection/Cut%20the%20Rope%202.5%20%5BiOS5.0%5D.ipa,
 ,v2.6,,https://archive.org/download/cut-the-rope-collection/Cut%20the%20Rope%202.6%20%5BiOS6.0%5D.ipa,
 ,v2.6,,https://archive.org/download/Cut_the_Rope_2.6_ios_6.0/Cut_the_Rope_2.6_ios_6.0.ipa,
+,v2.2,icons/com.chillingo.cuttherope/launchercf40402a2b9c.png,https://archive.org/download/fruit-ninja-thd-free-android-all-version/16%20Cut%20the%20Rope%202.2%20%2813516669%29.ipa,
 + Cut the Rope,com.chillingo.cuttheropelite,free.webp,lite and free releases,10
 ,v2.3.1,,https://archive.org/download/cut-the-rope-2.3.1-app-only/Cut%20the%20Rope_2.3.1_AppOnly.ipa,
 ,v1.3,icons/com.chillingo.cuttheropelite/ios131.png,https://archive.org/download/chuzzle-android/01%20Cut%20the%20Rope%20Free%201.3%20%287167038%29.ipa,
@@ -71,11 +72,15 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v1.0,,https://archive.org/download/cutthe-rope/CuttheRope.ipa,
 ,v1.2.2,,https://archive.org/download/ios-ipa-collection/Cut%20the%20Rope%20Lite%201.2.2.ipa,
 ,v2.3.8,,https://archive.org/download/com-chillingo-cuttheropelite-ios5-0-clutch-2-0-4-ipa/com.chillingo.cuttheropelite-iOS5.0-%28Clutch-2.0.4%29.ipa,
+,v1.1,icons/com.chillingo.cuttheropelite/launcher2a2507b24b5d.png,https://archive.org/download/fruit-ninja-hd-lenovo-le-pad-all-version/02%20Cut%20the%20Rope%20Lite%201.1%20%283173591%29.ipa,
+,v1.2.1,icons/com.chillingo.cuttheropelite/launcher2a2507b24b5d.png,https://archive.org/download/fruit-ninja-hd-lenovo-le-pad-all-version/04%20Cut%20the%20Rope%20Lite%201.2%20%281.2.1%29%20%284325574%29.ipa,
 + Cut the Rope,com.zeptolab.cuttheropelite,free.webp,free releases,10
 ,v3.3.0,,https://archive.org/download/cut-the-rope-3.3.0-app-only/Cut%20the%20Rope_3.3.0_AppOnly.ipa,
 ,v3.24.1,,https://archive.org/download/Cut_the_Rope_3.24.1_ios_8.0/Cut_the_Rope_3.24.1_ios_8.0.ipa,
 ,v3.32.0,,https://archive.org/download/cut-the-rope-3.32.0/Cut%20the%20Rope%203.32.0.ipa,
 ,v3.33.0,,https://archive.org/download/cut-the-rope-3.33.0/Cut%20the%20Rope%203.33.0.ipa,
+,v2.7,icons/com.zeptolab.cuttheropelite/launcherbf021c9f13c6.png,https://archive.org/download/cut-the-rope-lite-zeptolab-iphone/1%20Cut%20the%20Rope%20Lite%202.7.ipa,
+,v2.7.1,icons/com.zeptolab.cuttheropelite/launcherbf021c9f13c6.png,https://archive.org/download/cut-the-rope-lite-zeptolab-iphone/2%20Cut%20the%20Rope%20Lite%202.7.1.ipa,
 + Cut the Rope,com.zeptolab.cuttherope,free.webp,gold (ad free),10
 ,v3.10.3,,https://archive.org/download/cut-the-rope-3.10.3-64-bit/Cut%20the%20Rope%203.10.3%2064%20Bit.ipa,
 ,v2.7,,https://archive.org/download/cut-the-rope-collection/Cut%20the%20Rope%20GOLD%202.7.0.ipa,
@@ -162,6 +167,7 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v3.26.2,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.26.2%20%28iOS%209.0%29.ipa,
 ,v3.32.0,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.32.0%20%28iOS%209.0%29.ipa,
 ,v3.33.0,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.33.0%20%28iOS%209.0%29.ipa,
+,v3.3.0,icons/com.zeptolab.cuttheropehdlite/launcher0d3c80e15b8c.png,https://archive.org/download/cut-the-rope-original-ctrhome/event/com.zeptolab.cuttheropehdlite_3.3.0.ipa,
 + Cut the Rope,com.zeptolab.cuttherope,free.webp,testflight debug symbols,10
 ,v1.7.1,free.webp,https://debugging.games/_files/iOS/Cut%20the%20Rope%20Series/%5BiOS%5D%20Cut%20the%20Rope%20%28Debug%2C%20TestFlight%29%20%5Bv1.7.1%5D%20%5B2012-06-27%5D.7z,,"armv6, armv7",1.67 MB,symbols,STABS
 Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
@@ -393,7 +399,7 @@ Om Nom Toons,com.zeptolab.toonplayer,toons.webp,,4
 ,v1.2.0,,https://archive.org/download/zeptolab-om-nom-toons-i-os-9.0/Zeptolab%20Om%20Nom%20Toons%20iOS%209.0.ipa,
 Bubbles,com.zeptolab.hff,bubbles.webp,,3
 ,v1.0,,https://archive.org/download/om-nom-bubbles/OmNomBubbles%201.0.ipa,
-dreams,com.zeptolab.dreams,icons/com.zeptolab.dreams/launcher74b2cddfbabc.png,2012 om nom virtual-pet prototype,3,launcher74b2cddfbabc.png
+dreams,com.zeptolab.dreams,icons/com.zeptolab.dreams/launcher74b2cddfbabc.png,2012 om nom virtual pet proto (kind of like my om nom),3,launcher74b2cddfbabc.png
 ,v1.0,,https://archive.org/download/com.zeptolab.dreams/Dreams%201.0%20%2321.ipa,,,,,testflight archive #21
 ,,,https://archive.org/download/com.zeptolab.dreams/Dreams%201.0%20%2358.ipa,,,,,testflight archive #58
 ,,,https://archive.org/download/com.zeptolab.dreams/Dreams%201.0%20%2368.ipa,,,,,testflight archive #68
