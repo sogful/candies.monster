@@ -35,6 +35,10 @@ function cleanvalue(v) {
     return (v || "").trim();
 }
 
+function hasdownload(downloads) {
+    return (downloads || []).some(download => cleanvalue(download?.url) && download.kind !== "symbols");
+}
+
 function resolveiconpath(p, size = 128) {
     const value = cleanvalue(p);
     if (!value) return "";
@@ -185,10 +189,10 @@ function parsegamescsv(text) {
 }
 
 window.csvthing = {
-    parsegamescsv, resolveiconpath, resolveiconsrcset, resolveversionlabel,
+    parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset, resolveversionlabel,
     resolvegameicon, resolvepackageicon
 };
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export {parsegamescsv, resolveiconpath, resolveiconsrcset, resolveversionlabel, resolvegameicon, resolvepackageicon};
+export {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset, resolveversionlabel, resolvegameicon, resolvepackageicon};

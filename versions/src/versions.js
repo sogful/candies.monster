@@ -1,4 +1,4 @@
-import {resolveiconpath, resolveiconsrcset, resolveversionlabel} from "./load.js";
+import {hasdownload, resolveiconpath, resolveiconsrcset, resolveversionlabel} from "./load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -108,6 +108,7 @@ function versionsfor(cache, key) {
     const versions = Array.from(merged.values()).map(version => ({
         ...version,
         recordonly: !version.downloads?.length,
+        unavailable: !hasdownload(version.downloads),
         downloads: uniquedownloads(version.downloads).filter(isdownloadbuttonvisible),
         order: version.version.replace(/^v/i, "").split(".").map(value => parseInt(value) || 0)
     })).filter(version => version.downloads.length || version.recordonly);
@@ -182,6 +183,7 @@ function packageheader(game, index, pkg) {
 function versionpanel(version, fallback, legacy) {
     const panel = document.createElement("div");
     panel.className = "versionpanel";
+    panel.classList.toggle("unavailable", version.unavailable);
     const historical = !version.icon && legacy;
     const source = version.icon || (historical && legacyicons?.[version.version]) || fallback || "ctr/free";
     const icon = resolveiconpath(source);

@@ -1,4 +1,4 @@
-import {parsegamescsv, resolveiconpath, resolveiconsrcset} from "./load.js";
+import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./load.js";
 import {loadversions} from "./versions.js";
 import "/assets/static/favicon.js";
 
@@ -64,6 +64,9 @@ function mountplatform(platform) {
             const icon = document.createElement("div");
             icon.className = "gameicon clickable";
             const key = game.verkey ?? game.package;
+            const keys = Array.isArray(key) ? key : [key];
+            const available = keys.some(value => (platform.cache.get(value) || []).some(version => hasdownload(version.downloads)));
+            icon.classList.toggle("unavailable", !available);
             icon.dataset.gameid = Array.isArray(key) ? key[0] : key;
             const image = document.createElement("img");
             image.loading = "lazy";
