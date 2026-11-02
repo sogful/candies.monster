@@ -469,7 +469,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 + Cut the Rope HD,com.zeptolab.ctr.hd.paid.samsung,ctr/androidhdgallery4,samsung,10,/assets/images/gameicons/ctr/androidhdgallery4/raw.png
 ,v1.3.1,ctr/androidhdgallery4,https://archive.org/download/ctrhdandroid/com.zeptolab.ctr.hd.paid.samsung_1.3.1.apk,
 ,v1.3.1,ctr/androidhdgallery4,https://cdn.candies.monster/symbols/com.zeptolab.ctr.hd.paid.samsung/1.3.1.zip,,armeabi,0.46 MB,symbols,(symtab)
-+ Cut the Rope,com.yodo1tier1.ctr_original.telecom,ctr/androidv341,china telecom; libraries from a repackaged APK,0,/assets/images/gameicons/ctr/androidv341/raw.png
++ Cut the Rope,com.yodo1tier1.ctr_original.telecom,ctr/androidv341,china telecom (libraries from a repackaged apk),0,/assets/images/gameicons/ctr/androidv341/raw.png
 
 ,v2.1.2,ctr/androidv341,
 ,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr_original.telecom/2.1.2.zip,,armeabi,0.71 MB,symbols,exports
@@ -662,7 +662,7 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 ,v1.4.2,ctr2/androidamazonv142,https://www.mediafire.com/file/lbapbgax90wupsp/Cut_the_Rope_2_1.4.2.apk/file,
 + 割绳子2,com.yodo1tier1.ctr2.TXWXYY,ctr2/androidchinav2442,tencent (china),9,/assets/images/gameicons/ctr2/androidchinav2442/raw.png
 ,v2.4.4,ctr2/androidchinav2442,https://m.itmop.com/downinfo/191745.html,
-+ 割绳子2,com.yodo1.ctr2.YODO1_01,ctr2/androidchinav244,china yodo1; no-login build,0,/assets/images/gameicons/ctr2/androidchinav244/raw.png
++ 割绳子2,com.yodo1.ctr2.YODO1_01,ctr2/androidchinav244,china yodo1 (no login build),0,/assets/images/gameicons/ctr2/androidchinav244/raw.png
 
 ,v2.3.9.5,ctr2/androidchinav244,
 ,,,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/ctr2china/CTR2_chinese_no_login.apk,,armeabi,46.08 MB
