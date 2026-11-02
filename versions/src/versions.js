@@ -1,4 +1,4 @@
-import {resolveiconpath, resolveiconsrcset} from "./load.js";
+import {resolveiconpath, resolveiconsrcset, resolveversionlabel} from "./load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -82,7 +82,7 @@ function versionsfor(cache, key) {
     if (packages.has(key)) return packages.get(key);
     const merged = new Map();
     for (const item of cache.get(key) || []) {
-        const version = /^v/i.test(item.version || "") ? item.version : "v" + item.version;
+        const version = resolveversionlabel(item.version);
         const normalized = version.toLowerCase();
         if (!merged.has(normalized)) {
             merged.set(normalized, {...item, version});

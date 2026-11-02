@@ -51,6 +51,11 @@ function resolveiconsrcset(p) {
     return `${resolveiconpath(p)} 1x, ${resolveiconpath(p, 256)} 2x`;
 }
 
+function resolveversionlabel(value) {
+    const label = cleanvalue(value);
+    return /^v?\d/i.test(label) ? `v${label.replace(/^v/i, "")}` : label;
+}
+
 function resolvepackageicon(pkg, filename) {
     const f = cleanvalue(filename);
     if (!f || !pkg) return "";
@@ -147,7 +152,7 @@ function parsegamescsv(text) {
         const vk = currentgame.verkey;
         const versions = bypackage.get(vk) || [];
         if (c1) {
-            const normalizedversion = `v${c1.replace(/^v/i, "")}`;
+            const normalizedversion = resolveversionlabel(c1);
             let entry = versions.find(v => (v.version || "").toLowerCase() === normalizedversion.toLowerCase());
             if (!entry) {
                 entry = {version: normalizedversion, icon: resolveiconpath(c2), details: "", downloads: []};
@@ -178,10 +183,10 @@ function parsegamescsv(text) {
 }
 
 window.csvthing = {
-    parsegamescsv, resolveiconpath, resolveiconsrcset,
+    parsegamescsv, resolveiconpath, resolveiconsrcset, resolveversionlabel,
     resolvegameicon, resolvepackageicon
 };
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export {parsegamescsv, resolveiconpath, resolveiconsrcset, resolvegameicon, resolvepackageicon};
+export {parsegamescsv, resolveiconpath, resolveiconsrcset, resolveversionlabel, resolvegameicon, resolvepackageicon};
