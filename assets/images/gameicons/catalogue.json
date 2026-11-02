@@ -4235,5 +4235,21 @@
     "packages": [
       "com.zeptolab.toonplayer"
     ]
+  },
+  {
+    "game": "hungryforfruit",
+    "variant": "community",
+    "raw": "/assets/images/gameicons/hungryforfruit/community/raw.png",
+    "width": 150,
+    "height": 148,
+    "format": "png",
+    "sha256": "1713d86116ce7ab9784fa11840462c171afb0c2166b46f7b4bc1d19d52dd11f6",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/extra/hff.png",
+        "file": "hff.png"
+      }
+    ],
+    "packages": []
   }
 ]

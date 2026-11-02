@@ -1015,6 +1015,9 @@ Cut the Rope Holiday Gift,com.zeptolab.cuttheropexmas.google,ctrholiday/classic,
 ,v1.9.0,ctrholiday/classic,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Stuff/Holiday.Gift.Amazon.Kids.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 + Cut the Rope Holiday Gift,com.zeptolab.holiday.premium.tier,ctrholiday/androidv180,DRMed bemobi apps club (brazil),5,/assets/images/gameicons/ctrholiday/androidv180/raw.png
 ,v1.8.0,ctrholiday/androidv180,https://drive.google.com/file/d/1P_GruA1GxRhdb2eciuBC6EuxFr8NWYgk/view,
+Cut the Rope: Hungry for Fruit,,hungryforfruit/community,native libraries only; package and version unknown,0
+,unknown version,hungryforfruit/community,https://cdn.candies.monster/symbols/hungryforfruit/unknown.zip,,armeabi-v7a,0.53 MB,symbols,exports
+
 Cut the Rope: BLAST,com.skywalkgames.blastctr,blast/classic,,4,/assets/images/gameicons/blast/androidgallery/raw.png
 ,v6135,blast/classic,https://cut-the-rope-blast.en.uptodown.com/android/download/1017657903,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.skywalkgames.blastctr/Cut the Rope_ BLAST_6135_APKPure.apk,,"arm64, arm32",1006.06MB,,,,,,,,,,,,,,,,,,,,,,,
