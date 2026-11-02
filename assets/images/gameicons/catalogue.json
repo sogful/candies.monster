@@ -4333,5 +4333,41 @@
     "packages": [
       "com.zeptolab.ctr2"
     ]
+  },
+  {
+    "game": "pudding",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/pudding/classic/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "6d35e6c5b5f7386dbe52496d7c408e3ec8506eeba4c7872e62cb97c62ae616a8",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/extra/pudding.png",
+        "file": "pudding.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.monsters.free.google"
+    ]
+  },
+  {
+    "game": "pudding",
+    "variant": "androidhd",
+    "raw": "/assets/images/gameicons/pudding/androidhd/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "94646e65c1061454868a86da90c592532349ca44552c3780705f1f2baa106337",
+    "sources": [
+      {
+        "url": "https://theawesomeblue.github.io/ctrfiles/download/pudding/Pudding_Mosters_1.2.6_HD.apk",
+        "file": "res/drawable-xhdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.monsters.paid.google"
+    ]
   }
 ]
