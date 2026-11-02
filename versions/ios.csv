@@ -168,8 +168,10 @@ Cut the Rope,com.chillingo.cuttherope,free.webp,,10
 ,v3.32.0,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.32.0%20%28iOS%209.0%29.ipa,
 ,v3.33.0,icons/com.zeptolab.cuttheropehdlite/launcher653e77e7474e.png,https://archive.org/download/omnomipadchina/%E5%89%B2%E7%BB%B3%E5%AD%90%20%28Cut%20the%20Rope%29%20v3.33.0%20%28iOS%209.0%29.ipa,
 ,v3.3.0,icons/com.zeptolab.cuttheropehdlite/launcher0d3c80e15b8c.png,https://archive.org/download/cut-the-rope-original-ctrhome/event/com.zeptolab.cuttheropehdlite_3.3.0.ipa,
-+ Cut the Rope,com.zeptolab.cuttherope,free.webp,testflight debug symbols,10
-,v1.7.1,free.webp,https://debugging.games/_files/iOS/Cut%20the%20Rope%20Series/%5BiOS%5D%20Cut%20the%20Rope%20%28Debug%2C%20TestFlight%29%20%5Bv1.7.1%5D%20%5B2012-06-27%5D.7z,,"armv6, armv7",1.67 MB,symbols,STABS
++ Cut the Rope,com.zeptolab.cuttherope,free.webp,testflight,10
+,v1.7.1,icons/com.zeptolab.cuttherope/launchercf40402a2b9c.png,https://debugging.games/_files/iOS/Cut%20the%20Rope%20Series/%5BiOS%5D%20Cut%20the%20Rope%20%28Debug%2C%20TestFlight%29%20%5Bv1.7.1%5D%20%5B2012-06-27%5D.7z,,"armv6, armv7",1.67 MB,symbols,STABS
+,v1.7.1,icons/com.zeptolab.cuttherope/launchercf40402a2b9c.png,https://archive.org/download/zeptolab-testflight-ctrhome/CuttheRopeTestflight2.ipa,
+,v2.0.1,icons/com.zeptolab.cuttherope/launchercf40402a2b9c.png,https://archive.org/download/zeptolab-testflight-ctrhome/CutTheRopeTestflight.ipa,
 Cut the Rope,com.zeptolab.ctrexperiments,experimentsfree.webp,experiments,8
 ,v1.0,,https://archive.org/download/iOSObscura/iPhoneOS%203/com.zeptolab.ctrexperiments/Cut%20the%20Rope-%28com.zeptolab.ctrexperiments%29-1.0-%28iOS_3.0%29-37e7e4e478f51dc824642665e68f8177.ipa,
 ,v1.6.1,,https://archive.org/download/Cut_the_Rope_1.6.1_ios_4.3/Cut_the_Rope_1.6.1_ios_4.3.ipa,
@@ -465,3 +467,6 @@ Om Nom: Run,com.zeptolab.omnomrun,omnomrun.webp,,
 ,v1.0.0,,https://archive.org/download/Om_Nom__Run_1.0.0_ios_9.0/Om_Nom__Run_1.0.0_ios_9.0.ipa,
 CyberNom,com.zeptolab.cybernom,app-icon.png,,3
 ,v0.4,,https://archive.org/download/com.zeptolab.cybernom/com.zeptolab.cybernom_0.4.ipa,
+Comic,com.zeptolab.ctrcomic,icons/com.zeptolab.ctrcomic/launcher1a829bf3d427.png,cut the rope comic,4,launcher1a829bf3d427.png
+,v1.0.0,icons/com.zeptolab.ctrcomic/launcher1a829bf3d427.png,https://archive.org/download/cut-the-rope-comic/Cut%20the%20Rope%20Comic%201.0.ipa,
+,v1.0.0,icons/com.zeptolab.ctrcomic/launcher1a829bf3d427.png,https://archive.org/download/ctr-comic-app-full/Cut%20the%20Rope%20Comic-%28com.zeptolab.ctrcomic%29-1-%28iOS_3.0%29.ipa,
