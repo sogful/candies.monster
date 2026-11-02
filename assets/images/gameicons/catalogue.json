@@ -4945,5 +4945,41 @@
     "packages": [
       "on.in.space"
     ]
+  },
+  {
+    "game": "flick",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/flick/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "69b42af83fe5be27830b4c9d4e684b1a26557720c99f80ace6e4d0a0a201601a",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.goncalo.flick",
+        "file": "https://assets.appmeme.com/com.goncalo.flick--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.goncalo.flick"
+    ]
+  },
+  {
+    "game": "smash",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/smash/iosv10/raw.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "sha256": "158074155813e3a4380c4c5ee63bb213b0d35cdf42e40a3bab6ac1e18f0bd0dd",
+    "sources": [
+      {
+        "url": "https://www.pgyer.com/ipa/ipa/com.goncalo.omnomsmash",
+        "file": "https://assets.appmeme.com/com.goncalo.omnomsmash--ipa-1_0-icon.webp"
+      }
+    ],
+    "packages": [
+      "com.goncalo.omnomsmash"
+    ]
   }
 ]
