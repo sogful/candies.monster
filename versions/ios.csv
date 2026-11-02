@@ -295,18 +295,44 @@ Cut the Rope,com.zeptolab.ctrexperiments,ctrexp/free,experiments,8
 + Cut the Rope,com.zeptolab.ctrexperiments,ctrexp/iosv121,experiments testflight debug prototype,8,/assets/images/gameicons/ctrexp/iosv121/raw.png
 ,v1.3,ctrexp/iosv121,https://archive.org/download/ctr-experiments-1-3/eeea01f3379467b19651a34d444678b0.ipa,
 ,v1.3,ctrexp/iosv121,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperiments/1.3.7z,,"armv6, armv7",1.08 MB,symbols,(stabs)
-Cut the Rope,com.zeptolab.ctr2,ctr2/classic,cut the rope 2 paid,10
+Cut the Rope,com.zeptolab.ctr2,ctr2/classic,cut the rope 2 paid,10,/assets/images/gameicons/ctr2/christmasios/raw.png,/assets/images/gameicons/ctr2/goldios/raw.png,/assets/images/gameicons/ctr2/valentinesios/raw.png
 ,V1.17.2,,https://archive.org/download/Cut_the_Rope_1.17.2_ios_12.2/Cut_the_Rope_1.17.2_ios_12.2.ipa,
 ,v1.0,ctr2/iosv10,https://archive.org/download/cut-the-rope-2-v-1.0/Cut%20the%20Rope%202-v1.0-Thomas_xxxxx.ipa,
 ,,ctr2/iosv10,https://archive.org/download/seychells-big-mega-.ipa-collection-ios-apps-and-games/iPod%20touch%204th%20gen%2032GB%20White%20%28Black%29%20iOS%206.1.6%20Apps%20.ipa%20Collection/Cracked/001-100/com.zeptolab.ctr2-iOS4.3-%28Clutch-2.0.4%29.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.0.zip,,"armv7, armv7s",5.04 MB,symbols,STABS
 ,v1.0.1,,https://archive.org/download/Cut_the_Rope_2_1.0.1_ios_4.3/Cut_the_Rope_2_1.0.1_ios_4.3.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.0.1.zip,,"armv7, armv7s",2.52 MB,symbols,STABS
 ,v1.3.8,,https://theawesomeblue.github.io/ctrfiles/download/ctr2/Cut_the_Rope_2-v1.3.8_iOS5.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.3.8.zip,,armv7,6.56 MB,symbols,STABS
 ,v1.6.9,,https://archive.org/download/cut_the_rope_2_h7_ipa_1.6.9_ios_6.0/Cut_the_Rope_2_h7_ipa_1.6.9_ios_6.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.6.9.zip,,"arm64, armv7",19.03 MB,symbols,STABS
 ,v1.17.2,,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/CtR2GOLD1.17.2.ipa,
 ,v1.17.2,,https://archive.org/download/Cut_the_Rope_1.17.2_ios_8.0/Cut_the_Rope_1.17.2_ios_8.0.ipa,
 ,v1.1.2,,https://archive.org/download/Cut_the_Rope_1.1.2_ios_5.0/Cut_the_Rope_1.1.2_ios_5.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.1.2.zip,,"armv7, armv7s",8.83 MB,symbols,STABS
 ,v1.6.4,,https://pdalife.com/dwn/44700b07.html?lang=en,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.6.4.zip,,"arm64, armv7",9.09 MB,symbols,STABS
 ,v1.6.9,,https://pdalife.com/dwn/3ef89c23.html?lang=en,
+,v1.1,ctr2/goldios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.1.0.ipa,,"armv7, armv7s",83.91 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.1.zip,,"armv7, armv7s",5.89 MB,symbols,STABS
+,v1.1.1,ctr2/goldios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.1.1.ipa,,"armv7, armv7s",83.90 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.1.1.zip,,"armv7, armv7s",5.89 MB,symbols,STABS
+,v1.1.8,ctr2/goldios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.1.8.ipa,,armv7,80.88 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.1.8.zip,,armv7,2.96 MB,symbols,STABS
+,v1.2.4,ctr2/valentinesios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.2.4.ipa,,armv7,84.34 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.2.4.zip,,armv7,3.32 MB,symbols,STABS
+,v1.3,ctr2/christmasios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.0.ipa,,armv7,83.04 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.3.zip,,armv7,3.48 MB,symbols,STABS
+,v1.3.1,ctr2/christmasios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.1.ipa,,armv7,83.04 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.3.1.zip,,armv7,3.49 MB,symbols,STABS
+,v1.3.2,ctr2/christmasios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.2.ipa,,armv7,83.04 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.3.2.zip,,armv7,3.49 MB,symbols,STABS
+,v1.3.3,ctr2/christmasios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.3.ipa,,armv7,83.04 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.3.3.zip,,armv7,3.49 MB,symbols,STABS
+,v1.3.9,ctr2/goldios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.9.ipa,,"arm64, armv7",80.45 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.3.9.zip,,"arm64, armv7",6.88 MB,symbols,STABS
+,v1.6.3,ctr2/goldios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.6.3.ipa,,"arm64, armv7",79.22 MB
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.6.3.zip,,"arm64, armv7",8.65 MB,symbols,STABS
 + Cut the Rope,com.zeptolab.ctr2.f2p,ctr2/classic,cut the rope 2 free,9
 ,v1.19.3,,https://archive.org/download/cut-the-rope-2-v-1.19.3-hs/Cut%20The%20Rope%202%20v1.19.3%20HS.ipa,
 + 割绳子2,com.yodo1.cuttherope2,ctr2/ioschinav1521,chinese release (yodo1),10,/assets/images/gameicons/ctr2/ioschinav1521/raw.png
@@ -373,6 +399,8 @@ Cut the Rope,com.zeptolab.timetravel,ctrtt/classic,time travel,10
 ,v1.0,ctrtt/iosv10,https://archive.org/download/com.zeptolab.timetravel/94ca6c772af660be444a82082abc4e4f.ipa,
 Cut the Rope,com.zeptolab.ctrm,ctrmagic/classic,paid releases,7
 ,v1.0.0,,https://archive.org/download/Cut_the_Rope__Magic_1.0.0_ios_7.0/Cut_the_Rope__Magic_1.0.0_ios_7.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.0.0.zip,,"arm64, armv7",7.43 MB,symbols,STABS
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.0.0-8df33ddd9962.zip,,armv7,3.78 MB,symbols,STABS
 ,v1.11.0,,https://archive.org/download/cut-the-rope-magic-v-1.11.0-hs/Cut%20The%20Rope%20Magic%20v1.11.0%20HS.ipa,
 ,v1.0.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/01%20Cut%20the%20Rope%20Magic%20GOLD%201.0.0%20%281%29.ipa,
 ,v1.11.0,,https://archive.org/download/Cut_the_Rope_1.11.0_ios_8.0/Cut_the_Rope_1.11.0_ios_8.0.ipa,
@@ -380,13 +408,21 @@ Cut the Rope,com.zeptolab.ctrm,ctrmagic/classic,paid releases,7
 ,v1.0.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/02%20Cut%20the%20Rope%20Magic%20GOLD%201.0.0%20%282%29.ipa,
 ,v1.0.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/03%20Cut%20the%20Rope%20Magic%20GOLD%201.0.0%20%283%29.ipa,
 ,v1.1.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/04%20Cut%20the%20Rope%20Magic%20GOLD%201.1.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.1.0.zip,,armv7,4.54 MB,symbols,STABS
 ,v1.1.1,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/05%20Cut%20the%20Rope%20Magic%20GOLD%201.1.1.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.1.1.zip,,armv7,4.53 MB,symbols,STABS
 ,v1.2.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/06%20Cut%20the%20Rope%20Magic%20GOLD%201.2.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.2.0.zip,,armv7,4.63 MB,symbols,STABS
 ,v1.3.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/07%20Cut%20the%20Rope%20Magic%20GOLD%201.3.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.3.0.zip,,armv7,4.62 MB,symbols,STABS
 ,v1.4.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/08%20Cut%20the%20Rope%20Magic%20GOLD%201.4.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.4.0.zip,,armv7,5.07 MB,symbols,STABS
 ,v1.4.1,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/09%20Cut%20the%20Rope%20Magic%20GOLD%201.4.1.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.4.1.zip,,armv7,5.04 MB,symbols,STABS
 ,v1.4.2,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/10%20Cut%20the%20Rope%20Magic%20GOLD%201.4.2.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.4.2.zip,,armv7,5.37 MB,symbols,STABS
 ,v1.5.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/11%20Cut%20the%20Rope%20Magic%20GOLD%201.5.0.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrm/1.5.0.zip,,armv7,8.72 MB,symbols,STABS
 ,v1.6.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/12%20Cut%20the%20Rope%20Magic%20GOLD%201.6.0.ipa,
 ,v1.7.0,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/13%20Cut%20the%20Rope%20Magic%20GOLD%201.7.0.ipa,
 ,v1.7.1,,https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20GOLD%20%28iOS%29/14%20Cut%20the%20Rope%20Magic%20GOLD%201.7.1.ipa,
@@ -496,6 +532,7 @@ Candy Flick,com.zeptolab.candyflick,candyflick/classic,,5
 My Om Nom,com.zeptolab.myomnom.paid,myomnom/classic,,5
 ,v1.1.1,,https://archive.org/download/my-om-nom/My%20Om%20Nom%201.1.1.ipa,
 ,v1.1.3,,https://archive.org/download/my-om-nom/My%20Om%20Nom%201.1.3.ipa,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.myomnom.paid/1.1.3.zip,,armv7,2.81 MB,symbols,STABS
 ,v1.1.4,,https://archive.org/download/my-om-nom/My%20Om%20Nom%201.1.4.ipa,
 ,v1.1.5,,https://archive.org/download/my-om-nom/My%20Om%20Nom%201.1.5.ipa,
 ,v1.1.7,,https://archive.org/download/my-om-nom/My%20Om%20Nom%201.1.7.ipa,

@@ -4251,5 +4251,87 @@
       }
     ],
     "packages": []
+  },
+  {
+    "game": "ctr2",
+    "variant": "goldios",
+    "raw": "/assets/images/gameicons/ctr2/goldios/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "1b4542ef065fa952c63f7f9f5c9c2194188a8f1968d1fa462a550abc49748bcf",
+    "sources": [
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.1.0.ipa",
+        "file": "Payload/ctr2.app/Icon-152x152.png"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.1.1.ipa",
+        "file": "Payload/ctr2.app/Icon-152x152.png"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.1.8.ipa",
+        "file": "Payload/ctr2.app/Icon-152x152.png"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.9.ipa",
+        "file": "Payload/ctr2.app/AppIcon60x60@3x.png"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.6.3.ipa",
+        "file": "Payload/ctr2.app/AppIcon60x60@3x.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "valentinesios",
+    "raw": "/assets/images/gameicons/ctr2/valentinesios/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "02276dc8213eda4c74ed1f7be5b8930020e6bb5cc6de9a0ea190ae9663727936",
+    "sources": [
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.2.4.ipa",
+        "file": "Payload/ctr2.app/AppIcon60x60@3x.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "christmasios",
+    "raw": "/assets/images/gameicons/ctr2/christmasios/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "2d42d8b64c357b13aa1e8334afebbffa025bd4da29ee8fdd319f9c93c31e80f9",
+    "sources": [
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.0.ipa",
+        "file": "Payload/ctr2.app/AppIcon60x60@3x.png"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.1.ipa",
+        "file": "Payload/ctr2.app/AppIcon60x60@3x.png"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.2.ipa",
+        "file": "Payload/ctr2.app/AppIcon60x60@3x.png"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.3.3.ipa",
+        "file": "Payload/ctr2.app/AppIcon60x60@3x.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2"
+    ]
   }
 ]
