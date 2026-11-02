@@ -4585,5 +4585,77 @@
     "packages": [
       "com.stelar.omnomblast"
     ]
+  },
+  {
+    "game": "stories",
+    "variant": "iosv110",
+    "raw": "/assets/images/gameicons/stories/iosv110/raw.jpg",
+    "width": 512,
+    "height": 512,
+    "format": "jpeg",
+    "sha256": "fc187447a58d7c90beae10b988d4d56333e3d9ca377fb9c4dedd41232c8fbda8",
+    "sources": [
+      {
+        "url": "https://apps.apple.com/gb/app/id6446645915",
+        "file": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f1/11/71/f11171c0-6cee-6f58-5e9c-a56f628575d2/AppIcon-StoreApp-Default-0-0-1x_U007epad-0-0-0-85-220.png/512x512bb.jpg"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.cartoonapp"
+    ]
+  },
+  {
+    "game": "stickers",
+    "variant": "iosv13",
+    "raw": "/assets/images/gameicons/stickers/iosv13/raw.jpg",
+    "width": 512,
+    "height": 512,
+    "format": "jpeg",
+    "sha256": "7b1719b69913508440d22b68f5b6789f2c3b1d38e58d9459da31222c2df06086",
+    "sources": [
+      {
+        "url": "https://apps.apple.com/gb/app/id1152556331",
+        "file": "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/03/a1/da/03a1da08-532b-145f-dfda-6ca9f4ab06b4/mzl.byfdbnua.png/512x512bb.jpg"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.stickers"
+    ]
+  },
+  {
+    "game": "blast",
+    "variant": "iosv6140",
+    "raw": "/assets/images/gameicons/blast/iosv6140/raw.jpg",
+    "width": 512,
+    "height": 512,
+    "format": "jpeg",
+    "sha256": "a0da13b8458ae47bfb41478e5d166a0de6cfb6e8dca122cb9c25e3c5bfc56ec8",
+    "sources": [
+      {
+        "url": "https://apps.apple.com/gb/app/id1532002644",
+        "file": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/82/18/42/82184289-7d56-0080-5b9f-d92d289af88c/AppIcon-1x_U007emarketing-0-7-0-85-220-0.png/512x512bb.jpg"
+      }
+    ],
+    "packages": [
+      "com.skywalkgames.blastctr"
+    ]
+  },
+  {
+    "game": "ctrdaily",
+    "variant": "iosv1150",
+    "raw": "/assets/images/gameicons/ctrdaily/iosv1150/raw.jpg",
+    "width": 512,
+    "height": 512,
+    "format": "jpeg",
+    "sha256": "12ca1b0a2b0e38d7509b3b98ea41eb0a224779d1f5a20ae24085914a57e224d7",
+    "sources": [
+      {
+        "url": "https://apps.apple.com/gb/app/id6445926787",
+        "file": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/77/86/60/77866051-e80b-a9a8-a763-eb867d089a53/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg"
+      }
+    ],
+    "packages": [
+      "com.netflix.NGP.CutTheRopeDaily"
+    ]
   }
 ]
