@@ -1,0 +1,4239 @@
+[
+  {
+    "game": "ctr",
+    "variant": "modernalternate",
+    "raw": "/assets/images/gameicons/ctr/modernalternate/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "b752fdc8cbe7ed3ed45b2bb97f6bf699d4f6d31a99d3fd75da05445116fbf895",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "amazingcandy",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/amazingcandy/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "6cb62d0df81ef86060dca4d2c2f96a9b2876d2cae7d64219f33946c8cd9c42b4",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.amazingcandy"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "anniversary",
+    "raw": "/assets/images/gameicons/ctr/anniversary/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "82f2aa617ab06d20fe84eaf4f5f5d15bfd76120e748c9327174e101e6f5daff1",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "pirates",
+    "variant": "battle",
+    "raw": "/assets/images/gameicons/pirates/battle/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "f1ae8865afce87248f1655d87f3b659ec4906dd8aa0047bdbce829d54f181a82",
+    "sources": [],
+    "packages": [
+      "com.omnom.battlepirates"
+    ]
+  },
+  {
+    "game": "bigadventure",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/bigadventure/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "e9d4ffcd14076cecc9f7c8fd5a5846bbbea9dfec86488d6a500c884b3012e861",
+    "sources": [],
+    "packages": [
+      "com.zeptodev.nibblenombigadventure"
+    ]
+  },
+  {
+    "game": "blast",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/blast/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "909a89875b961a68c552a0def7a923a9d80d9bb8b74f50d2e4cdd9125e29f7da",
+    "sources": [],
+    "packages": [
+      "com.skywalkgames.blastctr"
+    ]
+  },
+  {
+    "game": "omnomblast",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/omnomblast/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "a567753d19d3f4836ed79ef2269088a836ff69aae81a7da4126ca39dd37a0949",
+    "sources": [],
+    "packages": [
+      "com.stelar.omnomblast"
+    ]
+  },
+  {
+    "game": "brainteaser",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/brainteaser/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "182bf17616e1c8e69af981eb13de04ba97226c16db83d64875e5ab8ecfd45e42",
+    "sources": [],
+    "packages": [
+      "com.gd.omnomquiz"
+    ]
+  },
+  {
+    "game": "bubble",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/bubble/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "5eb34014ed75ed9f57eda141b478a845495e38e046b053ac601e59be327ab279",
+    "sources": [],
+    "packages": [
+      "com.SugoooiStudio.OmNomBubble"
+    ]
+  },
+  {
+    "game": "bubbles",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/bubbles/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "82166a60de2f84815e37b5202951e8bcba438eb22879cb839d2317fd309c21d2",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.bubbles.f2p.google",
+      "com.zeptolab.hff"
+    ]
+  },
+  {
+    "game": "candyball",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/candyball/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "bc60117b2f914774beb793670ee903d2688171011d4ee4eb383daaed2482339a",
+    "sources": [],
+    "packages": [
+      "com.sugoooi.omnomcandyball"
+    ]
+  },
+  {
+    "game": "candybeat",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/candybeat/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "c6e2cf94967fb8ee928a31fde478cc294b9c499e29e06a0604c292259298c302",
+    "sources": [],
+    "packages": [
+      "com.amanotes.pamabeatcandy"
+    ]
+  },
+  {
+    "game": "candyflick",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/candyflick/classic/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "fb4c57f9c23559ab5fc3ec1ba7fdd634c053660afa1644b4433b05cf978e0574",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/extra/candyflick.png",
+        "file": "img/icons/extra/candyflick.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.candyflick"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "magiccrystal",
+    "raw": "/assets/images/gameicons/ctr/magiccrystal/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "e02c18817f3956a564b62c6b906e12b0b753aab70747563c19911c00bae84bfd",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "catch",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/catch/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "bce0c8bb6e6560a9aae0bc59a183624af9bba87048794d92635a9ea4bfd14a36",
+    "sources": [],
+    "packages": [
+      "com.redeye.OmNomCatch"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "christmas2017",
+    "raw": "/assets/images/gameicons/ctr/christmas2017/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "f8cb798d2de49d3aa9fd91ce132d634665c68746a520b3ba0c9088587a237284",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "christmas2018",
+    "raw": "/assets/images/gameicons/ctr/christmas2018/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "1d2a1c8cd1e80f6d7f46544fa58fb63b0a17b2ed93790f0f0f81adf67d2e866f",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "cookinggame",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/cookinggame/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "6c37621a2ac272937789236da26e3cafd0616ea7ebf6e52ce05cf4a778ef3da8",
+    "sources": [],
+    "packages": [
+      "com.appon.cookinggame.omnom"
+    ]
+  },
+  {
+    "game": "crafters",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/crafters/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "971f6f403eed7c02f4a298a4d4c9c24e96906c2410cd1b7eb9ea7ed6542c83df",
+    "sources": [],
+    "packages": [
+      "com.vividgames.om.nom.craft"
+    ]
+  },
+  {
+    "game": "crazyrun",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/crazyrun/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "f4eb3a368d982badc3d145cad79562c15fc79ccd99b9bf3e87c4bbc1334203fc",
+    "sources": [],
+    "packages": [
+      "com.momzikov.crazyrun"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctr2/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "f05bfad484f2c65650f86e667fb7f7355772accd9dc6befcdaa7871ada7b2a58",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2",
+      "com.zeptolab.ctr2.f2p",
+      "com.zeptolab.ctr2.f2p.google",
+      "com.zeptolab.ctr2.f2p.google.ar",
+      "com.zeptolab.ctr2.f2p.huawei",
+      "com.zeptolab.ctr2.kr.free.google",
+      "com.zeptolab.ctr2.paid.amazon.kids",
+      "com.zeptolab.ctr2.paid.google",
+      "com.zeptolab.ctr2.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "christmas",
+    "raw": "/assets/images/gameicons/ctr2/christmas/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "cad9c4bc67cb653bb64a20e9d09aa43796457ec6266dff34456e7cc4d9a32e09",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctr2/ctr2_christmas.png",
+        "file": "img/icons/ctr2/ctr2_christmas.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.amazon",
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "kakao",
+    "raw": "/assets/images/gameicons/ctr2/kakao/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "7da4926fc378f3f23ad1718c2a3936515e24a62b2050586fd4a4062dfc23f534",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "ctr2",
+    "variant": "modern",
+    "raw": "/assets/images/gameicons/ctr2/modern/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "e8d1e54928c12a3a31c9b6e9c976a9c87741e341fe916f6e295467e3b02bd7f2",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctr2/ctr2_android.png",
+        "file": "img/icons/ctr2/ctr2_android.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google",
+      "com.zeptolab.ctr2.paid.amazon.kids"
+    ]
+  },
+  {
+    "game": "ctr3",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctr3/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "a66feb73bda88b3f9e3039d2f33b414148423acdb6eb164df4735e09e3f1ce30",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr3"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "browser",
+    "raw": "/assets/images/gameicons/ctr/browser/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "a191801630548ed7c9e13ab83e0f744c491ee8cf7de3d58e434fafdc6e612506",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "nibbleadventure",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/nibbleadventure/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "97aa3e6cbca813880aca136f0b6d934738254c08e849df1847e1c43a0f4392d4",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.CTRNibbleAdventure"
+    ]
+  },
+  {
+    "game": "ctrdaily",
+    "variant": "alternate",
+    "raw": "/assets/images/gameicons/ctrdaily/alternate/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "778c1607c9c48e02c974163c5afb86f69cae8b2c61efffc5ebb68f77b750938f",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "cybernom",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/cybernom/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "452ca853a8c0368960075adc75c1de11f942ba7cb608ea6a889185e5881c18a4",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cybernom"
+    ]
+  },
+  {
+    "game": "ctrdaily",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctrdaily/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "dfa377b7cb757fbd86b9c5a179d5a4d8a417caaf9a5ddd9b91d6e50663a9bcc0",
+    "sources": [],
+    "packages": [
+      "com.netflix.NGP.CutTheRopeDaily",
+      "com.zeptolab.ctrdaily"
+    ]
+  },
+  {
+    "game": "ctrdaily",
+    "variant": "netflix",
+    "raw": "/assets/images/gameicons/ctrdaily/netflix/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "ae525d3fbb68a15214b9b3803fee60f3b4fcdaf870f8fb49378a7089be9cbd8f",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "dropandmatch",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/dropandmatch/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "d092e6039ab343679e81337907462e8717198bca10d9e9c624984c3906db0c2f",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.dropandmatch"
+    ]
+  },
+  {
+    "game": "doodle",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/doodle/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "4854f0237ad72cc25d7debae0609b8fdca10029269d5716fde874a0c3bc9e59a",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.crazyrun"
+    ]
+  },
+  {
+    "game": "drawtherope",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/drawtherope/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "115385ac7f62a86a9226e98c029826b4c0dd606fddb4a88853a4f0e8fd45d648",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.drawtherope"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctrexp/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "eaa8aec22503454109911fecde3c3667ea23ec116317941398ff7f41ab2c1fee",
+    "sources": [],
+    "packages": [
+      "com.yodo1tier1.ctrexperiments.cmmm",
+      "com.zeptolab.ctrex.subscr.tier",
+      "com.zeptolab.ctrexperiments.ads",
+      "com.zeptolab.ctrexperiments.google.paid",
+      "com.zeptolab.ctrexperiments.hd.google.paid"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "free",
+    "raw": "/assets/images/gameicons/ctrexp/free/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "12f7df970f304451e9eb42a7036b23da7b760deb0b38f44e5b613d65d42a3c17",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments",
+      "com.zeptolab.ctrexperimentshd",
+      "com.zeptolab.ctrexperimentshdlite",
+      "com.zeptolab.ctrexperimentslite"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "gold",
+    "raw": "/assets/images/gameicons/ctrexp/gold/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "0dec1b5eecd7668be3996427bf97f97ac59a52a49544de9dd9ae1e5626f1997f",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrexp/ctrexp_gold.png",
+        "file": "img/icons/ctrexp/ctrexp_gold.png"
+      }
+    ],
+    "packages": []
+  },
+  {
+    "game": "ctr",
+    "variant": "fabricbox",
+    "raw": "/assets/images/gameicons/ctr/fabricbox/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "fd148408c3d28ef85e1ed7e0716be39aa05b62a7b04ef14b75894a32ba823c4b",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "famobi",
+    "raw": "/assets/images/gameicons/ctr/famobi/raw.jpg",
+    "width": 320,
+    "height": 320,
+    "format": "jpeg",
+    "sha256": "012ad19193f7cb56a000c5a6272fe8e9a98c532f993c5b21db888f9e7967db30",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctr/famobi.jpg",
+        "file": "img/icons/ctr/famobi.jpg"
+      }
+    ],
+    "packages": []
+  },
+  {
+    "game": "ctr",
+    "variant": "free",
+    "raw": "/assets/images/gameicons/ctr/free/raw.webp",
+    "width": 1000,
+    "height": 1000,
+    "format": "webp",
+    "sha256": "48b7baefebc79a65e49070a8a8da48651812b86029b396ef95f96161de715f2c",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttherope",
+      "com.chillingo.cuttheropehd",
+      "com.chillingo.cuttheropehdlite",
+      "com.chillingo.cuttheropelite",
+      "com.zeptolab.ctr.ads",
+      "com.zeptolab.ctr.ads.u.huawei",
+      "com.zeptolab.ctr.paid",
+      "com.zeptolab.ctr.tryandbuy.svyaznoy",
+      "com.zeptolab.ctror.subscr.tier",
+      "com.zeptolab.cuttherope",
+      "com.zeptolab.cuttheropehd1",
+      "com.zeptolab.cuttheropelite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "freealternate",
+    "raw": "/assets/images/gameicons/ctr/freealternate/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "affdecaa3aa995cebf8287af195df34afb5340693ad9cb407c14f00c71ea2fd4",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "freehd",
+    "raw": "/assets/images/gameicons/ctr/freehd/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "04d9f577d143b5498deb1d74ebbb42fce86d51357b5629b86087f2ff1e62efb1",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "fruitblast",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/fruitblast/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "e01a24006d7bf5251c51518e239262c85df346be72b2d0ae171271a076606f7c",
+    "sources": [],
+    "packages": [
+      "com.vasilyandev.fruitblast"
+    ]
+  },
+  {
+    "game": "golf",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/golf/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "ffe91ce61ed469de4a7949a2e5c95f133d8ea746d9dbca095940d4464e8c7a13",
+    "sources": [],
+    "packages": [
+      "com.vividgames.om.nom.mini.golf"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "halloween",
+    "raw": "/assets/images/gameicons/ctr/halloween/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "d24a25db06af94af45e75f7be8880a20a1f19090c60f5a89cd421f9835fe669d",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "halloween2024",
+    "raw": "/assets/images/gameicons/ctr/halloween2024/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "c77306d45c602c65fa204e0da5d46f7663a2cbdbb8f977d9974e4697301476d9",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "ctrholiday",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctrholiday/classic/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "983d1b9b89df865a9d8592ae61baf1f430db4dbfe8e798b78d4f4f876217cc96",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/extra/ctrhg.png",
+        "file": "img/icons/extra/ctrhg.png"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttheropexmas",
+      "com.zeptolab.cuttheropexmas.amazon",
+      "com.zeptolab.cuttheropexmas.google",
+      "com.zeptolab.holiday.premium.tier"
+    ]
+  },
+  {
+    "game": "unknown",
+    "variant": "default",
+    "raw": "/assets/images/gameicons/unknown/default/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "020aa9bd6c4ec0f5ea8e346760081a5b93f7f0a15e5a578b614bdcddbe5ae173",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "idlecandy",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/idlecandy/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "cd8564425bffb81463dee95d494019861ecd4ddbfe7b067afd982dd9bc243014",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.candyfactory"
+    ]
+  },
+  {
+    "game": "idlecandy",
+    "variant": "alternate",
+    "raw": "/assets/images/gameicons/idlecandy/alternate/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "d948be082200907061386cbab5c8a19180e1584f5426c17cea01034ecb254e97",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "idlecandy",
+    "variant": "factory",
+    "raw": "/assets/images/gameicons/idlecandy/factory/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "b46bd11329f9c7653fe13e19b6304b3e16baf293d08c456ab22bace882bcf2aa",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "karts",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/karts/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "b677263643f4f7c459c31f4832ef3ed59d5a21a170de7de0b98a36426e890192",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.om.nom.karts"
+    ]
+  },
+  {
+    "game": "knockout",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/knockout/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "236d8a57fef1b2cbe4834df90d9682c63c8468097d6ae3685149199f338a168d",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.omnomknockout"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "lite",
+    "raw": "/assets/images/gameicons/ctr/lite/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "47e10909f37359004db275131b3841fb2fcdb14a14fb5258a70719087663277f",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctrmagic/classic/raw.png",
+    "width": 600,
+    "height": 600,
+    "format": "png",
+    "sha256": "4d7b43a0fd6c877d18885bb8a76858de72c4d75f50152c21279b8f7ce97a1db1",
+    "sources": [
+      {
+        "url": "https://archive.org/download/cut-the-rope-magic-app/Cut%20the%20Rope%20Magic%20F2P%20%28iOS%29/01%20Cut%20the%20Rope%20Magic%20F2P%201.5.0.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.zeptolab.ctrm.f2p",
+        "version": "1.5.0"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrm",
+      "com.zeptolab.ctrm.f2p",
+      "com.zeptolab.ctrm.free.google",
+      "com.zeptolab.ctrm.paid.amazon.ultimate"
+    ]
+  },
+  {
+    "game": "magiccandies",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/magiccandies/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "6a29fe7a078bf6dec9095c2dd144cfef77b953171ce02d63959680ac00c65496",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.OmNomMagicCandies"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "christmas",
+    "raw": "/assets/images/gameicons/ctrmagic/christmas/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "30b09b27450635ea9acc9014513ac219b10e53daad8cb39a633993d39fd00a39",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "wand",
+    "raw": "/assets/images/gameicons/ctrmagic/wand/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "edab7eff9b7b05f6ac1843e1cf998b57ba55b7d037d1abf4a0d77e64ac409406",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "bubble",
+    "variant": "marbleshooter",
+    "raw": "/assets/images/gameicons/bubble/marbleshooter/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "997f7e75161387770798e26e3bb997eef8fb28f5d341311bcda4290bf64f83b0",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "mayapapaya",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/mayapapaya/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "07bffd6e363434114fb1e34aef473f3658d969a21adbbc11012534bad80b80de",
+    "sources": [],
+    "packages": [
+      "com.momzikov.sweetalchemy.google"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "mechanicalbox",
+    "raw": "/assets/images/gameicons/ctr/mechanicalbox/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "028f86f69aec5ac53e5cd077da6784ef8930da12fee620071ddc028e75cdc446",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "merge",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/merge/classic/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "71e046b807294927faaf30aef5a7240eb423640cded3494adfa9d45e977d98da",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.omnommerge",
+      "com.zeptolab.omnommerge.google"
+    ]
+  },
+  {
+    "game": "mergenommies",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/mergenommies/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "b4b3c1a5e4beffdcb3808020f1983e2ceca176daca3a797f7b03ff060921cd29",
+    "sources": [],
+    "packages": [
+      "com.momzikov.mergenommie.google",
+      "com.momzikov.mergenommies.google"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "modern",
+    "raw": "/assets/images/gameicons/ctr/modern/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "7c7a6a6ad02514d21f355bfcba2a49c02153915a2a2ca1a5e5f56858b3936f51",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrorigins"
+    ]
+  },
+  {
+    "game": "myomnom",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/myomnom/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "3a8f6550739feedf71c1df324324852caa1c2938168ccad20f8b8f7dd85ceac4",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.mon.premium.tier",
+      "com.zeptolab.myomnom.free.google",
+      "com.zeptolab.myomnom.paid"
+    ]
+  },
+  {
+    "game": "bubble",
+    "variant": "alternate",
+    "raw": "/assets/images/gameicons/bubble/alternate/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "f82b6999f72f18df1db7f8cba5144b0e422159305abe8f458d3efb4f3b8ac945",
+    "sources": [],
+    "packages": [
+      "com.SugoooiStudio.OmNomBubble"
+    ]
+  },
+  {
+    "game": "omnomfarm",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/omnomfarm/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "05ce6316c21e1ee4b74949a22ce70906d4eb9b92afb635ffdd086e4334e6aa26",
+    "sources": [],
+    "packages": [
+      "com.DefaultCompany.OmNomFarm"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "momzikov",
+    "raw": "/assets/images/gameicons/omnomrun/momzikov/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "ff347e32457f13012fede72f81134b36404cf46a3ad028d2d4fdc4260ccd679b",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomrun.google",
+      "com.zeptolab.omnomrun"
+    ]
+  },
+  {
+    "game": "omnomrun2",
+    "variant": "store",
+    "raw": "/assets/images/gameicons/omnomrun2/store/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "456ddcb313fe528996af69202d3539de3920eaf9510ac7c80446c20c9a571a1d",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.OmNomRun2.parkour"
+    ]
+  },
+  {
+    "game": "omnomverse",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/omnomverse/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "25278a03df312519bbc02c3db0bc7c2bab52647ef20cd9ac43ca1e34b2c52d41",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "sweetdreams",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/sweetdreams/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "0701d8b8a015adf876db957dd54a70f4c097882af77b67860313a92a059d0b84",
+    "sources": [],
+    "packages": [
+      "com.zeptodev.onsweetdreams"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctr/classic/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "59f2f401dab6c6e9daad202c03fa4b3db99934f2a25ce74691e47deb0b5b3e1a",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr",
+      "com.zeptolab.ctr.ads",
+      "com.zeptolab.ctr.hd.google.paid",
+      "com.zeptolab.ctr.hd.lite.google",
+      "com.zeptolab.ctr.paid"
+    ]
+  },
+  {
+    "game": "pinpuzzle",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/pinpuzzle/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "bccfe38f01e8155d08573011498d25ec1be49652980c8a74ea0560c171e9c2b8",
+    "sources": [],
+    "packages": [
+      "com.bigcodegames.om.nom.pin.puzzle"
+    ]
+  },
+  {
+    "game": "pirates",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/pirates/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "5447d09944817e611742ea6043e115b75ab686f271762c057ecaab3ad1b933e0",
+    "sources": [],
+    "packages": [
+      "com.omnom.pirates",
+      "com.omnom.piratesclans",
+      "com.omnom.seabrawl"
+    ]
+  },
+  {
+    "game": "pirates",
+    "variant": "tactics",
+    "raw": "/assets/images/gameicons/pirates/tactics/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "d508f47c28d96516c37c9cf0fd42903113555e8dba2ac297c05d8088d3ee7ec8",
+    "sources": [],
+    "packages": [
+      "com.omnom.piratestactics"
+    ]
+  },
+  {
+    "game": "racing",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/racing/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "d3200606e9d87e6aed95aabba7415cd080abae2815aec3ce7a7cf43e251f883a",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.om.nom.racing.mayhem"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctrremastered/classic/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "e3bc257eb8bca437786bf4091431c79411e4cd59d0b98ce1b36691cc685d2480",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/ctrremastered.png",
+        "file": "img/icons/ctrremastered/ctrremastered.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "garden",
+    "raw": "/assets/images/gameicons/ctrremastered/garden/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "b0010db567966a7c48d3eba8a71c5eccc3744c876d55b3f7afec8e369bec0e50",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/1.3.0%20-%20Forest%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/1.3.0 - Forest - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "space",
+    "raw": "/assets/images/gameicons/ctrremastered/space/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "1748339963889c4d4d6306ad002b1b9eeda0a33ed990be5909dc08fe957a3c7b",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/2.3.0%20%26%202.3.5%20-%20Space%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/2.3.0 & 2.3.5 - Space - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "pirate",
+    "raw": "/assets/images/gameicons/ctrremastered/pirate/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "4616b94aa3e6effde4f5988293dc801ee1c5fc7faa624b347066aebce497c2de",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/2.4.0%20-%20Pirates%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/2.4.0 - Pirates - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "unicorn",
+    "raw": "/assets/images/gameicons/ctrremastered/unicorn/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "964e66413f0ead1f286d15afccf26951f5476aaf81420688265546c2b8384ebc",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/2.5.0%20-%20Adventure%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/2.5.0 - Adventure - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "birthday",
+    "raw": "/assets/images/gameicons/ctrremastered/birthday/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "15b57fe8dfcac0f7f46fe837d711790a9f0d84cd1019357c0092d83f1708bcd5",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/1.8.0%20%26%202.6.0%20-%20Birthday%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/1.8.0 & 2.6.0 - Birthday - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "paperboat",
+    "raw": "/assets/images/gameicons/ctrremastered/paperboat/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "2a744b6e13aa6bd2392d0e161a4c857487dbdcb58e9687290699bbea48d998f2",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/1.4.0%20-%20Postcard%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/1.4.0 - Postcard - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "bunny",
+    "raw": "/assets/images/gameicons/ctrremastered/bunny/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "4ff1e0ee81144da6771fe560d5d4b6ecf2c6217adadc6ca5186c1a08c6c55952",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/1.5.0%20-%20Easter%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/1.5.0 - Easter - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "firefighter",
+    "raw": "/assets/images/gameicons/ctrremastered/firefighter/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "3622048408c733244ec6c23c968289daa427d12f87422c29358c0770165ed0e8",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/1.6.0%20-%20Superhero%20Action%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/1.6.0 - Superhero Action - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "surfer",
+    "raw": "/assets/images/gameicons/ctrremastered/surfer/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "5cb7c871d27529174e6eb9b7554e13bcfd11368742e431f202be205ccde740ae",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/1.7.0%20-%20Summertime%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/1.7.0 - Summertime - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "holiday",
+    "raw": "/assets/images/gameicons/ctrremastered/holiday/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "0b268c15f1f8be3bf2a948aacf9fee54499ed64bec4abff85bf2e3b0966ee8ae",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/1.9.0%20%26%201.9.5%20-%20Thanksgiving%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/1.9.0 & 1.9.5 - Thanksgiving - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "wizard",
+    "raw": "/assets/images/gameicons/ctrremastered/wizard/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "bf82b37ca6fbddec4019fa8a83b35ea48dbcda9a1ab8e4747dd22ad9367866f2",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/2.0.0%20-%20Holiday%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/2.0.0 - Holiday - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "winter",
+    "raw": "/assets/images/gameicons/ctrremastered/winter/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "4ab87161f995ccf51dd130b6c905273abce7a269b98a06dce75f9c825055857a",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/2.1.0%20-%20Winter%20Fun%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/2.1.0 - Winter Fun - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "superhero",
+    "raw": "/assets/images/gameicons/ctrremastered/superhero/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "9f7a2378cce7c2940884ce20ca513c06e50b190cf2a0e6f7e3f79e3a32573956",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrremastered/2.2.0%20-%20Circus%20-%20iOS.png",
+        "file": "img/icons/ctrremastered/2.2.0 - Circus - iOS.png"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "rollrace",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/rollrace/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "bacbe3c89d48a602cf713a3e6d35bae0f108e4fa04dbeea56ee162b17a7ab875",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.om.nom.roll"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/omnomrun/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "4f236b4892111dce443d22913c778bbb4926d4870dad83d39109538df63d3ffb",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.omnomrun.google"
+    ]
+  },
+  {
+    "game": "omnomrun2",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/omnomrun2/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "406045a19f036a96e8901eecb727d26a9129bfae9bdb5574a0dbf5c437c6c19b",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.OmNomRun2.parkour",
+      "com.zeptolab.omnomparkour.google"
+    ]
+  },
+  {
+    "game": "omnomrun2",
+    "variant": "alternate",
+    "raw": "/assets/images/gameicons/omnomrun2/alternate/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "e9d61a26c66d5403cee06bebdc50320694b499a8224f39fd87aff2fe2d6cb62c",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "omnomrun3",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/omnomrun3/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "358f4eb17c10b36dbd84021516d93e70fcd18eac8c4f9f72986f098221c2201e",
+    "sources": [],
+    "packages": [
+      "com.momzikov.superrun",
+      "com.zeptolab.omnomrun3"
+    ]
+  },
+  {
+    "game": "solitaire",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/solitaire/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "0382769054a3fd0672d7d3a317dc80b65e8479890678520ee0d09312b3daa29f",
+    "sources": [],
+    "packages": [
+      "com.popside.solitaire.omnom"
+    ]
+  },
+  {
+    "game": "sports",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/sports/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "3e4a6f69c7932cc342bce952e3b85d8a870b05e5da17d2fb14d668ffa8337c82",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomsports"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "strawberrybox",
+    "raw": "/assets/images/gameicons/ctr/strawberrybox/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "2fdc60384f75899056ab38db85d652cfa8a63ae927d55e0346917076200c4c97",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "swing",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/swing/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "2d00b82f4d46e7f668b4f7b33129dfe49452ff442918aa141ab756d95b9116dd",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomswing.google"
+    ]
+  },
+  {
+    "game": "theme",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/theme/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "9edca7894e73c94adb44d90757e46ab283846c3f5f26844cb0c28b3ab64cc77e",
+    "sources": [],
+    "packages": [
+      "com.airthemes.ctrairtheme"
+    ]
+  },
+  {
+    "game": "theme",
+    "variant": "timetravel",
+    "raw": "/assets/images/gameicons/theme/timetravel/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "6805e9d57cf13d963b3b6bae900b2be4f17d4d1d968d80f4000f992aa74a1e1a",
+    "sources": [],
+    "packages": [
+      "com.airthemes.ctrairtheme",
+      "com.airthemes.timetravelzeptolab"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/ctrtt/classic/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "7305a4da1059ddca63ba8243707a5b044bd44916775d1c46e717e62f1ba3e4bb",
+    "sources": [
+      {
+        "url": "https://archive.org/download/cut-the-rope-time-travel-ctrhome/Cut_the_Rope_Time_Travel_1.5.0.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.zeptolab.timetravel",
+        "version": "1.5.0"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrtt.subscr.tier",
+      "com.zeptolab.timetravel",
+      "com.zeptolab.timetravel.free",
+      "com.zeptolab.timetravel.free.google",
+      "com.zeptolab.timetravel.paid.amazon.kids",
+      "com.zeptolab.timetravel.paid.google",
+      "com.zeptolab.timetravelhd"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "egypt",
+    "raw": "/assets/images/gameicons/ctrtt/egypt/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "e5babc7e18462ac73dd02dafdbeb478044985913ae14e2f71ef05a58c72af32c",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrtime/ctrtime_egypt.png",
+        "file": "img/icons/ctrtime/ctrtime_egypt.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel.free.tier3"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "free",
+    "raw": "/assets/images/gameicons/ctrtt/free/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "82854afa5c4ef7fbe29c26c2d5a81bcacd6e569952aff5b0efb3b7f75eb75b18",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "ctrtt",
+    "variant": "industrial",
+    "raw": "/assets/images/gameicons/ctrtt/industrial/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "c7deca55ffd9a430361f4dfbd9001fa93f3ed62510e1eff54174e6cff0299991",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "ctrtt",
+    "variant": "valentines",
+    "raw": "/assets/images/gameicons/ctrtt/valentines/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "2fd0897616973b02237105c2cfcc62000eea01df68cb4552ef3c6c4b8962fabd",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrtime/ctrtime_valentines.png",
+        "file": "img/icons/ctrtime/ctrtime_valentines.png"
+      }
+    ],
+    "packages": []
+  },
+  {
+    "game": "toons",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/toons/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "cf87bfdb200b5219826a20ac98417cec5f660fe50368374042d6f9626cdd92a3",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.toonplayer",
+      "com.zeptolab.toonplayer.google"
+    ]
+  },
+  {
+    "game": "tower3d",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/tower3d/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "86d40a3d7abec22d53818b83758e8dc46120378ccc6dc05425b2dd47759a3d98",
+    "sources": [],
+    "packages": [
+      "com.famobi.omnomtower3d"
+    ]
+  },
+  {
+    "game": "triplematch",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/triplematch/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "d25aa49b8920704b8687d73a2e70eadf4d7924039e59f12ec8818f1d6b76eebe",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.triplematch"
+    ]
+  },
+  {
+    "game": "tripletreat",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/tripletreat/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "24c309861f6e3e9b1cd5e09e54e6379973b686dc917deae778fe8a0fa27e2853",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "tycoon",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/tycoon/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "5e985dfd52bffdea79624c3462d50b163015eb40bd0899ff0d9f292c05649d3b",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.omnomfarm"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "valentinesclassic",
+    "raw": "/assets/images/gameicons/ctr/valentinesclassic/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "63285811d66e7bef230a55acd0c087cfb94db97f342218a619a975f1994fae82",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "ctr",
+    "variant": "valentinesmodern",
+    "raw": "/assets/images/gameicons/ctr/valentinesmodern/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "f322ddbfdf6ae1fd28e225c7a88684991a473ee87d53aa0765c2153094d34fc7",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "virtualpet",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/virtualpet/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "34e2f806ef3ea4cc1872f4545af74e4ff115b6afb783668b84ea25efb332ffd7",
+    "sources": [],
+    "packages": [
+      "com.myvirtualpet.omnomgame"
+    ]
+  },
+  {
+    "game": "wheresomnom",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/wheresomnom/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "e9e264db67bdb1015f6d61a164b40ac421bdf82cf473c0a3d660c7ad20f332ac",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.wheresomnom"
+    ]
+  },
+  {
+    "game": "wildlifepop",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/wildlifepop/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "624b764f807ad9cb77e21b965c1e5eb194265eff1d74274e6fc3123e6fafa3c0",
+    "sources": [],
+    "packages": [
+      "com.vasilyandev.wildlifepop"
+    ]
+  },
+  {
+    "game": "yeet",
+    "variant": "classic",
+    "raw": "/assets/images/gameicons/yeet/classic/raw.webp",
+    "width": 200,
+    "height": 200,
+    "format": "webp",
+    "sha256": "e3d0813a407d2d4c79254b3467e4ad764a8fc756e12a6ddfa62f3ea8a86006ce",
+    "sources": [],
+    "packages": []
+  },
+  {
+    "game": "yeet",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/yeet/androidgallery/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "a9430b831f047b6b49b2ea74fc85c568235af3c14f530706bf2aa6324feb552f",
+    "sources": [],
+    "packages": [
+      "com.aeonsparx.omnom"
+    ]
+  },
+  {
+    "game": "yeet",
+    "variant": "androidv006d",
+    "raw": "/assets/images/gameicons/yeet/androidv006d/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "8105c6110e37360e1d92b48e1779a487bf058b077c478bc4f1e722af26bfafcc",
+    "sources": [],
+    "packages": [
+      "com.aeonsparx.omnom"
+    ]
+  },
+  {
+    "game": "theme",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/theme/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "e5f211c42f453e5f983daab8f8e4836c32774bd08d372e25d455ffeea3b0f345",
+    "sources": [],
+    "packages": [
+      "com.airthemes.ctrairtheme"
+    ]
+  },
+  {
+    "game": "theme",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/theme/androidgallery2/raw.png",
+    "width": 48,
+    "height": 48,
+    "format": "png",
+    "sha256": "48f1e2570a25ebbdc9f9414135ac744c5383b89a42aba0e77a8b5672c8abec1d",
+    "sources": [],
+    "packages": [
+      "com.airthemes.ctrairtheme"
+    ]
+  },
+  {
+    "game": "candybeat",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/candybeat/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "9a2836c35fe3a89d301506d23bab2b42e699777e031b95d45e14118624ca6321",
+    "sources": [],
+    "packages": [
+      "com.amanotes.pamabeatcandy"
+    ]
+  },
+  {
+    "game": "cookinggame",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/cookinggame/androidgallery/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "04f9d21e855905d6d1d47276e78dbef37749b57ee86580acbd9b35e724ee6d81",
+    "sources": [],
+    "packages": [
+      "com.appon.cookinggame.omnom"
+    ]
+  },
+  {
+    "game": "pinpuzzle",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/pinpuzzle/androidgallery/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "db032d8e373a84db4bfd7023b12a6283043fe669cfdfd992dd92014cd30ef57c",
+    "sources": [],
+    "packages": [
+      "com.bigcodegames.om.nom.pin.puzzle"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/ctr/androidgallery/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "cf40402a2b9c354c9744575378ecd668514b55ce2f84ad492208581a670705ec",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttherope",
+      "com.zeptolab.cuttherope"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "iosv242",
+    "raw": "/assets/images/gameicons/ctr/iosv242/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "1ace9c187b8ebb1495e926e5483968681223f728d82c787c4518b8b876838fa6",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttherope"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdgallery",
+    "raw": "/assets/images/gameicons/ctr/androidhdgallery/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "8b290cb50a547f80b5fe4ef7a9a98f22a4a07c453ecd0baba59223fdfaa53262",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropehd"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdgallery2",
+    "raw": "/assets/images/gameicons/ctr/androidhdgallery2/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "7c3635dcb05f8676e78530c9d076de4aa708042a3708ff734406b556cdcaf5cc",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropehd",
+      "com.zeptolab.cuttheropehd1"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdv231",
+    "raw": "/assets/images/gameicons/ctr/ioshdv231/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "b60f691753cd6296403d7101712783f038bc5941a0fb59ff15d3d3f308aeff8f",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropehd"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdv12",
+    "raw": "/assets/images/gameicons/ctr/ioshdv12/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "c43acb857160dbaf4a4f485168002960e902cf4334040355fb0f0b1331b96aee",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropehd"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdlitegallery",
+    "raw": "/assets/images/gameicons/ctr/androidhdlitegallery/raw.jpg",
+    "width": 600,
+    "height": 600,
+    "format": "jpeg",
+    "sha256": "24ae94a2d3245306e460304b5b0685d7a5569fbb85029899aa4417500976907d",
+    "sources": [
+      {
+        "url": "https://archive.org/download/toilet-bathroom-rush-all-version/02%20Cut%20the%20Rope%20HD%20Free%202.3.2.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.chillingo.cuttheropehdlite",
+        "version": "2.3.2"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%205/Cut%20The%20Rope%20HD%20Lite%202.4.5.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.chillingo.cuttheropehdlite",
+        "version": "2.4.5"
+      },
+      {
+        "url": "https://archive.org/download/toilet-bathroom-rush-all-version/03%20Cut%20the%20Rope%20HD%20Free%202.3.6.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.chillingo.cuttheropehdlite",
+        "version": "2.3.6"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev10",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev10/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "10a92b3a82616fd56fe7a1c8122012bffbee2c74bd0e3f57198aff0ec28152ed",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdlitegallery2",
+    "raw": "/assets/images/gameicons/ctr/androidhdlitegallery2/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "1b01cbeb462a305c5b68b38e9cb079a28f98ada474bf34cc64984b69d75c943b",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropehdlite",
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev232",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev232/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "4e35c0a569ba933acab3128525075a65947bd8994b23fff29c103e8f88f3b036",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev231",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev231/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "ec866d66598dca9ba0c98596345e3d7a636af08a87d0e240d21a07be2c119477",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidlitegallery",
+    "raw": "/assets/images/gameicons/ctr/androidlitegallery/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "2a2507b24b5d5713a5a54d12f10ff5919b717ae14bf6df484f9f0b6d8d78d90f",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropelite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidlitegallery2",
+    "raw": "/assets/images/gameicons/ctr/androidlitegallery2/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "25ff5a9344bb075ae6b8523187abe8eeab18775c1048c3961aa880c3a32b8230",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropelite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioslitev232",
+    "raw": "/assets/images/gameicons/ctr/ioslitev232/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "cd6dc5f8b712d92da7df36b27ad5f9419e85e241a68ea0d5d6760a5e04972229",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropelite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidlitegallery3",
+    "raw": "/assets/images/gameicons/ctr/androidlitegallery3/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "bf021c9f13c6622fdf142fa30882ec35cb6580625f2cf1e21cf72e4e6fafab98",
+    "sources": [],
+    "packages": [
+      "com.chillingo.cuttheropelite",
+      "com.zeptolab.cuttheropelite"
+    ]
+  },
+  {
+    "game": "ctrholiday",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/ctrholiday/androidgallery/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "279fd4d4220618d2b031f1209e032e9cce49059e696fc6a9a9436ae854473a5f",
+    "sources": [
+      {
+        "url": "https://archive.org/download/cut-the-rope_202301/Cut%20the%20Rope%20-%20%28v1.7%29%20-%20iOS4.3.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.chillingo.cuttheropexmas",
+        "version": "1.7"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttheropexmas"
+    ]
+  },
+  {
+    "game": "tower3d",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/tower3d/androidgallery/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "1fac2af1e5748b335adeadd1ad823b859a92da3466ee15ffe3032b3a27ae6c42",
+    "sources": [],
+    "packages": [
+      "com.famobi.omnomtower3d"
+    ]
+  },
+  {
+    "game": "brainteaser",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/brainteaser/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "813dc77ff66d7790a3766c5f40bb8d6ffcc13d1e71fba7a6d8d517988319e991",
+    "sources": [],
+    "packages": [
+      "com.gd.omnomquiz"
+    ]
+  },
+  {
+    "game": "crazyrun",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/crazyrun/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "c87e7905bfcde5154c8b539183e6653c65212b6f6c1177699ce55fd33fcee6ec",
+    "sources": [],
+    "packages": [
+      "com.momzikov.crazyrun"
+    ]
+  },
+  {
+    "game": "mergenommies",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/mergenommies/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "e6ca88dc4fbdaa535819afd7e39f14acb29fc62c0b464f78a4b53669437fa27e",
+    "sources": [],
+    "packages": [
+      "com.momzikov.mergenommie.google"
+    ]
+  },
+  {
+    "game": "mergenommies",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/mergenommies/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "d723b684c38a79def98f1bd238436a65037718256f3bcc5e62de8f81aef1c3df",
+    "sources": [],
+    "packages": [
+      "com.momzikov.mergenommie.google"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/omnomrun/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "757d4443397d420f60fa575191e2fb9b762436ef5e073ad88aa6d1791413ef9f",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomrun.google"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/omnomrun/androidgallery2/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "eeedd84fe692c58cb0cbea1fd0119aca4c082881aec24f43bd101b114612d415",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomrun.google"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "androidgallery3",
+    "raw": "/assets/images/gameicons/omnomrun/androidgallery3/raw.png",
+    "width": 128,
+    "height": 128,
+    "format": "png",
+    "sha256": "b5570d9f3beff0ded120fdc65ba010a90a81c1ecdc1e74c7b443d1726260ec53",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomrun.google"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "androidgallery4",
+    "raw": "/assets/images/gameicons/omnomrun/androidgallery4/raw.png",
+    "width": 128,
+    "height": 128,
+    "format": "png",
+    "sha256": "2785c43615d52e489cb91f60e80cb3446fae3c12210ee8879e8cb82def439001",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomrun.google"
+    ]
+  },
+  {
+    "game": "sports",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/sports/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "d5b083fbf75e70667872e35f637492dadbdffbb83482911af12c146969fce5b2",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomsports"
+    ]
+  },
+  {
+    "game": "swing",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/swing/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "d68b8c247bb125e8d8498c8dfe0108db180baaee202d3196849eac750c024658",
+    "sources": [],
+    "packages": [
+      "com.momzikov.omnomswing.google"
+    ]
+  },
+  {
+    "game": "omnomrun3",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/omnomrun3/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "1ecfb26b832fdf4b25f127d551caf65dbc394ffdd8c2826fd9cca1eb1f104c79",
+    "sources": [],
+    "packages": [
+      "com.momzikov.superrun"
+    ]
+  },
+  {
+    "game": "virtualpet",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/virtualpet/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "6c150bed5d0419ad309d85e6a871b883098b029a809090b22c2d980d7700f705",
+    "sources": [],
+    "packages": [
+      "com.myvirtualpet.omnomgame"
+    ]
+  },
+  {
+    "game": "virtualpet",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/virtualpet/androidgallery2/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "978f5f043fdff8cc3d0b2507c55cfe47a006ba88c203a6855e88af654f9607cc",
+    "sources": [],
+    "packages": [
+      "com.myvirtualpet.omnomgame"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv257",
+    "raw": "/assets/images/gameicons/ctr/androidv257/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "19b3ee05a5f9b6ef43d29493fef5b60921451001aa801fd47bcd7479fb402fb8",
+    "sources": [],
+    "packages": [
+      "com.nazara.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv258",
+    "raw": "/assets/images/gameicons/ctr/androidv258/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "911156f9412405b46e7e967ced66f447f82f005ecbce2ad2442d919926eac338",
+    "sources": [],
+    "packages": [
+      "com.nazara.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidv100",
+    "raw": "/assets/images/gameicons/ctrmagic/androidv100/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "458ef85179aeaf6d1d970f99adb20a1779a5e8aa4c700d17fe1200ba0db390be",
+    "sources": [],
+    "packages": [
+      "com.nazara.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidv110",
+    "raw": "/assets/images/gameicons/ctrmagic/androidv110/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "7476f0ff71bafc242a6a1bdc64d06b50deb55c501b4c9bb3e0a7dddb3c5b3695",
+    "sources": [],
+    "packages": [
+      "com.nazara.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidv170",
+    "raw": "/assets/images/gameicons/ctr2/androidv170/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "f8eb363400e08945f42739a5cc98d7f8cf03a75b5947f7aae3459aeaf1af0216",
+    "sources": [],
+    "packages": [
+      "com.nazara.cuttherope2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidv165",
+    "raw": "/assets/images/gameicons/ctr2/androidv165/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "fdf38027c09d6faa3a42b9d499a7aea50c4275f787e2da3d7c7a4f0c1934b373",
+    "sources": [],
+    "packages": [
+      "com.nazara.cuttherope2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctrdaily",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/ctrdaily/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "b5d604797b706b0f802297f0128ad510ab4e165313f6c934b3c4076fcbd1f153",
+    "sources": [],
+    "packages": [
+      "com.netflix.NGP.CutTheRopeDaily"
+    ]
+  },
+  {
+    "game": "ctrdaily",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/ctrdaily/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "7bee50d56feffb778bb43d87d54703032a6a9206c600c3a094ec28f49b52b2e3",
+    "sources": [],
+    "packages": [
+      "com.netflix.NGP.CutTheRopeDaily"
+    ]
+  },
+  {
+    "game": "pirates",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/pirates/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "0e6171341edceff46918e0a8806df0b8ca613adcd48250f74409e32c5eb02e10",
+    "sources": [],
+    "packages": [
+      "com.omnom.battlepirates"
+    ]
+  },
+  {
+    "game": "pirates",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/pirates/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "78cc3819656df28b71d2c768a57440e3dc4638dd825215fa39667555966758b3",
+    "sources": [],
+    "packages": [
+      "com.omnom.pirates"
+    ]
+  },
+  {
+    "game": "pirates",
+    "variant": "androidgallery3",
+    "raw": "/assets/images/gameicons/pirates/androidgallery3/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "ded4414310db522e6cfc4d9bb1c922172305ca20dc438af17556bdaa08581e03",
+    "sources": [],
+    "packages": [
+      "com.omnom.piratesclans"
+    ]
+  },
+  {
+    "game": "pirates",
+    "variant": "androidgallery4",
+    "raw": "/assets/images/gameicons/pirates/androidgallery4/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "8f639d9edd8a19aabd19168ff74f73da8582eea0b1d9542b633fd33e857bc6dd",
+    "sources": [],
+    "packages": [
+      "com.omnom.piratestactics"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "androidgallery5",
+    "raw": "/assets/images/gameicons/omnomrun/androidgallery5/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "55fe71cafaf2ac048f4d2ef1ca72d5d5a153807288948b5c3bb65e54fa616100",
+    "sources": [],
+    "packages": [
+      "com.omnomrun.zeptolab.samsung",
+      "com.zeptolab.omnomrun.amazon",
+      "com.zeptolab.omnomrun.google"
+    ]
+  },
+  {
+    "game": "solitaire",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/solitaire/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "7bab244651d9e803055c58f00d74e408b99cefc501f71b3f976859d8f80ea07d",
+    "sources": [],
+    "packages": [
+      "com.popside.solitaire.omnom"
+    ]
+  },
+  {
+    "game": "catch",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/catch/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "e1809cde1fcab07ad1516abe0104ece67f1684943add6466a499402a3d46e44d",
+    "sources": [],
+    "packages": [
+      "com.redeye.OmNomCatch"
+    ]
+  },
+  {
+    "game": "blast",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/blast/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "babea02955727feff3b9eba3de57484530c3eb1a9aba0ff92b468610ec1b8890",
+    "sources": [],
+    "packages": [
+      "com.skywalkgames.blastctr"
+    ]
+  },
+  {
+    "game": "omnomblast",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/omnomblast/androidgallery/raw.jpg",
+    "width": 512,
+    "height": 512,
+    "format": "jpeg",
+    "sha256": "e0a5c2fd118a3a89713b300fe69018ce51ff10cced450e88005b7036624f18dc",
+    "sources": [],
+    "packages": [
+      "com.stelar.omnomblast"
+    ]
+  },
+  {
+    "game": "candyball",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/candyball/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "16e2a276dc95fb3901d77c3c1839c65996e5e4c0ac61a078864fb7a3a17c9a1c",
+    "sources": [],
+    "packages": [
+      "com.sugoooi.omnomcandyball"
+    ]
+  },
+  {
+    "game": "candyball",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/candyball/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "3038bccb3a0d263019b2b765b8cbfe8bb6365066847a0938b6e95f7687753958",
+    "sources": [],
+    "packages": [
+      "com.sugoooi.omnomcandyball"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidv111",
+    "raw": "/assets/images/gameicons/ctrtt/androidv111/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "6ba0950aa740222f1ce1203528cf9f269e77aa630b85317af5eb31e73cc88f62",
+    "sources": [],
+    "packages": [
+      "com.tcxx.cut.gsz"
+    ]
+  },
+  {
+    "game": "fruitblast",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/fruitblast/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "74c358ac227461e5fe47820416939b9200ec47dd8f65ab51ff3322aa6acc45ac",
+    "sources": [],
+    "packages": [
+      "com.vasilyandev.fruitblast"
+    ]
+  },
+  {
+    "game": "fruitblast",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/fruitblast/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "52aa4932c4cb17119a6ad62eaef7dd0210cb53e1c1a6309fd3d1c2234468bf7b",
+    "sources": [],
+    "packages": [
+      "com.vasilyandev.fruitblast"
+    ]
+  },
+  {
+    "game": "wildlifepop",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/wildlifepop/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "075bf076b508875b58109f0d5738c6162ca57a015619262f104bed16497681eb",
+    "sources": [],
+    "packages": [
+      "com.vasilyandev.wildlifepop"
+    ]
+  },
+  {
+    "game": "wildlifepop",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/wildlifepop/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "d04ede96c2b4705daef66ef14ed9030a8d741250ef9836cec3b9d64f134176b0",
+    "sources": [],
+    "packages": [
+      "com.vasilyandev.wildlifepop"
+    ]
+  },
+  {
+    "game": "crafters",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/crafters/androidgallery/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "648c56ff7324be257da0d457949a8e8e8b5fd7f5492b8466a7fd4132f6c590c4",
+    "sources": [],
+    "packages": [
+      "com.vividgames.om.nom.craft"
+    ]
+  },
+  {
+    "game": "golf",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/golf/androidgallery/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "f3262c3a90b239895ffb55be24c97f7fb9a8e973422471ebbf179f0381e2b171",
+    "sources": [],
+    "packages": [
+      "com.vividgames.om.nom.mini.golf"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidchinav244",
+    "raw": "/assets/images/gameicons/ctr2/androidchinav244/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "5a8649c0b181e909e6e32b2e8ce972275721ba9b842ccc50ee48f2b7e58874f0",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctr2/ctr2_gold.png",
+        "file": "img/icons/ctr2/ctr2_gold.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.ctr2.honor"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "ioschinav1521",
+    "raw": "/assets/images/gameicons/ctr2/ioschinav1521/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "b228a2aab8c5815d056963a3dc670cce1f5fc85127ef762e821b9a5c526bcd06",
+    "sources": [],
+    "packages": [
+      "com.yodo1.cuttherope2"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidchinav2442",
+    "raw": "/assets/images/gameicons/ctr2/androidchinav2442/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "04d3db1bb5d2dfbded812fa9cde783d868fb4f38f22ecc477ebb6c0467cff38b",
+    "sources": [],
+    "packages": [
+      "com.yodo1tier1.ctr2.TXWXYY"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidchinav201",
+    "raw": "/assets/images/gameicons/ctr2/androidchinav201/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "773fabf08c7c565369fec35230a0dd75894dade0972352ab3fecc87c27dd252d",
+    "sources": [],
+    "packages": [
+      "com.yodo1tier1.ctr2together.telecom"
+    ]
+  },
+  {
+    "game": "bigadventure",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/bigadventure/androidgallery/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "644e7fa37e0a8c8e2a32dc5370839350234fdda6089f51b90102086e906a4013",
+    "sources": [],
+    "packages": [
+      "com.zeptodev.nibblenombigadventure"
+    ]
+  },
+  {
+    "game": "sweetdreams",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/sweetdreams/androidgallery/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "ab7591a2addf0134172c7a346733e954ebc14341e45fe3731ab74c345e983651",
+    "sources": [],
+    "packages": [
+      "com.zeptodev.onsweetdreams"
+    ]
+  },
+  {
+    "game": "amazingcandy",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/amazingcandy/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "3b5b7440b41e8599f62b6ae42657d3bd23c6db7c226d9535eca4a393a94501e6",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.amazingcandy"
+    ]
+  },
+  {
+    "game": "bubbles",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/bubbles/androidgallery/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "78e074b31c884c21c7b05d43feb5ead0c85f618501a8d20ae368a7942db2a107",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/extra/bubbles.png",
+        "file": "img/icons/extra/bubbles.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.bubbles.f2p.google"
+    ]
+  },
+  {
+    "game": "idlecandy",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/idlecandy/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "81c5a973c55a0c33256d746b339955f4bc700d2f85ece1c19494e4a2448fdeb9",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.candyfactory"
+    ]
+  },
+  {
+    "game": "idlecandy",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/idlecandy/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "faddd2e41b2bdec77a1bf1efe3de85ed83cd8ee1eefa8dc0155949c8e4685622",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.candyfactory"
+    ]
+  },
+  {
+    "game": "idlecandy",
+    "variant": "androidgallery3",
+    "raw": "/assets/images/gameicons/idlecandy/androidgallery3/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "4f841391336f93616f13f86552c673bf33839438b96681a8f23d7b2fd019520f",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.candyfactory"
+    ]
+  },
+  {
+    "game": "idlecandy",
+    "variant": "androidgallery4",
+    "raw": "/assets/images/gameicons/idlecandy/androidgallery4/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "4b933fb3cf70e1d7c5478c3b858a0fc09ac2f710565e564f07d9ce501c3dec23",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.candyfactory"
+    ]
+  },
+  {
+    "game": "idlecandy",
+    "variant": "androidgallery5",
+    "raw": "/assets/images/gameicons/idlecandy/androidgallery5/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "b370616d6fd8e65396fa9e03802f9f4ee7a7bbac23e3a56ef81ec1d7e7e3e322",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.candyfactory"
+    ]
+  },
+  {
+    "game": "candyflick",
+    "variant": "iosv20",
+    "raw": "/assets/images/gameicons/candyflick/iosv20/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "d69da567c3a830da81c9e2b55858e1962bf7cbd2e53f9fcfd41458b378105f54",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.candyflick"
+    ]
+  },
+  {
+    "game": "doodle",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/doodle/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "a19651e0c7ef907f0ce3ee8690051e0c998523dcfec91b781ad068e6e8a1ecce",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.crazyrun"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv100",
+    "raw": "/assets/images/gameicons/ctr/androidv100/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "e4061530219fd47af66d481c05202907f2a298deddf4836758511233971749e5",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/ctr/androidgallery2/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "74ac2cb9cf1eba6a4f01b1a5cf3d7090dde7eae6f1f1eee02f40abbe7468a617",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr",
+      "com.zeptolab.positivo.ctr.lite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidgallery3",
+    "raw": "/assets/images/gameicons/ctr/androidgallery3/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "2f20bf2632726be7bb34c83de75427c81ae1b7b96d22596e6a7781db405393ea",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidgallery4",
+    "raw": "/assets/images/gameicons/ctr/androidgallery4/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "ce1e182ef7e025c751d1c9e82ed54ffd1809595eaeec30f4d980a11feb2862f2",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv252",
+    "raw": "/assets/images/gameicons/ctr/androidv252/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "6a8826685fef6cf4318bd7a9a0e9fc56d0977f86094f1255a28b888a51b68d3e",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidgallery5",
+    "raw": "/assets/images/gameicons/ctr/androidgallery5/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "7d19a8d789d084a036c91158475c49ff0e989dcf06ec80fd79ef5a641d96edb9",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv3790",
+    "raw": "/assets/images/gameicons/ctr/androidv3790/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "1a4489516b631043b21faf7f88394ab6f746e8d69113c99d9c6171dcf1a428af",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidgallery6",
+    "raw": "/assets/images/gameicons/ctr/androidgallery6/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "829a7a1fa55275054f6dd489aa762f38d6dd00e212dd21b616fff031ff544638",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidgallery7",
+    "raw": "/assets/images/gameicons/ctr/androidgallery7/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "e6a26d41308fe69f5a8eae4464155b1a26bb9801f5e8f7cd93496653f9820fac",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv351",
+    "raw": "/assets/images/gameicons/ctr/androidv351/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "080ce6fa13f2a65706c9e3fc37c4e35e5ec3d8ef43c712436e021ad6b04050a9",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidbackground",
+    "raw": "/assets/images/gameicons/ctr/androidbackground/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "2c31fdda2c209183f383722235fa7cc12f98833f1f69e3400d5656638a4f0a03",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidbackground2",
+    "raw": "/assets/images/gameicons/ctr/androidbackground2/raw.png",
+    "width": 324,
+    "height": 324,
+    "format": "png",
+    "sha256": "f5d8289f39e4ac37cc6686d9d5ac355e96f850a05d75bd5cffbf40a2992cb616",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidbackground3",
+    "raw": "/assets/images/gameicons/ctr/androidbackground3/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "c4f249093752ae550158e9f5afa7397f180672e3ee9f9442e284f1298ca19bd6",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidbackground4",
+    "raw": "/assets/images/gameicons/ctr/androidbackground4/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "9e8dc8869cdedcc2f7b0bb737995b124042be1d79d50d82166e82b41ac6955cc",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidforeground",
+    "raw": "/assets/images/gameicons/ctr/androidforeground/raw.png",
+    "width": 324,
+    "height": 324,
+    "format": "png",
+    "sha256": "23c5800f83e362caed8fbbc042b23c38e1042c8838ba01ac824f25787710910d",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidforeground2",
+    "raw": "/assets/images/gameicons/ctr/androidforeground2/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "4826ccda3244a72d1f7a984de378ee15834dfcfbe43e770cf8d516c484479839",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidforeground3",
+    "raw": "/assets/images/gameicons/ctr/androidforeground3/raw.png",
+    "width": 324,
+    "height": 324,
+    "format": "png",
+    "sha256": "db5e247a252927965e5252c49d4dcaef098d6e52f239b3f7236e46744cea90fc",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidforeground4",
+    "raw": "/assets/images/gameicons/ctr/androidforeground4/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "72f3765f40d4c65a7e6872ab8f87210784ad7373d14920641ed9f7b51ab0c0bf",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidforeground5",
+    "raw": "/assets/images/gameicons/ctr/androidforeground5/raw.png",
+    "width": 324,
+    "height": 324,
+    "format": "png",
+    "sha256": "7afef9079cb0bcdb48f861170120006567ef7481aabd8a9d433088814f0b6575",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidforeground6",
+    "raw": "/assets/images/gameicons/ctr/androidforeground6/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "c99121ef8ae3de5e4dfbb8b525bd5e9752411f61cf97b1921e15d767a6d3c76e",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv400",
+    "raw": "/assets/images/gameicons/ctr/androidv400/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "036fcdb68c8bdee6e209058d15dcc0909f3da5e9da1e3e8fabbae89785402ef6",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.ads",
+      "com.zeptolab.ctrorigins"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdgallery3",
+    "raw": "/assets/images/gameicons/ctr/androidhdgallery3/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "6f3dc82af7fd7b7e9d48f511c5605ceeeae63612c0313134e85a5b2190498efd",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.hd.google.paid",
+      "com.zeptolab.ctr.hd.paid.amazon.kids"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdv236",
+    "raw": "/assets/images/gameicons/ctr/androidhdv236/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "8cd9adbef02b940a3d505e546f2540deeff45513818737f1a0421f52b1635e85",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.hd.google.paid"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdv252",
+    "raw": "/assets/images/gameicons/ctr/androidhdv252/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "a7c93aea9be8397ec3a277f0cced9bfd16daa640c1fec7b3384534bb9815fcc1",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.hd.google.paid"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdgallery4",
+    "raw": "/assets/images/gameicons/ctr/androidhdgallery4/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "f1a63f4bc67f092d81848e9770d1e4cb98ed3535849d706fcad4b9c2089cd009",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.hd.google.paid",
+      "com.zeptolab.ctr.hd.paid.samsung"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdv3330",
+    "raw": "/assets/images/gameicons/ctr/androidhdv3330/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "2424d7d72bc48d217a5b2df0f45af2c1c8dde6a7f48baeaf7d4d1795585f45e0",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.hd.paid.amazon.kids",
+      "com.zeptolab.ctror.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidhdv253",
+    "raw": "/assets/images/gameicons/ctr/androidhdv253/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "75689964ef8a248128e084ab89858102c0f7e15315cc0bf7fe682ae02a198738",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.hd.paid.amazon.ultimate"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidgoldv234",
+    "raw": "/assets/images/gameicons/ctr/androidgoldv234/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "4c7741014e906a83dffb6a1eeaa35a2f75591bf4654255e2aa8dccf6baf5c0ad",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.paid",
+      "com.zeptolab.ctr.tryandbuy.svyaznoy"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/ctr2/iosv10/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "a55fa056cb28ffd58c357e4106ec03d3083d7607cd84cc5a3e6bcc2df1d64467",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidamazonv142",
+    "raw": "/assets/images/gameicons/ctr2/androidamazonv142/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "cc8048aeb8c308e9e6dbcec8fc0f89d58b9c3a6f6d2f3bd179b9dfd1b4e51c48",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctr2/ctr2_actuallyfree.png",
+        "file": "img/icons/ctr2/ctr2_actuallyfree.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.amazon.ultimate"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/ctr2/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "14256c64358304ace9e58733bba23b2c4ec346c3b1ae1d3ac93a4a213cb325b8",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google",
+      "com.zeptolab.ctr2.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidgallery3",
+    "raw": "/assets/images/gameicons/ctr2/androidgallery3/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "bebba17d4ae18cf03214defae67252cb6e7d61ac971f08eabff33ea94e793bc1",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidgallery4",
+    "raw": "/assets/images/gameicons/ctr2/androidgallery4/raw.png",
+    "width": 360,
+    "height": 360,
+    "format": "png",
+    "sha256": "47871fe67c9252b8f136c334db8dfda1abac1f6aba34957ade477b9f140d0407",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctr2/ctr2_anniversary.png",
+        "file": "img/icons/ctr2/ctr2_anniversary.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidgallery5",
+    "raw": "/assets/images/gameicons/ctr2/androidgallery5/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "5f3840df777e0ae596ab4f3e580a993518bcc726a80a26de1c6aa7437b55ebf6",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidgallery6",
+    "raw": "/assets/images/gameicons/ctr2/androidgallery6/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "255fec1b2005cead2b63461172cf619330e85d5821f2a6619e6a54511314edb3",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidgallery7",
+    "raw": "/assets/images/gameicons/ctr2/androidgallery7/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "c3827212a066c61dcd8eac81f3388b0cdf6c84c583ff6830c993e14d675ed716",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidgallery8",
+    "raw": "/assets/images/gameicons/ctr2/androidgallery8/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "b2400b99da88d1677e9eb3abfe6869ec70d4a9dd890365398e57489fcd0ebd49",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidbackground",
+    "raw": "/assets/images/gameicons/ctr2/androidbackground/raw.png",
+    "width": 162,
+    "height": 162,
+    "format": "png",
+    "sha256": "bd7edda8f211d427f25a510c261566a4d52fb335b9cb83b3d6b5d5e58136a14f",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidbackground2",
+    "raw": "/assets/images/gameicons/ctr2/androidbackground2/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "709349e4f49fb4eca6e67471877475b947b087cf03690a044ded4347b0b31f68",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidforeground",
+    "raw": "/assets/images/gameicons/ctr2/androidforeground/raw.png",
+    "width": 162,
+    "height": 162,
+    "format": "png",
+    "sha256": "8158688780942d5e37dd022c47d2c22325dde4dbcfe302dc034832e8aac77eec",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidforeground2",
+    "raw": "/assets/images/gameicons/ctr2/androidforeground2/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "5fa2946c5756d49eb5242781cd13359a676a5e8ec1b5e118ee65f110bed4d6b7",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidv1390",
+    "raw": "/assets/images/gameicons/ctr2/androidv1390/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "41cc46e0227a378ae1fdd4d4663438e5c4dee7a8d19c349665a0eba760546b74",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr2.subscr.tier"
+    ]
+  },
+  {
+    "game": "comic",
+    "variant": "iosv100",
+    "raw": "/assets/images/gameicons/comic/iosv100/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "1a829bf3d427777b8b703d1a37ef09769db449ec819a9b2435a4daac35f94383",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrcomic"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidv1110",
+    "raw": "/assets/images/gameicons/ctrexp/androidv1110/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "1cd144694b82a4a043a19cb17a39b1a72d3f7ecbf40ca26ec5452999d4019cd3",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrex.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/ctrexp/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "7fb25c4490933ef1462bd52825cc5a5ab883751c28d39a1b3e5d8febc1087fb6",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrex.subscr.tier",
+      "com.zeptolab.ctrexperiments.ads",
+      "com.zeptolab.ctrexperiments.hd.paid"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "iosv17",
+    "raw": "/assets/images/gameicons/ctrexp/iosv17/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "4e223285a1bc21017cd4307be81cd7aecb210688bac183f3f8bb1e26ec7192b5",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "iosv121",
+    "raw": "/assets/images/gameicons/ctrexp/iosv121/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "b4c1d537bddc70d83cc5691642e563c98b94387ba89731bb337fe21a8a0875fd",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/ctrexp/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "c465393da2e45b024a18aead2a6e9afc0c42ca20a42a8f4242c4a537c0922154",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments.ads"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidbackground",
+    "raw": "/assets/images/gameicons/ctrexp/androidbackground/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "0830e4c7d077a9e615691846eeff2819cb5894864e8488707caf54e60da810ae",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments.ads"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidforeground",
+    "raw": "/assets/images/gameicons/ctrexp/androidforeground/raw.png",
+    "width": 324,
+    "height": 324,
+    "format": "png",
+    "sha256": "50206c237483412fed9c75a4fb0c26abbc61536b9f0a9b5eb6327ae75e5b166d",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments.ads"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidgallery3",
+    "raw": "/assets/images/gameicons/ctrexp/androidgallery3/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "17580c3d1c4f2dbb5c6235670b6f09f6fe7fa88f3dc55b21cb959379f6f76965",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments.ads"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidv10",
+    "raw": "/assets/images/gameicons/ctrexp/androidv10/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "f5e090296e92102d5d92e2b1fdfe4abaa0906e9688328fa477352fc37e7391cf",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments.ads"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidgoldv17",
+    "raw": "/assets/images/gameicons/ctrexp/androidgoldv17/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "6367f99f2251e3831373a925eac7fc11ea6145ac6ecf86616ecb1b907a9b205d",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/img/icons/ctrexp/ctrexp_original.png",
+        "file": "img/icons/ctrexp/ctrexp_original.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperiments.google.paid"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidhdgallery",
+    "raw": "/assets/images/gameicons/ctrexp/androidhdgallery/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "4903aa8639d5c07c136ed0e92847140592357245f9e2e06d7c8f038c90bebf15",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperiments.hd.google.paid",
+      "com.zeptolab.ctrexperiments.hd.paid"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidhdgallery2",
+    "raw": "/assets/images/gameicons/ctrexp/androidhdgallery2/raw.jpg",
+    "width": 512,
+    "height": 512,
+    "format": "jpeg",
+    "sha256": "b9a388e5192cd31b0f33fe526eca2026340ad8b8670b70cd7b05e97d29ce0859",
+    "sources": [
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20(2)/Cut%20The%20Rope%20Experiments%20HD%201.6.1.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.zeptolab.ctrexperimentshd",
+        "version": "1.6.1"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperimentshd"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidhdgallery3",
+    "raw": "/assets/images/gameicons/ctrexp/androidhdgallery3/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "d6b04373df6ae7296fbd19ea809264ad02e8a5032833e9bb0896dd2fab81b6cc",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperimentshd"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "ioshdlitev171",
+    "raw": "/assets/images/gameicons/ctrexp/ioshdlitev171/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "1f60969bd20141dc9d4c357724ba6f713c20ecd1cf228bfeb7125fe01ff6fbce",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperimentshdlite"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "ioshdlitev172",
+    "raw": "/assets/images/gameicons/ctrexp/ioshdlitev172/raw.png",
+    "width": 600,
+    "height": 600,
+    "format": "png",
+    "sha256": "dfa06d255b3926fda3199e1eeef5c8274e9fb31e0f2a9e87c8275e0acfda9d70",
+    "sources": [
+      {
+        "url": "https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Experiments%20HD/Cut%20the%20Rope%20Experiments%20HD%20Free%20v1.7%20%28iOS%204.3%2B%29.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.zeptolab.ctrexperimentshdlite",
+        "version": "1.7"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%204/Cut%20The%20Rope%20Experiments%20HD%20Lite%201.8.0.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.zeptolab.ctrexperimentshdlite",
+        "version": "1.8"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperimentshdlite"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "ioshdlitev101",
+    "raw": "/assets/images/gameicons/ctrexp/ioshdlitev101/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "de77a62ddbf037d182319136831cbef4e5f9ace45a2fd271ef5c1198dbfe21a1",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperimentshdlite"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidlitegallery",
+    "raw": "/assets/images/gameicons/ctrexp/androidlitegallery/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "2ad9d11278f15c3b400c5db18946890ae44aa298bd4f6faa7d757ec360552dea",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperimentslite"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidlitegallery2",
+    "raw": "/assets/images/gameicons/ctrexp/androidlitegallery2/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "6732d71fdda2d7d65fffafb25dd62867d7c8d9a5282a42702063643b8da65797",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperimentslite"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "ioslitev171",
+    "raw": "/assets/images/gameicons/ctrexp/ioslitev171/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "48dfbff43b1d62e179d1e503daa6ad346296cbefc6204de0c6ab997f0d15acf1",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrexperimentslite"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "ioslitev191",
+    "raw": "/assets/images/gameicons/ctrexp/ioslitev191/raw.jpg",
+    "width": 600,
+    "height": 600,
+    "format": "jpeg",
+    "sha256": "2d604263cc9c3a271ca3ec814c2b89941c22d389e38b3323935c0850eac5a536",
+    "sources": [
+      {
+        "url": "https://archive.org/download/cut-the-rope-experiments-v-1.9.1-hs/Cut%20The%20Rope%20Experiments%20v1.9.1%20HS.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.zeptolab.ctrexperimentslite",
+        "version": "1.9.1"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperimentslite"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidv1180",
+    "raw": "/assets/images/gameicons/ctrmagic/androidv1180/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "65dcfcadad39edba236dafba377d075225fc5f69e5b279cfaa06bc0efc96c11f",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/ctrmagic/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "b6f64d26f508c640266201ab60a6cf205c162506aab1497182396c09811a7f05",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm",
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/ctrmagic/androidgallery2/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "35513bb3b88557246cf4983be5db251e722d94145c885480aea46837165532ce",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidbackground",
+    "raw": "/assets/images/gameicons/ctrmagic/androidbackground/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "f109f97aee71bdfca2171fc9494e5a9c91ebee1237677df8cb08ccae709e0b3f",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidforeground",
+    "raw": "/assets/images/gameicons/ctrmagic/androidforeground/raw.png",
+    "width": 432,
+    "height": 432,
+    "format": "png",
+    "sha256": "184794f95718509823cf3030afef8ebac7085de8ec7cbb38de0eed7eaed3e42d",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidv192",
+    "raw": "/assets/images/gameicons/ctrmagic/androidv192/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "0721e7ec978642f66907e8d463ee5a358267f7d1b8eebc8a56cbdc71f7bac94b",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.free.NonCMCC"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidamazonv141",
+    "raw": "/assets/images/gameicons/ctrmagic/androidamazonv141/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "a87d8c3b3c5b2ff4a5a5db550e46ee3513cf76543748ab01f35878555b95cdf0",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.paid.amazon.ultimate"
+    ]
+  },
+  {
+    "game": "nibbleadventure",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/nibbleadventure/androidgallery/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "af7ec27a31f42a7aa0c0e1bcf3a591b5aeccc2bf2cfadf30bce34d471ef8ce67",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.CTRNibbleAdventure"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv341",
+    "raw": "/assets/images/gameicons/ctr/androidv341/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "00ef1256cbf2755c99a92f73ffc1940e1e84eef7e773df7225d424393f976790",
+    "sources": [
+      {
+        "url": "https://ctrhome.github.io/games/cut-the-rope/icons/",
+        "file": "android-free-2018-10-26.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctror.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv330",
+    "raw": "/assets/images/gameicons/ctr/androidv330/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "a06c8362e9d3a4e223d5fcb4eed744d554a9626521b265e02497bd5243ebfe7d",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctror.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv3300",
+    "raw": "/assets/images/gameicons/ctr/androidv3300/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "9cb1326b32f5d526c7f0153442af8bd1ab14a69d3ba8c6a3df3ab35589e0d8bf",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctror.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv3151",
+    "raw": "/assets/images/gameicons/ctr/androidv3151/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "66d0fd221cd5237d01a98f4d10c138a4fcd5c6de44dd7a4fad7bf2982e48d06e",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctror.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidv1141",
+    "raw": "/assets/images/gameicons/ctrtt/androidv1141/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "6488dcd3a01f789455fe47044f9d92dfca1c62185281d02b8132f9ad7cbd8d99",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrtt.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/ctrtt/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "b062450acf2e68880a0513d5c804613da53c393bcc0b3601f338d2b970aeb8f3",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrtt.subscr.tier",
+      "com.zeptolab.timetravel.free.google",
+      "com.zeptolab.timetravel.paid.amazon.kids"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev360",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev360/raw.png",
+    "width": 167,
+    "height": 167,
+    "format": "png",
+    "sha256": "014b40c92129f25ce9b112cb9613521c3a52efc477aec499f2e544bd85c47862",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev330",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev330/raw.png",
+    "width": 167,
+    "height": 167,
+    "format": "png",
+    "sha256": "0d3c80e15b8c72e02645c8dbbd2b8330c548b8e09ce04b632e70fb515f0dba8e",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev311",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev311/raw.jpg",
+    "width": 600,
+    "height": 600,
+    "format": "jpeg",
+    "sha256": "aaf5e206991377dfc8afce18228f3b8f6ee0e3cc445c93775d78ea0b40ed33aa",
+    "sources": [
+      {
+        "url": "https://archive.org/download/fruit-ninja-thd-android-all-version/14%20Cut%20the%20Rope%20HD%202.3.1%20%2815644948%29.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.chillingo.cuttheropehd",
+        "version": "2.3.1"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collllection%20Part%205/Cut%20The%20Rope%20HD%202.4.2.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.chillingo.cuttheropehd",
+        "version": "2.4.2"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev3261",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev3261/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "653e77e7474e5f467c995611541c32f957c47427436d31ffba0bdb0127a6f92b",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev331",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev331/raw.png",
+    "width": 167,
+    "height": 167,
+    "format": "png",
+    "sha256": "68d616f19cec7d041c522db7cd04058180e59a71ab7f792b8dfdf587c21ba2a6",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev340",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev340/raw.png",
+    "width": 167,
+    "height": 167,
+    "format": "png",
+    "sha256": "adc8b98230fa4a3eef6fc8176ff1fceac70a05f5f31c8c6e837e256729cfdcbf",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev300",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev300/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "ca3ce801a7b1347d57a98bc3fb5d3e5a93ad7934841947d7a5d286e1be53b367",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdlitev370",
+    "raw": "/assets/images/gameicons/ctr/ioshdlitev370/raw.png",
+    "width": 167,
+    "height": 167,
+    "format": "png",
+    "sha256": "d720451b38a4b0d7cc2bbfc562faaa3840a86aad696cc5df3675860c7a96b624",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cuttheropehdlite"
+    ]
+  },
+  {
+    "game": "cybernom",
+    "variant": "iosgallery",
+    "raw": "/assets/images/gameicons/cybernom/iosgallery/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "67787eb794c108f6bd563ae91e2af50a96549e0710ef1f68f479cb5a6006dccd",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.cybernom"
+    ]
+  },
+  {
+    "game": "dreams",
+    "variant": "iosgallery",
+    "raw": "/assets/images/gameicons/dreams/iosgallery/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "74b2cddfbabc293a149b093c90d628054b2c7a8e9ff679c7f2cf7a4964f2a856",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.dreams"
+    ]
+  },
+  {
+    "game": "ctrholiday",
+    "variant": "androidv180",
+    "raw": "/assets/images/gameicons/ctrholiday/androidv180/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "79c13b60effdd3e758d194a0babc2286362ec09b41537de3f43d86bd095217c2",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.holiday.premium.tier"
+    ]
+  },
+  {
+    "game": "myomnom",
+    "variant": "androidv151",
+    "raw": "/assets/images/gameicons/myomnom/androidv151/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "168c193ed5d2dcf723758dde5e914ad2b02359e293424f69b835c164f3ba8367",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.mon.premium.tier"
+    ]
+  },
+  {
+    "game": "myomnom",
+    "variant": "androidv152",
+    "raw": "/assets/images/gameicons/myomnom/androidv152/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "3feb43ff740efd906b0d6949b4318e57b174092d69e6d0c86bc1525feb086b2d",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.mon.premium.tier",
+      "com.zeptolab.myomnom.free.google"
+    ]
+  },
+  {
+    "game": "books",
+    "variant": "androidamazonv10",
+    "raw": "/assets/images/gameicons/books/androidamazonv10/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "35064d8be3159cc8c0c0a897252b31526d41d1bf46b12263529ef7d8b0053dbd",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.omnombooks.amazon.ftu"
+    ]
+  },
+  {
+    "game": "magiccandies",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/magiccandies/androidgallery/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "f2a0d681a8283a0dcd946a57e0caf28b5edc6d780d0b32b45c342d54dddeb5e0",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.OmNomMagicCandies"
+    ]
+  },
+  {
+    "game": "merge",
+    "variant": "androidv4429",
+    "raw": "/assets/images/gameicons/merge/androidv4429/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "6ae659fb4ef7e142bdd02f9f5733c0a108afc83b4acaa4e636edc6a290fcfbfe",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.omnommerge"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "androidv181",
+    "raw": "/assets/images/gameicons/omnomrun/androidv181/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "b05f92bb019a59c69578493e918d2a2fcd5096550fde67f16c8ff092d562c420",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.omnomrun.google"
+    ]
+  },
+  {
+    "game": "omnomrun2",
+    "variant": "androidgallery",
+    "raw": "/assets/images/gameicons/omnomrun2/androidgallery/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "d598bb5b1dfd88c55982728284705d9b57547aee8c479293ae5f0a14672b4a21",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.OmNomRun2.parkour"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidgallery2",
+    "raw": "/assets/images/gameicons/ctrtt/androidgallery2/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "57740b99afb2a19f13772e964d3c84767b91070728e2224dbd8bf08009ed6848",
+    "sources": [
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/Cut%20The%20Rope%20Time%20Travel%201.4.0.ipa",
+        "entry": "Payload/ctr_timetravel.app/iTunesArtwork",
+        "package": "com.zeptolab.timetravel",
+        "version": "1.4"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/Cut%20The%20Rope%20Time%20Travel%201.3.1.ipa",
+        "entry": "Payload/TT_SD_Appstore_Paid_v1.3.1_rev36430_09-04-2014_Distribution.app/iTunesArtwork",
+        "package": "com.zeptolab.timetravel",
+        "version": "1.3.1"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Collection%20Part%203/Cut%20The%20Rope%20Time%20Travel%201.1.0.ipa",
+        "entry": "Payload/ctr_timetravel.app/iTunesArtwork",
+        "package": "com.zeptolab.timetravel",
+        "version": "1.1"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidgallery3",
+    "raw": "/assets/images/gameicons/ctrtt/androidgallery3/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "2a90f9ec9038fbd16b99f5ae6b9ebc63e6691778c24f14edf594c817c27aecc6",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravel"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/ctrtt/iosv10/raw.png",
+    "width": 1024,
+    "height": 1024,
+    "format": "png",
+    "sha256": "eee7c31b8ac5adda9583137d5fa04491254aad1cbec108c754d1622b9de3ed30",
+    "sources": [
+      {
+        "url": "https://archive.org/download/com.zeptolab.timetravel/94ca6c772af660be444a82082abc4e4f.ipa",
+        "entry": "Payload/ctr_timetravel.app/Icon-1024x1024.png",
+        "package": "com.zeptolab.timetravel",
+        "version": "1.0"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "iosv102",
+    "raw": "/assets/images/gameicons/ctrtt/iosv102/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "094361e4cc54da7da82583fcb0b67d69ee4afd6735a04d7208ac9bb537ccb33c",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravel.free"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidamazongallery",
+    "raw": "/assets/images/gameicons/ctrtt/androidamazongallery/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "932d1dd8438cd562e65f385f2bce5811780fc833372677d306e039b8e69c7192",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravel.paid.amazon",
+      "com.zeptolab.timetravel.paid.google"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidgoldv111",
+    "raw": "/assets/images/gameicons/ctrtt/androidgoldv111/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "593d0d8299f56aaf1cba703005d2e533e61231b62550cbd8ab1466ebfcaecf83",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravel.paid.google"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidgoldv193",
+    "raw": "/assets/images/gameicons/ctrtt/androidgoldv193/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "7fb2f351e12e6df4e7b5eff459c26a6cabb07ae0221c8f8d36d9c3c75278d7b8",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravel.paid.google"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidgoldv142",
+    "raw": "/assets/images/gameicons/ctrtt/androidgoldv142/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "88537d0b4c7335895d16bbd39cb54169622ad8144d91d5cbac964f0348a46d97",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravel.paid.google"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidhdgallery",
+    "raw": "/assets/images/gameicons/ctrtt/androidhdgallery/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "22fa8b72b68d0d1ebed156f5ca66615107cd210e45543b98d50a1ef1e0f908fa",
+    "sources": [
+      {
+        "url": "https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Time%20Travel%20HD/Cut%20the%20Rope%20Time%20Travel%20HD%20v1.4.3%20%28iOS%206.0%2B%29.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.zeptolab.timetravelhd",
+        "version": "1.4.3"
+      },
+      {
+        "url": "https://archive.org/download/cut-the-rope-hd-archive/Cut%20the%20Rope%20Time%20Travel%20HD/Cut%20the%20Rope%20Time%20Travel%20HD%20v1.4.3%20%28iOS%206.0%2B%29.ipa",
+        "entry": "Payload/ctr_timetravelHD.app/iTunesArtwork",
+        "package": "com.zeptolab.timetravelhd",
+        "version": "1.4.3"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20(2)/Cut%20The%20Rope%20Time%20Travel%20HD%201.1.1.ipa",
+        "entry": "Payload/ctr_timetravelHD.app/iTunesArtwork",
+        "package": "com.zeptolab.timetravelhd",
+        "version": "1.1.1"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Time%20Travel%20HD%201.2.0.ipa",
+        "entry": "iTunesArtwork",
+        "package": "com.zeptolab.timetravelhd",
+        "version": "1.2"
+      },
+      {
+        "url": "https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/BONUS%20%282%29/Cut%20The%20Rope%20Time%20Travel%20HD%201.2.0.ipa",
+        "entry": "Payload/ctr_timetravelHD.app/iTunesArtwork",
+        "package": "com.zeptolab.timetravelhd",
+        "version": "1.2"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravelhd"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "ioshdv143",
+    "raw": "/assets/images/gameicons/ctrtt/ioshdv143/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "677b06e84b5e59bb83a6467f5517a8ff5b13898197e6fbbe607c474c918ecaf9",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravelhd"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "ioshdv12",
+    "raw": "/assets/images/gameicons/ctrtt/ioshdv12/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "c0ef853093afc1117923375ba8c47efae78e338c8d586f0e32618b653103a456",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravelhd"
+    ]
+  },
+  {
+    "game": "toons",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/toons/iosv10/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "f3463cd6e10eca93c64f80a79f6e068ce3a8a312b6d5b709daa69737c40daa23",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.toonplayer"
+    ]
+  }
+]
