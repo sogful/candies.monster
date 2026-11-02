@@ -4567,5 +4567,23 @@
     "packages": [
       "com.zeptolab.timetravelhd"
     ]
+  },
+  {
+    "game": "blast",
+    "variant": "androidchinav095",
+    "raw": "/assets/images/gameicons/blast/androidchinav095/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "03939b9d9dc84e13239586838a4c627a834d7f1a118aedd1df5852328387cc75",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.stelar.omnomblast/0.9.5-5.apk",
+        "file": "res/mipmap-xxxhdpi/app_icon.png"
+      }
+    ],
+    "packages": [
+      "com.stelar.omnomblast"
+    ]
   }
 ]

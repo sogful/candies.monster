@@ -625,6 +625,7 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 ,v1.9.0,ctr2/classic,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.google/cut-the-rope-2-1-9-0.apk,,"arm32, x86",56.90MB,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.14.0,ctr2/classic,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.google/cut-the-rope-2.apk,,"arm32, x86",53.31MB,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.4,ctr2/androidv14,https://www.mediafire.com/file/lengumz71s2xt5s/com.zeptolab.ctr2.f2p.google_1.4.apk/file,,"armeabi-v7a, x86",48.29 MB
+,,ctr2/androidv14,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.google/1.4-1000290.apk,,"armeabi-v7a, x86",48.29 MB,archive
 + 컷더로프2,com.zeptolab.ctr2.kr.free.google,ctr2/classic,korean version,9
 ,v1.0.1,ctr2/classic,https://theawesomeblue.github.io/ctrfiles/download/ctr2/%EC%BB%B7%EB%8D%94%EB%A1%9C%ED%94%84-2_1.0.1.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 + Cut the Rope 2,com.zeptolab.ctr2.subscr.tier,ctr2/classic,gameloft,9
@@ -1003,6 +1004,7 @@ Cut the Rope Experiments,com.zeptolab.ctrexperiments.ads,ctrexp/classic,,6,/asse
 ,v1.7.3,ctrexp/classic,https://archive.org/download/cut-the-rope-experiments-v-1.7.3/Cut_the_Rope_Experiments_v1.7.3.apk,
 ,v1.0,ctrexp/androidpaidv10,https://www.mediafire.com/file/6cy1k8b1nfq46b5/Cut+the+Rope+Experiments+v1.0-por_manu201035.apk,,armeabi,19.11 MB
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperiments.google.paid/1.0.zip,,armeabi,0.48 MB,symbols,SYMTAB
+,,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/1.0-1.apk,,armeabi,19.11 MB,archive
 + Cut the Rope Experiments,com.zeptolab.ctrexperiments.hd.paid,ctrexp/androidgallery,amazon kids+,6,/assets/images/gameicons/ctrexp/androidgallery/raw.png
 ,v1.14.0,ctrexp/androidgallery,https://www.mediafire.com/file/kpk19mu580zy25c/com.zeptolab.ctrexperiments.hd.paid_v2556225.apk/file,
 ,v1.14.0,ctrexp/androidgallery,https://archive.org/download/cut-the-rope-amazon-kids/Cut%20the%20Rope%20Experiments%20Amazon%20Kids%201.14.0.apk,
@@ -1127,6 +1129,9 @@ Cut the Rope: BLAST,com.skywalkgames.blastctr,blast/classic,,4,/assets/images/ga
 ,v4064,blast/classic,https://cut-the-rope-blast.en.uptodown.com/android/download/1017300426,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v3525,blast/classic,https://cut-the-rope-blast.en.uptodown.com/android/download/4090862,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v3453,blast/classic,https://cut-the-rope-blast.en.uptodown.com/android/download/4915177,,,,,,,,,,,,,,,,,,,,,,,,,,
++ 割绳子:爆破,com.stelar.omnomblast,blast/androidchinav095,chinese beta,4,/assets/images/gameicons/blast/androidchinav095/raw.png
+
+,v0.9.5,blast/androidchinav095,https://cdn.candies.monster/apks/com.stelar.omnomblast/0.9.5-5.apk,,armeabi-v7a,89.76 MB,archive
 Om Nom Run,com.zeptolab.omnomrun.google,omnomrun/classic,,5
 ,v1.21.1,omnomrun/classic,https://www.malavida.com/en/soft/om-nom-run/android/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.19.1,omnomrun/classic,https://www.apkmirror.com/apk/zeptolab/om-nom-run/om-nom-run-1-19-1-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
