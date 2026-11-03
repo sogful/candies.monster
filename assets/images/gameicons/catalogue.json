@@ -5143,5 +5143,59 @@
     "packages": [
       "com.zeptolab.ctr.candytrail"
     ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "archive4399244",
+    "raw": "/assets/images/gameicons/ctr2/archive4399244/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "0b9f7679fc47cc407f972ae6eed2ecd70289fb09072f2c27d7b26075750445d2",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1.ctr2.A4399_1/chinaarchive/2.4.4-244000-1f5b359bc362.apk",
+        "file": "res/drawable-xxxhdpi/app_icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.ctr2.A4399_1"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "archiveuc244",
+    "raw": "/assets/images/gameicons/ctr2/archiveuc244/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "e0b7e54855ce7b8863a29d6f0aa675725e8ab613b56d416738721115a684c35e",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1.ctr2.UC_02/chinaarchive/2.4.4-244000-6558700b4458.apk",
+        "file": "res/drawable-xxxhdpi/app_icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.ctr2.UC_02"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "archivetencent243",
+    "raw": "/assets/images/gameicons/ctr2/archivetencent243/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "af5b7ba7e7e0356c48421c7a2d70d277286f305994534d6cd50f27a00b64e0af",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.TXWXYY/chinaarchive/2.4.3-243000-46db052f5b6b.apk",
+        "file": "res/drawable-xxxhdpi/app_icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1tier1.ctr2.TXWXYY"
+    ]
   }
 ]
