@@ -447,9 +447,9 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,v3.30.0 (all unlocked),ctr/free,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/Cut.the.Rope.v3.30.0.Gameloft.All.Boxes.Unlocked.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v3.30.0,ctr/androidhdv3330,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/Cut.the.Rope.v3.30.0.Gameloft.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v3.15.1,ctr/androidv3151,https://theawesomeblue.github.io/ctrfiles/download/ctr/event/CutTheRope_v3.15.1_GameloftStore.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
-,v3.4.1,ctr/androidv341,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/com.zeptolab.ctror.subscr.tier_3.4.1.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v3.4.1,ctr/androidsubscription341,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/com.zeptolab.ctror.subscr.tier_3.4.1.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,ctr/androidsubscription341,https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/megacollection/3.4.1-1764156-5ed580cfad9e.apk,,"armeabi-v7a, x86",46.45 MB,archive
-,v3.4.0,ctr/free,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/com.zeptolab.ctror.subscr.tier_3.4.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v3.4.0,ctr/androidifree340,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/com.zeptolab.ctror.subscr.tier_3.4.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,ctr/androidifree340,https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/megacollection/3.4.0-1764155-9a1fcd67e767.apk,,"armeabi-v7a, x86",48.29 MB,archive
 ,v3.3.0,ctr/androidv330,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/Cut.the.Rope.Gameloft.3.3.0.Halloween.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 + Cut the Rope Free,com.zeptolab.ctr.ads.u.huawei,ctr/free,huawei (app gallery),10
@@ -767,7 +767,7 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.paid.amazon.kids/1.18.0.zip,,"arm64-v8a, armeabi-v7a, x86, x86_64",8.93 MB,symbols,exports
 ,v1.18.0,ctrtt/androidgallery,https://archive.org/download/cut-the-rope-amazon-kids/Time%20Travel%20Amazon%20Kids.apk,
 + Cut the Rope Time Travel,com.zeptolab.timetravel.free.tier3,ctrtt/egypt,i-free,6,/assets/images/gameicons/ctrtt/egypt/raw.png
-,v1.0.2,ctrtt/egypt,https://www.mediafire.com/file/dxvat6jaxkjeqg3/com.zeptolab.timetravel.free.tier3_%25281.0.2%2529.apk/file,
+,v1.0.2,ctrtt/androidifree102,https://www.mediafire.com/file/dxvat6jaxkjeqg3/com.zeptolab.timetravel.free.tier3_%25281.0.2%2529.apk/file,
 ,,ctrtt/androidifree102,https://cdn.candies.monster/apks/com.zeptolab.timetravel.free.tier3/megacollection/1.0.2-712105-1ea9f752d532.apk,,"armeabi, armeabi-v7a, x86",30.34 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free.tier3/megacollection/1.0.2.zip,,"armeabi, armeabi-v7a, x86",1.52 MB,symbols,exports
 + 割绳子玩穿越,com.tcxx.cut.gsz,ctrtt/androidv111,chinese release (3m studio),6,/assets/images/gameicons/ctrtt/androidv111/raw.png
@@ -1108,7 +1108,7 @@ Cut the Rope Holiday Gift,com.zeptolab.cuttheropexmas.google,ctrholiday/classic,
 ,v1.6,ctrholiday/classic,https://archive.org/download/cut-the-rope-holiday-gift-1.6.1-apk/2_cut_the_rope_holiday_gift.apk,
 + Cut the Rope Holiday Gift,com.zeptolab.holiday.premium.tier,ctrholiday/classic,premium,5
 ,v1.8.0 (android 14+ fix),ctrholiday/classic,https://theawesomeblue.github.io/ctrfiles/download/ctrhg/Cut%20The%20Rope%20Holiday%20Gift%20(v1.8.0)%20(SDK24%20+%20Wider%20Screen%20Support)%20(saulfabreg).apk,,,,,,,,,,,,,,,,,,,,,,,,,,
-,v1.8.0,ctrholiday/classic,https://theawesomeblue.github.io/ctrfiles/download/ctrhg/Cut%20The%20Rope%20Holiday%20Gift%201.8.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v1.8.0,ctrholiday/androidpremium180,https://theawesomeblue.github.io/ctrfiles/download/ctrhg/Cut%20The%20Rope%20Holiday%20Gift%201.8.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://archive.org/download/cut-the-rope-holiday-gift-1.8.0/Cut%20The%20Rope%20Holiday%20Gift%201.8.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,ctrholiday/androidpremium180,https://cdn.candies.monster/apks/com.zeptolab.holiday.premium.tier/megacollection/1.8.0-13-49ae52f575a3.apk,,"armeabi, x86",28.00 MB,archive
 + Cut the Rope Holiday Gift,com.zeptolab.cuttheropexmas.amazon,ctrholiday/classic,amazon kids+,5
