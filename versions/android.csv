@@ -512,6 +512,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,v2.1.2,ctr/archivetencent211,
 ,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr_original.telecom/2.1.2.zip,,armeabi,0.71 MB,symbols,exports
 ,,ctr/archivetencent211,https://cdn.candies.monster/apks/com.yodo1tier1.ctr_original.telecom/chinaarchive/2.1.2-2014-59c082f2a363.apk,,"armeabi, x86",30.66 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr_original.telecom/chinaarchive/2.1.2.zip,,armeabi,0.72 MB,symbols,exports
 + Cut the Rope,com.zeptolab.ctror.subscr.tier,ctr/androidorange3300,orange jeux / gameloft,10,/assets/images/gameicons/ctr/androidorange3300/raw.png
 
 ,v3.30.0,ctr/androidorange3300,https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/orange/3.30.0-2354652.apk,,"arm64-v8a, armeabi-v7a, x86, x86_64",63.16 MB,archive
@@ -535,6 +536,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 + 割绳子前传,com.yodo1.ctr_original.TXYYB_01,ctr/archivetencent211,tencent (china),10,/assets/images/gameicons/ctr/archivetencent211/raw.png
 
 ,v2.1.1,ctr/archivetencent211,https://cdn.candies.monster/apks/com.yodo1.ctr_original.TXYYB_01/chinaarchive/2.1.1-2013-189b57d630dd.apk,,"armeabi, x86",30.12 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr_original.TXYYB_01/chinaarchive/2.1.1.zip,,armeabi,0.72 MB,symbols,exports
 Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/images/gameicons/ctr2/androidgallery/raw.png,/assets/images/gameicons/ctr2/modern/raw.png,/assets/images/gameicons/ctr2/christmas/raw.png,/assets/images/gameicons/ctr2/androidgallery3/raw.png,/assets/images/gameicons/ctr2/androidgallery4/raw.png,/assets/images/gameicons/ctr2/androidgallery5/raw.png,/assets/images/gameicons/ctr2/androidgallery6/raw.png,/assets/images/gameicons/ctr2/androidgallery7/raw.png,/assets/images/gameicons/ctr2/androidgallery8/raw.png,/assets/images/gameicons/ctr2/androidbackground/raw.png,/assets/images/gameicons/ctr2/androidbackground2/raw.png,/assets/images/gameicons/ctr2/androidforeground/raw.png,/assets/images/gameicons/ctr2/androidforeground2/raw.png
 ,v1.44.0,ctr2/classic,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-2/cut-the-rope-2-1-44-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.google/Cut the Rope 2_1.44.0_APKPure.apk,,arm64,56.08MB,,,,,,,,,,,,,,,,,,,,,,,
@@ -723,7 +725,10 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 + 割绳子2,com.yodo1tier1.ctr2.TXWXYY,ctr2/androidchinav2442,tencent (china),9,/assets/images/gameicons/ctr2/androidchinav2442/raw.png
 ,v2.4.4,ctr2/androidchinav2442,https://m.itmop.com/downinfo/191745.html,
 ,,ctr2/androidchinav2442,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.TXWXYY/chinaarchive/2.4.4-244000-e21e4543f2fd.apk,,"arm64-v8a, armeabi-v7a",114.95 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr2.TXWXYY/chinaarchive/2.4.4-arm64-v8a.zip,,arm64-v8a,39.52 MB,symbols,DWARF/SYMTAB
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr2.TXWXYY/chinaarchive/2.4.4-armeabi-v7a.zip,,armeabi-v7a,38.10 MB,symbols,DWARF/SYMTAB
 ,v2.4.3,ctr2/archivetencent243,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.TXWXYY/chinaarchive/2.4.3-243000-46db052f5b6b.apk,,armeabi-v7a,42.53 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr2.TXWXYY/chinaarchive/2.4.3.zip,,armeabi-v7a,2.82 MB,symbols,exports
 + 割绳子2,com.yodo1.ctr2.YODO1_01,ctr2/androidchinav244,china yodo1 (no login build),0,/assets/images/gameicons/ctr2/androidchinav244/raw.png
 
 ,v2.3.9.5,ctr2/androidchinav244,
@@ -734,11 +739,14 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 ,v2.3.9.3,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.YODO1_01/2.3.9.3-23930.apk,,armeabi,44.29 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.YODO1_01/2.3.9.3.zip,,armeabi,13.31 MB,symbols,DWARF/SYMTAB
 ,v2.4.6,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.YODO1_01/chinaarchive/2.4.6-245001-bdb07cafe67e.apk,,"arm64-v8a, armeabi-v7a",119.52 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.YODO1_01/chinaarchive/2.4.6-arm64-v8a.zip,,arm64-v8a,39.52 MB,symbols,DWARF/SYMTAB
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.YODO1_01/chinaarchive/2.4.6-armeabi-v7a.zip,,armeabi-v7a,38.10 MB,symbols,DWARF/SYMTAB
 + 割绳子2,com.yodo1tier1.ctr2.telecom,ctr2/androidtelecom220,chinese telecom (signed with test keys),9,/assets/images/gameicons/ctr2/androidtelecom220/raw.png
 
 ,v2.2.0,ctr2/androidtelecom220,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.2.0-2021.apk,,armeabi,31.90 MB,archive
 ,v2.3.4,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.3.4-2021.apk,,"armeabi, armeabi-v7a, x86",35.95 MB,archive
 ,v2.0.0,ctr2/archivetelecom200,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/chinaarchive/2.0.0-1000-7d4a8c6b4613.apk,,armeabi,24.63 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr2.telecom/chinaarchive/2.0.0.zip,,armeabi,1.58 MB,symbols,exports
 ,v2.3.0,ctr2/androidtelecom220,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/chinaarchive/2.3.0-2030-a020bb9936dd.apk,,armeabi,35.08 MB,archive
 + Cut the Rope 2,com.zeptolab.ctr2.trial.tier.ad.fon.msdk,ctr2/androidv14,ad-fon trial (trimf signer),9,/assets/images/gameicons/ctr2/androidv14/raw.png
 
@@ -752,23 +760,34 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 + 割绳子2,com.yodo1.ctr2.A4399_1,ctr2/archive4399244,4399 (china),9,/assets/images/gameicons/ctr2/archive4399244/raw.png
 
 ,v2.4.4,ctr2/archive4399244,https://cdn.candies.monster/apks/com.yodo1.ctr2.A4399_1/chinaarchive/2.4.4-244000-1f5b359bc362.apk,,"arm64-v8a, armeabi-v7a",122.65 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.A4399_1/chinaarchive/2.4.4-arm64-v8a.zip,,arm64-v8a,39.52 MB,symbols,DWARF/SYMTAB
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.A4399_1/chinaarchive/2.4.4-armeabi-v7a.zip,,armeabi-v7a,38.10 MB,symbols,DWARF/SYMTAB
 + 割绳子2,com.yodo1.ctr2.UC_02,ctr2/archiveuc244,uc browser (china),9,/assets/images/gameicons/ctr2/archiveuc244/raw.png
 
 ,v2.4.4,ctr2/archiveuc244,https://cdn.candies.monster/apks/com.yodo1.ctr2.UC_02/chinaarchive/2.4.4-244000-6558700b4458.apk,,"arm64-v8a, armeabi-v7a",127.71 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.UC_02/chinaarchive/2.4.4-arm64-v8a.zip,,arm64-v8a,39.52 MB,symbols,DWARF/SYMTAB
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.UC_02/chinaarchive/2.4.4-armeabi-v7a.zip,,armeabi-v7a,38.10 MB,symbols,DWARF/SYMTAB
 + 割绳子2,com.yodo1.ctr2.XIAOMI_01,ctr2/androidchinav2393,xiaomi (signed with test keys),9,/assets/images/gameicons/ctr2/androidchinav2393/raw.png
 
 ,v2.3.9.3,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.3.9.3-23930-aada2ae332a6.apk,,"armeabi, x86",55.82 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.3.9.3.zip,,armeabi,13.31 MB,symbols,DWARF/SYMTAB
 + 割绳子2,com.yodo1.ctr2.XIAOMI_01,ctr2/androidchinav2393,xiaomi (china),9,/assets/images/gameicons/ctr2/androidchinav2393/raw.png
 
 ,v2.4.2.10,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.2.10-242910-9c739e337bfd.apk,,armeabi-v7a,39.23 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.2.10.zip,,armeabi-v7a,2.82 MB,symbols,exports
 ,v2.4.2.6,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.2.6-24260-46d5cfa4b9f0.apk,,armeabi-v7a,38.59 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.2.6.zip,,armeabi-v7a,2.82 MB,symbols,exports
 ,v2.4.6,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.6-245001-a138dc9595cc.apk,,"arm64-v8a, armeabi-v7a",121.70 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.6-arm64-v8a.zip,,arm64-v8a,39.52 MB,symbols,DWARF/SYMTAB
+,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.6-armeabi-v7a.zip,,armeabi-v7a,38.10 MB,symbols,DWARF/SYMTAB
 + Cut the Rope 2,com.yodo1tier1.ctr2.cmcc,ctr2/archivecmcc200,china mobile (cmcc),9,/assets/images/gameicons/ctr2/archivecmcc200/raw.png
 
 ,v2.0.0,ctr2/archivecmcc200,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.0.0-1000-6bfc8f64fd01.apk,,armeabi,27.17 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.0.0.zip,,armeabi,1.58 MB,symbols,exports
 + 割绳子2,com.yodo1tier1.ctr2.cmcc,ctr2/archivecmcc210,china mobile (signed with test keys),9,/assets/images/gameicons/ctr2/archivecmcc210/raw.png
 
 ,v2.1.0,ctr2/archivecmcc210,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.1.0-2010-87da06a1a2ec.apk,,"armeabi, mips, x86",36.26 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.1.0.zip,,armeabi,2.09 MB,symbols,exports
 ,v2.3.8,ctr2/archivecmcc238,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.3.8-3600-97f7e648dbd0.apk,,armeabi,36.34 MB,archive
 Cut the Rope: Origins PTC,com.zeptolab.ctrorigins,ctr/modern,"this game had a lot of different iterations besides these versions, and ALL of them are miserable.",4,/assets/images/gameicons/ctr/androidv400/raw.png
 ,v0.27.0,ctr/modern,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-origins/cut-the-rope-origins-0-27-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -873,15 +892,19 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6
 + 割绳子玩穿越,com.yodo1.SD006.timetravel,ctrtt/archivesd6243,chinese release (SD006),6,/assets/images/gameicons/ctrtt/archivesd6243/raw.png
 
 ,v2.4.3,ctrtt/archivesd6243,https://cdn.candies.monster/apks/com.yodo1.SD006.timetravel/chinaarchive/2.4.3-1300-9b40e76bc842.apk,,armeabi,51.36 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1.SD006.timetravel/chinaarchive/2.4.3.zip,,armeabi,1.14 MB,symbols,exports
 + 割绳子玩穿越,com.yodo1tier1.SD999.timetravel,ctrtt/archivesd6243,chinese release (SD999),6,/assets/images/gameicons/ctrtt/archivesd6243/raw.png
 
 ,v2.4.3,ctrtt/archivesd6243,https://cdn.candies.monster/apks/com.yodo1tier1.SD999.timetravel/chinaarchive/2.4.3-1300-6590c32e78a6.apk,,armeabi,48.17 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.SD999.timetravel/chinaarchive/2.4.3.zip,,armeabi,1.14 MB,symbols,exports
 + 割绳子玩穿越,com.yodo1tier1.YY002.timetravel,ctrtt/androidifree102,chinese release (YY002; signed with test keys),6,/assets/images/gameicons/ctrtt/androidifree102/raw.png
 
 ,v2.4.2,ctrtt/androidifree102,https://cdn.candies.monster/apks/com.yodo1tier1.YY002.timetravel/chinaarchive/2.4.2-1145-7fa289f07e5e.apk,,"arm64-v8a, armeabi, armeabi-v7a, mips, x86",42.31 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.YY002.timetravel/chinaarchive/2.4.2.zip,,armeabi,1.14 MB,symbols,exports
 + 割绳子玩穿越,com.yodo1tier1.YY002.timetravel,ctrtt/archivesd6243,chinese release (YY002),6,/assets/images/gameicons/ctrtt/archivesd6243/raw.png
 
 ,v2.4.3,ctrtt/archivesd6243,https://cdn.candies.monster/apks/com.yodo1tier1.YY002.timetravel/chinaarchive/2.4.3-1200-545d971e6a2e.apk,,armeabi,43.71 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.YY002.timetravel/chinaarchive/2.4.3.zip,,armeabi,1.14 MB,symbols,exports
 Cut the Rope: Magic,com.zeptolab.ctrm.free.google,ctrmagic/classic,witchcraft,6,/assets/images/gameicons/ctrmagic/androidgallery2/raw.png,/assets/images/gameicons/ctrmagic/androidgallery/raw.png,/assets/images/gameicons/ctrmagic/christmas/raw.webp,/assets/images/gameicons/ctrmagic/wand/raw.webp,/assets/images/gameicons/ctrmagic/androidbackground/raw.png,/assets/images/gameicons/ctrmagic/androidforeground/raw.png
 ,v1.25.0,ctrmagic/classic,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-25-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.25.0,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -1147,6 +1170,7 @@ Cut the Rope Experiments,com.zeptolab.ctrexperiments.ads,ctrexp/classic,,6,/asse
 + 割绳子实验室版,com.yodo1tier1.ctrexperiments.cmmm,ctrexp/classic,chinese release (yodo1),6,/assets/images/gameicons/ctrexp/classic/raw.webp
 ,v2.1.0,ctrexp/androiddroidzoom179,https://mega.nz/file/zcN1jbxL#ODL1HkmZ6IXe-cwWGbG8kmHgrhxCRCHa1Rg8Spdxz-U,
 ,,ctrexp/androiddroidzoom179,https://cdn.candies.monster/apks/com.yodo1tier1.ctrexperiments.cmmm/chinaarchive/2.1.0-2010-50ab7c00f03f.apk,,"armeabi, x86",24.23 MB,archive
+,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctrexperiments.cmmm/chinaarchive/2.1.0.zip,,"armeabi, x86",1.51 MB,symbols,exports
 + Cut the Rope Experiments,com.zeptolab.ctrex.subscr.tier,ctrexp/androidv1110,DRMed bemobi apps club (brazil),6,/assets/images/gameicons/ctrexp/androidv1110/raw.png
 ,v1.11.0,ctrexp/androidv1110,https://drive.google.com/file/d/13IacYGTVji-7Y5Gl3F8HXXasVTvf4OR0/view,
 + Cut the Rope Experiments,com.zeptolab.ctrex.subscr.tier,ctrexp/androidgallery,DRMed claro juegos / gameloft (archive password: saulfabreg),6,/assets/images/gameicons/ctrexp/androidgallery/raw.png
