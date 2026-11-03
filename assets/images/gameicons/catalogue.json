@@ -5035,5 +5035,77 @@
     "packages": [
       "com.zeptolab.ctror.subscr.tier"
     ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androiddroidzoom179",
+    "raw": "/assets/images/gameicons/ctrexp/androiddroidzoom179/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "85906d995b9518b0b7b54e9604c0d89143657dee0c3303f478c414a7a2b47b59",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrex.subscr.tier/megacollection/1.7.9-982559-213477663a46.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrex.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctrholiday",
+    "variant": "androidpremium180",
+    "raw": "/assets/images/gameicons/ctrholiday/androidpremium180/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "2dfa9d02783e928e15e390cbe339b9b603d6feb57b913edcc9ebc9ac3762c141",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.holiday.premium.tier/megacollection/1.8.0-13-49ae52f575a3.apk",
+        "file": "res/drawable-xxhdpi-v4/ic_launcher.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.holiday.premium.tier"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidxc171",
+    "raw": "/assets/images/gameicons/ctrtt/androidxc171/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "6b7950f7b2ed86fafff48f70bc02c7610a998458c6cd8945f579bc2c81f35471",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.timetravel.free.google.xc/megacollection/1.7.1-1766924-96155320cf80.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel.free.google.xc"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidifree102",
+    "raw": "/assets/images/gameicons/ctrtt/androidifree102/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "dc5d17abbf8640caf5b31756adbe1733f133de0e885c1bcf7374fcd03f04add9",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.timetravel.free.tier3/megacollection/1.0.2-712105-1ea9f752d532.apk",
+        "file": "res/drawable-xxhdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel.free.tier3"
+    ]
   }
 ]

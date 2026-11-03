@@ -766,6 +766,7 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6
 ,v1.18.0,ctrtt/androidgallery,https://archive.org/download/cut-the-rope-amazon-kids/Time%20Travel%20Amazon%20Kids.apk,
 + Cut the Rope Time Travel,com.zeptolab.timetravel.free.tier3,ctrtt/egypt,i-free,6,/assets/images/gameicons/ctrtt/egypt/raw.png
 ,v1.0.2,ctrtt/egypt,https://www.mediafire.com/file/dxvat6jaxkjeqg3/com.zeptolab.timetravel.free.tier3_%25281.0.2%2529.apk/file,
+,,ctrtt/androidifree102,https://cdn.candies.monster/apks/com.zeptolab.timetravel.free.tier3/megacollection/1.0.2-712105-1ea9f752d532.apk,,"armeabi, armeabi-v7a, x86",30.34 MB,archive
 + 割绳子玩穿越,com.tcxx.cut.gsz,ctrtt/androidv111,chinese release (3m studio),6,/assets/images/gameicons/ctrtt/androidv111/raw.png
 ,v1.1.1,ctrtt/androidv111,https://drive.google.com/file/d/1eUY2F-GEQW3YM6QJkjKaIfCE33KaTrlo/view,
 ,,,https://cdn.candies.monster/apks/com.tcxx.cut.gsz/1.1.1-1110.apk,,"arm64-v8a, armeabi-v7a",77.55 MB,archive
@@ -785,6 +786,12 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6
 
 ,v1.14.1,ctrtt/androidgallery,https://cdn.candies.monster/apks/com.zeptolab.ctrtt.subscr.tier/orange/1.14.1-2123350.apk,,"arm64-v8a, armeabi-v7a, x86, x86_64",51.50 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrtt.subscr.tier/orange/1.14.1.zip,,"arm64-v8a, armeabi-v7a, x86, x86_64",8.85 MB,symbols,exports
++ Cut the Rope Time Travel HD,com.zeptolab.ctrtt.subscr.tier,ctrtt/androidgoldv142,gameloft / i-free (HD),6,/assets/images/gameicons/ctrtt/androidgoldv142/raw.png
+
+,v1.4.4,ctrtt/androidgoldv142,https://cdn.candies.monster/apks/com.zeptolab.ctrtt.subscr.tier/megacollection/1.4.4-812144-78d309bb3610.apk,,"armeabi, armeabi-v7a, x86",42.25 MB,archive
++ 割绳子之时间旅行,com.zeptolab.timetravel.free.google.xc,ctrtt/androidxc171,chinese release (xc; non-ZeptoLab signer),6,/assets/images/gameicons/ctrtt/androidxc171/raw.png
+
+,v1.7.1,ctrtt/androidxc171,https://cdn.candies.monster/apks/com.zeptolab.timetravel.free.google.xc/megacollection/1.7.1-1766924-96155320cf80.apk,,"armeabi-v7a, x86",46.83 MB,archive
 Cut the Rope: Magic,com.zeptolab.ctrm.free.google,ctrmagic/classic,witchcraft,6,/assets/images/gameicons/ctrmagic/androidgallery2/raw.png,/assets/images/gameicons/ctrmagic/androidgallery/raw.png,/assets/images/gameicons/ctrmagic/christmas/raw.webp,/assets/images/gameicons/ctrmagic/wand/raw.webp,/assets/images/gameicons/ctrmagic/androidbackground/raw.png,/assets/images/gameicons/ctrmagic/androidforeground/raw.png
 ,v1.25.0,ctrmagic/classic,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-magic/cut-the-rope-magic-1-25-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://apkpure.com/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.25.0,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -1061,6 +1068,9 @@ Cut the Rope Experiments,com.zeptolab.ctrexperiments.ads,ctrexp/classic,,6,/asse
 
 ,v2.3.1,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/china/2.3.1-1345294336.apk,,armeabi,21.70 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperiments.google.paid/china/2.3.1.zip,,armeabi,0.48 MB,symbols,SYMTAB
++ Cut the Rope Experiments,com.zeptolab.ctrex.subscr.tier,ctrexp/androiddroidzoom179,droidzoom / i-free,6,/assets/images/gameicons/ctrexp/androiddroidzoom179/raw.png
+,v1.7.9,ctrexp/androiddroidzoom179,https://cdn.candies.monster/apks/com.zeptolab.ctrex.subscr.tier/megacollection/1.7.9-982559-213477663a46.apk,,"armeabi, x86",28.07 MB,archive
+
 Cut the Rope Daily,com.netflix.NGP.CutTheRopeDaily,ctrdaily/classic,,4,/assets/images/gameicons/ctrdaily/androidgallery/raw.png,/assets/images/gameicons/ctrdaily/androidgallery2/raw.png
 ,v1.12.1,ctrdaily/classic,https://www.apkmirror.com/apk/netflix-inc/cut-the-rope-daily/cut-the-rope-daily-1-12-1-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.12.0,ctrdaily/classic,https://www.apkmirror.com/apk/netflix-inc/cut-the-rope-daily/cut-the-rope-daily-1-12-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -1096,6 +1106,7 @@ Cut the Rope Holiday Gift,com.zeptolab.cuttheropexmas.google,ctrholiday/classic,
 ,v1.8.0 (android 14+ fix),ctrholiday/classic,https://theawesomeblue.github.io/ctrfiles/download/ctrhg/Cut%20The%20Rope%20Holiday%20Gift%20(v1.8.0)%20(SDK24%20+%20Wider%20Screen%20Support)%20(saulfabreg).apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.8.0,ctrholiday/classic,https://theawesomeblue.github.io/ctrfiles/download/ctrhg/Cut%20The%20Rope%20Holiday%20Gift%201.8.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://archive.org/download/cut-the-rope-holiday-gift-1.8.0/Cut%20The%20Rope%20Holiday%20Gift%201.8.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,ctrholiday/androidpremium180,https://cdn.candies.monster/apks/com.zeptolab.holiday.premium.tier/megacollection/1.8.0-13-49ae52f575a3.apk,,"armeabi, x86",28.00 MB,archive
 + Cut the Rope Holiday Gift,com.zeptolab.cuttheropexmas.amazon,ctrholiday/classic,amazon kids+,5
 ,v1.9.0,ctrholiday/classic,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Stuff/Holiday.Gift.Amazon.Kids.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 + Cut the Rope Holiday Gift,com.zeptolab.holiday.premium.tier,ctrholiday/androidv180,DRMed bemobi apps club (brazil),5,/assets/images/gameicons/ctrholiday/androidv180/raw.png
