@@ -5197,5 +5197,77 @@
     "packages": [
       "com.yodo1tier1.ctr2.TXWXYY"
     ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "archivecmcc200",
+    "raw": "/assets/images/gameicons/ctr2/archivecmcc200/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "4fc57a2fd7e94a269d808b563be0e68c06607bcf7758e6d1b702ffce34be0fec",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.0.0-1000-6bfc8f64fd01.apk",
+        "file": "res/drawable-xxhdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1tier1.ctr2.cmcc"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "archivecmcc210",
+    "raw": "/assets/images/gameicons/ctr2/archivecmcc210/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "9cf07e4a828974b8a7e8c2f6239d27e12a84d300f6388c533604f6b81e3f6496",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.1.0-2010-87da06a1a2ec.apk",
+        "file": "res/drawable-hdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1tier1.ctr2.cmcc"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "archivecmcc238",
+    "raw": "/assets/images/gameicons/ctr2/archivecmcc238/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "fca139775385b2e434d5132ad38de856a89bd7689c1f76bc3872f4938270ea72",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.3.8-3600-97f7e648dbd0.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1tier1.ctr2.cmcc"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "archivetelecom200",
+    "raw": "/assets/images/gameicons/ctr2/archivetelecom200/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "03b21563939d62bd42a166080482ea512be3c49e05993cc8552aaee43420807b",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/chinaarchive/2.0.0-1000-7d4a8c6b4613.apk",
+        "file": "res/drawable-xhdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1tier1.ctr2.telecom"
+    ]
   }
 ]

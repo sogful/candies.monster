@@ -697,6 +697,8 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 
 ,v2.2.0,ctr2/androidtelecom220,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.2.0-2021.apk,,armeabi,31.90 MB,archive
 ,v2.3.4,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.3.4-2021.apk,,"armeabi, armeabi-v7a, x86",35.95 MB,archive
+,v2.0.0,ctr2/archivetelecom200,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/chinaarchive/2.0.0-1000-7d4a8c6b4613.apk,,armeabi,24.63 MB,archive
+,v2.3.0,ctr2/androidtelecom220,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/chinaarchive/2.3.0-2030-a020bb9936dd.apk,,armeabi,35.08 MB,archive
 + Cut the Rope 2,com.zeptolab.ctr2.trial.tier.ad.fon.msdk,ctr2/androidv14,ad-fon trial (trimf signer),9,/assets/images/gameicons/ctr2/androidv14/raw.png
 
 ,v1.4.1,ctr2/androidv14,https://cdn.candies.monster/apks/com.zeptolab.ctr2.trial.tier.ad.fon.msdk/megacollection/1.4.1-834141-c1f89b220a13.apk,,"armeabi-v7a, x86",32.07 MB,archive
@@ -720,6 +722,13 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 ,v2.4.2.10,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.2.10-242910-9c739e337bfd.apk,,armeabi-v7a,39.23 MB,archive
 ,v2.4.2.6,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.2.6-24260-46d5cfa4b9f0.apk,,armeabi-v7a,38.59 MB,archive
 ,v2.4.6,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.XIAOMI_01/chinaarchive/2.4.6-245001-a138dc9595cc.apk,,"arm64-v8a, armeabi-v7a",121.70 MB,archive
++ Cut the Rope 2,com.yodo1tier1.ctr2.cmcc,ctr2/archivecmcc200,china mobile (cmcc),9,/assets/images/gameicons/ctr2/archivecmcc200/raw.png
+
+,v2.0.0,ctr2/archivecmcc200,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.0.0-1000-6bfc8f64fd01.apk,,armeabi,27.17 MB,archive
++ 割绳子2,com.yodo1tier1.ctr2.cmcc,ctr2/archivecmcc210,china mobile (signed with test keys),9,/assets/images/gameicons/ctr2/archivecmcc210/raw.png
+
+,v2.1.0,ctr2/archivecmcc210,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.1.0-2010-87da06a1a2ec.apk,,"armeabi, mips, x86",36.26 MB,archive
+,v2.3.8,ctr2/archivecmcc238,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.3.8-3600-97f7e648dbd0.apk,,armeabi,36.34 MB,archive
 Cut the Rope: Origins PTC,com.zeptolab.ctrorigins,ctr/modern,"this game had a lot of different iterations besides these versions, and ALL of them are miserable.",4,/assets/images/gameicons/ctr/androidv400/raw.png
 ,v0.27.0,ctr/modern,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-origins/cut-the-rope-origins-0-27-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v0.26.1,ctr/modern,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-origins/cut-the-rope-origins-0-26-1-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
