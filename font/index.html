@@ -611,34 +611,34 @@
                 <div class="configlines">
                     <div class="configline">
                         <button class="fontbutton active clickable" data-font="Good Dog">
-                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>GoodDog</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog Cool">
-                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>Cool</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog Bones">
-                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>Bones</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog New">
-                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>New</span>
                         </button>
                     </div>
 
                     <div class="configline">
                         <button class="preset clickable" data-preset="default">
-                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>Default</span>
                         </button>
                         <button class="preset clickable" data-preset="plain">
-                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>Plain</span>
                         </button>
                         <button class="preset clickable" data-preset="cyan">
-                            <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                            <img src="/assets/images/buttons/sbutton.webp" draggable="false">
                             <span>Cyan</span>
                         </button>
                     </div>
@@ -722,7 +722,7 @@
                     <input type="number" class="settinginput imagesize" value="1000" min="100" max="5000" step="100">
                 </div>
                 <a class="sbutton clickable downloadbutton">
-                    <img src="/assets/images/longbuttons/sbutton.webp" draggable="false">
+                    <img src="/assets/images/buttons/sbutton.webp" draggable="false">
                     <span>Download</span>
                 </a>
             </div>
@@ -839,7 +839,7 @@
         fontbuttons.forEach(btn => {
             if (!btn.querySelector("img")) {
                 const img = document.createElement("img")
-                img.src = "/assets/images/longbuttons/sbutton.webp"
+                img.src = "/assets/images/buttons/sbutton.webp"
                 img.draggable = false
                 btn.insertBefore(img, btn.firstChild)
                 const span = document.createElement("span")
@@ -1326,7 +1326,7 @@
                 } else {
                     const activesuffix = state.useactivebutton ? "active" : ""
                     const filename = `${variant}button${activesuffix}.png`
-                    buttonbg.src = `/assets/images/longbuttons/${filename}`
+                    buttonbg.src = `/assets/images/buttons/${filename}`
                 }
                 
                 buttonbg.style.display = "block"
@@ -1628,7 +1628,7 @@
             const buttonaspectratios = {}
             
             for (const variant of variants) {
-                const buttonpath = `/assets/images/longbuttons/${variant}button.png`
+                const buttonpath = `/assets/images/buttons/${variant}button.png`
                 try {
                     const img = new Image()
                     await new Promise((resolve, reject) => {
@@ -1662,7 +1662,7 @@
             await new Promise((resolve, reject) => {
                 img.onload = resolve
                 img.onerror = reject
-                img.src = `/assets/images/longbuttons/${filename}`
+                img.src = `/assets/images/buttons/${filename}`
             })
             if (state.buttoncolor) {
                 return await applyhueshift(img, state.buttoncolor)

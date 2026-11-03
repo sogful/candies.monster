@@ -452,7 +452,7 @@
 
             width: 120px; height: 50px;
 
-            background-image: url("/assets/images/longbuttons/sbutton.webp");
+            background-image: url("/assets/images/buttons/sbutton.webp");
             background-size: cover; background-position: center;
             background-repeat: no-repeat;
         }
@@ -666,8 +666,8 @@
         updatemusic();
 
         function swapper(el) {
-            function activate() {el.style.backgroundImage = "url('/assets/images/longbuttons/sbuttonactive.webp')"}
-            function deactivate() {el.style.backgroundImage = "url('/assets/images/longbuttons/sbutton.webp')"}
+            function activate() {el.style.backgroundImage = "url('/assets/images/buttons/sbuttonactive.webp')"}
+            function deactivate() {el.style.backgroundImage = "url('/assets/images/buttons/sbutton.webp')"}
             el.addEventListener("mousedown", activate); el.addEventListener("mouseup", deactivate);
             el.addEventListener("mouseleave", deactivate);
             el.addEventListener("touchstart", function(e){ activate(); e.preventDefault(); }, {passive: false});
