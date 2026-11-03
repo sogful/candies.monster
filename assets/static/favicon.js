@@ -71,7 +71,7 @@ function animate() {
 
 function getframes() {
     if (!metadata) {
-        metadata = fetch("/assets/images/icon.json")
+        metadata = fetch("/assets/images/candies/icon.json")
             .then(response => {
                 if (!response.ok) throw new Error("favicon frames unavailable");
                 return response.json();
@@ -119,7 +119,7 @@ function load() {
     if (document.hidden || loading) return;
     loading = true;
     getframes().catch(() => {resolveimage(null)});
-    if (!image.getAttribute("src")) image.src = "/assets/images/icon.webp";
+    if (!image.getAttribute("src")) image.src = "/assets/images/candies/icon.webp";
     else if (image.complete && image.naturalWidth) imagechanged();
 }
 

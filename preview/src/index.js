@@ -8,7 +8,7 @@ import {createsharing} from "./sharing.js";
     let favicons = []; let index = 0; const delay = 300;
     let sheetimg = null;
 
-    fetch("/assets/images/icon.json")
+    fetch("/assets/images/candies/icon.json")
         .then(response => response.json()).then(data => {
             spritejson = data.frames; sheetimg = new Image();
             sheetimg.onload = () => {
@@ -25,7 +25,7 @@ import {createsharing} from "./sharing.js";
                         0, 0, frame.frame.w, frame.frame.h
                     ); return canvas.toDataURL("image/png");
                 }); favicongif();
-            }; sheetimg.src = "/assets/images/icon.webp";
+            }; sheetimg.src = "/assets/images/candies/icon.webp";
         });
     function favicongif() {
         if (!sheetloaded || favicons.length === 0) {setTimeout(favicongif, 50); return}
