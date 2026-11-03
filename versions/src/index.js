@@ -1,5 +1,6 @@
 import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./load.js";
 import {loadversions} from "./versions.js";
+import {updatecounts} from "./counts.js";
 import "/assets/static/favicon.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -41,6 +42,7 @@ function platformfailure(platform, error) {
     platform.nodes = null;
     platform.stamp = null;
     platform.error = error;
+    updatecounts(platform.name, null);
     console.error(`Unable to load ${platform.url}`, error);
     if (platform === activeplatform) platformstatus(platform, true);
 }
@@ -52,6 +54,7 @@ function prepareplatform(platform) {
     platform.games = parsed.games.map(game => ({...game, iosstuff: platform.name === "ios"}));
     platform.games.sort((first, second) => second.importance - first.importance);
     platform.cache = parsed.versionscache;
+    updatecounts(platform.name, platform.cache);
     platform.text = null;
 }
 
@@ -109,6 +112,17 @@ function fetchplatform(platform) {
         platform.text = await response.text();
         platform.error = null;
         if (platform === activeplatform) mountplatform(platform);
+        else {
+            const prepare = () => {
+                try {
+                    prepareplatform(platform);
+                } catch (error) {
+                    platformfailure(platform, error);
+                }
+            };
+            if ("requestIdleCallback" in window) requestIdleCallback(prepare, {timeout: 1500});
+            else setTimeout(prepare, 0);
+        }
     })().catch(error => platformfailure(platform, error)).finally(() => {
         platform.promise = null;
     });
