@@ -4981,5 +4981,59 @@
     "packages": [
       "com.goncalo.omnomsmash"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidtencent237",
+    "raw": "/assets/images/gameicons/ctr/androidtencent237/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "898686c9ca34c1057e8c2e6040572ab606de785c1788a85caf497715b7545402",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.tencent.tmgp.CTRO/megacollection/2.3.7-237-dca521b63113.apk",
+        "file": "res/drawable-hdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.tencent.tmgp.CTRO"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidifree340",
+    "raw": "/assets/images/gameicons/ctr/androidifree340/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "35131d04f36439351ae166f394040105db65b22cb6e0d0d72a7c3095a2fec445",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/megacollection/3.4.0-1764155-9a1fcd67e767.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctror.subscr.tier"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidsubscription341",
+    "raw": "/assets/images/gameicons/ctr/androidsubscription341/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "35ffcbfe881bce608a718235ed82dd730cce1e68774ad0af34dd98fb7d192819",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/megacollection/3.4.1-1764156-5ed580cfad9e.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctror.subscr.tier"
+    ]
   }
 ]

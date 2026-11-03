@@ -413,6 +413,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,v2.2.1,ctr/androidgoldv234,https://www.mediafire.com/file/dfuw4x9hskvuj65/com.zeptolab.ctr.tryandbuy.svyaznoy.apk/file,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://archive.org/download/com.zeptolab.ctr.tryandbuy.svyaznoy_20261011/com.zeptolab.ctr.tryandbuy.svyaznoy.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr.tryandbuy.svyaznoy/2.2.1.zip,,"armeabi, x86",0.92 MB,symbols,exports
+,,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.tryandbuy.svyaznoy/megacollection/2.2.1-20-16d7ee3f0a47.apk,,"armeabi, x86",23.18 MB,archive
 + Cut the Rope HD Free,com.zeptolab.ctr.hd.lite.google,ctr/classic,,10
 ,v1.0 (android 14+ fix),ctr/classic,https://theawesomeblue.github.io/ctrfiles/download/ctr/extra/Cut%20the%20Rope%20HD%20Free%20(v1.0)%20(SDK24%20+%20Wider%20Screen%20Support)%20(saulfabreg).apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.0,ctr/classic,https://theawesomeblue.github.io/ctrfiles/download/ctr/extra/Cut%20the%20Rope%20HD%20Free%201.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -447,7 +448,9 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,v3.30.0,ctr/androidhdv3330,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/Cut.the.Rope.v3.30.0.Gameloft.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v3.15.1,ctr/androidv3151,https://theawesomeblue.github.io/ctrfiles/download/ctr/event/CutTheRope_v3.15.1_GameloftStore.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v3.4.1,ctr/androidv341,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/com.zeptolab.ctror.subscr.tier_3.4.1.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,ctr/androidsubscription341,https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/megacollection/3.4.1-1764156-5ed580cfad9e.apk,,"armeabi-v7a, x86",46.45 MB,archive
 ,v3.4.0,ctr/free,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/com.zeptolab.ctror.subscr.tier_3.4.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,ctr/androidifree340,https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/megacollection/3.4.0-1764155-9a1fcd67e767.apk,,"armeabi-v7a, x86",48.29 MB,archive
 ,v3.3.0,ctr/androidv330,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/Cut.the.Rope.Gameloft.3.3.0.Halloween.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 + Cut the Rope Free,com.zeptolab.ctr.ads.u.huawei,ctr/free,huawei (app gallery),10
 ,v3.66.5,ctr/free,https://appgallery.cloud.huawei.com/appdl/C112283361,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -476,6 +479,15 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 + Cut the Rope,com.zeptolab.ctror.subscr.tier,ctr/androidorange3300,orange jeux / gameloft,10,/assets/images/gameicons/ctr/androidorange3300/raw.png
 
 ,v3.30.0,ctr/androidorange3300,https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/orange/3.30.0-2354652.apk,,"arm64-v8a, armeabi-v7a, x86, x86_64",63.16 MB,archive
++ 割绳子增强版,com.tencent.tmgp.CTRO,ctr/androidtencent237,tencent (china),10,/assets/images/gameicons/ctr/androidtencent237/raw.png
+
+,v2.3.7,ctr/androidtencent237,https://cdn.candies.monster/apks/com.tencent.tmgp.CTRO/megacollection/2.3.7-237-dca521b63113.apk,,"armeabi, x86",26.55 MB,archive
++ Cut the Rope,com.zeptolab.ctr.paid,ctr/androidgoldv234,amazon appstore (AntiLVL repack),10,/assets/images/gameicons/ctr/androidgoldv234/raw.png
+
+,v2.0.3,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/megacollection/2.0.3-17-b5bc6633bae9.apk,,"armeabi, x86",24.82 MB,archive
++ Cut the Rope,com.zeptolab.ctr.trybuy.droidzoom,ctr/androidv100,droidzoom,10,/assets/images/gameicons/ctr/androidv100/raw.png
+
+,v1.3.7,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.trybuy.droidzoom/megacollection/1.3.7-12-537cad072467.apk,,armeabi,16.59 MB,archive
 Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/images/gameicons/ctr2/androidgallery/raw.png,/assets/images/gameicons/ctr2/modern/raw.png,/assets/images/gameicons/ctr2/christmas/raw.png,/assets/images/gameicons/ctr2/androidgallery3/raw.png,/assets/images/gameicons/ctr2/androidgallery4/raw.png,/assets/images/gameicons/ctr2/androidgallery5/raw.png,/assets/images/gameicons/ctr2/androidgallery6/raw.png,/assets/images/gameicons/ctr2/androidgallery7/raw.png,/assets/images/gameicons/ctr2/androidgallery8/raw.png,/assets/images/gameicons/ctr2/androidbackground/raw.png,/assets/images/gameicons/ctr2/androidbackground2/raw.png,/assets/images/gameicons/ctr2/androidforeground/raw.png,/assets/images/gameicons/ctr2/androidforeground2/raw.png
 ,v1.44.0,ctr2/classic,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-2/cut-the-rope-2-1-44-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.google/Cut the Rope 2_1.44.0_APKPure.apk,,arm64,56.08MB,,,,,,,,,,,,,,,,,,,,,,,
@@ -671,7 +683,7 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 
 ,v2.3.9.3,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1.ctr2.YODO1_01/2.3.9.3-23930.apk,,armeabi,44.29 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.YODO1_01/2.3.9.3.zip,,armeabi,13.31 MB,symbols,DWARF/SYMTAB
-+ 割绳子2,com.yodo1tier1.ctr2.telecom,ctr2/androidtelecom220,"chinese telecom (signed with test keys)",9,/assets/images/gameicons/ctr2/androidtelecom220/raw.png
++ 割绳子2,com.yodo1tier1.ctr2.telecom,ctr2/androidtelecom220,chinese telecom (signed with test keys),9,/assets/images/gameicons/ctr2/androidtelecom220/raw.png
 
 ,v2.2.0,ctr2/androidtelecom220,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.2.0-2021.apk,,armeabi,31.90 MB,archive
 ,v2.3.4,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.3.4-2021.apk,,"armeabi, armeabi-v7a, x86",35.95 MB,archive
@@ -1066,7 +1078,7 @@ Cut the Rope Holiday Gift,com.zeptolab.cuttheropexmas.google,ctrholiday/classic,
 ,v1.9.0,ctrholiday/classic,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Stuff/Holiday.Gift.Amazon.Kids.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 + Cut the Rope Holiday Gift,com.zeptolab.holiday.premium.tier,ctrholiday/androidv180,DRMed bemobi apps club (brazil),5,/assets/images/gameicons/ctrholiday/androidv180/raw.png
 ,v1.8.0,ctrholiday/androidv180,https://drive.google.com/file/d/1P_GruA1GxRhdb2eciuBC6EuxFr8NWYgk/view,
-Cut the Rope: Hungry for Fruit,,hungryforfruit/community,lost media,0
+Cut the Rope: Hungry for Fruit,,hungryforfruit/community,,0
 ,???,hungryforfruit/community,https://cdn.candies.monster/symbols/hungryforfruit/unknown.zip,,armeabi-v7a,0.53 MB,symbols,exports
 
 Cut the Rope: BLAST,com.skywalkgames.blastctr,blast/classic,,4,/assets/images/gameicons/blast/androidgallery/raw.png
