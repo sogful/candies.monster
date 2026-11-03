@@ -5368,5 +5368,23 @@
     "packages": [
       "com.zeptolab.ctrexperiments.hd.amazon.paid.ultimate"
     ]
+  },
+  {
+    "game": "marbleshooter",
+    "variant": "listing",
+    "raw": "/assets/images/gameicons/marbleshooter/listing/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "e20b187172d1c0739dfec0271c99ad905f8a61b5bb6dafb9dba10b995d1f9999",
+    "sources": [
+      {
+        "url": "https://image-eo.winudf.com/v2/image1/Y29tLnJlbmRlcmVkaWRlYXMub21ub21tYXJibGVtYXRjaF9pY29uXzE2MjEwMTk2NTdfMDk5/icon.png?w=512&fakeurl=1",
+        "page": "https://apkpure.net/om-nom-marble-shooter/com.renderedideas.omnommarblematch"
+      }
+    ],
+    "packages": [
+      "com.renderedideas.omnommarblematch"
+    ]
   }
 ]
