@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-    <title>What a peculiar beast...</title>
+    <title>what a peculiar beast...</title>
     <link rel="icon" type="image/png" href="/assets/images/favicon.png">
 
     <meta charset="utf-8">
@@ -75,6 +75,84 @@
             top: 0.3em !important; right: 0.3em !important;
         }
 
+        .archiveinfo {
+            position: fixed; bottom: 0.75em;
+            left: 0.75em; z-index: 100000000;
+        }
+        .infobutton {
+            display: flex; align-items: center;
+            justify-content: center; list-style: none;
+            width: 3em; height: 3em;
+            background: rgba(0,0,0,0.5); border-radius: 0.75em;
+        }
+        .infobutton::-webkit-details-marker {display: none}
+        .infobutton img {
+            width: 2.5em; height: 2.5em;
+        }
+        .infopopup {
+            position: absolute; bottom: 3.5em;
+            left: 0; box-sizing: border-box;
+            width: min(32rem, calc(100vw - 1.5rem));
+            max-height: calc(100dvh - 6rem); overflow-y: auto;
+            background: rgba(0,0,0,0.75); border-radius: 1em;
+            padding: 1em; color: #fff;
+            -webkit-text-stroke: 0.1em #000;
+            text-shadow: 0 0.1em 0 #000; paint-order: stroke fill;
+        }
+        .infoheading {
+            display: flex; align-items: center;
+            gap: 0.75em; margin-bottom: 0.5em;
+        }
+        .infoheading img {
+            width: 5em; height: 5em;
+            object-fit: contain; flex-shrink: 0;
+            background-image: url("/assets/images/buttons/button.svg");
+            background-size: contain; background-repeat: no-repeat;
+        }
+        .infoheading h1 {
+            margin: 0; font-size: clamp(2.25rem, 7vw, 2.75rem);
+            line-height: 1; font-weight: normal;
+        }
+        .infopopup p {
+            max-height: none; overflow: visible;
+        }
+        .archivedescription {
+            font-size: 1.3em; margin-bottom: 0.75em;
+        }
+        .infopopup .tiny {
+            position: static; width: auto;
+            text-align: left; font-size: 0.85em;
+            line-height: 1.15; margin-bottom: 1em;
+        }
+        .archivebutton {
+            display: inline-flex; position: relative;
+            max-width: 100%; vertical-align: middle;
+            align-items: center; justify-content: center;
+            color: #fff; font-size: 1.15rem;
+            padding: 0.35em 0.85em; box-sizing: border-box;
+            background: url("/assets/images/longbuttons/lbutton.webp") center / 100% 100% no-repeat;
+        }
+        .archivebutton span {
+            display: inline-flex; align-items: center;
+            justify-content: center; gap: 0.3em;
+            white-space: nowrap; pointer-events: none;
+        }
+        .archivebutton .joinicon {
+            width: 1.6em; height: 1.6em;
+            object-fit: contain;
+        }
+        .archivebutton:active {
+            background-image: url("/assets/images/longbuttons/lbuttonactive.webp");
+        }
+        .infobutton, .archivebutton, .infobutton * {
+            cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+        }
+
+        @media (max-width: 650px) {
+            .gameopen .archiveinfo {bottom: 4.25em}
+            .gameopen .infopopup {max-height: calc(100dvh - 9.5rem)}
+        }
+
         /*//////////////////////////////////////////////////////////////////////*/
 
         .scrollnav {
@@ -94,6 +172,7 @@
         }
         .scrollnav.right {right: 0.5em}
         .scrollnav.left {left: 0.5em}
+        .gameopen .scrollnav {display: none !important}
 
         /*//////////////////////////////////////////////////////////////////////*/
 
@@ -140,6 +219,9 @@
             overflow-x: auto; overflow-y: hidden;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+        }
+        @media (max-width: 650px) {
+            .container {overflow-x: hidden; touch-action: pan-y pinch-zoom}
         }
 
         .gamepanels {
@@ -240,7 +322,7 @@
 
         .gameinfo {
             color: white;
-            margin-bottom: 1em;
+            margin-bottom: 0.5em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
@@ -259,7 +341,6 @@
         .gameinfo .description {
             font-size: 1em;
             color: white;
-            margin-top: 0.5em;
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -309,7 +390,7 @@
             overflow: hidden; width: 0;
         }
         .gameinfo .packageicons {
-            padding-top: 0.75em;
+            padding-top: 0.25em;
             display: flex; flex-wrap: wrap;
             align-items: center; gap: 2px;
         }
@@ -438,10 +519,25 @@
         <span>Submit!</span>
     </a-->
 
-    <p class="tiny">
-        None of the game files are stored on this domain. Whether the smaller developers shown actually have rights to Om Nom or not is purely speculative!<br>
-        Some apps might be slightly modified, if the modifications are known they'll be mentioned in the version number or game description.
-    </p>
+    <details class="archiveinfo">
+        <summary class="infobutton clickable" aria-label="About the apk archive">
+            <img src="/assets/images/info.png" alt="" draggable="false">
+        </summary>
+        <section class="infopopup" aria-label="About the apk archive">
+            <header class="infoheading">
+                <img src="/assets/images/buttons/versions.webp" alt="" draggable="false">
+                <h1>apk archive</h1>
+            </header>
+            <p class="archivedescription">Browse Android and iOS versions of Cut the Rope and other Om Nom games.</p>
+            <p class="tiny">
+                None of the game files are stored on this domain. Whether the smaller developers shown actually have rights to Om Nom or not is purely speculative!<br>
+                Some apps might be slightly modified, if the modifications are known they'll be mentioned in the version number or game description.
+            </p>
+            <a class="archivebutton clickable" href="https://example.com" target="_blank" rel="noopener">
+                <span><img class="joinicon" src="/assets/images/omnom.webp" alt="" draggable="false">Join Cut the Rope Home!</span>
+            </a>
+        </section>
+    </details>
     <p class="tiny oldstuff"><a href="old" im old!>Old version (CTR only)</a></p>
 
     <div class="scrollnav right" id="navios" style="cursor:pointer">
@@ -454,6 +550,7 @@
     </div>
 
     <script type="module" src="src/index.js"></script>
+    <script type="module" src="src/info.js"></script>
 
 </body>
 </html>
