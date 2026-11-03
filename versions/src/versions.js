@@ -52,20 +52,20 @@ function renderdownloadbutton(download) {
         const label = downloadattribute(download.label || "debug symbols");
         const details = downloadattribute([download.label || "debug symbols", download.arch, download.size].filter(Boolean).join(" | "));
         return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" aria-label="symbols: ${details}" title="${details}">
-            <img src="/assets/images/dlbuttons/symbols.png" alt="" draggable="false" loading="lazy" decoding="async">
+            <img src="/assets/images/downloadbuttons/symbols.png" alt="" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div>symbols</div><div>${label}</div></div>
         </a>`;
     }
     if (download.arch && download.size) {
         return `<a href="${download.url}" target="_blank" class="clickable cdnbutton">
-            <img src="/assets/images/dlbuttons/cdn.png" draggable="false" loading="lazy" decoding="async">
+            <img src="/assets/images/downloadbuttons/cdn.png" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div>${download.arch}</div><div>${download.size}</div></div>
         </a>`;
     }
     const button = download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.png";
     const label = download.label ? ` title="${downloadattribute(download.label)}" aria-label="${downloadattribute(download.label)}"` : "";
     return `<a href="${download.url}" target="_blank" class="clickable"${label}>
-        <img src="/assets/images/dlbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
+        <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
     </a>`;
 }
 
