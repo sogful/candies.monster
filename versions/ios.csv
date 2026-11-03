@@ -335,8 +335,9 @@ Cut the Rope,com.zeptolab.ctr2,ctr2/classic,cut the rope 2 paid,10,/assets/image
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.6.3.zip,,"arm64, armv7",8.65 MB,symbols,(stabs)
 + Cut the Rope,com.zeptolab.ctr2.f2p,ctr2/classic,cut the rope 2 free,9
 ,v1.19.3,,https://archive.org/download/cut-the-rope-2-v-1.19.3-hs/Cut%20The%20Rope%202%20v1.19.3%20HS.ipa,
-+ 割绳子2,com.yodo1.cuttherope2,ctr2/ioschinav1521,chinese release (yodo1),10,/assets/images/gameicons/ctr2/ioschinav1521/raw.png
-,v1.5.21,ctr2/ioschinav1521,https://mega.nz/file/LQ0gXbpA#vEnS42aL63Qqf-So2IH1SodOBMwnMzTOba3bRm-yKuw,
++ 割绳子2,com.yodo1.cuttherope2,ctr2/ioschinav1521,chinese release (yodo1),10,/assets/images/gameicons/ctr2/ioschinav1521/raw.jpg
+,v1.5.21,ctr2/ioschinav1521,https://mega.nz/file/LQ0gXbpA#vEnS42aL63Qqf-So2IH1SodOBMwnMzTOba3bRm-yKuw,"iOS 13.0+, build 1",arm64,191.80 MB,,
+,,,https://apps.apple.com/cn/app/%E5%89%B2%E7%BB%B3%E5%AD%902/id747314884?uo=4
 ,v1.3.0,ctr2/ioschinav130,https://www.mediafire.com/file/tvdqlu9l7l685kf/com.yodo1.cuttherope2_811147316.ipa/file,,armv7,113.55 MB
 Cut the Rope,com.zeptolab.timetravel,ctrtt/classic,time travel,10
 ,v1.15.0,,https://archive.org/download/Cut_the_Rope_1.15.0_ios_12.0/Cut_the_Rope_1.15.0_ios_12.0.ipa,

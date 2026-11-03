@@ -2529,12 +2529,21 @@
   {
     "game": "ctr2",
     "variant": "ioschinav1521",
-    "raw": "/assets/images/gameicons/ctr2/ioschinav1521/raw.png",
-    "width": 152,
-    "height": 152,
-    "format": "png",
-    "sha256": "b228a2aab8c5815d056963a3dc670cce1f5fc85127ef762e821b9a5c526bcd06",
-    "sources": [],
+    "raw": "/assets/images/gameicons/ctr2/ioschinav1521/raw.jpg",
+    "width": 512,
+    "height": 512,
+    "format": "jpeg",
+    "sha256": "2881c7ca939d123d9934efb555a0788e546a265ae4d68fc673fb04f11c06c9ef",
+    "sources": [
+      {
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/89/5f/72/895f7270-e1dd-fb06-55ab-e921d753a87f/AppIconBlue-1x_U007emarketing-0-10-0-85-220-0.png/512x512bb.jpg",
+        "version": "1.5.21"
+      },
+      {
+        "url": "https://mega.nz/file/LQ0gXbpA#vEnS42aL63Qqf-So2IH1SodOBMwnMzTOba3bRm-yKuw",
+        "file": "Payload/ctr2.app/AppIconBlue76x76@2x~ipad.png"
+      }
+    ],
     "packages": [
       "com.yodo1.cuttherope2"
     ]
