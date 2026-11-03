@@ -5323,5 +5323,41 @@
     "packages": [
       "com.zeptolab.ctrm.free.NonCMCC"
     ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "homiesunderground145",
+    "raw": "/assets/images/gameicons/ctrtt/homiesunderground145/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "96331b3d0680b4ec66d8ec9fab51e449aab732c74d6cbcc3ddf391747bf50857",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.amazon.ultimate/homiesarchive/1.4.5-834145-02e471564e2a.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel.paid.amazon.ultimate"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "homiesunderground179",
+    "raw": "/assets/images/gameicons/ctrexp/homiesunderground179/raw.png",
+    "width": 675,
+    "height": 675,
+    "format": "png",
+    "sha256": "ad0d522215afc3241339e073520b25e97df41efadf9ca1a7e8dfc253dd5a1a4f",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.hd.amazon.paid.ultimate/homiesarchive/1.7.9-1012678-ae7c6e914cf6.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperiments.hd.amazon.paid.ultimate"
+    ]
   }
 ]
