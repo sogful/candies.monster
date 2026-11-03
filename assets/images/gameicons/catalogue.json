@@ -5269,5 +5269,59 @@
     "packages": [
       "com.yodo1tier1.ctr2.telecom"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "archivetencent211",
+    "raw": "/assets/images/gameicons/ctr/archivetencent211/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "b4902533a4b544be06925ed6d425d651d2843e8cceb55c3008001b4e7eec4336",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1.ctr_original.TXYYB_01/chinaarchive/2.1.1-2013-189b57d630dd.apk",
+        "file": "res/drawable-xhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.ctr_original.TXYYB_01"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "archivesd6243",
+    "raw": "/assets/images/gameicons/ctrtt/archivesd6243/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "39cfa684be2cbb3a10d368f6ea9acaccd4a383d4ee5d1d45190c5bc2d28f8f63",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1.SD006.timetravel/chinaarchive/2.4.3-1300-9b40e76bc842.apk",
+        "file": "res/drawable-xxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.SD006.timetravel"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "archivetencent192",
+    "raw": "/assets/images/gameicons/ctrmagic/archivetencent192/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "a099db45293acb4fdee8461a05a3a3d215297182d585937caebe86ddbd3acea0",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.NonCMCC/chinaarchive/1.9.2-36-ce1239edc8f5.apk",
+        "file": "res/drawable-xxxhdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrm.free.NonCMCC"
+    ]
   }
 ]
