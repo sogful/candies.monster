@@ -5125,5 +5125,23 @@
     "packages": [
       "com.rainman.cuttherope"
     ]
+  },
+  {
+    "game": "candytrail",
+    "variant": "launch",
+    "raw": "/assets/images/gameicons/candytrail/launch/raw.png",
+    "width": 512,
+    "height": 512,
+    "format": "png",
+    "sha256": "515f8ded30e40dcd29e2529bc868a5558b9f9a8962ce4fde3f6f06933f5cf523",
+    "sources": [
+      {
+        "url": "https://play.google.com/store/apps/details?id=com.zeptolab.ctr.candytrail",
+        "image": "https://play-lh.googleusercontent.com/avpkAmfQ_ka_WBz1cUYlOqdG_KZq-KaBfAkvt1Fro7GAjbx6XyLbu0NPnwiGb8tSEzenzLVotdvuG7ZN4i2W=s512"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr.candytrail"
+    ]
   }
 ]
