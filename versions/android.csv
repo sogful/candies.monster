@@ -403,12 +403,30 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 + Cut the Rope,com.zeptolab.ctr.paid,ctr/free,gold (ad free),10
 ,v3.52.1,ctr/free,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/Cut.the.Rope.GOLD_3.52.1.xapk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v3.7.0,ctr/free,https://theawesomeblue.github.io/ctrfiles/download/ctr/Cut_the_Rope_GOLD_v3.7.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
-,v2.2,ctr/classic,https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid,,,,,,,,,,,,,,,,,,,,,,,,,,
-,v2.0.1,ctr/classic,https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid,,,,,,,,,,,,,,,,,,,,,,,,,,
-,v1.4.4,ctr/classic,https://www.apkbe.com/down/com.zeptolab.ctr.paid_1.4.4_paid,,,,,,,,,,,,,,,,,,,,,,,,,,
-,v1.1.1,ctr/classic,https://archive.org/download/cut-the-rope-apk-1.1.1/com.zeptolab.ctr.paid_1.1.1_paid-www.apkhere.com.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v2.2,ctr/androidgoldv234,https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.2-19-3f6a0169c63a.apk,,"armeabi, x86",23.33 MB,archive
+,v2.0.1,ctr/androidgoldv234,https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.0.1-15-566ab82681f4.apk,,"armeabi, x86",23.81 MB,archive
+,v1.4.4,ctr/androidv100,https://www.apkbe.com/down/com.zeptolab.ctr.paid_1.4.4_paid,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.4.4-11-9e19af821abf.apk,,armeabi,21.89 MB,archive
+,v1.1.1,ctr/androidv100,https://archive.org/download/cut-the-rope-apk-1.1.1/com.zeptolab.ctr.paid_1.1.1_paid-www.apkhere.com.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://www.apkbe.com/down/com.zeptolab.ctr.paid_1.1.1_paid,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.1.1-3-b95177f0e9bd.apk,,armeabi,13.90 MB,archive
 ,v2.3.4,ctr/androidgoldv234,https://archive.org/download/Cut_the_Rope_GOLD_2_3_4_android_2_2/Cut%2Bthe%2BRope%2Bv2.3.4.apk,
+,,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.3.4-30-89bb4e055347.apk,,"armeabi, x86",25.29 MB,archive
+,v1.0.0,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.0.0-1-acab250d4e9c.apk,,armeabi,14.41 MB,archive
+,v1.1,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.1-2-ccff878c2e9a.apk,,armeabi,13.90 MB,archive
+,v1.2,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.2-4-7d0a04f664cd.apk,,armeabi,16.89 MB,archive
+,v1.3,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.3-5-23862bd6c4cd.apk,,armeabi,17.52 MB,archive
+,v1.3.1,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.3.1-6-98cfe441ca70.apk,,armeabi,17.87 MB,archive
+,v1.3.2,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.3.2-7-b743cecfa30b.apk,,armeabi,17.58 MB,archive
+,v1.4,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.4-8-abf27f3b3691.apk,,armeabi,18.90 MB,archive
+,v2.0.3,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.0.3-17-2961e0683875.apk,,"armeabi, x86",24.70 MB,archive
+,v2.1,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.1-18-66bce8f75940.apk,,"armeabi, x86",25.20 MB,archive
+,v2.2.1,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.2.1-20-2731d00c4d95.apk,,"armeabi, x86",22.98 MB,archive
+,v2.3,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.3-22-d93eb2d110ff.apk,,"armeabi, x86",26.27 MB,archive
+,v2.3.1,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.3.1-23-7db34c2119df.apk,,"armeabi, x86",25.12 MB,archive
+,v2.3.2,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.3.2-24-d3a8441d2836.apk,,"armeabi, x86",24.59 MB,archive
 + Cut the Rope,com.zeptolab.ctr.tryandbuy.svyaznoy,ctr/free,,10
 ,v2.2.1,ctr/androidgoldv234,https://www.mediafire.com/file/dfuw4x9hskvuj65/com.zeptolab.ctr.tryandbuy.svyaznoy.apk/file,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://archive.org/download/com.zeptolab.ctr.tryandbuy.svyaznoy_20261011/com.zeptolab.ctr.tryandbuy.svyaznoy.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
