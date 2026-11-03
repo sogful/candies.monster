@@ -5107,5 +5107,23 @@
     "packages": [
       "com.zeptolab.timetravel.free.tier3"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidrainman400",
+    "raw": "/assets/images/gameicons/ctr/androidrainman400/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "b31c4eba4ad442d12c548f7ded516424be8fb6bcc1e28b66c346c4ccec1ef248",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.rainman.cuttherope/megacollection/4.0.0-4-b0b5ffcda75a.apk",
+        "file": "res/drawable-hdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.rainman.cuttherope"
+    ]
   }
 ]
