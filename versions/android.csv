@@ -907,10 +907,10 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6
 
 ,v1.4.4,ctrtt/androidgoldv142,https://cdn.candies.monster/apks/com.zeptolab.ctrtt.subscr.tier/megacollection/1.4.4-812144-78d309bb3610.apk,,"armeabi, armeabi-v7a, x86",42.25 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctrtt.subscr.tier/megacollection/1.4.4.zip,,"armeabi, armeabi-v7a, x86",3.45 MB,symbols,(exports)
-+ 割绳子之时间旅行,com.zeptolab.timetravel.free.google.xc,ctrtt/androidxc171,chinese release (xc; non-ZeptoLab signer),6,/assets/images/gameicons/ctrtt/androidxc171/raw.png
++ 割绳子之时间旅行,com.zeptolab.timetravel.free.google.xc,ctrtt/androidxc171,xc chinese release (unofficial signer),6,/assets/images/gameicons/ctrtt/androidxc171/raw.png
 
 ,v1.7.1,ctrtt/androidxc171,https://cdn.candies.monster/apks/com.zeptolab.timetravel.free.google.xc/megacollection/1.7.1-1766924-96155320cf80.apk,,"armeabi-v7a, x86",46.83 MB,archive
-+ 割绳子玩穿越,com.tcxx.cut.gsz,ctrtt/androidv111,chinese release (3m studio; archive build),6,/assets/images/gameicons/ctrtt/androidv111/raw.png
++ 割绳子玩穿越,com.tcxx.cut.gsz,ctrtt/androidv111,chinese release (3m studio),6,/assets/images/gameicons/ctrtt/androidv111/raw.png
 
 ,v1.1.1,ctrtt/androidv111,https://cdn.candies.monster/apks/com.tcxx.cut.gsz/chinaarchive/1.1.1-1110-82ad1d60aaa3.apk,,"arm64-v8a, armeabi-v7a",77.41 MB,archive
 + 割绳子玩穿越,com.yodo1.SD006.timetravel,ctrtt/archivesd6243,chinese release (SD006),6,/assets/images/gameicons/ctrtt/archivesd6243/raw.png
@@ -921,7 +921,7 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6
 
 ,v2.4.3,ctrtt/archivesd6243,https://cdn.candies.monster/apks/com.yodo1tier1.SD999.timetravel/chinaarchive/2.4.3-1300-6590c32e78a6.apk,,armeabi,48.17 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.yodo1tier1.SD999.timetravel/chinaarchive/2.4.3.zip,,armeabi,1.14 MB,symbols,(exports)
-+ 割绳子玩穿越,com.yodo1tier1.YY002.timetravel,ctrtt/androidifree102,chinese release (YY002; signed with test keys),6,/assets/images/gameicons/ctrtt/androidifree102/raw.png
++ 割绳子玩穿越,com.yodo1tier1.YY002.timetravel,ctrtt/androidifree102,YY002 chinese release (signed with test keys),6,/assets/images/gameicons/ctrtt/androidifree102/raw.png
 
 ,v2.4.2,ctrtt/androidifree102,https://cdn.candies.monster/apks/com.yodo1tier1.YY002.timetravel/chinaarchive/2.4.2-1145-7fa289f07e5e.apk,,"arm64-v8a, armeabi, armeabi-v7a, mips, x86",42.31 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.yodo1tier1.YY002.timetravel/chinaarchive/2.4.2.zip,,armeabi,1.14 MB,symbols,(exports)
@@ -1937,7 +1937,7 @@ Cut the Rope Daily,com.zeptolab.ctrdaily,ctrdaily/classic,,0
 ,v1.9.0,ctrdaily/classic,https://cdn.candies.monster/leaks/Cut the Rope Daily v1.9.0 (1).apk,,"arm64, arm32",259.34MB,,,,,,,,,,,,,,,,,,,,,,,
 Om Nom,com.zeptolab.omnombooks.amazon.ftu,books/androidamazonv10,play & learn with om nom for amazon kids+,3,/assets/images/gameicons/books/androidamazonv10/raw.png
 ,v1.0,books/androidamazonv10,https://www.mediafire.com/file/l4vjapd8ws6yulr/com.zeptolab.omnombooks.amazon.ftu_1.0.apk/file,
-Candy Trail,com.zeptolab.ctr.candytrail,candytrail/launch,soft launch,6,/assets/images/gameicons/candytrail/launch/raw.png
+Candy Trail,com.zeptolab.ctr.candytrail,candytrail/launch,soft launch,2,/assets/images/gameicons/candytrail/launch/raw.png
 ,v0.1.0,candytrail/launch,https://play.google.com/store/apps/details?id=com.zeptolab.ctr.candytrail
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctr.candytrail/0.1.0-45-arm64.xapk,,arm64-v8a,144.41 MB,archive,"XAPK - Android 12L+, base and ARM64 split"
 

@@ -145,8 +145,8 @@
             white-space: nowrap; pointer-events: none;
         }
         .archivebutton .joinicon {
-            width: 1.6em; height: 1.6em;
-            object-fit: contain;
+            width: 1.25em; height: 1.25em;
+            object-fit: contain; border-radius: 5px;
         }
         .archivebutton:active {
             background-image: url("/assets/images/buttons/lbuttonactive.webp");
@@ -532,26 +532,23 @@
         </summary>
         <section class="infopopup" aria-label="About the apk archive">
             <header class="infoheading">
-                <img src="/assets/images/pageicons/versions.webp" alt="" draggable="false">
+                <img src="/assets/images/pageicons/versions.webp" draggable="false">
                 <div class="infocopy">
                     <h1>app archive</h1>
                     <p class="archivedescription">download versions of om nom games</p>
                 </div>
             </header>
-            <p>DESCRIPTION LALALALA IM SO AHPPY
-                <span class="archivecounts" aria-live="polite">
-                    iOS versions with links: <span class="ioscount">...</span>,
-                    Android versions with links: <span class="androidcount">...</span>,
-                    symbols: <span class="symbolcount">...</span>,
-                    versions without links: <span class="missingcount">...</span>.
-                </span>
-            </p>
+            there are currently <i><span class="androidcount">...</span></i> android versions and <i><span class="ioscount">...</span></i> ios versions available! <br>
+            this collection also contains <span class="symbolcount">...</span> debug symbols, though most aren't complete enough to make reverse engineering easier.
+            versions without links: <span class="missingcount">...</span>.
+
+            none of the game files are stored on this domain. Whether the smaller developers shown actually have rights to Om Nom or not is purely speculative!<br><br>
+            some apps might be slightly modified, if the modifications are known they'll be mentioned in the version number or game description.
             <p class="tiny">
-                None of the game files are stored on this domain. Whether the smaller developers shown actually have rights to Om Nom or not is purely speculative!<br>
-                Some apps might be slightly modified, if the modifications are known they'll be mentioned in the version number or game description.
+                
             </p>
             <a class="archivebutton clickable" href="https://example.com" target="_blank" rel="noopener">
-                <span><img class="joinicon" src="/assets/images/omnom.webp" alt="" draggable="false">Join Cut the Rope Home!</span>
+                <span><img class="joinicon" src="https://cdn.discordapp.com/icons/1112531659078762617/a_76dd36a5ef79da45a0663306c812d61b.webp?animated=true&size=32" draggable="false">Join Cut the Rope Home!</span>
             </a>
         </section>
     </details>
