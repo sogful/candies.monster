@@ -28,17 +28,14 @@ function placeicon(placed, size, width, stretch, gap) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function packcircle(games, width) {
-    if (!games.length) return {positions: [], height: 0};
-    width = Math.max(1, width);
-    const gap = 6;
-    const sizes = games.map(game => Math.max(24, 50 + (game.importance - 3) * 5.7));
-    const scale = Math.min(1, width / Math.max(...sizes));
-    const area = sizes.reduce((total, size) => total + (size * scale + gap) ** 2, 0);
+function packicons(sizes, width, height, gap) {
+    const area = sizes.reduce((total, size) => total + (size + gap) ** 2, 0);
     const diameter = Math.sqrt(area * 4 / (Math.PI * 0.85));
-    const stretch = Math.max(1, (diameter / width) ** 2);
+    const ellipsewidth = Math.min(width, diameter);
+    const ellipseheight = Math.min(height, diameter ** 2 / ellipsewidth);
+    const stretch = ellipseheight / ellipsewidth;
     const positions = [];
-    for (const size of sizes) positions.push(placeicon(positions, size * scale, width, stretch, gap));
+    for (const size of sizes) positions.push(placeicon(positions, size, width, stretch, gap));
     const left = Math.min(...positions.map(position => position.left));
     const right = Math.max(...positions.map(position => position.left + position.size));
     const top = Math.min(...positions.map(position => position.top));
@@ -48,4 +45,23 @@ export function packcircle(games, width) {
         positions: positions.map(position => ({left: position.left + offset, top: position.top - top, size: position.size})),
         height: Math.ceil(bottom - top)
     };
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function packcircle(games, width, height = Infinity) {
+    if (!games.length) return {positions: [], height: 0};
+    width = Math.max(1, width);
+    height = Math.max(1, height);
+    const gap = Math.min(6, Math.sqrt(width * height / (games.length * 4)));
+    const sizes = games.map(game => Math.max(24, 50 + (game.importance - 3) * 5.7));
+    const area = sizes.reduce((total, size) => total + (size + gap) ** 2, 0);
+    let scale = Math.min(1, width / Math.max(...sizes), Math.sqrt(width * height * Math.PI * 0.85 / (4 * area)));
+    let packed;
+    for (let attempt = 0; attempt < 12; attempt++) {
+        packed = packicons(sizes.map(size => size * scale), width, height, gap);
+        if (packed.height <= height) break;
+        scale *= Math.min(0.94, Math.sqrt(height / packed.height) * 0.97);
+    }
+    return packed;
 }

@@ -152,3 +152,14 @@
 }
 
 .versioncontent.routeflash {outline-offset: 0}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.archivepage {
+    height: 100dvh; min-height: 100dvh;
+    overflow: hidden !important;
+}
+
+.container, .gamepanels {min-height: 100dvh}
+
+.container {height: 100dvh}

@@ -19,6 +19,7 @@ let currentloadid = 0;
 let resizeframe = 0;
 let navigation = 0;
 
+document.body.classList.add("archivepage");
 document.querySelector(".loading")?.remove();
 
 function platformstatus(platform, failed = false) {
@@ -149,7 +150,9 @@ function layoutplatform(platform) {
     const mobile = window.innerWidth <= 650;
     const bounds = platform.circle.getBoundingClientRect();
     const width = bounds.width || Math.min(window.innerWidth * 0.9, 800);
-    const stamp = `${width},${mobile}`;
+    const style = getComputedStyle(platform.screen);
+    const height = Math.max(1, platform.screen.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom));
+    const stamp = `${width},${height},${mobile}`;
     if (platform.stamp === stamp) return;
     platform.stamp = stamp;
     const nodes = [...platform.nodes];
@@ -167,7 +170,7 @@ function layoutplatform(platform) {
         return;
     }
     */
-    const packed = packcircle(nodes.map(node => elements.get(node)), width);
+    const packed = packcircle(nodes.map(node => elements.get(node)), width, height);
     platform.circle.style.setProperty("--circleheight", `${packed.height}px`);
     nodes.forEach((node, index) => {
         const position = packed.positions[index];
