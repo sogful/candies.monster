@@ -52,15 +52,21 @@ function downloadsize(value) {
     return match ? `${(Math.round(Number(match[1]) * 10) / 10).toFixed(1)}mb` : value;
 }
 
+function downloadarch(value) {
+    const architectures = new Set(String(value || "").toLowerCase().split(/[,;\s/]+/));
+    return ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"].every(arch => architectures.has(arch)) ? "universal" : value;
+}
+
 function renderdownloadbutton(download, version) {
     const note = Array.from(new Set([download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))).join("; ");
     const annotation = note ? `<div class="downloadnote">${downloadattribute(note)}</div>` : "";
     const size = downloadsize(download.size);
+    const arch = downloadarch(download.arch);
     const button = download.kind === "symbols" ? "symbols.webp" : download.arch && download.size ? "cdn.webp" :
         download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.webp";
     const details = downloadattribute([
         version, download.url, download.kind === "symbols" ? download.label || "debug symbols" : "",
-        download.arch, size, note,
+        arch, size, note,
         button === "other.webp" ? "⚠️ this version is from an unpopular source" : ""
     ].filter(Boolean).join("\n"));
     const attributes = `href="${downloadattribute(download.url)}" target="_blank" rel="noopener" title="${details}" aria-label="${details}"`;
@@ -74,7 +80,7 @@ function renderdownloadbutton(download, version) {
     if (download.arch && download.size) {
         return `<a ${attributes} class="clickable cdnbutton">
             <img src="/assets/images/downloadbuttons/cdn.webp" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext"><div class="downloadmeta">${downloadattribute(download.arch)}</div><div class="downloadmeta">${downloadattribute(size)}</div>${annotation}</div>
+            <div class="cdntext"><div class="downloadmeta">${downloadattribute(arch)}</div><div class="downloadmeta">${downloadattribute(size)}</div>${annotation}</div>
         </a>`;
     }
     if (note) {

@@ -83,3 +83,11 @@
     top: 2.5em; right: 0;
     bottom: auto; left: auto;
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.gamecircle .gameicon, .gamecircle .gameicon *,
+.scrollnav:hover, .scrollnav:hover *,
+.backbutton:hover, .backbutton:hover * {
+    cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+}
