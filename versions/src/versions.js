@@ -47,34 +47,43 @@ function downloadattribute(value) {
     return String(value || "").replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
-function renderdownloadbutton(download) {
+function downloadsize(value) {
+    const match = String(value || "").trim().match(/^(\d+(?:\.\d+)?)\s*mb$/i);
+    return match ? `${(Math.round(Number(match[1]) * 10) / 10).toFixed(1)}mb` : value;
+}
+
+function renderdownloadbutton(download, version) {
     const note = Array.from(new Set([download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))).join("; ");
     const annotation = note ? `<div class="downloadnote">${downloadattribute(note)}</div>` : "";
+    const size = downloadsize(download.size);
+    const button = download.kind === "symbols" ? "symbols.png" : download.arch && download.size ? "cdn.png" :
+        download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.png";
+    const details = downloadattribute([
+        version, download.url, download.kind === "symbols" ? download.label || "debug symbols" : "",
+        download.arch, size, note,
+        button === "other.png" ? "⚠️ this version is from an unpopular source" : ""
+    ].filter(Boolean).join("\n"));
+    const attributes = `href="${downloadattribute(download.url)}" target="_blank" rel="noopener" title="${details}" aria-label="${details}"`;
     if (download.kind === "symbols") {
         const label = downloadattribute(download.label || "debug symbols");
-        const details = downloadattribute([download.label || "debug symbols", download.arch, download.size, note].filter(Boolean).join(" | "));
-        return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" aria-label="symbols: ${details}" title="${details}">
+        return `<a ${attributes} class="clickable cdnbutton">
             <img src="/assets/images/downloadbuttons/symbols.png" alt="" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div>symbols</div><div>${label}</div>${annotation}</div>
         </a>`;
     }
     if (download.arch && download.size) {
-        const details = downloadattribute([download.arch, download.size, note].filter(Boolean).join(" | "));
-        return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" title="${details}" aria-label="${details}">
+        return `<a ${attributes} class="clickable cdnbutton">
             <img src="/assets/images/downloadbuttons/cdn.png" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext"><div>${download.arch}</div><div>${download.size}</div>${annotation}</div>
+            <div class="cdntext"><div class="downloadmeta">${downloadattribute(download.arch)}</div><div class="downloadmeta">${downloadattribute(size)}</div>${annotation}</div>
         </a>`;
     }
-    const button = download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.png";
     if (note) {
-        const details = downloadattribute(note);
-        return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" title="${details}" aria-label="${downloadattribute(button.replace(/\.[^.]+$/, ""))}: ${details}">
+        return `<a ${attributes} class="clickable cdnbutton">
             <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext">${annotation}</div>
         </a>`;
     }
-    const label = download.label ? ` title="${downloadattribute(download.label)}" aria-label="${downloadattribute(download.label)}"` : "";
-    return `<a href="${download.url}" target="_blank" class="clickable"${label}>
+    return `<a ${attributes} class="clickable">
         <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
     </a>`;
 }
@@ -210,7 +219,7 @@ function versionpanel(version, fallback, legacy) {
         <div class="versioninfo">
             <div class="version">${version.version}</div>
             ${version.details ? `<div class="details">${version.details}</div>` : ""}
-            <div class="versionbuttons">${version.downloads.map(renderdownloadbutton).join("")}</div>
+            <div class="versionbuttons">${version.downloads.map(download => renderdownloadbutton(download, version.version)).join("")}</div>
         </div>
     `;
     return panel;
