@@ -47,3 +47,18 @@
 .packagepair .gameinfo {overflow-wrap: anywhere}
 
 .packagepair .packageversions {grid-template-columns: minmax(0, 1fr)}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.gamescreen {
+    flex-direction: column; align-items: center;
+    justify-content: flex-start; box-sizing: border-box;
+    overflow-y: auto; overflow-x: hidden;
+    height: 100dvh; padding: 24px 16px 72px;
+}
+
+.gamecircle {
+    display: block; width: min(100%, 800px);
+    height: var(--circleheight, 600px); min-height: 0;
+    flex-shrink: 0; margin: auto 0;
+}

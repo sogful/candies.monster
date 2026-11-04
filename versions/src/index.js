@@ -1,5 +1,6 @@
 import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./load.js";
 import {loadversions} from "./versions.js";
+import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
 import "/assets/static/favicon.js";
 
@@ -133,89 +134,6 @@ function fetchplatform(platform) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function packcircle(games, width, height) {
-    const placed = [];
-    const centerx = width / 2;
-    const centery = height / 2;
-    const importance = games.length ? games[0].importance - games[games.length - 1].importance : 0;
-
-    for (let index = 0; index < games.length; index++) {
-        const game = games[index];
-        const size = 50 + (game.importance - 3) * 5.7;
-        let x = centerx - size / 2;
-        let y = centery - size / 2;
-        if (index) {
-            const weight = importance > 0 ? (game.importance - games[games.length - 1].importance) / importance : 1 - index / Math.max(1, games.length - 1);
-            const minimum = size * 0.65;
-            const maximumradius = Math.min(size * 2, Math.min(width, height) * 0.4);
-            const radius = minimum + (1 - weight) * (maximumradius - minimum);
-            const angle = (index - 1) * Math.PI * (3 - Math.sqrt(5));
-            let targetx = centerx + Math.cos(angle) * radius;
-            let targety = centery + Math.sin(angle) * radius;
-            let overlapping = true;
-            let attempt = 0;
-            while (overlapping && attempt < 50) {
-                overlapping = false;
-                for (const other of placed) {
-                    const differencex = targetx - other.x;
-                    const differencey = targety - other.y;
-                    const squared = differencex * differencex + differencey * differencey;
-                    const distance = (size + other.size) / 2 + 12;
-                    if (squared < distance * distance) {
-                        overlapping = true;
-                        if (squared > 0) {
-                            const actual = Math.sqrt(squared);
-                            const push = distance - actual + 1;
-                            const direction = Math.atan2(differencey, differencex);
-                            targetx += Math.cos(direction) * push;
-                            targety += Math.sin(direction) * push;
-                        } else {
-                            const direction = Math.random() * Math.PI * 2;
-                            targetx += Math.cos(direction) * (distance + 1);
-                            targety += Math.sin(direction) * (distance + 1);
-                        }
-                        targetx = Math.max(size / 2, Math.min(width - size / 2, targetx));
-                        targety = Math.max(size / 2, Math.min(height - size / 2, targety));
-                        break;
-                    }
-                }
-                attempt++;
-            }
-            if (overlapping) {
-                outer:
-                for (let radius = minimum; radius <= Math.min(width, height) * 0.5; radius += size * 0.4) {
-                    for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 12) {
-                        const candidatex = centerx + Math.cos(angle) * radius;
-                        const candidatey = centery + Math.sin(angle) * radius;
-                        let colliding = false;
-                        for (const other of placed) {
-                            const differencex = candidatex - other.x;
-                            const differencey = candidatey - other.y;
-                            const distance = (size + other.size) / 2 + 12;
-                            if (differencex * differencex + differencey * differencey < distance * distance) {
-                                colliding = true;
-                                break;
-                            }
-                        }
-                        if (!colliding) {
-                            targetx = candidatex;
-                            targety = candidatey;
-                            break outer;
-                        }
-                    }
-                }
-            }
-            x = targetx - size / 2;
-            y = targety - size / 2;
-        }
-        x = Math.max(0, Math.min(width - size, x));
-        y = Math.max(0, Math.min(height - size, y));
-        const item = {x: x + size / 2, y: y + size / 2, size, index, left: x, top: y};
-        placed.push(item);
-    }
-    return placed;
-}
-
 function updateicon(image, size) {
     const source = resolveiconpath(image.dataset.source, size);
     if (image.getAttribute("src") === source) return;
@@ -228,8 +146,7 @@ function layoutplatform(platform) {
     const mobile = window.innerWidth <= 650;
     const bounds = platform.circle.getBoundingClientRect();
     const width = bounds.width || Math.min(window.innerWidth * 0.9, 800);
-    const height = bounds.height || Math.max(Math.min(window.innerHeight * 0.9, 800), 600);
-    const stamp = mobile ? `mobile,${window.innerWidth}` : `${width},${height}`;
+    const stamp = `${width},${mobile}`;
     if (platform.stamp === stamp) return;
     platform.stamp = stamp;
     const nodes = [...platform.nodes];
@@ -237,6 +154,7 @@ function layoutplatform(platform) {
     nodes.forEach((node, index) => {
         if (platform.circle.children[index] !== node) platform.circle.insertBefore(node, platform.circle.children[index] || null);
     });
+    /*
     if (mobile) {
         const size = Math.min(80, Math.max(50, 50 + 30 * ((window.innerWidth - 220) / 380)));
         platform.nodes.forEach(node => {
@@ -245,9 +163,11 @@ function layoutplatform(platform) {
         });
         return;
     }
-    const positions = packcircle(platform.games, width, height);
-    platform.nodes.forEach((node, index) => {
-        const position = positions[index];
+    */
+    const packed = packcircle(nodes.map(node => elements.get(node)), width);
+    platform.circle.style.setProperty("--circleheight", `${packed.height}px`);
+    nodes.forEach((node, index) => {
+        const position = packed.positions[index];
         node.style.width = `${position.size}px`;
         node.style.height = `${position.size}px`;
         node.style.left = `${position.left}px`;
@@ -330,6 +250,7 @@ window.addEventListener("resize", () => {
     resizeframe = requestAnimationFrame(() => {
         resizeframe = 0;
         if (!currentgame) layoutplatform(activeplatform);
+        container.scrollTo({left: activeplatform.screen.offsetLeft, behavior: "instant"});
     });
 });
 
