@@ -84,6 +84,8 @@ Cut the Rope,com.chillingo.cuttherope,ctr/free,,10
 ,v1.4.1,ctr/androidlitegallery2,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.4.1.zip,,"armv6, armv7",3.64 MB,symbols,(stabs)
 ,v1.4.2,ctr/androidlitegallery2,https://cdn.candies.monster/symbols/com.chillingo.cuttheropelite/1.4.2.zip,,armv7,1.78 MB,symbols,(stabs)
 + Cut the Rope,com.zeptolab.cuttheropelite,ctr/free,free releases,10
+,v3.79.0,ctr/androidv400,https://archive.org/download/i-pad-ipa-archive-2018/Cut%20the%20Rope%203.79.0.ipa,,arm64,314.92 MB,,,encrypted
+,v3.37.0,ctr/ioshdlitev3261,https://archive.org/download/cut-the-rope_202208/Cut%20the%20rope.ipa,,arm64,153.21 MB,,,encrypted
 ,v3.3.0,,https://archive.org/download/cut-the-rope-3.3.0-app-only/Cut%20the%20Rope_3.3.0_AppOnly.ipa,
 ,v3.24.1,,https://archive.org/download/Cut_the_Rope_3.24.1_ios_8.0/Cut_the_Rope_3.24.1_ios_8.0.ipa,
 ,v3.32.0,,https://archive.org/download/cut-the-rope-3.32.0/Cut%20the%20Rope%203.32.0.ipa,
@@ -195,6 +197,7 @@ Cut the Rope,com.chillingo.cuttherope,ctr/free,,10
 ,v1.7.1,ctr/androidgallery,https://archive.org/download/zeptolab-testflight-ctrhome/CuttheRopeTestflight2.ipa,
 ,v2.0.1,ctr/androidgallery,https://archive.org/download/zeptolab-testflight-ctrhome/CutTheRopeTestflight.ipa,
 Cut the Rope,com.zeptolab.ctrexperiments,ctrexp/free,experiments,8
+,v1.13.0,ctrexp/ioslitev191,https://file.ipaomtk.com/cut-the-rope-experiments-gold/Cut_the_Rope_Experiments_GOLD-v1.13.0-ipaomtk.com.ipa,,"armv7, arm64",78.11 MB,,,armv7 encrypted
 ,v1.0,,https://archive.org/download/iOSObscura/iPhoneOS%203/com.zeptolab.ctrexperiments/Cut%20the%20Rope-%28com.zeptolab.ctrexperiments%29-1.0-%28iOS_3.0%29-37e7e4e478f51dc824642665e68f8177.ipa,
 ,v1.6.1,,https://archive.org/download/Cut_the_Rope_1.6.1_ios_4.3/Cut_the_Rope_1.6.1_ios_4.3.ipa,
 ,v1.7.5,,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/experiments/Cut.the.Rope.Experiments.1.7.5.iOS.6.0+.ipa,
@@ -334,6 +337,14 @@ Cut the Rope,com.zeptolab.ctr2,ctr2/classic,cut the rope 2 paid,10,/assets/image
 ,v1.6.3,ctr2/goldios,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllllection%20Part%206/Cut%20The%20Rope%202%201.6.3.ipa,,"arm64, armv7",79.22 MB
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr2/1.6.3.zip,,"arm64, armv7",8.65 MB,symbols,(stabs)
 + Cut the Rope,com.zeptolab.ctr2.f2p,ctr2/classic,cut the rope 2 free,9
+,v1.9.0,ctr2/androidgallery3,https://archive.org/download/ipa-selfmader-collection/Cut_The_Rope_2_Om_Nom_s_Adventure_%5BZeptoLab_UK_Limited%5D__v1.9.0_v140673_3GS_Univ_LP_os70_-Ghay.rc336_102.ipa,,"armv7, arm64",86.27 MB,,,
+,v1.6.7,ctr2/androidgallery,https://archive.org/download/starbucks-4.4.6-cracker-xi/Cut%20The%20Rope/ctr2_f2p_1.6.7_CrackerXI.ipa,,arm64,129.02 MB,,,
+,v1.6.6,ctr2/christmas,https://archive.org/download/starbucks-4.4.6-cracker-xi/Cut%20The%20Rope/ctr2ftp_1.6.6_CrackerXI.ipa,,arm64,130.45 MB,,,
+,v1.3.6,ctr2/androidgallery,https://archive.org/download/Cut_the_Rope_1.3.6_ios_5.0/Cut_the_Rope_1.3.6_ios_5.0.ipa,,armv7,81.47 MB,,,
+,v1.3.4,ctr2/christmas,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/CTR%202%20Om%20Nom%27s%20Quest%201.3.4.ipa,,armv7,82.26 MB,,,
+,v1.2,ctr2/androidgallery,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/CTR%202%20Om%20Nom%27s%20Quest%201.2.0.ipa,,"armv7, armv7s",82.23 MB,,,
+,v1.0.1,ctr2/androidgallery,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/CTR%202%20Om%20Nom%27s%20Quest%201.0.1.ipa,,"armv7, armv7s",90.33 MB,,,
+,v1.0,ctr2/androidgallery,https://archive.org/download/com.zeptolab.ctr2.f2p-ios5.0-clutch-2.0.4-2/Cut%20The%20Rope%20Colllection%20Part%202/CTR%202%20Om%20Nom%27s%20Quest%201.0.0.ipa,,"armv7, armv7s",90.33 MB,,,
 ,v1.19.3,,https://archive.org/download/cut-the-rope-2-v-1.19.3-hs/Cut%20The%20Rope%202%20v1.19.3%20HS.ipa,
 + 割绳子2,com.yodo1.cuttherope2,ctr2/ioschinav1521,chinese release (yodo1),10,/assets/images/gameicons/ctr2/ioschinav1521/raw.jpg
 ,v1.5.21,ctr2/ioschinav1521,https://mega.nz/file/LQ0gXbpA#vEnS42aL63Qqf-So2IH1SodOBMwnMzTOba3bRm-yKuw,"iOS 13.0+, build 1",arm64,191.80 MB,,
