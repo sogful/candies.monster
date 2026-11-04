@@ -396,12 +396,9 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,,,"https://cdn.candies.monster/apks/com.zeptolab.ctr.ads/com.zeptolab.ctr.ads_1.4.1-9_minAPI4(armeabi,armeabi-v7a)(nodpi)_apkmirror.com.apk",,"arm, arm32",20.81MB,,,,,,,,,,,,,,,,,,,,,,,
 ,,,"https://cdn.candies.monster/apks/com.zeptolab.ctr.ads/com.zeptolab.ctr.ads_1.4.1-9_minAPI4(armeabi,armeabi-v7a)(nodpi)_apkmirror.com.apk",,"arm, arm32",20.81MB,,,,,,,,,,,,,,,,,,,,,,,
 ,,ctr/androidgallery2,https://cdn.candies.monster/apks/com.zeptolab.ctr.ads/earlyarchive/1.4.1-9-e2355938a886.apk,,"armeabi, armeabi-v7a",20.81 MB,archive
-,v1.3.2,ctr/androidgallery2,https://www.mediafire.com/file/gp8gu3ze01cstx2/Cut_the_Rope_1.3.2.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v1.3.2,ctr/androidgallery2,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,ctr/androidgallery2,https://cdn.candies.monster/apks/com.zeptolab.ctr.ads/earlyarchive/1.3.2-7-50ed0721f0b1.apk,,armeabi,17.70 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr.ads/earlyarchive/1.3.2.zip,,armeabi,0.49 MB,symbols,(symtab)
-,v1.3.1,ctr/classic,https://www.mediafire.com/file/7uan5ze5k15ge1m/Cut+the+Rope+v1.3.1+Final+Android.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
-,v1.3,ctr/classic,https://www.mediafire.com/file/kxk40qhudcgqwd2/Cut+the+Rope+1.3.zip/file,,,,,,,,,,,,,,,,,,,,,,,,,,
-,v1.0,ctr/classic,https://archive.org/download/cuttherope_new9871t/cuttherope_new9871t.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v4.0.0,ctr/androidv400,https://apkpure.net/cut-the-rope/com.zeptolab.ctr.ads/download/4.0.0,
 ,v4.0.1,ctr/androidv400,https://apkpure.net/cut-the-rope/com.zeptolab.ctr.ads/download/4.0.1,
 ,v4.0.2,ctr/androidv400,https://apkpure.net/cut-the-rope/com.zeptolab.ctr.ads/download/4.0.2,
@@ -448,10 +445,13 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr.paid/earlyarchive/1.2.zip,,armeabi,0.40 MB,symbols,(symtab)
 ,v1.3,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.3-5-23862bd6c4cd.apk,,armeabi,17.52 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr.paid/earlyarchive/1.3.zip,,armeabi,0.47 MB,symbols,(symtab)
+,,,https://www.mediafire.com/file/kxk40qhudcgqwd2/Cut+the+Rope+1.3.zip/file
 ,v1.3.1,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.3.1-6-98cfe441ca70.apk,,armeabi,17.87 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr.paid/earlyarchive/1.3.1.zip,,armeabi,0.47 MB,symbols,(symtab)
+,,,https://www.mediafire.com/file/7uan5ze5k15ge1m/Cut+the+Rope+v1.3.1+Final+Android.apk
 ,v1.3.2,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.3.2-7-b743cecfa30b.apk,,armeabi,17.58 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.ctr.paid/earlyarchive/1.3.2.zip,,armeabi,0.50 MB,symbols,(symtab)
+,,,https://www.mediafire.com/file/gp8gu3ze01cstx2/Cut_the_Rope_1.3.2.apk
 ,v1.4,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/1.4-8-abf27f3b3691.apk,,armeabi,18.90 MB,archive
 ,v2.0.3,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.0.3-17-2961e0683875.apk,,"armeabi, x86",24.70 MB,archive
 ,v2.1,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.1-18-66bce8f75940.apk,,"armeabi, x86",25.20 MB,archive
@@ -561,6 +561,9 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 + Cut the Rope,com.zeptolab.ctr.hd.paid.amazon.kids,ctr/androidorange3300,amazon kids+ (community-signed),10,/assets/images/gameicons/ctr/androidorange3300/raw.png
 
 ,v3.30.0,ctr/androidorange3300,https://cdn.candies.monster/apks/com.zeptolab.ctr.hd.paid.amazon.kids/homiesarchive/3.30.0-2557643-a1810d549265.apk,,arm64-v8a,49.42 MB,archive
++ Cut The Rope,com.zeptolab.ctr,ctr/androidv100,getjar / downjoy (modified),10,/assets/images/gameicons/ctr/androidv100/raw.png
+
+,v1.0.0,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr/dragonland/1.0.0-1-b20f8f209ef9.apk,,armeabi,14.34 MB,archive,modified GetJar build; Downjoy signer
 Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/images/gameicons/ctr2/androidgallery/raw.png,/assets/images/gameicons/ctr2/modern/raw.png,/assets/images/gameicons/ctr2/christmas/raw.png,/assets/images/gameicons/ctr2/androidgallery3/raw.png,/assets/images/gameicons/ctr2/androidgallery4/raw.png,/assets/images/gameicons/ctr2/androidgallery5/raw.png,/assets/images/gameicons/ctr2/androidgallery6/raw.png,/assets/images/gameicons/ctr2/androidgallery7/raw.png,/assets/images/gameicons/ctr2/androidgallery8/raw.png,/assets/images/gameicons/ctr2/androidbackground/raw.png,/assets/images/gameicons/ctr2/androidbackground2/raw.png,/assets/images/gameicons/ctr2/androidforeground/raw.png,/assets/images/gameicons/ctr2/androidforeground2/raw.png
 ,v1.44.0,ctr2/classic,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-2/cut-the-rope-2-1-44-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.google/Cut the Rope 2_1.44.0_APKPure.apk,,arm64,56.08MB,,,,,,,,,,,,,,,,,,,,,,,
