@@ -5422,5 +5422,23 @@
     "packages": [
       "com.px.omnomtower3d"
     ]
+  },
+  {
+    "game": "books",
+    "variant": "bemobilatam",
+    "raw": "/assets/images/gameicons/books/bemobilatam/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "e905c9c9ffefd4e74e1dcedcb3231daa23a59726283d8bb78d075d06c16dbf42",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.omnombooks.tier2/dragonland/1.0.0-64-2c57b3b5ff53.apk",
+        "file": "res/drawable-xxxhdpi/app_icon.png"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.omnombooks.tier2"
+    ]
   }
 ]
