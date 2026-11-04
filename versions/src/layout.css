@@ -34,3 +34,16 @@
         height: 100dvh; min-height: 100dvh;
     }
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.packagepair {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start; column-gap: 0.5em;
+}
+
+.packagecolumn {min-width: 0}
+
+.packagepair .gameinfo {overflow-wrap: anywhere}
+
+.packagepair .packageversions {grid-template-columns: minmax(0, 1fr)}

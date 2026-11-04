@@ -31,7 +31,7 @@ let legacypromise = null;
 function packageiconhtml(game, index) {
     const list = game.pkgIconsList;
     const urls = list && (list[index] ?? list[0]);
-    if (!urls?.length) return "";
+    if (!urls || urls.length < 2) return "";
     return `<div class="packageicons">${urls.map(url => `<a class="clickable" href="${downloadattribute(resolverawiconpath(url))}" target="_blank" rel="noopener" aria-label="open original icon"><img src="${downloadattribute(resolveiconpath(url))}" alt="" draggable="false" loading="lazy" decoding="async" width="32" height="32"></a>`).join("")}</div>`;
 }
 
@@ -272,7 +272,19 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
             }
             return {pkg, versions, target, fallback: Array.isArray(game.icon) ? game.icon[index] || game.icon[0] : game.icon};
         });
-        if (grouped) list.appendChild(fragment);
+        if (grouped) {
+            for (let index = 0; index + 1 < sections.length; index++) {
+                if (sections[index].versions.length !== 1 || sections[index + 1].versions.length !== 1) continue;
+                const first = sections[index].target.parentElement;
+                const second = sections[index + 1].target.parentElement;
+                const pair = document.createElement("div");
+                pair.className = "packagepair";
+                fragment.insertBefore(pair, first);
+                pair.append(first, second);
+                index++;
+            }
+            list.appendChild(fragment);
+        }
         const needslegacy = packagelist.includes("com.zeptolab.ctr.ads") && sections.some(section => section.versions.some(version => !version.icon));
         if (needslegacy && !legacyicons) {
             void loadlegacyicons().then(() => {if (iscurrent(loadid)) updatelegacyicons(list)});
