@@ -381,7 +381,11 @@ const rawicons = {
     "ctrexp/androidv1170": "png",
     "omnomrun/androidv1220": "png",
     "ctrdaily/androidv1141": "png",
-    "ctr/androidorigins0281": "png"
+    "ctr/androidorigins0281": "png",
+    "ctr2/easterorange": "png",
+    "ctrtt/industrialfree": "png",
+    "ctrmagic/valentines": "png",
+    "ctrmagic/bluebird": "png"
 };
 
 export {rawicons};

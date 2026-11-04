@@ -5767,5 +5767,60 @@
     "packages": [
       "com.zeptolab.ctrorigins"
     ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "easterorange",
+    "raw": "/assets/images/gameicons/ctr2/easterorange/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "52d2e8ed60d2c351d22deca7870d7984d39b2ee7d1a793f77bfefc41d55bcf6a",
+    "sources": [
+      "https://apk.gold/download?file_id=26201/cut-the-rope-2",
+      "https://apk.gold/download?file_id=26356/cut-the-rope-2"
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "industrialfree",
+    "raw": "/assets/images/gameicons/ctrtt/industrialfree/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "1fa8f404ec923a2d45e9f01cd62084ea1206052cff07466471d1092cb36c62af",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.timetravel.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "valentines",
+    "raw": "/assets/images/gameicons/ctrmagic/valentines/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "8cca9559cdf7add7490c354430391679742936fac1f3937b5e3e56edd8dfccf2",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "bluebird",
+    "raw": "/assets/images/gameicons/ctrmagic/bluebird/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "dc1780eecee7560b20a9417d2b6d6e598f24ef07d2cf2fcabf6551c327992da9",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
   }
 ]
