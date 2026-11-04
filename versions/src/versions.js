@@ -235,6 +235,12 @@ function versionpanel(version, fallback, legacy, game, index) {
         </div>
     `;
     shareheading(panel.querySelector(".version"), game, index, version.version);
+    const content = document.createElement("div");
+    content.className = "versioncontent";
+    content.dataset.routepackage = panel.dataset.routepackage;
+    content.dataset.version = panel.dataset.version;
+    content.append(...panel.childNodes);
+    panel.appendChild(content);
     return panel;
 }
 

@@ -98,7 +98,7 @@
 
 .sharetitle .sharelink {
     display: inline-flex; vertical-align: middle;
-    width: 1rem; height: 1rem;
+    width: 0.666667rem; height: 0.666667rem;
     margin-left: 0.25rem; opacity: 0;
     pointer-events: none; -webkit-text-stroke: 0;
 }
@@ -137,3 +137,18 @@
 @media (prefers-reduced-motion: reduce) {
     .routeflash {animation-duration: 0.5s}
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.gamename .sharelink {margin-left: 0.5rem}
+
+.versioncontent {
+    display: flex; align-items: center;
+    width: fit-content; max-width: 100%;
+}
+
+.versioncontent .versioninfo {
+    flex: 0 1 auto; width: auto;
+}
+
+.versioncontent.routeflash {outline-offset: 0}

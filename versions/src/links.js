@@ -110,11 +110,12 @@ export async function revealroute(game, route, iscurrent) {
     const candidates = screen.querySelectorAll(route.version ? ".versionpanel" : ".gameinfo");
     const target = Array.from(candidates).find(node => node.getClientRects().length && node.dataset.routepackage === key && (!route.version || node.dataset.version === route.version));
     if (!target) return;
-    screen.scrollTop += target.getBoundingClientRect().top - screen.getBoundingClientRect().top - 16;
-    target.classList.remove("routeflash");
-    void target.offsetWidth;
-    target.classList.add("routeflash");
-    target.addEventListener("animationend", () => target.classList.remove("routeflash"), {once: true});
+    const flash = (route.version && target.querySelector(".versioncontent")) || target;
+    screen.scrollTop += flash.getBoundingClientRect().top - screen.getBoundingClientRect().top - 16;
+    flash.classList.remove("routeflash");
+    void flash.offsetWidth;
+    flash.classList.add("routeflash");
+    flash.addEventListener("animationend", () => flash.classList.remove("routeflash"), {once: true});
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -140,16 +141,10 @@ export function startlinks(openroute) {
         const link = event.target.closest?.(".sharelink");
         if (!link) return;
         event.preventDefault();
-        const before = location.hash;
         try {
             await copylink(link.href);
             link.title = "Link copied";
             link.setAttribute("aria-label", "Link copied");
-            if (location.hash === before) {
-                const route = readhash(new URL(link.href).hash);
-                write(route);
-                await openroute(route);
-            }
         } catch {
             link.title = "Unable to copy link";
             link.setAttribute("aria-label", "Unable to copy link");
