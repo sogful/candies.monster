@@ -1436,6 +1436,9 @@ Om Nom Run,com.zeptolab.omnomrun.google,omnomrun/classic,,5
 + Om Nom: Run,com.zeptolab.omnomrun.google,omnomrun/androidgallery5,amazon kids+ (community-signed),5,/assets/images/gameicons/omnomrun/androidgallery5/raw.png
 
 ,v1.8.3,omnomrun/androidgallery5,https://cdn.candies.monster/apks/com.zeptolab.omnomrun.google/homiesarchive/1.8.3-250-5c98a808281e.apk,,"arm64-v8a, armeabi-v7a",165.87 MB,archive
++ Om Nom: Run,com.zeptolab.omnomrun.google,omnomrun/androidgallery5,orange jeux,5,/assets/images/gameicons/omnomrun/androidgallery5/raw.png
+
+,v1.1.0,omnomrun/androidgallery5,https://cdn.candies.monster/apks/com.zeptolab.omnomrun.google/dragonland/1.1.0-204-042e5f7f8b80.apk,,"arm64-v8a, armeabi-v7a",80.52 MB,archive,Orange Games signer
 Om Nom Run 2,com.zeptolab.OmNomRun2.parkour,omnomrun2/classic,,4,/assets/images/gameicons/omnomrun2/store/raw.png,/assets/images/gameicons/omnomrun2/androidgallery/raw.png
 ,v3.0.19,omnomrun2/classic,https://apkpure.com/om-nom-run-2/com.zeptolab.OmNomRun2.parkour/download/3.0.19,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://om-nom-run-2.en.uptodown.com/android/download/1016686800,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -1567,6 +1570,9 @@ Om Nom: Merge,com.zeptolab.omnommerge.google,merge/classic,,5
 + Om Nom: Merge,com.zeptolab.omnommerge,merge/classic,amazon kids+ (community-signed),5,/assets/images/gameicons/merge/classic/raw.png
 
 ,v46.5.3,merge/classic,https://cdn.candies.monster/apks/com.zeptolab.omnommerge/homiesarchive/46.5.3-63-82daea5591fb.apk,,arm64-v8a,83.98 MB,archive
++ Om Nom Merge,com.zeptolab.omnommerge.px,merge/classic,orange jeux,5,/assets/images/gameicons/merge/classic/raw.png
+
+,v44,merge/classic,https://cdn.candies.monster/apks/com.zeptolab.omnommerge.px/dragonland/44-44-df62be863e8a.apk,,"armeabi-v7a, x86",87.28 MB,archive,Orange Games signer
 OmNom Swing,com.momzikov.omnomswing.google,swing/classic,,1,/assets/images/gameicons/swing/androidgallery/raw.png
 ,v0.31.01,swing/classic,https://apkpure.com/om-nom-swing/com.momzikov.omnomswing.google/download/0.31.01,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.momzikov.omnomswing.google/Om Nom Swing_0.31.01_APKPure.apk,,"arm64, arm32, x86",59.21MB,,,,,,,,,,,,,,,,,,,,,,,
@@ -1728,6 +1734,9 @@ Om Nom: Bubbles,com.zeptolab.bubbles.f2p.google,bubbles/classic,Buble,2,/assets/
 ,v1.0.4,bubbles/classic,https://apkpure.com/om-nom-bubbles/com.zeptolab.bubbles.f2p.google/download/1.0.4,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.zeptolab.bubbles.f2p.google/Om Nom_ Bubbles_1.0.4_APKPure.apk,,"arm, arm32, x86",27.85MB,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://theawesomeblue.github.io/ctrfiles/download/bubbles/Om_Nom_Bubbles_1.0.4.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
++ Om Nom Bubbles,com.px.OmNomBubbles,bubbles/orangejeux,orange jeux,2,/assets/images/gameicons/bubbles/orangejeux/raw.png
+
+,v1.0,bubbles/orangejeux,https://cdn.candies.monster/apks/com.px.OmNomBubbles/dragonland/1.0-1-692a3ab23b7f.apk,,"arm64-v8a, armeabi, armeabi-v7a, x86, x86_64",14.42 MB,archive,Orange Games signer
 Om Nom Bubble,com.SugoooiStudio.OmNomBubble,bubble/classic,,2,/assets/images/gameicons/bubble/alternate/raw.webp
 ,v1.1,bubble/classic,https://apkpure.com/om-nom-bubble/com.SugoooiStudio.OmNomBubble/download/1.1,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.SugoooiStudio.OmNomBubble/Om Nom Bubble_1.1_APKPure.xapk,,arm64,27.30MB,,,,,,,,,,,,,,,,,,,,,,,
@@ -1916,6 +1925,9 @@ Om Nom Tower 3D,com.famobi.omnomtower3d,tower3d/classic,,3,/assets/images/gameic
 ,,,https://cdn.candies.monster/apks/com.famobi.omnomtower3d/Om Nom Tower 3D_20251112_APKPure.xapk,,arm64,35.44MB,,,,,,,,,,,,,,,,,,,,,,,
 ,v20251208,tower3d/classic,https://apkpure.com/om-nom-tower-3d/com.famobi.omnomtower3d/download/20251208,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.famobi.omnomtower3d/Om Nom Tower 3D_20251208_APKPure.xapk,,arm64,35.78MB,,,,,,,,,,,,,,,,,,,,,,,
++ Om Nom Tower,com.px.omnomtower3d,tower3d/orangejeux,orange jeux,3,/assets/images/gameicons/tower3d/orangejeux/raw.png
+
+,v1.0n1,tower3d/orangejeux,https://cdn.candies.monster/apks/com.px.omnomtower3d/dragonland/1.0n1-2-ea3bb1b87fd2.apk,,"arm64-v8a, armeabi, armeabi-v7a, x86, x86_64",23.40 MB,archive,Orange Games signer
 Beat Candy,com.amanotes.pamabeatcandy,candybeat/classic,,1,/assets/images/gameicons/candybeat/androidgallery/raw.png
 ,v1.13,candybeat/classic,https://apkpure.com/candy-beat/com.amanotes.pamabeatcandy/download/1.13,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.amanotes.pamabeatcandy/Candy Beat_1.13_APKPure.apk,,arm64,54.28MB,,,,,,,,,,,,,,,,,,,,,,,

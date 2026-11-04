@@ -5386,5 +5386,41 @@
     "packages": [
       "com.renderedideas.omnommarblematch"
     ]
+  },
+  {
+    "game": "bubbles",
+    "variant": "orangejeux",
+    "raw": "/assets/images/gameicons/bubbles/orangejeux/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "fbf769dc1ec65c703173965e5071bbe4b0166016e83484f3fff9a9abc4cc5d7d",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.px.OmNomBubbles/dragonland/1.0-1-692a3ab23b7f.apk",
+        "file": "res/mipmap-xxxhdpi/ic_launcher.png"
+      }
+    ],
+    "packages": [
+      "com.px.OmNomBubbles"
+    ]
+  },
+  {
+    "game": "tower3d",
+    "variant": "orangejeux",
+    "raw": "/assets/images/gameicons/tower3d/orangejeux/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "5caf25c6ad79556f8adda8a23b3d3e93aa03d4b20b95577259b702e45945dcd9",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.px.omnomtower3d/dragonland/1.0n1-2-ea3bb1b87fd2.apk",
+        "file": "res/mipmap-xxxhdpi/ic_launcher_13266.png"
+      }
+    ],
+    "packages": [
+      "com.px.omnomtower3d"
+    ]
   }
 ]
