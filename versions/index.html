@@ -363,16 +363,14 @@
         .packagecolumn .packageversions {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            padding-right: 0.5em;
-            padding-bottom: 1em;
-            width: 100%;
-            box-sizing: border-box;
+            padding-right: 0.5em; padding-bottom: 0.25em;
+            width: 100%; box-sizing: border-box;
         }
 
         .versionpanel {
             display: flex; flex-direction: row;
             align-items: center; line-height: 0.75;
-            padding-top: 0.25em; padding-bottom: 0.25em;
+            padding-bottom: 0.1em;
             box-sizing: border-box;
             min-width: 0;
         }
@@ -416,6 +414,7 @@
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
         }
+        .downloadnote, .downloadmeta {line-height: 0.9}
 
         .versionbuttons {
             display: flex;
@@ -539,20 +538,25 @@
                     <p class="archivedescription">download versions of om nom games</p>
                 </div>
             </header>
-            there are currently <i><span class="androidcount">...</span></i> android versions and <i><span class="ioscount">...</span></i> ios versions available! <br>
+            there are currently <i><span class="androidcount">...</span></i> android and <i><span class="ioscount">...</span></i> ios versions available! <br>
             this collection also contains <i><span class="symbolcount">...</span></i> debug symbol downloads, which could be helpful for reverse engineering.
             <br><br>
             please not that most apps are <i>not</i> checked for malware! though unlikely to be malicious, if you want to ensure your device is safe, use <img width="15" src="/assets/images/downloadbuttons/apkmirror.webp"> apkmirror, <img width="15" src="/assets/images/downloadbuttons/apkpure.webp"> apkpure or <img width="15" src="/assets/images/downloadbuttons/ctrhome.webp"><img width="15" src="/assets/images/downloadbuttons/cdn.webp"> our own reuploads! some apps might be slightly modified, if the modifications are known they'll be mentioned beside the download links.
             <br>
             whether the smaller developers shown actually have rights to om nom or not is purely speculative.
             <br><br>
-            about <span class="missingcount">...</span> versions are <span style="color:#ffa5a5">missing</span>, and more are yet to be found, so if you have something to add you can
+            about <span class="missingcount">...</span> versions are <span style="color:#ffa5a5">missing</span>, and more are yet to be found, so if you have something to add you can:
             <br>
             <a class="archivebutton clickable" href="https://discord.gg/CUXK9aUTdz" target="_blank" rel="noopener">
-                <span><img class="joinicon" src="https://cdn.discordapp.com/icons/1112531659078762617/a_76dd36a5ef79da45a0663306c812d61b.webp?animated=true&size=32" draggable="false">Join CtR Home on Discord!</span>
+                <span><img class="joinicon" src="https://cdn.discordapp.com/icons/1112531659078762617/a_76dd36a5ef79da45a0663306c812d61b.webp?animated=true&size=32" draggable="false">Join Cut the Rope Home on Discord!</span>
             </a>
             <br>
-            and send in your findings to <a href="https://discord.com/channels/1112531659078762617/1439356053719351376">#<img width="15" src="/assets/images/search.png">version-search</a>! also mention <a href="https://discord.com/users/763502120333869116">@cvgd</a> if you want to make sure it gets added specifically to this site.
+            and send in your findings to <a href="https://discord.com/channels/1112531659078762617/1439356053719351376">#<img width="15" src="/assets/images/search.png">version-search</a>! mention <a href="https://discord.com/users/763502120333869116">@cvgd</a> if you want to make sure it gets added specifically to this site.
+            <br><br>
+            on the note of ctr home, to view additional platforms and a compilation of the very best gameloft and unpatched versions, without the boring softlaunch goop, see:<br>
+            <a class="archivebutton clickable" href="https://ctrhome.github.io/games/" target="_blank" rel="noopener">
+                <span><img class="joinicon" src="https://ctrhome.github.io/img/favicon/candy.ico" draggable="false">Games - Cut the Rope Home</span>
+            </a>
             <p class="verytiny">see the <a href="old" im old!>old version of this page</a> for just the main ctr uploads<br>for legal, email <a href="mailto:this.address.isnt.actually.routed.anywhere@candies.monster">this.address.isnt.actually.routed.anywhere@candies.monster</a></p>
         </section>
     </details>
