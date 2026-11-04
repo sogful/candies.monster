@@ -1,0 +1,8 @@
+.versionbuttons .cdnbutton {
+    height: auto; min-height: 24px;
+    padding: 1px 0;
+}
+
+.versionbuttons .cdnbutton .cdntext {
+    white-space: normal; overflow-wrap: anywhere;
+}

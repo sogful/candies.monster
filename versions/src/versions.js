@@ -48,21 +48,31 @@ function downloadattribute(value) {
 }
 
 function renderdownloadbutton(download) {
+    const note = Array.from(new Set([download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))).join("; ");
+    const annotation = note ? `<div class="downloadnote">${downloadattribute(note)}</div>` : "";
     if (download.kind === "symbols") {
         const label = downloadattribute(download.label || "debug symbols");
-        const details = downloadattribute([download.label || "debug symbols", download.arch, download.size].filter(Boolean).join(" | "));
+        const details = downloadattribute([download.label || "debug symbols", download.arch, download.size, note].filter(Boolean).join(" | "));
         return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" aria-label="symbols: ${details}" title="${details}">
             <img src="/assets/images/downloadbuttons/symbols.png" alt="" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext"><div>symbols</div><div>${label}</div></div>
+            <div class="cdntext"><div>symbols</div><div>${label}</div>${annotation}</div>
         </a>`;
     }
     if (download.arch && download.size) {
-        return `<a href="${download.url}" target="_blank" class="clickable cdnbutton">
+        const details = downloadattribute([download.arch, download.size, note].filter(Boolean).join(" | "));
+        return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" title="${details}" aria-label="${details}">
             <img src="/assets/images/downloadbuttons/cdn.png" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext"><div>${download.arch}</div><div>${download.size}</div></div>
+            <div class="cdntext"><div>${download.arch}</div><div>${download.size}</div>${annotation}</div>
         </a>`;
     }
     const button = download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.png";
+    if (note) {
+        const details = downloadattribute(note);
+        return `<a href="${download.url}" target="_blank" rel="noopener" class="clickable cdnbutton" title="${details}" aria-label="${downloadattribute(button.replace(/\.[^.]+$/, ""))}: ${details}">
+            <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
+            <div class="cdntext">${annotation}</div>
+        </a>`;
+    }
     const label = download.label ? ` title="${downloadattribute(download.label)}" aria-label="${downloadattribute(download.label)}"` : "";
     return `<a href="${download.url}" target="_blank" class="clickable"${label}>
         <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
@@ -70,16 +80,21 @@ function renderdownloadbutton(download) {
 }
 
 function uniquedownloads(downloads) {
-    const seen = new Set();
-    return (downloads || []).filter(download => {
-        if (!download?.url) return false;
+    const seen = new Map();
+    for (const download of downloads || []) {
+        if (!download?.url) continue;
         const iscdn = (download.arch && download.size) || download.url.includes("cdn.candies.monster");
         const sourcekey = iscdn ? `${download.url}|${download.arch || ""}|${download.size || ""}` : download.url;
         const key = `${download.kind || "app"}|${sourcekey}`;
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-    });
+        if (!seen.has(key)) seen.set(key, {...download});
+        else {
+            const existing = seen.get(key);
+            for (const field of ["note", "label"]) {
+                existing[field] = Array.from(new Set([existing[field], download[field]].filter(Boolean))).join("; ");
+            }
+        }
+    }
+    return Array.from(seen.values());
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
