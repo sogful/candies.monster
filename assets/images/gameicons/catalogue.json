@@ -5440,5 +5440,59 @@
     "packages": [
       "com.zeptolab.omnombooks.tier2"
     ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "china4399early",
+    "raw": "/assets/images/gameicons/ctr2/china4399early/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "58b2623004c0b2ca6f609706547e27de2d4f790547a33dbf7c2ecb3c06903e81",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1.ctr2.A4399_1/dragonland/2.3.9-23900-a093e88e4804.apk",
+        "file": "res/drawable-xxxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.ctr2.A4399_1"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "chinaccyx",
+    "raw": "/assets/images/gameicons/ctr2/chinaccyx/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "a82587c946d61e69d052a985cc04dcc781a8e9e1917b2a441a4d084525c54bd5",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.yodo1.ctr2.CCYX_01/dragonland/2.3.8-3800-889caf2d9815.apk",
+        "file": "res/drawable-xxhdpi-v4/icon.png"
+      }
+    ],
+    "packages": [
+      "com.yodo1.ctr2.CCYX_01"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "rainmanlite",
+    "raw": "/assets/images/gameicons/ctr/rainmanlite/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "46e7f87c6859846bf44d8c31548682f3a0520d0d1812b2a18b54efa71d2d2b60",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.rainman.cuttheropelite/dragonland/1.0.1-2-588e4e16cb30.apk",
+        "file": "res/drawable-hdpi/icon.png"
+      }
+    ],
+    "packages": [
+      "com.rainman.cuttheropelite"
+    ]
   }
 ]

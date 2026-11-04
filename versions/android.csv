@@ -554,6 +554,10 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 
 ,v4.0.0,ctr/androidrainman400,https://cdn.candies.monster/apks/com.rainman.cuttherope/megacollection/4.0.0-4-b0b5ffcda75a.apk,,"armeabi, armeabi-v7a",9.12 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.rainman.cuttherope/megacollection/4.0.0.zip,,"armeabi, armeabi-v7a",0.17 MB,symbols,(exports)
+,v1.0.0,ctr/androidrainman400,https://cdn.candies.monster/apks/com.rainman.cuttherope/dragonland/1.0.0-1-a551f39d7a3d.apk,,"armeabi, armeabi-v7a",6.67 MB,archive,
+,v2.0.0,ctr/androidrainman400,https://cdn.candies.monster/apks/com.rainman.cuttherope/dragonland/2.0.0-2-64d505d35b64.apk,,"armeabi, armeabi-v7a",8.17 MB,archive,
+,v3.0.0,ctr/androidrainman400,https://cdn.candies.monster/apks/com.rainman.cuttherope/dragonland/3.0.0-3-6ca8eb574fa4.apk,,"armeabi, armeabi-v7a",9.12 MB,archive,
+,v4.0.1,ctr/androidrainman400,https://cdn.candies.monster/apks/com.rainman.cuttherope/dragonland/4.0.1-5-7cead7cde817.apk,,"armeabi, armeabi-v7a",10.59 MB,archive,
 + 割绳子前传,com.yodo1.ctr_original.TXYYB_01,ctr/archivetencent211,tencent (china),10,/assets/images/gameicons/ctr/archivetencent211/raw.png
 
 ,v2.1.1,ctr/archivetencent211,https://cdn.candies.monster/apks/com.yodo1.ctr_original.TXYYB_01/chinaarchive/2.1.1-2013-189b57d630dd.apk,,"armeabi, x86",30.12 MB,archive
@@ -564,6 +568,12 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 + Cut The Rope,com.zeptolab.ctr,ctr/androidv100,getjar / downjoy (modified),10,/assets/images/gameicons/ctr/androidv100/raw.png
 
 ,v1.0.0,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr/dragonland/1.0.0-1-b20f8f209ef9.apk,,armeabi,14.34 MB,archive,modified GetJar build; Downjoy signer
++ 割绳子前传,com.yodo1.ctr_original.MUZHIWAN_01,ctr/archivetencent211,muzhiwan (china),10,/assets/images/gameicons/ctr/archivetencent211/raw.png
+
+,v2.1.1,ctr/archivetencent211,https://cdn.candies.monster/apks/com.yodo1.ctr_original.MUZHIWAN_01/dragonland/2.1.1-2013-04e860476d83.apk,,"armeabi, x86",30.12 MB,archive,
++ Cut the Rope (Lite),com.rainman.cuttheropelite,ctr/rainmanlite,third-party release (rainman / wooboo),10,/assets/images/gameicons/ctr/rainmanlite/raw.png
+
+,v1.0.1,ctr/rainmanlite,https://cdn.candies.monster/apks/com.rainman.cuttheropelite/dragonland/1.0.1-2-588e4e16cb30.apk,,"armeabi, armeabi-v7a",6.72 MB,archive,
 Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/images/gameicons/ctr2/androidgallery/raw.png,/assets/images/gameicons/ctr2/modern/raw.png,/assets/images/gameicons/ctr2/christmas/raw.png,/assets/images/gameicons/ctr2/androidgallery3/raw.png,/assets/images/gameicons/ctr2/androidgallery4/raw.png,/assets/images/gameicons/ctr2/androidgallery5/raw.png,/assets/images/gameicons/ctr2/androidgallery6/raw.png,/assets/images/gameicons/ctr2/androidgallery7/raw.png,/assets/images/gameicons/ctr2/androidgallery8/raw.png,/assets/images/gameicons/ctr2/androidbackground/raw.png,/assets/images/gameicons/ctr2/androidbackground2/raw.png,/assets/images/gameicons/ctr2/androidforeground/raw.png,/assets/images/gameicons/ctr2/androidforeground2/raw.png
 ,v1.44.0,ctr2/classic,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-2/cut-the-rope-2-1-44-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.google/Cut the Rope 2_1.44.0_APKPure.apk,,arm64,56.08MB,,,,,,,,,,,,,,,,,,,,,,,
@@ -820,6 +830,15 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 
 ,v1.1.7,ctr2/androidv14,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.samsung/dragonland/1.1.7-812117-8119ae6df12c.apk,,"armeabi-v7a, x86",37.69 MB,archive,
 ,v1.6.6,ctr2/androidv14,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.samsung/dragonland/1.6.6-1560991-6fb7050160ca.apk,,"armeabi-v7a, x86",44.85 MB,archive,
++ 割绳子2,com.yodo1.ctr2.A4399_1,ctr2/china4399early,4399 (china; test-key repack),9,/assets/images/gameicons/ctr2/china4399early/raw.png
+
+,v2.3.9,ctr2/china4399early,https://cdn.candies.monster/apks/com.yodo1.ctr2.A4399_1/dragonland/2.3.9-23900-a093e88e4804.apk,,armeabi,39.12 MB,archive,test-key signed
++ 割绳子2,com.yodo1.ctr2.CCYX_01,ctr2/chinaccyx,ccyx (china),9,/assets/images/gameicons/ctr2/chinaccyx/raw.png
+
+,v2.3.8,ctr2/chinaccyx,https://cdn.candies.monster/apks/com.yodo1.ctr2.CCYX_01/dragonland/2.3.8-3800-889caf2d9815.apk,,armeabi,40.31 MB,archive,
++ 割绳子2,com.yodo1.ctr2.QIHU360_01,ctr2/androidv14,qihoo 360 (china),9,/assets/images/gameicons/ctr2/androidv14/raw.png
+
+,v2.1.0,ctr2/androidv14,https://cdn.candies.monster/apks/com.yodo1.ctr2.QIHU360_01/dragonland/2.1.0-2010-d22f44357094.apk,,armeabi,35.72 MB,archive,
 Cut the Rope: Origins PTC,com.zeptolab.ctrorigins,ctr/modern,"this game had a lot of different iterations besides these versions, and ALL of them are miserable.",4,/assets/images/gameicons/ctr/androidv400/raw.png
 ,v0.27.0,ctr/modern,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-origins/cut-the-rope-origins-0-27-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v0.26.1,ctr/modern,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-origins/cut-the-rope-origins-0-26-1-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
