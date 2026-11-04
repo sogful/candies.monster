@@ -368,7 +368,20 @@ const rawicons = {
     "books/bemobilatam": "png",
     "ctr2/china4399early": "png",
     "ctr2/chinaccyx": "png",
-    "ctr/rainmanlite": "png"
+    "ctr/rainmanlite": "png",
+    "ctr/androidv3781": "png",
+    "ctr2/androidv1471": "png",
+    "ctr2/androidv1460": "png",
+    "ctrtt/androidv1222": "png",
+    "ctrtt/androidv1221": "png",
+    "ctrtt/androidv1220": "png",
+    "ctrmagic/androidv1271": "png",
+    "ctrmagic/androidv1260": "png",
+    "ctrexp/androidv1180": "png",
+    "ctrexp/androidv1170": "png",
+    "omnomrun/androidv1220": "png",
+    "ctrdaily/androidv1141": "png",
+    "ctr/androidorigins0281": "png"
 };
 
 export {rawicons};

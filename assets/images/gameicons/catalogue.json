@@ -5494,5 +5494,278 @@
     "packages": [
       "com.rainman.cuttheropelite"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv3781",
+    "raw": "/assets/images/gameicons/ctr/androidv3781/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "53bf23dc9e4883a03e9a0c22afc22a565550f7ccabc40f3ac8b3ccf3fa28e7af",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope/com.zeptolab.ctr.ads/download/3.78.1",
+        "resource": "config.xhdpi.apk:res/drawable-xhdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "3.78.1",
+        "versioncode": "2556295"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidv1471",
+    "raw": "/assets/images/gameicons/ctr2/androidv1471/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "580f545d9be1676e95af8b6cbc8dbaecb560d1f77dae21f167fd98242fd6107a",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-2/com.zeptolab.ctr2.f2p.google/download/1.47.1",
+        "resource": "config.hdpi.apk:res/drawable-hdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.47.1",
+        "versioncode": "2579468"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "androidv1460",
+    "raw": "/assets/images/gameicons/ctr2/androidv1460/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "97fe24d6245a87a5d1eb6f29a87f90d3c559eb8bfdd5b0498547fb996541ca15",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-2/com.zeptolab.ctr2.f2p.google/download/1.46.0",
+        "resource": "config.xxhdpi.apk:res/drawable-xxhdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.46.0",
+        "versioncode": "2556310"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p.google"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidv1222",
+    "raw": "/assets/images/gameicons/ctrtt/androidv1222/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "44f42f2e0cb916a7cbd11f53da1b90224de190b59596d514a2cc925f38b4194e",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-time-travel/com.zeptolab.timetravel.free.google/download/1.22.2",
+        "resource": "config.hdpi.apk:res/drawable-hdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.22.2",
+        "versioncode": "2580081"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel.free.google"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidv1221",
+    "raw": "/assets/images/gameicons/ctrtt/androidv1221/raw.png",
+    "width": 48,
+    "height": 48,
+    "format": "png",
+    "sha256": "194429a20fba518cbef171e01d5f853d018c00045b3d8633026ccf00bf7b3ae3",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-time-travel/com.zeptolab.timetravel.free.google/download/1.22.1",
+        "resource": "config.mdpi.apk:res/drawable-mdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.22.1",
+        "versioncode": "2579958"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel.free.google"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "androidv1220",
+    "raw": "/assets/images/gameicons/ctrtt/androidv1220/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "aed80863e913af8e0b1e58fed9ba85e8f91528d888fa73dadd8ca413fe275084",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-time-travel/com.zeptolab.timetravel.free.google/download/1.22.0",
+        "resource": "config.xhdpi.apk:res/drawable-xhdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.22.0",
+        "versioncode": "2579626"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidv1271",
+    "raw": "/assets/images/gameicons/ctrmagic/androidv1271/raw.png",
+    "width": 48,
+    "height": 48,
+    "format": "png",
+    "sha256": "831a4b7a93287b7226ef9ec65e861b590bf52ae120889ced439cd32148631ba2",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.27.1",
+        "resource": "config.mdpi.apk:res/drawable-mdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.27.1",
+        "versioncode": "2579469"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidv1260",
+    "raw": "/assets/images/gameicons/ctrmagic/androidv1260/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "94a48c35b39bfff951790e55725c59fb5d407674cdc7131d463d3d391e5604a2",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-magic/com.zeptolab.ctrm.free.google/download/1.26.0",
+        "resource": "config.xhdpi.apk:res/drawable-xhdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.26.0",
+        "versioncode": "2556444"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrm.free.google"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidv1180",
+    "raw": "/assets/images/gameicons/ctrexp/androidv1180/raw.png",
+    "width": 48,
+    "height": 48,
+    "format": "png",
+    "sha256": "67d74d7745f4aa7756c1aa8901e2a0d39f14f1db87ec4d3ba1611789b9ab4933",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-experiments/com.zeptolab.ctrexperiments.ads/download/1.18.0",
+        "resource": "config.mdpi.apk:res/drawable-mdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.18.0",
+        "versioncode": "2557651"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperiments.ads"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidv1170",
+    "raw": "/assets/images/gameicons/ctrexp/androidv1170/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "f821f584ac858adef7531cb02ec69e7f4b1deaa13fb39266954973039377ad33",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-experiments/com.zeptolab.ctrexperiments.ads/download/1.17.0",
+        "resource": "config.xxhdpi.apk:res/drawable-xxhdpi-v4/icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.17.0",
+        "versioncode": "2556649"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperiments.ads"
+    ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "androidv1220",
+    "raw": "/assets/images/gameicons/omnomrun/androidv1220/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "59437176e8158064849b9dbd2fe809ba4f25451272071f389ecd42e7ea78c546",
+    "sources": [
+      {
+        "url": "https://apkpure.net/om-nom-run/com.zeptolab.omnomrun.google/download/1.22.0",
+        "resource": "res/mipmap-xxxhdpi-v4/app_icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.22.0",
+        "versioncode": "443"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.omnomrun.google"
+    ]
+  },
+  {
+    "game": "ctrdaily",
+    "variant": "androidv1141",
+    "raw": "/assets/images/gameicons/ctrdaily/androidv1141/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "6b48a8fccd9c38937aaa6bacbfb31f70d70fb091d907af52a412f6770eb0cb7e",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-daily/com.netflix.NGP.CutTheRopeDaily/download/1.14.1",
+        "resource": "res/mipmap-xxxhdpi-v4/app_icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "1.14.1",
+        "versioncode": "121"
+      }
+    ],
+    "packages": [
+      "com.netflix.NGP.CutTheRopeDaily"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidorigins0281",
+    "raw": "/assets/images/gameicons/ctr/androidorigins0281/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "6015f73946da311c19b3a4d7bc10208c8c1624cb1a776c1b117d9b53a315a31c",
+    "sources": [
+      {
+        "url": "https://apkpure.net/cut-the-rope-origins/com.zeptolab.ctrorigins/download/0.28.1",
+        "resource": "res/mipmap-xxxhdpi-v4/app_icon.png",
+        "extraction": "native launcher from package ZIP ranges",
+        "version": "0.28.1",
+        "versioncode": "10263"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrorigins"
+    ]
   }
 ]
