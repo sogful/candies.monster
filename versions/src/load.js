@@ -1,3 +1,7 @@
+import {rawicons} from "./icons.js";
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 function parsecsv(text) {
     const rows = [];
     let row = [];
@@ -39,20 +43,30 @@ function hasdownload(downloads) {
     return (downloads || []).some(download => cleanvalue(download?.url) && download.kind !== "symbols");
 }
 
-function resolveiconpath(p, size = 128) {
+function resolveiconpath(p) {
     const value = cleanvalue(p);
     if (!value) return "";
     if (value.startsWith("http://") || value.startsWith("https://")) return value;
     const base = "/assets/images/gameicons/";
     if (value.startsWith("/") && !value.startsWith(base)) return value;
     const relative = value.replace(/^\/?assets\/images\/gameicons\//, "");
-    const key = relative.replace(/\/(128|256)\.webp$/, "");
-    return `${base}${key}/${size === 256 ? 256 : 128}.webp`;
+    const key = relative.replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
+    return `${base}${key}/64.webp`;
 }
 
 function resolveiconsrcset(p) {
     if (!cleanvalue(p)) return "";
-    return `${resolveiconpath(p)} 1x, ${resolveiconpath(p, 256)} 2x`;
+    return `${resolveiconpath(p)} 1x`;
+}
+
+function resolverawiconpath(p) {
+    const value = cleanvalue(p);
+    if (!value || /^https?:\/\//i.test(value)) return value;
+    const base = "/assets/images/gameicons/";
+    if (value.startsWith("/") && !value.startsWith(base)) return value;
+    const relative = value.replace(/^\/?assets\/images\/gameicons\//, "");
+    const key = relative.replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
+    return `${base}${key}/raw.${rawicons[key] || "png"}`;
 }
 
 function resolveversionlabel(value) {
@@ -190,10 +204,10 @@ function parsegamescsv(text) {
 }
 
 window.csvthing = {
-    parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset, resolveversionlabel,
+    parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel,
     resolvegameicon, resolvepackageicon
 };
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset, resolveversionlabel, resolvegameicon, resolvepackageicon};
+export {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel, resolvegameicon, resolvepackageicon};

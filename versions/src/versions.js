@@ -1,4 +1,4 @@
-import {hasdownload, resolveiconpath, resolveiconsrcset, resolveversionlabel} from "./load.js";
+import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel} from "./load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -32,7 +32,7 @@ function packageiconhtml(game, index) {
     const list = game.pkgIconsList;
     const urls = list && (list[index] ?? list[0]);
     if (!urls?.length) return "";
-    return `<div class="packageicons">${urls.map(url => `<img src="${url}" alt="" draggable="false" loading="lazy" decoding="async" width="32" height="32">`).join("")}</div>`;
+    return `<div class="packageicons">${urls.map(url => `<a class="clickable" href="${downloadattribute(resolverawiconpath(url))}" target="_blank" rel="noopener" aria-label="open original icon"><img src="${downloadattribute(resolveiconpath(url))}" alt="" draggable="false" loading="lazy" decoding="async" width="32" height="32"></a>`).join("")}</div>`;
 }
 
 function isdownloadbuttonvisible(download) {
@@ -173,6 +173,7 @@ function updatelegacyicons(list) {
         if (icon) {
             image.srcset = resolveiconsrcset(icon);
             image.src = resolveiconpath(icon);
+            image.closest(".versionicon").href = resolverawiconpath(icon);
         }
     });
 }
@@ -213,9 +214,9 @@ function versionpanel(version, fallback, legacy) {
     const icon = resolveiconpath(source);
     const srcset = resolveiconsrcset(source);
     panel.innerHTML = `
-        <div class="versionicon">
+        <a class="versionicon clickable" href="${downloadattribute(resolverawiconpath(source))}" target="_blank" rel="noopener" aria-label="open original icon for ${downloadattribute(version.version)}">
             <img src="${icon}" srcset="${srcset}" alt="" draggable="false" loading="lazy" decoding="async" width="60" height="60"${historical ? ` data-legacyversion="${version.version}"` : ""}>
-        </div>
+        </a>
         <div class="versioninfo">
             <div class="version">${version.version}</div>
             ${version.details ? `<div class="details">${version.details}</div>` : ""}

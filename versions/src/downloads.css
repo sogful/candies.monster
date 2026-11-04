@@ -12,3 +12,7 @@
 .versionbuttons .cdnbutton .downloadmeta {
     color: rgba(255,255,255,0.65); font-size: 0.9em;
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.packageicons a {display: block}

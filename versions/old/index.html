@@ -289,7 +289,7 @@
                 
                 gamestuff.innerHTML = `
                     <div class="header">
-                        <p>${game.version}</p> <img class="icon" src="${game.icon}">
+                        <p>${game.version}</p> <a class="clickable" href="${game.rawicon}" target="_blank" rel="noopener" aria-label="open original icon"><img class="icon" src="${game.icon}"></a>
                     </div>
                     <div class="buttons">
                         ${game.downloads.map(d => 

@@ -1,7 +1,7 @@
 [
   {
     "category": "Candy Flick",
-    "icon": "/assets/images/gameicons/candyflick/classic/128.webp",
+    "icon": "/assets/images/gameicons/candyflick/classic/64.webp",
     "tracks": [
       {
         "path": "candyflick/menu_music.mp3",
@@ -14,7 +14,7 @@
   },
   {
     "category": "Cut the Rope",
-    "icon": "/assets/images/gameicons/ctr/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctr/classic/64.webp",
     "tracks": [
       {
         "path": "ctr/game_music.ogg",
@@ -36,7 +36,7 @@
   },
   {
     "category": "Cut the Rope 2",
-    "icon": "/assets/images/gameicons/ctr2/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctr2/classic/64.webp",
     "tracks": [
       {
         "path": "ctr2/game_music_1.ogg",
@@ -74,7 +74,7 @@
   },
   {
     "category": "Experiments",
-    "icon": "/assets/images/gameicons/ctrexp/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctrexp/classic/64.webp",
     "tracks": [
       {
         "path": "experiments/game_music.ogg",
@@ -104,7 +104,7 @@
   },
   {
     "category": "Daily",
-    "icon": "/assets/images/gameicons/ctrdaily/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctrdaily/classic/64.webp",
     "tracks": [
       {
         "path": "daily/beach_menu_music_122bpm_G_v2.mp3",
@@ -479,7 +479,7 @@
   },
   {
     "category": "Holiday Gift",
-    "icon": "/assets/images/gameicons/ctrholiday/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctrholiday/classic/64.webp",
     "tracks": [
       {
         "path": "holidaygift/game_music.ogg",
@@ -501,7 +501,7 @@
   },
   {
     "category": "Idle Candy",
-    "icon": "/assets/images/gameicons/idlecandy/classic/128.webp",
+    "icon": "/assets/images/gameicons/idlecandy/classic/64.webp",
     "tracks": [
       {
         "path": "idlecandy/frenzy_mode.ogg",
@@ -531,7 +531,7 @@
   },
   {
     "category": "Magic",
-    "icon": "/assets/images/gameicons/ctrmagic/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctrmagic/classic/64.webp",
     "tracks": [
       {
         "path": "magic/boss_game_music.ogg",
@@ -585,7 +585,7 @@
   },
   {
     "category": "Merge",
-    "icon": "/assets/images/gameicons/merge/classic/128.webp",
+    "icon": "/assets/images/gameicons/merge/classic/64.webp",
     "tracks": [
       {
         "path": "merge/MU_BOSS.ogg",
@@ -623,7 +623,7 @@
   },
   {
     "category": "My Om Nom",
-    "icon": "/assets/images/gameicons/myomnom/classic/128.webp",
+    "icon": "/assets/images/gameicons/myomnom/classic/64.webp",
     "tracks": [
       {
         "path": "myomnom/dance_3.mp3",
@@ -692,7 +692,7 @@
   },
   {
     "category": "Ringtone",
-    "icon": "/assets/images/gameicons/ctr/browser/128.webp",
+    "icon": "/assets/images/gameicons/ctr/browser/64.webp",
     "tracks": [
       {
         "path": "ringtone/cuttherope_level_theme.mp3",
@@ -719,7 +719,7 @@
   },
   {
     "category": "Time Travel",
-    "icon": "/assets/images/gameicons/ctrtt/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctrtt/classic/64.webp",
     "tracks": [
       {
         "path": "timetravel/disco_loop.ogg",
@@ -749,7 +749,7 @@
   },
   {
     "category": "Triple Treat",
-    "icon": "/assets/images/gameicons/tripletreat/classic/128.webp",
+    "icon": "/assets/images/gameicons/tripletreat/classic/64.webp",
     "tracks": [
       {
         "path": "tripletreat/menu_music.mp3",
@@ -836,7 +836,7 @@
   },
   {
     "category": "Cut the Rope 3",
-    "icon": "/assets/images/gameicons/ctr3/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctr3/classic/64.webp",
     "tracks": [
       {
         "path": "ctr3/music_Cave.ogg",
@@ -890,7 +890,7 @@
   },
   {
     "category": "Cut the Rope Remastered",
-    "icon": "/assets/images/gameicons/ctrremastered/classic/128.webp",
+    "icon": "/assets/images/gameicons/ctrremastered/classic/64.webp",
     "tracks": [
       {
         "path": "remastered/music_Boardgame_Birthday.ogg",
