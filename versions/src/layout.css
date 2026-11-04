@@ -1,0 +1,36 @@
+.container {overscroll-behavior: none}
+
+.gamescreen, .gamecircle, .versionscreen {transition: none}
+
+.versionbackdrop {
+    display: none; position: fixed;
+    top: 0; right: 0;
+    width: 50vw; height: 100vh;
+    height: 100dvh; z-index: 99998;
+    background: rgba(0,0,0,0.5); pointer-events: none;
+}
+
+.gameopen .versionbackdrop {display: block}
+
+.versionscreen, .versionscreen.active {background: transparent}
+
+.versionscreen {
+    display: none; height: 100dvh;
+    overscroll-behavior: contain;
+}
+
+.versionscreen.active {display: flex}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+@media (max-width: 650px) {
+    .versionbackdrop {width: 100vw}
+
+    .gameopen .gamepanels {visibility: hidden}
+
+    .gamescreen.slideleft {transform: none}
+
+    .container, .gamescreen {
+        height: 100dvh; min-height: 100dvh;
+    }
+}

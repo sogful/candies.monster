@@ -43,7 +43,7 @@ function hasdownload(downloads) {
     return (downloads || []).some(download => cleanvalue(download?.url) && download.kind !== "symbols");
 }
 
-function resolveiconpath(p) {
+function resolveiconpath(p, size = 64) {
     const value = cleanvalue(p);
     if (!value) return "";
     if (value.startsWith("http://") || value.startsWith("https://")) return value;
@@ -51,12 +51,12 @@ function resolveiconpath(p) {
     if (value.startsWith("/") && !value.startsWith(base)) return value;
     const relative = value.replace(/^\/?assets\/images\/gameicons\//, "");
     const key = relative.replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
-    return `${base}${key}/64.webp`;
+    return `${base}${key}/${size > 64 ? 128 : 64}.webp`;
 }
 
-function resolveiconsrcset(p) {
+function resolveiconsrcset(p, size = 64) {
     if (!cleanvalue(p)) return "";
-    return `${resolveiconpath(p)} 1x`;
+    return `${resolveiconpath(p, size)} 1x`;
 }
 
 function resolverawiconpath(p) {

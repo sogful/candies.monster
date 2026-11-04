@@ -54,6 +54,11 @@ function prepareplatform(platform) {
     platform.games = parsed.games.map(game => ({...game, iosstuff: platform.name === "ios"}));
     platform.games.sort((first, second) => second.importance - first.importance);
     platform.cache = parsed.versionscache;
+    platform.games.forEach(game => {
+        const key = game.verkey ?? game.package;
+        const keys = Array.isArray(key) ? key : [key];
+        game.available = keys.some(value => (platform.cache.get(value) || []).some(version => hasdownload(version.downloads)));
+    });
     updatecounts(platform.name, platform.cache);
     platform.text = null;
 }
@@ -67,9 +72,7 @@ function mountplatform(platform) {
             const icon = document.createElement("div");
             icon.className = "gameicon clickable";
             const key = game.verkey ?? game.package;
-            const keys = Array.isArray(key) ? key : [key];
-            const available = keys.some(value => (platform.cache.get(value) || []).some(version => hasdownload(version.downloads)));
-            icon.classList.toggle("unavailable", !available);
+            icon.classList.toggle("unavailable", !game.available);
             icon.dataset.gameid = Array.isArray(key) ? key[0] : key;
             const image = document.createElement("img");
             image.loading = "lazy";
@@ -78,12 +81,11 @@ function mountplatform(platform) {
             image.draggable = false;
             image.alt = Array.isArray(game.name) ? game.name[0] : game.name;
             image.addEventListener("error", () => {
-                image.srcset = resolveiconsrcset("unknown/default");
-                image.src = resolveiconpath("unknown/default");
+                image.dataset.source = "unknown/default";
+                updateicon(image, image.getBoundingClientRect().width);
             }, {once: true});
             const source = (Array.isArray(game.icon) ? game.icon[0] : game.icon) || "unknown/default";
-            image.srcset = resolveiconsrcset(source);
-            image.src = resolveiconpath(source);
+            image.dataset.source = source;
             icon.appendChild(image);
             elements.set(icon, game);
             fragment.appendChild(icon);
@@ -214,17 +216,33 @@ function packcircle(games, width, height) {
     return placed;
 }
 
+function updateicon(image, size) {
+    const source = resolveiconpath(image.dataset.source, size);
+    if (image.getAttribute("src") === source) return;
+    image.srcset = resolveiconsrcset(image.dataset.source, size);
+    image.src = source;
+}
+
 function layoutplatform(platform) {
     if (!platform.nodes) return;
-    const mobile = window.innerWidth < 650;
+    const mobile = window.innerWidth <= 650;
     const bounds = platform.circle.getBoundingClientRect();
     const width = bounds.width || Math.min(window.innerWidth * 0.9, 800);
     const height = bounds.height || Math.max(Math.min(window.innerHeight * 0.9, 800), 600);
-    const stamp = mobile ? "mobile" : `${width},${height}`;
+    const stamp = mobile ? `mobile,${window.innerWidth}` : `${width},${height}`;
     if (platform.stamp === stamp) return;
     platform.stamp = stamp;
+    const nodes = [...platform.nodes];
+    if (mobile) nodes.sort((first, second) => Number(elements.get(second).available) - Number(elements.get(first).available));
+    nodes.forEach((node, index) => {
+        if (platform.circle.children[index] !== node) platform.circle.insertBefore(node, platform.circle.children[index] || null);
+    });
     if (mobile) {
-        platform.nodes.forEach(node => node.removeAttribute("style"));
+        const size = Math.min(80, Math.max(50, 50 + 30 * ((window.innerWidth - 220) / 380)));
+        platform.nodes.forEach(node => {
+            node.removeAttribute("style");
+            updateicon(node.querySelector("img"), size);
+        });
         return;
     }
     const positions = packcircle(platform.games, width, height);
@@ -235,6 +253,7 @@ function layoutplatform(platform) {
         node.style.left = `${position.left}px`;
         node.style.top = `${position.top}px`;
         node.style.position = "absolute";
+        updateicon(node.querySelector("img"), position.size);
     });
 }
 
@@ -242,7 +261,7 @@ function layoutplatform(platform) {
 
 function containerscroll(game) {
     const platform = platforms[game?.iosstuff ? 1 : 0];
-    container.scrollTo({left: platform.screen.offsetLeft, behavior: "smooth"});
+    container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
 }
 
 function activateplatform(platform, scroll = true) {
