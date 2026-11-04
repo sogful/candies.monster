@@ -2,6 +2,7 @@ import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./
 import {loadversions} from "./versions.js";
 import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
+import {preparekeys, gameroute, readhash, revealroute, startlinks} from "./links.js";
 import "/assets/static/favicon.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -16,6 +17,7 @@ let activeplatform = platforms[0];
 let currentgame = null;
 let currentloadid = 0;
 let resizeframe = 0;
+let navigation = 0;
 
 document.querySelector(".loading")?.remove();
 
@@ -54,6 +56,7 @@ function prepareplatform(platform) {
     if (!parsed.games.length) throw new Error(`No games in ${platform.url}`);
     platform.games = parsed.games.map(game => ({...game, iosstuff: platform.name === "ios"}));
     platform.games.sort((first, second) => second.importance - first.importance);
+    preparekeys(platform.games);
     platform.cache = parsed.versionscache;
     platform.games.forEach(game => {
         const key = game.verkey ?? game.package;
@@ -184,16 +187,18 @@ function containerscroll(game) {
     container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
 }
 
-function activateplatform(platform, scroll = true) {
+function activateplatform(platform, scroll = true, write = true) {
     if (currentgame) return;
     activeplatform = platform;
+    if (write) {navigation++; document.documentElement.classList.remove("routepending"); links.write({platform: platform.name})}
     document.querySelector("#navios").style.display = platform.name === "ios" ? "none" : "flex";
     document.querySelector("#navandroid").style.display = platform.name === "ios" ? "flex" : "none";
     void fetchplatform(platform);
     if (scroll) container.scrollTo({left: platform.screen.offsetLeft, behavior: "smooth"});
 }
 
-async function selectgame(game) {
+async function selectgame(game, write = true) {
+    if (write) {navigation++; document.documentElement.classList.remove("routepending"); links.write(gameroute(game))}
     const loadid = ++currentloadid;
     const platform = platforms[game.iosstuff ? 1 : 0];
     activeplatform = platform;
@@ -204,14 +209,16 @@ async function selectgame(game) {
     await loadversions(packages, game, loadid, alreadyshown, platform.cache, id => id === currentloadid, containerscroll);
 }
 
-function goback() {
+function goback(write = true) {
+    if (write) {navigation++; document.documentElement.classList.remove("routepending")}
     currentloadid++;
     const game = currentgame;
     platforms.forEach(platform => platform.screen.classList.remove("slideleft"));
     document.querySelector("#versionscreen").classList.remove("active");
     document.querySelector(".backbutton").classList.remove("active");
     currentgame = null;
-    activateplatform(game ? platforms[game.iosstuff ? 1 : 0] : activeplatform, false);
+    activateplatform(game ? platforms[game.iosstuff ? 1 : 0] : activeplatform, false, false);
+    if (write) links.write({platform: activeplatform.name});
     layoutplatform(activeplatform);
     if (game) containerscroll(game);
     document.body.classList.remove("gameopen");
@@ -233,7 +240,7 @@ document.addEventListener("click", event => {
         goback();
     } else if (control.classList.contains("retryplatform")) {
         const platform = platforms.find(item => item.name === control.dataset.platform);
-        if (platform) void fetchplatform(platform);
+        if (platform) void fetchplatform(platform).then(() => links.restore(true));
     } else if (control.classList.contains("scrollnav")) {
         activateplatform(platforms[control.id === "navios" ? 1 : 0]);
     }
@@ -254,4 +261,34 @@ window.addEventListener("resize", () => {
     });
 });
 
+async function restoreview(route) {
+    const request = ++navigation;
+    document.documentElement.classList.add("routepending");
+    try {
+        if (currentgame) goback(false);
+        const platform = platforms[route.platform === "ios" ? 1 : 0];
+        activateplatform(platform, false, false);
+        await fetchplatform(platform);
+        if (request !== navigation) return;
+        prepareplatform(platform);
+        const game = platform.games?.find(item => item.routekey === route.game);
+        if (game) {
+            await selectgame(game, false);
+            if (request !== navigation) return;
+            containerscroll(game);
+            await revealroute(game, route, () => request === navigation);
+        } else {
+            container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
+        }
+        if (request !== navigation) return;
+        document.querySelector(".archiveinfo").open = route.info;
+    } finally {
+        if (request === navigation) document.documentElement.classList.remove("routepending");
+    }
+}
+
+const links = startlinks(restoreview);
+if (!location.hash) links.write({platform: "android"}, true);
+if (readhash().game) document.documentElement.classList.add("routepending");
 platforms.forEach(platform => {void fetchplatform(platform)});
+void links.restore(true);

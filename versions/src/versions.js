@@ -1,3 +1,4 @@
+import {packagekey, shareheading} from "./links.js";
 import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel} from "./load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -190,9 +191,11 @@ function packageheader(game, index, pkg) {
     const value = key => Array.isArray(game[key]) ? game[key][index] : game[key];
     const header = document.createElement("div");
     header.className = "gameinfo";
+    header.dataset.routepackage = packagekey(game, index);
     const name = document.createElement("div");
     name.className = "gamename";
     name.textContent = value("name");
+    shareheading(name, game, index);
     header.appendChild(name);
     if (pkg != null && String(pkg).trim()) {
         const identifier = document.createElement("div");
@@ -211,9 +214,11 @@ function packageheader(game, index, pkg) {
     return header;
 }
 
-function versionpanel(version, fallback, legacy) {
+function versionpanel(version, fallback, legacy, game, index) {
     const panel = document.createElement("div");
     panel.className = "versionpanel";
+    panel.dataset.routepackage = packagekey(game, index);
+    panel.dataset.version = version.version;
     panel.classList.toggle("unavailable", version.unavailable);
     const historical = !version.icon && legacy;
     const source = version.icon || (historical && legacyicons?.[version.version]) || fallback || "ctr/free";
@@ -224,11 +229,12 @@ function versionpanel(version, fallback, legacy) {
             <img src="${icon}" srcset="${srcset}" alt="" draggable="false" loading="lazy" decoding="async" width="60" height="60"${historical ? ` data-legacyversion="${version.version}"` : ""}>
         </a>
         <div class="versioninfo">
-            <div class="version">${version.version}</div>
+            <div class="version">${downloadattribute(version.version)}</div>
             ${version.details ? `<div class="details">${version.details}</div>` : ""}
             <div class="versionbuttons">${version.downloads.map(download => renderdownloadbutton(download, version.version)).join("")}</div>
         </div>
     `;
+    shareheading(panel.querySelector(".version"), game, index, version.version);
     return panel;
 }
 
@@ -255,6 +261,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
         const grouped = packagelist.length > 1;
         list.classList.toggle("multipackage", grouped);
         info.replaceChildren();
+        info.dataset.routepackage = packagekey(game);
         info.style.display = grouped ? "none" : "";
         if (!grouped) {
             const header = packageheader(game, 0, packagelist[0]);
@@ -276,7 +283,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
                 column.appendChild(target);
                 fragment.appendChild(column);
             }
-            return {pkg, versions, target, fallback: Array.isArray(game.icon) ? game.icon[index] || game.icon[0] : game.icon};
+            return {pkg, index, versions, target, fallback: Array.isArray(game.icon) ? game.icon[index] || game.icon[0] : game.icon};
         });
         if (grouped) {
             for (let index = 0; index + 1 < sections.length; index++) {
@@ -302,7 +309,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
                 if (!iscurrent(loadid)) return;
                 const batch = document.createDocumentFragment();
                 section.versions.slice(offset, offset + 32).forEach(version => {
-                    batch.appendChild(versionpanel(version, section.fallback, packagelist.includes("com.zeptolab.ctr.ads")));
+                    batch.appendChild(versionpanel(version, section.fallback, packagelist.includes("com.zeptolab.ctr.ads"), game, section.index));
                     visible++;
                 });
                 section.target.appendChild(batch);
