@@ -62,3 +62,24 @@
     height: var(--circleheight, 600px); min-height: 0;
     flex-shrink: 0; margin: auto 0;
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.scrollnav {
+    top: auto; bottom: 0.5em;
+    transform: none;
+}
+
+.backbutton {
+    top: auto; bottom: 0.5em;
+}
+
+.archiveinfo {
+    top: 0.5em; right: 0.5em;
+    bottom: auto; left: auto;
+}
+
+.infopopup {
+    top: 2.5em; right: 0;
+    bottom: auto; left: auto;
+}
