@@ -816,6 +816,10 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 ,v2.1.0,ctr2/archivecmcc210,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.1.0-2010-87da06a1a2ec.apk,,"armeabi, mips, x86",36.26 MB,archive
 ,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.1.0.zip,,armeabi,2.09 MB,symbols,(exports)
 ,v2.3.8,ctr2/archivecmcc238,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.cmcc/chinaarchive/2.3.8-3600-97f7e648dbd0.apk,,armeabi,36.34 MB,archive
++ Cut the Rope 2,com.zeptolab.ctr2.f2p.samsung,ctr2/androidv14,samsung galaxy store,9,/assets/images/gameicons/ctr2/androidv14/raw.png
+
+,v1.1.7,ctr2/androidv14,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.samsung/dragonland/1.1.7-812117-8119ae6df12c.apk,,"armeabi-v7a, x86",37.69 MB,archive,
+,v1.6.6,ctr2/androidv14,https://cdn.candies.monster/apks/com.zeptolab.ctr2.f2p.samsung/dragonland/1.6.6-1560991-6fb7050160ca.apk,,"armeabi-v7a, x86",44.85 MB,archive,
 Cut the Rope: Origins PTC,com.zeptolab.ctrorigins,ctr/modern,"this game had a lot of different iterations besides these versions, and ALL of them are miserable.",4,/assets/images/gameicons/ctr/androidv400/raw.png
 ,v0.27.0,ctr/modern,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-origins/cut-the-rope-origins-0-27-0-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v0.26.1,ctr/modern,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-origins/cut-the-rope-origins-0-26-1-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -865,6 +869,7 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6
 ,v1.0.1,ctrtt/classic,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-time-travel-2/cut-the-rope-time-travel-1-0-1-release/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.18.0,ctrtt/androidgallery,https://apk.cafe/download?file_id=2204289/cut-the-rope-time-travel,
 ,v1.18.0,ctrtt/androidgallery,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free.google/1.18.0.7z,,arm64-v8a,2.30 MB,symbols,(exports)
+,v1.0,ctrtt/androidifree102,https://cdn.candies.monster/apks/com.zeptolab.timetravel.free.google/dragonland/1.0-712103-b8aa406fd728.apk,,"armeabi, armeabi-v7a, x86",30.53 MB,archive,
 + Cut the Rope Time Travel HD,com.zeptolab.timetravel.paid.google,ctrtt/classic,,6
 ,v1.4.2,ctrtt/androidgoldv142,https://theawesomeblue.github.io/ctrfiles/download/ctrtt/Cut%20the%20Rope%20Time%20Travel%20HD%20v1.4.2.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.2.1,ctrtt/classic,https://theawesomeblue.github.io/ctrfiles/download/ctrtt/Cut%20the%20Rope%20Time%20Travel%20HD%20v1.2.1.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -874,6 +879,14 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6
 ,v1.9.3,ctrtt/androidgoldv193,https://drive.google.com/file/d/1Yc7uvWj0en12SGU6UbT7heUQRJgiW7kT/view,
 ,v1.4.2,ctrtt/androidgoldv142,https://archive.org/download/cut-the-rope-time-travel-hd-1.4.2-apk/5_cut_the_rope_time_travel_hd.apk,
 ,v1.4,ctrtt/androidamazongallery,https://archive.org/download/cut-the-rope-time-travel-hd-1.4/Cut_the_Rope_Time_Travel_HD_1.4.apk,
+,v1.0 (build 712103),ctrtt/androidgoldv111,https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.google/dragonland/1.0-712103-9ac976dd3e9e.apk,,"armeabi, armeabi-v7a, x86",29.36 MB,archive,build 712103
+,v1.0 (build 734103),ctrtt/androidgoldv111,https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.google/dragonland/1.0-734103-878ef90ca3e8.apk,,"armeabi, armeabi-v7a, x86",35.74 MB,archive,build 734103
+,v1.1,ctrtt/androidgoldv111,https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.google/dragonland/1.1-812111-de989a4aa230.apk,,"armeabi, armeabi-v7a, x86",33.99 MB,archive,
+,v1.2,ctrtt/androidgoldv111,https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.google/dragonland/1.2-812120-7e57202764b4.apk,,"armeabi, armeabi-v7a, x86",39.94 MB,archive,
+,v1.2.2,ctrtt/androidgoldv111,https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.google/dragonland/1.2.2-812122-a9515eb5a035.apk,,"armeabi, armeabi-v7a, x86",39.02 MB,archive,
+,v1.3.0,ctrtt/androidgoldv111,https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.google/dragonland/1.3.0-812130-2718749c00b5.apk,,"armeabi, armeabi-v7a, x86",40.66 MB,archive,
+,v1.3.1,ctrtt/androidgoldv111,https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.google/dragonland/1.3.1-812131-55e469cdd48e.apk,,"armeabi, armeabi-v7a, x86",40.66 MB,archive,
+,v1.3.2,ctrtt/androidgoldv111,https://cdn.candies.monster/apks/com.zeptolab.timetravel.paid.google/dragonland/1.3.2-812132-28ccd850a5e2.apk,,"armeabi, armeabi-v7a, x86",39.75 MB,archive,
 + Cut the Rope Time Travel,com.zeptolab.ctrtt.subscr.tier,ctrtt/classic,Gameloft,6
 ,v1.14.1 (all unlocked),ctrtt/classic,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/Cut.the.Rope.Time.Travel.1.14.1.Gameloft.Everything.Unlocked.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.14.1,ctrtt/classic,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/Cut.the.Rope.Time.Travel.1.14.1.Gameloft.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -1255,6 +1268,7 @@ Cut the Rope Holiday Gift,com.zeptolab.cuttheropexmas.google,ctrholiday/classic,
 ,v1.6.1,ctrholiday/classic,https://cut-the-rope-holiday-gift.en.uptodown.com/android/download/54256,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://theawesomeblue.github.io/ctrfiles/download/ctrhg/Cut%20the%20Rope%20Holiday%20Gift%201.6.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.6,ctrholiday/classic,https://archive.org/download/cut-the-rope-holiday-gift-1.6.1-apk/2_cut_the_rope_holiday_gift.apk,
+,v1.7,ctrholiday/androidpremium180,https://cdn.candies.monster/apks/com.zeptolab.cuttheropexmas.google/dragonland/1.7-10-4246f86349c3.apk,,"armeabi, x86",29.81 MB,archive,
 + Cut the Rope Holiday Gift,com.zeptolab.holiday.premium.tier,ctrholiday/classic,premium,5
 ,v1.8.0 (android 14+ fix),ctrholiday/classic,https://theawesomeblue.github.io/ctrfiles/download/ctrhg/Cut%20The%20Rope%20Holiday%20Gift%20(v1.8.0)%20(SDK24%20+%20Wider%20Screen%20Support)%20(saulfabreg).apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.8.0,ctrholiday/androidpremium180,https://theawesomeblue.github.io/ctrfiles/download/ctrhg/Cut%20The%20Rope%20Holiday%20Gift%201.8.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
