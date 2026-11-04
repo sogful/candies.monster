@@ -5,23 +5,23 @@ import {hasdownload, resolveiconpath, resolveiconsrcset, resolveversionlabel} fr
 const debugshowleaks = true;
 const debugshowapks = false;
 const buttonmap = [
-    {domain: "apkmirror.com", icon: "apkmirror.png"},
-    {domain: "apkpure.com", icon: "apkpure.png"},
-    {domain: "apkpure.net", icon: "apkpure.png"},
-    {domain: "uptodown.com", icon: "uptodown.png"},
-    {domain: "pdalife.to", icon: "pdalife.png"},
-    {domain: "apkbe.com", icon: "apkbe.png"},
-    {domain: "downzen.com", icon: "downzen.png"},
+    {domain: "apkmirror.com", icon: "apkmirror.webp"},
+    {domain: "apkpure.com", icon: "apkpure.webp"},
+    {domain: "apkpure.net", icon: "apkpure.webp"},
+    {domain: "uptodown.com", icon: "uptodown.webp"},
+    {domain: "pdalife.to", icon: "pdalife.webp"},
+    {domain: "apkbe.com", icon: "apkbe.webp"},
+    {domain: "downzen.com", icon: "downzen.webp"},
 
-    {domain: "mega.io", icon: "mega.png"},
-    {domain: "mega.nz", icon: "mega.png"},
-    {domain: "mediafire.com", icon: "mediafire.png"},
-    {domain: "archive.org", icon: "internetarchive.png"},
+    {domain: "mega.io", icon: "mega.webp"},
+    {domain: "mega.nz", icon: "mega.webp"},
+    {domain: "mediafire.com", icon: "mediafire.webp"},
+    {domain: "archive.org", icon: "internetarchive.webp"},
 
     // i know this is dumb but i haven't seen anyone besides me and blue putting this many apks and ipas onto github
-    {domain: "github.com", icon: "ctrhome.png"},
-    {domain: "githubusercontent.com", icon: "ctrhome.png"},
-    {domain: "github.io", icon: "ctrhome.png"}
+    {domain: "github.com", icon: "ctrhome.webp"},
+    {domain: "githubusercontent.com", icon: "ctrhome.webp"},
+    {domain: "github.io", icon: "ctrhome.webp"}
 ];
 const prepared = new WeakMap();
 let lastview = null;
@@ -56,24 +56,24 @@ function renderdownloadbutton(download, version) {
     const note = Array.from(new Set([download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))).join("; ");
     const annotation = note ? `<div class="downloadnote">${downloadattribute(note)}</div>` : "";
     const size = downloadsize(download.size);
-    const button = download.kind === "symbols" ? "symbols.png" : download.arch && download.size ? "cdn.png" :
-        download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.png";
+    const button = download.kind === "symbols" ? "symbols.webp" : download.arch && download.size ? "cdn.webp" :
+        download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.webp";
     const details = downloadattribute([
         version, download.url, download.kind === "symbols" ? download.label || "debug symbols" : "",
         download.arch, size, note,
-        button === "other.png" ? "⚠️ this version is from an unpopular source" : ""
+        button === "other.webp" ? "⚠️ this version is from an unpopular source" : ""
     ].filter(Boolean).join("\n"));
     const attributes = `href="${downloadattribute(download.url)}" target="_blank" rel="noopener" title="${details}" aria-label="${details}"`;
     if (download.kind === "symbols") {
         const label = downloadattribute(download.label || "debug symbols");
         return `<a ${attributes} class="clickable cdnbutton">
-            <img src="/assets/images/downloadbuttons/symbols.png" alt="" draggable="false" loading="lazy" decoding="async">
+            <img src="/assets/images/downloadbuttons/symbols.webp" alt="" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div>symbols</div><div>${label}</div>${annotation}</div>
         </a>`;
     }
     if (download.arch && download.size) {
         return `<a ${attributes} class="clickable cdnbutton">
-            <img src="/assets/images/downloadbuttons/cdn.png" draggable="false" loading="lazy" decoding="async">
+            <img src="/assets/images/downloadbuttons/cdn.webp" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div class="downloadmeta">${downloadattribute(download.arch)}</div><div class="downloadmeta">${downloadattribute(size)}</div>${annotation}</div>
         </a>`;
     }
