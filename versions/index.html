@@ -60,19 +60,12 @@
 
         p {margin: 0; z-index: 99; overflow: hidden; max-height: 5em}
 
-        .tiny {
-            position: fixed; bottom: 0.3em; width: 90%;
-            text-align: center; line-height: 0.9;
-            color: rgb(223, 223, 223); font-size: 0.61em;
+        .verytiny {
+            color: rgb(223, 223, 223); font-size: 0.5em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
-            pointer-events: auto; padding-bottom: 5px;
-            box-sizing: border-box; paint-order: stroke fill;
-        }
-        .tiny a {pointer-events: auto}
-        .oldstuff {
-            pointer-events: auto; text-align: right; opacity: 0.5;
-            top: 0.3em !important; right: 0.3em !important;
+            paint-order: stroke fill; 
+            margin-bottom: 1em; margin-top: 0.5em;
         }
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -91,7 +84,7 @@
             width: 2em;
         }
         .infopopup {
-            position: absolute; bottom: 3.5em;
+            position: absolute; bottom: 2.5em;
             left: 0; box-sizing: border-box;
             width: min(32rem, calc(100vw - 1.5rem));
             max-height: calc(100dvh - 6rem); overflow-y: auto;
@@ -539,20 +532,22 @@
                 </div>
             </header>
             there are currently <i><span class="androidcount">...</span></i> android versions and <i><span class="ioscount">...</span></i> ios versions available! <br>
-            this collection also contains <span class="symbolcount">...</span> debug symbols, though most aren't complete enough to make reverse engineering easier.
-            versions without links: <span class="missingcount">...</span>.
-
-            none of the game files are stored on this domain. Whether the smaller developers shown actually have rights to Om Nom or not is purely speculative!<br><br>
-            some apps might be slightly modified, if the modifications are known they'll be mentioned in the version number or game description.
-            <p class="tiny">
-                
-            </p>
-            <a class="archivebutton clickable" href="https://example.com" target="_blank" rel="noopener">
-                <span><img class="joinicon" src="https://cdn.discordapp.com/icons/1112531659078762617/a_76dd36a5ef79da45a0663306c812d61b.webp?animated=true&size=32" draggable="false">Join Cut the Rope Home!</span>
+            this collection also contains <i><span class="symbolcount">...</span></i> debug symbol downloads, which could be helpful for reverse engineering.
+            <br><br>
+            please not that most apps are <i>not</i> checked for malware! though unlikely to be malicious, if you want to ensure your device is safe, use <img width="15" src="/assets/images/downloadbuttons/apkmirror.png"> apkmirror, <img width="15" src="/assets/images/downloadbuttons/apkpure.png"> apkpure or <img width="15" src="/assets/images/downloadbuttons/ctrhome.png"><img width="15" src="/assets/images/downloadbuttons/cdn.png"> our own reuploads! some apps might be slightly modified, if the modifications are known they'll be mentioned in the version number or game description.
+            <br>
+            whether the smaller developers shown actually have rights to om nom or not is purely speculative.
+            <br><br>
+            about <span class="missingcount">...</span> versions are <span style="color:#ffa5a5">missing</span>, and more are yet to be found, so if you have something to add you can
+            <br>
+            <a class="archivebutton clickable" href="https://discord.gg/CUXK9aUTdz" target="_blank" rel="noopener">
+                <span><img class="joinicon" src="https://cdn.discordapp.com/icons/1112531659078762617/a_76dd36a5ef79da45a0663306c812d61b.webp?animated=true&size=32" draggable="false">Join CtR Home on Discord!</span>
             </a>
+            <br>
+            and send in your findings to <a href="https://discord.com/channels/1112531659078762617/1439356053719351376">#<img width="15" src="/assets/images/search.png">version-search</a>! also mention <a href="https://discord.com/users/763502120333869116">@cvgd</a> if you want to make sure it gets added specifically to this site.
+            <p class="verytiny">see the <a href="old" im old!>old version of this page</a> for just the main ctr uploads<br>for legal, email <a href="mailto:this.address.isnt.actually.routed.anywhere@candies.monster">this.address.isnt.actually.routed.anywhere@candies.monster</a></p>
         </section>
     </details>
-    <p class="tiny oldstuff"><a href="old" im old!>Old version (CTR only)</a></p>
 
     <div class="scrollnav right" id="navios" style="cursor:pointer">
         <span>IOS</span>
