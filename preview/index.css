@@ -1,10 +1,10 @@
 @font-face {
     font-family: "Good Dog";
-    src: /*universal*/ url("/assets/fonts/gooddog.woff");
+    src: /*universal*/ url("/assets/fonts/gooddog.woff2");
 }
 @font-face {
     font-family: "JetBrains Mono";
-    src: /*universal*/ url("/assets/fonts/jetbrainsmono.woff");
+    src: /*universal*/ url("/assets/fonts/jetbrainsmono.woff2");
 }
 
 body {

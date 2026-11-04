@@ -1,0 +1,13 @@
+@font-face {
+    font-family: "Good Dog"; font-display: swap;
+    src: url("/assets/fonts/knmaiyuan.woff2") format("woff2");
+    unicode-range: U+4E00, U+4E4B, U+4F20, U+524D, U+5272, U+5408, U+589E, U+5B50, U+5B9E, U+5BA4, U+5F3A, U+6210, U+65C5, U+65F6, U+6CD5, U+7206, U+7248, U+73A9, U+7834, U+7A7F, U+7EF3, U+884C, U+8D77, U+8D8A, U+95F4, U+9A8C, U+9B54, U+FF1A;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+@font-face {
+    font-family: "Good Dog"; font-display: swap;
+    src: url("/assets/fonts/cafedongdong.woff2") format("woff2");
+    unicode-range: U+B354, U+B85C, U+CEF7, U+D504;
+}
