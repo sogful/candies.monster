@@ -1,4 +1,6 @@
-Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the newer versions..),10,/assets/images/gameicons/ctr/androidgallery3/raw.png,/assets/images/gameicons/ctr/androidgallery4/raw.png,/assets/images/gameicons/ctr/androidv252/raw.png,/assets/images/gameicons/ctr/androidgallery5/raw.png,/assets/images/gameicons/ctr/androidv3790/raw.png,/assets/images/gameicons/ctr/androidgallery6/raw.png,/assets/images/gameicons/ctr/androidgallery7/raw.png,/assets/images/gameicons/ctr/christmas2018/raw.webp,/assets/images/gameicons/ctr/strawberrybox/raw.webp,/assets/images/gameicons/ctr/valentinesmodern/raw.webp,/assets/images/gameicons/ctr/androidv351/raw.png,/assets/images/gameicons/ctr/androidbackground/raw.png,/assets/images/gameicons/ctr/androidbackground2/raw.png,/assets/images/gameicons/ctr/androidbackground3/raw.png,/assets/images/gameicons/ctr/androidbackground4/raw.png,/assets/images/gameicons/ctr/androidforeground/raw.png,/assets/images/gameicons/ctr/androidforeground2/raw.png,/assets/images/gameicons/ctr/androidforeground3/raw.png,/assets/images/gameicons/ctr/androidforeground4/raw.png,/assets/images/gameicons/ctr/androidforeground5/raw.png,/assets/images/gameicons/ctr/androidforeground6/raw.png
+Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the newer versions..),10,/assets/images/gameicons/ctr/androidgallery3/raw.png,/assets/images/gameicons/ctr/androidgallery4/raw.png,/assets/images/gameicons/ctr/androidv252/raw.png,/assets/images/gameicons/ctr/androidgallery5/raw.png,/assets/images/gameicons/ctr/androidv3790/raw.png,/assets/images/gameicons/ctr/androidgallery6/raw.png,/assets/images/gameicons/ctr/androidgallery7/raw.png,/assets/images/gameicons/ctr/christmas2018/raw.webp,/assets/images/gameicons/ctr/strawberrybox/raw.webp,/assets/images/gameicons/ctr/valentinesmodern/raw.webp,/assets/images/gameicons/ctr/androidv351/raw.png,/assets/images/gameicons/ctr/androidbackground/raw.png,/assets/images/gameicons/ctr/androidbackground2/raw.png,/assets/images/gameicons/ctr/androidbackground3/raw.png,/assets/images/gameicons/ctr/androidbackground4/raw.png,/assets/images/gameicons/ctr/androidforeground/raw.png,/assets/images/gameicons/ctr/androidforeground2/raw.png,/assets/images/gameicons/ctr/androidforeground3/raw.png,/assets/images/gameicons/ctr/androidforeground4/raw.png,/assets/images/gameicons/ctr/androidforeground5/raw.png,/assets/images/gameicons/ctr/androidforeground6/raw.png,/assets/images/gameicons/ctr/free/raw.webp
+,v2.4.2,ctr/androidgallery3,https://cdn.candies.monster/apks/com.zeptolab.ctr.ads/4pda/2.4.2-912242-db1c54759d32.apk,,"armeabi, x86",27.7mb,archive,,
+,v2.3.9,ctr/androidgallery3,https://cdn.candies.monster/apks/com.zeptolab.ctr.ads/4pda/2.3.9-35-e9c20f61bbaa.apk,,"armeabi, x86",24.3mb,archive,,
 ,v3.52.2,ctr/androidv3790,https://apk.gold/download?file_id=2659882/cut-the-rope-full-free,,x86,55.9mb,,,
 ,v3.27.0,ctr/free,https://downzen.com/en/android/cut-the-rope-full-free/download/3270/,,arm64-v8a,49.7mb,,,
 ,v4.3.0,,https://apkfab.com/cut-the-rope-full-free/com.zeptolab.ctr.ads/download?sha1=0ba2a52fc0c9365cbc902220c2caad63d77131e8,,arm64-v8a,282.4mb
@@ -1434,6 +1436,8 @@ Cut the Rope: Magic,com.zeptolab.ctrm.free.google,ctrmagic/classic,witchcraft,6,
 + Cut the Rope: Magic,com.zeptolab.ctrm.subscriap.tier.ucbrowser,ctrmagic/androidgallery2,uc browser,6,/assets/images/gameicons/ctrmagic/androidgallery2/raw.png
 
 ,v1.1.0,ctrmagic/androidgallery2,https://cdn.candies.monster/apks/com.zeptolab.ctrm.subscriap.tier.ucbrowser/megacollection/1.1.0-1521766-6f8e5ec4ee7c.apk,,"armeabi-v7a, x86",37.5mb,archive
++ Cut the Rope: Magic,com.zeptolab.ctrm.no_connectivity,ctrmagic/androidgallery2,samsung retail demo,6,/assets/images/gameicons/ctrmagic/androidgallery2/raw.png
+,v1.1.2,ctrmagic/androidgallery2,https://cdn.candies.monster/apks/com.zeptolab.ctrm.no_connectivity/4pda/1.1.2-1529691-f6b6d48d8144.apk,,"armeabi-v7a, x86",35.7mb,archive,,
 Cut the Rope Experiments,com.zeptolab.ctrexperiments.ads,ctrexp/classic,,6,/assets/images/gameicons/ctrexp/androidgallery2/raw.png,/assets/images/gameicons/ctrexp/androidbackground/raw.png,/assets/images/gameicons/ctrexp/androidforeground/raw.png,/assets/images/gameicons/ctrexp/androidgallery3/raw.png,/assets/images/gameicons/ctrexp/androidgallery/raw.png
 ,v1.19.0,,https://apkfab.com/cut-the-rope-experiments-free/com.zeptolab.ctrexperiments.ads/download?sha1=ea06e4ce69e6f6fa51f51564faa5ceb46c3c7621,,arm64-v8a,99.7mb
 ,v1.18.0,,https://apkfab.com/cut-the-rope-experiments-free/com.zeptolab.ctrexperiments.ads/download?sha1=134bb1c9349a556155ea1ca776a5de7339b21306,,arm64-v8a,99.9mb
@@ -1510,7 +1514,13 @@ Cut the Rope Experiments,com.zeptolab.ctrexperiments.ads,ctrexp/classic,,6,/asse
 ,,,https://captain-droid.com/en/games/arcade/cut-the-rope-experiments/attachment/cut-the-rope-experiments-free-1-7/,,,,,,
 ,v1.0,ctrexp/androidv10,https://cdn.candies.monster/symbols/com.zeptolab.ctrexperiments.ads/1.0.7z,,armeabi,0.4mb,symbols,(symtab)
 ,v1.7.3,ctrexp/androidgallery2,https://archive.org/download/cut-the-rope-experiments-free-1.7.3-apk/9_cut_the_rope_experiments.apk,
-+ Cut the Rope Experiments HD,com.zeptolab.ctrexperiments.hd.google.paid,ctrexp/classic,,6
++ Cut the Rope Experiments HD,com.zeptolab.ctrexperiments.hd.google.paid,ctrexp/classic,,6,/assets/images/gameicons/ctrexp/classic/raw.webp,/assets/images/gameicons/ctrexp/androidhdgallery/raw.png
+,v1.6,ctrexp/androidhdgallery,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.hd.google.paid/4pda/1.6-16-3e14514de5aa.apk,,"armeabi, x86",43.1mb,archive,,
+,v1.5.2,ctrexp/androidhdgallery,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.hd.google.paid/4pda/1.5.2-15-a127845a17d4.apk,,"armeabi, x86",47.2mb,archive,,
+,v1.1.7,ctrexp/androidhdgallery,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.hd.google.paid/4pda/1.1.7-10-62909b062b05.apk,,armeabi,45.6mb,archive,,
+,v1.1.6,ctrexp/androidhdgallery,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.hd.google.paid/4pda/1.1.6-9-a7fe892c27ef.apk,,armeabi,45.6mb,archive,,
+,v1.1.4,ctrexp/androidhdgallery,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.hd.google.paid/4pda/1.1.4-7-6fdc757628a2.apk,,armeabi,45.4mb,archive,,
+,v1.1.3,ctrexp/androidhdgallery,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.hd.google.paid/4pda/1.1.3-6-eb90354b6e45.apk,,armeabi,45.4mb,archive,,
 ,v1.7.3,ctrexp/classic,https://theawesomeblue.github.io/ctrfiles/download/ctre/CTR%20EXPERIMENTS%20HD%201.7.3%20allunlock.apk,,,,,,all unlocked,,,,,,,,,,,,,,,,,,,,
 ,v1.7.3,ctrexp/classic,https://theawesomeblue.github.io/ctrfiles/download/ctre/Cut%20the%20Rope%20Experiments%20HD%20v1.7.3%20(SDK24%20+%20Wider%20Screen%20Support)%20(saulfabreg).apk,,,,,,android 14+ fix,,,,,,,,,,,,,,,,,,,,
 ,v1.7.3,ctrexp/classic,https://theawesomeblue.github.io/ctrfiles/download/ctre/Cut_the_Rope_Experiments_HD_1.7.3.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -1532,7 +1542,14 @@ Cut the Rope Experiments,com.zeptolab.ctrexperiments.ads,ctrexp/classic,,6,/asse
 
 
 ,v1.11.0,ctrexp/androidv1110,https://cdn.candies.monster/apks/com.zeptolab.ctrex.subscr.tier/dragonland/1.11.0-2121017-0015ad85dee1.apk,,"arm64-v8a, armeabi-v7a, x86, x86_64",48.5mb,archive,NoDRM + NoTitleBar (signed with a test key),bemobi latam
-+ Cut the Rope Experiments,com.zeptolab.ctrexperiments.google.paid,ctrexp/classic,gold (ad free),6,/assets/images/gameicons/ctrexp/androidchinav232/raw.png,/assets/images/gameicons/ctrexp/androidpaidv10/raw.png
++ Cut the Rope Experiments,com.zeptolab.ctrexperiments.google.paid,ctrexp/classic,gold (ad free),6,/assets/images/gameicons/ctrexp/androidchinav232/raw.png,/assets/images/gameicons/ctrexp/androidpaidv10/raw.png,/assets/images/gameicons/ctrexp/classic/raw.webp
+,v1.6,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.6-16-be8b6180f269.apk,,"armeabi, x86",22.1mb,archive,,
+,v1.5.2,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.5.2-15-0be5f5d50ea6.apk,,"armeabi, x86",24.6mb,archive,,
+,v1.1.7,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.1.7-10-9739c87f05e3.apk,,armeabi,23.4mb,archive,,
+,v1.1.6,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.1.6-9-cd6ed76cc059.apk,,armeabi,23.4mb,archive,,
+,v1.1.4,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.1.4-7-16d0cc268e77.apk,,armeabi,23.2mb,archive,,
+,v1.1.2,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.1.2-5-2939abd21ea1.apk,,armeabi,23.2mb,archive,,
+,v1.1.0,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.1.0-3-6bf467ef9d60.apk,,armeabi,21.1mb,archive,,
 ,v1.11.0,ctrexp/classic,https://theawesomeblue.github.io/ctrfiles/download/ctre/Cut-the-Rope-Experiments-v1-11-0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.7,ctrexp/androidgoldv17,https://archive.org/download/Cut_the_Rope__Experiments_GOLD_1_7_android_2_2/Cut_the_Rope_Experiments_v1.7_by_chathu_ac.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.7.3,ctrexp/classic,https://archive.org/download/cut-the-rope-experiments-v-1.7.3/Cut_the_Rope_Experiments_v1.7.3.apk,,,,,,
