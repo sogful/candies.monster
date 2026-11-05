@@ -253,7 +253,11 @@ document.addEventListener("click", event => {
 });
 
 container.addEventListener("scroll", () => {
-    if (currentgame || scrolltarget) return;
+    if (currentgame) return;
+    if (scrolltarget) {
+        if (Math.abs(container.scrollLeft - scrolltarget.screen.offsetLeft) < 1) scrolltarget = null;
+        return;
+    }
     const platform = platforms[container.scrollLeft >= platforms[1].screen.offsetLeft / 2 ? 1 : 0];
     if (platform !== activeplatform) activateplatform(platform, false);
 }, {passive: true});
