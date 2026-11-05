@@ -594,6 +594,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,v1.0.0,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr/dragonland/1.0.0-1-b20f8f209ef9.apk,,armeabi,14.3mb,archive,modified getjar build (downjoy signer),
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctr/discord/1.0.0-1-4982234fb6a3.apk,,armeabi,14.3mb,archive,,sdk 25 compatibility patch
 + Cut the Rope HD,com.zeptolab.ctr.hd.google.paid,ctr/classic,,10,/assets/images/gameicons/ctr/classic/raw.png,/assets/images/gameicons/ctr/androidhdv252/raw.png
+,v2.3,ctr/androidhdgallery3,https://drive.google.com/file/d/1M28jUVVA3y53uTsn68z5qa0vxQa_lDQF/view,,"armeabi, x86",49.8mb,,,
 ,v2.5.3,ctr/androidhdv252,https://theawesomeblue.github.io/ctrfiles/download/ctr/Cut%20the%20Rope%20HD%20(v2.5.3)%20(SDK24%20+%20Wider%20Screen%20Support)%20(saulfabreg).apk,,,,,,android 14+ fix,,,,,,,,,,,,,,,,,,,,
 ,v2.5.3,ctr/androidhdv252,https://theawesomeblue.github.io/ctrfiles/download/ctr/Cut-the-Rope-HD_2.5.3.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v2.5.2,ctr/androidhdv252,https://theawesomeblue.github.io/ctrfiles/download/ctr/Cut%20the%20Rope%20HD%202.5.2%20(SDK24%20+%20Wider%20Screen%20Support)%20(saulfabreg).apk,,,,,,android 14+ fix,,,,,,,,,,,,,,,,,,,,
@@ -1035,6 +1036,7 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 ,v2.1.0,ctr2/androidv14,https://cdn.candies.monster/apks/com.yodo1.ctr2.QIHU360_01/dragonland/2.1.0-2010-d22f44357094.apk,,armeabi,35.7mb,archive,
 ,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.QIHU360_01/dragonland/2.1.0-2010.zip,,armeabi,2.1mb,symbols,(dynsym)
 Cut the Rope: Origins,com.zeptolab.ctrorigins,ctr/modern,"this game had a lot of different iterations besides these versions, and ALL of them are miserable.",4,/assets/images/gameicons/ctr/androidv400/raw.png
+,v0.2.0,ctr/androidorigins0281,https://drive.google.com/file/d/1Ge_lVtLxzZSjuAVnO3DCHN4JOLXjtFnf/view,,"arm64-v8a, armeabi-v7a",164.4mb,,,
 ,v0.19.2,ctr/androidorigins0281,https://cdn.candies.monster/apks/com.zeptolab.ctrorigins/discord/0.19.2-10185-57bb525a2f19.xapk,,arm64-v8a,189.7mb,archive,,
 ,v0.29.0,ctr/androidorigins0281,https://d.apkpure.com/b/XAPK/com.zeptolab.ctrorigins?versionCode=10265,,arm64,207.9mb
 ,v0.28.1,ctr/androidorigins0281,https://d.apkpure.com/b/XAPK/com.zeptolab.ctrorigins?versionCode=10263,,arm64,233.2mb
@@ -1407,13 +1409,14 @@ Cut the Rope: Magic,com.zeptolab.ctrm.free.google,ctrmagic/classic,witchcraft,6,
 ,v1.4.1,ctrmagic/androidamazonv141,https://www.mediafire.com/file/gel3553mjzdf2y8/Cut_the_Rope__Magic_1.4.1.apk/file,
 ,,,https://mega.nz/folder/HR40hA6C#blcUqtLX5GUNmE4GtKLPAw/file/eFo0xKzB,,"armeabi-v7a, x86",49.8mb,,,
 ,,,https://mega.nz/folder/HR40hA6C#blcUqtLX5GUNmE4GtKLPAw/file/PU5AxY6b,,"armeabi-v7a, x86",49.8mb,,,amazon drm removed
-+ Cut the Rope: Magic,com.zeptolab.ctrm,ctrmagic/classic,gameloft,6,/assets/images/gameicons/ctrmagic/androidgallery/raw.png,/assets/images/gameicons/ctrmagic/androidv1180/raw.png,/assets/images/gameicons/ctrmagic/classic/raw.png
++ Cut the Rope: Magic,com.zeptolab.ctrm,ctrmagic/classic,gameloft/amazon kids+,6,/assets/images/gameicons/ctrmagic/androidgallery/raw.png,/assets/images/gameicons/ctrmagic/androidv1180/raw.png,/assets/images/gameicons/ctrmagic/classic/raw.png
 ,v1.12.2,ctrmagic/classic,https://theawesomeblue.github.io/ctrfiles/download/ctrm/CutTheRopeMagic_1.12.2_Gameloft.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.12.2,ctrmagic/classic,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/Cut_the_Rope_Magic_1.12.2_PandaGrove.apk,,,,,,panda grove mod,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctrm/4pda/1.12.2-1912257-792dbab65df5.apk,,universal,56.3mb,archive,,panda grove mod
 ,v1.11.0,ctrmagic/androidgallery,https://theawesomeblue.github.io/ctrfiles/download/ctrm/Cut_the_Rope_Magic_1.11.0_GameloftStore.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://archive.org/download/cut-the-rope-magic-gameloft-store/Cut_the_Rope_Magic_1.11.0_GameloftStore.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.10.3,ctrmagic/androidgallery,https://archive.org/download/cut-the-rope-amazon-kids/CtR%20Magic%20Amazon%20Kids.apk,,,,,,amazon kids+
+,,,https://drive.google.com/file/d/1CYCbhAhkKvmoKzFU4QVzt3xn-XkRdkvo/view,,"armeabi-v7a, x86",48.5mb,,,amazon kids+
 ,v1.18.0,ctrmagic/androidv1180,https://drive.google.com/file/d/1HV_EZhDXYuvDM_SVOjxDi_kfwGBOPIuZ/view,,,,,,DRMed bemobi apps club (brazil)
 ,v1.19.0,ctrmagic/androidgallery,https://mega.nz/folder/bPwU1J4K#deOjsZBkDqJB79_ql4fhLw/file/PTolkTyL,,,,,,DRMed claro juegos/gameloft (password: saulfabreg)
 
@@ -1546,6 +1549,7 @@ Cut the Rope Experiments,com.zeptolab.ctrexperiments.ads,ctrexp/classic,,6,/asse
 
 ,v1.11.0,ctrexp/androidv1110,https://cdn.candies.monster/apks/com.zeptolab.ctrex.subscr.tier/dragonland/1.11.0-2121017-0015ad85dee1.apk,,"arm64-v8a, armeabi-v7a, x86, x86_64",48.5mb,archive,NoDRM + NoTitleBar (signed with a test key),bemobi latam
 + Cut the Rope Experiments,com.zeptolab.ctrexperiments.google.paid,ctrexp/classic,gold (ad free),6,/assets/images/gameicons/ctrexp/androidchinav232/raw.png,/assets/images/gameicons/ctrexp/androidpaidv10/raw.png,/assets/images/gameicons/ctrexp/classic/raw.webp
+,v1.7.1,ctrexp/androiddroidzoom179,https://drive.google.com/file/d/13bx_re1BPIJ2AVyg1b3xM1fNc5Zq6teF/view,,"armeabi, x86",25.5mb,,,
 ,v1.6,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.6-16-be8b6180f269.apk,,"armeabi, x86",22.1mb,archive,,
 ,v1.5.2,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.5.2-15-0be5f5d50ea6.apk,,"armeabi, x86",24.6mb,archive,,
 ,v1.1.7,ctrexp/androidpaidv10,https://cdn.candies.monster/apks/com.zeptolab.ctrexperiments.google.paid/4pda/1.1.7-10-9739c87f05e3.apk,,armeabi,23.4mb,archive,,
@@ -1787,6 +1791,7 @@ Om Nom Run,com.zeptolab.omnomrun.google,omnomrun/classic,,5,/assets/images/gamei
 ,v1.1.12,omnomrun/androidgallery5,https://www.mediafire.com/file/337afntpnvqb7wb/com.omnomrun.zeptolab.samsung_v213.apk/file,
 + Om Nom: Run,com.zeptolab.omnomrun.amazon,omnomrun/androidgallery5,amazon appstore,5,/assets/images/gameicons/omnomrun/androidgallery5/raw.png
 ,v1.11,omnomrun/androidgallery5,https://www.mediafire.com/file/121jss5skhnyb0m/com.zeptolab.omnomrun.amazon_1.11.apk/file,
+,,,https://drive.google.com/file/d/1x43E66bvwcfqzBQYtBHtU-zgAUnHjZhR/view,,"arm64-v8a, armeabi-v7a",169.3mb,,,
 Om Nom Run 2,com.zeptolab.OmNomRun2.parkour,omnomrun2/classic,,4,/assets/images/gameicons/omnomrun2/store/raw.png,/assets/images/gameicons/omnomrun2/androidgallery/raw.png
 ,v3.0.19,omnomrun2/classic,https://d.apkpure.net/b/XAPK/com.zeptolab.OmNomRun2.parkour?versionCode=30191,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://om-nom-run-2.en.uptodown.com/android/download/1016686800,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -1868,6 +1873,7 @@ My Om Nom Free,com.zeptolab.myomnom.free.google,myomnom/classic,"check pdalife a
 ,v1.5.2,myomnom/androidv152,https://archive.org/download/cut-the-rope-amazon-kids/My.Om.Nom.v.1.5.2.b_AmazonKids.apk,,,,,,
 ,,,https://mega.nz/folder/IYdXWJza#FtUwi52cKLq1hprBPWh_6w/file/EQNCkDZZ,,armeabi,220.7mb,,,amazon drm removed
 ,,,https://mega.nz/folder/IYdXWJza#FtUwi52cKLq1hprBPWh_6w/file/pM0DHDTQ,,armeabi,220.5mb,,,"amazon drm removed, android 7+, widescreen"
+,,,https://drive.google.com/file/d/127WmWbzu5tyLvW4rWNrU7xjjIMtWjLdm/view,,armeabi,220.6mb,,,amazon kids+
 ,v1.5.1,myomnom/androidv152,https://drive.google.com/file/d/1jil-hWQj35eQPNTVu8s1OBVxkAGVLSr3/view,,,,,,DRMed bemobi apps club (brazil)
 
 ,v1.5.1,myomnom/androidv152,https://cdn.candies.monster/apks/com.zeptolab.mon.premium.tier/dragonland/1.5.1-412000033-7d55b94e4b79.apk,,armeabi,43.9mb,archive,NoDRM + SDK24 (resigned),bemobi latam
