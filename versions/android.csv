@@ -322,6 +322,8 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,v3.14.0,ctr/fabricbox,https://cut-the-rope.en.uptodown.com/android/download/1050487658,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://downzen.com/en/android/cut-the-rope-full-free/download/3140/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://www.apk4fun.com/apk/513938/,,,,,,
+,,,https://mega.nz/file/oUMWgDyA#nzcZmHoH8HPhJ8D2ieLeQTGEoRYPrKylgjicjseH_GY,,"arm64-v8a, armeabi-v7a, x86",75.8mb,,,"merged splits, extra icons"
+,,,https://mega.nz/file/xJknhZyC#TFEieaKnsvGsvrOfK4wB4eckKTUe-1q2W-qnPyDpWaU,,"arm64-v8a, armeabi-v7a",50.0mb,,,split apk bundle
 ,v3.12.2,ctr/fabricbox,https://cut-the-rope.en.uptodown.com/android/download/1954671,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://downzen.com/en/android/cut-the-rope-full-free/download/3122/,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,http://cut-the-rope-full-free.apk.watch/3.12.2,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -528,6 +530,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,,,https://captain-droid.com/en/games/arcade/cut-the-rope-nakormi-monstrika/attachment/cut-the-rope-free-2-3-4/,,,,,,
 + Cut the Rope,com.zeptolab.ctr.paid,ctr/free,gold (ad free),10,/assets/images/gameicons/ctr/androidgoldv234/raw.png
 ,v3.52.1,ctr/free,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Varied/Cut.the.Rope.GOLD_3.52.1.xapk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,https://mega.nz/file/QI91jZDS#LbGxyIelen_6RYQ7edXasfeu42tpmrpjY9CkVL-90r0,,arm64-v8a,54.9mb,,,merged splits
 ,v3.7.0,ctr/free,https://theawesomeblue.github.io/ctrfiles/download/ctr/Cut_the_Rope_GOLD_v3.7.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v2.2,ctr/androidgoldv234,https://www.apkbe.com/down/com.zeptolab.ctr.paid_2.2_paid,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,ctr/androidgoldv234,https://cdn.candies.monster/apks/com.zeptolab.ctr.paid/earlyarchive/2.2-19-3f6a0169c63a.apk,,"armeabi, x86",23.3mb,archive,,
@@ -1107,6 +1110,7 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6,/a
 ,v1.18.0,ctrtt/androidgallery,https://apk.cafe/download?file_id=2204289/cut-the-rope-time-travel,
 ,v1.18.0,ctrtt/androidgallery,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free.google/1.18.0.7z,,arm64-v8a,2.3mb,symbols,(dynsym)
 ,,,https://www.apk4fun.com/apk/1163251/,,,,,,
+,,,https://mega.nz/file/tcdlVJTI#vx71EFyCQABEd96IfXlnf-tuwWdIeFVlZHATQLYhCWQ,,armeabi-v7a,45.9mb,,,modified gameloft freemium
 ,v1.0,ctrtt/androidifree102,https://cdn.candies.monster/apks/com.zeptolab.timetravel.free.google/dragonland/1.0-712103-b8aa406fd728.apk,,"armeabi, armeabi-v7a, x86",30.5mb,archive,
 ,,,https://cdn.candies.monster/symbols/com.zeptolab.timetravel.free.google/dragonland/1.0-712103.zip,,"armeabi, armeabi-v7a, x86",1.5mb,symbols,(dynsym)
 + Cut the Rope Time Travel HD,com.zeptolab.timetravel.paid.google,ctrtt/classic,,6
@@ -1836,6 +1840,8 @@ My Om Nom Free,com.zeptolab.myomnom.free.google,myomnom/classic,"check pdalife a
 ,v1.5.2,myomnom/androidv152,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Stuff/My.Om.Nom.v.1.5.2.b_AmazonKids_Android14Fix.apk,,,,,,android 14+ fix,,,,,,,,,,,,,,,,,,,,
 ,v1.5.2,myomnom/androidv152,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Stuff/My.Om.Nom.v.1.5.2.b_AmazonKids.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.5.2,myomnom/androidv152,https://archive.org/download/cut-the-rope-amazon-kids/My.Om.Nom.v.1.5.2.b_AmazonKids.apk,,,,,,
+,,,https://mega.nz/folder/IYdXWJza#FtUwi52cKLq1hprBPWh_6w/file/EQNCkDZZ,,armeabi,220.7mb,,,amazon drm removed
+,,,https://mega.nz/folder/IYdXWJza#FtUwi52cKLq1hprBPWh_6w/file/pM0DHDTQ,,armeabi,220.5mb,,,"amazon drm removed, android 7+, widescreen"
 ,v1.5.1,myomnom/androidv152,https://drive.google.com/file/d/1jil-hWQj35eQPNTVu8s1OBVxkAGVLSr3/view,,,,,,DRMed bemobi apps club (brazil)
 
 ,v1.5.1,myomnom/androidv152,https://cdn.candies.monster/apks/com.zeptolab.mon.premium.tier/dragonland/1.5.1-412000033-7d55b94e4b79.apk,,armeabi,43.9mb,archive,NoDRM + SDK24 (resigned),bemobi latam
@@ -2293,6 +2299,7 @@ Om Nom,com.zeptolab.omnombooks.amazon.ftu,books/androidamazonv10,play & learn wi
 + Om Nom,com.zeptolab.omnombooks.tier2,books/bemobilatam,bemobi latam (NoDRM repack),3,/assets/images/gameicons/books/bemobilatam/raw.png
 
 ,v1.0.0,books/bemobilatam,https://cdn.candies.monster/apks/com.zeptolab.omnombooks.tier2/dragonland/1.0.0-64-2c57b3b5ff53.apk,,"arm64-v8a, armeabi-v7a, x86",62.9mb,archive,NoDRM (signed with a test key)
+,,,https://mega.nz/folder/hEdlBJgL#kax1AQc8b_gMHisS9hNYPw/file/xRFX1RST,,"arm64-v8a, armeabi-v7a, x86",62.9mb,,,bemobi drm removed
 Candy Trail,com.zeptolab.ctr.candytrail,candytrail/launch,soft launch,2,/assets/images/gameicons/candytrail/launch/raw.png
 ,v0.1.0,candytrail/launch,https://play.google.com/store/apps/details?id=com.zeptolab.ctr.candytrail
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctr.candytrail/0.1.0-45-arm64.xapk,,arm64-v8a,144.4mb,archive,android 12l+
