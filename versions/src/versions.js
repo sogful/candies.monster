@@ -6,11 +6,13 @@ import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, res
 const debugshowleaks = true;
 const debugshowapks = false;
 const buttonmap = [
+    {domain: "cdn.candies.monster", icon: "cdn.webp"},
     {domain: "apkmirror.com", icon: "apkmirror.webp"},
     {domain: "apkpure.com", icon: "apkpure.webp"},
     {domain: "apkpure.net", icon: "apkpure.webp"},
     {domain: "uptodown.com", icon: "uptodown.webp"},
     {domain: "pdalife.to", icon: "pdalife.webp"},
+    {domain: "pdalife.com", icon: "pdalife.webp"},
     {domain: "apkbe.com", icon: "apkbe.webp"},
     {domain: "downzen.com", icon: "downzen.webp"},
 
@@ -63,7 +65,7 @@ function renderdownloadbutton(download, version) {
     const annotation = note ? `<div class="downloadnote">${downloadattribute(note)}</div>` : "";
     const size = downloadsize(download.size);
     const arch = downloadarch(download.arch);
-    const button = download.kind === "symbols" ? "symbols.webp" : download.arch && download.size ? "cdn.webp" :
+    const button = download.kind === "symbols" ? "symbols.webp" :
         download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.webp";
     const details = downloadattribute([
         version, download.url, download.kind === "symbols" ? download.label || "debug symbols" : "",
@@ -80,7 +82,7 @@ function renderdownloadbutton(download, version) {
     }
     if (download.arch && download.size) {
         return `<a ${attributes} class="clickable cdnbutton">
-            <img src="/assets/images/downloadbuttons/cdn.webp" draggable="false" loading="lazy" decoding="async">
+            <img src="/assets/images/downloadbuttons/${downloadattribute(button)}" alt="${downloadattribute(button.replace(/\.[^.]+$/, ""))}" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div class="downloadmeta">${downloadattribute(arch)}</div><div class="downloadmeta">${downloadattribute(size)}</div>${annotation}</div>
         </a>`;
     }
