@@ -628,6 +628,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,v3.30.0,ctr/androidhdv3330,https://cdn.candies.monster/apks/com.zeptolab.ctror.subscr.tier/orange/3.30.0-2354652.apk,,"arm64-v8a, armeabi-v7a, x86, x86_64",63.2mb,archive,,orange jeux/gameloft
 + Cut the Rope Free,com.zeptolab.ctr.ads.u.huawei,ctr/free,huawei (app gallery),10
 ,v3.66.5,ctr/free,https://appgallery.cloud.huawei.com/appdl/C112283361,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,https://cdn.candies.monster/apks/com.zeptolab.ctr.ads.u.huawei/discord/3.66.5-2112006-288e09f408c6.apk,,universal,107.9mb,archive,,
 + Cut the Rope Free,com.zeptolab.ctr.lite.google,ctr/androidgallery2,,10
 ,v1.9.5,ctr/androidgallery2,https://cdn.candies.monster/apks/com.zeptolab.ctr.lite.google/someversions/1.9.5-195-34c8f050e5c6.apk,,armeabi,18.3mb,archive,,modified
 + Cut the Rope Free,com.zeptolab.positivo.ctr.lite,ctr/androidgallery2,positivo,10
@@ -2304,5 +2305,6 @@ Candy Trail,com.zeptolab.ctr.candytrail,candytrail/launch,soft launch,2,/assets/
 ,v0.1.0,candytrail/launch,https://play.google.com/store/apps/details?id=com.zeptolab.ctr.candytrail
 ,,,https://cdn.candies.monster/apks/com.zeptolab.ctr.candytrail/0.1.0-45-arm64.xapk,,arm64-v8a,144.4mb,archive,android 12l+
 
+,,,https://cdn.candies.monster/apks/com.zeptolab.ctr.candytrail/patches/0.1.0-45-arm64-playstorepromptremoved-306e0a5bdc7b.xapk,,arm64-v8a,144.4mb,archive,,play store prompt removed
 Om Nom Marble Shooter,com.renderedideas.omnommarblematch,marbleshooter/listing,,2,/assets/images/gameicons/marbleshooter/listing/raw.png
 ,v1.0,marbleshooter/listing,
