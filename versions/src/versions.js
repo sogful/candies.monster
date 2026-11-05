@@ -60,13 +60,22 @@ function downloadarch(value) {
     return ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"].every(arch => architectures.has(arch)) ? "universal" : value;
 }
 
+function downloadbutton(download) {
+    return download.kind === "symbols" ? "symbols.webp" :
+        download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.webp";
+}
+
+function secondarydownload(download) {
+    return ["other.webp", "pdalife.webp"].includes(downloadbutton(download));
+}
+
 function renderdownloadbutton(download, version) {
     const note = Array.from(new Set([download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))).join("; ");
     const annotation = note ? `<div class="downloadnote">${downloadattribute(note)}</div>` : "";
     const size = downloadsize(download.size);
     const arch = downloadarch(download.arch);
-    const button = download.kind === "symbols" ? "symbols.webp" :
-        download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.webp";
+    const button = downloadbutton(download);
+    const compact = secondarydownload(download) ? " smallsource" : "";
     const details = downloadattribute([
         version, download.url, download.kind === "symbols" ? download.label || "debug symbols" : "",
         arch, size, note,
@@ -81,18 +90,18 @@ function renderdownloadbutton(download, version) {
         </a>`;
     }
     if (download.arch && download.size) {
-        return `<a ${attributes} class="clickable cdnbutton">
+        return `<a ${attributes} class="clickable cdnbutton${compact}">
             <img src="/assets/images/downloadbuttons/${downloadattribute(button)}" alt="${downloadattribute(button.replace(/\.[^.]+$/, ""))}" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext"><div class="downloadmeta">${downloadattribute(arch)}</div><div class="downloadmeta">${downloadattribute(size)}</div>${annotation}</div>
         </a>`;
     }
     if (note) {
-        return `<a ${attributes} class="clickable cdnbutton">
+        return `<a ${attributes} class="clickable cdnbutton${compact}">
             <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext">${annotation}</div>
         </a>`;
     }
-    return `<a ${attributes} class="clickable">
+    return `<a ${attributes} class="clickable${compact}">
         <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
     </a>`;
 }
@@ -142,7 +151,8 @@ function versionsfor(cache, key) {
         ...version,
         recordonly: !version.downloads?.length,
         unavailable: !hasdownload(version.downloads),
-        downloads: uniquedownloads(version.downloads).filter(isdownloadbuttonvisible),
+        downloads: uniquedownloads(version.downloads).filter(isdownloadbuttonvisible)
+            .sort((first, second) => Number(secondarydownload(first)) - Number(secondarydownload(second))),
         order: version.version.replace(/^v/i, "").split(".").map(value => parseInt(value) || 0)
     })).filter(version => version.downloads.length || version.recordonly);
     versions.sort((first, second) => {
