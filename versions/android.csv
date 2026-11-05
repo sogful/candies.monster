@@ -590,6 +590,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 ,,,https://www.apkmirror.com/apk/zeptolab/cut-the-rope-3/cut-the-rope-1-1-1-release/cut-the-rope-1-1-1-android-apk-download/,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 ,v1.0.0,ctr/androidv100,https://cdn.candies.monster/apks/com.zeptolab.ctr/dragonland/1.0.0-1-b20f8f209ef9.apk,,armeabi,14.3mb,archive,modified getjar build (downjoy signer),
+,,,https://cdn.candies.monster/apks/com.zeptolab.ctr/discord/1.0.0-1-4982234fb6a3.apk,,armeabi,14.3mb,archive,,sdk 25 compatibility patch
 + Cut the Rope HD,com.zeptolab.ctr.hd.google.paid,ctr/classic,,10
 ,v2.5.3,ctr/androidhdv252,https://theawesomeblue.github.io/ctrfiles/download/ctr/Cut%20the%20Rope%20HD%20(v2.5.3)%20(SDK24%20+%20Wider%20Screen%20Support)%20(saulfabreg).apk,,,,,,android 14+ fix,,,,,,,,,,,,,,,,,,,,
 ,v2.5.3,ctr/androidhdv252,https://theawesomeblue.github.io/ctrfiles/download/ctr/Cut-the-Rope-HD_2.5.3.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -973,6 +974,7 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 + 割绳子2,com.yodo1tier1.ctr2.telecom,ctr2/androidtelecom220,chinese telecom (signed with test keys),9,/assets/images/gameicons/ctr2/androidtelecom220/raw.png
 
 ,v2.2.0,ctr2/androidtelecom220,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.2.0-2021.apk,,armeabi,31.9mb,archive
+,,,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/discord/2.2.0-2021-6ced35c00883.apk,,armeabi,32.0mb,archive,,"drm removed, sdk 24"
 ,v2.3.4,ctr2/androidchinav2393,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/2.3.4-2021.apk,,"armeabi, armeabi-v7a, x86",36.0mb,archive
 ,v2.0.0,ctr2/archivetelecom200,https://cdn.candies.monster/apks/com.yodo1tier1.ctr2.telecom/chinaarchive/2.0.0-1000-7d4a8c6b4613.apk,,armeabi,24.6mb,archive
 ,,,https://cdn.candies.monster/symbols/com.yodo1tier1.ctr2.telecom/chinaarchive/2.0.0.zip,,armeabi,1.6mb,symbols,(dynsym)
@@ -1030,6 +1032,7 @@ Cut the Rope 2,com.zeptolab.ctr2.f2p.google,ctr2/classic,rope tuah!,9,/assets/im
 ,v2.1.0,ctr2/androidv14,https://cdn.candies.monster/apks/com.yodo1.ctr2.QIHU360_01/dragonland/2.1.0-2010-d22f44357094.apk,,armeabi,35.7mb,archive,
 ,,,https://cdn.candies.monster/symbols/com.yodo1.ctr2.QIHU360_01/dragonland/2.1.0-2010.zip,,armeabi,2.1mb,symbols,(dynsym)
 Cut the Rope: Origins,com.zeptolab.ctrorigins,ctr/modern,"this game had a lot of different iterations besides these versions, and ALL of them are miserable.",4,/assets/images/gameicons/ctr/androidv400/raw.png
+,v0.19.2,ctr/androidorigins0281,https://cdn.candies.monster/apks/com.zeptolab.ctrorigins/discord/0.19.2-10185-57bb525a2f19.xapk,,arm64-v8a,189.7mb,archive,,
 ,v0.29.0,ctr/androidorigins0281,https://d.apkpure.com/b/XAPK/com.zeptolab.ctrorigins?versionCode=10265,,arm64,207.9mb
 ,v0.28.1,ctr/androidorigins0281,https://d.apkpure.com/b/XAPK/com.zeptolab.ctrorigins?versionCode=10263,,arm64,233.2mb
 ,v0.28.0,ctr/androidorigins0281,https://d.apkpure.com/b/XAPK/com.zeptolab.ctrorigins?versionCode=10259,,arm32,232.2mb
@@ -1395,6 +1398,7 @@ Cut the Rope: Magic,com.zeptolab.ctrm.free.google,ctrmagic/classic,witchcraft,6,
 ,,,"https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.0.0-1498955_minAPI14(armeabi-v7a,x86)(nodpi).apk",,"arm32, x86",39.8mb,,,,,,,,,,,,,,,,,,,,,,,
 ,,,"https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/com.zeptolab.ctrm.free.google_1.0.0-1498955_minAPI14(armeabi-v7a,x86)(nodpi).apk",,"arm32, x86",39.8mb,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.4.0,ctrmagic/androidv140,https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/1.4.0-1509763.apk,,"armeabi-v7a, x86",38.8mb,archive
+,,,https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.google/discord/1.4.0-1509763-8f5b1fff5fe1.apk,,"armeabi-v7a, x86",39.5mb,archive,,modified build
 + Cut the Rope: Magic,com.zeptolab.ctrm.paid.amazon.ultimate,ctrmagic/classic,amazon underground,6
 ,v1.0.0,ctrmagic/classic,https://theawesomeblue.github.io/ctrfiles/download/ctrm/Cut.the.Rope.Magic.v.1.0.0.b_amazon.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.4.1,ctrmagic/androidamazonv141,https://www.mediafire.com/file/gel3553mjzdf2y8/Cut_the_Rope__Magic_1.4.1.apk/file,
@@ -1521,6 +1525,7 @@ Cut the Rope Experiments,com.zeptolab.ctrexperiments.ads,ctrexp/classic,,6,/asse
 ,v1.9.4,ctrexp/classic,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/MoreVaried/Cut.the.Rope.Experiments.v1.9.4.Gameloft.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.11.0,ctrexp/androidv1110,https://drive.google.com/file/d/13IacYGTVji-7Y5Gl3F8HXXasVTvf4OR0/view,,,,,,DRMed bemobi apps club (brazil)
 ,v1.9.4,ctrexp/classic,https://mega.nz/folder/bPwU1J4K#deOjsZBkDqJB79_ql4fhLw/file/6SBEmD5A,,,,,,DRMed claro juegos/gameloft (password: saulfabreg)
+,,,https://cdn.candies.monster/apks/com.zeptolab.ctrex.subscr.tier/discord/1.9.4-1812231-f3d205d1e2e8.apk,,universal,47.3mb,archive,,"hd levels, unlocked boxes and powers"
 ,v1.9.2,ctrexp/androidgallery,https://drive.google.com/file/d/1JwvCrv5Ba1ybdtQhtrA7Gg-L8kT8MhP6/view,,,,,,rustore
 ,v1.7.9,ctrexp/androiddroidzoom179,https://archive.org/download/ctr-experiments-1.7.9-droidzoom/CTRExp_1.7.9_DroidZoom_patched_signed.apk,,,,,,droidzoom (patched license check)
 ,v1.7.9,ctrexp/androiddroidzoom179,https://cdn.candies.monster/apks/com.zeptolab.ctrex.subscr.tier/megacollection/1.7.9-982559-213477663a46.apk,,"armeabi, x86",28.1mb,archive,,droidzoom/i-free
@@ -2062,8 +2067,8 @@ My Om Nom Virtual Pet,com.myvirtualpet.omnomgame,virtualpet/classic,,3,/assets/i
 ,v1.11.0,virtualpet/classic,https://cdn.candies.monster/apks/com.myvirtualpet.omnomgame/My Om Nom - Virtual Pet_1.11.0_APKPure.xapk,,arm64,276.4mb,,,,,,,,,,,,,,,,,,,,,,,
 Om Nom: Bubbles,com.zeptolab.bubbles.f2p.google,bubbles/classic,Buble,2,/assets/images/gameicons/bubbles/androidgallery/raw.png
 ,v1.0.4,bubbles/classic,https://d.apkpure.net/b/APK/com.zeptolab.bubbles.f2p.google?versionCode=1506826,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,https://cdn.candies.monster/apks/com.zeptolab.bubbles.f2p.google/Om Nom_ Bubbles_1.0.4_APKPure.apk,,"arm, arm32, x86",27.9mb,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://theawesomeblue.github.io/ctrfiles/download/bubbles/Om_Nom_Bubbles_1.0.4.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,https://cdn.candies.monster/apks/com.zeptolab.bubbles.f2p.google/discord/1.0.4-1506826-0471ef246c0a.apk,,"armeabi, armeabi-v7a, x86",27.8mb,archive,,
 + Om Nom Bubbles,com.px.OmNomBubbles,bubbles/orangejeux,orange jeux,2,/assets/images/gameicons/bubbles/orangejeux/raw.png
 
 ,v1.0,bubbles/orangejeux,https://cdn.candies.monster/apks/com.px.OmNomBubbles/dragonland/1.0-1-692a3ab23b7f.apk,,"arm64-v8a, armeabi, armeabi-v7a, x86, x86_64",14.4mb,archive,signed by orange games
