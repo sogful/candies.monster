@@ -1,3 +1,7 @@
+import("./imageloading.js").catch(error => console.warn("Image loading indicator unavailable.", error));
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 // font fallback
 (function () {
     var applied = false;
