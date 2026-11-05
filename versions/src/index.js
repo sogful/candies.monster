@@ -4,6 +4,7 @@ import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
 import {preparekeys, gameroute, readhash, revealroute, startlinks} from "./links.js";
 import "/assets/static/favicon.js";
+import "./quality.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -18,6 +19,7 @@ let currentgame = null;
 let currentloadid = 0;
 let resizeframe = 0;
 let navigation = 0;
+let scrolltarget = null;
 
 document.body.classList.add("archivepage");
 document.querySelector(".loading")?.remove();
@@ -197,6 +199,7 @@ function activateplatform(platform, scroll = true, write = true) {
     document.querySelector("#navios").style.display = platform.name === "ios" ? "none" : "flex";
     document.querySelector("#navandroid").style.display = platform.name === "ios" ? "flex" : "none";
     void fetchplatform(platform);
+    scrolltarget = scroll && Math.abs(container.scrollLeft - platform.screen.offsetLeft) > 1 ? platform : null;
     if (scroll) container.scrollTo({left: platform.screen.offsetLeft, behavior: "smooth"});
 }
 
@@ -250,6 +253,13 @@ document.addEventListener("click", event => {
 });
 
 container.addEventListener("scroll", () => {
+    if (currentgame || scrolltarget) return;
+    const platform = platforms[container.scrollLeft >= platforms[1].screen.offsetLeft / 2 ? 1 : 0];
+    if (platform !== activeplatform) activateplatform(platform, false);
+}, {passive: true});
+
+container.addEventListener("scrollend", () => {
+    scrolltarget = null;
     if (currentgame) return;
     const platform = platforms[container.scrollLeft >= platforms[1].screen.offsetLeft / 2 ? 1 : 0];
     if (platform !== activeplatform) activateplatform(platform, false);

@@ -32,3 +32,8 @@
 .versionbuttons .smallsource img {
     width: 12px; height: 12px;
 }
+
+.versionbuttons::after {
+    content: ""; flex-basis: 100%;
+    height: 0; order: 0;
+}

@@ -13,6 +13,8 @@ const buttonmap = [
     {domain: "uptodown.com", icon: "uptodown.webp"},
     {domain: "pdalife.to", icon: "pdalife.webp"},
     {domain: "pdalife.com", icon: "pdalife.webp"},
+    {domain: "4pda.to", icon: "4pda.webp"},
+    {domain: "4pda.ru", icon: "4pda.webp"},
     {domain: "apkbe.com", icon: "apkbe.webp"},
     {domain: "downzen.com", icon: "downzen.webp"},
 
@@ -61,6 +63,7 @@ function downloadarch(value) {
 }
 
 function downloadbutton(download) {
+    if (download.kind !== "symbols" && download.url.startsWith("https://cdn.candies.monster/apks/") && download.url.includes("/4pda/")) return "4pda.webp";
     return download.kind === "symbols" ? "symbols.webp" :
         download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.webp";
 }
