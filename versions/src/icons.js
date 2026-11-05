@@ -385,7 +385,8 @@ const rawicons = {
     "ctr2/easterorange": "png",
     "ctrtt/industrialfree": "png",
     "ctrmagic/valentines": "png",
-    "ctrmagic/bluebird": "png"
+    "ctrmagic/bluebird": "png",
+    "ctrexp/androidhd173fix": "png"
 };
 
 export {rawicons};

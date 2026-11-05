@@ -5822,5 +5822,20 @@
     "packages": [
       "com.zeptolab.ctrm.free.google"
     ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "androidhd173fix",
+    "raw": "/assets/images/gameicons/ctrexp/androidhd173fix/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "e5bc21b47a1a9590d0635a4693263354682a4aa90d8cc2c82c398f3faab05cd2",
+    "sources": [
+      "https://4pda.to/forum/dl/post/35470257/Cut+the+Rope+Experiments+HD+v1.7.3+sdk27.apk"
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperiments.hd.google.paid"
+    ]
   }
 ]
