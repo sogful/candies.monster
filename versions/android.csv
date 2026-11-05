@@ -626,7 +626,7 @@ Cut the Rope,com.zeptolab.ctr.ads,ctr/free,the original one! (don't download the
 + Cut the Rope Free,com.zeptolab.ctr.ads.u.huawei,ctr/free,huawei (app gallery),10
 ,v3.66.5,ctr/free,https://appgallery.cloud.huawei.com/appdl/C112283361,,,,,,,,,,,,,,,,,,,,,,,,,,
 + Cut the Rope Free,com.zeptolab.ctr.lite.google,ctr/androidgallery2,,10
-,v1.9.5,ctr/androidgallery2,https://cdn.candies.monster/apks/com.zeptolab.ctr.lite.google/someversions/1.9.5-195-34c8f050e5c6.apk,,armeabi,18.3426 MB,,,modified
+,v1.9.5,ctr/androidgallery2,https://cdn.candies.monster/apks/com.zeptolab.ctr.lite.google/someversions/1.9.5-195-34c8f050e5c6.apk,,armeabi,18.3426 MB,archive,,modified
 + Cut the Rope Free,com.zeptolab.positivo.ctr.lite,ctr/androidgallery2,positivo,10
 ,v1.0,ctr/androidgallery2,https://archive.org/download/com-zeptolab-positivo-ctr-lite-1-0-20261005/Cut_the_rope_1.0.apk,,,,,,,,,,,,,,,,,,,,,,,,,,
 + Cut the Rope Free,com.nazara.ctr.ads,ctr/androidv258,nazara (india),10,/assets/images/gameicons/ctr/androidv257/raw.png,/assets/images/gameicons/ctr/androidv258/raw.png
@@ -1162,7 +1162,7 @@ Cut the Rope Time Travel,com.zeptolab.timetravel.free.google,ctrtt/classic,,6,/a
 ,,,https://cdn.candies.monster/symbols/com.tcxx.cut.gsz/1.1.1.zip,,"arm64-v8a, armeabi-v7a",4.11 MB,symbols,(dynsym),
 
 ,v1.1.1,ctrtt/androidv111,https://cdn.candies.monster/apks/com.tcxx.cut.gsz/chinaarchive/1.1.1-1110-82ad1d60aaa3.apk,,"arm64-v8a, armeabi-v7a",77.41 MB,archive,,
-,,,https://cdn.candies.monster/apks/com.tcxx.cut.gsz/someversions/1.1.1-1110-8fd582ba01f3.apk,,"arm64-v8a, armeabi-v7a",77.4137 MB,,,alternate signature
+,,,https://cdn.candies.monster/apks/com.tcxx.cut.gsz/someversions/1.1.1-1110-8fd582ba01f3.apk,,"arm64-v8a, armeabi-v7a",77.4137 MB,archive,,alternate signature
 + Cut the Rope Time Travel HD,com.zeptolab.timetravel.paid.amazon,ctrtt/androidamazongallery,amazon appstore,6,/assets/images/gameicons/ctrtt/androidamazongallery/raw.png
 ,v1.4,ctrtt/androidamazongallery,https://archive.org/download/cut-the-rope-time-travel-hd-1.4-android/Cut%20the%20Rope%20Time%20Travel%20HD%201.4.apk,
 + 割绳子之时间旅行,com.zeptolab.timetravel.free.google.xc,ctrtt/androidxc171,xc chinese (unofficial signer),6,/assets/images/gameicons/ctrtt/androidxc171/raw.png
@@ -1781,7 +1781,7 @@ Om Nom Run 2,com.zeptolab.OmNomRun2.parkour,omnomrun2/classic,,4,/assets/images/
 ,v2.1.3,omnomrun2/classic,https://om-nom-run-2.en.uptodown.com/android/download/107066268,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v2.1.2,omnomrun2/classic,https://om-nom-run-2.en.uptodown.com/android/download/108169364,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v2.1.0,omnomrun2/classic,https://om-nom-run-2.en.uptodown.com/android/download/106569035,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,https://cdn.candies.monster/apks/com.zeptolab.OmNomRun2.parkour/someversions/2.1.0-2101-0739e20baffa.apk,,arm64-v8a,70.6481 MB,,,chinese enjoy
+,,,https://cdn.candies.monster/apks/com.zeptolab.OmNomRun2.parkour/someversions/2.1.0-2101-0739e20baffa.apk,,arm64-v8a,70.6481 MB,archive,,chinese enjoy
 ,v1.5.0,omnomrun2/classic,https://om-nom-run-2.en.uptodown.com/android/download/111018707,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.4.0,omnomrun2/classic,https://om-nom-run-2.en.uptodown.com/android/download/102572030,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.3.1,omnomrun2/classic,https://om-nom-run-2.en.uptodown.com/android/download/101516094,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -1863,7 +1863,7 @@ Om Nom: Merge,com.zeptolab.omnommerge.google,merge/classic,,5
 
 ,v46.5.3,merge/classic,https://cdn.candies.monster/apks/com.zeptolab.omnommerge/homiesarchive/46.5.3-63-82daea5591fb.apk,,arm64-v8a,83.98 MB,archive,,community-signed
 + 割绳子：合成,com.yodo1.omnommerge.Yodo1,merge/classic,yodo1 / 9game (china),5
-,v1.0.0,merge/classic,https://cdn.candies.monster/apks/com.yodo1.omnommerge.Yodo1/someversions/1.0.0-1000-84d923805f03.apk,,armeabi-v7a,75.3828 MB,,,
+,v1.0.0,merge/classic,https://cdn.candies.monster/apks/com.yodo1.omnommerge.Yodo1/someversions/1.0.0-1000-84d923805f03.apk,,armeabi-v7a,75.3828 MB,archive,,
 + 割绳子：合成,com.yodo1.omnommerge.m4399,merge/classic,4399 (china),5,/assets/images/gameicons/merge/classic/raw.png
 
 ,v1.0.1,merge/classic,https://cdn.candies.monster/apks/com.yodo1.omnommerge.m4399/chinaarchive/1.0.1-1010-0866671d0d2b.apk,,armeabi-v7a,76.52 MB,archive
@@ -1984,7 +1984,7 @@ Om Nom Toons,com.zeptolab.toonplayer.google,toons/classic,you're NEVER too old t
 ,v1.1.0,toons/classic,https://om-nom-toons.en.uptodown.com/android/download/74988259@1.1.0,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.0.1,toons/classic,https://om-nom-toons.en.uptodown.com/android/download/1077733,,,,,,,,,,,,,,,,,,,,,,,,,,
 My Om Nom Virtual Pet,com.myvirtualpet.omnomgame,virtualpet/classic,,3,/assets/images/gameicons/virtualpet/androidgallery/raw.png,/assets/images/gameicons/virtualpet/androidgallery2/raw.png
-,v0.1.1,virtualpet/androidgallery,https://cdn.candies.monster/apks/com.myvirtualpet.omnomgame/phoneky/0.1.1-5-7e14f312b9e8.apk,,"arm64-v8a, armeabi-v7a",142.5884 MB,,,
+,v0.1.1,virtualpet/androidgallery,https://cdn.candies.monster/apks/com.myvirtualpet.omnomgame/phoneky/0.1.1-5-7e14f312b9e8.apk,,"arm64-v8a, armeabi-v7a",142.5884 MB,archive,,
 ,,,https://prodigits.co.uk/pcontent4/android-games/games/sx5/2024/1/490-my-om-nom-virtual-pet-0-1-1.apk,,"arm64-v8a, armeabi-v7a",142.5884 MB,,,
 ,v1.10.0,virtualpet/classic,https://d.apkpure.net/b/XAPK/com.myvirtualpet.omnomgame?versionCode=213&nc=arm64-v8a&sv=28,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.myvirtualpet.omnomgame/My Om Nom - Virtual Pet_1.10.0_APKPure.xapk,,arm64,175.46MB,,,,,,,,,,,,,,,,,,,,,,,
