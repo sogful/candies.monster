@@ -386,7 +386,8 @@ const rawicons = {
     "ctrtt/industrialfree": "png",
     "ctrmagic/valentines": "png",
     "ctrmagic/bluebird": "png",
-    "ctrexp/androidhd173fix": "png"
+    "ctrexp/androidhd173fix": "png",
+    "omnomrun/beach": "png"
 };
 
 export {rawicons};

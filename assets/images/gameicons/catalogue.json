@@ -5837,5 +5837,20 @@
     "packages": [
       "com.zeptolab.ctrexperiments.hd.google.paid"
     ]
+  },
+  {
+    "game": "omnomrun",
+    "variant": "beach",
+    "raw": "/assets/images/gameicons/omnomrun/beach/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "4cdfa9aafda218497305f2cca27cfe775427c9ab9a29e3675c73c3dcab0f72a6",
+    "sources": [
+      "https://4pda.to/forum/dl/post/27218197/com.zeptolab.omnomrun.google_0_apps.evozi.com.zip"
+    ],
+    "packages": [
+      "com.zeptolab.omnomrun.google"
+    ]
   }
 ]
