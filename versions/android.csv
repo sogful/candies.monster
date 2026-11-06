@@ -2333,9 +2333,6 @@ Om Nom,com.zeptolab.omnombooks.amazon.ftu,books/androidamazonv10,play & learn wi
 ,v1.0.0,books/bemobilatam,https://cdn.candies.monster/apks/com.zeptolab.omnombooks.tier2/dragonland/1.0.0-64-2c57b3b5ff53.apk,,"arm64-v8a, armeabi-v7a, x86",62.9mb,archive,NoDRM (signed with a test key)
 ,,,https://mega.nz/folder/hEdlBJgL#kax1AQc8b_gMHisS9hNYPw/file/xRFX1RST,,"arm64-v8a, armeabi-v7a, x86",62.9mb,,,bemobi drm removed
 Candy Trail,com.zeptolab.ctr.candytrail,candytrail/launch,soft launch,2,/assets/images/gameicons/candytrail/launch/raw.png
-,v0.1.0,candytrail/launch,https://play.google.com/store/apps/details?id=com.zeptolab.ctr.candytrail
-,,,https://cdn.candies.monster/apks/com.zeptolab.ctr.candytrail/0.1.0-45-arm64.xapk,,arm64-v8a,144.4mb,archive,android 12l+
-
-,,,https://cdn.candies.monster/apks/com.zeptolab.ctr.candytrail/patches/0.1.0-45-arm64-playstorepromptremoved-306e0a5bdc7b.xapk,,arm64-v8a,144.4mb,archive,,play store prompt removed
+,v0.1.0,https://cdn.candies.monster/apks/com.zeptolab.ctr.candytrail/patches/0.1.0-45-arm64-playstorepromptremoved-306e0a5bdc7b.xapk,,arm64-v8a,144.4mb,archive,,no play store drm (android 12L+)
 Om Nom Marble Shooter,com.renderedideas.omnommarblematch,marbleshooter/listing,,2,/assets/images/gameicons/marbleshooter/listing/raw.png
 ,v1.0,marbleshooter/listing,
