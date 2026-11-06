@@ -108,6 +108,9 @@ function mountplatform(platform) {
         platform.circle.classList.remove("rendering");
     }
     layoutplatform(platform);
+    if (platform === activeplatform) {
+        platform.nodes.forEach(node => updateicon(node.querySelector("img"), parseFloat(node.style.width)));
+    }
 }
 
 function fetchplatform(platform) {
@@ -147,9 +150,10 @@ function fetchplatform(platform) {
 /*//////////////////////////////////////////////////////////////////////*/
 
 function updateicon(image, size) {
-    const source = resolveiconpath(image.dataset.source, size);
+    const pixels = size * (window.devicePixelRatio || 1) * (window.visualViewport?.scale || 1);
+    const source = resolveiconpath(image.dataset.source, pixels);
     if (image.getAttribute("src") === source) return;
-    image.srcset = resolveiconsrcset(image.dataset.source, size);
+    image.srcset = resolveiconsrcset(image.dataset.source, pixels);
     image.src = source;
 }
 
@@ -187,7 +191,7 @@ function layoutplatform(platform) {
         node.style.left = `${position.left}px`;
         node.style.top = `${position.top}px`;
         node.style.position = "absolute";
-        updateicon(node.querySelector("img"), position.size);
+        if (platform === activeplatform) updateicon(node.querySelector("img"), position.size);
     });
 }
 

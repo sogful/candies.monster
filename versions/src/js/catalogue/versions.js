@@ -37,7 +37,11 @@ function packageiconhtml(game, index) {
     const list = game.pkgIconsList;
     const urls = list && (list[index] ?? list[0]);
     if (!urls || urls.length < 2) return "";
-    return `<div class="packageicons">${urls.map(url => `<a class="clickable" href="${downloadattribute(resolverawiconpath(url))}" target="_blank" rel="noopener" aria-label="open original icon"><img src="${downloadattribute(resolveiconpath(url))}" alt="" draggable="false" loading="lazy" decoding="async" width="32" height="32"></a>`).join("")}</div>`;
+    return `<div class="packageicons">${urls.map(url => `<a class="clickable" href="${downloadattribute(resolverawiconpath(url))}" target="_blank" rel="noopener" aria-label="open original icon"><img src="${downloadattribute(resolveiconpath(url, iconpixels(32)))}" alt="" draggable="false" loading="lazy" decoding="async" width="32" height="32"></a>`).join("")}</div>`;
+}
+
+function iconpixels(size) {
+    return size * (window.devicePixelRatio || 1) * (window.visualViewport?.scale || 1);
 }
 
 function isdownloadbuttonvisible(download) {
@@ -248,8 +252,8 @@ function versionpanel(version, fallback, legacy, game, index) {
     panel.classList.toggle("unavailable", version.unavailable);
     const historical = !version.icon && legacy;
     const source = version.icon || (historical && legacyicons?.[version.version]) || fallback || "ctr/free";
-    const icon = resolveiconpath(source);
-    const srcset = resolveiconsrcset(source);
+    const icon = resolveiconpath(source, iconpixels(50));
+    const srcset = resolveiconsrcset(source, iconpixels(50));
     panel.innerHTML = `
         <a class="versionicon clickable" href="${downloadattribute(resolverawiconpath(source))}" target="_blank" rel="noopener" aria-label="open original icon for ${downloadattribute(version.version)}">
             <img src="${icon}" srcset="${srcset}" alt="" draggable="false" loading="lazy" decoding="async" width="60" height="60"${historical ? ` data-legacyversion="${version.version}"` : ""}>

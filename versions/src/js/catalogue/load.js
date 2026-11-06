@@ -51,7 +51,7 @@ function resolveiconpath(p, size = 64) {
     if (value.startsWith("/") && !value.startsWith(base)) return value;
     const relative = value.replace(/^\/?assets\/images\/gameicons\//, "");
     const key = relative.replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
-    return `${base}${key}/${size > 64 ? 128 : 64}.webp`;
+    return `${base}${key}/${size > 128.5 ? 256 : size > 64.5 ? 128 : 64}.webp`;
 }
 
 function resolveiconsrcset(p, size = 64) {

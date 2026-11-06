@@ -17,6 +17,7 @@ style.textContent = `
         width: min(80%,32px); aspect-ratio: 1;
         left: 50%; top: 50%;
         margin: 0; z-index: 1;
+        transform: translate(-50%,-50%);
         background: center / contain no-repeat url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(loadingsvg)}");
         animation: imagecandy 1s linear infinite;
     }
