@@ -1,4 +1,4 @@
-function placeicon(placed, size, width, stretch, gap) {
+function placeicon(placed, ordered, size, width, stretch, gap) {
     const rows = new Set([-size / 2]);
     for (const other of placed) {
         rows.add(other.top - size - gap);
@@ -14,10 +14,9 @@ function placeicon(placed, size, width, stretch, gap) {
         if (!best || score < best.score) best = {left: x, top, size, score};
     }
     for (const top of rows) {
-        const obstacles = placed.filter(other => top < other.top + other.size + gap - 0.001 && top + size + gap > other.top + 0.001);
-        obstacles.sort((first, second) => first.left - second.left);
         let left = -width / 2;
-        for (const other of obstacles) {
+        for (const other of ordered) {
+            if (top >= other.top + other.size + gap - 0.001 || top + size + gap <= other.top + 0.001) continue;
             consider(left, other.left - size - gap, top);
             left = Math.max(left, other.left + other.size + gap);
         }
@@ -35,7 +34,14 @@ function packicons(sizes, width, height, gap) {
     const ellipseheight = Math.min(height, diameter ** 2 / ellipsewidth);
     const stretch = ellipseheight / ellipsewidth;
     const positions = [];
-    for (const size of sizes) positions.push(placeicon(positions, size, width, stretch, gap));
+    const ordered = [];
+    for (const size of sizes) {
+        const position = placeicon(positions, ordered, size, width, stretch, gap);
+        positions.push(position);
+        let index = ordered.findIndex(other => other.left > position.left);
+        if (index < 0) index = ordered.length;
+        ordered.splice(index, 0, position);
+    }
     const left = Math.min(...positions.map(position => position.left));
     const right = Math.max(...positions.map(position => position.left + position.size));
     const top = Math.min(...positions.map(position => position.top));
@@ -56,12 +62,12 @@ export function packcircle(games, width, height = Infinity) {
     const gap = Math.min(6, Math.sqrt(width * height / (games.length * 4)));
     const sizes = games.map(game => Math.max(24, 50 + (game.importance - 3) * 5.7));
     const area = sizes.reduce((total, size) => total + (size + gap) ** 2, 0);
-    let scale = Math.min(1, width / Math.max(...sizes), Math.sqrt(width * height * Math.PI * 0.85 / (4 * area)));
-    let packed;
-    for (let attempt = 0; attempt < 12; attempt++) {
-        packed = packicons(sizes.map(size => size * scale), width, height, gap);
-        if (packed.height <= height) break;
-        scale *= Math.min(0.94, Math.sqrt(height / packed.height) * 0.97);
-    }
-    return packed;
+    const scale = Math.min(1, width / Math.max(...sizes), Math.sqrt(width * height * Math.PI * 0.85 / (4 * area)));
+    const packed = packicons(sizes.map(size => size * scale), width, height, gap);
+    if (packed.height <= height) return packed;
+    const fit = height / packed.height;
+    return {
+        positions: packed.positions.map(position => ({left: (position.left - width / 2) * fit + width / 2, top: position.top * fit, size: position.size * fit})),
+        height
+    };
 }

@@ -134,6 +134,8 @@ function parsegamescsv(text) {
         const c5 = cleanvalue(line[5]);
         const c6 = cleanvalue(line[6]);
 
+        if (r === 0 && c0 === "game" && c1 === "package/version") continue;
+
         const kind = cleanvalue(line[7]);
         const label = cleanvalue(line[8]);
         const note = cleanvalue(line[9]);

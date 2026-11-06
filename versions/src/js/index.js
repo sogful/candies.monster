@@ -1,5 +1,5 @@
-import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./load.js";
-import {loadversions} from "./versions.js";
+import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./catalogue/load.js";
+import {loadversions} from "./catalogue/versions.js";
 import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
 import {preparekeys, gameroute, readhash, revealroute, startlinks} from "./links.js";
@@ -58,7 +58,13 @@ function prepareplatform(platform) {
     const parsed = parsegamescsv(platform.text);
     if (!parsed.games.length) throw new Error(`No games in ${platform.url}`);
     platform.games = parsed.games.map(game => ({...game, iosstuff: platform.name === "ios"}));
-    platform.games.sort((first, second) => second.importance - first.importance);
+    platform.games.sort((first, second) => {
+        const importance = second.importance - first.importance;
+        if (importance) return importance;
+        const firstkey = JSON.stringify([first.package, first.name]);
+        const secondkey = JSON.stringify([second.package, second.name]);
+        return firstkey < secondkey ? -1 : firstkey > secondkey ? 1 : 0;
+    });
     preparekeys(platform.games);
     platform.cache = parsed.versionscache;
     platform.games.forEach(game => {
@@ -124,7 +130,7 @@ function fetchplatform(platform) {
         else {
             const prepare = () => {
                 try {
-                    prepareplatform(platform);
+                    mountplatform(platform);
                 } catch (error) {
                     platformfailure(platform, error);
                 }
@@ -269,14 +275,18 @@ container.addEventListener("scrollend", () => {
     if (platform !== activeplatform) activateplatform(platform, false);
 }, {passive: true});
 
-window.addEventListener("resize", () => {
+function schedulelayout() {
     if (resizeframe) return;
     resizeframe = requestAnimationFrame(() => {
         resizeframe = 0;
-        if (!currentgame) layoutplatform(activeplatform);
+        if (!currentgame) platforms.forEach(layoutplatform);
         container.scrollTo({left: activeplatform.screen.offsetLeft, behavior: "instant"});
     });
-});
+}
+
+window.addEventListener("resize", schedulelayout);
+const boundsobserver = new ResizeObserver(schedulelayout);
+platforms.forEach(platform => boundsobserver.observe(platform.circle));
 
 async function restoreview(route) {
     const request = ++navigation;

@@ -1,4 +1,4 @@
-import {hasdownload} from "./load.js";
+import {hasdownload} from "./catalogue/load.js";
 
 const platforms = new Map();
 

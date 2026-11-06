@@ -1,4 +1,4 @@
-import {packagekey, shareheading} from "./links.js";
+import {packagekey, shareheading} from "../links.js";
 import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel} from "./load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -59,7 +59,9 @@ function downloadsize(value) {
 
 function downloadarch(value) {
     const architectures = new Set(String(value || "").toLowerCase().split(/[,;\s/]+/));
-    return ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"].every(arch => architectures.has(arch)) ? "universal" : value;
+    if (["armeabi-v7a", "arm64-v8a", "x86", "x86_64"].every(arch => architectures.has(arch))) return "universal";
+    const aliases = {"armeabi": "arm", "armeabi-v7a": "arm", "arm32": "arm", "armv7": "arm", "arm64-v8a": "arm64", "aarch64": "arm64", "x86_64": "x64", "arm64-v8": "arm64"};
+    return [...new Set([...architectures].filter(Boolean).map(arch => aliases[arch] || arch))].join(",");
 }
 
 function downloadbutton(download) {
@@ -69,7 +71,7 @@ function downloadbutton(download) {
 }
 
 function secondarydownload(download) {
-    return ["other.webp", "pdalife.webp"].includes(downloadbutton(download));
+    return ["other.webp", "pdalife.webp", "symbols.webp"].includes(downloadbutton(download));
 }
 
 function renderdownloadbutton(download, version) {
@@ -86,20 +88,21 @@ function renderdownloadbutton(download, version) {
     ].filter(Boolean).join("\n"));
     const attributes = `href="${downloadattribute(download.url)}" target="_blank" rel="noopener" title="${details}" aria-label="${details}"`;
     if (download.kind === "symbols") {
-        const label = downloadattribute(download.label || "debug symbols");
-        return `<a ${attributes} class="clickable cdnbutton">
+        const label = downloadattribute((download.label || "symbols").replace(/^\((.*)\)$/, "$1"));
+        return `<a ${attributes} class="clickable cdnbutton smallsource annotated">
             <img src="/assets/images/downloadbuttons/symbols.webp" alt="" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext"><div>symbols</div><div>${label}</div>${annotation}</div>
+            <div class="cdntext"><div>${label}</div>${annotation}</div>
         </a>`;
     }
-    if (download.arch && download.size) {
-        return `<a ${attributes} class="clickable cdnbutton${compact}">
+    if (download.arch || download.size) {
+        const metadata = [size, arch ? `(${arch})` : ""].filter(Boolean).join(" ");
+        return `<a ${attributes} class="clickable cdnbutton annotated${compact}">
             <img src="/assets/images/downloadbuttons/${downloadattribute(button)}" alt="${downloadattribute(button.replace(/\.[^.]+$/, ""))}" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext"><div class="downloadmeta">${downloadattribute(arch)}</div><div class="downloadmeta">${downloadattribute(size)}</div>${annotation}</div>
+            <div class="cdntext"><div class="downloadmeta">${downloadattribute(metadata)}</div>${annotation}</div>
         </a>`;
     }
     if (note) {
-        return `<a ${attributes} class="clickable cdnbutton${compact}">
+        return `<a ${attributes} class="clickable cdnbutton annotated${compact}">
             <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
             <div class="cdntext">${annotation}</div>
         </a>`;
@@ -125,6 +128,14 @@ function uniquedownloads(downloads) {
         }
     }
     return Array.from(seen.values());
+}
+
+function renderdownloads(downloads, version) {
+    return downloads.map(download => {
+        const annotated = download.arch || download.size || download.label || download.note || download.kind === "symbols";
+        const separator = annotated ? `<span class="downloadbreak${secondarydownload(download) ? " secondarybreak" : ""}" aria-hidden="true"></span>` : "";
+        return renderdownloadbutton(download, version) + separator;
+    }).join("");
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -246,7 +257,7 @@ function versionpanel(version, fallback, legacy, game, index) {
         <div class="versioninfo">
             <div class="version">${downloadattribute(version.version)}</div>
             ${version.details ? `<div class="details">${version.details}</div>` : ""}
-            <div class="versionbuttons">${version.downloads.map(download => renderdownloadbutton(download, version.version)).join("")}</div>
+            <div class="versionbuttons">${renderdownloads(version.downloads, version.version)}</div>
         </div>
     `;
     shareheading(panel.querySelector(".version"), game, index, version.version);

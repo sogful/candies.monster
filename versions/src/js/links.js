@@ -70,13 +70,7 @@ export function shareheading(heading, game, index = 0, version = "") {
     link.href = routehash(gameroute(game, index, version));
     link.title = "Copy link";
     link.setAttribute("aria-label", "Copy link");
-    const image = document.createElement("img");
-    image.src = "/assets/images/link.png";
-    image.alt = "";
-    image.draggable = false;
-    image.width = 16;
-    image.height = 16;
-    link.appendChild(image);
+    link.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" stroke="#000" stroke-width="0.8" paint-order="stroke fill" transform="rotate(45 12 12)" d="M3.9 12a3.1 3.1 0 0 1 3.1-3.1h4V7H7a5 5 0 0 0 0 10h4v-1.9H7A3.1 3.1 0 0 1 3.9 12M8 13h8v-2H8zm9-6h-4v1.9h4a3.1 3.1 0 0 1 0 6.2h-4V17h4a5 5 0 0 0 0-10"/></svg>`;
     heading.appendChild(link);
 }
 
