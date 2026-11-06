@@ -388,7 +388,10 @@ const rawicons = {
     "ctrmagic/bluebird": "png",
     "ctrexp/androidhd173fix": "png",
     "omnomrun/beach": "png",
-    "ctr/limewithlogo": "png"
+    "ctr/limewithlogo": "png",
+    "ctr/limecompact": "png",
+    "ctr/limeclassic": "png",
+    "ctr/limeearly": "png"
 };
 
 export {rawicons};

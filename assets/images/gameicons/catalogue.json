@@ -5867,5 +5867,50 @@
     "packages": [
       "com.zeptolab.ctr.ads"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "limecompact",
+    "raw": "/assets/images/gameicons/ctr/limecompact/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "aedb5cff2d5810c7d6659b1348a4cf4685cc783f248c73a04b726bcc5596faa0",
+    "sources": [
+      "https://d.apkpure.com/b/XAPK/com.zeptolab.ctr.ads?versionCode=2354121&nc=arm64-v8a&sv=21"
+    ],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "limeclassic",
+    "raw": "/assets/images/gameicons/ctr/limeclassic/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "131a011fa096a1a73f1e1c1a1140c9f757fe49c3397c21955018941ae18dd996",
+    "sources": [
+      "https://d.apkpure.com/b/XAPK/com.zeptolab.ctr.ads?versionCode=2353140&nc=armeabi-v7a&sv=21"
+    ],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "limeearly",
+    "raw": "/assets/images/gameicons/ctr/limeearly/raw.png",
+    "width": 48,
+    "height": 48,
+    "format": "png",
+    "sha256": "9a226a81aa0975f755a70058fdb316870ffa7054160a7e0a4ebb34cd0690801d",
+    "sources": [
+      "https://d.apkpure.com/b/XAPK/com.zeptolab.ctr.ads?versionCode=2352474&nc=armeabi-v7a&sv=21"
+    ],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
   }
 ]
