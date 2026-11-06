@@ -100,7 +100,7 @@ async function convert(files, folder = false) {
                     const timeout = setTimeout(() => {
                         stalled = true;
                         worker.terminate();
-                        reject(new Error("Conversion timed out."));
+                        reject(new Error("Conversion timed out.."));
                     }, 60000);
                     worker.onmessage = event => {
                         if (event.data.id !== request) return;
