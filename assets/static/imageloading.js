@@ -56,11 +56,10 @@ function finish(image) {
     hide(image);
 }
 
-function show(image) {
+function show(image, parent, relative) {
     if (overlays.has(image)) return;
-    const parent = image.parentElement;
-    if (!parent || !image.width || !image.height) return;
-    if (getComputedStyle(parent).position === "static") {
+    if (!parent) return;
+    if (relative) {
         positions.set(parent, parent.style.position);
         parent.style.position = "relative";
     }
@@ -90,10 +89,16 @@ function inspect(node) {
 }
 
 const viewport = new IntersectionObserver(entries => {
-    for (const entry of entries) {
+    const prepared = entries.map(entry => {
         const image = entry.target;
+        const parent = image.parentElement;
+        const shown = !image.complete && image.isConnected && entry.isIntersecting && entry.boundingClientRect.width > 0 && entry.boundingClientRect.height > 0;
+        const relative = shown && parent && !overlays.has(image) && getComputedStyle(parent).position === "static";
+        return {image, parent, shown, relative};
+    });
+    for (const {image, parent, shown, relative} of prepared) {
         if (image.complete || !image.isConnected) finish(image);
-        else if (entry.isIntersecting && entry.boundingClientRect.width > 0 && entry.boundingClientRect.height > 0) show(image);
+        else if (shown) show(image, parent, relative);
         else hide(image);
     }
 });
