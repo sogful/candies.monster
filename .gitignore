@@ -5,8 +5,8 @@
 /preview/h5dx/*
 !/preview/h5dx/dist/
 
-/convert/__pycache__
-/convert/assets/static/__pycache__
+/raw2png/__pycache__
+/raw2png/assets/static/__pycache__
 
 /template.html
 .vscode/
