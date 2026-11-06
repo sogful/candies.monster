@@ -5852,5 +5852,20 @@
     "packages": [
       "com.zeptolab.omnomrun.google"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "limewithlogo",
+    "raw": "/assets/images/gameicons/ctr/limewithlogo/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "f7ce0821d552393b9f2d168683d54db8d998abee1e9786b2873affa1ad15a6f2",
+    "sources": [
+      "https://d.apkpure.com/b/XAPK/com.zeptolab.ctr.ads?versionCode=2354969&nc=arm64-v8a&sv=21"
+    ],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
   }
 ]
