@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+
+    <style>.redirecting {display: none}</style>
+    <script>
+        (() => {
+            const redirects = {
+                convert: "/raw2png/", rawtopng: "/raw2png/", raw: "/raw2png/", converter: "/raw2png/",
+                convertlevels: "/xml2json", xmltojson: "/xml2json", json2xml: "/xml2json",
+                jsontoxml: "/xml2json", levelconverter: "/xml2json",
+                musicplayer: "/music/", audio: "/music/", tunes: "/music/"
+            };
+            let path = location.pathname;
+            try {path = decodeURIComponent(path)} catch {}
+            const name = path.replace(/^\/+|\/+$/g, "").replace(/(?:\/index)?\.html?$/i, "").toLowerCase();
+            if (!Object.hasOwn(redirects, name)) return;
+            document.documentElement.classList.add("redirecting");
+            location.replace(redirects[name] + location.search + location.hash);
+        })();
+    </script>
+
 
     <title>404</title>
     <link rel="icon" type="image/png" href="/levels/assets/images/warning.png">
 
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script async src="/assets/static/global.js"></script>
 
