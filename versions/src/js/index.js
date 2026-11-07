@@ -2,7 +2,7 @@ import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./
 import {loadversions} from "./catalogue/versions.js";
 import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
-import {preparekeys, gameroute, readhash, revealroute, startlinks} from "./links.js";
+import {preparekeys, packagekey, gameroute, readhash, revealroute, startlinks} from "./links.js";
 import "/assets/static/favicon.js";
 import "./quality.js";
 
@@ -302,7 +302,14 @@ async function restoreview(route) {
         await fetchplatform(platform);
         if (request !== navigation) return;
         prepareplatform(platform);
-        const game = platform.games?.find(item => item.routekey === route.game);
+        let game = platform.games?.find(item => item.routekey === route.game);
+        if (!game && route.game) {
+            game = platform.games?.find(item => (Array.isArray(item.package) ? item.package : [item.package]).includes(route.game));
+            if (game) {
+                const index = (Array.isArray(game.package) ? game.package : [game.package]).indexOf(route.game);
+                route = {...route, game: game.routekey, package: route.package || (index ? packagekey(game, index) : "")};
+            }
+        }
         if (game) {
             await selectgame(game, false);
             if (request !== navigation) return;
