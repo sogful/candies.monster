@@ -9,6 +9,8 @@ export function startsearch(options) {
     const input = form.querySelector(".archivequery");
     const screen = document.querySelector(".searchresults");
     const status = screen.querySelector(".searchstatus");
+    const empty = screen.querySelector(".searchempty");
+    const clear = form.querySelector(".searchclear");
     const list = screen.querySelector(".searchmatches");
     const more = screen.querySelector(".searchmore");
     const columns = new Map();
@@ -47,7 +49,7 @@ export function startsearch(options) {
 
     function header(record) {
         const group = document.createElement("section");
-        group.className = "searchgroup";
+        group.className = "packagecolumn searchgroup";
         const heading = packageheader(record.game, record.index, record.package);
         const route = gameroute(record.game, record.index);
         const title = heading.querySelector(".gamename");
@@ -59,7 +61,7 @@ export function startsearch(options) {
         platform.textContent = record.platform === "ios" ? "iOS" : "Android";
         heading.prepend(platform);
         const versions = document.createElement("div");
-        versions.className = "searchversions";
+        versions.className = "packageversions searchversions";
         group.append(heading, versions);
         columns.set(record, versions);
         return group;
@@ -88,6 +90,8 @@ export function startsearch(options) {
 
     async function run(write = true) {
         const query = input.value.trim();
+        clear.hidden = !input.value;
+        empty.hidden = true;
         if (!query) {
             options.close();
             dim();
@@ -120,7 +124,8 @@ export function startsearch(options) {
             screen.scrollTop = 0;
             const versions = found.results.reduce((count, result) => count + result.versions.length, 0);
             const games = found.results.length;
-            status.textContent = games ? `${games} ${games === 1 ? "game" : "games"}, ${versions} ${versions === 1 ? "version" : "versions"}` : "No results";
+            status.textContent = games ? `${games} ${games === 1 ? "game" : "games"}, ${versions} ${versions === 1 ? "version" : "versions"}` : "";
+            empty.hidden = games > 0;
             append();
         } catch (error) {
             if (current !== request) return;
@@ -138,6 +143,12 @@ export function startsearch(options) {
     });
     input.addEventListener("focus", () => {
         if (input.value.trim() && !shown) void run();
+    });
+    clear.addEventListener("click", () => {
+        input.value = "";
+        cancelAnimationFrame(frame);
+        void run();
+        input.focus();
     });
     form.addEventListener("submit", event => {
         event.preventDefault();
