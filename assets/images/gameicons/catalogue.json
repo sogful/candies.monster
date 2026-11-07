@@ -5912,5 +5912,23 @@
     "packages": [
       "com.zeptolab.ctr.ads"
     ]
+  },
+  {
+    "game": "theme",
+    "variant": "androidtimetravel",
+    "raw": "/assets/images/gameicons/theme/androidtimetravel/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "a9d6319526c47f06f07ae06268db299ed58d3f84a3069fbe16541ef5b9f270ca",
+    "sources": [
+      {
+        "url": "https://d.apkpure.net/b/APK/com.airthemes.timetravelzeptolab?versionCode=13",
+        "entry": "res/drawable-xxxhdpi-v4/ic_launcher.png"
+      }
+    ],
+    "packages": [
+      "com.airthemes.timetravelzeptolab"
+    ]
   }
 ]

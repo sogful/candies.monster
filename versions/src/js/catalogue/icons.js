@@ -100,6 +100,7 @@ const rawicons = {
     "swing/classic": "webp",
     "theme/classic": "webp",
     "theme/timetravel": "webp",
+    "theme/androidtimetravel": "png",
     "ctrtt/classic": "png",
     "ctrtt/egypt": "png",
     "ctrtt/free": "webp",
