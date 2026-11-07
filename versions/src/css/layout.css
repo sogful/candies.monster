@@ -2,9 +2,16 @@
 
 .overlaymasked {
     mask-image: var(--overlaymask); mask-repeat: no-repeat;
-    mask-size: calc(100% + 32px) calc(100% + 32px); mask-position: -16px -16px;
     mask-origin: border-box; mask-clip: no-clip;
 }
+
+.overlaydefinitions {
+    position: fixed; top: 0;
+    left: 0; width: 0;
+    height: 0; pointer-events: none;
+}
+
+.gameopen .archiveinfo {display: none}
 
 .gamescreen, .gamecircle, .versionscreen {transition: none}
 
