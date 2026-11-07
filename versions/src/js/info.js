@@ -1,4 +1,10 @@
+import {setoverlay} from "./overlays.js";
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 const info = document.querySelector(".archiveinfo");
+info.addEventListener("toggle", () => setoverlay(info.querySelector(".infopopup"), info.open));
+setoverlay(info.querySelector(".infopopup"), info.open);
 
 /*//////////////////////////////////////////////////////////////////////*/
 

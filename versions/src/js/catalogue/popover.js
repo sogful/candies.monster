@@ -1,3 +1,7 @@
+import {setoverlay} from "../overlays.js";
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 let popup = null;
 let trigger = null;
 let closing = 0;
@@ -24,6 +28,7 @@ function closepopup(focus = false) {
     keepopen();
     if (!popup || popup.hidden) return;
     popup.hidden = true;
+    setoverlay(popup, false);
     const previous = trigger;
     trigger = null;
     previous?.setAttribute("aria-expanded", "false");
@@ -63,6 +68,7 @@ function positionpopup() {
     const actual = popup.getBoundingClientRect();
     popup.style.left = `${Math.max(left + 8, Math.min(anchor.left, left + width - actual.width - 8))}px`;
     popup.style.top = `${underneath ? anchor.bottom + 8 : anchor.top - actual.height - 8}px`;
+    setoverlay(popup, true);
 }
 
 function scheduleposition() {
@@ -89,10 +95,7 @@ function showpopup(button) {
     trigger = button;
     button.setAttribute("aria-expanded", "true");
     const data = button.dataset;
-    popup.replaceChildren(
-        textnode("div", "downloadheading", data.downloadversion),
-        textnode("div", "downloadsource", data.downloadsource)
-    );
+    popup.replaceChildren(textnode("div", "downloadheading", data.downloadversion));
     const details = document.createElement("dl");
     details.className = "downloaddata";
     for (const [label, value] of [["Size", data.downloadsize], ["Architecture", data.downloadarch], ["Symbols", data.downloadsymbols]]) {

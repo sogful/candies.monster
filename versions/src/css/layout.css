@@ -1,5 +1,11 @@
 .container {overscroll-behavior: none}
 
+.overlaymasked {
+    mask-image: var(--overlaymask); mask-repeat: no-repeat;
+    mask-size: calc(100% + 32px) calc(100% + 32px); mask-position: -16px -16px;
+    mask-origin: border-box; mask-clip: no-clip;
+}
+
 .gamescreen, .gamecircle, .versionscreen {transition: none}
 
 .versionbackdrop {
@@ -77,6 +83,7 @@
 .archiveinfo {
     top: 0.5em; right: 0.5em;
     bottom: auto; left: auto;
+    z-index: 100000001;
 }
 
 .infopopup {

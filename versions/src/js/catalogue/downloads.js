@@ -3,7 +3,6 @@ import "./popover.js";
 /*//////////////////////////////////////////////////////////////////////*/
 
 const buttonmap = [
-    {domain: "cdn.candies.monster", icon: "cdn"},
     {domain: "apkmirror.com", icon: "apkmirror"},
     {domain: "apkpure.com", icon: "apkpure"},
     {domain: "apkpure.net", icon: "apkpure"},
@@ -12,15 +11,18 @@ const buttonmap = [
     {domain: "pdalife.com", icon: "pdalife"},
     {domain: "4pda.to", icon: "4pda"},
     {domain: "4pda.ru", icon: "4pda"},
+    {domain: "apkbe.com", icon: "apkbe"},
+    {domain: "downzen.com", icon: "downzen"},
+
     {domain: "drive.google.com", icon: "googledrive"},
     {domain: "drive.usercontent.google.com", icon: "googledrive"},
     {domain: "drive.googleusercontent.com", icon: "googledrive"},
-    {domain: "apkbe.com", icon: "apkbe"},
-    {domain: "downzen.com", icon: "downzen"},
     {domain: "mega.io", icon: "mega"},
     {domain: "mega.nz", icon: "mega"},
     {domain: "mediafire.com", icon: "mediafire"},
     {domain: "archive.org", icon: "internetarchive"},
+    {domain: "cdn.candies.monster", icon: "cdn"},
+
     {domain: "github.com", icon: "ctrhome"},
     {domain: "githubusercontent.com", icon: "ctrhome"},
     {domain: "github.io", icon: "ctrhome"}
@@ -75,7 +77,7 @@ function renderdownloadbutton(download, version, description) {
     const source = sourcenames[name] || hostname || "Download";
     const note = [...new Set([description, download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))].join("\n");
     const information = {
-        version, source, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
+        version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
         symbols: download.kind === "symbols" ? (download.label || "symbols").replace(/^\((.*)\)$/, "$1") : "",
         warning: button === "other.webp" ? "⚠️ this version is from an unpopular source" : ""
     };
