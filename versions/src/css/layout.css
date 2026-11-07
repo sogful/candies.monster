@@ -1,8 +1,15 @@
 .container {overscroll-behavior: none}
 
 .overlaymasked {
+    -webkit-mask-image: var(--overlaymask); -webkit-mask-repeat: no-repeat;
+    -webkit-mask-origin: border-box; -webkit-mask-clip: no-clip;
     mask-image: var(--overlaymask); mask-repeat: no-repeat;
     mask-origin: border-box; mask-clip: no-clip;
+}
+
+.overlayimage {
+    -webkit-mask-size: calc(100% + 32px) calc(100% + 32px); -webkit-mask-position: -16px -16px;
+    mask-size: calc(100% + 32px) calc(100% + 32px); mask-position: -16px -16px;
 }
 
 .overlaydefinitions {
@@ -67,7 +74,7 @@
     flex-direction: column; align-items: center;
     justify-content: flex-start; box-sizing: border-box;
     overflow-y: auto; overflow-x: hidden;
-    height: 100dvh; padding: 24px 16px 72px;
+    height: 100dvh; padding: 48px 16px;
 }
 
 .gamecircle {

@@ -1,6 +1,7 @@
 const active = new Set();
 const masked = new Map();
 const shapes = new WeakMap();
+const linked = CSS.supports("mask-image", "url(#overlaymask)");
 let definitions = null;
 let sequence = 0;
 let frame = 0;
@@ -68,6 +69,10 @@ function maskimage(target, covers) {
         for (const [name, value] of Object.entries({x: -16, y: -16, width, height})) node.setAttribute(name, value);
     }
     shape.holes.replaceChildren(...cutouts.map(attributes => svgnode("rect", attributes)));
+    if (!linked) {
+        const image = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="-16 -16 ${width} ${height}"><defs>${shape.cut.outerHTML}</defs>${shape.base.outerHTML}${shape.outside.outerHTML}</svg>`;
+        shape.url = `url("data:image/svg+xml,${encodeURIComponent(image)}")`;
+    }
     shape.key = key;
     return shape.url;
 }
@@ -78,7 +83,7 @@ function refresh() {
     cancelAnimationFrame(frame);
     frame = 0;
     const panels = [...active].map(measure).filter(Boolean);
-    const targets = new Set([...document.querySelectorAll(".gamescreen,.versionscreen,.backbutton,.scrollnav,.infobutton"), ...active]);
+    const targets = new Set([...document.querySelectorAll(".gamescreen,.versionscreen,.backbutton,.scrollnav,.infobutton,.archivesearch,.searchresults"), ...active]);
     const changes = new Map();
     if (panels.length) {
         for (const element of targets) {
@@ -92,7 +97,7 @@ function refresh() {
     }
     for (const element of masked.keys()) {
         if (changes.has(element)) continue;
-        element.classList.remove("overlaymasked");
+        element.classList.remove("overlaymasked", "overlayimage");
         element.style.removeProperty("--overlaymask");
         masked.delete(element);
     }
@@ -101,6 +106,7 @@ function refresh() {
         if (masked.get(element) === image) continue;
         element.style.setProperty("--overlaymask", image);
         element.classList.add("overlaymasked");
+        element.classList.toggle("overlayimage", !linked);
         masked.set(element, image);
     }
 }

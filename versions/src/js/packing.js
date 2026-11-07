@@ -42,14 +42,12 @@ function packicons(sizes, width, height, gap) {
         if (index < 0) index = ordered.length;
         ordered.splice(index, 0, position);
     }
-    const left = Math.min(...positions.map(position => position.left));
-    const right = Math.max(...positions.map(position => position.left + position.size));
     const top = Math.min(...positions.map(position => position.top));
     const bottom = Math.max(...positions.map(position => position.top + position.size));
-    const offset = (width - right - left) / 2;
+    const extent = Math.max(-top, bottom);
     return {
-        positions: positions.map(position => ({left: position.left + offset, top: position.top - top, size: position.size})),
-        height: Math.ceil(bottom - top)
+        positions: positions.map(position => ({left: position.left + width / 2, top: position.top + extent, size: position.size})),
+        height: extent * 2
     };
 }
 
