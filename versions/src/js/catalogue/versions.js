@@ -100,7 +100,7 @@ function loadlegacyicons() {
             legacyicons = Object.fromEntries(legacy.filter(item => item?.version && item.icon).map(item => [String(item.version), item.icon]));
             return legacyicons;
         })().catch(error => {
-            console.warn("Unable to load legacy version icons", error);
+            console.warn("unable to load legacy version icons?!", error);
             return {};
         }).finally(() => {
             legacypromise = null;
@@ -266,7 +266,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
         if (!visible) {
             const empty = document.createElement("div");
             empty.className = "versionstatus";
-            empty.textContent = "No versions found for this game.";
+            empty.textContent = "no versions for this game?! i usually add some, please report this to cv";
             list.appendChild(empty);
         }
         if (!shown) showversions(game, loadid, alreadyshown, iscurrent, containerscroll);
@@ -277,7 +277,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
         const message = document.createElement("div");
         message.className = "versionstatus";
         message.setAttribute("role", "alert");
-        message.textContent = "Unable to show versions for this game.";
+        message.textContent = "showing versions failed?! please report this to cv";
         list.replaceChildren(message);
         showversions(game, loadid, alreadyshown, iscurrent, containerscroll);
     }
