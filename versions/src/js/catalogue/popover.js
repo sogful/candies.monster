@@ -41,7 +41,7 @@ function closepopup(focus = false) {
 
 function delayedclose() {
     keepopen();
-    closing = setTimeout(() => closepopup(), 160);
+    closing = setTimeout(() => closepopup(), ["left", "right"].includes(popup?.dataset.placement) ? 320 : 160);
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -57,9 +57,21 @@ function positionpopup() {
     const height = viewport?.height || innerHeight;
     const anchor = trigger.getBoundingClientRect();
     if (anchor.bottom <= top || anchor.top >= top + height || anchor.right <= left || anchor.left >= left + width) return closepopup();
-    popup.style.maxWidth = `${Math.max(0, width - 16)}px`;
+    const panel = !touchinput() ? trigger.closest(".versionscreen")?.getBoundingClientRect() : null;
+    const before = panel ? panel.left - left - 16 : 0;
+    const after = panel ? left + width - panel.right - 16 : 0;
+    const beside = Math.max(before, after) >= 240;
+    const preceding = before >= after;
+    popup.style.maxWidth = `${Math.max(0, beside ? Math.min(width - 16, preceding ? before : after) : width - 16)}px`;
     popup.style.maxHeight = `${Math.max(0, height - 16)}px`;
     const measured = popup.getBoundingClientRect();
+    if (beside) {
+        popup.dataset.placement = preceding ? "left" : "right";
+        popup.style.left = `${preceding ? panel.left - measured.width - 8 : panel.right + 8}px`;
+        popup.style.top = `${Math.max(top + 8, Math.min(anchor.top, top + height - measured.height - 8))}px`;
+        setoverlay(popup, true);
+        return;
+    }
     const below = top + height - anchor.bottom - 16;
     const above = anchor.top - top - 16;
     const underneath = measured.height <= below || (measured.height > above && below >= above);
@@ -104,7 +116,18 @@ function showpopup(button) {
     }
     if (details.childElementCount) popup.appendChild(details);
     if (data.downloadnote) popup.appendChild(textnode("div", "downloadnotes", data.downloadnote));
-    if (data.downloadwarning) popup.appendChild(textnode("div", "downloadwarning", data.downloadwarning));
+    if (data.downloadwarning) {
+        const warning = document.createElement("div");
+        warning.className = "downloadwarning";
+        const icon = document.createElement("img");
+        icon.src = "/assets/images/warning.png";
+        icon.alt = "";
+        icon.width = 16;
+        icon.height = 16;
+        icon.draggable = false;
+        warning.append(icon, textnode("span", "downloadwarningtext", data.downloadwarning));
+        popup.appendChild(warning);
+    }
     const url = textnode("a", "downloadurl clickable", button.href);
     url.href = button.href;
     url.target = "_blank";

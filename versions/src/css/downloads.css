@@ -35,7 +35,7 @@
     position: fixed; z-index: 100000000;
     width: 320px; box-sizing: border-box;
     padding: 12px; border-radius: 12px;
-    background: rgba(0,0,0,0.5); color: #fff;
+    background: rgba(0,0,0,0.25); color: #fff;
     overflow: auto; overscroll-behavior: contain;
     font-size: 1rem; line-height: 1.2;
     -webkit-text-stroke: 0.07em #000; paint-order: stroke fill;
@@ -48,7 +48,7 @@
 
 .downloaddata {
     display: grid; grid-template-columns: auto 1fr;
-    gap: 3px 12px; margin: 10px 0;
+    gap: 0 8px; margin: 2px 0;
 }
 
 .downloadlabel {opacity: 0.75}
@@ -58,15 +58,25 @@
 }
 
 .downloadnotes, .downloadwarning {
-    margin-top: 10px; white-space: pre-line;
+    margin-top: 2px; white-space: pre-line;
     overflow-wrap: anywhere;
 }
 
 .downloadurl {
-    display: block; margin-top: 10px;
+    display: block; margin-top: 2px;
     font-family: inherit; font-size: 0.65em;
     overflow-wrap: anywhere;
     -webkit-text-stroke: 0.06em #000; text-shadow: 0 0.07em 0 #000;
+}
+
+.downloadwarning {
+    display: flex; align-items: flex-start;
+    gap: 0.25em;
+}
+
+.downloadwarning img {
+    width: 1em; height: 1em;
+    flex: 0 0 1em; margin-top: 0.08em;
 }
 
 .downloadpopup a, .downloadpopup a * {
