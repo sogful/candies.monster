@@ -2,6 +2,7 @@ import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./
 import {loadversions} from "./catalogue/versions.js";
 import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
+import {startsearch} from "./search/index.js";
 import {preparekeys, packagekey, gameroute, readhash, revealroute, startlinks} from "./links.js";
 import "/assets/static/favicon.js";
 import "./quality.js";
@@ -20,6 +21,7 @@ let currentloadid = 0;
 let resizeframe = 0;
 let navigation = 0;
 let scrolltarget = null;
+let search = null;
 
 document.body.classList.add("archivepage");
 document.querySelector(".loading")?.remove();
@@ -214,6 +216,7 @@ function activateplatform(platform, scroll = true, write = true) {
 }
 
 async function selectgame(game, write = true) {
+    search?.hide(false);
     if (write) {navigation++; document.documentElement.classList.remove("routepending"); links.write(gameroute(game))}
     const loadid = ++currentloadid;
     const platform = platforms[game.iosstuff ? 1 : 0];
@@ -253,7 +256,8 @@ document.addEventListener("click", event => {
         if (game) void selectgame(game);
     } else if (control.classList.contains("backbutton")) {
         event.preventDefault();
-        goback();
+        if (search.shown) search.hide();
+        else goback();
     } else if (control.classList.contains("retryplatform")) {
         const platform = platforms.find(item => item.name === control.dataset.platform);
         if (platform) void fetchplatform(platform).then(() => links.restore(true));
@@ -294,6 +298,7 @@ platforms.forEach(platform => boundsobserver.observe(platform.circle));
 
 async function restoreview(route) {
     const request = ++navigation;
+    search?.hide(false);
     document.documentElement.classList.add("routepending");
     try {
         if (currentgame) goback(false);
@@ -302,6 +307,11 @@ async function restoreview(route) {
         await fetchplatform(platform);
         if (request !== navigation) return;
         prepareplatform(platform);
+        if (route.search && !route.game) {
+            document.documentElement.classList.remove("routepending");
+            await search.restore(route.search);
+            return;
+        }
         let game = platform.games?.find(item => item.routekey === route.game);
         if (!game && route.game) {
             game = platform.games?.find(item => (Array.isArray(item.package) ? item.package : [item.package]).includes(route.game));
@@ -326,6 +336,20 @@ async function restoreview(route) {
 }
 
 const links = startlinks(restoreview);
+search = startsearch({
+    platforms,
+    ready: async () => {
+        await Promise.all(platforms.map(fetchplatform));
+        platforms.forEach(mountplatform);
+    },
+    close: () => {
+        navigation++;
+        document.documentElement.classList.remove("routepending");
+        if (currentgame) goback(false);
+    },
+    write: (query, replace) => links.write({platform: activeplatform.name, search: query}, replace),
+    open: async route => {links.write(route); await restoreview(route)}
+});
 if (!location.hash) links.write({platform: "android"}, true);
 if (readhash().game) document.documentElement.classList.add("routepending");
 platforms.forEach(platform => {void fetchplatform(platform)});

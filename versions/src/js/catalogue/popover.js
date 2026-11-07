@@ -57,7 +57,7 @@ function positionpopup() {
     const height = viewport?.height || innerHeight;
     const anchor = trigger.getBoundingClientRect();
     if (anchor.bottom <= top || anchor.top >= top + height || anchor.right <= left || anchor.left >= left + width) return closepopup();
-    const panel = !touchinput() ? trigger.closest(".versionscreen")?.getBoundingClientRect() : null;
+    const panel = !touchinput() ? trigger.closest(".versionscreen,.searchresults")?.getBoundingClientRect() : null;
     const before = panel ? panel.left - left - 16 : 0;
     const after = panel ? left + width - panel.right - 16 : 0;
     const beside = Math.max(before, after) >= 240;

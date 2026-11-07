@@ -472,9 +472,20 @@
     <link rel="stylesheet" href="src/css/downloads.css">
     <link rel="stylesheet" href="src/css/layout.css">
     <link rel="stylesheet" href="src/css/fonts.css">
+    <link rel="stylesheet" href="src/css/search.css">
     <script src="/assets/static/fontcompat.js"></script>
 </head>
 <body>
+
+    <form class="archivesearch" role="search">
+        <img src="/assets/images/search.png" alt="" width="20" height="20" draggable="false">
+        <input class="archivequery" type="search" aria-label="Search games and versions" placeholder="search games and versions" autocomplete="off" spellcheck="false">
+    </form>
+    <section class="searchresults" hidden aria-label="Search results">
+        <div class="searchstatus" role="status" aria-live="polite"></div>
+        <div class="searchmatches"></div>
+        <div class="searchmore" aria-hidden="true"></div>
+    </section>
 
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
     <noscript><style>

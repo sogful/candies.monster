@@ -50,7 +50,7 @@ function uniquedownloads(downloads) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function versionsfor(cache, key) {
+export function versionsfor(cache, key) {
     if (!prepared.has(cache)) prepared.set(cache, new Map());
     const packages = prepared.get(cache);
     if (packages.has(key)) return packages.get(key);
@@ -123,7 +123,7 @@ function updatelegacyicons(list) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function packageheader(game, index, pkg) {
+export function packageheader(game, index, pkg) {
     const value = key => Array.isArray(game[key]) ? game[key][index] : game[key];
     const header = document.createElement("div");
     header.className = "gameinfo";
@@ -150,7 +150,7 @@ function packageheader(game, index, pkg) {
     return header;
 }
 
-function versionpanel(version, fallback, legacy, game, index) {
+export function versionpanel(version, fallback, legacy, game, index) {
     const panel = document.createElement("div");
     panel.className = "versionpanel";
     panel.dataset.routepackage = packagekey(game, index);

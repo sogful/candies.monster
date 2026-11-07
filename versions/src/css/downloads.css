@@ -1,5 +1,9 @@
 .packageicons a {display: block}
 
+.versionpanel.unavailable {opacity: 1}
+
+.versionpanel.unavailable .versionicon, .versionpanel.unavailable .version {opacity: 0.3}
+
 /*//////////////////////////////////////////////////////////////////////*/
 
 .versionbuttons .downloadbutton {

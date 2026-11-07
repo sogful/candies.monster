@@ -46,6 +46,7 @@ export function routehash(route) {
     if (route.package) query.set("package", route.package);
     if (route.version) query.set("version", route.version);
     if (route.info) query.set("info", "1");
+    if (route.search) query.set("search", route.search);
     const path = `#${route.platform === "ios" ? "ios" : "android"}${route.game ? `/${encodeURIComponent(route.game)}` : ""}`;
     return query.size ? `${path}?${query}` : path;
 }
@@ -55,7 +56,7 @@ export function readhash(hash = location.hash) {
         const [path, query] = hash.slice(1).split("?");
         const [platform, game = ""] = path.split("/");
         const parameters = new URLSearchParams(query);
-        return {platform: platform === "ios" ? "ios" : "android", game: decodeURIComponent(game), package: parameters.get("package") || "", version: parameters.get("version") || "", info: parameters.get("info") === "1"};
+        return {platform: platform === "ios" ? "ios" : "android", game: decodeURIComponent(game), package: parameters.get("package") || "", version: parameters.get("version") || "", info: parameters.get("info") === "1", search: parameters.get("search") || ""};
     } catch {
         return {platform: "android", game: "", package: "", version: "", info: false};
     }
