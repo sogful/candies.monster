@@ -8,7 +8,7 @@
 }
 
 body {
-    font-family: "Good Dog";
+    font-family: var(--sitefont, "Good Dog");
     position: relative; z-index: 1;
     display: flex; justify-content: center; align-items: flex-start;
     min-height: 100vh; min-width: 100vw; overflow-y: auto;
@@ -197,7 +197,7 @@ a, .button {
     top: 0em; left: 0;
     z-index: 999999999; border: none;
     color: white; cursor: pointer; white-space: nowrap;
-    font-family: "Good Dog"; font-size: 1.1em;
+    font-family: var(--sitefont, "Good Dog"); font-size: 1.1em;
     background: rgba(0,0,0,0.25);
     border-radius: 0 0 0.6em 0;
     padding: 0.5em 0.5em 0.5em 0.3em;
@@ -428,7 +428,7 @@ body.shareonly .back {display: inline}
 .upload {margin-left: 0.5em}
 .uploadinput {
     display: flex; align-items: center; justify-content: center;
-    text-align: center !important; font-family: "Good Dog";
+    text-align: center !important; font-family: var(--sitefont, "Good Dog");
     height: 100%; width: 100%;
 }
 .uploadinput a {font-size: 2em; padding: 1em}

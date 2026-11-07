@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
     <title>Music List!</title>
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
 
@@ -27,7 +28,7 @@
         }
 
         body {
-            font-family: "Good Dog"; background-color: black;
+            font-family: var(--sitefont, "Good Dog"); background-color: black;
             min-height: 100vh; overflow-x: hidden;
             user-select: none; cursor: url("/assets/static/cursors/idle.cur"), default !important;
             position: relative;
@@ -113,7 +114,7 @@
             display: block;
         }
         .extensionlabel {
-            color: white; font-family: "Good Dog";
+            color: white; font-family: var(--sitefont, "Good Dog");
             font-size: 0.75em; -webkit-text-stroke: 0.2em black;
             text-shadow: 0 0.05em 0 black;
             paint-order: stroke fill; position: absolute;
@@ -261,6 +262,7 @@
             transition: height 0.1s ease-out;
         }
     </style>
+    <script src="/assets/static/fontcompat.js"></script>
 </head>
 <body>
     <div class="stupidbg"></div>

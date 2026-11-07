@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
 
     <title>Cut the Rope – Level Browser</title>
     <link rel="icon" type="image/png" href="icon.png">
@@ -25,7 +26,7 @@
         }
 
         body {
-            font-family: "Good Dog";
+            font-family: var(--sitefont, "Good Dog");
             display: flex; justify-content: center; align-items: flex-start;
             min-height: 100vh; min-width: 100vw; overflow-y: auto;
             user-select: none; padding: 0; margin: 0;
@@ -471,6 +472,7 @@
 
     </style>
 
+    <script src="/assets/static/fontcompat.js"></script>
 </head>
 <body>
 

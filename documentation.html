@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="document">
 <head>
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
 
     <title>Documentation</title>
     <link rel="icon" type="image/png" href="/assets/images/candies/favicon.png">
@@ -37,7 +38,7 @@
         }
 
         body {
-            font-family: "Good Dog";
+            font-family: var(--sitefont, "Good Dog");
             position: relative; z-index: 1;
             display: flex; justify-content: center;
             align-items: flex-start;
@@ -130,6 +131,7 @@
         }
 
     </style>
+    <script src="/assets/static/fontcompat.js"></script>
 </head>
 <body>
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
 
     <title>raw2png</title>
     <link rel="icon" type="image/png" href="/assets/images/candies/favicon.png">
@@ -31,7 +32,7 @@
         html::-webkit-scrollbar {width: 0; height: 0}
 
         body {
-            font-family: "Good Dog";
+            font-family: var(--sitefont, "Good Dog");
             position: relative; z-index: 1;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh; min-width: 100vw;
@@ -214,6 +215,7 @@
 
 
     <script type="module" src="/assets/static/favicon.js"></script>
+    <script src="/assets/static/fontcompat.js"></script>
 </head>
 <body>
     

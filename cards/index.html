@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
 
     <title>Cards Archive</title>
     <link rel="icon" type="image/png" href="/assets/images/candies/favicon.png">
@@ -28,7 +29,7 @@
         }
 
         body {
-            font-family: "Good Dog";
+            font-family: var(--sitefont, "Good Dog");
             position: relative; z-index: 1;
             display: flex; justify-content: center;
             min-height: 100vh; min-width: 100vw;
@@ -168,7 +169,7 @@
         .downloadbutton img {width: 48px; height: 48px}
 
         .extensionlabel {
-            font-family: "Good Dog"; color: white;
+            font-family: var(--sitefont, "Good Dog"); color: white;
             font-size: 1.5em; margin-top: 0.25em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
@@ -182,6 +183,7 @@
 
     </style>
     <script type="module" src="/assets/static/favicon.js"></script>
+    <script src="/assets/static/fontcompat.js"></script>
 </head>
 <body>
 

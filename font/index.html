@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
 
     <title>ont Maker!</title>
     <link rel="icon" type="image/png" href="icon.png">
@@ -45,7 +46,7 @@
         }
 
         body {
-            font-family: "Good Dog";
+            font-family: var(--sitefont, "Good Dog");
             position: relative; z-index: 1;
             display: flex; justify-content: center;
             min-height: 100vh; min-width: 100vw;
@@ -316,14 +317,14 @@
         .fontbutton span, .preset span {
             position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #fff; font-size: 1.5em; font-family: "Good Dog";
+            color: #fff; font-size: 1.5em; font-family: var(--sitefont, "Good Dog");
             -webkit-text-stroke: 0.15em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
             pointer-events: none; white-space: nowrap; user-select: none;
         }
         .fontbutton[data-font="Good Dog"] span {
-            font-family: "Good Dog";
+            font-family: var(--sitefont, "Good Dog");
         }
         .fontbutton[data-font="Good Dog Cool"] span {
             font-family: "Good Dog Cool";
@@ -372,7 +373,7 @@
             background: rgba(0,0,0,0.5);
             border: none; border-radius: 1em;
             color: white;
-            font-family: "Good Dog";
+            font-family: var(--sitefont, "Good Dog");
             font-size: 0.9em;
             width: 60px;
         }
@@ -568,6 +569,7 @@
         .checkboxinput:checked {background-image: url("/assets/images/checked.png")}
 
     </style>
+    <script src="/assets/static/fontcompat.js"></script>
 </head>
 <body>
 
