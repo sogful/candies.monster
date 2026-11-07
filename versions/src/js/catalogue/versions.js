@@ -1,33 +1,11 @@
 import {packagekey, shareheading} from "../links.js";
+import {downloadattribute, renderdownloads, secondarydownload} from "./downloads.js";
 import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel} from "./load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 const debugshowleaks = true;
 const debugshowapks = false;
-const buttonmap = [
-    {domain: "cdn.candies.monster", icon: "cdn.webp"},
-    {domain: "apkmirror.com", icon: "apkmirror.webp"},
-    {domain: "apkpure.com", icon: "apkpure.webp"},
-    {domain: "apkpure.net", icon: "apkpure.webp"},
-    {domain: "uptodown.com", icon: "uptodown.webp"},
-    {domain: "pdalife.to", icon: "pdalife.webp"},
-    {domain: "pdalife.com", icon: "pdalife.webp"},
-    {domain: "4pda.to", icon: "4pda.webp"},
-    {domain: "4pda.ru", icon: "4pda.webp"},
-    {domain: "apkbe.com", icon: "apkbe.webp"},
-    {domain: "downzen.com", icon: "downzen.webp"},
-
-    {domain: "mega.io", icon: "mega.webp"},
-    {domain: "mega.nz", icon: "mega.webp"},
-    {domain: "mediafire.com", icon: "mediafire.webp"},
-    {domain: "archive.org", icon: "internetarchive.webp"},
-
-    // i know this is dumb but i haven't seen anyone besides me and blue putting this many apks and ipas onto github
-    {domain: "github.com", icon: "ctrhome.webp"},
-    {domain: "githubusercontent.com", icon: "ctrhome.webp"},
-    {domain: "github.io", icon: "ctrhome.webp"}
-];
 const prepared = new WeakMap();
 let lastview = null;
 let legacyicons = null;
@@ -52,70 +30,6 @@ function isdownloadbuttonvisible(download) {
     return true;
 }
 
-function downloadattribute(value) {
-    return String(value || "").replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-}
-
-function downloadsize(value) {
-    const match = String(value || "").trim().match(/^(\d+(?:\.\d+)?)\s*mb$/i);
-    return match ? `${(Math.round(Number(match[1]) * 10) / 10).toFixed(1)}mb` : value;
-}
-
-function downloadarch(value) {
-    const architectures = new Set(String(value || "").toLowerCase().split(/[,;\s/]+/));
-    if (["armeabi-v7a", "arm64-v8a", "x86", "x86_64"].every(arch => architectures.has(arch))) return "universal";
-    const aliases = {"armeabi": "arm", "armeabi-v7a": "arm", "arm32": "arm", "armv7": "arm", "arm64-v8a": "arm64", "aarch64": "arm64", "x86_64": "x64", "arm64-v8": "arm64"};
-    return [...new Set([...architectures].filter(Boolean).map(arch => aliases[arch] || arch))].join(",");
-}
-
-function downloadbutton(download) {
-    if (download.kind !== "symbols" && download.url.startsWith("https://cdn.candies.monster/apks/") && download.url.includes("/4pda/")) return "4pda.webp";
-    return download.kind === "symbols" ? "symbols.webp" :
-        download.button || buttonmap.find(item => download.url.includes(item.domain))?.icon || "other.webp";
-}
-
-function secondarydownload(download) {
-    return ["other.webp", "pdalife.webp", "symbols.webp"].includes(downloadbutton(download));
-}
-
-function renderdownloadbutton(download, version) {
-    const note = Array.from(new Set([download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))).join("; ");
-    const annotation = note ? `<div class="downloadnote">${downloadattribute(note)}</div>` : "";
-    const size = downloadsize(download.size);
-    const arch = downloadarch(download.arch);
-    const button = downloadbutton(download);
-    const compact = secondarydownload(download) ? " smallsource" : "";
-    const details = downloadattribute([
-        version, download.url, download.kind === "symbols" ? download.label || "debug symbols" : "",
-        arch, size, note,
-        button === "other.webp" ? "⚠️ this version is from an unpopular source" : ""
-    ].filter(Boolean).join("\n"));
-    const attributes = `href="${downloadattribute(download.url)}" target="_blank" rel="noopener" title="${details}" aria-label="${details}"`;
-    if (download.kind === "symbols") {
-        const label = downloadattribute((download.label || "symbols").replace(/^\((.*)\)$/, "$1"));
-        return `<a ${attributes} class="clickable cdnbutton smallsource annotated">
-            <img src="/assets/images/downloadbuttons/symbols.webp" alt="" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext"><div>${label}</div>${annotation}</div>
-        </a>`;
-    }
-    if (download.arch || download.size) {
-        const metadata = [size, arch ? `(${arch})` : ""].filter(Boolean).join(" ");
-        return `<a ${attributes} class="clickable cdnbutton annotated${compact}">
-            <img src="/assets/images/downloadbuttons/${downloadattribute(button)}" alt="${downloadattribute(button.replace(/\.[^.]+$/, ""))}" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext"><div class="downloadmeta">${downloadattribute(metadata)}</div>${annotation}</div>
-        </a>`;
-    }
-    if (note) {
-        return `<a ${attributes} class="clickable cdnbutton annotated${compact}">
-            <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
-            <div class="cdntext">${annotation}</div>
-        </a>`;
-    }
-    return `<a ${attributes} class="clickable${compact}">
-        <img src="/assets/images/downloadbuttons/${button}" alt="${button.replace(/\.[^.]+$/, "")}" draggable="false" loading="lazy" decoding="async">
-    </a>`;
-}
-
 function uniquedownloads(downloads) {
     const seen = new Map();
     for (const download of downloads || []) {
@@ -132,14 +46,6 @@ function uniquedownloads(downloads) {
         }
     }
     return Array.from(seen.values());
-}
-
-function renderdownloads(downloads, version) {
-    return downloads.map(download => {
-        const annotated = download.arch || download.size || download.label || download.note || download.kind === "symbols";
-        const separator = annotated ? `<span class="downloadbreak${secondarydownload(download) ? " secondarybreak" : ""}" aria-hidden="true"></span>` : "";
-        return renderdownloadbutton(download, version) + separator;
-    }).join("");
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -260,8 +166,8 @@ function versionpanel(version, fallback, legacy, game, index) {
         </a>
         <div class="versioninfo">
             <div class="version">${downloadattribute(version.version)}</div>
-            ${version.details ? `<div class="details">${version.details}</div>` : ""}
-            <div class="versionbuttons">${renderdownloads(version.downloads, version.version)}</div>
+            ${version.details && !version.downloads.length ? `<div class="details">${downloadattribute(version.details)}</div>` : ""}
+            <div class="versionbuttons">${renderdownloads(version.downloads, version.version, version.details)}</div>
         </div>
     `;
     shareheading(panel.querySelector(".version"), game, index, version.version);

@@ -1,34 +1,23 @@
-.versionbuttons .cdnbutton {
-    height: auto; min-height: 24px;
-    padding: 1px 0; width: auto;
-    min-width: 0; flex-basis: auto;
-    order: 0; max-width: 100%;
-}
-
-.versionbuttons .cdnbutton .cdntext {
-    white-space: normal; overflow-wrap: anywhere;
-}
-
-/*//////////////////////////////////////////////////////////////////////*/
-
-.versionbuttons .cdnbutton .downloadmeta {
-    color: rgba(255,255,255,0.65); font-size: 0.9em;
-}
-
-/*//////////////////////////////////////////////////////////////////////*/
-
 .packageicons a {display: block}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.versionbuttons .smallsource {
-    order: 1; height: auto;
-    min-height: 12px; align-self: center;
+.versionbuttons .downloadbutton {
+    display: inline-flex; align-items: center;
+    justify-content: center; flex: 0 0 24px;
+    width: 24px; height: 24px;
+    order: 0; touch-action: manipulation;
 }
 
-.versionbuttons .cdnbutton.smallsource {
-    width: auto; min-width: 0;
-    flex-basis: auto; max-width: 100%;
+.versionbuttons .downloadbutton img {
+    display: block; width: 24px;
+    height: 24px;
+}
+
+.versionbuttons .smallsource {
+    order: 1; align-self: center;
+    flex-basis: 12px; width: 12px;
+    height: 12px;
 }
 
 .versionbuttons .smallsource img {
@@ -40,8 +29,48 @@
     height: 0; order: 0;
 }
 
-.versionbuttons .downloadbreak {
-    flex-basis: 100%; height: 0;
+/*//////////////////////////////////////////////////////////////////////*/
+
+.downloadpopup {
+    position: fixed; z-index: 100000000;
+    width: 320px; box-sizing: border-box;
+    padding: 12px; border-radius: 12px;
+    background: rgba(0,0,0,0.5); color: #fff;
+    overflow: auto; overscroll-behavior: contain;
+    font-size: 1rem; line-height: 1.2;
+    -webkit-text-stroke: 0.07em #000; paint-order: stroke fill;
+    text-shadow: 0 0.07em 0 #000; user-select: text;
 }
 
-.versionbuttons .secondarybreak {order: 1}
+.downloadpopup[hidden] {display: none}
+
+.downloadheading {font-size: 1.4em}
+
+.downloadsource {opacity: 0.85}
+
+.downloaddata {
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 3px 12px; margin: 10px 0;
+}
+
+.downloadlabel {opacity: 0.75}
+
+.downloadvalue {
+    margin: 0; overflow-wrap: anywhere;
+}
+
+.downloadnotes, .downloadwarning {
+    margin-top: 10px; white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.downloadurl {
+    display: block; margin-top: 10px;
+    font-family: inherit; font-size: 0.65em;
+    overflow-wrap: anywhere;
+    -webkit-text-stroke: 0.06em #000; text-shadow: 0 0.07em 0 #000;
+}
+
+.downloadpopup a, .downloadpopup a * {
+    cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+}
