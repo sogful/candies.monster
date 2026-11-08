@@ -5930,5 +5930,23 @@
     "packages": [
       "com.airthemes.timetravelzeptolab"
     ]
+  },
+  {
+    "game": "offlinegames",
+    "variant": "launch",
+    "raw": "/assets/images/gameicons/offlinegames/launch/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "154faa16085d5e05b65c06970bc869a63deeea207ec4cadeb7618e22b676e7a9",
+    "sources": [
+      {
+        "url": "https://apkcube.com/offline-games-om-nom-and-more/com.fl.omnomoffline/download?version=0.1.20",
+        "entry": "res/mipmap-xxxhdpi-v4/app_icon.png"
+      }
+    ],
+    "packages": [
+      "com.fl.omnomoffline"
+    ]
   }
 ]

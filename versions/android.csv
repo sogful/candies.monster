@@ -2337,3 +2337,5 @@ Candy Trail,com.zeptolab.ctr.candytrail,candytrail/launch,,2,/assets/images/game
 ,v0.1.0,,https://cdn.candies.monster/apks/com.zeptolab.ctr.candytrail/patches/0.1.0-45-arm64-nodrm.xapk,,arm64-v8a,144.4mb,archive,,no play store drm (android 12L+),,,,,,,,,,,,,,,,,,,,,
 Om Nom Marble Shooter,com.renderedideas.omnommarblematch,marbleshooter/listing,,2,/assets/images/gameicons/marbleshooter/listing/raw.png,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.0,marbleshooter/listing,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Offline Games,com.fl.omnomoffline,offlinegames/launch,,2,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v0.1.20,offlinegames/launch,https://apkcube.com/offline-games-om-nom-and-more/com.fl.omnomoffline/download?version=0.1.20,,arm64-v8a,229.3mb,,,play store license check,,,,,,,,,,,,,,,,,,,,,

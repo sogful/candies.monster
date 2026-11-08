@@ -66,6 +66,7 @@ const rawicons = {
     "myomnom/classic": "webp",
     "bubble/alternate": "webp",
     "omnomfarm/classic": "webp",
+    "offlinegames/launch": "png",
     "omnomrun/momzikov": "webp",
     "omnomrun2/store": "png",
     "omnomverse/classic": "webp",
