@@ -339,8 +339,10 @@ const links = startlinks(restoreview);
 search = startsearch({
     platforms,
     ready: async () => {
-        await Promise.all(platforms.map(fetchplatform));
-        platforms.forEach(mountplatform);
+        const platform = activeplatform;
+        await fetchplatform(platform);
+        mountplatform(platform);
+        return platform;
     },
     close: () => {
         navigation++;

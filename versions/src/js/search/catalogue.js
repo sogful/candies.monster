@@ -22,10 +22,11 @@ export function searchindex(platforms) {
                 const description = value("description");
                 const key = value("verkey") || pkg;
                 const heading = text([name, pkg, description]);
-                const versions = versionsfor(platform.cache, key).map(version => ({
-                    version,
-                    text: text([heading, version.version, version.details, ...version.downloads.flatMap(download => Object.values(download))])
-                }));
+                const versions = versionsfor(platform.cache, key).map(version => {
+                    const common = text([heading, version.version, version.details]);
+                    const downloads = version.downloads.map(download => ({download, text: text(Object.values(download))}));
+                    return {version, common, downloads, text: text([common, ...downloads.map(download => download.text)])};
+                });
                 return {game, index, platform: platform.name, name, package: pkg, description, heading, versions};
             }));
             indexes.set(platform.cache, records);
@@ -41,9 +42,21 @@ export function findresults(records, query) {
     const results = [];
     for (const record of records) {
         const heading = matches(record.heading);
-        const versions = record.versions.filter(version => matches(version.text)).map(item => item.version);
+        const versions = record.versions.filter(version => matches(version.text)).map(item => {
+            const required = terms.filter(term => !item.common.includes(term));
+            const downloads = new Set(item.downloads.filter(download => required.some(term => download.text.includes(term))).map(item => item.download));
+            return {
+                version: item.version,
+                details: matches(text([item.version.details])),
+                downloads: downloads.size ? downloads : null
+            };
+        });
         if (heading) games.add(record.game);
-        if (heading || versions.length) results.push({record, versions});
+        if (heading || versions.length) results.push({
+            record, versions,
+            package: matches(text([record.package])),
+            description: matches(text([record.description]))
+        });
     }
     return {results, games};
 }

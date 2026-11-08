@@ -47,19 +47,16 @@ export function startsearch(options) {
         return link;
     }
 
-    function header(record) {
+    function header(match) {
+        const record = match.record;
         const group = document.createElement("section");
         group.className = "packagecolumn searchgroup";
-        const heading = packageheader(record.game, record.index, record.package);
+        const heading = packageheader(record.game, record.index, record.package, false);
         const route = gameroute(record.game, record.index);
         const title = heading.querySelector(".gamename");
         title.firstChild.replaceWith(jump(record.name, route));
-        const pkg = heading.querySelector(".package");
-        if (pkg) pkg.replaceChildren(jump(record.package, route));
-        const platform = document.createElement("div");
-        platform.className = "searchplatform";
-        platform.textContent = record.platform === "ios" ? "iOS" : "Android";
-        heading.prepend(platform);
+        if (!match.package) heading.querySelector(".package")?.remove();
+        if (!match.description) heading.querySelector(".description")?.remove();
         const versions = document.createElement("div");
         versions.className = "packageversions searchversions";
         group.append(heading, versions);
@@ -72,14 +69,21 @@ export function startsearch(options) {
         const fragment = document.createDocumentFragment();
         const end = Math.min(offset + 40, entries.length);
         while (offset < end) {
-            const {record, version} = entries[offset++];
+            const entry = entries[offset++];
+            const {record, version} = entry;
             if (!version) {
-                fragment.appendChild(header(record));
+                fragment.appendChild(header(entry));
                 continue;
             }
             const game = record.game;
             const fallback = Array.isArray(game.icon) ? game.icon[record.index] || game.icon[0] : game.icon;
             const panel = versionpanel(version, fallback, record.package === "com.zeptolab.ctr.ads", game, record.index);
+            if (!entry.details) panel.querySelector(".details")?.remove();
+            if (entry.downloads) {
+                panel.querySelectorAll(".downloadbutton").forEach((button, index) => {
+                    button.classList.toggle("searchdim", !entry.downloads.has(version.downloads[index]));
+                });
+            }
             const title = panel.querySelector(".version");
             title.firstChild.replaceWith(jump(version.version, gameroute(game, record.index, version.version)));
             columns.get(record).appendChild(panel);
@@ -110,13 +114,13 @@ export function startsearch(options) {
         const current = ++request;
         status.textContent = "Searching...";
         try {
-            await options.ready();
+            const platform = await options.ready();
             if (current !== request) return;
-            const found = findresults(searchindex(options.platforms), query);
+            const found = findresults(searchindex([platform]), query);
             dim(found.games);
             entries = found.results.flatMap(result => [
-                {record: result.record},
-                ...result.versions.map(version => ({record: result.record, version}))
+                {...result, version: null},
+                ...result.versions.map(version => ({record: result.record, ...version}))
             ]);
             offset = 0;
             columns.clear();
