@@ -6108,5 +6108,65 @@
     "packages": [
       "com.chillingo.cuttherope"
     ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "ioslitev182",
+    "raw": "/assets/images/gameicons/ctrexp/ioslitev182/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "c13b063c2af5bd5f257be80485af4490d8b2aa84008486a680db7021c6726650",
+    "sources": [
+      {
+        "url": "https://ia601403.us.archive.org/21/items/iOSObscura/iOS%206/com.zeptolab.ctrexperimentslite/Cut%20the%20Rope-%28com.zeptolab.ctrexperimentslite%29-141833-%28iOS_6.0%29-ff2193c30428a6e5cda0f393445bf0ed.ipa",
+        "member": "Payload/ctre_free.app/AppIcon60x60@3x.png",
+        "originalsha256": "81159806743d03f7335eb23d8f7e7514acb42bead23f93be8211ce0c10e13609",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperimentslite"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "ioshdv111",
+    "raw": "/assets/images/gameicons/ctrexp/ioshdv111/raw.png",
+    "width": 72,
+    "height": 72,
+    "format": "png",
+    "sha256": "39c50ecd9efc961c5a3536f3e8f6b1883db4ca64b647c76f52446dd3485b6598",
+    "sources": [
+      {
+        "url": "https://archive.org/download/ios-ipa-collection/Cut%20the%20Rope%20Experiments%20HD%201.1.1.ipa",
+        "member": "Payload/CTRExperimentsHD.app/Icon-72.png",
+        "originalsha256": "f10a57e43fb1c157f1acb41aa2704880be61fa2d93b077d710888e4730ab319d",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperimentshd"
+    ]
+  },
+  {
+    "game": "ctrexp",
+    "variant": "ioshdlitev182",
+    "raw": "/assets/images/gameicons/ctrexp/ioshdlitev182/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "fc28880ead62f9cce90596a6e84e832e1c29648b49e500f2483d05a60fea4e6a",
+    "sources": [
+      {
+        "url": "https://archive.org/download/missing-ipas/com.zeptolab.ctrexperimentshdlite-iOS6.0-%28Clutch-2.0.4%29.ipa",
+        "member": "Payload/ctre_free.app/AppIcon60x60@3x.png",
+        "originalsha256": "8d87e19095b20174515e63a8f57ee62ec0aa8cd13d102116ebca56baaa0effad",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrexperimentshdlite"
+    ]
   }
 ]
