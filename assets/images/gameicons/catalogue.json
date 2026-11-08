@@ -6168,5 +6168,125 @@
     "packages": [
       "com.zeptolab.ctrexperimentshdlite"
     ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "iosv133",
+    "raw": "/assets/images/gameicons/ctr2/iosv133/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "b642858f6fed003aa1ea5e10642d97944ccb572b59db1301e70f024d8ddca923",
+    "sources": [
+      {
+        "url": "https://ia601403.us.archive.org/21/items/iOSObscura/PossiblyBroken/Cut_the_Rope_2_v1.3.3-www.CafeApple.net-2f26af53590cedf8a82f351883e2e3cc.ipa",
+        "member": "Payload/ctr2.app/AppIcon57x57@2x.png",
+        "originalsha256": "ac58340b48dcd3ba36b4fcbb250f76acb03d0280e5797cb37aab1c87c8da280a",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2"
+    ]
+  },
+  {
+    "game": "ctrtt",
+    "variant": "iosv103",
+    "raw": "/assets/images/gameicons/ctrtt/iosv103/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "0eb37af8e73a9395d4664638a16d63f87b0224cc153ffffc046768f366d6c827",
+    "sources": [
+      {
+        "url": "https://ia601403.us.archive.org/21/items/iOSObscura/iOS%204/com.zeptolab.timetravel/Time%20Travel-%28com.zeptolab.timetravel%29-1.0-%28iOS_4.3%29-b26c64c438c4521cd6a1f329dbe8fdb8.ipa",
+        "member": "Payload/ctr_timetravel.app/Icon@2x.png",
+        "originalsha256": "abc3ea83d1fcfe7df56942d3a34c6f91489521326e4c21b6ccc6d5575116cb31",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.timetravel"
+    ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "iosv142",
+    "raw": "/assets/images/gameicons/ctrmagic/iosv142/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "cf0b2aef54e3ebe39d0f2b152473c31b70c83bf0af78b5267367b72047555844",
+    "sources": [
+      {
+        "url": "https://archive.org/download/ipa-selfmader-collection/Cut_the_Rope_Magic__v1.4.2_v111044_3GS_Univ_LP_os70_-Locophone-ICPDA.rc333_91.ipa",
+        "member": "Payload/ctrm.release.app/AppIcon60x60@3x.png",
+        "originalsha256": "e7906d5a233d2b66dbc23339e174359b4e3ca6be64636cd0de841ae7a8157e86",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrm"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "iosv101",
+    "raw": "/assets/images/gameicons/ctr2/iosv101/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "267b315179a5be760dd5fcff68f11d3c4ac01c774487df348c060a408d838162",
+    "sources": [
+      {
+        "url": "https://archive.org/download/mobile-applications/Bonus%20ERA%20%28iPAS%29/Cut%20the%20Rope%201.0.1.ipa",
+        "member": "Payload/ctr2ftp.app/Icon-152x152.png",
+        "originalsha256": "83eb4b887c395c7d0177f6da779dcf12059274ade91904ace443156599e28baa",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "iosv134",
+    "raw": "/assets/images/gameicons/ctr2/iosv134/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "365c930c7b08b96c5ff87103fbdf6a96bb0ebf9d96a0594bfbb3c5d2c8889fb4",
+    "sources": [
+      {
+        "url": "https://archive.org/download/mobile-applications/Bonus%20ERA%20%28iPAS%29/Cut%20the%20Rope%201.3.4.ipa",
+        "member": "Payload/ctr2ftp.app/AppIcon57x57@2x.png",
+        "originalsha256": "26369a7c3cc01d9be120eac110556fe337af711883cc586afaabf1653fc8d235",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p"
+    ]
+  },
+  {
+    "game": "ctr2",
+    "variant": "iosv136",
+    "raw": "/assets/images/gameicons/ctr2/iosv136/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "57309594755d21bc0d89ad251383629f3473c263a0d92a492c44ea446fcb2b90",
+    "sources": [
+      {
+        "url": "https://archive.org/download/mobile-applications/Bonus%20ERA%20%28iPAS%29/Cut%20the%20Rope%201.3.6.ipa",
+        "member": "Payload/ctr2ftp.app/AppIcon57x57@2x.png",
+        "originalsha256": "584c73de367b7723e587ce49336767b20c4ed8f10a78ad49ef9392da9ec9c08c",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr2.f2p"
+    ]
   }
 ]
