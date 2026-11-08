@@ -123,7 +123,7 @@ function updatelegacyicons(list) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function packageheader(game, index, pkg, icons = true) {
+export function packageheader(game, index, pkg) {
     const value = key => Array.isArray(game[key]) ? game[key][index] : game[key];
     const header = document.createElement("div");
     header.className = "gameinfo";
@@ -145,7 +145,7 @@ export function packageheader(game, index, pkg, icons = true) {
         description.textContent = value("description");
         header.appendChild(description);
     }
-    const strip = icons ? packageiconhtml(game, index) : "";
+    const strip = packageiconhtml(game, index);
     if (strip) header.insertAdjacentHTML("beforeend", strip);
     return header;
 }
