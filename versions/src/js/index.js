@@ -1,4 +1,5 @@
 import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./catalogue/load.js";
+import {loadcataloguedata} from "./catalogue/data.js";
 import {loadversions} from "./catalogue/versions.js";
 import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
@@ -10,8 +11,8 @@ import "./quality.js";
 /*//////////////////////////////////////////////////////////////////////*/
 
 const platforms = [
-    {name: "android", label: "Android", url: "android.csv", circle: document.querySelector("#gamecircle"), screen: document.querySelector("#gamescreen")},
-    {name: "ios", label: "iOS", url: "ios.csv", circle: document.querySelector("#gamecircle-ios"), screen: document.querySelector("#gamescreenios")}
+    {name: "android", label: "Android", url: "data/android.csv", circle: document.querySelector("#gamecircle"), screen: document.querySelector("#gamescreen")},
+    {name: "ios", label: "iOS", url: "data/ios.csv", circle: document.querySelector("#gamecircle-ios"), screen: document.querySelector("#gamescreenios")}
 ];
 const container = document.querySelector(".container");
 const elements = new WeakMap();
@@ -127,7 +128,7 @@ function fetchplatform(platform) {
     }
     if (platform === activeplatform) platformstatus(platform);
     platform.promise = (async () => {
-        const response = await fetch(platform.url);
+        const [response] = await Promise.all([fetch(platform.url), loadcataloguedata()]);
         if (!response.ok) throw new Error(`${platform.url}: HTTP ${response.status}`);
         platform.text = await response.text();
         platform.error = null;

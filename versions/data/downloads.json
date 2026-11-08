@@ -1,0 +1,134 @@
+{
+    "domains": [
+        {
+            "domain": "apkmirror.com",
+            "icon": "apkmirror"
+        },
+        {
+            "domain": "apkpure.com",
+            "icon": "apkpure"
+        },
+        {
+            "domain": "apkpure.net",
+            "icon": "apkpure"
+        },
+        {
+            "domain": "uptodown.com",
+            "icon": "uptodown"
+        },
+        {
+            "domain": "pdalife.to",
+            "icon": "pdalife"
+        },
+        {
+            "domain": "pdalife.com",
+            "icon": "pdalife"
+        },
+        {
+            "domain": "4pda.to",
+            "icon": "4pda"
+        },
+        {
+            "domain": "4pda.ru",
+            "icon": "4pda"
+        },
+        {
+            "domain": "apkbe.com",
+            "icon": "apkbe"
+        },
+        {
+            "domain": "downzen.com",
+            "icon": "downzen"
+        },
+        {
+            "domain": "drive.google.com",
+            "icon": "googledrive"
+        },
+        {
+            "domain": "drive.usercontent.google.com",
+            "icon": "googledrive"
+        },
+        {
+            "domain": "drive.googleusercontent.com",
+            "icon": "googledrive"
+        },
+        {
+            "domain": "mega.io",
+            "icon": "mega"
+        },
+        {
+            "domain": "mega.nz",
+            "icon": "mega"
+        },
+        {
+            "domain": "mediafire.com",
+            "icon": "mediafire"
+        },
+        {
+            "domain": "archive.org",
+            "icon": "internetarchive"
+        },
+        {
+            "domain": "cdn.candies.monster",
+            "icon": "cdn"
+        },
+        {
+            "domain": "github.com",
+            "icon": "ctrhome"
+        },
+        {
+            "domain": "githubusercontent.com",
+            "icon": "ctrhome"
+        },
+        {
+            "domain": "github.io",
+            "icon": "ctrhome"
+        }
+    ],
+    "names": {
+        "cdn": "candies.monster",
+        "apkmirror": "APKMirror",
+        "apkpure": "APKPure",
+        "uptodown": "Uptodown",
+        "pdalife": "PDA Life",
+        "4pda": "4PDA",
+        "googledrive": "Google Drive",
+        "apkbe": "APKBE",
+        "downzen": "Downzen",
+        "mega": "MEGA",
+        "mediafire": "MediaFire",
+        "internetarchive": "Internet Archive",
+        "ctrhome": "Cut the Rope Home",
+        "symbols": "Debug symbols"
+    },
+    "architectures": {
+        "armeabi": "arm",
+        "armeabi-v7a": "arm",
+        "arm32": "arm",
+        "armv7": "arm",
+        "arm64-v8a": "arm64",
+        "aarch64": "arm64",
+        "x86_64": "x64",
+        "arm64-v8": "arm64"
+    },
+    "universal": [
+        "armeabi-v7a",
+        "arm64-v8a",
+        "x86",
+        "x86_64"
+    ],
+    "secondary": [
+        "other.webp",
+        "pdalife.webp",
+        "symbols.webp"
+    ],
+    "symbols": "symbols.webp",
+    "fallback": "other.webp",
+    "mirrors": [
+        {
+            "prefix": "https://cdn.candies.monster/apks/",
+            "contains": "/4pda/",
+            "button": "4pda.webp"
+        }
+    ]
+}

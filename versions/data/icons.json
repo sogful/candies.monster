@@ -1,4 +1,4 @@
-const rawicons = {
+{
     "myomnom/iosv118": "png",
     "ctrremastered/iosv240": "png",
     "ctr3/iosv160": "png",
@@ -419,6 +419,4 @@ const rawicons = {
     "ctr/limecompact": "png",
     "ctr/limeclassic": "png",
     "ctr/limeearly": "png"
-};
-
-export {rawicons};
+}

@@ -1,39 +1,5 @@
 import "./popover.js";
-
-/*//////////////////////////////////////////////////////////////////////*/
-
-const buttonmap = [
-    {domain: "apkmirror.com", icon: "apkmirror"},
-    {domain: "apkpure.com", icon: "apkpure"},
-    {domain: "apkpure.net", icon: "apkpure"},
-    {domain: "uptodown.com", icon: "uptodown"},
-    {domain: "pdalife.to", icon: "pdalife"},
-    {domain: "pdalife.com", icon: "pdalife"},
-    {domain: "4pda.to", icon: "4pda"},
-    {domain: "4pda.ru", icon: "4pda"},
-    {domain: "apkbe.com", icon: "apkbe"},
-    {domain: "downzen.com", icon: "downzen"},
-
-    {domain: "drive.google.com", icon: "googledrive"},
-    {domain: "drive.usercontent.google.com", icon: "googledrive"},
-    {domain: "drive.googleusercontent.com", icon: "googledrive"},
-    {domain: "mega.io", icon: "mega"},
-    {domain: "mega.nz", icon: "mega"},
-    {domain: "mediafire.com", icon: "mediafire"},
-    {domain: "archive.org", icon: "internetarchive"},
-    {domain: "cdn.candies.monster", icon: "cdn"},
-
-    {domain: "github.com", icon: "ctrhome"},
-    {domain: "githubusercontent.com", icon: "ctrhome"},
-    {domain: "github.io", icon: "ctrhome"}
-];
-const sourcenames = {
-    cdn: "candies.monster", apkmirror: "APKMirror", apkpure: "APKPure",
-    uptodown: "Uptodown", pdalife: "PDA Life", "4pda": "4PDA",
-    googledrive: "Google Drive", apkbe: "APKBE", downzen: "Downzen",
-    mega: "MEGA", mediafire: "MediaFire", internetarchive: "Internet Archive",
-    ctrhome: "Cut the Rope Home", symbols: "Debug symbols"
-};
+import {downloadbuttons} from "./data.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -48,23 +14,23 @@ function downloadsize(value) {
 
 function downloadarch(value) {
     const architectures = new Set(String(value || "").toLowerCase().split(/[,;\s/]+/));
-    if (["armeabi-v7a", "arm64-v8a", "x86", "x86_64"].every(arch => architectures.has(arch))) return "universal";
-    const aliases = {"armeabi": "arm", "armeabi-v7a": "arm", "arm32": "arm", "armv7": "arm", "arm64-v8a": "arm64", "aarch64": "arm64", "x86_64": "x64", "arm64-v8": "arm64"};
-    return [...new Set([...architectures].filter(Boolean).map(arch => aliases[arch] || arch))].join(",");
+    if (downloadbuttons.universal.every(arch => architectures.has(arch))) return "universal";
+    return [...new Set([...architectures].filter(Boolean).map(arch => downloadbuttons.architectures[arch] || arch))].join(",");
 }
 
 function downloadbutton(download) {
-    if (download.kind !== "symbols" && download.url.startsWith("https://cdn.candies.monster/apks/") && download.url.includes("/4pda/")) return "4pda.webp";
-    if (download.kind === "symbols") return "symbols.webp";
+    const mirror = downloadbuttons.mirrors.find(item => download.url.startsWith(item.prefix) && download.url.includes(item.contains));
+    if (download.kind !== "symbols" && mirror) return mirror.button;
+    if (download.kind === "symbols") return downloadbuttons.symbols;
     if (download.button) return download.button;
     let hostname = "";
     try {hostname = new URL(download.url).hostname.toLowerCase()} catch {}
-    const match = buttonmap.find(item => hostname === item.domain || hostname.endsWith(`.${item.domain}`));
-    return `${match?.icon || "other"}.webp`;
+    const match = downloadbuttons.domains.find(item => hostname === item.domain || hostname.endsWith(`.${item.domain}`));
+    return match ? `${match.icon}.webp` : downloadbuttons.fallback;
 }
 
 export function secondarydownload(download) {
-    return ["other.webp", "pdalife.webp", "symbols.webp"].includes(downloadbutton(download));
+    return downloadbuttons.secondary.includes(downloadbutton(download));
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -74,12 +40,12 @@ function renderdownloadbutton(download, version, description) {
     const name = button.replace(/\.[^.]+$/, "");
     let hostname = "";
     try {hostname = new URL(download.url).hostname} catch {}
-    const source = sourcenames[name] || hostname || "Download";
+    const source = downloadbuttons.names[name] || hostname || "Download";
     const note = [...new Set([description, download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))].join("\n");
     const information = {
         version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
         symbols: download.kind === "symbols" ? (download.label || "symbols").replace(/^\((.*)\)$/, "$1") : "",
-        warning: button === "other.webp" ? "this version is from an unpopular source" : ""
+        warning: button === downloadbuttons.fallback ? "this version is from an unpopular source" : ""
     };
     const metadata = Object.entries(information).filter(([, value]) => value).map(([key, value]) => `data-download${key}="${downloadattribute(value)}"`).join(" ");
     const compact = secondarydownload(download) ? " smallsource" : "";
