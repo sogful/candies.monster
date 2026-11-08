@@ -1,4 +1,10 @@
 const rawicons = {
+    "ctr/ioshdv25": "png",
+    "ctr/iosv232": "png",
+    "ctr/ioshdv232": "png",
+    "ctrholiday/iosv161": "png",
+    "ctr/iosv12": "png",
+    "ctr/iosv25": "png",
     "ctr/iosv422": "png",
     "virtualpet/iosv1014": "png",
     "ctr/modernalternate": "webp",

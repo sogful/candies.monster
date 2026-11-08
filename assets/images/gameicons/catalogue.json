@@ -5988,5 +5988,125 @@
     "packages": [
       "com.myvirtualpet.omnomgame"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdv25",
+    "raw": "/assets/images/gameicons/ctr/ioshdv25/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "0e82f5af8cefc2ea3a3c292edf95e8dc3c33011544bd0199504bbb4747f4b89a",
+    "sources": [
+      {
+        "url": "https://archive.org/download/hd-ipa-collection/Cut_the_Rope_HD_2.5_www.iPhoneCake.com_.ipa",
+        "member": "Payload/CutTheRopeHD.app/Icon-152x152.png",
+        "originalsha256": "b1c9d67bc4fd5cfcdf8ebda5498580eb8a33c925033e1e95703b2e5da5ea379e",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttheropehd"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "iosv232",
+    "raw": "/assets/images/gameicons/ctr/iosv232/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "53b419fea36f6d9a0986421c648c00af77000470c1197e1b2aabf69a06ff0719",
+    "sources": [
+      {
+        "url": "https://ia601403.us.archive.org/21/items/iOSObscura/iOS%204/com.chillingo.cuttherope/Cut%20the%20Rope-%28com.chillingo.cuttherope%29-2.3.2-%28iOS_4.3%29-c8fd5bdd2d60da151cc68714bb4d26d2.ipa",
+        "member": "Payload/CutTheRope.app/Icon-120x120.png",
+        "originalsha256": "2ab3f5a8878d0a8c7425795a2d87a4b6899ee25fa685e5a6354b147df1bed3ee",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttherope"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "ioshdv232",
+    "raw": "/assets/images/gameicons/ctr/ioshdv232/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "fb6863162d057e36a5340c6c9e3f1cb0a11f0b488d397d96de7f79c6a86e7869",
+    "sources": [
+      {
+        "url": "https://ia601403.us.archive.org/21/items/iOSObscura/iOS%204/com.chillingo.cuttheropehd/Cut%20the%20Rope-%28com.chillingo.cuttheropehd%29-2.3.2-%28iOS_4.3%29-c497c8c753e6d2851a5811f6c6e07c5b.ipa",
+        "member": "Payload/CutTheRopeHD.app/Icon-152x152.png",
+        "originalsha256": "8d857a78255cdca5afd3e69ef276bba950f84facf5ebe7b4913f556c42391a51",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttheropehd"
+    ]
+  },
+  {
+    "game": "ctrholiday",
+    "variant": "iosv161",
+    "raw": "/assets/images/gameicons/ctrholiday/iosv161/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "fc75d5041f098f4bb141336528cf174f26c172423fe4a5252ec68520e959222f",
+    "sources": [
+      {
+        "url": "https://ia601403.us.archive.org/21/items/iOSObscura/iOS%204/com.chillingo.cuttheropexmas/Cut%20the%20Rope-%28com.chillingo.cuttheropexmas%29-1.6.1-%28iOS_4.3%29-d40f6a6c6a034f6c14d8013e292f1b6e.ipa",
+        "member": "Payload/CutTheRopeGift.app/icon_ctr_holiday_gift_120x120.png",
+        "originalsha256": "a120d2415d3e2a2b95c3dd509189f2dc8e9cda662e8fe231e1e3c66c6717762e",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttheropexmas"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "iosv12",
+    "raw": "/assets/images/gameicons/ctr/iosv12/raw.png",
+    "width": 114,
+    "height": 114,
+    "format": "png",
+    "sha256": "91efc2e5e021b5aeb5fbf13e1b3d4db0e5ce015db5ef6842217c49ae5babc6e9",
+    "sources": [
+      {
+        "url": "https://ia601403.us.archive.org/21/items/iOSObscura/iPhoneOS%203/com.chillingo.cuttherope/Cut%20the%20Rope-%28com.chillingo.cuttherope%29-1.2-%28iOS_3.0%29-2d7132063332ccf6b8e95d7259045333.ipa",
+        "member": "Payload/CutTheRope.app/Icon@2x.png",
+        "originalsha256": "56f41c347d9ea6470844a7e40a172830441c24cc64a2b7fe91a8dd1ad41c9e9e",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttherope"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "iosv25",
+    "raw": "/assets/images/gameicons/ctr/iosv25/raw.png",
+    "width": 120,
+    "height": 120,
+    "format": "png",
+    "sha256": "ed39a4ba75483e255aa5c80b2e94ea110943618e9053ca91d0749abc0b879e91",
+    "sources": [
+      {
+        "url": "https://archive.org/download/ios3-5iap/Cut%20the%20Rope%202.5%20%5BiOS5.0%5D.ipa",
+        "member": "Payload/CutTheRope.app/Icon-120x120.png",
+        "originalsha256": "62d2efa30633b58074d309694fac81527e0d5a20157c034e9ed72bbc3ab687e6",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.chillingo.cuttherope"
+    ]
   }
 ]
