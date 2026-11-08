@@ -10,14 +10,18 @@
         {"domain": "4pda.ru", "icon": "4pda"},
         {"domain": "apkbe.com", "icon": "apkbe"},
         {"domain": "downzen.com", "icon": "downzen"},
+
         {"domain": "drive.google.com", "icon": "googledrive"},
         {"domain": "drive.usercontent.google.com", "icon": "googledrive"},
         {"domain": "drive.googleusercontent.com", "icon": "googledrive"},
+
         {"domain": "mega.io", "icon": "mega"},
         {"domain": "mega.nz", "icon": "mega"},
         {"domain": "mediafire.com", "icon": "mediafire"},
+
         {"domain": "archive.org", "icon": "internetarchive"},
         {"domain": "cdn.candies.monster", "icon": "cdn"},
+        
         {"domain": "github.com", "icon": "ctrhome"},
         {"domain": "githubusercontent.com", "icon": "ctrhome"},
         {"domain": "github.io", "icon": "ctrhome"}
