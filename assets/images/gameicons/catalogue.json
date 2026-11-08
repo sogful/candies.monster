@@ -6448,5 +6448,24 @@
     "packages": [
       "com.zeptolab.hff"
     ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "androidcmcc116",
+    "raw": "/assets/images/gameicons/ctrmagic/androidcmcc116/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "4ed2445ec67ab36088ddf31f9de8f7bb9004e63fc099f0596b52e083b39218f2",
+    "sources": [
+      {
+        "url": "https://cdn.candies.monster/apks/com.zeptolab.ctrm.free.CMCC/filebin20261108/1.1.6-8-a26d91be3cad.apk",
+        "member": "res/drawable-xxxhdpi-v4/icon.png",
+        "archive": "gfgf.zip"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctrm.free.CMCC"
+    ]
   }
 ]
