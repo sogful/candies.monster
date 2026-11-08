@@ -1,4 +1,12 @@
 const rawicons = {
+    "myomnom/iosv118": "png",
+    "ctrremastered/iosv240": "png",
+    "ctr3/iosv160": "png",
+    "ctrremastered/iosv270": "png",
+    "candyflick/iosv26": "png",
+    "candyflick/iosv202": "png",
+    "myomnom/iosv111": "png",
+    "bubbles/iosv10": "png",
     "ctr2/iosv133": "png",
     "ctrtt/iosv103": "png",
     "ctrmagic/iosv142": "png",

@@ -6288,5 +6288,165 @@
     "packages": [
       "com.zeptolab.ctr2.f2p"
     ]
+  },
+  {
+    "game": "myomnom",
+    "variant": "iosv118",
+    "raw": "/assets/images/gameicons/myomnom/iosv118/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "f7f48144afc5c883e05e6516f3d1b077d3cabcd222dadedc55cf979e3e706c76",
+    "sources": [
+      {
+        "url": "https://archive.org/download/Hieutruong.gamehay20chiaseacc.com/hieutruong.gamenor%40icloud.com/My%20Om%20Nom%201.1.8.ipa",
+        "member": "Payload/my_om_nom_zl_rel.app/Icon-76@2x.png",
+        "originalsha256": "d18f827379d9bb7acac878f37b139d6e554e231ca2252eadf66756222f708431",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.myomnom.paid"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "iosv240",
+    "raw": "/assets/images/gameicons/ctrremastered/iosv240/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "93821ad9d9d43de554cb22dfe854ccd374637430fcc078ce2a3527b36ef2f51c",
+    "sources": [
+      {
+        "url": "https://archive.org/download/apple-arcade-ios-app-archive-2023-08/Cut%20the%20Rope%20Remastered/com.paladinstudios.ctr-3499.ipa",
+        "member": "Payload/CuttheRope.app/AppIcon76x76@2x~ipad.png",
+        "originalsha256": "842f99eb5958c771e53d74fec164b7f047abb1f3dcfc3948fb03159ba9552c2a",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "ctr3",
+    "variant": "iosv160",
+    "raw": "/assets/images/gameicons/ctr3/iosv160/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "8ba15f88cfc8739a779bcb828a3580d4f210c3ca892faa8baa0a0eb313cb401a",
+    "sources": [
+      {
+        "url": "https://archive.org/download/apple-arcade-ios-app-archive-2024-04/Cut%20the%20Rope%203/com.zeptolab.ctr3-5592.ipa",
+        "member": "Payload/CutTheRope3.app/AppIcon76x76@2x~ipad.png",
+        "originalsha256": "717515dfb1ea101467b79968fa2ec83362d58f89647931d0277ca9c3635cf5cd",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr3"
+    ]
+  },
+  {
+    "game": "ctrremastered",
+    "variant": "iosv270",
+    "raw": "/assets/images/gameicons/ctrremastered/iosv270/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "d4d62569528091151e21bd4d830eabf0f01b9dfca6f1c68244f032b127cb4c14",
+    "sources": [
+      {
+        "url": "https://archive.org/download/apple-arcade-ios-app-archive-2024-04/Cut%20the%20Rope%20Remastered/com.paladinstudios.ctr-4016.ipa",
+        "member": "Payload/Cut the Rope.app/AppIcon76x76@2x~ipad.png",
+        "originalsha256": "838b3e794a60a200a8b939a7dce01d643f011ac1ed0456e10743f60e7c2f5085",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.paladinstudios.ctr"
+    ]
+  },
+  {
+    "game": "candyflick",
+    "variant": "iosv26",
+    "raw": "/assets/images/gameicons/candyflick/iosv26/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "f23442a28ad4c9924ede9f5c7d6e7063b6587d073bf2dc222b701aa7c6636086",
+    "sources": [
+      {
+        "url": "https://archive.org/download/com.kabam.ff7-ios7.0-clutch-2.0.4/com.zeptolab.candyflick-iOS7.0-%28Clutch-2.0.4%29.ipa",
+        "member": "Payload/candyflick.app/Icon-60@3x.png",
+        "originalsha256": "3b3bb1557fede779b10c05ec675d781b681c95f9fca9f474c68745cc0537d32c",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.candyflick"
+    ]
+  },
+  {
+    "game": "candyflick",
+    "variant": "iosv202",
+    "raw": "/assets/images/gameicons/candyflick/iosv202/raw.png",
+    "width": 144,
+    "height": 144,
+    "format": "png",
+    "sha256": "3858dccc2ecac138b5dac9ca12ea894276dc63faff8f187a8a6ff36cfb644868",
+    "sources": [
+      {
+        "url": "https://archive.org/download/com.lego.fusion.resortdesigner-ios7.0-clutch-2.0.4-4/CANDY%20FLICK/com.zeptolab.candyflick-iOS4.3-%28Clutch-2.0.4%29-2.ipa",
+        "member": "Payload/candyflick_2.0.app/Icon-144.png",
+        "originalsha256": "86a8fc2294e8d3e564c2e22e41f7c109ce9d2765db1f4347f4fb309d5d375187",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.candyflick"
+    ]
+  },
+  {
+    "game": "myomnom",
+    "variant": "iosv111",
+    "raw": "/assets/images/gameicons/myomnom/iosv111/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "d283f9a623963f08170a09e69d438f359132c51eb468bb1ac762c60aa7b69078",
+    "sources": [
+      {
+        "url": "https://archive.org/download/iOSObscura/PossiblyBroken/My_Om_Nom_v1.1.1%28www.Downloadha.com%29-7eb1e7fab0654f881048fe7d460a2236.ipa",
+        "member": "Payload/my_om_nom_zl_rel.app/Icon-60@3x.png",
+        "originalsha256": "887badfb069b5440401a1c69fb304049978a97fe87fba12e2871a76ff9cb8510",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.myomnom.paid"
+    ]
+  },
+  {
+    "game": "bubbles",
+    "variant": "iosv10",
+    "raw": "/assets/images/gameicons/bubbles/iosv10/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sha256": "262da41ee81e564022a2b7b49a773452344a24125e88fead971ef6dd278297ec",
+    "sources": [
+      {
+        "url": "https://archive.org/download/random-ipa-collection/random-ipa-collection/com.zeptolab.hff_72337_ios-7.0_bubbles_230aff20.ipa",
+        "member": "Payload/hff.app/AppIcon60x60@3x.png",
+        "originalsha256": "c9cac42fb2f70a3cdde6011f7780707e2ea758e796faa9d1f3db68c0f6b5602b",
+        "conversion": "lossless PNG decoding; CgBI normalized when present"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.hff"
+    ]
   }
 ]
