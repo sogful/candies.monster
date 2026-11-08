@@ -1,0 +1,91 @@
+[
+    {
+        "selector": ".aircushion",
+        "title": "Air Cushions",
+        "description": "Inflated fabric that propels candy into its direction."
+    },
+    {
+        "selector": ".bee",
+        "title": "Bees",
+        "description": "Little critters that move ropes along a specific path."
+    },
+    {
+        "selector": ".blade",
+        "title": "Blades",
+        "description": "Sharp hazards that can be rotated by 90°. They come in red and green variations."
+    },
+    {
+        "selector": ".bouncingplatform",
+        "title": "Bouncing Platforms",
+        "description": "Trampoline-like objects that bounce the candy."
+    },
+    {
+        "selector": ".bubble",
+        "title": "Bubbles",
+        "description": "<a class='greatness'>a</a>"
+    },
+    {
+        "selector": ".disc",
+        "title": "Discs",
+        "description": "Background elements which rotate some objects they contain in a circular path."
+    },
+    {
+        "selector": ".electricspark",
+        "title": "Electric Sparks",
+        "description": "Electric fields that periodically turn on and off. They are dangerous and will instantly break the candy!"
+    },
+    {
+        "selector": ".ghost",
+        "title": "Ghosts",
+        "description": "Creatures that can morph into other objects when clicked.",
+        "footer": "<img class='warning' src='/levels/assets/images/warning.png'> Only available on mobile (~2.0+)"
+    },
+    {
+        "selector": ".gravity",
+        "title": "Gravity",
+        "description": "A button that allows changing the gravity of some objects in the level, including the candy. This allows for more precise and wacky movement."
+    },
+    {
+        "selector": ".lantern",
+        "title": "Lanterns",
+        "description": "Objects which allow the candy to teleport between other lanterns.",
+        "footer": "<img class='warning' src='/levels/assets/images/warning.png'> Only available on mobile (~2.3.2+)"
+    },
+    {
+        "selector": ".magichat",
+        "title": "Magic Hats",
+        "description": "Color-coded hats that teleport the candy from one place to another. Although there are only red and green variants, modifying the <pre>group</pre> allows for an unlimited amount of magic hat tunnels."
+    },
+    {
+        "selector": ".mouse",
+        "title": "Mice",
+        "description": "Little critters that grab the candy and move it between different holes as a form of teleportation.",
+        "footer": "<img class='warning' src='/levels/assets/images/warning.png'> Only available on mobile (2.3+)"
+    },
+    {
+        "selector": ".nightlight",
+        "title": "Night Lights",
+        "description": "Lamps that reveal hidden stars and keep Om Nom awake. They can also be used to push the candy.",
+        "footer": "<img class='warning' src='/levels/assets/images/warning.png'> Only available on mobile (~2.4.5+)"
+    },
+    {
+        "selector": ".spider",
+        "title": "Spiders",
+        "description": "Little critters that attempt to steal the candy by climbing down ropes."
+    },
+    {
+        "selector": ".splitcandy",
+        "title": "Split Candy",
+        "description": "The candy needs to be merged into one piece first before Om Nom can eat it."
+    },
+    {
+        "selector": ".steam",
+        "title": "Steam",
+        "description": "Valves that can be switched between three pressure modes to move the candy."
+    },
+    {
+        "selector": ".timed",
+        "title": "Timed Stars",
+        "description": "Stars that will disappear if not collected within a certain time period. These usually require speedrunning the level."
+    }
+]

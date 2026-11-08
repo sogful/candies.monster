@@ -24,542 +24,204 @@
     <meta property="og:title" content="candies (dot) monster" />
     <meta property="og:description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <meta property="og:image" content="https://candies.monster/assets/images/embeds/index.png">
-
-    <!-- search engines (basically no one is gonna find this through google but still) -->
     <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
     <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
     <meta name="bingbot" content="index, follow">
     <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
 
-    <style>
-
-        @font-face {
-            font-family: "Good Dog";
-            src: /*universal*/ url("/assets/fonts/gooddog.woff2");
-            font-display: swap;
-        }
-
-        body {
-            font-family: var(--sitefont, "Good Dog");
-            position: relative; z-index: 1;
-            display: flex; justify-content: center; align-items: flex-start;
-            min-height: 100vh; min-width: 100vw; overflow-y: auto;
-            user-select: none; padding: 0; margin: 0;
-            -webkit-user-drag: none;
-
-            background-color: #e9a856;
-            --bg: url("/assets/images/bgs/bg.webp");
-            background-image: var(--bg), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' style='background:%239a2' viewBox='0 0 2048 1154'%3E%3Cpath fill='%23d94' d='M0-4h2048v500c-25 2-41-10-66-8q-42-1-83 4c-18-1-42-7-63-10-21-13-47-2-71-16-28 8-56 2-84-5-26-7-62 1-90-7-28 5-52-14-80-7-24-1-40 11-64 4-41 7-83 4-125 12-26 10-54 9-81 5-24 9-51 5-75 16-27 3-56 15-82 4-36 1-74-2-108 7-36 8-75 7-111 17-24 9-48 9-72 8q-57 1-116 6c-33 9-71 7-108 8-22 14-43-2-66-2q-48 5-93-6c-23-3-54-4-81-6-30-4-59 6-89-4-36-7-71-19-109-17-23-3-44-12-68-11-20-6-69 16-63-16z'/%3E%3Cpath fill='%2356a' d='M538 786q38-5 64 18c29 9 53 20 84 23 50 5 92 23 140 30q80 21 159 34c60 21 126 20 186 42q60 8 119 23c39 12 82 5 121 20 42 15 87 24 132 13 44-10 88-26 134-26 31-1 56-15 88-18 39-8 75-11 113-25 56-10 114-19 176-29v271l-572 1-1476-1V914c65-8 128-30 192-41 42-15 90-16 135-30q43-18 88-29'/%3E%3Cpath fill='%23fff' d='M540 783c23-1 44-1 60 16 31 10 56 21 88 25 49 4 90 24 139 29q79 22 160 35c60 21 126 20 185 42q60 9 120 23c39 12 81 5 120 20 42 15 88 24 132 13 44-10 88-26 135-26 30-1 56-15 87-18 38-9 73-9 109-24 57-11 115-17 169-36 14 16-35 17-49 24q-68 3-132 24c-22 6-44 7-63 14-36 14-78 9-115 21-26-1-45 20-70 20-24 4-50 3-72 14l-57 1c-28 4-51-13-80-17-20-5-40 4-57-12-49-18-104-12-152-30-21-6-49-7-72-16-38-16-80-14-120-20-40-14-82-18-122-32-41 1-78-20-120-20-27-11-58-9-83-20-27-4-51-24-79-29-27-8-59-20-89-5-57 8-103 45-161 46-38 13-80 10-117 26-32 0-62 14-94 18-42 11-85 22-129 23-26 4 39-12 34-10 35-5 67-20 103-21q92-23 183-43c43-15 98-12 142-35 23-6 44-16 67-20'/%3E%3Cpath fill='%23fff' d='M1481 445c70-5 138 15 208 14 68 6 137 10 203 25 40-4 79 6 119 6 22 2 57 11 14 8-30-11-68-4-102-6-20 7-40 3-62-2-21-1-40-13-59-12-22 2-41-15-62-4-37-1-66-15-103-13-26 2-49-5-75-3-24-15-54-7-81-5-17 8-44-1-66 4-35 7-74 1-109 14-22 7-44 2-65 1-24 9-51 4-75 16-27 3-56 14-82 4-36 1-74-3-108 7-34 7-69 6-103 15-25 6-50 15-76 8l-101 6c-23 1-44 9-67 9-30 1-60-3-88 8-36-18-79-1-115-13-26-5-56-4-84-8q-42-2-82 0c-43-7-85-23-129-21-21-3-41-12-63-11-21-5-61 10-68-8l91 5q161 26 325 35l134 9q32-12 64-6c92-2 183-18 275-23 41-7 85-9 123-16 37 0 73-5 110-5 111-35 229-20 343-37z'/%3E%3C/svg%3E");
-            background-position: center center;
-            background-repeat: no-repeat; background-size: cover;
-
-            cursor: url("/assets/static/cursors/idle.cur"), default !important;
-            transition: filter 1s ease;
-        }
-        html {transition: filter 1s ease}
-        body:active, body:focus, body:focus-within, body:target, body:active * {
-            cursor: url("/assets/static/cursors/active.cur"), default !important;
-        }
-        :any-link {
-            color: #8feeff; text-decoration: none !important;
-            cursor: url("/assets/static/cursors/link.cur"), default !important;
-        }
-        * {
-            cursor: inherit !important;
-            scrollbar-width: none; scrollbar-color: #ffffff #ffffff;
-        }
-        *::-webkit-scrollbar {width: 0px}
-        p {margin: 0; text-align: center}
-
-        .github { /* "hitbox" */
-            display: flex; position: fixed;
-            top: 0; right: 0;
-            width: 52px; height: 52px;
-            align-items: flex-start; justify-content: flex-end;
-            z-index: 1000;
-        }
-        .github img { /* actual visual */
-            width: 74px; height: 130px;
-            pointer-events: none;
-            position: absolute; top: 0; right: 0;
-            user-select: none;
-        }
-
-        /*//////////////////////////////////////////////////////////////////////*/
-
-        .page {
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            width: min(90vw, 700px); height: 90vh;
-            color: white; font-size: 1.25em;
-            -webkit-text-stroke: 0.175em black;
-            text-shadow: 0 0.15em 0 black;
-            paint-order: stroke fill; gap: 8px 0;
-        }
-        .logo {
-            max-width: 700px;
-            width: 90%; object-fit: contain; margin: 1em;
-            filter: drop-shadow(0 0 12px rgba(0,0,0,0.33));
-            position: relative;
-        }
-        .fun {
-            width: 4%; height: 4%;
-            position: absolute;
-            bottom: 55%; left: 1.5%;
-        }
-
-        .buttons {
-            display: flex; gap: 8px 0;
-            justify-content: center; align-items: center;
-            max-width: 700px; width: 100%; object-fit: contain;
-            flex-wrap: wrap;
-        }
-
-        .button {
-            max-width: 100px;
-            width: min(20vw, 100px);
-            background-image: url("/assets/images/pageicons/button.svg");
-            filter: drop-shadow(0 0 12px rgba(0,0,0,0.33));
-        }
-        .small > a > .button {
-            max-width: 50px;
-            width: min(10vw, 50px);
-        }
-
-		.buttons a {position: relative; display: inline-flex}
-        .buttons a::after {
-            position: absolute; inset: 0; z-index: 2;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 1.75em;
-            -webkit-text-stroke: 0.175em black;
-            text-shadow: 0 0.15em 0 black;
-            paint-order: stroke fill;
-        }
-        [wip] > img, [todo] > img {filter: grayscale(1)}
-        [wip]::after {content: "wip"}
-        [todo]::after {content: "todo"}
-
-        .buttonlabel {
-            width: max-content; height: auto; 
-            min-width: 0; min-height: 0; max-width: 70%;
-            left: 50%; bottom: -0.5em; z-index: 99;
-            position: absolute; display: inline-flex;
-            align-items: flex-end; justify-content: center;
-            pointer-events: none; white-space: nowrap;
-            color: white; font-size: 0.55em; line-height: 1;
-            -webkit-text-stroke: 0.175em black;
-            text-shadow: 0 0.175em 0 black; paint-order: stroke fill;
-            user-select: none; pointer-events: none;
-            background-color: rgba(0,0,0,0.5);
-            padding: 0 0.5em; border-radius: 0 0 0.75em 0.75em;
-            transform: translateX(-50%);
-        }
-        @media (max-width: 400px) {.buttonlabel {display: none}}
-        .small > a > .buttonlabel {font-size: 0.5em}
-
-        .p {display: none}
-        .buttons a[fun] {display: none}
-
-        .tiny {
-            position: fixed; bottom: 0.3em; width: 90%;
-            text-align: center;
-            color: rgb(223, 223, 223); font-size: 0.67em;
-            -webkit-text-stroke: 0.175em black;
-            text-shadow: 0 0.15em 0 black;
-            paint-order: stroke fill;
-        }
-
-        /*//////////////////////////////////////////////////////////////////////*/
-
-        .rain {
-            position: fixed; overflow: hidden;
-            inset: 0; z-index: -999; opacity: 0.5;
-            pointer-events: none;
-        }
-        .candy {
-            position: absolute;
-            left: 0; top: 0; will-change: transform;
-            pointer-events: none;
-            opacity: 0; transition: opacity 0.3s linear;
-            background-image: url("/assets/images/candies/candies.webp");
-            background-repeat: no-repeat; background-size: auto;
-        }
-        @keyframes fall {
-            from {transform: translateY(var(--startY, -10vh)) rotate(var(--r0, 0deg))} 
-            to {transform: translateY(110vh) rotate(var(--r1, 360deg))}
-        }
-        @keyframes shake {
-            0%, 100% {transform: translate(0, 0)}
-            2%, 6%, 10%, 14%, 18%, 22%, 26%, 30%, 34%, 38%, 42%, 46%, 50%, 54%, 58%, 62%, 66%, 70%, 74%, 78%, 82%, 86%, 90%, 94%, 98% {transform: translate(-5px, -5px) rotate(-0.1deg)}
-            4%, 8%, 12%, 16%, 20%, 24%, 28%, 32%, 36%, 40%, 44%, 48%, 52%, 56%, 60%, 64%, 68%, 72%, 76%, 80%, 84%, 88%, 92%, 96% {transform: translate(5px, 5px) rotate(0.1deg)}
-        }
-
-        /*//////////////////////////////////////////////////////////////////////*/
-
-        .sbuttons {
-            display: flex; position: fixed; flex-direction: row;
-            justify-content: center; align-items: top; flex-wrap: wrap;
-            bottom: 0.75em; width: 750px; max-width: 90%; height: auto;
-        }
-        .sbutton {padding: 2px; image-rendering: pixelated; background-repeat: no-repeat}
-
-        .copied {
-            position: absolute;
-            left: 50%; top: 50%; transform: translate(-50%, -50%);
-            padding: 5px 10px; font-size: 20px; white-space: nowrap; 
-            pointer-events: none; transition: opacity 0.2s ease; 
-            color: white; font-size: 2em; z-index: 999; opacity: 0;
-            -webkit-text-stroke: 0.175em black;
-            text-shadow: 0 0.15em 0 black;
-            paint-order: stroke fill;
-        }
-
-        .middleclick {
-            display: flex; position: fixed; flex-direction: row;
-            justify-content: center; align-items: top; flex-wrap: wrap;
-            bottom: 3.25em; width: 110px; height: 32px; 
-            padding-left: 17.5em;
-            user-select: none; pointer-events: none;
-            opacity: 0; transition: opacity 0.5s;
-        }
-        .sbuttons:hover ~ .middleclick,
-        .sbuttons:focus-within ~ .middleclick {opacity: 1}
-
-        .music {
-            position: fixed; bottom: 0.5em; left: 0.5em;
-            width: 2em; height: 2em; z-index: 1000;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/src/css/home.css">
+    <link rel="stylesheet" href="/src/css/levels.css">
     <script src="/assets/static/fontcompat.js"></script>
 </head>
-<body>
-
-    <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
-    <audio class="theme" src="/assets/audio/theme.opus" preload="none" loop></audio>
-
-    <div class="rain" aria-hidden="true"></div>
-    <div class="copied"><a>copied!</a></div>
-
-    <noscript><style>.rain, .copied, .music {display: none}</style></noscript>
-
-    <a class="github" href="//github.com/sogful/candies.monster"><img src="/assets/images/github.png" title="github repository"></a>
-
-    <div class="page">
-
-        <div class="logo">
-            <img src="/assets/images/branding/logo.svg" draggable="false" title="candies dot monster (the site you're on right now!)" fetchpriority="high">
-            <div class="fun"></div>
+<body class="homepage">
+        <audio class="click" preload="auto" src="/assets/audio/tap.mp3"></audio>
+        <audio class="theme" loop="" preload="none" src="/assets/audio/theme.opus"></audio>
+        <canvas aria-hidden="true" class="effects"></canvas>
+        <div class="copied" role="status">
+            <a>copied!</a>
         </div>
-        
-        <div class="buttons">
-
-            <a href="/raw2png/">
-                <img class="button clickable" src="/assets/images/pageicons/convert.webp" 
-                     draggable="false" title="decompress pesky .raw files">
-                <span class="buttonlabel">raw2png</span>
-            </a>
-            <a href="/versions">
-                <img class="button clickable" src="/assets/images/pageicons/versions.webp" 
-                     draggable="false" title="download versions of various om nom games">
-                <span class="buttonlabel">game versions</span>
-            </a>
-            <a href="/music">
-                <img class="button clickable" src="/assets/images/pageicons/music.webp" 
-                     draggable="false" title="play and download some tunes!">
-                <span class="buttonlabel">music player</span>
-            </a>
-            
-            <a href="/split">
-                <img class="button clickable" src="/assets/images/pageicons/split.webp"
-                     draggable="false" title="split spritesheets with xml">
-                <span class="buttonlabel">sheet splitter</span>
-            </a>
-            <a href="/font">
-                <img class="button clickable" src="/assets/images/pageicons/font.webp" 
-                     draggable="false" title="generate the gooddog font with questionable accuracy">
-                <span class="buttonlabel">font generator</span>
-            </a>
-
-            <!-- you can find this by clicking a specific place on the page, come find it without snooping around! -->
-            <a href="//public.candies.monster/site" fun>
-                <img class="button clickable" src="/assets/images/pageicons/public.webp" loading="lazy"
-                     draggable="false" title=".">
-                <span class="buttonlabel">???|+???????!@???????-????????????????#@=???????????</span>
-            </a>
-
-            <!-- doesn't mean it's abandoned, i just haven't done a single line of code for it in a year -->
-            <!--a wip>
-                <img class="button clickable" src="/assets/images/pageicons/old/levels.webp"
-                     draggable="false" title="likely will be a place to view and download custom levels">
-            </a-->
-
-        </div>
-        <div class="buttons small">
-            
-
-            <a href="/preview">
-                <img class="button clickable" src="/assets/images/pageicons/preview.webp" 
-                    draggable="false" title="preview custom levels online">
-                <span class="buttonlabel">preview</span>
-            </a>
-            <a href="/cards">
-                <img class="button clickable" src="/assets/images/pageicons/cards.webp" 
-                     draggable="false" title="winnable cards in newer cut the rope versions">
-                <span class="buttonlabel">cards</span>
-            </a>
-            <a href="/comics">
-                <img class="button clickable" src="/assets/images/pageicons/comics.webp"
-                     draggable="false" title="removed comics from cut the rope origins">
-                <span class="buttonlabel">comics</span>
-            </a>
-            <a href="/snow">
-                <img class="button clickable" src="/assets/images/pageicons/snow.webp"
-                     draggable="false" title="a simple cut the rope holiday gift snow effect!">
-                <span class="buttonlabel">snow!</span>
-            </a>
-            <a href="/merch">
-                <img class="button clickable" src="/assets/images/pageicons/merch.webp" 
-                     draggable="false" title="om nom merch like plushies, figurines etc">
-                <span class="buttonlabel">merch</span>
-            </a>
-            <a href="/xml2json">
-                <img class="button clickable" src="/assets/images/pageicons/convertlevels.webp" 
-                     draggable="false" title="convert between the two level formats. thankfully, there are only two! i hope.">
-                <span class="buttonlabel">xml2json</span>
-            </a>
-            
-        
-        </div>
-        <p>..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
-
-    </div>
-    <span class="tiny"><a href="/documentation">documentation</a>&nbsp;•&nbsp;<a href="/credits">credits</a>&nbsp;•&nbsp;<a href="https://discord.gg/ExFtwhB5kS">have a question?</a> (ping <a href="https://discord.com/users/763502120333869116">@cvgd</a>)&nbsp;•&nbsp;<a href="https://ctrhome.github.io/fan-projects">more fun stuff!</a></span>
-
-
-    <img class="music clickable" src="/assets/images/nomusic.png" title="enable/disable tunes on this page">
-
-    <div class="sbuttons">
-        <a><img class="sbutton" src="/assets/images/88x31/default.png" title="an 88x31 button with om nom in front of the gift box background."></a>
-        <a><img class="sbutton" src="/assets/images/88x31/tasty.png" title="an 88x31 button with the text: &quot;this page is TASTY!&quot;"></a>
-        <!-- slide -->
-        <a class="ctrgame">
-            <img class="sbutton ctrimg" src="/assets/images/88x31/game1.gif" draggable="false" title="an 88x31 gif with a small cut the rope level. to the top left there is a rope that can be dragged over to be cut.">
-            <input type="range" class="ctrslider" min="0" max="100" value="50" step="10">
-            <style>
-                .ctrgame {position: relative; display: inline-block; width: 88px; height: 31px}
-                .ctrimg {width: 88px; height: 31px; pointer-events: none; user-select: none}
-                .ctrslider {position: absolute; left: 0; top: 0; width: 40px; height: 15px; opacity: 0; z-index: 999}
-            </style>
-            <script>
-                const slider = document.querySelector(".ctrslider"); let activated = false;
-                slider.addEventListener('input', function() {
-                    if (!activated && (Number(slider.value) === 100 || Number(slider.value) === 0)) {
-                        document.querySelector(".ctrimg").src = '/assets/images/88x31/game2.gif';
-                        activated = true; slider.disabled = true;
-                    }
-                });
-            </script>
+        <a aria-label="github repository" class="github" href="https://github.com/sogful/candies.monster">
+            <img alt="" draggable="false" src="/assets/images/github.png" title="github repository">
         </a>
-
-        <!-- click (no js!) -->
-        <!--a class="ctrgame">
-            <input type="radio" id="ctrtoggle" name="ctrgame" class="ctrcheckbox">
-            <label for="ctrtoggle" class="ctrlabel">
-                <img class="sbutton ctrimg ctrone" src="/assets/images/88x31/game1.gif" draggable="false">
-                <img class="sbutton ctrimg ctrtwo" src="/assets/images/88x31/game2.gif" draggable="false">
-            </label>
-            <style>
-                .ctrgame {position: relative; display: inline-block; width: 88px; height: 31px}
-                #ctrtoggle {position: absolute; opacity: 0; width: 0; height: 0}
-                .ctrlabel {display: block; width: 88px; height: 31px; cursor: pointer}
-                .ctrimg {width: 88px; height: 31px; position: absolute; left: 0; top: 0}
-                .ctrone {opacity: 1} .ctrtwo {opacity: 0}
-                #ctrtoggle:checked ~ .ctrlabel .ctrone {opacity: 0}
-                #ctrtoggle:checked ~ .ctrlabel .ctrtwo {opacity: 1}
-                #ctrtoggle:checked ~ .ctrlabel {cursor: default; pointer-events: none}
-            </style>
-        </a-->
-        
-    </div>
-    <img class="middleclick" src="/assets/images/middleclick.png">
-
-    <script>
-
-        // click sfx
-        document.querySelectorAll(".clickable").forEach(function(element) {
-            element.addEventListener("click", function() {
-                document.querySelector(".click").currentTime = 0;
-                document.querySelector(".click").play();
-            });
-        });
-
-        /*//////////////////////////////////////////////////////////////////////*/
-        
-        // music toggle
-        (function() {
-            const musicbutton = document.querySelector(".music");
-            const music = document.querySelector(".theme");
-            let isplaying = false; let audioctx = null;
-            let gainnode = null; let source = null;
-
-            function musicstop(callback) {
-                if (!audioctx) {if (callback) callback(); return}
-                const time = audioctx.currentTime;
-                gainnode.gain.cancelScheduledValues(time);
-                gainnode.gain.setValueAtTime(gainnode.gain.value, time);
-                gainnode.gain.linearRampToValueAtTime(0, time + 0.1);
-                setTimeout(() => {
-                    music.pause(); music.currentTime = 0;
-                    gainnode.gain.setValueAtTime(1, audioctx.currentTime);
-                    if (callback) callback();
-                }, 100);
-            }
-            function setupmusic() {
-                if (!audioctx) {
-                    audioctx = new (window.AudioContext || window.webkitAudioContext)();
-                    gainnode = audioctx.createGain(); gainnode.gain.value = 1;
-                    source = audioctx.createMediaElementSource(music);
-                    source.connect(gainnode).connect(audioctx.destination);
-                }
-            }
-            musicbutton.addEventListener("click", function() {
-                setupmusic();
-                if (isplaying) {
-                    musicstop(); musicbutton.src = "/assets/images/nomusic.png";
-                    isplaying = false;
-                } else {
-                    if (audioctx && audioctx.state === "suspended") audioctx.resume();
-                    gainnode.gain.setValueAtTime(1, audioctx.currentTime);
-                    music.volume = 1; music.play()
-                    musicbutton.src = "/assets/images/music.png"; isplaying = true;
-                }
-            });
-        })();
-
-        /*//////////////////////////////////////////////////////////////////////*/
-        
-        // copy buttons on middle click (slightly fixed over the pawing.cv code)
-        document.addEventListener("auxclick", (e) => {
-            let el = e.target.closest(".sbutton, .ctrgame"); if (!el) return;
-            if (e.button === 1) {
-                e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-
-                let copiablebutton;
-                if (el.tagName === "IMG") {copiablebutton = el.parentElement}
-                else {copiablebutton = el}
-                let clone = copiablebutton.cloneNode(true);
-
-                function fixsrc(node) {
-                    if (node.tagName === "IMG" && node.src) {
-                        let src = node.getAttribute("src");
-                        if (src && src.includes("/assets/") && !src.includes("//candies.monster/")) {
-                            if (src.startsWith("/")) {node.setAttribute("src", "//candies.monster" + src)}
-                            else {node.setAttribute("src", "//candies.monster/" + src)}
-                        }
-                    } else if (node.tagName === "SCRIPT") {
-                        let scripttext = node.textContent;
-                        if (scripttext && scripttext.includes("/assets/") && !scripttext.includes("//candies.monster/")) {
-                            scripttext = scripttext.replace(/(['"])\/assets\//g, "$1//candies.monster/assets/");
-                            scripttext = scripttext.replace(/(['"])assets\//g, "$1//candies.monster/assets/");
-                            node.textContent = scripttext;
-                        }
-                    }
-                    for (let child of node.childNodes) {if (child.nodeType === 1) fixsrc(child)}
-                }; fixsrc(clone);
-
-                function removegarbage(node) {
-                    if (node.removeAttribute) {
-                        node.removeAttribute("style");
-                        node.removeAttribute("class");
-                    }
-                    for (let child of node.childNodes) {removegarbage(child)}
-                }; removegarbage(clone);
-
-                navigator.clipboard.writeText(clone.outerHTML);
-                document.querySelector(".copied a").textContent = "copied!";
-                document.querySelector(".copied").style.opacity = "1";
-                setTimeout(function() {document.querySelector(".copied").style.opacity = "0"}, 1000);
-                return false;
-            }
-        });
-
-        /*//////////////////////////////////////////////////////////////////////*/
-
-        (function() {
-            let funn = false;
-            document.querySelector(".fun").addEventListener("click", function() {
-                if (funn) return;
-                funn = true;
-
-                document.querySelectorAll("[fun]").forEach(function(element) {
-                    element.style.display = "inline-flex";
-                });
-                document.documentElement.style.filter = "invert(1)";
-                document.documentElement.style.animation = "shake 2s ease-in-out infinite";
-                const funtitle = "??!?!?!?!?!?!?!?!?!?!?!?!?!?!";
-                let titleidx = 0;
-                if (window.titleInterval) clearInterval(window.titleInterval);
-                window.titleInterval = setInterval(() => {
-                    titleidx = (titleidx + 1) % (funtitle.length + 1);
-                    document.title = funtitle.slice(0, titleidx);
-                    if (titleidx === funtitle.length) titleidx = 0;
-                }, 10);
-                if (window.sheetimg) window.sheetimg.src = "/assets/images/wonderful.png";
-
-                // am i doing a bit much?? maybeeeeeeeeeeeeee
-                document.querySelector(".sbuttons").remove();
-                document.querySelector(".github").remove();
-                document.querySelector(".music").remove();
-                document.querySelector(".rain").remove();
-                document.querySelector("p").remove();
-                var weird = new Audio("assets/audio/weird.ogg");
-                weird.loop = true; weird.play();
-                if ('Notification' in window && Notification.requestPermission) {
-                    Notification.requestPermission().catch(()=>{});
-                }
-                if (navigator.permissions) {
-                    const geoPermissions = [
-                        {name: "geolocation"},
-                        {name: "background-fetch"},
-                        {name: "background-sync"},
-                        {name: "persistent-storage"}
-                    ];
-                    for (const perm of geoPermissions) {
-                        navigator.permissions.query(perm).catch(() => {});
-                    }
-                }
-                if (navigator.geolocation && navigator.geolocation.getCurrentPosition) {
-                    try { navigator.geolocation.getCurrentPosition(()=>{}, ()=>{}); } catch (e) {}
-                }
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    navigator.mediaDevices.getUserMedia({video: true}).catch(()=>{});
-                }
-                if (document.documentElement.requestFullscreen) {
-                    try { document.documentElement.requestFullscreen(); } catch (e) {}
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    try { document.documentElement.webkitRequestFullscreen(); } catch (e) {}
-                }
-                if (document.body && document.body.requestPointerLock) {
-                    try { document.body.requestPointerLock(); } catch (e) {}
-                } else if (document.body && document.body.webkitRequestPointerLock) {
-                    try { document.body.webkitRequestPointerLock(); } catch (e) {}
-                }
-                if (window.documentPictureInPicture && window.documentPictureInPicture.requestWindow) {
-                    window.documentPictureInPicture.requestWindow().then(function(pipWindow){
-                        pipWindow.document.body.innerHTML = 'Hello from PiP';
-                    }).catch(()=>{});
-                }
-                navigator.vibrate(); document.hasFocus(); navigator.keyboard.lock();
-                navigator.permissions.query({name: 'notifications'}).catch(()=>{});
-                navigator.permissions.query({name: 'camera'}).catch(()=>{});
-                navigator.permissions.query({name: 'microphone'}).catch(()=>{});
-                navigator.permissions.query({name: 'clipboard-read'}).catch(()=>{});
-                navigator.permissions.query({name: 'midi'}).catch(()=>{});
-                navigator.permissions.query({name: 'push'}).catch(()=>{});
-            });
-        })();
-
-    </script>
-</body>
+        <div class="site">
+            <aside aria-label="site navigation" class="sidebar">
+                <div class="sidebarlogo">
+                    <img alt="candies dot monster" draggable="false" fetchpriority="high" height="400" src="/assets/images/branding/logotiny.webp" title="candies dot monster (the site you&#x27;re on right now!)" width="600">
+                    <div class="fun"></div>
+                </div>
+                <div class="buttons bignav">
+                    <a aria-label="decompress pesky .raw files" class="navlink" href="/raw2png/">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/convert.webp" title="decompress pesky .raw files">
+                        <span class="buttonlabel">raw2png</span>
+                    </a>
+                    <a aria-label="download versions of various om nom games" class="navlink" href="/versions">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/versions.webp" title="download versions of various om nom games">
+                        <span class="buttonlabel">game versions</span>
+                    </a>
+                    <a aria-label="play and download some tunes!" class="navlink" href="/music">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/music.webp" title="play and download some tunes!">
+                        <span class="buttonlabel">music player</span>
+                    </a>
+                    <a aria-label="split spritesheets with xml" class="navlink" href="/split">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/split.webp" title="split spritesheets with xml">
+                        <span class="buttonlabel">sheet splitter</span>
+                    </a>
+                    <a aria-label="generate the gooddog font with questionable accuracy" class="navlink" href="/font">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/font.webp" title="generate the gooddog font with questionable accuracy">
+                        <span class="buttonlabel">font generator</span>
+                    </a>
+                    <a aria-label="." class="navlink" fun="" href="//public.candies.monster/site">
+                        <img class="button clickable" draggable="false" loading="lazy" src="/assets/images/pageicons/public.webp" title=".">
+                        <span class="buttonlabel">???|+???????!@???????-????????????????#@=???????????</span>
+                    </a>
+                </div>
+                <div class="buttons small smallnav">
+                    <a aria-label="preview custom levels online" class="navlink" href="/preview">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/preview.webp" title="preview custom levels online">
+                        <span class="buttonlabel">preview</span>
+                    </a>
+                    <a aria-label="winnable cards in newer cut the rope versions" class="navlink" href="/cards">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/cards.webp" title="winnable cards in newer cut the rope versions">
+                        <span class="buttonlabel">cards</span>
+                    </a>
+                    <a aria-label="removed comics from cut the rope origins" class="navlink" href="/comics">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/comics.webp" title="removed comics from cut the rope origins">
+                        <span class="buttonlabel">comics</span>
+                    </a>
+                    <a aria-label="a simple cut the rope holiday gift snow effect!" class="navlink" href="/snow">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/snow.webp" title="a simple cut the rope holiday gift snow effect!">
+                        <span class="buttonlabel">snow!</span>
+                    </a>
+                    <a aria-label="om nom merch like plushies, figurines etc" class="navlink" href="/merch">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/merch.webp" title="om nom merch like plushies, figurines etc">
+                        <span class="buttonlabel">merch</span>
+                    </a>
+                    <a aria-label="convert between the two level formats. thankfully, there are only two! i hope." class="navlink" href="/xml2json">
+                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/convertlevels.webp" title="convert between the two level formats. thankfully, there are only two! i hope.">
+                        <span class="buttonlabel">xml2json</span>
+                    </a>
+                </div>
+                <p class="resourceblurb">..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
+                <div class="sbuttons">
+                    <a>
+                        <img class="sbutton" draggable="false" src="/assets/images/88x31/default.png" title="an 88x31 button with om nom in front of the gift box background.">
+                    </a>
+                    <a>
+                        <img class="sbutton" draggable="false" src="/assets/images/88x31/tasty.png" title="an 88x31 button with the text: &quot;this page is TASTY!&quot;">
+                    </a>
+                    <a class="ctrgame">
+                        <img class="sbutton ctrimg" draggable="false" src="/assets/images/88x31/game1.gif" title="an 88x31 gif with a small cut the rope level. to the top left there is a rope that can be dragged over to be cut.">
+                        <input class="ctrslider" max="100" min="0" step="10" type="range" value="50">
+                    </a>
+                    <img alt="middle click to copy a button" class="middleclick" draggable="false" src="/assets/images/middleclick.png">
+                </div>
+                <img alt="enable or disable music" aria-pressed="false" class="music clickable" draggable="false" role="button" src="/assets/images/nomusic.png" tabindex="0" title="enable/disable tunes on this page">
+                <footer class="tiny"><a href="/documentation">documentation</a> • <a href="/credits">credits</a> • <a href="https://discord.gg/ExFtwhB5kS">have a question?</a> (ping <a href="https://discord.com/users/763502120333869116">@cvgd</a> ) • <a href="https://ctrhome.github.io/fan-projects">more fun stuff!</a></footer>
+            </aside>
+            <main aria-label="custom levels" class="levelbrowser">
+                <details class="morestuff">
+                    <summary class="clickable">More stuff!</summary>
+                    <div class="frame">
+                        <img alt="" class="awful" draggable="false" loading="lazy" src="/levels/assets/images/depressingframe.png">
+                        <div class="adheader">
+                            <span>More stuff!</span>
+                            <button aria-label="close more stuff" class="adclose clickable" type="button">
+                                <img alt="" draggable="false" src="/levels/assets/images/x.png">
+                            </button>
+                        </div>
+                        <div class="carousel">
+                            <a href="https://adriandrummis.github.io/CutTheRopeEditor" rel="noopener noreferrer" target="_blank">
+                                <img class="active" decoding="async" draggable="false" loading="lazy" src="/levels/assets/images/ads/ctreditor.png">
+                            </a>
+                            <a hidden="" href="https://x.com/mushroomfromgd" rel="noopener noreferrer" target="_blank">
+                                <img decoding="async" draggable="false" loading="lazy" src="/levels/assets/images/ads/aidrum.png">
+                            </a>
+                            <a hidden="" href="https://theawesomeblue.nekoweb.org/links.html" rel="noopener noreferrer" target="_blank">
+                                <img decoding="async" draggable="false" loading="lazy" src="/levels/assets/images/ads/blue.png">
+                            </a>
+                            <a hidden="" href="https://spiritaccount.net" rel="noopener noreferrer" target="_blank">
+                                <img decoding="async" draggable="false" loading="lazy" src="/levels/assets/images/ads/spiritaccount.png">
+                            </a>
+                        </div>
+                        <div class="adfooter">
+                            <button aria-label="previous link" class="adleft clickable" type="button">
+                                <img alt="" draggable="false" src="/levels/assets/images/left.png">
+                            </button>
+                            <button aria-label="next link" class="adright clickable" type="button">
+                                <img alt="" draggable="false" src="/levels/assets/images/right.png">
+                            </button>
+                        </div>
+                    </div>
+                </details>
+                <div class="main">
+                    <div class="controls">
+                        <div aria-label="scroll levels up" class="up clickable" role="button" tabindex="0">
+                            <img class="arrow" draggable="false" src="/levels/assets/images/controls/up.png">
+                            <img class="divider" draggable="false" src="/levels/assets/images/controls/dividerup.png">
+                        </div>
+                        <div aria-label="scroll levels down" class="down clickable" role="button" tabindex="0">
+                            <img class="divider" draggable="false" src="/levels/assets/images/controls/dividerdown.png">
+                            <img class="arrow" draggable="false" src="/levels/assets/images/controls/down.png">
+                        </div>
+                    </div>
+                    <div class="levels">
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/levels/assets/images/example.webp">
+                            <div class="header">
+                                <p class="title">hello world</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/levels/assets/images/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/levels/assets/images/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/levels/assets/images/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/levels/assets/images/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/levels/assets/images/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/levels/assets/images/features/spider.png">
+                                    <img class="steam" draggable="false" src="/levels/assets/images/features/steam.png">
+                                    <img class="timed" draggable="false" src="/levels/assets/images/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/levels/assets/images/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/levels/assets/images/features/bee.png">
+                                    <img class="blade" draggable="false" src="/levels/assets/images/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/levels/assets/images/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/levels/assets/images/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/levels/assets/images/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/levels/assets/images/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/levels/assets/images/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/levels/assets/images/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/levels/assets/images/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/levels/assets/images/play.png">
+                                        <a aria-label="download hello world" class="leveldownload clickable" download="1_1.xml" href="/levels/assets/static/1_1.xml">
+                                            <img class="download" draggable="false" src="/levels/assets/images/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <img alt="Om Nom" class="nom" draggable="true" src="/levels/assets/svgs/nom1.svg">
+            </main>
+        </div>
+        <script src="/src/js/home/sidebar.js" type="module"></script>
+        <script src="/src/js/home/levels.js" type="module"></script>
+    </body>
 </html>

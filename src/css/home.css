@@ -1,0 +1,248 @@
+@font-face {
+    font-family: "Good Dog"; font-display: swap;
+    src: url("/assets/fonts/gooddog.woff2");
+}
+
+.homepage {
+    margin: 0; padding: 0;
+    height: 100vh; height: 100dvh;
+    overflow: hidden; background-color: #e9a856;
+    background-image: url("/assets/images/bgs/bg.webp"); background-size: cover;
+    background-position: center; background-repeat: no-repeat;
+    font-family: var(--sitefont,"Good Dog"); color: #fff;
+    user-select: none; -webkit-user-drag: none;
+    cursor: url("/assets/static/cursors/idle.cur"), default;
+}
+
+.homepage :any-link {
+    color: #8feeff; text-decoration: none;
+    cursor: url("/assets/static/cursors/link.cur"), pointer;
+}
+
+.homepage .clickable, .homepage .navlink, .homepage .fun {
+    cursor: url("/assets/static/cursors/link.cur"), pointer;
+}
+
+.homepage :active {cursor: url("/assets/static/cursors/active.cur"), default}
+
+.homepage * {scrollbar-width: none}
+.homepage ::-webkit-scrollbar {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.site {
+    position: relative; z-index: 3;
+    display: flex; height: 100%;
+    pointer-events: none;
+}
+
+.sidebar {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 6px;
+    width: 144px; flex: 0 0 144px;
+    height: 100%; box-sizing: border-box;
+    padding: 6px 14px; overflow-y: auto;
+    overscroll-behavior: contain; pointer-events: auto;
+    background: rgba(0,0,0,0.5); font-size: 16px;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+
+.sidebarlogo {
+    position: relative; width: 116px;
+    flex-shrink: 0; line-height: 0;
+}
+
+.sidebarlogo img {
+    width: 100%; height: auto;
+}
+
+.fun {
+    position: absolute; width: 4%;
+    height: 8%; bottom: 55%;
+    left: 1.5%;
+}
+
+.buttons {
+    display: grid; justify-content: center;
+    gap: 8px 0; flex-shrink: 0;
+}
+
+.navlink {
+    position: relative; display: inline-flex;
+    align-items: center; justify-content: center;
+    width: 76px; height: 76px;
+}
+
+.button {
+    display: block; width: 100%;
+    height: 100%; object-fit: contain;
+    background-image: url("/assets/images/pageicons/button.svg"); background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.smallnav {
+    grid-template-columns: repeat(2,38px); gap: 8px 6px;
+}
+
+.smallnav .navlink {
+    width: 38px; height: 38px;
+}
+
+.buttonlabel {
+    position: absolute; left: 50%;
+    bottom: -4px; transform: translateX(-50%);
+    width: max-content; max-width: 125%;
+    padding: 0 4px; border-radius: 0 0 8px 8px;
+    background: rgba(0,0,0,0.5); color: #fff;
+    font-size: 11px; line-height: 1;
+    text-align: center; pointer-events: none;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.175em 0 #000;
+}
+
+.smallnav .buttonlabel {font-size: 9px}
+.buttons [fun] {display: none}
+
+.resourceblurb {
+    margin: 0; text-align: center;
+    font-size: 14px; line-height: 1.05;
+}
+
+.tiny {
+    text-align: center; font-size: 12px;
+    color: #dfdfdf; line-height: 1.25;
+}
+
+.music {
+    width: 28px; height: 28px;
+    object-fit: contain; flex-shrink: 0;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.sbuttons {
+    position: relative; display: flex;
+    flex-wrap: wrap; justify-content: center;
+    gap: 4px; flex-shrink: 0;
+}
+
+.sbutton {
+    display: block; width: 88px;
+    height: 31px; image-rendering: pixelated;
+}
+
+.ctrgame {
+    position: relative; display: block;
+    width: 88px; height: 31px;
+}
+
+.ctrimg {pointer-events: none}
+
+.ctrslider {
+    position: absolute; left: 0;
+    top: 0; width: 40px;
+    height: 15px; opacity: 0;
+}
+
+.middleclick {
+    display: none; width: 110px;
+    height: 32px; pointer-events: none;
+    position: absolute; top: -34px;
+    left: 50%; transform: translateX(-50%);
+}
+
+@media (hover: hover) {
+    .middleclick {
+        display: block; opacity: 0;
+    }
+    .sbuttons:hover .middleclick, .sbuttons:focus-within .middleclick {opacity: 1}
+}
+
+.copied {
+    position: fixed; left: 50%;
+    top: 50%; transform: translate(-50%,-50%);
+    padding: 5px 10px; font-size: 32px;
+    color: #fff; z-index: 10;
+    pointer-events: none; opacity: 0;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+
+.github {
+    position: fixed; top: 0;
+    right: 0; z-index: 1;
+    width: 52px; height: 52px;
+}
+
+.github img {
+    position: absolute; top: 0;
+    right: 0; width: 74px;
+    height: 130px; pointer-events: none;
+}
+
+.effects {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 2; pointer-events: none;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+@media (max-width: 700px) and (min-height: 501px) {
+    .site {flex-direction: column}
+    .middleclick {display: none}
+    .sidebar {
+        display: grid; grid-template-columns: 64px minmax(0,1fr);
+        width: 100%; height: auto;
+        flex: 0 0 auto; padding: 8px 12px;
+        gap: 7px 10px; overflow: visible;
+        pointer-events: none;
+        --buttonsize: min(58px,calc((100vw - 44px) / 5));
+    }
+    .sidebar > * {pointer-events: auto}
+    .sidebarlogo {
+        grid-column: 1; grid-row: 1;
+        width: 64px; align-self: center;
+    }
+    .bignav {
+        grid-column: 1 / -1; grid-row: 2;
+        display: flex; gap: 4px;
+    }
+    .navlink {
+        width: var(--buttonsize); height: var(--buttonsize);
+        flex-shrink: 0;
+    }
+    .smallnav {
+        grid-column: 1 / -1; grid-row: 3;
+        display: flex; gap: 6px;
+    }
+    .smallnav .navlink {
+        width: calc(var(--buttonsize) / 2); height: calc(var(--buttonsize) / 2);
+    }
+    .buttonlabel {display: none}
+    .resourceblurb {
+        grid-column: 2; grid-row: 1;
+        font-size: 14px; margin-right: 62px;
+        align-self: center;
+    }
+    .sbuttons {
+        grid-column: 1 / -1; grid-row: 4;
+        gap: 3px; align-self: center;
+    }
+    .tiny {
+        grid-column: 1 / -1; grid-row: 5;
+        font-size: 11px;
+    }
+    .music {
+        grid-column: 1; grid-row: 3;
+        width: 24px; height: 24px;
+        justify-self: start; align-self: center;
+    }
+}
+
+@keyframes shake {
+    0%, 100% {transform: translate(0,0)}
+    25%, 75% {transform: translate(-5px,-5px) rotate(-0.1deg)}
+    50% {transform: translate(5px,5px) rotate(0.1deg)}
+}

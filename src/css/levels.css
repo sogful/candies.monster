@@ -1,0 +1,295 @@
+.levelbrowser {
+    position: relative; flex: 1 1 auto;
+    min-width: 0; min-height: 0;
+    height: 100%; pointer-events: none;
+    overflow: hidden;
+}
+
+.main {
+    position: relative; display: flex;
+    justify-content: center; align-items: center;
+    width: 100%; height: 100%;
+}
+
+.controls {
+    position: absolute; inset: 12px 0;
+    display: flex; flex-direction: column;
+    justify-content: space-between; align-items: center;
+}
+
+.up, .down {
+    display: flex; flex-direction: column;
+    align-items: center; pointer-events: auto;
+    line-height: 0;
+}
+
+.arrow {
+    width: 60px; height: auto;
+}
+.divider {
+    width: min(450px,75vw); height: auto;
+}
+
+.levels {
+    display: flex; flex-wrap: wrap;
+    justify-content: center; align-content: flex-start;
+    gap: 20px; box-sizing: border-box;
+    width: 100%; max-width: 1000px;
+    height: calc(100% - 150px); padding: 14px 20px;
+    overflow-y: auto; overscroll-behavior: contain;
+    pointer-events: auto; scrollbar-width: none;
+}
+
+.level {
+    position: relative; flex-shrink: 0;
+    width: 400px; max-width: 100%;
+    height: 200px; box-sizing: border-box;
+    padding: 20px 26px; border-radius: 16px;
+    background: url("/levels/assets/images/coolbox.webp") center / 100% 100% no-repeat;
+    isolation: isolate;
+}
+
+.levelbg {
+    position: absolute; inset: 5px 10px;
+    width: calc(100% - 20px); height: calc(100% - 10px);
+    border-radius: 16px; object-fit: cover;
+    mix-blend-mode: overlay; z-index: -1;
+    pointer-events: none;
+}
+
+.header {
+    display: flex; gap: 10px;
+    align-items: center; padding-top: 10px;
+    height: 30px;
+}
+
+.title, .creator {
+    margin: 0; color: #fff;
+    white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; min-width: 0;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+
+.title {
+    font-size: 28px; max-width: 220px;
+}
+
+.creator {
+    font-size: 16px; max-width: 100px;
+    flex-shrink: 0;
+}
+
+.desc {
+    position: relative; margin-top: 12px;
+    max-width: calc(100% - 28px); font-style: italic;
+    color: #fff; font-size: 16px;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 3px 0 #000;
+}
+
+.desc a {
+    display: -webkit-box; white-space: pre-line;
+    -webkit-line-clamp: 3; line-clamp: 3;
+    -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.desc a::before, .desc a::after {content: "\""}
+
+.footer {
+    position: absolute; bottom: 12px;
+    left: 24px; right: 60px;
+    display: flex; align-items: center;
+    gap: 8px;
+}
+
+.rating, .features {
+    display: flex; align-items: center;
+    color: #fff; font-size: 24px;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 3px 0 #000;
+}
+
+.rating {flex-shrink: 0}
+.rating p {margin: 0}
+.rating img {
+    height: 32px; width: auto;
+}
+
+.features {
+    position: relative; border-radius: 16px;
+    background: rgba(0,0,0,0.25); min-width: 0;
+}
+
+.features img {
+    display: block; height: 30px;
+    width: auto; margin: 0 2px;
+}
+
+.features img:nth-of-type(n+5) {display: none}
+
+.morefeatures {
+    position: absolute; top: 100%;
+    left: 50%; transform: translateX(-50%);
+    width: max-content; font-size: 13px;
+    line-height: 1; padding: 3px;
+}
+
+.features.expanded {
+    position: absolute; left: 72px;
+    bottom: 0; z-index: 5;
+    display: flex; flex-wrap: wrap;
+    width: 190px; max-width: calc(100vw - 120px);
+    padding: 4px; background: rgba(0,0,0,0.5);
+}
+
+.features.expanded img {display: block}
+.features.expanded .morefeatures {display: none}
+
+.side {
+    position: absolute; right: -50px;
+    bottom: 0; display: flex;
+    flex-direction: column; align-items: center;
+}
+
+.objectcount {
+    margin-bottom: 4px; font-size: 16px;
+    color: #fff; white-space: nowrap;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 3px 0 #000;
+}
+
+.download {
+    display: block; width: 44px;
+}
+.play {display: none}
+.leveldownload {line-height: 0}
+
+.nom {
+    position: absolute; left: 16px;
+    bottom: 0; height: 110px;
+    pointer-events: auto;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.morestuff {
+    position: absolute; top: 12px;
+    right: 80px; z-index: 6;
+    pointer-events: auto; color: #fff;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+
+.morestuff summary {list-style: none}
+.morestuff summary::-webkit-details-marker {display: none}
+
+.frame {
+    position: absolute; top: 28px;
+    right: -50px; width: min(400px,calc(100vw - 24px));
+    aspect-ratio: 1700 / 1330; container-type: size;
+}
+
+.awful {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 2; pointer-events: none;
+}
+
+.adheader {
+    position: absolute; top: 2%;
+    left: 7%; right: 7%;
+    display: flex; justify-content: space-between;
+    align-items: center; z-index: 3;
+    font-size: 24px;
+}
+
+.adclose, .adleft, .adright {
+    border: 0; padding: 0;
+    background: none; line-height: 0;
+}
+
+.adclose img {
+    height: 22px; width: auto;
+}
+
+.carousel {
+    position: absolute; top: 6%;
+    left: 8%; width: 84%;
+    height: 60%; display: flex;
+    align-items: center; justify-content: center;
+}
+
+.carousel a {
+    width: 100%; height: 100%;
+}
+.carousel [hidden] {display: none}
+.carousel img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+}
+
+.adfooter {
+    position: absolute; top: 44%;
+    left: 10%; right: 10%;
+    display: flex; justify-content: space-between;
+    z-index: 3;
+}
+
+.adfooter img {
+    height: 24px; width: auto;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.tooltip {
+    position: fixed; z-index: 10;
+    padding: 8px; border-radius: 12px;
+    max-width: min(250px,calc(100vw - 32px)); box-sizing: border-box;
+    background: rgba(0,0,0,0.5); color: #fff;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+
+.tooltip[hidden] {display: none}
+.tooltiptitle {font-size: 22px}
+.tooltipdesc {font-size: 16px}
+.tooltipfooter {
+    font-size: 12px; opacity: 0.75;
+}
+.tooltip pre {
+    display: inline; white-space: pre-wrap;
+}
+.warning {
+    height: 15px; vertical-align: middle;
+}
+
+@media (max-width: 700px) {
+    .levelbrowser {height: auto}
+    .levels {
+        padding: 10px 18px; height: calc(100% - 130px);
+    }
+    .level {padding: 16px 22px}
+    .title {font-size: 25px}
+    .creator {
+        max-width: 75px; font-size: 14px;
+    }
+    .features img {
+        height: 25px; margin: 0 1px;
+    }
+    .rating {font-size: 21px}
+    .rating img {height: 28px}
+    .morestuff {
+        top: 4px; right: 80px;
+    }
+    .nom {height: 80px}
+    .arrow {width: 50px}
+}
+
+@media (max-height: 500px) {
+    .controls {inset: 8px 0}
+    .arrow {width: 36px}
+    .levels {
+        height: calc(100% - 100px); padding: 8px 20px;
+    }
+}

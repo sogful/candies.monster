@@ -1,0 +1,167 @@
+import {startfavicon} from "/assets/static/favicon.js";
+
+startfavicon({onimage(image) {
+    window.sheetimg = image;
+    if (document.documentElement.style.filter === "invert(1)") image.src = "/assets/images/wonderful.png";
+}}).catch(() => {});
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+const canvas = document.querySelector(".effects");
+const context = canvas?.getContext("2d");
+const motion = matchMedia("(prefers-reduced-motion: reduce)");
+const drops = [];
+let sprites = [];
+let sheet = null;
+let shadow = null;
+let width = innerWidth;
+let height = innerHeight;
+let ratio = 1;
+let limit = 0;
+let frame = 0;
+let previous = 0;
+let angle = 0;
+let suspended = false;
+let interval = 1000 / 30;
+let expensive = 0;
+let loading = null;
+
+function resize() {
+    width = innerWidth;
+    height = innerHeight;
+    const limited = width <= 700 || navigator.hardwareConcurrency <= 4 || navigator.deviceMemory <= 4;
+    const budget = limited ? 650000 : 1500000;
+    ratio = Math.min(limited ? 0.85 : 1, Math.sqrt(budget / (width * height)));
+    canvas.width = Math.max(1, Math.round(width * ratio));
+    canvas.height = Math.max(1, Math.round(height * ratio));
+    limit = Math.min(limited ? 14 : 36, Math.max(8, Math.round(width * height / 26000)));
+    if (navigator.connection?.saveData) limit = Math.min(limit, 6);
+    drops.length = Math.min(drops.length, limit);
+    while (sprites.length && drops.length < limit) drops.push(particle(true));
+    paint(0);
+}
+
+function particle(warm = false) {
+    const sprite = sprites[Math.floor(Math.random() * sprites.length)].frame;
+    const size = 24 + Math.random() * 32;
+    return {
+        sprite, size, x: Math.random() * width,
+        y: warm ? Math.random() * (height + size) - size : -size,
+        speed: 40 + Math.random() * 80,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() < 0.5 ? -1 : 1) * (0.5 + Math.random())
+    };
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+function paint(seconds) {
+    if (!context) return;
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    context.clearRect(0, 0, width, height);
+    if (!motion.matches && sheet) {
+        for (let index = 0; index < drops.length; index++) {
+            let drop = drops[index];
+            drop.y += drop.speed * seconds;
+            drop.angle += drop.spin * seconds;
+            if (drop.y > height + drop.size) drop = drops[index] = particle();
+            const sprite = drop.sprite;
+            const scale = drop.size / Math.max(sprite.w, sprite.h);
+            context.save();
+            context.globalAlpha = Math.min(0.5, Math.max(0, drop.y / 80));
+            context.translate(drop.x, drop.y);
+            context.rotate(drop.angle);
+            context.drawImage(sheet, sprite.x, sprite.y, sprite.w, sprite.h, -sprite.w * scale / 2, -sprite.h * scale / 2, sprite.w * scale, sprite.h * scale);
+            context.restore();
+        }
+    }
+    if (shadow) {
+        const size = Math.hypot(width, height) * 1.5;
+        angle += seconds * Math.PI / 30;
+        context.save();
+        context.translate(width / 2, height / 2);
+        context.rotate(angle);
+        context.drawImage(shadow, -size / 2, -size / 2, size, size);
+        context.restore();
+    }
+}
+
+function stop() {
+    cancelAnimationFrame(frame);
+    frame = 0;
+    previous = 0;
+}
+
+function tick(now) {
+    frame = 0;
+    if (document.hidden || suspended || !canvas.isConnected || motion.matches) return;
+    if (!previous || now - previous >= interval - 1) {
+        const elapsed = previous ? Math.min((now - previous) / 1000, 0.1) : 0;
+        previous = now;
+        const started = performance.now();
+        paint(elapsed);
+        expensive += performance.now() - started > 10 ? 1 : -0.25;
+        expensive = Math.max(0, expensive);
+        if (expensive > 12) {
+            interval = 1000 / 20;
+            limit = Math.max(6, Math.floor(limit * 0.75));
+            drops.length = Math.min(drops.length, limit);
+            expensive = 0;
+        }
+    }
+    frame = requestAnimationFrame(tick);
+}
+
+function resume() {
+    stop();
+    if (document.hidden || suspended || !canvas?.isConnected) return;
+    if (motion.matches) paint(0);
+    else {
+        loadrain();
+        frame = requestAnimationFrame(tick);
+    }
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+function image(url) {
+    return new Promise((resolve, reject) => {
+        const bitmap = new Image();
+        bitmap.decoding = "async";
+        bitmap.fetchPriority = "low";
+        bitmap.onload = () => resolve(bitmap);
+        bitmap.onerror = reject;
+        bitmap.src = url;
+    });
+}
+
+function loadrain() {
+    if (sheet || loading) return;
+    loading = Promise.all([
+        image("/assets/images/candies/candies.webp"),
+        fetch("/assets/images/candies/candies.json").then(response => {
+            if (!response.ok) throw new Error("Candy metadata unavailable");
+            return response.json();
+        })
+    ]).then(([bitmap, metadata]) => {
+        sheet = bitmap;
+        sprites = metadata.frames;
+        resize();
+        resume();
+    }).catch(() => {loading = null});
+}
+
+if (context) {
+    resize();
+    image("/levels/assets/images/shadow.webp").then(bitmap => {
+        shadow = bitmap;
+        paint(0);
+        resume();
+    }).catch(() => {});
+    document.addEventListener("visibilitychange", resume);
+    window.addEventListener("resize", resize, {passive: true});
+    window.addEventListener("pagehide", () => {suspended = true; stop()});
+    window.addEventListener("pageshow", () => {suspended = false; resume()});
+    if (motion.addEventListener) motion.addEventListener("change", resume);
+    else motion.addListener(resume);
+}

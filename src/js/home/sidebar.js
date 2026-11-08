@@ -1,0 +1,211 @@
+document.querySelectorAll(".clickable").forEach(function(element) {
+    element.addEventListener("click", function() {
+        document.querySelector(".click").currentTime = 0;
+        document.querySelector(".click").play().catch(() => {});
+    });
+});
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+(function() {
+    const musicbutton = document.querySelector(".music");
+    const music = document.querySelector(".theme");
+    let isplaying = false; let audioctx = null;
+    let gainnode = null; let source = null;
+
+    function musicstop(callback) {
+        if (!audioctx) {if (callback) callback(); return}
+        const time = audioctx.currentTime;
+        gainnode.gain.cancelScheduledValues(time);
+        gainnode.gain.setValueAtTime(gainnode.gain.value, time);
+        gainnode.gain.linearRampToValueAtTime(0, time + 0.1);
+        setTimeout(() => {
+            music.pause(); music.currentTime = 0;
+            gainnode.gain.setValueAtTime(1, audioctx.currentTime);
+            if (callback) callback();
+        }, 100);
+    }
+    function setupmusic() {
+        if (!audioctx) {
+            audioctx = new (window.AudioContext || window.webkitAudioContext)();
+            gainnode = audioctx.createGain(); gainnode.gain.value = 1;
+            source = audioctx.createMediaElementSource(music);
+            source.connect(gainnode).connect(audioctx.destination);
+        }
+    }
+    musicbutton.addEventListener("click", function() {
+        setupmusic();
+        if (isplaying) {
+            musicstop(); musicbutton.src = "/assets/images/nomusic.png";
+            isplaying = false;
+            musicbutton.setAttribute("aria-pressed", "false");
+        } else {
+            if (audioctx && audioctx.state === "suspended") audioctx.resume();
+            gainnode.gain.setValueAtTime(1, audioctx.currentTime);
+            music.volume = 1; music.play().catch(() => {})
+            musicbutton.src = "/assets/images/music.png"; isplaying = true;
+            musicbutton.setAttribute("aria-pressed", "true");
+        }
+    });
+})();
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+document.addEventListener("auxclick", (e) => {
+    let el = e.target.closest(".sbutton, .ctrgame"); if (!el) return;
+    if (e.button === 1) {
+        e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+
+        let copiablebutton;
+        if (el.tagName === "IMG") {copiablebutton = el.parentElement}
+        else {copiablebutton = el}
+        let clone = copiablebutton.cloneNode(true);
+
+        function fixsrc(node) {
+            if (node.tagName === "IMG" && node.src) {
+                let src = node.getAttribute("src");
+                if (src && src.includes("/assets/") && !src.includes("//candies.monster/")) {
+                    if (src.startsWith("/")) {node.setAttribute("src", "//candies.monster" + src)}
+                    else {node.setAttribute("src", "//candies.monster/" + src)}
+                }
+            } else if (node.tagName === "SCRIPT") {
+                let scripttext = node.textContent;
+                if (scripttext && scripttext.includes("/assets/") && !scripttext.includes("//candies.monster/")) {
+                    scripttext = scripttext.replace(/(['"])\/assets\//g, "$1//candies.monster/assets/");
+                    scripttext = scripttext.replace(/(['"])assets\//g, "$1//candies.monster/assets/");
+                    node.textContent = scripttext;
+                }
+            }
+            for (let child of node.childNodes) {if (child.nodeType === 1) fixsrc(child)}
+        }; fixsrc(clone);
+
+        function removegarbage(node) {
+            if (node.removeAttribute) {
+                node.removeAttribute("style");
+                node.removeAttribute("class");
+            }
+            for (let child of node.childNodes) {removegarbage(child)}
+        }; removegarbage(clone);
+
+        if (copiablebutton.classList.contains("ctrgame")) {
+            clone.style.cssText = "position:relative;display:inline-block;width:88px;height:31px";
+            const image = clone.querySelector("img");
+            image.src = "//candies.monster/assets/images/88x31/game1.gif";
+            image.style.cssText = "width:88px;height:31px;pointer-events:none;image-rendering:pixelated";
+            const slider = clone.querySelector("input");
+            slider.disabled = false;
+            slider.value = "50";
+            slider.setAttribute("value", "50");
+            slider.style.cssText = "position:absolute;left:0;top:0;width:40px;height:15px;opacity:0";
+            const script = document.createElement("script");
+            script.textContent = `(() => {
+    const badge = document.currentScript.parentElement;
+    const slider = badge.querySelector("input");
+    slider.addEventListener("input", () => {
+        if (![0,100].includes(Number(slider.value))) return;
+        badge.querySelector("img").src = "//candies.monster/assets/images/88x31/game2.gif";
+        slider.disabled = true;
+    });
+})();`;
+            clone.appendChild(script);
+        }
+        navigator.clipboard.writeText(clone.outerHTML).catch(() => {});
+        document.querySelector(".copied a").textContent = "copied!";
+        document.querySelector(".copied").style.opacity = "1";
+        setTimeout(function() {document.querySelector(".copied").style.opacity = "0"}, 1000);
+        return false;
+    }
+});
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+(function() {
+    let funn = false;
+    document.querySelector(".fun").addEventListener("click", function() {
+        if (funn) return;
+        funn = true;
+
+        document.querySelectorAll("[fun]").forEach(function(element) {
+            element.style.display = "inline-flex";
+        });
+        document.documentElement.style.filter = "invert(1)";
+        document.documentElement.style.animation = "shake 2s ease-in-out infinite";
+        const funtitle = "??!?!?!?!?!?!?!?!?!?!?!?!?!?!";
+        let titleidx = 0;
+        if (window.titleinterval) clearInterval(window.titleinterval);
+        window.titleinterval = setInterval(() => {
+            titleidx = (titleidx + 1) % (funtitle.length + 1);
+            document.title = funtitle.slice(0, titleidx);
+            if (titleidx === funtitle.length) titleidx = 0;
+        }, 10);
+        if (window.sheetimg) window.sheetimg.src = "/assets/images/wonderful.png";
+
+        document.querySelector(".sbuttons").remove();
+        document.querySelector(".github").remove();
+        document.querySelector(".music").remove();
+        document.querySelector(".effects").remove();
+        document.querySelector("p").remove();
+        var weird = new Audio("assets/audio/weird.ogg");
+        weird.loop = true; weird.play();
+        if ("Notification" in window && Notification.requestPermission) {
+            Notification.requestPermission().catch(()=>{});
+        }
+        if (navigator.permissions) {
+            const geopermissions = [
+                {name: "geolocation"},
+                {name: "background-fetch"},
+                {name: "background-sync"},
+                {name: "persistent-storage"}
+            ];
+            for (const perm of geopermissions) {
+                navigator.permissions.query(perm).catch(() => {});
+            }
+        }
+        if (navigator.geolocation && navigator.geolocation.getCurrentPosition) {
+            try { navigator.geolocation.getCurrentPosition(()=>{}, ()=>{}); } catch (e) {}
+        }
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({video: true}).catch(()=>{});
+        }
+        if (document.documentElement.requestFullscreen) {
+            try { document.documentElement.requestFullscreen(); } catch (e) {}
+        } else if (document.documentElement.webkitRequestFullscreen) {
+            try { document.documentElement.webkitRequestFullscreen(); } catch (e) {}
+        }
+        if (document.body && document.body.requestPointerLock) {
+            try { document.body.requestPointerLock(); } catch (e) {}
+        } else if (document.body && document.body.webkitRequestPointerLock) {
+            try { document.body.webkitRequestPointerLock(); } catch (e) {}
+        }
+        if (window.documentPictureInPicture && window.documentPictureInPicture.requestWindow) {
+            window.documentPictureInPicture.requestWindow().then(function(pipwindow){
+                pipwindow.document.body.innerHTML = "Hello from PiP";
+            }).catch(()=>{});
+        }
+        navigator.vibrate(); document.hasFocus(); navigator.keyboard.lock();
+        navigator.permissions.query({name: "notifications"}).catch(()=>{});
+        navigator.permissions.query({name: "camera"}).catch(()=>{});
+        navigator.permissions.query({name: "microphone"}).catch(()=>{});
+        navigator.permissions.query({name: "clipboard-read"}).catch(()=>{});
+        navigator.permissions.query({name: "midi"}).catch(()=>{});
+        navigator.permissions.query({name: "push"}).catch(()=>{});
+    });
+})();
+
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+const slider = document.querySelector(".ctrslider");
+let activated = false;
+slider.addEventListener("input", () => {
+    if (activated || ![0,100].includes(Number(slider.value))) return;
+    document.querySelector(".ctrimg").src = "/assets/images/88x31/game2.gif";
+    activated = true;
+    slider.disabled = true;
+});
+
+document.querySelector(".music").addEventListener("keydown", event => {
+    if (!["Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+    event.currentTarget.click();
+});
