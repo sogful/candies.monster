@@ -282,7 +282,7 @@
 
         // load from versions.json
         async function loadjson() {
-            const response = await fetch("../data/legacy.json"); const games = await response.json();
+            const response = await fetch("data/legacy.json"); const games = await response.json();
             const container = document.querySelector(".games")
             
             games.forEach(game => {

@@ -37,10 +37,9 @@ export function secondarydownload(download) {
 
 function renderdownloadbutton(download, version, description) {
     const button = downloadbutton(download);
-    const name = button.replace(/\.[^.]+$/, "");
     let hostname = "";
     try {hostname = new URL(download.url).hostname} catch {}
-    const source = downloadbuttons.names[name] || hostname || "Download";
+    const source = hostname || "Download";
     const note = [...new Set([description, download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))].join("\n");
     const information = {
         version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
