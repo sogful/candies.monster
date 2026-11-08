@@ -2,7 +2,7 @@ import {startfavicon} from "/assets/static/favicon.js";
 
 startfavicon({onimage(image) {
     window.sheetimg = image;
-    if (document.documentElement.style.filter === "invert(1)") image.src = "/assets/images/wonderful.png";
+    if (document.documentElement.style.filter === "invert(1)") image.src = "/assets/images/misc/wonderful.png";
 }}).catch(() => {});
 
 /*//////////////////////////////////////////////////////////////////////*/

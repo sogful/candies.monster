@@ -36,7 +36,7 @@ style.textContent = `
 /*//////////////////////////////////////////////////////////////////////*/
 
 function gameimage(image) {
-    return /\/assets\/images\/gameicons\//.test(image.currentSrc || image.getAttribute("src") || "") || image.matches(".gameicon img");
+    return /\/assets\/images\/icons\/games\//.test(image.currentSrc || image.getAttribute("src") || "") || image.matches(".gameicon img");
 }
 
 function hide(image) {

@@ -49,7 +49,7 @@ function renderdownloadbutton(download, version, description) {
     const metadata = Object.entries(information).filter(([, value]) => value).map(([key, value]) => `data-download${key}="${downloadattribute(value)}"`).join(" ");
     const compact = secondarydownload(download) ? " smallsource" : "";
     return `<a class="downloadbutton clickable${compact}" href="${downloadattribute(download.url)}" target="_blank" rel="noopener" aria-label="${downloadattribute(`${source} ${version}`)}" aria-haspopup="dialog" ${metadata}>
-        <img src="/assets/images/downloadbuttons/${downloadattribute(button)}" alt="" draggable="false" loading="lazy" decoding="async" width="24" height="24">
+        <img src="/assets/images/buttons/download/${downloadattribute(button)}" alt="" draggable="false" loading="lazy" decoding="async" width="24" height="24">
     </a>`;
 }
 

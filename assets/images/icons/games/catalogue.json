@@ -2,7 +2,7 @@
   {
     "game": "ctr",
     "variant": "modernalternate",
-    "raw": "/assets/images/gameicons/ctr/modernalternate/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/modernalternate/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -15,7 +15,7 @@
   {
     "game": "amazingcandy",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/amazingcandy/classic/raw.webp",
+    "raw": "/assets/images/icons/games/amazingcandy/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -28,7 +28,7 @@
   {
     "game": "ctr",
     "variant": "anniversary",
-    "raw": "/assets/images/gameicons/ctr/anniversary/raw.png",
+    "raw": "/assets/images/icons/games/ctr/anniversary/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -39,7 +39,7 @@
   {
     "game": "pirates",
     "variant": "battle",
-    "raw": "/assets/images/gameicons/pirates/battle/raw.webp",
+    "raw": "/assets/images/icons/games/pirates/battle/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -52,7 +52,7 @@
   {
     "game": "bigadventure",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/bigadventure/classic/raw.webp",
+    "raw": "/assets/images/icons/games/bigadventure/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -65,7 +65,7 @@
   {
     "game": "blast",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/blast/classic/raw.webp",
+    "raw": "/assets/images/icons/games/blast/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -78,7 +78,7 @@
   {
     "game": "omnomblast",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/omnomblast/classic/raw.webp",
+    "raw": "/assets/images/icons/games/omnomblast/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -91,7 +91,7 @@
   {
     "game": "brainteaser",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/brainteaser/classic/raw.webp",
+    "raw": "/assets/images/icons/games/brainteaser/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -104,7 +104,7 @@
   {
     "game": "bubble",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/bubble/classic/raw.webp",
+    "raw": "/assets/images/icons/games/bubble/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -117,7 +117,7 @@
   {
     "game": "bubbles",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/bubbles/classic/raw.webp",
+    "raw": "/assets/images/icons/games/bubbles/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -131,7 +131,7 @@
   {
     "game": "candyball",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/candyball/classic/raw.webp",
+    "raw": "/assets/images/icons/games/candyball/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -144,7 +144,7 @@
   {
     "game": "candybeat",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/candybeat/classic/raw.webp",
+    "raw": "/assets/images/icons/games/candybeat/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -157,7 +157,7 @@
   {
     "game": "candyflick",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/candyflick/classic/raw.png",
+    "raw": "/assets/images/icons/games/candyflick/classic/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -175,7 +175,7 @@
   {
     "game": "ctr",
     "variant": "magiccrystal",
-    "raw": "/assets/images/gameicons/ctr/magiccrystal/raw.png",
+    "raw": "/assets/images/icons/games/ctr/magiccrystal/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -186,7 +186,7 @@
   {
     "game": "catch",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/catch/classic/raw.webp",
+    "raw": "/assets/images/icons/games/catch/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -199,7 +199,7 @@
   {
     "game": "ctr",
     "variant": "christmas2017",
-    "raw": "/assets/images/gameicons/ctr/christmas2017/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/christmas2017/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -212,7 +212,7 @@
   {
     "game": "ctr",
     "variant": "christmas2018",
-    "raw": "/assets/images/gameicons/ctr/christmas2018/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/christmas2018/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -225,7 +225,7 @@
   {
     "game": "cookinggame",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/cookinggame/classic/raw.webp",
+    "raw": "/assets/images/icons/games/cookinggame/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -238,7 +238,7 @@
   {
     "game": "crafters",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/crafters/classic/raw.webp",
+    "raw": "/assets/images/icons/games/crafters/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -251,7 +251,7 @@
   {
     "game": "crazyrun",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/crazyrun/classic/raw.webp",
+    "raw": "/assets/images/icons/games/crazyrun/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -264,7 +264,7 @@
   {
     "game": "ctr2",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctr2/classic/raw.webp",
+    "raw": "/assets/images/icons/games/ctr2/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -285,7 +285,7 @@
   {
     "game": "ctr2",
     "variant": "christmas",
-    "raw": "/assets/images/gameicons/ctr2/christmas/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/christmas/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -304,7 +304,7 @@
   {
     "game": "ctr2",
     "variant": "kakao",
-    "raw": "/assets/images/gameicons/ctr2/kakao/raw.webp",
+    "raw": "/assets/images/icons/games/ctr2/kakao/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -315,7 +315,7 @@
   {
     "game": "ctr2",
     "variant": "modern",
-    "raw": "/assets/images/gameicons/ctr2/modern/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/modern/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -334,7 +334,7 @@
   {
     "game": "ctr3",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctr3/classic/raw.webp",
+    "raw": "/assets/images/icons/games/ctr3/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -347,7 +347,7 @@
   {
     "game": "ctr",
     "variant": "browser",
-    "raw": "/assets/images/gameicons/ctr/browser/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/browser/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -358,7 +358,7 @@
   {
     "game": "nibbleadventure",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/nibbleadventure/classic/raw.webp",
+    "raw": "/assets/images/icons/games/nibbleadventure/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -371,7 +371,7 @@
   {
     "game": "ctrdaily",
     "variant": "alternate",
-    "raw": "/assets/images/gameicons/ctrdaily/alternate/raw.webp",
+    "raw": "/assets/images/icons/games/ctrdaily/alternate/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -382,7 +382,7 @@
   {
     "game": "cybernom",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/cybernom/classic/raw.webp",
+    "raw": "/assets/images/icons/games/cybernom/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -395,7 +395,7 @@
   {
     "game": "ctrdaily",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctrdaily/classic/raw.webp",
+    "raw": "/assets/images/icons/games/ctrdaily/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -409,7 +409,7 @@
   {
     "game": "ctrdaily",
     "variant": "netflix",
-    "raw": "/assets/images/gameicons/ctrdaily/netflix/raw.webp",
+    "raw": "/assets/images/icons/games/ctrdaily/netflix/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -420,7 +420,7 @@
   {
     "game": "dropandmatch",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/dropandmatch/classic/raw.webp",
+    "raw": "/assets/images/icons/games/dropandmatch/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -433,7 +433,7 @@
   {
     "game": "doodle",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/doodle/classic/raw.webp",
+    "raw": "/assets/images/icons/games/doodle/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -446,7 +446,7 @@
   {
     "game": "drawtherope",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/drawtherope/classic/raw.webp",
+    "raw": "/assets/images/icons/games/drawtherope/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -459,7 +459,7 @@
   {
     "game": "ctrexp",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctrexp/classic/raw.webp",
+    "raw": "/assets/images/icons/games/ctrexp/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -476,7 +476,7 @@
   {
     "game": "ctrexp",
     "variant": "free",
-    "raw": "/assets/images/gameicons/ctrexp/free/raw.webp",
+    "raw": "/assets/images/icons/games/ctrexp/free/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -492,7 +492,7 @@
   {
     "game": "ctrexp",
     "variant": "gold",
-    "raw": "/assets/images/gameicons/ctrexp/gold/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/gold/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -508,7 +508,7 @@
   {
     "game": "ctr",
     "variant": "fabricbox",
-    "raw": "/assets/images/gameicons/ctr/fabricbox/raw.png",
+    "raw": "/assets/images/icons/games/ctr/fabricbox/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -521,7 +521,7 @@
   {
     "game": "ctr",
     "variant": "famobi",
-    "raw": "/assets/images/gameicons/ctr/famobi/raw.jpg",
+    "raw": "/assets/images/icons/games/ctr/famobi/raw.jpg",
     "width": 320,
     "height": 320,
     "format": "jpeg",
@@ -537,7 +537,7 @@
   {
     "game": "ctr",
     "variant": "free",
-    "raw": "/assets/images/gameicons/ctr/free/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/free/raw.webp",
     "width": 1000,
     "height": 1000,
     "format": "webp",
@@ -561,7 +561,7 @@
   {
     "game": "ctr",
     "variant": "freealternate",
-    "raw": "/assets/images/gameicons/ctr/freealternate/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/freealternate/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -574,7 +574,7 @@
   {
     "game": "ctr",
     "variant": "freehd",
-    "raw": "/assets/images/gameicons/ctr/freehd/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/freehd/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -585,7 +585,7 @@
   {
     "game": "fruitblast",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/fruitblast/classic/raw.webp",
+    "raw": "/assets/images/icons/games/fruitblast/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -598,7 +598,7 @@
   {
     "game": "golf",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/golf/classic/raw.webp",
+    "raw": "/assets/images/icons/games/golf/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -611,7 +611,7 @@
   {
     "game": "ctr",
     "variant": "halloween",
-    "raw": "/assets/images/gameicons/ctr/halloween/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/halloween/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -624,7 +624,7 @@
   {
     "game": "ctr",
     "variant": "halloween2024",
-    "raw": "/assets/images/gameicons/ctr/halloween2024/raw.png",
+    "raw": "/assets/images/icons/games/ctr/halloween2024/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -635,7 +635,7 @@
   {
     "game": "ctrholiday",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctrholiday/classic/raw.png",
+    "raw": "/assets/images/icons/games/ctrholiday/classic/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -656,7 +656,7 @@
   {
     "game": "unknown",
     "variant": "default",
-    "raw": "/assets/images/gameicons/unknown/default/raw.webp",
+    "raw": "/assets/images/icons/games/unknown/default/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -669,7 +669,7 @@
   {
     "game": "idlecandy",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/idlecandy/classic/raw.webp",
+    "raw": "/assets/images/icons/games/idlecandy/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -682,7 +682,7 @@
   {
     "game": "idlecandy",
     "variant": "alternate",
-    "raw": "/assets/images/gameicons/idlecandy/alternate/raw.webp",
+    "raw": "/assets/images/icons/games/idlecandy/alternate/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -693,7 +693,7 @@
   {
     "game": "idlecandy",
     "variant": "factory",
-    "raw": "/assets/images/gameicons/idlecandy/factory/raw.webp",
+    "raw": "/assets/images/icons/games/idlecandy/factory/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -704,7 +704,7 @@
   {
     "game": "karts",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/karts/classic/raw.webp",
+    "raw": "/assets/images/icons/games/karts/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -717,7 +717,7 @@
   {
     "game": "knockout",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/knockout/classic/raw.webp",
+    "raw": "/assets/images/icons/games/knockout/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -730,7 +730,7 @@
   {
     "game": "ctr",
     "variant": "lite",
-    "raw": "/assets/images/gameicons/ctr/lite/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/lite/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -741,7 +741,7 @@
   {
     "game": "ctrmagic",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctrmagic/classic/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/classic/raw.png",
     "width": 600,
     "height": 600,
     "format": "png",
@@ -764,7 +764,7 @@
   {
     "game": "magiccandies",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/magiccandies/classic/raw.webp",
+    "raw": "/assets/images/icons/games/magiccandies/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -777,7 +777,7 @@
   {
     "game": "ctrmagic",
     "variant": "christmas",
-    "raw": "/assets/images/gameicons/ctrmagic/christmas/raw.webp",
+    "raw": "/assets/images/icons/games/ctrmagic/christmas/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -790,7 +790,7 @@
   {
     "game": "ctrmagic",
     "variant": "wand",
-    "raw": "/assets/images/gameicons/ctrmagic/wand/raw.webp",
+    "raw": "/assets/images/icons/games/ctrmagic/wand/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -803,7 +803,7 @@
   {
     "game": "bubble",
     "variant": "marbleshooter",
-    "raw": "/assets/images/gameicons/bubble/marbleshooter/raw.webp",
+    "raw": "/assets/images/icons/games/bubble/marbleshooter/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -814,7 +814,7 @@
   {
     "game": "mayapapaya",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/mayapapaya/classic/raw.webp",
+    "raw": "/assets/images/icons/games/mayapapaya/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -827,7 +827,7 @@
   {
     "game": "ctr",
     "variant": "mechanicalbox",
-    "raw": "/assets/images/gameicons/ctr/mechanicalbox/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/mechanicalbox/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -840,7 +840,7 @@
   {
     "game": "merge",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/merge/classic/raw.png",
+    "raw": "/assets/images/icons/games/merge/classic/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -854,7 +854,7 @@
   {
     "game": "mergenommies",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/mergenommies/classic/raw.webp",
+    "raw": "/assets/images/icons/games/mergenommies/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -868,7 +868,7 @@
   {
     "game": "ctr",
     "variant": "modern",
-    "raw": "/assets/images/gameicons/ctr/modern/raw.png",
+    "raw": "/assets/images/icons/games/ctr/modern/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -881,7 +881,7 @@
   {
     "game": "myomnom",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/myomnom/classic/raw.webp",
+    "raw": "/assets/images/icons/games/myomnom/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -896,7 +896,7 @@
   {
     "game": "bubble",
     "variant": "alternate",
-    "raw": "/assets/images/gameicons/bubble/alternate/raw.webp",
+    "raw": "/assets/images/icons/games/bubble/alternate/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -909,7 +909,7 @@
   {
     "game": "omnomfarm",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/omnomfarm/classic/raw.webp",
+    "raw": "/assets/images/icons/games/omnomfarm/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -922,7 +922,7 @@
   {
     "game": "omnomrun",
     "variant": "momzikov",
-    "raw": "/assets/images/gameicons/omnomrun/momzikov/raw.webp",
+    "raw": "/assets/images/icons/games/omnomrun/momzikov/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -936,7 +936,7 @@
   {
     "game": "omnomrun2",
     "variant": "store",
-    "raw": "/assets/images/gameicons/omnomrun2/store/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun2/store/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -949,7 +949,7 @@
   {
     "game": "omnomverse",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/omnomverse/classic/raw.webp",
+    "raw": "/assets/images/icons/games/omnomverse/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -960,7 +960,7 @@
   {
     "game": "sweetdreams",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/sweetdreams/classic/raw.webp",
+    "raw": "/assets/images/icons/games/sweetdreams/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -973,7 +973,7 @@
   {
     "game": "ctr",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctr/classic/raw.png",
+    "raw": "/assets/images/icons/games/ctr/classic/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -990,7 +990,7 @@
   {
     "game": "pinpuzzle",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/pinpuzzle/classic/raw.webp",
+    "raw": "/assets/images/icons/games/pinpuzzle/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1003,7 +1003,7 @@
   {
     "game": "pirates",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/pirates/classic/raw.webp",
+    "raw": "/assets/images/icons/games/pirates/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1018,7 +1018,7 @@
   {
     "game": "pirates",
     "variant": "tactics",
-    "raw": "/assets/images/gameicons/pirates/tactics/raw.webp",
+    "raw": "/assets/images/icons/games/pirates/tactics/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1031,7 +1031,7 @@
   {
     "game": "racing",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/racing/classic/raw.webp",
+    "raw": "/assets/images/icons/games/racing/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1044,7 +1044,7 @@
   {
     "game": "ctrremastered",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctrremastered/classic/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/classic/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1062,7 +1062,7 @@
   {
     "game": "ctrremastered",
     "variant": "garden",
-    "raw": "/assets/images/gameicons/ctrremastered/garden/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/garden/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1080,7 +1080,7 @@
   {
     "game": "ctrremastered",
     "variant": "space",
-    "raw": "/assets/images/gameicons/ctrremastered/space/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/space/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1098,7 +1098,7 @@
   {
     "game": "ctrremastered",
     "variant": "pirate",
-    "raw": "/assets/images/gameicons/ctrremastered/pirate/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/pirate/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1116,7 +1116,7 @@
   {
     "game": "ctrremastered",
     "variant": "unicorn",
-    "raw": "/assets/images/gameicons/ctrremastered/unicorn/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/unicorn/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1134,7 +1134,7 @@
   {
     "game": "ctrremastered",
     "variant": "birthday",
-    "raw": "/assets/images/gameicons/ctrremastered/birthday/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/birthday/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1152,7 +1152,7 @@
   {
     "game": "ctrremastered",
     "variant": "paperboat",
-    "raw": "/assets/images/gameicons/ctrremastered/paperboat/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/paperboat/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1170,7 +1170,7 @@
   {
     "game": "ctrremastered",
     "variant": "bunny",
-    "raw": "/assets/images/gameicons/ctrremastered/bunny/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/bunny/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1188,7 +1188,7 @@
   {
     "game": "ctrremastered",
     "variant": "firefighter",
-    "raw": "/assets/images/gameicons/ctrremastered/firefighter/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/firefighter/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1206,7 +1206,7 @@
   {
     "game": "ctrremastered",
     "variant": "surfer",
-    "raw": "/assets/images/gameicons/ctrremastered/surfer/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/surfer/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1224,7 +1224,7 @@
   {
     "game": "ctrremastered",
     "variant": "holiday",
-    "raw": "/assets/images/gameicons/ctrremastered/holiday/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/holiday/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1242,7 +1242,7 @@
   {
     "game": "ctrremastered",
     "variant": "wizard",
-    "raw": "/assets/images/gameicons/ctrremastered/wizard/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/wizard/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1260,7 +1260,7 @@
   {
     "game": "ctrremastered",
     "variant": "winter",
-    "raw": "/assets/images/gameicons/ctrremastered/winter/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/winter/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1278,7 +1278,7 @@
   {
     "game": "ctrremastered",
     "variant": "superhero",
-    "raw": "/assets/images/gameicons/ctrremastered/superhero/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/superhero/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1296,7 +1296,7 @@
   {
     "game": "rollrace",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/rollrace/classic/raw.webp",
+    "raw": "/assets/images/icons/games/rollrace/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1309,7 +1309,7 @@
   {
     "game": "omnomrun",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/omnomrun/classic/raw.webp",
+    "raw": "/assets/images/icons/games/omnomrun/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1322,7 +1322,7 @@
   {
     "game": "omnomrun2",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/omnomrun2/classic/raw.webp",
+    "raw": "/assets/images/icons/games/omnomrun2/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1336,7 +1336,7 @@
   {
     "game": "omnomrun2",
     "variant": "alternate",
-    "raw": "/assets/images/gameicons/omnomrun2/alternate/raw.webp",
+    "raw": "/assets/images/icons/games/omnomrun2/alternate/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1347,7 +1347,7 @@
   {
     "game": "omnomrun3",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/omnomrun3/classic/raw.webp",
+    "raw": "/assets/images/icons/games/omnomrun3/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1361,7 +1361,7 @@
   {
     "game": "solitaire",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/solitaire/classic/raw.webp",
+    "raw": "/assets/images/icons/games/solitaire/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1374,7 +1374,7 @@
   {
     "game": "sports",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/sports/classic/raw.webp",
+    "raw": "/assets/images/icons/games/sports/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1387,7 +1387,7 @@
   {
     "game": "ctr",
     "variant": "strawberrybox",
-    "raw": "/assets/images/gameicons/ctr/strawberrybox/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/strawberrybox/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1400,7 +1400,7 @@
   {
     "game": "swing",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/swing/classic/raw.webp",
+    "raw": "/assets/images/icons/games/swing/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1413,7 +1413,7 @@
   {
     "game": "theme",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/theme/classic/raw.webp",
+    "raw": "/assets/images/icons/games/theme/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1426,7 +1426,7 @@
   {
     "game": "theme",
     "variant": "timetravel",
-    "raw": "/assets/images/gameicons/theme/timetravel/raw.webp",
+    "raw": "/assets/images/icons/games/theme/timetravel/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1440,7 +1440,7 @@
   {
     "game": "ctrtt",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/ctrtt/classic/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/classic/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1466,7 +1466,7 @@
   {
     "game": "ctrtt",
     "variant": "egypt",
-    "raw": "/assets/images/gameicons/ctrtt/egypt/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/egypt/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1484,7 +1484,7 @@
   {
     "game": "ctrtt",
     "variant": "free",
-    "raw": "/assets/images/gameicons/ctrtt/free/raw.webp",
+    "raw": "/assets/images/icons/games/ctrtt/free/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1495,7 +1495,7 @@
   {
     "game": "ctrtt",
     "variant": "industrial",
-    "raw": "/assets/images/gameicons/ctrtt/industrial/raw.webp",
+    "raw": "/assets/images/icons/games/ctrtt/industrial/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1506,7 +1506,7 @@
   {
     "game": "ctrtt",
     "variant": "valentines",
-    "raw": "/assets/images/gameicons/ctrtt/valentines/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/valentines/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -1522,7 +1522,7 @@
   {
     "game": "toons",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/toons/classic/raw.webp",
+    "raw": "/assets/images/icons/games/toons/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1536,7 +1536,7 @@
   {
     "game": "tower3d",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/tower3d/classic/raw.webp",
+    "raw": "/assets/images/icons/games/tower3d/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1549,7 +1549,7 @@
   {
     "game": "triplematch",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/triplematch/classic/raw.webp",
+    "raw": "/assets/images/icons/games/triplematch/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1562,7 +1562,7 @@
   {
     "game": "tripletreat",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/tripletreat/classic/raw.webp",
+    "raw": "/assets/images/icons/games/tripletreat/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1573,7 +1573,7 @@
   {
     "game": "tycoon",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/tycoon/classic/raw.webp",
+    "raw": "/assets/images/icons/games/tycoon/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1586,7 +1586,7 @@
   {
     "game": "ctr",
     "variant": "valentinesclassic",
-    "raw": "/assets/images/gameicons/ctr/valentinesclassic/raw.png",
+    "raw": "/assets/images/icons/games/ctr/valentinesclassic/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -1597,7 +1597,7 @@
   {
     "game": "ctr",
     "variant": "valentinesmodern",
-    "raw": "/assets/images/gameicons/ctr/valentinesmodern/raw.webp",
+    "raw": "/assets/images/icons/games/ctr/valentinesmodern/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1610,7 +1610,7 @@
   {
     "game": "virtualpet",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/virtualpet/classic/raw.webp",
+    "raw": "/assets/images/icons/games/virtualpet/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1623,7 +1623,7 @@
   {
     "game": "wheresomnom",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/wheresomnom/classic/raw.webp",
+    "raw": "/assets/images/icons/games/wheresomnom/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1636,7 +1636,7 @@
   {
     "game": "wildlifepop",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/wildlifepop/classic/raw.webp",
+    "raw": "/assets/images/icons/games/wildlifepop/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1649,7 +1649,7 @@
   {
     "game": "yeet",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/yeet/classic/raw.webp",
+    "raw": "/assets/images/icons/games/yeet/classic/raw.webp",
     "width": 200,
     "height": 200,
     "format": "webp",
@@ -1660,7 +1660,7 @@
   {
     "game": "yeet",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/yeet/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/yeet/androidgallery/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -1673,7 +1673,7 @@
   {
     "game": "yeet",
     "variant": "androidv006d",
-    "raw": "/assets/images/gameicons/yeet/androidv006d/raw.png",
+    "raw": "/assets/images/icons/games/yeet/androidv006d/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -1686,7 +1686,7 @@
   {
     "game": "theme",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/theme/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/theme/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -1699,7 +1699,7 @@
   {
     "game": "theme",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/theme/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/theme/androidgallery2/raw.png",
     "width": 48,
     "height": 48,
     "format": "png",
@@ -1712,7 +1712,7 @@
   {
     "game": "candybeat",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/candybeat/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/candybeat/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -1725,7 +1725,7 @@
   {
     "game": "cookinggame",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/cookinggame/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/cookinggame/androidgallery/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -1738,7 +1738,7 @@
   {
     "game": "pinpuzzle",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/pinpuzzle/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/pinpuzzle/androidgallery/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -1751,7 +1751,7 @@
   {
     "game": "ctr",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/ctr/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidgallery/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -1765,7 +1765,7 @@
   {
     "game": "ctr",
     "variant": "iosv242",
-    "raw": "/assets/images/gameicons/ctr/iosv242/raw.png",
+    "raw": "/assets/images/icons/games/ctr/iosv242/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -1778,7 +1778,7 @@
   {
     "game": "ctr",
     "variant": "androidhdgallery",
-    "raw": "/assets/images/gameicons/ctr/androidhdgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdgallery/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -1791,7 +1791,7 @@
   {
     "game": "ctr",
     "variant": "androidhdgallery2",
-    "raw": "/assets/images/gameicons/ctr/androidhdgallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdgallery2/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -1805,7 +1805,7 @@
   {
     "game": "ctr",
     "variant": "ioshdv231",
-    "raw": "/assets/images/gameicons/ctr/ioshdv231/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdv231/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -1818,7 +1818,7 @@
   {
     "game": "ctr",
     "variant": "ioshdv12",
-    "raw": "/assets/images/gameicons/ctr/ioshdv12/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdv12/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -1831,7 +1831,7 @@
   {
     "game": "ctr",
     "variant": "androidhdlitegallery",
-    "raw": "/assets/images/gameicons/ctr/androidhdlitegallery/raw.jpg",
+    "raw": "/assets/images/icons/games/ctr/androidhdlitegallery/raw.jpg",
     "width": 600,
     "height": 600,
     "format": "jpeg",
@@ -1863,7 +1863,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev10",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev10/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev10/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -1876,7 +1876,7 @@
   {
     "game": "ctr",
     "variant": "androidhdlitegallery2",
-    "raw": "/assets/images/gameicons/ctr/androidhdlitegallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdlitegallery2/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -1890,7 +1890,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev232",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev232/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev232/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -1903,7 +1903,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev231",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev231/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev231/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -1916,7 +1916,7 @@
   {
     "game": "ctr",
     "variant": "androidlitegallery",
-    "raw": "/assets/images/gameicons/ctr/androidlitegallery/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidlitegallery/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -1929,7 +1929,7 @@
   {
     "game": "ctr",
     "variant": "androidlitegallery2",
-    "raw": "/assets/images/gameicons/ctr/androidlitegallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidlitegallery2/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -1942,7 +1942,7 @@
   {
     "game": "ctr",
     "variant": "ioslitev232",
-    "raw": "/assets/images/gameicons/ctr/ioslitev232/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioslitev232/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -1955,7 +1955,7 @@
   {
     "game": "ctr",
     "variant": "androidlitegallery3",
-    "raw": "/assets/images/gameicons/ctr/androidlitegallery3/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidlitegallery3/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -1969,7 +1969,7 @@
   {
     "game": "ctrholiday",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/ctrholiday/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrholiday/androidgallery/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -1989,7 +1989,7 @@
   {
     "game": "tower3d",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/tower3d/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/tower3d/androidgallery/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2002,7 +2002,7 @@
   {
     "game": "brainteaser",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/brainteaser/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/brainteaser/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2015,7 +2015,7 @@
   {
     "game": "crazyrun",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/crazyrun/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/crazyrun/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2028,7 +2028,7 @@
   {
     "game": "mergenommies",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/mergenommies/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/mergenommies/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2041,7 +2041,7 @@
   {
     "game": "mergenommies",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/mergenommies/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/mergenommies/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2054,7 +2054,7 @@
   {
     "game": "omnomrun",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/omnomrun/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2067,7 +2067,7 @@
   {
     "game": "omnomrun",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/omnomrun/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun/androidgallery2/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2080,7 +2080,7 @@
   {
     "game": "omnomrun",
     "variant": "androidgallery3",
-    "raw": "/assets/images/gameicons/omnomrun/androidgallery3/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun/androidgallery3/raw.png",
     "width": 128,
     "height": 128,
     "format": "png",
@@ -2093,7 +2093,7 @@
   {
     "game": "omnomrun",
     "variant": "androidgallery4",
-    "raw": "/assets/images/gameicons/omnomrun/androidgallery4/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun/androidgallery4/raw.png",
     "width": 128,
     "height": 128,
     "format": "png",
@@ -2106,7 +2106,7 @@
   {
     "game": "sports",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/sports/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/sports/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2119,7 +2119,7 @@
   {
     "game": "swing",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/swing/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/swing/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2132,7 +2132,7 @@
   {
     "game": "omnomrun3",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/omnomrun3/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun3/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2145,7 +2145,7 @@
   {
     "game": "virtualpet",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/virtualpet/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/virtualpet/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2158,7 +2158,7 @@
   {
     "game": "virtualpet",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/virtualpet/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/virtualpet/androidgallery2/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2171,7 +2171,7 @@
   {
     "game": "ctr",
     "variant": "androidv257",
-    "raw": "/assets/images/gameicons/ctr/androidv257/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv257/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2184,7 +2184,7 @@
   {
     "game": "ctr",
     "variant": "androidv258",
-    "raw": "/assets/images/gameicons/ctr/androidv258/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv258/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2197,7 +2197,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidv100",
-    "raw": "/assets/images/gameicons/ctrmagic/androidv100/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidv100/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2210,7 +2210,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidv110",
-    "raw": "/assets/images/gameicons/ctrmagic/androidv110/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidv110/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2223,7 +2223,7 @@
   {
     "game": "ctr2",
     "variant": "androidv170",
-    "raw": "/assets/images/gameicons/ctr2/androidv170/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidv170/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2236,7 +2236,7 @@
   {
     "game": "ctr2",
     "variant": "androidv165",
-    "raw": "/assets/images/gameicons/ctr2/androidv165/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidv165/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2249,7 +2249,7 @@
   {
     "game": "ctrdaily",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/ctrdaily/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrdaily/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2262,7 +2262,7 @@
   {
     "game": "ctrdaily",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/ctrdaily/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctrdaily/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2275,7 +2275,7 @@
   {
     "game": "pirates",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/pirates/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/pirates/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2288,7 +2288,7 @@
   {
     "game": "pirates",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/pirates/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/pirates/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2301,7 +2301,7 @@
   {
     "game": "pirates",
     "variant": "androidgallery3",
-    "raw": "/assets/images/gameicons/pirates/androidgallery3/raw.png",
+    "raw": "/assets/images/icons/games/pirates/androidgallery3/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2314,7 +2314,7 @@
   {
     "game": "pirates",
     "variant": "androidgallery4",
-    "raw": "/assets/images/gameicons/pirates/androidgallery4/raw.png",
+    "raw": "/assets/images/icons/games/pirates/androidgallery4/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2327,7 +2327,7 @@
   {
     "game": "omnomrun",
     "variant": "androidgallery5",
-    "raw": "/assets/images/gameicons/omnomrun/androidgallery5/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun/androidgallery5/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2342,7 +2342,7 @@
   {
     "game": "solitaire",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/solitaire/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/solitaire/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2355,7 +2355,7 @@
   {
     "game": "catch",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/catch/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/catch/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2368,7 +2368,7 @@
   {
     "game": "blast",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/blast/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/blast/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2381,7 +2381,7 @@
   {
     "game": "omnomblast",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/omnomblast/androidgallery/raw.jpg",
+    "raw": "/assets/images/icons/games/omnomblast/androidgallery/raw.jpg",
     "width": 512,
     "height": 512,
     "format": "jpeg",
@@ -2394,7 +2394,7 @@
   {
     "game": "candyball",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/candyball/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/candyball/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2407,7 +2407,7 @@
   {
     "game": "candyball",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/candyball/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/candyball/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2420,7 +2420,7 @@
   {
     "game": "ctrtt",
     "variant": "androidv111",
-    "raw": "/assets/images/gameicons/ctrtt/androidv111/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidv111/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2433,7 +2433,7 @@
   {
     "game": "fruitblast",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/fruitblast/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/fruitblast/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2446,7 +2446,7 @@
   {
     "game": "fruitblast",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/fruitblast/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/fruitblast/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2459,7 +2459,7 @@
   {
     "game": "wildlifepop",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/wildlifepop/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/wildlifepop/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2472,7 +2472,7 @@
   {
     "game": "wildlifepop",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/wildlifepop/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/wildlifepop/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2485,7 +2485,7 @@
   {
     "game": "crafters",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/crafters/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/crafters/androidgallery/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2498,7 +2498,7 @@
   {
     "game": "golf",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/golf/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/golf/androidgallery/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2511,7 +2511,7 @@
   {
     "game": "ctr2",
     "variant": "androidchinav244",
-    "raw": "/assets/images/gameicons/ctr2/androidchinav244/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidchinav244/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -2529,7 +2529,7 @@
   {
     "game": "ctr2",
     "variant": "ioschinav1521",
-    "raw": "/assets/images/gameicons/ctr2/ioschinav1521/raw.jpg",
+    "raw": "/assets/images/icons/games/ctr2/ioschinav1521/raw.jpg",
     "width": 512,
     "height": 512,
     "format": "jpeg",
@@ -2551,7 +2551,7 @@
   {
     "game": "ctr2",
     "variant": "androidchinav2442",
-    "raw": "/assets/images/gameicons/ctr2/androidchinav2442/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidchinav2442/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2564,7 +2564,7 @@
   {
     "game": "ctr2",
     "variant": "androidchinav201",
-    "raw": "/assets/images/gameicons/ctr2/androidchinav201/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidchinav201/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2577,7 +2577,7 @@
   {
     "game": "bigadventure",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/bigadventure/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/bigadventure/androidgallery/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -2590,7 +2590,7 @@
   {
     "game": "sweetdreams",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/sweetdreams/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/sweetdreams/androidgallery/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -2603,7 +2603,7 @@
   {
     "game": "amazingcandy",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/amazingcandy/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/amazingcandy/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2616,7 +2616,7 @@
   {
     "game": "bubbles",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/bubbles/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/bubbles/androidgallery/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -2634,7 +2634,7 @@
   {
     "game": "idlecandy",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/idlecandy/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/idlecandy/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2647,7 +2647,7 @@
   {
     "game": "idlecandy",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/idlecandy/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/idlecandy/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2660,7 +2660,7 @@
   {
     "game": "idlecandy",
     "variant": "androidgallery3",
-    "raw": "/assets/images/gameicons/idlecandy/androidgallery3/raw.png",
+    "raw": "/assets/images/icons/games/idlecandy/androidgallery3/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2673,7 +2673,7 @@
   {
     "game": "idlecandy",
     "variant": "androidgallery4",
-    "raw": "/assets/images/gameicons/idlecandy/androidgallery4/raw.png",
+    "raw": "/assets/images/icons/games/idlecandy/androidgallery4/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2686,7 +2686,7 @@
   {
     "game": "idlecandy",
     "variant": "androidgallery5",
-    "raw": "/assets/images/gameicons/idlecandy/androidgallery5/raw.png",
+    "raw": "/assets/images/icons/games/idlecandy/androidgallery5/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2699,7 +2699,7 @@
   {
     "game": "candyflick",
     "variant": "iosv20",
-    "raw": "/assets/images/gameicons/candyflick/iosv20/raw.png",
+    "raw": "/assets/images/icons/games/candyflick/iosv20/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -2712,7 +2712,7 @@
   {
     "game": "doodle",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/doodle/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/doodle/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2725,7 +2725,7 @@
   {
     "game": "ctr",
     "variant": "androidv100",
-    "raw": "/assets/images/gameicons/ctr/androidv100/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv100/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -2738,7 +2738,7 @@
   {
     "game": "ctr",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/ctr/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidgallery2/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -2752,7 +2752,7 @@
   {
     "game": "ctr",
     "variant": "androidgallery3",
-    "raw": "/assets/images/gameicons/ctr/androidgallery3/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidgallery3/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -2765,7 +2765,7 @@
   {
     "game": "ctr",
     "variant": "androidgallery4",
-    "raw": "/assets/images/gameicons/ctr/androidgallery4/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidgallery4/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2778,7 +2778,7 @@
   {
     "game": "ctr",
     "variant": "androidv252",
-    "raw": "/assets/images/gameicons/ctr/androidv252/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv252/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2791,7 +2791,7 @@
   {
     "game": "ctr",
     "variant": "androidgallery5",
-    "raw": "/assets/images/gameicons/ctr/androidgallery5/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidgallery5/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -2804,7 +2804,7 @@
   {
     "game": "ctr",
     "variant": "androidv3790",
-    "raw": "/assets/images/gameicons/ctr/androidv3790/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv3790/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2817,7 +2817,7 @@
   {
     "game": "ctr",
     "variant": "androidgallery6",
-    "raw": "/assets/images/gameicons/ctr/androidgallery6/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidgallery6/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -2830,7 +2830,7 @@
   {
     "game": "ctr",
     "variant": "androidgallery7",
-    "raw": "/assets/images/gameicons/ctr/androidgallery7/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidgallery7/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2843,7 +2843,7 @@
   {
     "game": "ctr",
     "variant": "androidv351",
-    "raw": "/assets/images/gameicons/ctr/androidv351/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv351/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -2856,7 +2856,7 @@
   {
     "game": "ctr",
     "variant": "androidbackground",
-    "raw": "/assets/images/gameicons/ctr/androidbackground/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidbackground/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -2869,7 +2869,7 @@
   {
     "game": "ctr",
     "variant": "androidbackground2",
-    "raw": "/assets/images/gameicons/ctr/androidbackground2/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidbackground2/raw.png",
     "width": 324,
     "height": 324,
     "format": "png",
@@ -2882,7 +2882,7 @@
   {
     "game": "ctr",
     "variant": "androidbackground3",
-    "raw": "/assets/images/gameicons/ctr/androidbackground3/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidbackground3/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -2895,7 +2895,7 @@
   {
     "game": "ctr",
     "variant": "androidbackground4",
-    "raw": "/assets/images/gameicons/ctr/androidbackground4/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidbackground4/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -2908,7 +2908,7 @@
   {
     "game": "ctr",
     "variant": "androidforeground",
-    "raw": "/assets/images/gameicons/ctr/androidforeground/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidforeground/raw.png",
     "width": 324,
     "height": 324,
     "format": "png",
@@ -2921,7 +2921,7 @@
   {
     "game": "ctr",
     "variant": "androidforeground2",
-    "raw": "/assets/images/gameicons/ctr/androidforeground2/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidforeground2/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -2934,7 +2934,7 @@
   {
     "game": "ctr",
     "variant": "androidforeground3",
-    "raw": "/assets/images/gameicons/ctr/androidforeground3/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidforeground3/raw.png",
     "width": 324,
     "height": 324,
     "format": "png",
@@ -2947,7 +2947,7 @@
   {
     "game": "ctr",
     "variant": "androidforeground4",
-    "raw": "/assets/images/gameicons/ctr/androidforeground4/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidforeground4/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -2960,7 +2960,7 @@
   {
     "game": "ctr",
     "variant": "androidforeground5",
-    "raw": "/assets/images/gameicons/ctr/androidforeground5/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidforeground5/raw.png",
     "width": 324,
     "height": 324,
     "format": "png",
@@ -2973,7 +2973,7 @@
   {
     "game": "ctr",
     "variant": "androidforeground6",
-    "raw": "/assets/images/gameicons/ctr/androidforeground6/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidforeground6/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -2986,7 +2986,7 @@
   {
     "game": "ctr",
     "variant": "androidv400",
-    "raw": "/assets/images/gameicons/ctr/androidv400/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv400/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3000,7 +3000,7 @@
   {
     "game": "ctr",
     "variant": "androidhdgallery3",
-    "raw": "/assets/images/gameicons/ctr/androidhdgallery3/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdgallery3/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -3014,7 +3014,7 @@
   {
     "game": "ctr",
     "variant": "androidhdv236",
-    "raw": "/assets/images/gameicons/ctr/androidhdv236/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdv236/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -3027,7 +3027,7 @@
   {
     "game": "ctr",
     "variant": "androidhdv252",
-    "raw": "/assets/images/gameicons/ctr/androidhdv252/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdv252/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3040,7 +3040,7 @@
   {
     "game": "ctr",
     "variant": "androidhdgallery4",
-    "raw": "/assets/images/gameicons/ctr/androidhdgallery4/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdgallery4/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -3054,7 +3054,7 @@
   {
     "game": "ctr",
     "variant": "androidhdv3330",
-    "raw": "/assets/images/gameicons/ctr/androidhdv3330/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdv3330/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -3068,7 +3068,7 @@
   {
     "game": "ctr",
     "variant": "androidhdv253",
-    "raw": "/assets/images/gameicons/ctr/androidhdv253/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidhdv253/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3081,7 +3081,7 @@
   {
     "game": "ctr",
     "variant": "androidgoldv234",
-    "raw": "/assets/images/gameicons/ctr/androidgoldv234/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidgoldv234/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -3095,7 +3095,7 @@
   {
     "game": "ctr2",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/ctr2/iosv10/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/iosv10/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -3108,7 +3108,7 @@
   {
     "game": "ctr2",
     "variant": "androidamazonv142",
-    "raw": "/assets/images/gameicons/ctr2/androidamazonv142/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidamazonv142/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -3126,7 +3126,7 @@
   {
     "game": "ctr2",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/ctr2/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3140,7 +3140,7 @@
   {
     "game": "ctr2",
     "variant": "androidgallery3",
-    "raw": "/assets/images/gameicons/ctr2/androidgallery3/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidgallery3/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3153,7 +3153,7 @@
   {
     "game": "ctr2",
     "variant": "androidgallery4",
-    "raw": "/assets/images/gameicons/ctr2/androidgallery4/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidgallery4/raw.png",
     "width": 360,
     "height": 360,
     "format": "png",
@@ -3171,7 +3171,7 @@
   {
     "game": "ctr2",
     "variant": "androidgallery5",
-    "raw": "/assets/images/gameicons/ctr2/androidgallery5/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidgallery5/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3184,7 +3184,7 @@
   {
     "game": "ctr2",
     "variant": "androidgallery6",
-    "raw": "/assets/images/gameicons/ctr2/androidgallery6/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidgallery6/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3197,7 +3197,7 @@
   {
     "game": "ctr2",
     "variant": "androidgallery7",
-    "raw": "/assets/images/gameicons/ctr2/androidgallery7/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidgallery7/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3210,7 +3210,7 @@
   {
     "game": "ctr2",
     "variant": "androidgallery8",
-    "raw": "/assets/images/gameicons/ctr2/androidgallery8/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidgallery8/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3223,7 +3223,7 @@
   {
     "game": "ctr2",
     "variant": "androidbackground",
-    "raw": "/assets/images/gameicons/ctr2/androidbackground/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidbackground/raw.png",
     "width": 162,
     "height": 162,
     "format": "png",
@@ -3236,7 +3236,7 @@
   {
     "game": "ctr2",
     "variant": "androidbackground2",
-    "raw": "/assets/images/gameicons/ctr2/androidbackground2/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidbackground2/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -3249,7 +3249,7 @@
   {
     "game": "ctr2",
     "variant": "androidforeground",
-    "raw": "/assets/images/gameicons/ctr2/androidforeground/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidforeground/raw.png",
     "width": 162,
     "height": 162,
     "format": "png",
@@ -3262,7 +3262,7 @@
   {
     "game": "ctr2",
     "variant": "androidforeground2",
-    "raw": "/assets/images/gameicons/ctr2/androidforeground2/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidforeground2/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -3275,7 +3275,7 @@
   {
     "game": "ctr2",
     "variant": "androidv1390",
-    "raw": "/assets/images/gameicons/ctr2/androidv1390/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidv1390/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3288,7 +3288,7 @@
   {
     "game": "comic",
     "variant": "iosv100",
-    "raw": "/assets/images/gameicons/comic/iosv100/raw.png",
+    "raw": "/assets/images/icons/games/comic/iosv100/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -3301,7 +3301,7 @@
   {
     "game": "ctrexp",
     "variant": "androidv1110",
-    "raw": "/assets/images/gameicons/ctrexp/androidv1110/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidv1110/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3314,7 +3314,7 @@
   {
     "game": "ctrexp",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/ctrexp/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3329,7 +3329,7 @@
   {
     "game": "ctrexp",
     "variant": "iosv17",
-    "raw": "/assets/images/gameicons/ctrexp/iosv17/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/iosv17/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -3342,7 +3342,7 @@
   {
     "game": "ctrexp",
     "variant": "iosv121",
-    "raw": "/assets/images/gameicons/ctrexp/iosv121/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/iosv121/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -3355,7 +3355,7 @@
   {
     "game": "ctrexp",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/ctrexp/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3368,7 +3368,7 @@
   {
     "game": "ctrexp",
     "variant": "androidbackground",
-    "raw": "/assets/images/gameicons/ctrexp/androidbackground/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidbackground/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -3381,7 +3381,7 @@
   {
     "game": "ctrexp",
     "variant": "androidforeground",
-    "raw": "/assets/images/gameicons/ctrexp/androidforeground/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidforeground/raw.png",
     "width": 324,
     "height": 324,
     "format": "png",
@@ -3394,7 +3394,7 @@
   {
     "game": "ctrexp",
     "variant": "androidgallery3",
-    "raw": "/assets/images/gameicons/ctrexp/androidgallery3/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidgallery3/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3407,7 +3407,7 @@
   {
     "game": "ctrexp",
     "variant": "androidv10",
-    "raw": "/assets/images/gameicons/ctrexp/androidv10/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidv10/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -3420,7 +3420,7 @@
   {
     "game": "ctrexp",
     "variant": "androidgoldv17",
-    "raw": "/assets/images/gameicons/ctrexp/androidgoldv17/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidgoldv17/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -3438,7 +3438,7 @@
   {
     "game": "ctrexp",
     "variant": "androidhdgallery",
-    "raw": "/assets/images/gameicons/ctrexp/androidhdgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidhdgallery/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -3452,7 +3452,7 @@
   {
     "game": "ctrexp",
     "variant": "androidhdgallery2",
-    "raw": "/assets/images/gameicons/ctrexp/androidhdgallery2/raw.jpg",
+    "raw": "/assets/images/icons/games/ctrexp/androidhdgallery2/raw.jpg",
     "width": 512,
     "height": 512,
     "format": "jpeg",
@@ -3472,7 +3472,7 @@
   {
     "game": "ctrexp",
     "variant": "androidhdgallery3",
-    "raw": "/assets/images/gameicons/ctrexp/androidhdgallery3/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidhdgallery3/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -3485,7 +3485,7 @@
   {
     "game": "ctrexp",
     "variant": "ioshdlitev171",
-    "raw": "/assets/images/gameicons/ctrexp/ioshdlitev171/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/ioshdlitev171/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -3498,7 +3498,7 @@
   {
     "game": "ctrexp",
     "variant": "ioshdlitev172",
-    "raw": "/assets/images/gameicons/ctrexp/ioshdlitev172/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/ioshdlitev172/raw.png",
     "width": 600,
     "height": 600,
     "format": "png",
@@ -3524,7 +3524,7 @@
   {
     "game": "ctrexp",
     "variant": "ioshdlitev101",
-    "raw": "/assets/images/gameicons/ctrexp/ioshdlitev101/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/ioshdlitev101/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -3537,7 +3537,7 @@
   {
     "game": "ctrexp",
     "variant": "androidlitegallery",
-    "raw": "/assets/images/gameicons/ctrexp/androidlitegallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidlitegallery/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -3550,7 +3550,7 @@
   {
     "game": "ctrexp",
     "variant": "androidlitegallery2",
-    "raw": "/assets/images/gameicons/ctrexp/androidlitegallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidlitegallery2/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -3563,7 +3563,7 @@
   {
     "game": "ctrexp",
     "variant": "ioslitev171",
-    "raw": "/assets/images/gameicons/ctrexp/ioslitev171/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/ioslitev171/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -3576,7 +3576,7 @@
   {
     "game": "ctrexp",
     "variant": "ioslitev191",
-    "raw": "/assets/images/gameicons/ctrexp/ioslitev191/raw.jpg",
+    "raw": "/assets/images/icons/games/ctrexp/ioslitev191/raw.jpg",
     "width": 600,
     "height": 600,
     "format": "jpeg",
@@ -3596,7 +3596,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidv1180",
-    "raw": "/assets/images/gameicons/ctrmagic/androidv1180/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidv1180/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3609,7 +3609,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/ctrmagic/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3623,7 +3623,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/ctrmagic/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidgallery2/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3636,7 +3636,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidbackground",
-    "raw": "/assets/images/gameicons/ctrmagic/androidbackground/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidbackground/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -3649,7 +3649,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidforeground",
-    "raw": "/assets/images/gameicons/ctrmagic/androidforeground/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidforeground/raw.png",
     "width": 432,
     "height": 432,
     "format": "png",
@@ -3662,7 +3662,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidv192",
-    "raw": "/assets/images/gameicons/ctrmagic/androidv192/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidv192/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3675,7 +3675,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidamazonv141",
-    "raw": "/assets/images/gameicons/ctrmagic/androidamazonv141/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidamazonv141/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3688,7 +3688,7 @@
   {
     "game": "nibbleadventure",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/nibbleadventure/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/nibbleadventure/androidgallery/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -3701,7 +3701,7 @@
   {
     "game": "ctr",
     "variant": "androidv341",
-    "raw": "/assets/images/gameicons/ctr/androidv341/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv341/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -3719,7 +3719,7 @@
   {
     "game": "ctr",
     "variant": "androidv330",
-    "raw": "/assets/images/gameicons/ctr/androidv330/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv330/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3732,7 +3732,7 @@
   {
     "game": "ctr",
     "variant": "androidv3300",
-    "raw": "/assets/images/gameicons/ctr/androidv3300/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv3300/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3745,7 +3745,7 @@
   {
     "game": "ctr",
     "variant": "androidv3151",
-    "raw": "/assets/images/gameicons/ctr/androidv3151/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv3151/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3758,7 +3758,7 @@
   {
     "game": "ctrtt",
     "variant": "androidv1141",
-    "raw": "/assets/images/gameicons/ctrtt/androidv1141/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidv1141/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3771,7 +3771,7 @@
   {
     "game": "ctrtt",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/ctrtt/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3786,7 +3786,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev360",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev360/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev360/raw.png",
     "width": 167,
     "height": 167,
     "format": "png",
@@ -3799,7 +3799,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev330",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev330/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev330/raw.png",
     "width": 167,
     "height": 167,
     "format": "png",
@@ -3812,7 +3812,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev311",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev311/raw.jpg",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev311/raw.jpg",
     "width": 600,
     "height": 600,
     "format": "jpeg",
@@ -3838,7 +3838,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev3261",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev3261/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev3261/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -3851,7 +3851,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev331",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev331/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev331/raw.png",
     "width": 167,
     "height": 167,
     "format": "png",
@@ -3864,7 +3864,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev340",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev340/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev340/raw.png",
     "width": 167,
     "height": 167,
     "format": "png",
@@ -3877,7 +3877,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev300",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev300/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev300/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -3890,7 +3890,7 @@
   {
     "game": "ctr",
     "variant": "ioshdlitev370",
-    "raw": "/assets/images/gameicons/ctr/ioshdlitev370/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdlitev370/raw.png",
     "width": 167,
     "height": 167,
     "format": "png",
@@ -3903,7 +3903,7 @@
   {
     "game": "cybernom",
     "variant": "iosgallery",
-    "raw": "/assets/images/gameicons/cybernom/iosgallery/raw.png",
+    "raw": "/assets/images/icons/games/cybernom/iosgallery/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -3916,7 +3916,7 @@
   {
     "game": "dreams",
     "variant": "iosgallery",
-    "raw": "/assets/images/gameicons/dreams/iosgallery/raw.png",
+    "raw": "/assets/images/icons/games/dreams/iosgallery/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -3929,7 +3929,7 @@
   {
     "game": "ctrholiday",
     "variant": "androidv180",
-    "raw": "/assets/images/gameicons/ctrholiday/androidv180/raw.png",
+    "raw": "/assets/images/icons/games/ctrholiday/androidv180/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -3942,7 +3942,7 @@
   {
     "game": "myomnom",
     "variant": "androidv151",
-    "raw": "/assets/images/gameicons/myomnom/androidv151/raw.png",
+    "raw": "/assets/images/icons/games/myomnom/androidv151/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3955,7 +3955,7 @@
   {
     "game": "myomnom",
     "variant": "androidv152",
-    "raw": "/assets/images/gameicons/myomnom/androidv152/raw.png",
+    "raw": "/assets/images/icons/games/myomnom/androidv152/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3969,7 +3969,7 @@
   {
     "game": "books",
     "variant": "androidamazonv10",
-    "raw": "/assets/images/gameicons/books/androidamazonv10/raw.png",
+    "raw": "/assets/images/icons/games/books/androidamazonv10/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -3982,7 +3982,7 @@
   {
     "game": "magiccandies",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/magiccandies/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/magiccandies/androidgallery/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -3995,7 +3995,7 @@
   {
     "game": "merge",
     "variant": "androidv4429",
-    "raw": "/assets/images/gameicons/merge/androidv4429/raw.png",
+    "raw": "/assets/images/icons/games/merge/androidv4429/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4008,7 +4008,7 @@
   {
     "game": "omnomrun",
     "variant": "androidv181",
-    "raw": "/assets/images/gameicons/omnomrun/androidv181/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun/androidv181/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4021,7 +4021,7 @@
   {
     "game": "omnomrun2",
     "variant": "androidgallery",
-    "raw": "/assets/images/gameicons/omnomrun2/androidgallery/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun2/androidgallery/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4034,7 +4034,7 @@
   {
     "game": "ctrtt",
     "variant": "androidgallery2",
-    "raw": "/assets/images/gameicons/ctrtt/androidgallery2/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidgallery2/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -4066,7 +4066,7 @@
   {
     "game": "ctrtt",
     "variant": "androidgallery3",
-    "raw": "/assets/images/gameicons/ctrtt/androidgallery3/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidgallery3/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -4079,7 +4079,7 @@
   {
     "game": "ctrtt",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/ctrtt/iosv10/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/iosv10/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -4099,7 +4099,7 @@
   {
     "game": "ctrtt",
     "variant": "iosv102",
-    "raw": "/assets/images/gameicons/ctrtt/iosv102/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/iosv102/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -4112,7 +4112,7 @@
   {
     "game": "ctrtt",
     "variant": "androidamazongallery",
-    "raw": "/assets/images/gameicons/ctrtt/androidamazongallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidamazongallery/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -4126,7 +4126,7 @@
   {
     "game": "ctrtt",
     "variant": "androidgoldv111",
-    "raw": "/assets/images/gameicons/ctrtt/androidgoldv111/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidgoldv111/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -4139,7 +4139,7 @@
   {
     "game": "ctrtt",
     "variant": "androidgoldv193",
-    "raw": "/assets/images/gameicons/ctrtt/androidgoldv193/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidgoldv193/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -4152,7 +4152,7 @@
   {
     "game": "ctrtt",
     "variant": "androidgoldv142",
-    "raw": "/assets/images/gameicons/ctrtt/androidgoldv142/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidgoldv142/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4165,7 +4165,7 @@
   {
     "game": "ctrtt",
     "variant": "androidhdgallery",
-    "raw": "/assets/images/gameicons/ctrtt/androidhdgallery/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidhdgallery/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -4209,7 +4209,7 @@
   {
     "game": "ctrtt",
     "variant": "ioshdv143",
-    "raw": "/assets/images/gameicons/ctrtt/ioshdv143/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/ioshdv143/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -4222,7 +4222,7 @@
   {
     "game": "ctrtt",
     "variant": "ioshdv12",
-    "raw": "/assets/images/gameicons/ctrtt/ioshdv12/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/ioshdv12/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -4235,7 +4235,7 @@
   {
     "game": "toons",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/toons/iosv10/raw.png",
+    "raw": "/assets/images/icons/games/toons/iosv10/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -4248,7 +4248,7 @@
   {
     "game": "hungryforfruit",
     "variant": "community",
-    "raw": "/assets/images/gameicons/hungryforfruit/community/raw.png",
+    "raw": "/assets/images/icons/games/hungryforfruit/community/raw.png",
     "width": 150,
     "height": 148,
     "format": "png",
@@ -4264,7 +4264,7 @@
   {
     "game": "ctr2",
     "variant": "goldios",
-    "raw": "/assets/images/gameicons/ctr2/goldios/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/goldios/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -4298,7 +4298,7 @@
   {
     "game": "ctr2",
     "variant": "valentinesios",
-    "raw": "/assets/images/gameicons/ctr2/valentinesios/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/valentinesios/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -4316,7 +4316,7 @@
   {
     "game": "ctr2",
     "variant": "christmasios",
-    "raw": "/assets/images/gameicons/ctr2/christmasios/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/christmasios/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -4346,7 +4346,7 @@
   {
     "game": "pudding",
     "variant": "classic",
-    "raw": "/assets/images/gameicons/pudding/classic/raw.png",
+    "raw": "/assets/images/icons/games/pudding/classic/raw.png",
     "width": 1024,
     "height": 1024,
     "format": "png",
@@ -4364,7 +4364,7 @@
   {
     "game": "pudding",
     "variant": "androidhd",
-    "raw": "/assets/images/gameicons/pudding/androidhd/raw.png",
+    "raw": "/assets/images/icons/games/pudding/androidhd/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -4382,7 +4382,7 @@
   {
     "game": "ctrexp",
     "variant": "androidpaidv10",
-    "raw": "/assets/images/gameicons/ctrexp/androidpaidv10/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidpaidv10/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -4400,7 +4400,7 @@
   {
     "game": "ctr2",
     "variant": "androidv14",
-    "raw": "/assets/images/gameicons/ctr2/androidv14/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidv14/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4418,7 +4418,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidv140",
-    "raw": "/assets/images/gameicons/ctrmagic/androidv140/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidv140/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4436,7 +4436,7 @@
   {
     "game": "pudding",
     "variant": "androidgamebase132",
-    "raw": "/assets/images/gameicons/pudding/androidgamebase132/raw.png",
+    "raw": "/assets/images/icons/games/pudding/androidgamebase132/raw.png",
     "width": 100,
     "height": 100,
     "format": "png",
@@ -4454,7 +4454,7 @@
   {
     "game": "ctr2",
     "variant": "androidchinav2393",
-    "raw": "/assets/images/gameicons/ctr2/androidchinav2393/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidchinav2393/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4472,7 +4472,7 @@
   {
     "game": "ctr2",
     "variant": "androidtelecom220",
-    "raw": "/assets/images/gameicons/ctr2/androidtelecom220/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidtelecom220/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4490,7 +4490,7 @@
   {
     "game": "ctrexp",
     "variant": "androidchinav232",
-    "raw": "/assets/images/gameicons/ctrexp/androidchinav232/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidchinav232/raw.png",
     "width": 100,
     "height": 100,
     "format": "png",
@@ -4508,7 +4508,7 @@
   {
     "game": "pudding",
     "variant": "androidamazon124",
-    "raw": "/assets/images/gameicons/pudding/androidamazon124/raw.png",
+    "raw": "/assets/images/icons/games/pudding/androidamazon124/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -4526,7 +4526,7 @@
   {
     "game": "ctr",
     "variant": "androidorange3300",
-    "raw": "/assets/images/gameicons/ctr/androidorange3300/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidorange3300/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4544,7 +4544,7 @@
   {
     "game": "ctr2",
     "variant": "ioschinav130",
-    "raw": "/assets/images/gameicons/ctr2/ioschinav130/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/ioschinav130/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -4562,7 +4562,7 @@
   {
     "game": "ctrtt",
     "variant": "ioschinav1180",
-    "raw": "/assets/images/gameicons/ctrtt/ioschinav1180/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/ioschinav1180/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -4580,7 +4580,7 @@
   {
     "game": "blast",
     "variant": "androidchinav095",
-    "raw": "/assets/images/gameicons/blast/androidchinav095/raw.png",
+    "raw": "/assets/images/icons/games/blast/androidchinav095/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -4598,7 +4598,7 @@
   {
     "game": "stories",
     "variant": "iosv110",
-    "raw": "/assets/images/gameicons/stories/iosv110/raw.jpg",
+    "raw": "/assets/images/icons/games/stories/iosv110/raw.jpg",
     "width": 512,
     "height": 512,
     "format": "jpeg",
@@ -4616,7 +4616,7 @@
   {
     "game": "stickers",
     "variant": "iosv13",
-    "raw": "/assets/images/gameicons/stickers/iosv13/raw.jpg",
+    "raw": "/assets/images/icons/games/stickers/iosv13/raw.jpg",
     "width": 512,
     "height": 512,
     "format": "jpeg",
@@ -4634,7 +4634,7 @@
   {
     "game": "blast",
     "variant": "iosv6140",
-    "raw": "/assets/images/gameicons/blast/iosv6140/raw.jpg",
+    "raw": "/assets/images/icons/games/blast/iosv6140/raw.jpg",
     "width": 512,
     "height": 512,
     "format": "jpeg",
@@ -4652,7 +4652,7 @@
   {
     "game": "ctrdaily",
     "variant": "iosv1150",
-    "raw": "/assets/images/gameicons/ctrdaily/iosv1150/raw.jpg",
+    "raw": "/assets/images/icons/games/ctrdaily/iosv1150/raw.jpg",
     "width": 512,
     "height": 512,
     "format": "jpeg",
@@ -4670,7 +4670,7 @@
   {
     "game": "party",
     "variant": "iosv01",
-    "raw": "/assets/images/gameicons/party/iosv01/raw.webp",
+    "raw": "/assets/images/icons/games/party/iosv01/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4688,7 +4688,7 @@
   {
     "game": "knockout",
     "variant": "iosv1010",
-    "raw": "/assets/images/gameicons/knockout/iosv1010/raw.webp",
+    "raw": "/assets/images/icons/games/knockout/iosv1010/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4706,7 +4706,7 @@
   {
     "game": "maze",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/maze/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/maze/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4724,7 +4724,7 @@
   {
     "game": "popsicles",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/popsicles/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/popsicles/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4742,7 +4742,7 @@
   {
     "game": "poolparty",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/poolparty/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/poolparty/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4760,7 +4760,7 @@
   {
     "game": "runduel",
     "variant": "iosv02",
-    "raw": "/assets/images/gameicons/runduel/iosv02/raw.webp",
+    "raw": "/assets/images/icons/games/runduel/iosv02/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4778,7 +4778,7 @@
   {
     "game": "racing",
     "variant": "iosv05",
-    "raw": "/assets/images/gameicons/racing/iosv05/raw.webp",
+    "raw": "/assets/images/icons/games/racing/iosv05/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4796,7 +4796,7 @@
   {
     "game": "quiz",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/quiz/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/quiz/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4814,7 +4814,7 @@
   {
     "game": "dash",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/dash/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/dash/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4832,7 +4832,7 @@
   {
     "game": "strike",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/strike/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/strike/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4850,7 +4850,7 @@
   {
     "game": "hop",
     "variant": "iosv11",
-    "raw": "/assets/images/gameicons/hop/iosv11/raw.webp",
+    "raw": "/assets/images/icons/games/hop/iosv11/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4868,7 +4868,7 @@
   {
     "game": "influencer",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/influencer/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/influencer/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4886,7 +4886,7 @@
   {
     "game": "fruitrun",
     "variant": "iosv20",
-    "raw": "/assets/images/gameicons/fruitrun/iosv20/raw.webp",
+    "raw": "/assets/images/icons/games/fruitrun/iosv20/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4904,7 +4904,7 @@
   {
     "game": "archernom",
     "variant": "iosv4",
-    "raw": "/assets/images/gameicons/archernom/iosv4/raw.webp",
+    "raw": "/assets/images/icons/games/archernom/iosv4/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4922,7 +4922,7 @@
   {
     "game": "karts",
     "variant": "iosmomzikovv112",
-    "raw": "/assets/images/gameicons/karts/iosmomzikovv112/raw.webp",
+    "raw": "/assets/images/icons/games/karts/iosmomzikovv112/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4940,7 +4940,7 @@
   {
     "game": "space",
     "variant": "iosv02",
-    "raw": "/assets/images/gameicons/space/iosv02/raw.webp",
+    "raw": "/assets/images/icons/games/space/iosv02/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4958,7 +4958,7 @@
   {
     "game": "flick",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/flick/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/flick/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4976,7 +4976,7 @@
   {
     "game": "smash",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/smash/iosv10/raw.webp",
+    "raw": "/assets/images/icons/games/smash/iosv10/raw.webp",
     "width": 512,
     "height": 512,
     "format": "webp",
@@ -4994,7 +4994,7 @@
   {
     "game": "ctr",
     "variant": "androidtencent237",
-    "raw": "/assets/images/gameicons/ctr/androidtencent237/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidtencent237/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -5012,7 +5012,7 @@
   {
     "game": "ctr",
     "variant": "androidifree340",
-    "raw": "/assets/images/gameicons/ctr/androidifree340/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidifree340/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5030,7 +5030,7 @@
   {
     "game": "ctr",
     "variant": "androidsubscription341",
-    "raw": "/assets/images/gameicons/ctr/androidsubscription341/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidsubscription341/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5048,7 +5048,7 @@
   {
     "game": "ctrexp",
     "variant": "androiddroidzoom179",
-    "raw": "/assets/images/gameicons/ctrexp/androiddroidzoom179/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androiddroidzoom179/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5066,7 +5066,7 @@
   {
     "game": "ctrholiday",
     "variant": "androidpremium180",
-    "raw": "/assets/images/gameicons/ctrholiday/androidpremium180/raw.png",
+    "raw": "/assets/images/icons/games/ctrholiday/androidpremium180/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5084,7 +5084,7 @@
   {
     "game": "ctrtt",
     "variant": "androidxc171",
-    "raw": "/assets/images/gameicons/ctrtt/androidxc171/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidxc171/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5102,7 +5102,7 @@
   {
     "game": "ctrtt",
     "variant": "androidifree102",
-    "raw": "/assets/images/gameicons/ctrtt/androidifree102/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidifree102/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5120,7 +5120,7 @@
   {
     "game": "ctr",
     "variant": "androidrainman400",
-    "raw": "/assets/images/gameicons/ctr/androidrainman400/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidrainman400/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -5138,7 +5138,7 @@
   {
     "game": "candytrail",
     "variant": "launch",
-    "raw": "/assets/images/gameicons/candytrail/launch/raw.png",
+    "raw": "/assets/images/icons/games/candytrail/launch/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -5156,7 +5156,7 @@
   {
     "game": "ctr2",
     "variant": "archive4399244",
-    "raw": "/assets/images/gameicons/ctr2/archive4399244/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/archive4399244/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5174,7 +5174,7 @@
   {
     "game": "ctr2",
     "variant": "archiveuc244",
-    "raw": "/assets/images/gameicons/ctr2/archiveuc244/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/archiveuc244/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5192,7 +5192,7 @@
   {
     "game": "ctr2",
     "variant": "archivetencent243",
-    "raw": "/assets/images/gameicons/ctr2/archivetencent243/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/archivetencent243/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5210,7 +5210,7 @@
   {
     "game": "ctr2",
     "variant": "archivecmcc200",
-    "raw": "/assets/images/gameicons/ctr2/archivecmcc200/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/archivecmcc200/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5228,7 +5228,7 @@
   {
     "game": "ctr2",
     "variant": "archivecmcc210",
-    "raw": "/assets/images/gameicons/ctr2/archivecmcc210/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/archivecmcc210/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -5246,7 +5246,7 @@
   {
     "game": "ctr2",
     "variant": "archivecmcc238",
-    "raw": "/assets/images/gameicons/ctr2/archivecmcc238/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/archivecmcc238/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5264,7 +5264,7 @@
   {
     "game": "ctr2",
     "variant": "archivetelecom200",
-    "raw": "/assets/images/gameicons/ctr2/archivetelecom200/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/archivetelecom200/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -5282,7 +5282,7 @@
   {
     "game": "ctr",
     "variant": "archivetencent211",
-    "raw": "/assets/images/gameicons/ctr/archivetencent211/raw.png",
+    "raw": "/assets/images/icons/games/ctr/archivetencent211/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -5300,7 +5300,7 @@
   {
     "game": "ctrtt",
     "variant": "archivesd6243",
-    "raw": "/assets/images/gameicons/ctrtt/archivesd6243/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/archivesd6243/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5318,7 +5318,7 @@
   {
     "game": "ctrmagic",
     "variant": "archivetencent192",
-    "raw": "/assets/images/gameicons/ctrmagic/archivetencent192/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/archivetencent192/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5336,7 +5336,7 @@
   {
     "game": "ctrtt",
     "variant": "homiesunderground145",
-    "raw": "/assets/images/gameicons/ctrtt/homiesunderground145/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/homiesunderground145/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5354,7 +5354,7 @@
   {
     "game": "ctrexp",
     "variant": "homiesunderground179",
-    "raw": "/assets/images/gameicons/ctrexp/homiesunderground179/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/homiesunderground179/raw.png",
     "width": 675,
     "height": 675,
     "format": "png",
@@ -5372,7 +5372,7 @@
   {
     "game": "marbleshooter",
     "variant": "listing",
-    "raw": "/assets/images/gameicons/marbleshooter/listing/raw.png",
+    "raw": "/assets/images/icons/games/marbleshooter/listing/raw.png",
     "width": 512,
     "height": 512,
     "format": "png",
@@ -5390,7 +5390,7 @@
   {
     "game": "bubbles",
     "variant": "orangejeux",
-    "raw": "/assets/images/gameicons/bubbles/orangejeux/raw.png",
+    "raw": "/assets/images/icons/games/bubbles/orangejeux/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5408,7 +5408,7 @@
   {
     "game": "tower3d",
     "variant": "orangejeux",
-    "raw": "/assets/images/gameicons/tower3d/orangejeux/raw.png",
+    "raw": "/assets/images/icons/games/tower3d/orangejeux/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5426,7 +5426,7 @@
   {
     "game": "books",
     "variant": "bemobilatam",
-    "raw": "/assets/images/gameicons/books/bemobilatam/raw.png",
+    "raw": "/assets/images/icons/games/books/bemobilatam/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5444,7 +5444,7 @@
   {
     "game": "ctr2",
     "variant": "china4399early",
-    "raw": "/assets/images/gameicons/ctr2/china4399early/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/china4399early/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5462,7 +5462,7 @@
   {
     "game": "ctr2",
     "variant": "chinaccyx",
-    "raw": "/assets/images/gameicons/ctr2/chinaccyx/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/chinaccyx/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5480,7 +5480,7 @@
   {
     "game": "ctr",
     "variant": "rainmanlite",
-    "raw": "/assets/images/gameicons/ctr/rainmanlite/raw.png",
+    "raw": "/assets/images/icons/games/ctr/rainmanlite/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -5498,7 +5498,7 @@
   {
     "game": "ctr",
     "variant": "androidv3781",
-    "raw": "/assets/images/gameicons/ctr/androidv3781/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidv3781/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -5519,7 +5519,7 @@
   {
     "game": "ctr2",
     "variant": "androidv1471",
-    "raw": "/assets/images/gameicons/ctr2/androidv1471/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidv1471/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -5540,7 +5540,7 @@
   {
     "game": "ctr2",
     "variant": "androidv1460",
-    "raw": "/assets/images/gameicons/ctr2/androidv1460/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/androidv1460/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5561,7 +5561,7 @@
   {
     "game": "ctrtt",
     "variant": "androidv1222",
-    "raw": "/assets/images/gameicons/ctrtt/androidv1222/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidv1222/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -5582,7 +5582,7 @@
   {
     "game": "ctrtt",
     "variant": "androidv1221",
-    "raw": "/assets/images/gameicons/ctrtt/androidv1221/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidv1221/raw.png",
     "width": 48,
     "height": 48,
     "format": "png",
@@ -5603,7 +5603,7 @@
   {
     "game": "ctrtt",
     "variant": "androidv1220",
-    "raw": "/assets/images/gameicons/ctrtt/androidv1220/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/androidv1220/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -5624,7 +5624,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidv1271",
-    "raw": "/assets/images/gameicons/ctrmagic/androidv1271/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidv1271/raw.png",
     "width": 48,
     "height": 48,
     "format": "png",
@@ -5645,7 +5645,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidv1260",
-    "raw": "/assets/images/gameicons/ctrmagic/androidv1260/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidv1260/raw.png",
     "width": 96,
     "height": 96,
     "format": "png",
@@ -5666,7 +5666,7 @@
   {
     "game": "ctrexp",
     "variant": "androidv1180",
-    "raw": "/assets/images/gameicons/ctrexp/androidv1180/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidv1180/raw.png",
     "width": 48,
     "height": 48,
     "format": "png",
@@ -5687,7 +5687,7 @@
   {
     "game": "ctrexp",
     "variant": "androidv1170",
-    "raw": "/assets/images/gameicons/ctrexp/androidv1170/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidv1170/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5708,7 +5708,7 @@
   {
     "game": "omnomrun",
     "variant": "androidv1220",
-    "raw": "/assets/images/gameicons/omnomrun/androidv1220/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun/androidv1220/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5729,7 +5729,7 @@
   {
     "game": "ctrdaily",
     "variant": "androidv1141",
-    "raw": "/assets/images/gameicons/ctrdaily/androidv1141/raw.png",
+    "raw": "/assets/images/icons/games/ctrdaily/androidv1141/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5750,7 +5750,7 @@
   {
     "game": "ctr",
     "variant": "androidorigins0281",
-    "raw": "/assets/images/gameicons/ctr/androidorigins0281/raw.png",
+    "raw": "/assets/images/icons/games/ctr/androidorigins0281/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5771,7 +5771,7 @@
   {
     "game": "ctr2",
     "variant": "easterorange",
-    "raw": "/assets/images/gameicons/ctr2/easterorange/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/easterorange/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5787,7 +5787,7 @@
   {
     "game": "ctrtt",
     "variant": "industrialfree",
-    "raw": "/assets/images/gameicons/ctrtt/industrialfree/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/industrialfree/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5800,7 +5800,7 @@
   {
     "game": "ctrmagic",
     "variant": "valentines",
-    "raw": "/assets/images/gameicons/ctrmagic/valentines/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/valentines/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5813,7 +5813,7 @@
   {
     "game": "ctrmagic",
     "variant": "bluebird",
-    "raw": "/assets/images/gameicons/ctrmagic/bluebird/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/bluebird/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5826,7 +5826,7 @@
   {
     "game": "ctrexp",
     "variant": "androidhd173fix",
-    "raw": "/assets/images/gameicons/ctrexp/androidhd173fix/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/androidhd173fix/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5841,7 +5841,7 @@
   {
     "game": "omnomrun",
     "variant": "beach",
-    "raw": "/assets/images/gameicons/omnomrun/beach/raw.png",
+    "raw": "/assets/images/icons/games/omnomrun/beach/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5856,7 +5856,7 @@
   {
     "game": "ctr",
     "variant": "limewithlogo",
-    "raw": "/assets/images/gameicons/ctr/limewithlogo/raw.png",
+    "raw": "/assets/images/icons/games/ctr/limewithlogo/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5871,7 +5871,7 @@
   {
     "game": "ctr",
     "variant": "limecompact",
-    "raw": "/assets/images/gameicons/ctr/limecompact/raw.png",
+    "raw": "/assets/images/icons/games/ctr/limecompact/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -5886,7 +5886,7 @@
   {
     "game": "ctr",
     "variant": "limeclassic",
-    "raw": "/assets/images/gameicons/ctr/limeclassic/raw.png",
+    "raw": "/assets/images/icons/games/ctr/limeclassic/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -5901,7 +5901,7 @@
   {
     "game": "ctr",
     "variant": "limeearly",
-    "raw": "/assets/images/gameicons/ctr/limeearly/raw.png",
+    "raw": "/assets/images/icons/games/ctr/limeearly/raw.png",
     "width": 48,
     "height": 48,
     "format": "png",
@@ -5916,7 +5916,7 @@
   {
     "game": "theme",
     "variant": "androidtimetravel",
-    "raw": "/assets/images/gameicons/theme/androidtimetravel/raw.png",
+    "raw": "/assets/images/icons/games/theme/androidtimetravel/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5934,7 +5934,7 @@
   {
     "game": "offlinegames",
     "variant": "launch",
-    "raw": "/assets/images/gameicons/offlinegames/launch/raw.png",
+    "raw": "/assets/images/icons/games/offlinegames/launch/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",
@@ -5952,7 +5952,7 @@
   {
     "game": "ctr",
     "variant": "iosv422",
-    "raw": "/assets/images/gameicons/ctr/iosv422/raw.png",
+    "raw": "/assets/images/icons/games/ctr/iosv422/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -5972,7 +5972,7 @@
   {
     "game": "virtualpet",
     "variant": "iosv1014",
-    "raw": "/assets/images/gameicons/virtualpet/iosv1014/raw.png",
+    "raw": "/assets/images/icons/games/virtualpet/iosv1014/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -5992,7 +5992,7 @@
   {
     "game": "ctr",
     "variant": "ioshdv25",
-    "raw": "/assets/images/gameicons/ctr/ioshdv25/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdv25/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -6012,7 +6012,7 @@
   {
     "game": "ctr",
     "variant": "iosv232",
-    "raw": "/assets/images/gameicons/ctr/iosv232/raw.png",
+    "raw": "/assets/images/icons/games/ctr/iosv232/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -6032,7 +6032,7 @@
   {
     "game": "ctr",
     "variant": "ioshdv232",
-    "raw": "/assets/images/gameicons/ctr/ioshdv232/raw.png",
+    "raw": "/assets/images/icons/games/ctr/ioshdv232/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -6052,7 +6052,7 @@
   {
     "game": "ctrholiday",
     "variant": "iosv161",
-    "raw": "/assets/images/gameicons/ctrholiday/iosv161/raw.png",
+    "raw": "/assets/images/icons/games/ctrholiday/iosv161/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -6072,7 +6072,7 @@
   {
     "game": "ctr",
     "variant": "iosv12",
-    "raw": "/assets/images/gameicons/ctr/iosv12/raw.png",
+    "raw": "/assets/images/icons/games/ctr/iosv12/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -6092,7 +6092,7 @@
   {
     "game": "ctr",
     "variant": "iosv25",
-    "raw": "/assets/images/gameicons/ctr/iosv25/raw.png",
+    "raw": "/assets/images/icons/games/ctr/iosv25/raw.png",
     "width": 120,
     "height": 120,
     "format": "png",
@@ -6112,7 +6112,7 @@
   {
     "game": "ctrexp",
     "variant": "ioslitev182",
-    "raw": "/assets/images/gameicons/ctrexp/ioslitev182/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/ioslitev182/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -6132,7 +6132,7 @@
   {
     "game": "ctrexp",
     "variant": "ioshdv111",
-    "raw": "/assets/images/gameicons/ctrexp/ioshdv111/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/ioshdv111/raw.png",
     "width": 72,
     "height": 72,
     "format": "png",
@@ -6152,7 +6152,7 @@
   {
     "game": "ctrexp",
     "variant": "ioshdlitev182",
-    "raw": "/assets/images/gameicons/ctrexp/ioshdlitev182/raw.png",
+    "raw": "/assets/images/icons/games/ctrexp/ioshdlitev182/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -6172,7 +6172,7 @@
   {
     "game": "ctr2",
     "variant": "iosv133",
-    "raw": "/assets/images/gameicons/ctr2/iosv133/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/iosv133/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -6192,7 +6192,7 @@
   {
     "game": "ctrtt",
     "variant": "iosv103",
-    "raw": "/assets/images/gameicons/ctrtt/iosv103/raw.png",
+    "raw": "/assets/images/icons/games/ctrtt/iosv103/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -6212,7 +6212,7 @@
   {
     "game": "ctrmagic",
     "variant": "iosv142",
-    "raw": "/assets/images/gameicons/ctrmagic/iosv142/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/iosv142/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -6232,7 +6232,7 @@
   {
     "game": "ctr2",
     "variant": "iosv101",
-    "raw": "/assets/images/gameicons/ctr2/iosv101/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/iosv101/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -6252,7 +6252,7 @@
   {
     "game": "ctr2",
     "variant": "iosv134",
-    "raw": "/assets/images/gameicons/ctr2/iosv134/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/iosv134/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -6272,7 +6272,7 @@
   {
     "game": "ctr2",
     "variant": "iosv136",
-    "raw": "/assets/images/gameicons/ctr2/iosv136/raw.png",
+    "raw": "/assets/images/icons/games/ctr2/iosv136/raw.png",
     "width": 114,
     "height": 114,
     "format": "png",
@@ -6292,7 +6292,7 @@
   {
     "game": "myomnom",
     "variant": "iosv118",
-    "raw": "/assets/images/gameicons/myomnom/iosv118/raw.png",
+    "raw": "/assets/images/icons/games/myomnom/iosv118/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -6312,7 +6312,7 @@
   {
     "game": "ctrremastered",
     "variant": "iosv240",
-    "raw": "/assets/images/gameicons/ctrremastered/iosv240/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/iosv240/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -6332,7 +6332,7 @@
   {
     "game": "ctr3",
     "variant": "iosv160",
-    "raw": "/assets/images/gameicons/ctr3/iosv160/raw.png",
+    "raw": "/assets/images/icons/games/ctr3/iosv160/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -6352,7 +6352,7 @@
   {
     "game": "ctrremastered",
     "variant": "iosv270",
-    "raw": "/assets/images/gameicons/ctrremastered/iosv270/raw.png",
+    "raw": "/assets/images/icons/games/ctrremastered/iosv270/raw.png",
     "width": 152,
     "height": 152,
     "format": "png",
@@ -6372,7 +6372,7 @@
   {
     "game": "candyflick",
     "variant": "iosv26",
-    "raw": "/assets/images/gameicons/candyflick/iosv26/raw.png",
+    "raw": "/assets/images/icons/games/candyflick/iosv26/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -6392,7 +6392,7 @@
   {
     "game": "candyflick",
     "variant": "iosv202",
-    "raw": "/assets/images/gameicons/candyflick/iosv202/raw.png",
+    "raw": "/assets/images/icons/games/candyflick/iosv202/raw.png",
     "width": 144,
     "height": 144,
     "format": "png",
@@ -6412,7 +6412,7 @@
   {
     "game": "myomnom",
     "variant": "iosv111",
-    "raw": "/assets/images/gameicons/myomnom/iosv111/raw.png",
+    "raw": "/assets/images/icons/games/myomnom/iosv111/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -6432,7 +6432,7 @@
   {
     "game": "bubbles",
     "variant": "iosv10",
-    "raw": "/assets/images/gameicons/bubbles/iosv10/raw.png",
+    "raw": "/assets/images/icons/games/bubbles/iosv10/raw.png",
     "width": 180,
     "height": 180,
     "format": "png",
@@ -6452,7 +6452,7 @@
   {
     "game": "ctrmagic",
     "variant": "androidcmcc116",
-    "raw": "/assets/images/gameicons/ctrmagic/androidcmcc116/raw.png",
+    "raw": "/assets/images/icons/games/ctrmagic/androidcmcc116/raw.png",
     "width": 192,
     "height": 192,
     "format": "png",

@@ -46,7 +46,7 @@ document.addEventListener("auxclick", (e) => {
         if (copiablebutton.classList.contains("ctrgame")) {
             clone.style.cssText = "position:relative;display:inline-block;width:88px;height:31px";
             const image = clone.querySelector("img");
-            image.src = "//candies.monster/assets/images/88x31/game1.gif";
+            image.src = "//candies.monster/assets/images/buttons/88x31/game1.gif";
             image.style.cssText = "width:88px;height:31px;pointer-events:none;image-rendering:pixelated";
             const slider = clone.querySelector("input");
             slider.disabled = false;
@@ -59,7 +59,7 @@ document.addEventListener("auxclick", (e) => {
     const slider = badge.querySelector("input");
     slider.addEventListener("input", () => {
         if (![0,100].includes(Number(slider.value))) return;
-        badge.querySelector("img").src = "//candies.monster/assets/images/88x31/game2.gif";
+        badge.querySelector("img").src = "//candies.monster/assets/images/buttons/88x31/game2.gif";
         slider.disabled = true;
     });
 })();`;
@@ -94,7 +94,7 @@ document.addEventListener("auxclick", (e) => {
             document.title = funtitle.slice(0, titleidx);
             if (titleidx === funtitle.length) titleidx = 0;
         }, 10);
-        if (window.sheetimg) window.sheetimg.src = "/assets/images/wonderful.png";
+        if (window.sheetimg) window.sheetimg.src = "/assets/images/misc/wonderful.png";
 
         document.querySelector(".sbuttons").remove();
         document.querySelector(".github").remove();
@@ -154,7 +154,7 @@ const slider = document.querySelector(".ctrslider");
 let activated = false;
 slider.addEventListener("input", () => {
     if (activated || ![0,100].includes(Number(slider.value))) return;
-    document.querySelector(".ctrimg").src = "/assets/images/88x31/game2.gif";
+    document.querySelector(".ctrimg").src = "/assets/images/buttons/88x31/game2.gif";
     activated = true;
     slider.disabled = true;
 });

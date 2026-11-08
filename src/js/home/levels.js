@@ -17,12 +17,12 @@ for (const direction of ["previous", "next"]) {
     const control = document.querySelector("." + direction);
     const arrow = control.querySelector(".arrow");
     const sprite = direction === "previous" ? "up" : "down";
-    function release() {arrow.src = `/assets/images/levels/controls/${sprite}.png`}
+    function release() {arrow.src = `/assets/images/buttons/${sprite}.png`}
     function scroll() {
         const card = list.querySelector(".level");
         const distance = card.getBoundingClientRect().width + parseFloat(getComputedStyle(list).gap);
         list.scrollBy({left: direction === "previous" ? -distance : distance, behavior: motion.matches ? "instant" : "smooth"});
-        arrow.src = `/assets/images/levels/controls/${sprite}active.png`;
+        arrow.src = `/assets/images/buttons/${sprite}active.png`;
     }
     control.addEventListener("pointerdown", event => {
         if (event.button !== 0) return;

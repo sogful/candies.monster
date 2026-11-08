@@ -9,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script async src="/assets/static/global.js"></script>
 
-    <meta property="og:image" content="/assets/images/embeds/music.png">
+    <meta property="og:image" content="/assets/images/branding/embeds/music.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="/assets/images/embeds/music.png">
+    <meta name="twitter:image" content="/assets/images/branding/embeds/music.png">
 
     <!-- search engines (practically no one is gonna find this through google but still) -->
     <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
@@ -287,7 +287,7 @@
             opacity: 0.25; z-index: -1; pointer-events: none;
         }
     </style> <div class="nojs">
-    <div class="nojsbg"></div> <img src="/assets/images/nojs.webp" draggable="false">
+    <div class="nojsbg"></div> <img src="/assets/images/omnom/nojs.webp" draggable="false">
     <a>Please enable Javascript in your browser to use this page.</a></div></noscript>
 
     <div class="songlistcontainer">
@@ -503,7 +503,7 @@
                     header.className = "songblockheader";
                     const icon = document.createElement("div");
                     icon.className = "songblockicon";
-                    const iconpath = category.icon.startsWith("/") ? category.icon : `/assets/images/gameicons/${category.icon}/64.webp`;
+                    const iconpath = category.icon.startsWith("/") ? category.icon : `/assets/images/icons/games/${category.icon}/64.webp`;
                     icon.style.backgroundImage = `url(${iconpath})`;
                     icon.style.backgroundSize = "cover";
                     

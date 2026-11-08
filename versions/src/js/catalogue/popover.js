@@ -120,7 +120,7 @@ function showpopup(button) {
         const warning = document.createElement("div");
         warning.className = "downloadwarning";
         const icon = document.createElement("img");
-        icon.src = "/assets/images/warning.png";
+        icon.src = "/assets/images/icons/warning.png";
         icon.alt = "";
         icon.width = 16;
         icon.height = 16;

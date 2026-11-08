@@ -47,9 +47,9 @@ function resolveiconpath(p, size = 64) {
     const value = cleanvalue(p);
     if (!value) return "";
     if (value.startsWith("http://") || value.startsWith("https://")) return value;
-    const base = "/assets/images/gameicons/";
+    const base = "/assets/images/icons/games/";
     if (value.startsWith("/") && !value.startsWith(base)) return value;
-    const relative = value.replace(/^\/?assets\/images\/gameicons\//, "");
+    const relative = value.replace(/^\/?assets\/images\/icons\/games\//, "");
     const key = relative.replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
     return `${base}${key}/${size > 128.5 ? 256 : size > 64.5 ? 128 : 64}.webp`;
 }
@@ -62,9 +62,9 @@ function resolveiconsrcset(p, size = 64) {
 function resolverawiconpath(p) {
     const value = cleanvalue(p);
     if (!value || /^https?:\/\//i.test(value)) return value;
-    const base = "/assets/images/gameicons/";
+    const base = "/assets/images/icons/games/";
     if (value.startsWith("/") && !value.startsWith(base)) return value;
-    const relative = value.replace(/^\/?assets\/images\/gameicons\//, "");
+    const relative = value.replace(/^\/?assets\/images\/icons\/games\//, "");
     const key = relative.replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
     return `${base}${key}/raw.${rawicons[key] || "png"}`;
 }
@@ -77,7 +77,7 @@ function resolveversionlabel(value) {
 function resolvepackageicon(pkg, filename) {
     const f = cleanvalue(filename);
     if (!f || !pkg) return "";
-    if (/\.(png|jpe?g|webp)$/i.test(f) && (f.startsWith("/assets/images/gameicons/") || /^https?:\/\//i.test(f))) return f;
+    if (/\.(png|jpe?g|webp)$/i.test(f) && (f.startsWith("/assets/images/icons/games/") || /^https?:\/\//i.test(f))) return f;
     return "";
 }
 
