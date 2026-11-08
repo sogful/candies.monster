@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        (() => {
+            const view = location.hash.slice(1).toLowerCase();
+            if (["credits", "documentation"].includes(view)) {
+                document.documentElement.classList.add("documentopen", "document" + view);
+            }
+        })();
+    </script>
     <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
 
     <title>candies.monster</title>
@@ -31,6 +39,7 @@
 
     <link rel="stylesheet" href="/src/css/home.css">
     <link rel="stylesheet" href="/src/css/levels.css">
+    <link rel="stylesheet" href="/src/css/documents.css">
     <link rel="stylesheet" href="/src/css/effects.css">
     <script src="/assets/static/fontcompat.js"></script>
 </head>
@@ -151,6 +160,121 @@
                     </div>
                 </details>
                 <div class="levelcontent">
+                    <section class="documentviews" aria-label="site information">
+                        <button class="documentclose clickable" type="button" aria-label="back to levels">
+                            <img src="/assets/images/icons/x.png" alt="" width="28" height="28" draggable="false">
+                        </button>
+                        <article class="documentpage creditsview" aria-label="credits">
+                            <h1 class="documenttitle">Credits</h1>
+                            <br>
+
+                            <ul class="documentcontributors">
+                                <li class="documententry">Bingies24
+                                    <i class="documenttiny">(uhq vector of the candy)</i>
+                                </li>
+                                <li class="documententry">yell0wsuit
+                                    <i class="documenttiny">(most of the raw2png script work)</i>
+                                </li>
+                            </ul>
+
+                            <h1 class="documentheading documentmajor">game version archiving/help</h1>
+                            <ul class="documentcontributors">
+                                <li class="documententry"><h2 class="documentheading">saulfabreg<br>
+                                        <i class="documenttiny">(amazing patch/search work over the last year)</i>
+                                </h2></li>
+                                <li class="documententry"><h2 class="documentheading">dragonland3030<br>
+                                        <i class="documenttiny">(tons of drives with apks and ipas)</i>
+                                </h2></li>
+                                <li class="documententry"><h3 class="documentheading documentminor">jul.mik</h3></li>
+                                <li class="documententry"><h3 class="documentheading documentminor">itsme_lis</h3></li>
+                                <li class="documententry"><h3 class="documentheading documentminor">PigDoggo</h3></li>
+                                <li class="documententry">Bingies24</li>
+                                <li class="documententry">SwordJhon</li>
+                                <li class="documententry">sami9999999999</li>
+                                <li class="documententry">propplayer</li>
+                                <li class="documententry">Bioux_2024</li>
+                            </ul>
+
+                            <h1 class="documentheading documentmajor">merch findings</h1>
+                            <ul class="documentcontributors">
+                                <li class="documententry"><h2 class="documentheading">trosde.quoniam<br>
+                                        <i class="documenttiny">(lots of previously unknown plushies discovered)</i>
+                                </h2></li>
+                                <li class="documententry"><h3 class="documentheading documentminor">345rusl</h3></li>
+                                <li class="documententry">mr.hi9051</li>
+                                <li class="documententry">mrcatz</li>
+                            </ul>
+
+                            <h2 class="documentheading">CTR Home team</h2>
+                            <ul class="documentcontributors">
+                                <li class="documententry">aidrum</li>
+                                <li class="documententry">Bingies24</li>
+                                <li class="documententry">Genji</li>
+                                <li class="documententry">MlopsFunny</li>
+                                <li class="documententry">MrCatz</li>
+                                <li class="documententry">saulfabreg</li>
+                                <li class="documententry">TheAwesomeBlue</li>
+                                <li class="documententry">yell0wsuit</li>
+                            </ul>
+                        </article>
+                        <article class="documentpage documentationview" aria-label="documentation">
+                            <h1 class="documenttitle">Documentation</h1>
+                            <a>info possibly useful for people implementing the level preview/convert features into their own project and more</a>
+                            <br>
+
+                            <h2 class="documentheading">cloudflare worker endpoints</h2>
+
+                            <ul class="documentlist">
+                                <li class="documententry"><span class="documentlink">https://play.candies.monster/?data=<span class="documentnote"> (xml / plain / base64 / url-safe base64) </span>&redirect</span> - generate shortlink<br>
+                                    <span class="documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">redirect</code> - redirect to the level preview instead of returning data</span>
+                                </li>
+
+                                <li class="documententry"><span class="documentlink">https://play.candies.monster/api/code/<span class="documentnote"> (shortcode) </span></span> - get base64 data of a shortlink</li>
+                            </ul>
+
+                            <ul class="documentlist">
+                                <li class="documententry"><span class="documentlink">https://convert.candies.monster/?xml=<span class="documentnote"> (xml / plain / base64 / url-safe base64) </span>&download&gzip</span> - convert to json</li>
+
+                                <li class="documententry"><span class="documentlink">https://convert.candies.monster/?json=<span class="documentnote"> (xml / plain / base64 / url-safe base64) </span>&download&gzip</span> - convert to xml</li>
+
+                                <li class="documententry"><span class="documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">gzip</code> - <a href="https://en.wikipedia.org/wiki/Gzip" target="_blank">gzip</a> and then base64 the data for the best possible url-safe compression. geometry dash uses this, actually!
+                                </span></li>
+
+                                <li class="documententry"><span class="documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">download</code> - download file instead of getting the plain text response
+                                </span></li>
+                            </ul>
+
+                            <ul class="documentlist">
+                                <li class="documententry"><span class="documentlink">https://cdn.candies.monster/testflight/<span class="documentnote"> (hash) </span>.ipa</span> - 10 recovered teraleak ipas<br>
+                                    <span class="documentnote">archived from d193ln56du8muy.cloudfront.net/ipas</span></li>
+
+                                <li class="documententry"><span class="documentlink">https://cdn.candies.monster/leaks/<span class="documentnote"> (filename) </span>.apk</span> - 25+ zeptoapp apks<br>
+                                    <span class="documentnote">archived from zeptoapp.zeptodev.com/api/applications/download</span></li>
+
+                                <li class="documententry"><span class="documentlink">https://cdn.candies.monster/ads/<span class="documentnote"> (id) </span>.jpg</span> - 8700+ images of marketing material<br>
+                                    <span class="documentnote">mirror of bms.zeptolab.com/feeder/images</span></li>
+                            </ul>
+
+                            <h2 class="documentheading">preview</h2>
+                            <ul class="documentlist">
+                                <li class="documententry"><span class="documentlink">https://candies.monster/preview?data=<span class="documentnote"> (xml / plain / base64 / url-safe base64) </span>&noui&embed</span></li>
+
+                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">version</code> (<code class="documentcode">ver</code> / <code class="documentcode">v</code>) - skip the version picker and load straight into a specific game</li>
+
+                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">noui</code> (<code class="documentcode">nu</code> / <code class="documentcode">u</code>) - hide everything besides the game and background</li>
+
+                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">embed</code> (<code class="documentcode">shareonly</code> / <code class="documentcode">so</code> / <code class="documentcode">s</code>) - hide the edit button, show a back button that sends a signal outside of an iframe instead of changing versions (for the ctr level editor)</li>
+
+                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">nomusic</code> (<code class="documentcode">nm</code> / <code class="documentcode">m</code>) - force mute in-game music for this session, making the music toggle nonfunctional and level restart not restart it</li>
+
+                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">jolly</code> (<code class="documentcode">jl</code> / <code class="documentcode">j</code>) - enable christmas mode for this session</li>
+
+                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">candy</code> (<code class="documentcode">ca</code> / <code class="documentcode">c</code>) - choose between candies, so 1-52. <br> if nothing is provided or is invalid then uses 1. 52 is the easter special from cut the rope 1.3 (ios)</li>
+
+                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">background</code> (<code class="documentcode">bg</code> / <code class="documentcode">b</code>) - choose between backgrounds, so 1&ndash;11 & 16, 16 is the xmas background</li>
+                            </ul>
+                        </article>
+                    </section>
                 <div class="main">
                     <div class="controls">
                         <div aria-label="previous levels" class="previous clickable" role="button" tabindex="0">
@@ -674,9 +798,10 @@ hello, world</a>
                     </div>
                 </div>
                 </div>
-                <footer class="sitefooter"><a href="/documentation">docs</a> • <a href="/credits">credits</a> • <a href="https://discord.com/users/763502120333869116">contact</a> • <a href="https://ctrhome.github.io/fan-projects">more fun!</a></footer>
+                <footer class="sitefooter"><a href="#documentation">docs</a> • <a href="#credits">credits</a> • <a href="https://discord.com/users/763502120333869116">contact</a> • <a href="https://ctrhome.github.io/fan-projects">more fun!</a></footer>
             </main>
         </div>
+        <script src="/src/js/home/documents.js" type="module"></script>
         <script src="/src/js/home/sidebar.js" type="module"></script>
         <script src="/src/js/home/levels.js" type="module"></script>
     </body>
