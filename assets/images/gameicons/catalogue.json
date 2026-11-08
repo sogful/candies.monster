@@ -5948,5 +5948,45 @@
     "packages": [
       "com.fl.omnomoffline"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "iosv422",
+    "raw": "/assets/images/gameicons/ctr/iosv422/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "4887f12ecdbd7fc8f5f197ce78f68c62b77e8d463d4e9b33021a9ee3a168612e",
+    "sources": [
+      {
+        "url": "https://mega.nz/folder/VQBVVbrJ#pzXQBMpnmymIH-lpRvAIRw/file/MIADWRCA",
+        "member": "Payload/CuttheRope.app/AppIcon76x76@2x~ipad.png",
+        "originalsha256": "546b1e4fc34381133e0a65acfa43189c59820abfe5edc789d17577b25b9e08d3",
+        "conversion": "lossless CgBI PNG normalization"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.cuttheropelite"
+    ]
+  },
+  {
+    "game": "virtualpet",
+    "variant": "iosv1014",
+    "raw": "/assets/images/gameicons/virtualpet/iosv1014/raw.png",
+    "width": 152,
+    "height": 152,
+    "format": "png",
+    "sha256": "d12477ccd817900b13849f967ca6c27fc3c8ea798f4a6293efc67bf35d9e02b4",
+    "sources": [
+      {
+        "url": "https://mega.nz/folder/VQBVVbrJ#pzXQBMpnmymIH-lpRvAIRw/file/kZJBzLDR",
+        "member": "Payload/MyOmNomVirtualPet.app/AppIcon76x76@2x~ipad.png",
+        "originalsha256": "49ea12d0c5bf0379ab54efda6e56468b4c389a6cb22e04c240509a612921e5c7",
+        "conversion": "lossless CgBI PNG normalization"
+      }
+    ],
+    "packages": [
+      "com.myvirtualpet.omnomgame"
+    ]
   }
 ]
