@@ -3,8 +3,8 @@
 <head>
     <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
 
-    <title>candies (dot) monster</title>
-    <meta name="title" content="candies (dot) monster" />
+    <title>candies.monster</title>
+    <meta name="title" content="candies.monster" />
     <meta name="description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <link rel="icon" type="image/png" href="/assets/images/candies/favicon.png">
 
@@ -13,7 +13,7 @@
     <script async src="/assets/static/global.js"></script>
     <script type="module" src="/src/effects.js"></script>
 
-    <meta property="twitter:title" content="candies (dot) monster" />
+    <meta property="twitter:title" content="candies.monster" />
     <meta property="twitter:description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://candies.monster/assets/images/embeds/index.png">
@@ -21,7 +21,7 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://candies.monster/" />
-    <meta property="og:title" content="candies (dot) monster" />
+    <meta property="og:title" content="candies.monster" />
     <meta property="og:description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <meta property="og:image" content="https://candies.monster/assets/images/embeds/index.png">
     <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
@@ -31,12 +31,13 @@
 
     <link rel="stylesheet" href="/src/css/home.css">
     <link rel="stylesheet" href="/src/css/levels.css">
+    <link rel="stylesheet" href="/src/css/effects.css">
     <script src="/assets/static/fontcompat.js"></script>
 </head>
 <body class="homepage">
         <audio class="click" preload="auto" src="/assets/audio/tap.mp3"></audio>
-        <audio class="theme" loop="" preload="none" src="/assets/audio/theme.opus"></audio>
         <canvas aria-hidden="true" class="effects"></canvas>
+        <div aria-hidden="true" class="shadow"></div>
         <div class="copied" role="status">
             <a>copied!</a>
         </div>
@@ -45,6 +46,7 @@
         </a>
         <div class="site">
             <aside aria-label="site navigation" class="sidebar">
+                <div class="sitenavigation">
                 <div class="sidebarlogo">
                     <img alt="candies dot monster" draggable="false" fetchpriority="high" height="400" src="/assets/images/branding/logotiny.webp" title="candies dot monster (the site you&#x27;re on right now!)" width="600">
                     <div class="fun"></div>
@@ -57,10 +59,6 @@
                     <a aria-label="download versions of various om nom games" class="navlink" href="/versions">
                         <img class="button clickable" draggable="false" src="/assets/images/pageicons/versions.webp" title="download versions of various om nom games">
                         <span class="buttonlabel">game versions</span>
-                    </a>
-                    <a aria-label="play and download some tunes!" class="navlink" href="/music">
-                        <img class="button clickable" draggable="false" src="/assets/images/pageicons/music.webp" title="play and download some tunes!">
-                        <span class="buttonlabel">music player</span>
                     </a>
                     <a aria-label="split spritesheets with xml" class="navlink" href="/split">
                         <img class="button clickable" draggable="false" src="/assets/images/pageicons/split.webp" title="split spritesheets with xml">
@@ -102,6 +100,7 @@
                     </a>
                 </div>
                 <p class="resourceblurb">..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
+                </div>
                 <div class="sbuttons">
                     <a>
                         <img class="sbutton" draggable="false" src="/assets/images/88x31/default.png" title="an 88x31 button with om nom in front of the gift box background.">
@@ -115,58 +114,55 @@
                     </a>
                     <img alt="middle click to copy a button" class="middleclick" draggable="false" src="/assets/images/middleclick.png">
                 </div>
-                <img alt="enable or disable music" aria-pressed="false" class="music clickable" draggable="false" role="button" src="/assets/images/nomusic.png" tabindex="0" title="enable/disable tunes on this page">
-                <footer class="tiny"><a href="/documentation">documentation</a> • <a href="/credits">credits</a> • <a href="https://discord.gg/ExFtwhB5kS">have a question?</a> (ping <a href="https://discord.com/users/763502120333869116">@cvgd</a> ) • <a href="https://ctrhome.github.io/fan-projects">more fun stuff!</a></footer>
             </aside>
             <main aria-label="custom levels" class="levelbrowser">
                 <details class="morestuff">
                     <summary class="clickable">More stuff!</summary>
                     <div class="frame">
-                        <img alt="" class="awful" draggable="false" loading="lazy" src="/levels/assets/images/depressingframe.png">
+                        <img alt="" class="awful" draggable="false" loading="lazy" src="/assets/images/levels/depressingframe.png">
                         <div class="adheader">
                             <span>More stuff!</span>
                             <button aria-label="close more stuff" class="adclose clickable" type="button">
-                                <img alt="" draggable="false" src="/levels/assets/images/x.png">
+                                <img alt="" draggable="false" src="/assets/images/levels/x.png">
                             </button>
                         </div>
                         <div class="carousel">
                             <a href="https://adriandrummis.github.io/CutTheRopeEditor" rel="noopener noreferrer" target="_blank">
-                                <img class="active" decoding="async" draggable="false" loading="lazy" src="/levels/assets/images/ads/ctreditor.png">
+                                <img class="active" decoding="async" draggable="false" loading="lazy" src="/assets/images/levels/ads/ctreditor.png">
                             </a>
                             <a hidden="" href="https://x.com/mushroomfromgd" rel="noopener noreferrer" target="_blank">
-                                <img decoding="async" draggable="false" loading="lazy" src="/levels/assets/images/ads/aidrum.png">
+                                <img decoding="async" draggable="false" loading="lazy" src="/assets/images/levels/ads/aidrum.png">
                             </a>
                             <a hidden="" href="https://theawesomeblue.nekoweb.org/links.html" rel="noopener noreferrer" target="_blank">
-                                <img decoding="async" draggable="false" loading="lazy" src="/levels/assets/images/ads/blue.png">
+                                <img decoding="async" draggable="false" loading="lazy" src="/assets/images/levels/ads/blue.png">
                             </a>
                             <a hidden="" href="https://spiritaccount.net" rel="noopener noreferrer" target="_blank">
-                                <img decoding="async" draggable="false" loading="lazy" src="/levels/assets/images/ads/spiritaccount.png">
+                                <img decoding="async" draggable="false" loading="lazy" src="/assets/images/levels/ads/spiritaccount.png">
                             </a>
                         </div>
                         <div class="adfooter">
                             <button aria-label="previous link" class="adleft clickable" type="button">
-                                <img alt="" draggable="false" src="/levels/assets/images/left.png">
+                                <img alt="" draggable="false" src="/assets/images/levels/left.png">
                             </button>
                             <button aria-label="next link" class="adright clickable" type="button">
-                                <img alt="" draggable="false" src="/levels/assets/images/right.png">
+                                <img alt="" draggable="false" src="/assets/images/levels/right.png">
                             </button>
                         </div>
                     </div>
                 </details>
+                <div class="levelcontent">
                 <div class="main">
                     <div class="controls">
-                        <div aria-label="scroll levels up" class="up clickable" role="button" tabindex="0">
-                            <img class="arrow" draggable="false" src="/levels/assets/images/controls/up.png">
-                            <img class="divider" draggable="false" src="/levels/assets/images/controls/dividerup.png">
+                        <div aria-label="previous levels" class="previous clickable" role="button" tabindex="0">
+                            <img class="arrow" draggable="false" src="/assets/images/levels/controls/up.png">
                         </div>
-                        <div aria-label="scroll levels down" class="down clickable" role="button" tabindex="0">
-                            <img class="divider" draggable="false" src="/levels/assets/images/controls/dividerdown.png">
-                            <img class="arrow" draggable="false" src="/levels/assets/images/controls/down.png">
+                        <div aria-label="next levels" class="next clickable" role="button" tabindex="0">
+                            <img class="arrow" draggable="false" src="/assets/images/levels/controls/down.png">
                         </div>
                     </div>
                     <div class="levels">
                         <div class="level">
-                            <img class="levelbg" draggable="false" src="/levels/assets/images/example.webp">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
                             <div class="header">
                                 <p class="title">hello world</p>
                                 <p class="creator">by admin</p>
@@ -183,34 +179,493 @@ hello, world</a>
                             <div class="footer">
                                 <div class="rating">
                                     <p>1.23</p>
-                                    <img draggable="false" src="/levels/assets/images/rating/star1.png">
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
                                 </div>
                                 <div class="features">
-                                    <img class="splitcandy" draggable="false" src="/levels/assets/images/features/splitcandy.png">
-                                    <img class="lantern" draggable="false" src="/levels/assets/images/features/lantern.png">
-                                    <img class="mouse" draggable="false" src="/levels/assets/images/features/mouse.png">
-                                    <img class="nightlight" draggable="false" src="/levels/assets/images/features/nightlight.png">
-                                    <img class="spider" draggable="false" src="/levels/assets/images/features/spider.png">
-                                    <img class="steam" draggable="false" src="/levels/assets/images/features/steam.png">
-                                    <img class="timed" draggable="false" src="/levels/assets/images/features/timed.png">
-                                    <img class="aircushion" draggable="false" src="/levels/assets/images/features/aircushion.png">
-                                    <img class="bee" draggable="false" src="/levels/assets/images/features/bee.png">
-                                    <img class="blade" draggable="false" src="/levels/assets/images/features/blade.png">
-                                    <img class="bouncingplatform" draggable="false" src="/levels/assets/images/features/bouncingplatform.png">
-                                    <img class="magichat" draggable="false" src="/levels/assets/images/features/magichat.png">
-                                    <img class="bubble" draggable="false" src="/levels/assets/images/features/bubble.png">
-                                    <img class="disc" draggable="false" src="/levels/assets/images/features/disc.png">
-                                    <img class="electricspark" draggable="false" src="/levels/assets/images/features/electricspark.png">
-                                    <img class="ghost" draggable="false" src="/levels/assets/images/features/ghost.png">
-                                    <img class="gravity" draggable="false" src="/levels/assets/images/features/gravity.png">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
                                     <a class="morefeatures" role="button" tabindex="0">Show more...</a>
                                 </div>
                                 <div class="side">
                                     <a class="objectcount">10 obj</a>
                                     <div class="sidebuttons">
-                                        <img class="play" draggable="false" src="/levels/assets/images/play.png">
-                                        <a aria-label="download hello world" class="leveldownload clickable" download="1_1.xml" href="/levels/assets/static/1_1.xml">
-                                            <img class="download" draggable="false" src="/levels/assets/images/download.png">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 2</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 2" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 3</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 3" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 4</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 4" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 5</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 5" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 6</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 6" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 7</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 7" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 8</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 8" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 9</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 9" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level">
+                            <img class="levelbg" draggable="false" src="/assets/images/levels/example.webp">
+                            <div class="header">
+                                <p class="title">hello world 10</p>
+                                <p class="creator">by admin</p>
+                            </div>
+                            <div class="desc">
+                                <a>programmed to work and not to feel
+not even sure that this is real
+hello, world
+find my voice
+although, it sounds like bits and bytes
+my circuitry is filled with mites
+hello, world</a>
+                            </div>
+                            <div class="footer">
+                                <div class="rating">
+                                    <p>1.23</p>
+                                    <img draggable="false" src="/assets/images/levels/rating/star1.png">
+                                </div>
+                                <div class="features">
+                                    <img class="splitcandy" draggable="false" src="/assets/images/levels/features/splitcandy.png">
+                                    <img class="lantern" draggable="false" src="/assets/images/levels/features/lantern.png">
+                                    <img class="mouse" draggable="false" src="/assets/images/levels/features/mouse.png">
+                                    <img class="nightlight" draggable="false" src="/assets/images/levels/features/nightlight.png">
+                                    <img class="spider" draggable="false" src="/assets/images/levels/features/spider.png">
+                                    <img class="steam" draggable="false" src="/assets/images/levels/features/steam.png">
+                                    <img class="timed" draggable="false" src="/assets/images/levels/features/timed.png">
+                                    <img class="aircushion" draggable="false" src="/assets/images/levels/features/aircushion.png">
+                                    <img class="bee" draggable="false" src="/assets/images/levels/features/bee.png">
+                                    <img class="blade" draggable="false" src="/assets/images/levels/features/blade.png">
+                                    <img class="bouncingplatform" draggable="false" src="/assets/images/levels/features/bouncingplatform.png">
+                                    <img class="magichat" draggable="false" src="/assets/images/levels/features/magichat.png">
+                                    <img class="bubble" draggable="false" src="/assets/images/levels/features/bubble.png">
+                                    <img class="disc" draggable="false" src="/assets/images/levels/features/disc.png">
+                                    <img class="electricspark" draggable="false" src="/assets/images/levels/features/electricspark.png">
+                                    <img class="ghost" draggable="false" src="/assets/images/levels/features/ghost.png">
+                                    <img class="gravity" draggable="false" src="/assets/images/levels/features/gravity.png">
+                                    <a class="morefeatures" role="button" tabindex="0">Show more...</a>
+                                </div>
+                                <div class="side">
+                                    <a class="objectcount">10 obj</a>
+                                    <div class="sidebuttons">
+                                        <img class="play" draggable="false" src="/assets/images/levels/play.png">
+                                        <a aria-label="download hello world 10" class="leveldownload clickable" download="1_1.xml" href="/assets/static/levels/1_1.xml">
+                                            <img class="download" draggable="false" src="/assets/images/levels/download.png">
                                         </a>
                                     </div>
                                 </div>
@@ -218,7 +673,8 @@ hello, world</a>
                         </div>
                     </div>
                 </div>
-                <img alt="Om Nom" class="nom" draggable="true" src="/levels/assets/svgs/nom1.svg">
+                </div>
+                <footer class="sitefooter"><a href="/documentation">documentation</a> • <a href="/credits">credits</a> • <a href="https://discord.gg/ExFtwhB5kS">have a question?</a> (ping <a href="https://discord.com/users/763502120333869116">@cvgd</a> ) • <a href="https://ctrhome.github.io/fan-projects">more fun stuff!</a></footer>
             </main>
         </div>
         <script src="/src/js/home/sidebar.js" type="module"></script>

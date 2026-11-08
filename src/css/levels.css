@@ -3,6 +3,12 @@
     min-width: 0; min-height: 0;
     height: 100%; pointer-events: none;
     overflow: hidden;
+    display: flex; flex-direction: column;
+}
+
+.levelcontent {
+    position: relative; flex: 1 1 auto;
+    min-height: 0;
 }
 
 .main {
@@ -12,32 +18,31 @@
 }
 
 .controls {
-    position: absolute; inset: 12px 0;
-    display: flex; flex-direction: column;
-    justify-content: space-between; align-items: center;
+    position: absolute; inset: 0 6px;
+    display: flex; justify-content: space-between;
+    align-items: center; pointer-events: none;
 }
 
-.up, .down {
-    display: flex; flex-direction: column;
+.previous, .next {
+    display: flex; justify-content: center;
     align-items: center; pointer-events: auto;
     line-height: 0;
+    width: 44px; height: 60px;
 }
 
 .arrow {
-    width: 60px; height: auto;
-}
-.divider {
-    width: min(450px,75vw); height: auto;
+    width: 44px; height: auto;
+    transform: rotate(-90deg); pointer-events: none;
 }
 
 .levels {
-    display: flex; flex-wrap: wrap;
-    justify-content: center; align-content: flex-start;
+    display: flex; align-items: center;
     gap: 20px; box-sizing: border-box;
-    width: 100%; max-width: 1000px;
-    height: calc(100% - 150px); padding: 14px 20px;
-    overflow-y: auto; overscroll-behavior: contain;
+    width: calc(100% - 104px); height: 100%;
+    padding: 14px 0; overflow-x: auto;
+    overflow-y: hidden; overscroll-behavior-x: contain;
     pointer-events: auto; scrollbar-width: none;
+    scroll-snap-type: x mandatory;
 }
 
 .level {
@@ -45,8 +50,8 @@
     width: 400px; max-width: 100%;
     height: 200px; box-sizing: border-box;
     padding: 20px 26px; border-radius: 16px;
-    background: url("/levels/assets/images/coolbox.webp") center / 100% 100% no-repeat;
-    isolation: isolate;
+    background: url("/assets/images/levels/coolbox.webp") center / 100% 100% no-repeat;
+    isolation: isolate; scroll-snap-align: start;
 }
 
 .levelbg {
@@ -165,12 +170,6 @@
 .play {display: none}
 .leveldownload {line-height: 0}
 
-.nom {
-    position: absolute; left: 16px;
-    bottom: 0; height: 110px;
-    pointer-events: auto;
-}
-
 /*//////////////////////////////////////////////////////////////////////*/
 
 .morestuff {
@@ -265,11 +264,10 @@
 }
 
 @media (max-width: 700px) {
-    .levelbrowser {height: auto}
     .levels {
-        padding: 10px 18px; height: calc(100% - 130px);
+        width: calc(100% - 68px); gap: 12px;
     }
-    .level {padding: 16px 22px}
+    .level {padding: 16px 18px}
     .title {font-size: 25px}
     .creator {
         max-width: 75px; font-size: 14px;
@@ -282,14 +280,11 @@
     .morestuff {
         top: 4px; right: 80px;
     }
-    .nom {height: 80px}
-    .arrow {width: 50px}
+    .controls {inset: 0 2px}
+    .previous, .next {width: 30px}
+    .arrow {width: 30px}
 }
 
 @media (max-height: 500px) {
-    .controls {inset: 8px 0}
-    .arrow {width: 36px}
-    .levels {
-        height: calc(100% - 100px); padding: 8px 20px;
-    }
+    .morestuff {top: 2px}
 }

@@ -1,0 +1,24 @@
+.shadow {
+    position: fixed; left: 50%;
+    top: 50%; z-index: 2;
+    width: var(--shadowsize,212vmax); height: var(--shadowsize,212vmax);
+    pointer-events: none; transform: translate(-50%,-50%);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1781 1781'%3E%3Cdefs%3E%3Cfilter id='soft' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='8'/%3E%3C/filter%3E%3Cmask id='hole'%3E%3Cpath fill='white' d='M0 0h1781v1781H0z'/%3E%3Crect x='594' y='611' width='596' height='596' rx='17' filter='url(%23soft)'/%3E%3C/mask%3E%3C/defs%3E%3Cg opacity='.321569' mask='url(%23hole)'%3E%3Cpath fill='%2322131c' d='M0 0h1781v1781H0z'/%3E%3Crect x='583' y='600' width='618' height='618' rx='17' fill='none' stroke='%2360260a' stroke-opacity='.66' stroke-width='30' filter='url(%23soft)'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 100% 100%; animation: shadowturn 60s linear infinite;
+    will-change: transform;
+}
+
+.shadow.paused {animation-play-state: paused}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+@keyframes shadowturn {
+    from {transform: translate(-50%,-50%) rotate(0turn)}
+    to {transform: translate(-50%,-50%) rotate(1turn)}
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shadow {
+        animation: none; will-change: auto;
+    }
+}

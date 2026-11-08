@@ -1,7 +1,5 @@
 const list = document.querySelector(".levels");
 const motion = matchMedia("(prefers-reduced-motion: reduce)");
-const features = document.querySelector(".features");
-const more = features.querySelector(".morefeatures");
 const advert = document.querySelector(".morestuff");
 const ads = Array.from(advert.querySelectorAll(".carousel a"));
 let adindex = 0;
@@ -15,14 +13,16 @@ document.body.appendChild(tooltip);
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-for (const direction of ["up", "down"]) {
+for (const direction of ["previous", "next"]) {
     const control = document.querySelector("." + direction);
     const arrow = control.querySelector(".arrow");
-    function release() {arrow.src = `/levels/assets/images/controls/${direction}.png`}
+    const sprite = direction === "previous" ? "up" : "down";
+    function release() {arrow.src = `/assets/images/levels/controls/${sprite}.png`}
     function scroll() {
-        const distance = direction === "up" ? -220 : 220;
-        list.scrollBy({top: distance, behavior: motion.matches ? "instant" : "smooth"});
-        arrow.src = `/levels/assets/images/controls/${direction}active.png`;
+        const card = list.querySelector(".level");
+        const distance = card.getBoundingClientRect().width + parseFloat(getComputedStyle(list).gap);
+        list.scrollBy({left: direction === "previous" ? -distance : distance, behavior: motion.matches ? "instant" : "smooth"});
+        arrow.src = `/assets/images/levels/controls/${sprite}active.png`;
     }
     control.addEventListener("pointerdown", event => {
         if (event.button !== 0) return;
@@ -40,14 +40,9 @@ for (const direction of ["up", "down"]) {
     });
 }
 
-more.addEventListener("click", event => {
-    event.preventDefault();
-    features.classList.add("expanded");
-    more.setAttribute("aria-expanded", "true");
-});
-
-more.addEventListener("keydown", event => {
-    if (!["Enter", " "].includes(event.key)) return;
+list.addEventListener("keydown", event => {
+    const more = event.target.closest(".morefeatures");
+    if (!more || !["Enter", " "].includes(event.key)) return;
     event.preventDefault();
     more.click();
 });
@@ -104,14 +99,21 @@ function hide() {
 }
 
 document.addEventListener("click", event => {
+    const more = event.target.closest(".morefeatures");
+    if (more) {
+        event.preventDefault();
+        more.closest(".features").classList.add("expanded");
+        more.setAttribute("aria-expanded", "true");
+    }
     const feature = event.target.closest(".features img");
     if (feature) {
         if (active === feature) hide();
         else void showtooltip(feature);
     } else if (!tooltip.contains(event.target)) hide();
-    if (!features.contains(event.target)) {
+    for (const features of document.querySelectorAll(".features.expanded")) {
+        if (features.contains(event.target)) continue;
         features.classList.remove("expanded");
-        more.setAttribute("aria-expanded", "false");
+        features.querySelector(".morefeatures").setAttribute("aria-expanded", "false");
     }
     if (advert.open && !advert.contains(event.target)) advert.open = false;
 });
@@ -119,9 +121,11 @@ document.addEventListener("click", event => {
 document.addEventListener("keydown", event => {
     if (event.key !== "Escape") return;
     hide();
-    features.classList.remove("expanded");
+    for (const features of document.querySelectorAll(".features.expanded")) {
+        features.classList.remove("expanded");
+        features.querySelector(".morefeatures").setAttribute("aria-expanded", "false");
+    }
     advert.open = false;
 });
 list.addEventListener("scroll", hide, {passive: true});
 window.addEventListener("resize", hide, {passive: true});
-document.querySelector(".nom").src = `/levels/assets/svgs/nom${Math.floor(Math.random() * 3) + 1}.svg`;

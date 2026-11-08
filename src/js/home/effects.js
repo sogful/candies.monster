@@ -9,18 +9,17 @@ startfavicon({onimage(image) {
 
 const canvas = document.querySelector(".effects");
 const context = canvas?.getContext("2d");
+const shadow = document.querySelector(".shadow");
 const motion = matchMedia("(prefers-reduced-motion: reduce)");
 const drops = [];
 let sprites = [];
 let sheet = null;
-let shadow = null;
 let width = innerWidth;
 let height = innerHeight;
 let ratio = 1;
 let limit = 0;
 let frame = 0;
 let previous = 0;
-let angle = 0;
 let suspended = false;
 let interval = 1000 / 30;
 let expensive = 0;
@@ -34,6 +33,7 @@ function resize() {
     ratio = Math.min(limited ? 0.85 : 1, Math.sqrt(budget / (width * height)));
     canvas.width = Math.max(1, Math.round(width * ratio));
     canvas.height = Math.max(1, Math.round(height * ratio));
+    document.documentElement.style.setProperty("--shadowsize", `${Math.hypot(width, height) * 1.5}px`);
     limit = Math.min(limited ? 14 : 36, Math.max(8, Math.round(width * height / 26000)));
     if (navigator.connection?.saveData) limit = Math.min(limit, 6);
     drops.length = Math.min(drops.length, limit);
@@ -75,15 +75,6 @@ function paint(seconds) {
             context.restore();
         }
     }
-    if (shadow) {
-        const size = Math.hypot(width, height) * 1.5;
-        angle += seconds * Math.PI / 30;
-        context.save();
-        context.translate(width / 2, height / 2);
-        context.rotate(angle);
-        context.drawImage(shadow, -size / 2, -size / 2, size, size);
-        context.restore();
-    }
 }
 
 function stop() {
@@ -114,6 +105,7 @@ function tick(now) {
 
 function resume() {
     stop();
+    shadow?.classList.toggle("paused", document.hidden || suspended);
     if (document.hidden || suspended || !canvas?.isConnected) return;
     if (motion.matches) paint(0);
     else {
@@ -145,7 +137,10 @@ function loadrain() {
         })
     ]).then(([bitmap, metadata]) => {
         sheet = bitmap;
-        sprites = metadata.frames;
+        sprites = metadata.frames.filter(sprite => {
+            const frame = sprite.frame;
+            return frame && frame.w > 0 && frame.h > 0 && frame.x >= 0 && frame.y >= 0;
+        });
         resize();
         resume();
     }).catch(() => {loading = null});
@@ -153,14 +148,10 @@ function loadrain() {
 
 if (context) {
     resize();
-    image("/levels/assets/images/shadow.webp").then(bitmap => {
-        shadow = bitmap;
-        paint(0);
-        resume();
-    }).catch(() => {});
+    resume();
     document.addEventListener("visibilitychange", resume);
     window.addEventListener("resize", resize, {passive: true});
-    window.addEventListener("pagehide", () => {suspended = true; stop()});
+    window.addEventListener("pagehide", () => {suspended = true; resume()});
     window.addEventListener("pageshow", () => {suspended = false; resume()});
     if (motion.addEventListener) motion.addEventListener("change", resume);
     else motion.addListener(resume);

@@ -7,50 +7,6 @@ document.querySelectorAll(".clickable").forEach(function(element) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-(function() {
-    const musicbutton = document.querySelector(".music");
-    const music = document.querySelector(".theme");
-    let isplaying = false; let audioctx = null;
-    let gainnode = null; let source = null;
-
-    function musicstop(callback) {
-        if (!audioctx) {if (callback) callback(); return}
-        const time = audioctx.currentTime;
-        gainnode.gain.cancelScheduledValues(time);
-        gainnode.gain.setValueAtTime(gainnode.gain.value, time);
-        gainnode.gain.linearRampToValueAtTime(0, time + 0.1);
-        setTimeout(() => {
-            music.pause(); music.currentTime = 0;
-            gainnode.gain.setValueAtTime(1, audioctx.currentTime);
-            if (callback) callback();
-        }, 100);
-    }
-    function setupmusic() {
-        if (!audioctx) {
-            audioctx = new (window.AudioContext || window.webkitAudioContext)();
-            gainnode = audioctx.createGain(); gainnode.gain.value = 1;
-            source = audioctx.createMediaElementSource(music);
-            source.connect(gainnode).connect(audioctx.destination);
-        }
-    }
-    musicbutton.addEventListener("click", function() {
-        setupmusic();
-        if (isplaying) {
-            musicstop(); musicbutton.src = "/assets/images/nomusic.png";
-            isplaying = false;
-            musicbutton.setAttribute("aria-pressed", "false");
-        } else {
-            if (audioctx && audioctx.state === "suspended") audioctx.resume();
-            gainnode.gain.setValueAtTime(1, audioctx.currentTime);
-            music.volume = 1; music.play().catch(() => {})
-            musicbutton.src = "/assets/images/music.png"; isplaying = true;
-            musicbutton.setAttribute("aria-pressed", "true");
-        }
-    });
-})();
-
-/*//////////////////////////////////////////////////////////////////////*/
-
 document.addEventListener("auxclick", (e) => {
     let el = e.target.closest(".sbutton, .ctrgame"); if (!el) return;
     if (e.button === 1) {
@@ -142,7 +98,6 @@ document.addEventListener("auxclick", (e) => {
 
         document.querySelector(".sbuttons").remove();
         document.querySelector(".github").remove();
-        document.querySelector(".music").remove();
         document.querySelector(".effects").remove();
         document.querySelector("p").remove();
         var weird = new Audio("assets/audio/weird.ogg");
@@ -204,8 +159,3 @@ slider.addEventListener("input", () => {
     slider.disabled = true;
 });
 
-document.querySelector(".music").addEventListener("keydown", event => {
-    if (!["Enter", " "].includes(event.key)) return;
-    event.preventDefault();
-    event.currentTarget.click();
-});
