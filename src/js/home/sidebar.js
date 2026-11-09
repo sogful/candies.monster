@@ -1,3 +1,36 @@
+const navigation = document.querySelector(".sidebar");
+const footer = document.querySelector(".sitefooter");
+const toggle = document.createElement("button");
+toggle.type = "button";
+toggle.className = "sidebartoggle clickable";
+toggle.setAttribute("aria-label", "hide navigation");
+toggle.setAttribute("aria-expanded", "true");
+const arrow = document.createElement("img");
+arrow.src = "/assets/images/buttons/back.png";
+arrow.alt = "";
+arrow.draggable = false;
+toggle.append(arrow);
+navigation.after(toggle);
+
+function measurefooter() {
+    document.documentElement.style.setProperty("--footerheight", footer.getBoundingClientRect().height + "px");
+}
+
+toggle.addEventListener("click", () => {
+    const hidden = document.documentElement.classList.toggle("navigationhidden");
+    toggle.setAttribute("aria-expanded", String(!hidden));
+    toggle.setAttribute("aria-label", hidden ? "show navigation" : "hide navigation");
+    navigation.inert = hidden;
+    footer.inert = hidden;
+    navigation.setAttribute("aria-hidden", String(hidden));
+    footer.setAttribute("aria-hidden", String(hidden));
+});
+measurefooter();
+if (window.ResizeObserver) new ResizeObserver(measurefooter).observe(footer);
+else window.addEventListener("resize", measurefooter, {passive: true});
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 document.querySelectorAll(".clickable").forEach(function(element) {
     element.addEventListener("click", function() {
         document.querySelector(".click").currentTime = 0;
@@ -158,4 +191,3 @@ slider.addEventListener("input", () => {
     activated = true;
     slider.disabled = true;
 });
-

@@ -46,6 +46,7 @@
     background: rgba(0,0,0,0.5); font-size: 16px;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.15em 0 #000;
+    transition: margin-left 260ms ease;
 }
 
 .sitenavigation {
@@ -107,6 +108,7 @@
     text-align: center; pointer-events: none;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.175em 0 #000;
+    position: relative; margin-top: -5px;
 }
 
 .smallnav .buttonlabel {font-size: 9px}
@@ -127,7 +129,33 @@
     white-space: nowrap; text-align: center;
     pointer-events: auto; -webkit-text-stroke: 0.175em #000;
     paint-order: stroke fill; text-shadow: 0 0.15em 0 #000;
+    transition: transform 260ms ease, margin-bottom 260ms ease;
 }
+
+.sidebartoggle {
+    position: absolute; top: 14px;
+    left: 88px; z-index: 6;
+    display: grid; place-items: center;
+    width: 24px; height: 44px;
+    padding: 0 3px 0 0; border: 0;
+    border-radius: 0 100% 100% 0; background: rgba(0,0,0,0.5);
+    pointer-events: auto; transition: left 260ms ease;
+}
+
+.sidebartoggle img {
+    width: 19px; height: auto;
+    pointer-events: none; transition: transform 260ms ease;
+}
+
+.navigationhidden .sidebar {margin-left: -88px}
+.navigationhidden .sidebartoggle {left: 0}
+.navigationhidden .sidebartoggle img {transform: scaleX(-1)}
+.navigationhidden .sitefooter {
+    transform: translateY(100%); margin-bottom: calc(-1 * var(--footerheight,27px));
+    pointer-events: none;
+}
+
+.documentcredits .sidebartoggle {visibility: hidden}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -210,8 +238,23 @@
         gap: 8px; overflow-x: auto;
         overflow-y: hidden; white-space: nowrap;
         pointer-events: none;
+        transition: margin-top 260ms ease;
     }
     .sidebar > * {pointer-events: auto}
+    .navigationhidden .sidebar {
+        margin-left: 0; margin-top: -76px;
+    }
+    .sidebartoggle {
+        top: 76px; left: 10px;
+        width: 44px; height: 24px;
+        padding: 0 0 3px; border-radius: 0 0 100% 100%;
+        transition: top 260ms ease;
+    }
+    .sidebartoggle img {transform: rotate(90deg)}
+    .navigationhidden .sidebartoggle {
+        top: 0; left: 10px;
+    }
+    .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}
     .sitenavigation {display: contents}
     .sidebarlogo {
         width: 64px; align-self: center;
@@ -242,6 +285,10 @@
         gap: 3px; margin-top: 0;
         margin-left: auto; order: 4;
     }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar, .sidebartoggle, .sidebartoggle img, .sitefooter {transition: none}
 }
 
 @keyframes shake {
