@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<map>
+    <layer name="settings">
+        <map gridSize="32" width="320" height="480" />
+        <gameDesign ropePhysicsSpeed="1.0" special="1" twoParts="false" />
+    </layer>
+    <layer name="Objects">
+        <candy x="158" y="147" />
+        <grab x="159" y="45" length="90" wheel="false" gun="false" radius="-1" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
+        <target x="161" y="427" />
+        <star x="162" y="230" timeout="-1" />
+        <star x="161" y="295" timeout="-1" />
+        <star x="161" y="361" timeout="-1" />
+        <tutorialText x="174" y="46" locale="en" text="TUTORIAL_LVL_1_1_01" width="160" />
+        <tutorialText x="182" y="335" locale="en" text="TUTORIAL_LVL_1_1_02" width="130" />
+        <tutorial01 x="57" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+        <tutorial04 x="231" y="416" locale="en" moveSpeed="100" rotateSpeed="100" />
+        <tutorial01 x="109" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+        <tutorial01 x="161" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+        <tutorial01 x="213" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+        <tutorial01 x="265" y="119" locale="en" moveSpeed="100" rotateSpeed="100" />
+        <tutorial10 x="93" y="149" locale="en" moveSpeed="100" rotateSpeed="100" special="2" />
+    </layer>
+</map>

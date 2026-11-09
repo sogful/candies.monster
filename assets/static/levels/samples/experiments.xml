@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<map>
+    <layer name="settings">
+        <map width="320" height="480" gridSize="32" />
+        <gameDesign water="0" />
+    </layer>
+    <layer name="Objects">
+        <candy x="155" y="150" />
+        <target x="160" y="420" />
+        <grab x="155" y="55" length="95" radius="-1" />
+        <grab x="45" y="185" gun="true" angle="0" />
+        <rocket x="265" y="290" angle="-90" />
+        <hand x="55" y="320" segmentsCount="2" segment1Angle="-30" segment1Length="60" segment2Angle="-90" segment2Length="50" />
+        <star x="160" y="230" />
+        <star x="245" y="250" />
+        <star x="160" y="365" />
+    </layer>
+</map>

@@ -1,0 +1,228 @@
+{
+  "source": "https://github.com/yell0wsuit/cuttherope-dx",
+  "assets": "content/images",
+  "scale": 3,
+  "frames": {
+    "target": [
+      "char_animations",
+      0
+    ],
+    "support": [
+      "char_supports",
+      0
+    ],
+    "candy": [
+      "candies/obj_candy_01_new",
+      1
+    ],
+    "candybase": [
+      "candies/obj_candy_01_new",
+      0
+    ],
+    "candytop": [
+      "candies/obj_candy_01_new",
+      2
+    ],
+    "candyleft": [
+      "candies/obj_candy_01_new",
+      8
+    ],
+    "candyright": [
+      "candies/obj_candy_01_new",
+      9
+    ],
+    "star": [
+      "obj_star_idle",
+      1
+    ],
+    "gravity": [
+      "obj_star_idle",
+      21
+    ],
+    "bubble": [
+      "obj_bubble",
+      0
+    ],
+    "pump": [
+      "obj_pump",
+      0
+    ],
+    "sock": [
+      "obj_hat",
+      0
+    ],
+    "grab": [
+      "obj_hook",
+      0
+    ],
+    "automatic": [
+      "obj_hook",
+      4
+    ],
+    "wheel": [
+      "obj_hook",
+      11
+    ],
+    "spider": [
+      "obj_spider",
+      0
+    ],
+    "bee": [
+      "obj_bee",
+      1
+    ],
+    "beewings": [
+      "obj_bee",
+      2
+    ],
+    "electro": [
+      "obj_electrodes",
+      0
+    ],
+    "disc": [
+      "obj_vinil",
+      0
+    ],
+    "dischandle": [
+      "obj_vinil",
+      4
+    ],
+    "ghost": [
+      "obj_ghost",
+      0
+    ],
+    "ghostface": [
+      "obj_ghost",
+      1
+    ],
+    "steam": [
+      "obj_pipe",
+      0
+    ],
+    "valve": [
+      "obj_pipe",
+      1
+    ],
+    "pipe": [
+      "obj_bamboo_tube",
+      0
+    ],
+    "ant": [
+      "obj_ant",
+      0
+    ],
+    "mouse": [
+      "obj_mouse",
+      0
+    ],
+    "lantern": [
+      "obj_lantern",
+      2
+    ],
+    "light": [
+      "obj_lighter",
+      0
+    ],
+    "lightbulb": [
+      "obj_lighter",
+      1
+    ],
+    "bulbcap": [
+      "obj_lighter",
+      2
+    ],
+    "gunback": [
+      "obj_gun",
+      0
+    ],
+    "gunfront": [
+      "obj_gun",
+      2
+    ],
+    "rocketbase": [
+      "obj_rocket",
+      0
+    ],
+    "rocket": [
+      "obj_rocket",
+      1
+    ],
+    "handbase": [
+      "obj_robohand",
+      4
+    ],
+    "handjoint": [
+      "obj_robohand",
+      1
+    ],
+    "hand": [
+      "obj_robohand",
+      5
+    ],
+    "belt": [
+      "obj_conveyor",
+      4
+    ],
+    "beltend": [
+      "obj_conveyor",
+      0
+    ],
+    "snail": [
+      "obj_snail",
+      8
+    ],
+    "snaileyes": [
+      "obj_snail",
+      2
+    ],
+    "axe": [
+      "obj_axe",
+      1
+    ],
+    "axepivot": [
+      "obj_axe",
+      2
+    ],
+    "bouncerone": [
+      "obj_bouncer",
+      0
+    ],
+    "bouncertwo": [
+      "obj_bouncer",
+      5
+    ],
+    "spikeone": [
+      "obj_spikes",
+      8
+    ],
+    "rotatespikeone": [
+      "obj_spikes",
+      0
+    ],
+    "spiketwo": [
+      "obj_spikes",
+      9
+    ],
+    "rotatespiketwo": [
+      "obj_spikes",
+      1
+    ],
+    "spikethree": [
+      "obj_spikes",
+      10
+    ],
+    "rotatespikethree": [
+      "obj_spikes",
+      2
+    ],
+    "spikefour": [
+      "obj_spikes",
+      11
+    ],
+    "rotatespikefour": [
+      "obj_spikes",
+      3
+    ]
+  },
+  "ancestor": "animations/om_nom_prehistoric.xml timeline 0, first frame; FlashXmlScale 1.56, BaseTargetScale 1.73"
+}
