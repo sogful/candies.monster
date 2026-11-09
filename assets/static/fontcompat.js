@@ -9,6 +9,11 @@
     const links = new WeakSet();
     let pending = false;
 
+    const linkstyle = document.createElement("style");
+    linkstyle.className = "linkcolors";
+    linkstyle.textContent = ":any-link {-webkit-text-stroke-color: #000}";
+    document.head.appendChild(linkstyle);
+
     /*//////////////////////////////////////////////////////////////////////*/
 
     function shadows(width, color) {
