@@ -1,3 +1,5 @@
+@import url("./leveldetail.css");
+
 .levelbrowser {
     position: relative; flex: 1 1 auto;
     min-width: 0; min-height: 0;
@@ -26,8 +28,13 @@
 .previous, .next {
     display: flex; justify-content: center;
     align-items: center; pointer-events: auto;
-    line-height: 0;
     width: 44px; height: 60px;
+    padding: 0; border: 0;
+    background: none; line-height: 0;
+}
+
+.previous:disabled, .next:disabled {
+    opacity: 0.3; cursor: default;
 }
 
 .arrow {
@@ -36,27 +43,28 @@
 }
 
 .levels {
-    display: flex; align-items: center;
-    gap: 20px; box-sizing: border-box;
-    width: calc(100% - 104px); height: 100%;
-    padding: 14px 0; overflow-x: auto;
-    overflow-y: hidden; overscroll-behavior-x: contain;
-    pointer-events: auto; scrollbar-width: none;
-    scroll-snap-type: x mandatory;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+    box-sizing: border-box; height: 100%;
+    width: calc(100% - 104px); padding: 14px 0;
+    overflow-x: hidden; overflow-y: auto;
+    overscroll-behavior-y: contain; pointer-events: auto;
+    scrollbar-width: none;
 }
 
 .level {
     position: relative; flex-shrink: 0;
-    width: 400px; max-width: 100%;
-    height: 200px; box-sizing: border-box;
-    padding: 20px 26px; border-radius: 16px;
-    background: url("/assets/images/coolbox.webp") center / 100% 100% no-repeat;
-    isolation: isolate; scroll-snap-align: start;
+    width: 100%; max-width: 560px;
+    min-height: 116px; box-sizing: border-box;
+    padding: 18px 24px 22px; border: 0 solid transparent;
+    border-image-source: url("/assets/images/coolbox.svg");
+    border-image-slice: 100 fill; border-image-width: 32px;
+    isolation: isolate;
 }
 
 .levelbg {
-    position: absolute; inset: 5px 10px;
-    width: calc(100% - 20px); height: calc(100% - 10px);
+    position: absolute; inset: 8px;
+    width: calc(100% - 16px); height: calc(100% - 16px);
     border-radius: 16px; object-fit: cover;
     mix-blend-mode: overlay; z-index: -1;
     pointer-events: none;
@@ -64,8 +72,7 @@
 
 .header {
     display: flex; gap: 10px;
-    align-items: center; padding-top: 10px;
-    height: 30px;
+    align-items: baseline; min-width: 0;
 }
 
 .title, .creator {
@@ -74,10 +81,11 @@
     text-overflow: ellipsis; min-width: 0;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.15em 0 #000;
+    padding: 3px 2px;
 }
 
 .title {
-    font-size: 28px; max-width: 220px;
+    font-size: 28px; flex: 1 1 auto;
 }
 
 .creator {
@@ -85,27 +93,10 @@
     flex-shrink: 0;
 }
 
-.desc {
-    position: relative; margin-top: 12px;
-    max-width: calc(100% - 28px); font-style: italic;
-    color: #fff; font-size: 16px;
-    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
-    text-shadow: 0 3px 0 #000;
-}
-
-.desc a {
-    display: -webkit-box; white-space: pre-line;
-    -webkit-line-clamp: 3; line-clamp: 3;
-    -webkit-box-orient: vertical; overflow: hidden;
-}
-
-.desc a::before, .desc a::after {content: "\""}
-
 .footer {
-    position: absolute; bottom: 12px;
-    left: 24px; right: 60px;
-    display: flex; align-items: center;
-    gap: 8px;
+    position: relative; display: flex;
+    align-items: center; gap: 8px;
+    margin-top: 8px;
 }
 
 .rating, .features {
@@ -138,37 +129,25 @@
     left: 50%; transform: translateX(-50%);
     width: max-content; font-size: 13px;
     line-height: 1; padding: 3px;
+    border: 0; background: none;
+    color: inherit; font-family: inherit;
+    -webkit-text-stroke: inherit; paint-order: inherit;
+    text-shadow: inherit;
 }
 
 .features.expanded {
-    position: absolute; left: 72px;
-    bottom: 0; z-index: 5;
     display: flex; flex-wrap: wrap;
-    width: 190px; max-width: calc(100vw - 120px);
+    width: 190px; max-width: 100%;
     padding: 4px; background: rgba(0,0,0,0.5);
 }
 
 .features.expanded img {display: block}
 .features.expanded .morefeatures {display: none}
 
-.side {
-    position: absolute; right: -50px;
-    bottom: 0; display: flex;
-    flex-direction: column; align-items: center;
+.levelnotice {
+    color: #fff; text-align: center;
+    font-size: 24px;
 }
-
-.objectcount {
-    margin-bottom: 4px; font-size: 16px;
-    color: #fff; white-space: nowrap;
-    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
-    text-shadow: 0 3px 0 #000;
-}
-
-.download {
-    display: block; width: 44px;
-}
-.play {display: none}
-.leveldownload {line-height: 0}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -265,10 +244,10 @@
 
 @media (max-width: 700px) {
     .levels {
-        width: calc(100% - 68px); gap: 12px;
+        width: calc(100% - 68px); gap: 8px;
     }
-    .level {padding: 16px 18px}
-    .title {font-size: 25px}
+    .level {padding: 14px 16px 22px}
+    .title {font-size: 23px}
     .creator {
         max-width: 75px; font-size: 14px;
     }

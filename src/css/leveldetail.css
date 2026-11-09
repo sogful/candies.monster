@@ -1,0 +1,195 @@
+.leveldetail {
+    position: absolute; inset: 0;
+    box-sizing: border-box; padding: 30px 60px 24px;
+    overflow-y: auto; overscroll-behavior: contain;
+    pointer-events: auto; scrollbar-width: none;
+    color: #fff; text-align: center;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+
+.leveldetail[hidden] {display: none}
+.leveldetail::-webkit-scrollbar {display: none}
+.levelopen .levelcontent > .main {visibility: hidden}
+.levelopen .morestuff {visibility: hidden}
+.documentopen .leveldetail {display: none}
+
+.levelback {
+    position: absolute; left: 32px;
+    top: 28px; width: 42px;
+    border: 0; padding: 0;
+    background: none; line-height: 0;
+}
+
+.levelback img {width: 100%}
+
+.levelheading {
+    padding: 0 36px; margin: 0 auto;
+    max-width: 760px;
+}
+
+.levelname {
+    font-size: clamp(28px,4vw,48px); font-weight: normal;
+    line-height: 1.15; margin: 0;
+    overflow-wrap: anywhere; padding: 4px;
+}
+
+.levelauthor {
+    color: #8feeff; font-size: 25px;
+    margin: 5px 0 0;
+}
+
+.levelhero {
+    display: grid; grid-template-columns: 1fr 180px 1fr;
+    align-items: center; gap: 32px;
+    max-width: 680px; margin: 28px auto;
+}
+
+.levelnom {
+    width: 112px; max-width: 100%;
+}
+
+.levelstars {
+    display: flex; justify-content: center;
+    align-items: center; gap: 5px;
+    font-size: 28px; margin-top: 6px;
+}
+
+.levelstars img {
+    width: 68px; height: auto;
+}
+
+.levelplay {
+    display: block; width: 180px;
+    line-height: 0; border-radius: 50%;
+}
+
+.levelplay img {width: 100%}
+.levelplay[aria-disabled] {opacity: 0.5}
+.levelplay:active {transform: scale(0.96)}
+
+.levelstatistics {
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 10px;
+}
+
+.levelstat {
+    display: flex; align-items: baseline;
+    gap: 8px;
+}
+
+.levelvalue {
+    font-weight: normal; font-size: 30px;
+}
+
+.levellabel {
+    font-size: 19px; color: #e3f7ff;
+}
+
+.levelprogress {
+    max-width: 540px; margin: 0 auto 20px;
+}
+
+.levelprogressrow {font-size: 24px}
+
+.levelprogressbar {
+    position: relative; height: 28px;
+    border-radius: 16px; overflow: hidden;
+    background: rgba(0,0,0,0.5); margin-top: 5px;
+}
+
+.levelprogressfill {
+    position: absolute; inset: 0 auto 0 0;
+    background: #8ed93d;
+}
+
+.levelprogresstext {
+    position: relative; display: block;
+    line-height: 28px; font-size: 22px;
+}
+
+.levelbest {
+    margin: 12px 0 0; font-size: 22px;
+}
+
+.levelinformation {
+    box-sizing: border-box; max-width: 660px;
+    margin: 0 auto; padding: 22px 28px;
+    border: 0 solid transparent;
+    border-image-source: url("/assets/images/coolbox.svg");
+    border-image-slice: 100 fill; border-image-width: 32px;
+}
+
+.leveldescription {
+    margin: 0 0 12px; font-size: 25px;
+    overflow-wrap: anywhere;
+}
+
+.levelfeatures {
+    display: flex; justify-content: center;
+    flex-wrap: wrap; gap: 8px;
+    margin-bottom: 16px;
+}
+
+.levelfeatures img {
+    width: 30px; height: 30px;
+    object-fit: contain;
+}
+
+.levelaction {
+    display: inline-flex; align-items: center;
+    justify-content: center; width: 180px;
+    min-height: 66px; background: url("/assets/images/buttons/wide/sbutton.webp") center / 100% 100% no-repeat;
+    color: #fff; font-size: 25px;
+    text-decoration: none;
+}
+
+.levelaction:active {background-image: url("/assets/images/buttons/wide/sbuttonactive.webp")}
+.levelstatus {
+    font-size: 24px; margin: 14px 0 0;
+}
+.levelstatus:empty {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+@media (max-width: 700px) {
+    .leveldetail {padding: 26px 16px 20px}
+    .levelback {
+        left: 32px; width: 32px;
+    }
+    .levelheading {padding: 0 45px}
+    .levelname {font-size: 28px}
+    .levelauthor {font-size: 20px}
+    .levelhero {
+        grid-template-columns: 1fr 104px 1fr; gap: 12px;
+        margin: 24px auto;
+    }
+    .levelplay {width: 104px}
+    .levelnom {width: 76px}
+    .levelstars {
+        font-size: 21px; gap: 0;
+    }
+    .levelstars img {width: 48px}
+    .levelstatistics {gap: 8px}
+    .levelstat {
+        flex-direction: column; gap: 0;
+        align-items: center;
+    }
+    .levelvalue {font-size: 24px}
+    .levellabel {font-size: 15px}
+    .levelprogressrow, .levelbest {font-size: 22px}
+    .levelinformation {padding: 18px 20px}
+    .leveldescription {font-size: 23px}
+    .levelfeatures {gap: 6px}
+    .levelfeatures img {
+        width: 26px; height: 26px;
+    }
+}
+
+@media (max-height: 600px) and (min-width: 701px) {
+    .leveldetail {padding-top: 18px}
+    .levelname {font-size: 32px}
+    .levelhero {margin: 14px auto}
+    .levelplay {width: 140px}
+    .levelnom {width: 90px}
+}

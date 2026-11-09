@@ -105,8 +105,9 @@ function tick(now) {
 
 function resume() {
     stop();
-    shadow?.classList.toggle("paused", document.hidden || suspended);
-    if (document.hidden || suspended || !canvas?.isConnected) return;
+    const covered = document.documentElement.matches(".documentopen.documentdocumentation");
+    shadow?.classList.toggle("paused", document.hidden || suspended || covered);
+    if (document.hidden || suspended || covered || !canvas?.isConnected) return;
     if (motion.matches) paint(0);
     else {
         loadrain();
@@ -150,6 +151,7 @@ if (context) {
     resize();
     resume();
     document.addEventListener("visibilitychange", resume);
+    document.addEventListener("homeviewchange", resume);
     window.addEventListener("resize", resize, {passive: true});
     window.addEventListener("pagehide", () => {suspended = true; resume()});
     window.addEventListener("pageshow", () => {suspended = false; resume()});

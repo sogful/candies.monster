@@ -1,7 +1,14 @@
+import {leveldetails} from "./leveldetail.js";
+
 const list = document.querySelector(".levels");
-const motion = matchMedia("(prefers-reduced-motion: reduce)");
 const advert = document.querySelector(".morestuff");
 const ads = Array.from(advert.querySelectorAll(".carousel a"));
+const previous = document.querySelector(".previous");
+const next = document.querySelector(".next");
+const pagesize = 10;
+const detail = leveldetails();
+let entries = [];
+let page = 0;
 let adindex = 0;
 let definitions = null;
 let loading = null;
@@ -13,32 +20,104 @@ document.body.appendChild(tooltip);
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-for (const direction of ["previous", "next"]) {
-    const control = document.querySelector("." + direction);
-    const arrow = control.querySelector(".arrow");
-    const sprite = direction === "previous" ? "up" : "down";
-    function release() {arrow.src = `/assets/images/buttons/${sprite}.png`}
-    function scroll() {
-        const card = list.querySelector(".level");
-        const distance = card.getBoundingClientRect().width + parseFloat(getComputedStyle(list).gap);
-        list.scrollBy({left: direction === "previous" ? -distance : distance, behavior: motion.matches ? "instant" : "smooth"});
-        arrow.src = `/assets/images/buttons/${sprite}active.png`;
+function element(tag, classname, text) {
+    const node = document.createElement(tag);
+    node.className = classname;
+    if (text !== undefined) node.textContent = text;
+    return node;
+}
+
+function picture(source, classname, alternative = "") {
+    const node = element("img", classname);
+    node.src = source;
+    node.alt = alternative;
+    node.draggable = false;
+    node.loading = "lazy";
+    node.decoding = "async";
+    return node;
+}
+
+function createlevel(entry) {
+    const card = element("article", "level clickable");
+    card.dataset.level = String(entry.id ?? entries.indexOf(entry) + 1);
+    card.tabIndex = 0;
+    card.setAttribute("role", "link");
+    card.setAttribute("aria-label", "open " + entry.title);
+    const header = element("div", "header");
+    header.append(element("p", "title", entry.title), element("p", "creator", `by ${entry.creator}`));
+    const footer = element("div", "footer");
+    const rating = element("div", "rating");
+    rating.append(element("p", "", String(entry.rating)), picture("/assets/images/stars/star1.png", "", "stars"));
+    const features = element("div", "features");
+    for (const name of entry.features || []) {
+        if (!/^[a-z]+$/.test(name)) continue;
+        features.append(picture(`/assets/images/objects/${name}.png`, name, name));
     }
+    if (features.children.length > 4) {
+        const more = element("button", "morefeatures clickable", "show more");
+        more.type = "button";
+        more.setAttribute("aria-expanded", "false");
+        features.append(more);
+    }
+    footer.append(rating, features);
+    if (entry.background) card.append(picture(entry.background, "levelbg"));
+    card.append(header, footer);
+    return card;
+}
+
+function showpage(number) {
+    const pages = Math.max(1, Math.ceil(entries.length / pagesize));
+    page = Math.max(0, Math.min(number, pages - 1));
+    hide();
+    const content = document.createDocumentFragment();
+    for (const entry of entries.slice(page * pagesize, (page + 1) * pagesize)) content.append(createlevel(entry));
+    if (!entries.length) content.append(element("p", "levelnotice", "no levels yet"));
+    list.replaceChildren(content);
+    list.scrollTop = 0;
+    list.setAttribute("aria-label", `levels, page ${page + 1} of ${pages}`);
+    previous.disabled = page === 0;
+    next.disabled = page >= pages - 1;
+}
+
+for (const [control, offset, sprite] of [[previous, -1, "up"], [next, 1, "down"]]) {
+    const arrow = control.querySelector(".arrow");
+    function release() {arrow.src = `/assets/images/buttons/${sprite}.png`}
+    control.addEventListener("click", () => showpage(page + offset));
     control.addEventListener("pointerdown", event => {
-        if (event.button !== 0) return;
+        if (event.button !== 0 || control.disabled) return;
         control.setPointerCapture(event.pointerId);
-        scroll();
+        arrow.src = `/assets/images/buttons/${sprite}active.png`;
     });
     control.addEventListener("pointerup", release);
     control.addEventListener("pointercancel", release);
     control.addEventListener("lostpointercapture", release);
-    control.addEventListener("keydown", event => {
-        if (!["Enter", " "].includes(event.key)) return;
-        event.preventDefault();
-        scroll();
-        release();
-    });
 }
+
+fetch(new URL("../../data/test.json", import.meta.url)).then(response => {
+    if (!response.ok) throw new Error("Levels unavailable");
+    return response.json();
+}).then(data => {
+    if (!Array.isArray(data)) throw new Error("Invalid level data");
+    entries = data;
+    detail.setentries(data);
+    showpage(0);
+}).catch(() => {
+    list.replaceChildren(element("p", "levelnotice", "levels could not be loaded"));
+}).finally(() => list.setAttribute("aria-busy", "false"));
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+list.addEventListener("click", event => {
+    const card = event.target.closest(".level");
+    if (!card || event.target.closest(".features")) return;
+    detail.open(card.dataset.level);
+});
+
+list.addEventListener("keydown", event => {
+    if (!event.target.matches(".level") || !["Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+    detail.open(event.target.dataset.level);
+});
 
 list.addEventListener("keydown", event => {
     const more = event.target.closest(".morefeatures");
