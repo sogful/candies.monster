@@ -1,5 +1,4 @@
 const navigation = document.querySelector(".sidebar");
-const footer = document.querySelector(".sitefooter");
 const toggle = document.createElement("button");
 toggle.type = "button";
 toggle.className = "sidebartoggle clickable";
@@ -12,22 +11,48 @@ arrow.draggable = false;
 toggle.append(arrow);
 navigation.after(toggle);
 
-function measurefooter() {
-    document.documentElement.style.setProperty("--footerheight", footer.getBoundingClientRect().height + "px");
-}
-
 toggle.addEventListener("click", () => {
     const hidden = document.documentElement.classList.toggle("navigationhidden");
     toggle.setAttribute("aria-expanded", String(!hidden));
     toggle.setAttribute("aria-label", hidden ? "show navigation" : "hide navigation");
     navigation.inert = hidden;
-    footer.inert = hidden;
     navigation.setAttribute("aria-hidden", String(hidden));
-    footer.setAttribute("aria-hidden", String(hidden));
+    if (hidden) closebuttons();
 });
-measurefooter();
-if (window.ResizeObserver) new ResizeObserver(measurefooter).observe(footer);
-else window.addEventListener("resize", measurefooter, {passive: true});
+
+const buttonstoggle = document.querySelector(".buttonstoggle");
+const drawer = document.querySelector(".buttondrawer");
+
+function positionbuttons() {
+    if (drawer.hidden) return;
+    const bounds = buttonstoggle.getBoundingClientRect();
+    const side = navigation.getBoundingClientRect();
+    drawer.style.left = Math.max(4, Math.min(side.right, innerWidth - drawer.offsetWidth - 4)) + "px";
+    drawer.style.top = Math.max(4, Math.min(bounds.bottom - drawer.offsetHeight, innerHeight - drawer.offsetHeight - 4)) + "px";
+}
+
+function closebuttons() {
+    drawer.hidden = true;
+    buttonstoggle.setAttribute("aria-expanded", "false");
+}
+
+buttonstoggle.addEventListener("click", () => {
+    drawer.hidden = !drawer.hidden;
+    buttonstoggle.setAttribute("aria-expanded", String(!drawer.hidden));
+    positionbuttons();
+});
+document.addEventListener("pointerdown", event => {
+    if (!drawer.contains(event.target) && !buttonstoggle.contains(event.target)) closebuttons();
+});
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !drawer.hidden) {
+        closebuttons();
+        buttonstoggle.focus({preventScroll: true});
+    }
+});
+window.addEventListener("resize", positionbuttons, {passive: true});
+navigation.addEventListener("scroll", positionbuttons, {passive: true});
+document.addEventListener("homeviewchange", closebuttons);
 
 /*//////////////////////////////////////////////////////////////////////*/
 

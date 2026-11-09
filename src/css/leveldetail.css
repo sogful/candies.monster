@@ -12,11 +12,15 @@
 .leveldetail::-webkit-scrollbar {display: none}
 .levelopen .levelcontent > .main {visibility: hidden}
 .levelopen .morestuff {visibility: hidden}
+.levelopen .github {
+    opacity: 0; visibility: hidden;
+    pointer-events: none;
+}
 .documentopen .leveldetail {display: none}
 
 .levelback {
-    position: absolute; left: 32px;
-    top: 28px; width: 42px;
+    position: absolute; left: 8px;
+    top: 8px; width: 42px;
     border: 0; padding: 0;
     background: none; line-height: 0;
 }
@@ -155,7 +159,7 @@
 @media (max-width: 700px) {
     .leveldetail {padding: 26px 16px 20px}
     .levelback {
-        left: 32px; width: 32px;
+        left: 8px; width: 32px;
     }
     .levelheading {padding: 0 45px}
     .levelname {font-size: 28px}

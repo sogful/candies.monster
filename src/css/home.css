@@ -120,20 +120,24 @@
     font-size: 14px; line-height: 1.05;
 }
 
-.sitefooter {
-    display: block; flex-shrink: 0;
-    box-sizing: border-box; width: 100%;
-    padding: 5px 8px; overflow-x: auto;
-    background: rgba(0,0,0,0.5); color: #dfdfdf;
-    font-size: 13px; line-height: 1.3;
+.sidelinks {
+    display: flex; flex-direction: column;
+    flex-shrink: 0; align-items: center;
+    width: 88px; padding: 3px 0;
+    font-size: 14px; line-height: 1.15;
     white-space: nowrap; text-align: center;
-    pointer-events: auto; -webkit-text-stroke: 0.175em #000;
-    paint-order: stroke fill; text-shadow: 0 0.15em 0 #000;
-    transition: transform 260ms ease, margin-bottom 260ms ease;
+}
+
+.buttonstoggle {
+    border: 0; padding: 0;
+    background: none; color: #8feeff;
+    font: inherit; line-height: inherit;
+    -webkit-text-stroke: inherit; paint-order: inherit;
+    text-shadow: inherit;
 }
 
 .sidebartoggle {
-    position: absolute; top: 14px;
+    position: absolute; bottom: 14px;
     left: 88px; z-index: 6;
     display: grid; place-items: center;
     width: 24px; height: 44px;
@@ -150,21 +154,24 @@
 .navigationhidden .sidebar {margin-left: -88px}
 .navigationhidden .sidebartoggle {left: 0}
 .navigationhidden .sidebartoggle img {transform: scaleX(-1)}
-.navigationhidden .sitefooter {
-    transform: translateY(100%); margin-bottom: calc(-1 * var(--footerheight,27px));
-    pointer-events: none;
-}
 
 .documentcredits .sidebartoggle {visibility: hidden}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 .sbuttons {
-    position: relative; display: flex;
-    flex-wrap: wrap; justify-content: center;
-    gap: 4px; flex-shrink: 0;
-    margin-top: auto;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 4px;
 }
+
+.buttondrawer {
+    position: fixed; z-index: 8;
+    width: 88px; padding: 8px;
+    border-radius: 0 8px 8px 0; background: rgba(0,0,0,0.5);
+    pointer-events: auto;
+}
+
+.buttondrawer[hidden] {display: none}
 
 .sbutton {
     display: block; width: 88px;
@@ -211,13 +218,13 @@
 .github {
     position: fixed; top: 0;
     right: 0; z-index: 1;
-    width: 52px; height: 52px;
+    width: 40px; height: 40px;
 }
 
 .github img {
     position: absolute; top: 0;
-    right: 0; width: 74px;
-    height: 130px; pointer-events: none;
+    right: 0; width: 56px;
+    height: 98px; pointer-events: none;
 }
 
 .effects {
@@ -245,14 +252,14 @@
         margin-left: 0; margin-top: -76px;
     }
     .sidebartoggle {
-        top: 76px; left: 10px;
+        bottom: 10px; left: 10px;
         width: 44px; height: 24px;
         padding: 0 0 3px; border-radius: 0 0 100% 100%;
-        transition: top 260ms ease;
+        transition: none;
     }
     .sidebartoggle img {transform: rotate(90deg)}
     .navigationhidden .sidebartoggle {
-        top: 0; left: 10px;
+        left: 10px;
     }
     .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}
     .sitenavigation {display: contents}
@@ -280,15 +287,17 @@
         width: 88px; flex: 0 0 88px;
         white-space: normal; order: 3;
     }
-    .sbuttons {
-        flex-direction: row; flex-wrap: nowrap;
-        gap: 3px; margin-top: 0;
-        margin-left: auto; order: 4;
+    .sidelinks {
+        order: 4; margin-left: auto;
+        font-size: 12px; padding: 0 5px;
+    }
+    .buttondrawer {
+        border-radius: 8px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .sidebar, .sidebartoggle, .sidebartoggle img, .sitefooter {transition: none}
+    .sidebar, .sidebartoggle, .sidebartoggle img {transition: none}
 }
 
 @keyframes shake {

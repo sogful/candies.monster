@@ -5,7 +5,7 @@ const panel = document.querySelector(".documentviews");
 const scroll = document.querySelector(".documentscroll");
 const close = document.querySelector(".documentclose");
 const back = document.querySelector(".documentback");
-const links = [...document.querySelectorAll('.sitefooter [href="#credits"], .sitefooter [href="#documentation"]')];
+const links = [...document.querySelectorAll('.sidelinks [href="#credits"], .sidelinks [href="#documentation"]')];
 const views = ["credits", "documentation"];
 const roll = credits(scroll, panel.querySelector(".creditsview"));
 const motion = matchMedia("(prefers-reduced-motion: reduce)");

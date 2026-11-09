@@ -187,7 +187,7 @@
 }
 
 .documentback {
-    left: 30px; width: 56px;
+    left: 8px; width: 56px;
     height: 56px; display: none;
 }
 
@@ -199,13 +199,13 @@
     pointer-events: none;
 }
 
-.sitefooter [aria-current="page"] {color: #fff}
+.sidelinks [aria-current="page"] {color: #fff}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 @media (max-width: 700px) {
     .documentationview {padding: 90px 18px 18px}
-    .documentback {top: 30px}
+    .documentback {top: 8px}
     .documentcontributors, .documentlist {padding-left: 0}
     .creditsview {width: 70%}
     .nomone, .nomthree {right: 92%}
