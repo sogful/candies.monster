@@ -6467,5 +6467,24 @@
     "packages": [
       "com.zeptolab.ctrm.free.CMCC"
     ]
+  },
+  {
+    "game": "ctr",
+    "variant": "androidv244",
+    "raw": "/assets/images/icons/games/ctr/androidv244/raw.png",
+    "width": 96,
+    "height": 96,
+    "format": "png",
+    "sha256": "4a27450167b7461c8d9f1f9ae8b1cdc983c7f5d95bc67d76e8e96198c0b53746",
+    "sources": [
+      {
+        "url": "https://doc.downloadha.com/Mehran/94/01/23/Cut-the-Rope-v2-4-4%28www.Downloadha.com%29.zip",
+        "file": "res/drawable-xhdpi/icon.png",
+        "apksha256": "f781b5a6eb540bbb5f494394293c2ae4625385af7d932426bfa2bbadf4e179f3"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.ctr.ads"
+    ]
   }
 ]
