@@ -1,0 +1,157 @@
+import {artwork, level, picture} from "./data.js";
+import {draw} from "./draw.js";
+
+const records = new Map();
+const pending = new Set();
+const root = document.documentElement;
+let working = false;
+let quality = "auto";
+let detail = null;
+let resize;
+try {quality = localStorage.getItem("levelquality") || "auto"} catch {}
+if (!["auto", "low", "high", "off"].includes(quality)) quality = "auto";
+
+function density() {
+    if (quality === "low") return 0.6;
+    if (quality === "high") return Math.min(2, devicePixelRatio || 1);
+    return navigator.connection?.saveData || navigator.deviceMemory && navigator.deviceMemory <= 4 ? 0.75 : Math.min(1.25, devicePixelRatio || 1);
+}
+
+function queue(record) {
+    if (!record.visible || !record.canvas.isConnected || quality === "off" || document.hidden) return;
+    pending.add(record);
+    if (!working) void render();
+}
+
+async function render() {
+    working = true;
+    while (pending.size) {
+        if (document.hidden) break;
+        const record = pending.values().next().value;
+        pending.delete(record);
+        if (!record.visible || !record.canvas.isConnected || quality === "off") continue;
+        const version = record.version;
+        try {
+            const [map, art, background] = await Promise.all([
+                level(record.entry.file), artwork(quality !== "high"),
+                record.entry.background ? picture(record.entry.background).catch(() => null) : null
+            ]);
+            if (version !== record.version || !record.canvas.isConnected || !record.visible || quality === "off") continue;
+            const box = record.canvas.getBoundingClientRect();
+            if (box.width < 1 || box.height < 1) continue;
+            draw(record.canvas, map, art, background, box.width, box.height, density(), record.detail);
+            record.canvas.dataset.ready = "true";
+            delete record.canvas.dataset.error;
+        } catch {
+            record.canvas.dataset.error = "true";
+        }
+        await new Promise(resolve => setTimeout(resolve, 0));
+    }
+    working = false;
+}
+
+const observer = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
+    for (const entry of entries) {
+        const record = records.get(entry.target);
+        if (!record) continue;
+        record.visible = entry.isIntersecting;
+        if (record.visible && !record.canvas.dataset.ready) queue(record);
+    }
+}, {rootMargin: "100px"}) : null;
+
+const sizes = "ResizeObserver" in window ? new ResizeObserver(entries => {
+    for (const entry of entries) {
+        const record = records.get(entry.target);
+        if (record) queue(record);
+    }
+}) : null;
+
+function create(entry, expanded) {
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1;
+    canvas.className = expanded ? "levelscene" : "levelbg levelcanvas";
+    canvas.setAttribute("aria-hidden", "true");
+    const record = {canvas, entry, detail: expanded, visible: expanded || !observer, version: 0};
+    records.set(canvas, record);
+    if (expanded) document.body.prepend(canvas);
+    observer?.observe(canvas);
+    sizes?.observe(canvas);
+    canvas.hidden = quality === "off";
+    if (record.visible) queue(record);
+    if (!observer && !expanded) requestAnimationFrame(() => queue(record));
+    return record;
+}
+
+function remove(record) {
+    record.version++;
+    pending.delete(record);
+    observer?.unobserve(record.canvas);
+    sizes?.unobserve(record.canvas);
+    records.delete(record.canvas);
+    record.canvas.width = record.canvas.height = 1;
+    record.canvas.remove();
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function thumbnail(entry) {
+    return create(entry, false).canvas;
+}
+
+export function clearthumbnails() {
+    for (const record of records.values()) if (!record.detail) remove(record);
+}
+
+export function scene(entry) {
+    if (!entry) {
+        if (detail) remove(detail);
+        detail = null;
+        return;
+    }
+    if (detail?.entry === entry) return;
+    if (detail) remove(detail);
+    detail = create(entry, true);
+}
+
+export function settings() {
+    const label = document.createElement("label");
+    label.className = "levelquality";
+    label.append(document.createTextNode("preview quality "));
+    const select = document.createElement("select");
+    select.className = "qualityselect clickable";
+    select.setAttribute("aria-label", "level preview quality");
+    for (const value of ["auto", "low", "high", "off"]) {
+        const option = document.createElement("option");
+        option.value = option.textContent = value;
+        select.append(option);
+    }
+    select.value = quality;
+    select.addEventListener("change", () => {
+        quality = select.value;
+        try {localStorage.setItem("levelquality", quality)} catch {}
+        for (const record of records.values()) {
+            record.version++;
+            record.canvas.hidden = quality === "off";
+            delete record.canvas.dataset.ready;
+            if (quality === "off") record.canvas.width = record.canvas.height = 1;
+            else queue(record);
+        }
+    });
+    label.append(select);
+    document.querySelector(".levelbrowser").append(label);
+}
+
+window.addEventListener("resize", () => {
+    clearTimeout(resize);
+    resize = setTimeout(() => {
+        for (const record of records.values()) queue(record);
+    }, 120);
+}, {passive: true});
+
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) for (const record of records.values()) queue(record);
+});
+
+document.addEventListener("homeviewchange", () => {
+    if (root.classList.contains("documentopen")) scene(null);
+});

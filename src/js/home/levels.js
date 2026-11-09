@@ -1,4 +1,5 @@
 import {leveldetails} from "./leveldetail.js";
+import {thumbnail, clearthumbnails, settings} from "./renderer/index.js";
 
 const list = document.querySelector(".levels");
 const advert = document.querySelector(".morestuff");
@@ -7,6 +8,7 @@ const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
 const pagesize = 10;
 const detail = leveldetails();
+settings();
 let entries = [];
 let page = 0;
 let adindex = 0;
@@ -60,7 +62,7 @@ function createlevel(entry) {
         features.append(more);
     }
     footer.append(rating, features);
-    if (entry.background) card.append(picture(entry.background, "levelbg"));
+    card.append(thumbnail(entry));
     card.append(header, footer);
     return card;
 }
@@ -69,6 +71,7 @@ function showpage(number) {
     const pages = Math.max(1, Math.ceil(entries.length / pagesize));
     page = Math.max(0, Math.min(number, pages - 1));
     hide();
+    clearthumbnails();
     const content = document.createDocumentFragment();
     for (const entry of entries.slice(page * pagesize, (page + 1) * pagesize)) content.append(createlevel(entry));
     if (!entries.length) content.append(element("p", "levelnotice", "no levels yet"));

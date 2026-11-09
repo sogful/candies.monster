@@ -1,3 +1,5 @@
+import {scene} from "./renderer/index.js";
+
 export function leveldetails() {
     const root = document.documentElement;
     const main = document.querySelector(".levelcontent > .main");
@@ -130,6 +132,7 @@ export function leveldetails() {
         const wasopen = !panel.hidden;
         panel.hidden = !open;
         if (!open) {
+            scene(null);
             if (current && !location.hash) document.title = "candies.monster";
             return;
         }
@@ -141,6 +144,7 @@ export function leveldetails() {
         panel.scrollTop = 0;
         const entry = entries.find((item, index) => String(item.id ?? index + 1) === id);
         if (entry) {
+            scene(entry);
             document.title = entry.title + " - candies.monster";
             content(entry);
         } else {

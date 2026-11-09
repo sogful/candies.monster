@@ -1,4 +1,5 @@
 @import url("./leveldetail.css");
+@import url("./levelrenderer.css");
 
 .levelbrowser {
     position: relative; flex: 1 1 auto;
