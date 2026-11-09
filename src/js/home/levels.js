@@ -1,16 +1,16 @@
 import {leveldetails} from "./leveldetail.js";
 import {thumbnail, clearthumbnails} from "./renderer/index.js";
+import {morestuff} from "./rope/index.js";
+
+morestuff();
 
 const list = document.querySelector(".levels");
-const advert = document.querySelector(".morestuff");
-const ads = Array.from(advert.querySelectorAll(".carousel a"));
 const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
 const pagesize = 10;
 const detail = leveldetails();
 let entries = [];
 let page = 0;
-let adindex = 0;
 let definitions = null;
 let loading = null;
 let active = null;
@@ -128,17 +128,6 @@ list.addEventListener("keydown", event => {
     more.click();
 });
 
-function showad(change) {
-    adindex = (adindex + change + ads.length) % ads.length;
-    ads.forEach((link, index) => {link.hidden = index !== adindex});
-}
-
-document.querySelector(".adleft").addEventListener("click", () => showad(-1));
-document.querySelector(".adright").addEventListener("click", () => showad(1));
-document.querySelector(".adclose").addEventListener("click", () => {advert.open = false});
-
-/*//////////////////////////////////////////////////////////////////////*/
-
 function loadfeatures() {
     if (!loading) {
         loading = fetch(new URL("../../data/features.json", import.meta.url)).then(response => {
@@ -196,7 +185,6 @@ document.addEventListener("click", event => {
         features.classList.remove("expanded");
         features.querySelector(".morefeatures").setAttribute("aria-expanded", "false");
     }
-    if (advert.open && !advert.contains(event.target)) advert.open = false;
 });
 
 document.addEventListener("keydown", event => {
@@ -206,7 +194,6 @@ document.addEventListener("keydown", event => {
         features.classList.remove("expanded");
         features.querySelector(".morefeatures").setAttribute("aria-expanded", "false");
     }
-    advert.open = false;
 });
 list.addEventListener("scroll", hide, {passive: true});
 window.addEventListener("resize", hide, {passive: true});

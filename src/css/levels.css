@@ -1,5 +1,6 @@
 @import url("./leveldetail.css");
 @import url("./levelrenderer.css");
+@import url("./morestuff.css");
 
 .levelbrowser {
     position: relative; flex: 1 1 auto;
@@ -152,75 +153,6 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.morestuff {
-    position: absolute; top: 12px;
-    right: 80px; z-index: 6;
-    pointer-events: auto; color: #fff;
-    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
-    text-shadow: 0 0.15em 0 #000;
-}
-
-.morestuff summary {list-style: none}
-.morestuff summary::-webkit-details-marker {display: none}
-
-.frame {
-    position: absolute; top: 28px;
-    right: -50px; width: min(400px,calc(100vw - 24px));
-    aspect-ratio: 1700 / 1330; container-type: size;
-}
-
-.awful {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    z-index: 2; pointer-events: none;
-}
-
-.adheader {
-    position: absolute; top: 2%;
-    left: 7%; right: 7%;
-    display: flex; justify-content: space-between;
-    align-items: center; z-index: 3;
-    font-size: 24px;
-}
-
-.adclose, .adleft, .adright {
-    border: 0; padding: 0;
-    background: none; line-height: 0;
-}
-
-.adclose img {
-    height: 22px; width: auto;
-}
-
-.carousel {
-    position: absolute; top: 6%;
-    left: 8%; width: 84%;
-    height: 60%; display: flex;
-    align-items: center; justify-content: center;
-}
-
-.carousel a {
-    width: 100%; height: 100%;
-}
-.carousel [hidden] {display: none}
-.carousel img {
-    width: 100%; height: 100%;
-    object-fit: contain;
-}
-
-.adfooter {
-    position: absolute; top: 44%;
-    left: 10%; right: 10%;
-    display: flex; justify-content: space-between;
-    z-index: 3;
-}
-
-.adfooter img {
-    height: 24px; width: auto;
-}
-
-/*//////////////////////////////////////////////////////////////////////*/
-
 .tooltip {
     position: fixed; z-index: 10;
     padding: 8px; border-radius: 12px;
@@ -257,14 +189,8 @@
     }
     .rating {font-size: 21px}
     .rating img {height: 28px}
-    .morestuff {
-        top: 4px; right: 80px;
-    }
     .controls {inset: 0 2px}
     .previous, .next {width: 30px}
     .arrow {width: 30px}
 }
 
-@media (max-height: 500px) {
-    .morestuff {top: 2px}
-}

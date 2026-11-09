@@ -1,0 +1,97 @@
+.morestuff {
+    position: absolute; top: 0;
+    left: 0; right: 60px;
+    height: 0; z-index: 6;
+    pointer-events: none; color: #fff;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+
+.ropehandle {
+    position: absolute; right: 0;
+    top: 0; width: 100px;
+    border: 0; padding: 5px 0;
+    background: none; color: #fff;
+    font: inherit; font-size: 17px;
+    -webkit-text-stroke: inherit; paint-order: inherit;
+    text-shadow: inherit; touch-action: none;
+    user-select: none; pointer-events: auto;
+    transform: translateY(56px);
+}
+
+.ropehandle::before {
+    content: ""; display: block;
+    width: 32px; height: 28px;
+    margin: -5px auto 0; background-image: url("/assets/images/misc/depressingframe.png");
+    background-size: 340px 266px; background-position: -280px -237px;
+}
+
+.ropecanvas {
+    position: absolute; top: 0;
+    right: 0; width: 100px;
+    pointer-events: none;
+}
+
+.frame {
+    position: absolute; right: 0;
+    top: calc(-1 * var(--panelheight,313px) - 12px + var(--drop,0px));
+    width: min(400px,calc(100% - 12px)); aspect-ratio: 1700 / 940;
+    container-type: size; pointer-events: auto;
+    overflow: hidden;
+}
+
+.frame[hidden] {display: none}
+
+.awful {
+    position: absolute; left: 0;
+    top: 0; width: 100%;
+    height: 141.489%;
+    z-index: 2; pointer-events: none;
+}
+
+.adheader {
+    position: absolute; top: 2.83%;
+    left: 7%; right: 7%;
+    display: flex; justify-content: space-between;
+    align-items: center; z-index: 3;
+    font-size: clamp(15px,2.2vw,24px);
+}
+
+.adclose, .adleft, .adright {
+    border: 0; padding: 0;
+    background: none; line-height: 0;
+}
+
+.adclose img {
+    height: 22px; width: auto;
+}
+
+.carousel {
+    position: absolute; top: 8.49%;
+    left: 8%; width: 84%;
+    height: 84.9%; display: flex;
+    align-items: center; justify-content: center;
+}
+
+.carousel a {
+    width: 100%; height: 100%;
+}
+.carousel [hidden] {display: none}
+.carousel img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+}
+
+.adfooter {
+    position: absolute; top: 62.25%;
+    left: 10%; right: 10%;
+    display: flex; justify-content: space-between;
+    z-index: 3;
+}
+
+.adfooter img {
+    height: 24px; width: auto;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
