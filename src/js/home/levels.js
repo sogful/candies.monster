@@ -1,5 +1,5 @@
 import {leveldetails} from "./leveldetail.js";
-import {thumbnail, clearthumbnails, settings} from "./renderer/index.js";
+import {thumbnail, clearthumbnails} from "./renderer/index.js";
 
 const list = document.querySelector(".levels");
 const advert = document.querySelector(".morestuff");
@@ -8,7 +8,6 @@ const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
 const pagesize = 10;
 const detail = leveldetails();
-settings();
 let entries = [];
 let page = 0;
 let adindex = 0;

@@ -5,20 +5,11 @@ const records = new Map();
 const pending = new Set();
 const root = document.documentElement;
 let working = false;
-let quality = "auto";
 let detail = null;
 let resize;
-try {quality = localStorage.getItem("levelquality") || "auto"} catch {}
-if (!["auto", "low", "high", "off"].includes(quality)) quality = "auto";
-
-function density() {
-    if (quality === "low") return 0.6;
-    if (quality === "high") return Math.min(2, devicePixelRatio || 1);
-    return navigator.connection?.saveData || navigator.deviceMemory && navigator.deviceMemory <= 4 ? 0.75 : Math.min(1.25, devicePixelRatio || 1);
-}
 
 function queue(record) {
-    if (!record.visible || !record.canvas.isConnected || quality === "off" || document.hidden) return;
+    if (!record.visible || !record.canvas.isConnected || document.hidden) return;
     pending.add(record);
     if (!working) void render();
 }
@@ -29,17 +20,17 @@ async function render() {
         if (document.hidden) break;
         const record = pending.values().next().value;
         pending.delete(record);
-        if (!record.visible || !record.canvas.isConnected || quality === "off") continue;
+        if (!record.visible || !record.canvas.isConnected) continue;
         const version = record.version;
         try {
             const [map, art, background] = await Promise.all([
-                level(record.entry.file), artwork(quality !== "high"),
+                level(record.entry.file), artwork(true),
                 record.entry.background ? picture(record.entry.background).catch(() => null) : null
             ]);
-            if (version !== record.version || !record.canvas.isConnected || !record.visible || quality === "off") continue;
+            if (version !== record.version || !record.canvas.isConnected || !record.visible) continue;
             const box = record.canvas.getBoundingClientRect();
             if (box.width < 1 || box.height < 1) continue;
-            draw(record.canvas, map, art, background, box.width, box.height, density(), record.detail);
+            draw(record.canvas, map, art, background, box.width, box.height, 0.6, record.detail);
             record.canvas.dataset.ready = "true";
             delete record.canvas.dataset.error;
         } catch {
@@ -76,7 +67,6 @@ function create(entry, expanded) {
     if (expanded) document.body.prepend(canvas);
     observer?.observe(canvas);
     sizes?.observe(canvas);
-    canvas.hidden = quality === "off";
     if (record.visible) queue(record);
     if (!observer && !expanded) requestAnimationFrame(() => queue(record));
     return record;
@@ -111,34 +101,6 @@ export function scene(entry) {
     if (detail?.entry === entry) return;
     if (detail) remove(detail);
     detail = create(entry, true);
-}
-
-export function settings() {
-    const label = document.createElement("label");
-    label.className = "levelquality";
-    label.append(document.createTextNode("preview quality "));
-    const select = document.createElement("select");
-    select.className = "qualityselect clickable";
-    select.setAttribute("aria-label", "level preview quality");
-    for (const value of ["auto", "low", "high", "off"]) {
-        const option = document.createElement("option");
-        option.value = option.textContent = value;
-        select.append(option);
-    }
-    select.value = quality;
-    select.addEventListener("change", () => {
-        quality = select.value;
-        try {localStorage.setItem("levelquality", quality)} catch {}
-        for (const record of records.values()) {
-            record.version++;
-            record.canvas.hidden = quality === "off";
-            delete record.canvas.dataset.ready;
-            if (quality === "off") record.canvas.width = record.canvas.height = 1;
-            else queue(record);
-        }
-    });
-    label.append(select);
-    document.querySelector(".levelbrowser").append(label);
 }
 
 window.addEventListener("resize", () => {

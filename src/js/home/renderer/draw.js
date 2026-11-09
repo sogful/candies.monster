@@ -38,7 +38,7 @@ export function draw(canvas, map, art, background, width, height, density, detai
         context.fillRect(0, 0, width, height);
     }
     if (detail) {
-        context.fillStyle = "rgba(0,0,0,0.25)";
+        context.fillStyle = "rgba(0,0,0,0.5)";
         context.fillRect(0, 0, width, height);
     }
 }
