@@ -39,9 +39,9 @@
 .sidebar {
     display: flex; flex-direction: column;
     align-items: center; gap: 6px;
-    width: 100px; flex: 0 0 100px;
+    width: 88px; flex: 0 0 88px;
     height: 100%; box-sizing: border-box;
-    padding: 6px; overflow: hidden;
+    padding: 6px 0; overflow: hidden;
     overscroll-behavior: contain; pointer-events: auto;
     background: rgba(0,0,0,0.5); font-size: 16px;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
@@ -50,13 +50,13 @@
 
 .sitenavigation {
     display: flex; flex-direction: column;
-    align-items: center; gap: 6px;
+    align-items: center; gap: 4px;
     flex: 1 1 auto; min-height: 0;
     width: 100%; overflow-y: auto;
 }
 
 .sidebarlogo {
-    position: relative; width: 76px;
+    position: relative; width: 88px;
     flex-shrink: 0; line-height: 0;
 }
 
@@ -72,37 +72,38 @@
 
 .buttons {
     display: grid; justify-content: center;
-    gap: 8px 0; flex-shrink: 0;
+    gap: 2px 0; flex-shrink: 0;
 }
 
 .navlink {
     position: relative; display: inline-flex;
     align-items: center; justify-content: center;
-    width: 76px; height: 76px;
+    flex-direction: column; width: 88px;
+    height: auto;
 }
 
 .button {
     display: block; width: 100%;
-    height: 100%; object-fit: contain;
+    height: auto; object-fit: contain;
     background-image: url("/assets/images/buttons/pages/button.svg"); background-size: contain;
     background-repeat: no-repeat;
 }
 
 .smallnav {
-    grid-template-columns: repeat(2,38px); gap: 8px 0;
+    grid-template-columns: repeat(2,44px); gap: 2px 0;
 }
 
 .smallnav .navlink {
-    width: 38px; height: 38px;
+    width: 44px; height: auto;
 }
 
 .buttonlabel {
-    position: absolute; left: 50%;
-    bottom: -4px; transform: translateX(-50%);
-    width: max-content; max-width: 125%;
-    padding: 0 4px; border-radius: 0 0 8px 8px;
+    display: block; box-sizing: border-box;
+    width: max-content; max-width: 100%;
+    padding: 1px 3px 2px; border-radius: 4px;
+    overflow-wrap: anywhere;
     background: rgba(0,0,0,0.5); color: #fff;
-    font-size: 11px; line-height: 1;
+    font-size: 11px; line-height: 1.1;
     text-align: center; pointer-events: none;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.175em 0 #000;
@@ -113,6 +114,7 @@
 
 .resourceblurb {
     margin: 0; text-align: center;
+    padding: 0 3px; box-sizing: border-box;
     font-size: 14px; line-height: 1.05;
 }
 
@@ -203,8 +205,8 @@
     .middleclick {display: none}
     .sidebar {
         flex-direction: row; align-items: center;
-        width: 100%; height: 104px;
-        flex: 0 0 104px; padding: 2px 6px;
+        width: 100%; height: 76px;
+        flex: 0 0 76px; padding: 4px 0;
         gap: 8px; overflow-x: auto;
         overflow-y: hidden; white-space: nowrap;
         pointer-events: none;
@@ -212,30 +214,31 @@
     .sidebar > * {pointer-events: auto}
     .sitenavigation {display: contents}
     .sidebarlogo {
-        width: 60px; align-self: center;
+        width: 64px; align-self: center;
     }
     .bignav {
         display: flex; gap: 4px;
         order: 2;
     }
     .navlink {
-        width: 60px; height: 60px;
+        width: 64px; height: 64px;
         flex-shrink: 0;
     }
     .smallnav {
-        grid-template-columns: repeat(2,30px); gap: 2px 0;
+        grid-template-columns: repeat(3,32px); grid-template-rows: repeat(2,32px);
+        grid-auto-flow: column; gap: 0;
         order: 1;
     }
     .smallnav .navlink {
-        width: 30px; height: 30px;
+        width: 32px; height: 32px;
     }
     .buttonlabel {display: none}
     .resourceblurb {
-        width: 100px; flex: 0 0 100px;
+        width: 88px; flex: 0 0 88px;
         white-space: normal; order: 3;
     }
     .sbuttons {
-        flex-direction: column; flex-wrap: nowrap;
+        flex-direction: row; flex-wrap: nowrap;
         gap: 3px; margin-top: 0;
         margin-left: auto; order: 4;
     }
