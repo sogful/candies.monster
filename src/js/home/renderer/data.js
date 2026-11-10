@@ -1,3 +1,5 @@
+import {source} from "../source.js";
+
 const levels = new Map();
 const images = new Map();
 const sprites = new Map();
@@ -81,10 +83,7 @@ export function parse(text) {
 
 export function level(file) {
     if (!levels.has(file)) {
-        levels.set(file, fetch(file).then(response => {
-            if (!response.ok) throw new Error("Level unavailable");
-            return response.text();
-        }).then(parse).catch(error => {
+        levels.set(file, source(file).then(parse).catch(error => {
             levels.delete(file);
             throw error;
         }));

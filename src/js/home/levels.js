@@ -1,6 +1,7 @@
 import {leveldetails} from "./leveldetail.js";
 import {thumbnail, clearthumbnails} from "./renderer/index.js";
 import {morestuff} from "./rope/index.js";
+import {catalogue} from "./catalogue.js";
 
 morestuff();
 
@@ -48,7 +49,7 @@ function createlevel(entry) {
     header.append(element("p", "title", entry.title), element("p", "creator", `by ${entry.creator}`));
     const footer = element("div", "footer");
     const rating = element("div", "rating");
-    rating.append(element("p", "", String(entry.rating)), picture("/assets/images/stars/star1.png", "", "stars"));
+    rating.append(element("p", "", String(entry.rating ?? "--")), picture("/assets/images/stars/star1.png", "", "stars"));
     const features = element("div", "features");
     for (const name of entry.features || []) {
         if (!/^[a-z]+$/.test(name)) continue;
@@ -95,10 +96,7 @@ for (const [control, offset, sprite] of [[previous, -1, "up"], [next, 1, "down"]
     control.addEventListener("lostpointercapture", release);
 }
 
-fetch(new URL("../../data/test.json", import.meta.url)).then(response => {
-    if (!response.ok) throw new Error("Levels unavailable");
-    return response.json();
-}).then(data => {
+catalogue().then(data => {
     if (!Array.isArray(data)) throw new Error("Invalid level data");
     entries = data;
     detail.setentries(data);

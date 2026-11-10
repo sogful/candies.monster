@@ -9,7 +9,7 @@ let detail = null;
 let resize;
 
 function queue(record) {
-    if (!record.visible || !record.canvas.isConnected || document.hidden) return;
+    if (!record.visible || !record.canvas.isConnected || document.hidden || root.classList.contains("gameopen")) return;
     pending.add(record);
     if (!working) void render();
 }
@@ -17,7 +17,7 @@ function queue(record) {
 async function render() {
     working = true;
     while (pending.size) {
-        if (document.hidden) break;
+        if (document.hidden || root.classList.contains("gameopen")) break;
         const record = pending.values().next().value;
         pending.delete(record);
         if (!record.visible || !record.canvas.isConnected) continue;
@@ -27,7 +27,7 @@ async function render() {
                 level(record.entry.file), artwork(true),
                 record.entry.background ? picture(record.entry.background).catch(() => null) : null
             ]);
-            if (version !== record.version || !record.canvas.isConnected || !record.visible) continue;
+            if (version !== record.version || !record.canvas.isConnected || !record.visible || root.classList.contains("gameopen")) continue;
             const box = record.canvas.getBoundingClientRect();
             if (box.width < 1 || box.height < 1) continue;
             draw(record.canvas, map, art, background, box.width, box.height, 0.6, record.detail);
@@ -116,4 +116,8 @@ document.addEventListener("visibilitychange", () => {
 
 document.addEventListener("homeviewchange", () => {
     if (root.classList.contains("documentopen")) scene(null);
+});
+
+document.addEventListener("gameviewchange", () => {
+    if (!root.classList.contains("gameopen")) for (const record of records.values()) queue(record);
 });

@@ -2,10 +2,13 @@ import {createsession} from "./playtest.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function createcontroller({frame, onerror, onclose, ontoolong}) {
+export function createcontroller({frame, onerror, onclose, ontoolong, onprogress = () => {}, onready = () => {}}) {
     const session = createsession({onerror, onclose});
     let sequence = 0;
     let nonce = null;
+    let runtime = false;
+    let level = false;
+    let ready = false;
     const keys = new Set(["KeyQ", "Escape", "KeyP", "KeyM", "KeyR", "Space", "Enter", "ArrowLeft", "ArrowRight"]);
     const held = new Set();
 
@@ -35,11 +38,12 @@ export function createcontroller({frame, onerror, onclose, ontoolong}) {
         sequence++;
         session.close();
         nonce = null;
+        runtime = level = ready = false;
         frame.classList.remove("active");
         frame.src = "about:blank";
     }
 
-    async function open(game, {xml, base64, nomusic, candy, jolly, background}) {
+    async function open(game, {xml, base64, nomusic, candy, jolly, background, view}) {
         close();
         const current = sequence;
         const sources = {
@@ -59,6 +63,7 @@ export function createcontroller({frame, onerror, onclose, ontoolong}) {
         if (candy) url.searchParams.set("candy", candy);
         if (jolly) url.searchParams.set("jolly", "");
         if (background != null) url.searchParams.set("background", String(background));
+        if (view === "level") url.searchParams.set("view", view);
         url.searchParams.set("_", Date.now().toString());
         if (game !== "dx" && new TextEncoder().encode(url.href).length > 16384) {
             ontoolong();
@@ -80,9 +85,18 @@ export function createcontroller({frame, onerror, onclose, ontoolong}) {
     }
 
     window.addEventListener("message", (event) => {
-        if (event.origin === location.origin && event.source === frame.contentWindow
-            && event.data?.type === "ctrdx-exit" && nonce && event.data.nonce === nonce) {
-            onclose();
+        if (event.origin !== location.origin || event.source !== frame.contentWindow
+            || !nonce || event.data?.nonce !== nonce) return;
+        const data = event.data;
+        if (data.type === "ctrdx-exit") onclose();
+        else if (data.type === "ctrdx-error") onerror("Game could not load.");
+        else if (data.type === "ctrdx-progress" && Number.isFinite(data.percent)) {
+            onprogress({percent: Math.max(0, Math.min(99, data.percent)), stage: String(data.stage || ""), loaded: data.loaded, total: data.total});
+        } else if (data.type === "ctrdx-runtime-ready") runtime = true;
+        else if (data.type === "ctrdx-level-ready") level = true;
+        if (runtime && level && !ready) {
+            ready = true;
+            onready();
         }
     });
     window.addEventListener("pagehide", (event) => {

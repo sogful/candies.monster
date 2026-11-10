@@ -1,4 +1,5 @@
 import {scene} from "./renderer/index.js";
+import {player} from "./play/index.js";
 
 export function leveldetails() {
     const root = document.documentElement;
@@ -7,7 +8,7 @@ export function leveldetails() {
     panel.hidden = true;
     panel.setAttribute("aria-label", "level details");
     document.querySelector(".levelcontent").append(panel);
-    const files = new Map();
+    const game = player();
     let entries = [];
     let ready = false;
     let current = "";
@@ -31,6 +32,7 @@ export function leveldetails() {
     }
 
     function back() {
+        game.stop();
         history.pushState(null, "", location.pathname + location.search);
         render();
         const card = document.querySelector('.level[data-level="' + current + '"]');
@@ -52,19 +54,6 @@ export function leveldetails() {
         return row;
     }
 
-    function preview(file) {
-        if (!files.has(file)) {
-            files.set(file, fetch(file).then(response => {
-                if (!response.ok) throw new Error("Preview unavailable");
-                return response.text();
-            }).then(data => "/preview/?data=" + encodeURIComponent(data)).catch(error => {
-                files.delete(file);
-                throw error;
-            }));
-        }
-        return files.get(file);
-    }
-
     /*//////////////////////////////////////////////////////////////////////*/
 
     function content(entry) {
@@ -74,18 +63,18 @@ export function leveldetails() {
         const rating = create("div", "levelscore");
         rating.append(image("/assets/images/omnom/omnom.webp", "levelnom", "Om Nom"));
         const stars = create("div", "levelstars");
-        stars.append(create("span", "", String(entry.rating)), image("/assets/images/stars/star1.png", "", "stars"));
+        stars.append(create("span", "", String(entry.rating ?? "--")), image("/assets/images/stars/star1.png", "", "stars"));
         rating.append(stars);
-        const play = create("a", "levelplay clickable");
+        const play = create("button", "levelplay clickable");
+        play.type = "button";
         play.setAttribute("aria-label", "play " + entry.title);
-        play.setAttribute("aria-disabled", "true");
-        play.setAttribute("aria-busy", "true");
         play.append(image("/assets/images/misc/play.png", "", "play"));
         play.addEventListener("click", event => {
-            if (!play.href) event.preventDefault();
+            event.preventDefault();
+            void game.open(entry, play, status);
         });
         const statistics = create("div", "levelstatistics");
-        statistics.append(stat("downloads", entry.downloads || 0), stat("likes", entry.likes || 0), stat("objects", entry.objects || 0));
+        statistics.append(stat("downloads", entry.downloads ?? "--"), stat("likes", entry.likes ?? "--"), stat("objects", entry.objects ?? "--"));
         hero.append(rating, play, statistics);
         const progress = create("div", "levelprogress");
         const collected = create("div", "levelprogressrow");
@@ -107,24 +96,15 @@ export function leveldetails() {
         information.append(features);
         const download = create("a", "levelaction clickable", "download level");
         download.href = entry.file;
-        download.download = entry.file.split("/").pop();
+        download.download = entry.filename || entry.file.split("/").pop();
         information.append(download);
         const status = create("p", "levelstatus");
         status.setAttribute("role", "status");
         panel.append(control(), heading, hero, progress, information, status);
-        preview(entry.file).then(url => {
-            if (!play.isConnected) return;
-            play.href = url;
-            play.removeAttribute("aria-disabled");
-            play.removeAttribute("aria-busy");
-        }).catch(() => {
-            if (!status.isConnected) return;
-            status.textContent = "preview unavailable";
-            play.removeAttribute("aria-busy");
-        });
     }
 
     function render() {
+        game.stop();
         const match = /^#level\/(\d+)$/.exec(location.hash);
         const open = Boolean(match);
         root.classList.toggle("levelopen", open);
@@ -158,6 +138,7 @@ export function leveldetails() {
     window.addEventListener("popstate", render);
     document.addEventListener("homeviewchange", render);
     document.addEventListener("keydown", event => {
+        if (root.classList.contains("gameopen") || root.classList.contains("gameloading")) return;
         if (event.key !== "Escape" || event.defaultPrevented || !root.classList.contains("levelopen")) return;
         event.preventDefault();
         back();
