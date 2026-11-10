@@ -74,3 +74,10 @@ export function closeWindow() {
     }
     globalThis.close();
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function loaded() {
+    if (globalThis.parent === globalThis) return;
+    globalThis.parent.postMessage({type: "ctrdx-level-ready", nonce: nonceFromQuery()}, location.origin);
+}

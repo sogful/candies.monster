@@ -3,7 +3,10 @@
     <head>
         <meta charset="utf-8" />
         <script src="./console-capture.js"></script>
-        <script>globalThis.ctrdxIsolationReady = Promise.resolve(false);</script>
+        <script>
+            globalThis.ctrdxIsolationReady = Promise.resolve(false);
+            if (new URLSearchParams(location.search).get("view") === "level") document.documentElement.classList.add("levelbrowsergame");
+        </script>
 
         <!-- Resolves to the directory this page is served from, so the app works from a domain
              root and from a GitHub Pages project subpath alike. It lives here rather than being
@@ -520,6 +523,9 @@
                 start.hidden = true;
                 globalThis.ctrdxStart();
                 splash.classList.add("hidden");
+                if (globalThis.parent !== globalThis) {
+                    globalThis.parent.postMessage({type: "ctrdx-runtime-ready", nonce: new URLSearchParams(location.search).get("playtest")}, location.origin);
+                }
             };
             // The failure seam lives here, not in main.js, because main.js reaches its own
             // first statement only after its static imports have been fetched and evaluated.
@@ -533,6 +539,10 @@
                     return;
                 }
                 reported = true;
+
+                if (globalThis.parent !== globalThis) {
+                    globalThis.parent.postMessage({type: "ctrdx-error", nonce: new URLSearchParams(location.search).get("playtest"), message: "Game could not load."}, location.origin);
+                }
 
                 console.error(`ctrdx-boot-failure: ${id}`, detail ?? "");
                 globalThis.ctrdxStopHint();

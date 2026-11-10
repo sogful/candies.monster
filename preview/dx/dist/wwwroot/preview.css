@@ -6,6 +6,10 @@
 
 .previewpointer:focus {outline: none}
 
+.levelbrowsergame .previewgame, .levelbrowsergame .previewmovie {
+    max-width: none; max-height: none;
+}
+
 /*//////////////////////////////////////////////////////////////////////*/
 
 .previewloader {

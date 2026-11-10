@@ -111,6 +111,40 @@ test("blocked storage falls back to the channel; blocking both reports an action
     }
 });
 
+/*//////////////////////////////////////////////////////////////////////*/
+
+test("embedded loading waits for both readiness signals and rejects unrelated messages", async () => {
+    const listeners = new Map();
+    globalThis.location = {origin: "https://candies.monster"};
+    globalThis.window = {addEventListener: (name, callback) => listeners.set(name, callback)};
+    const frame = {src: "about:blank", contentWindow: {}, classList: {add() {}, remove() {}}};
+    const progress = [];
+    let ready = 0;
+    const controller = createcontroller({frame, onerror: assert.fail, onclose() {}, ontoolong: assert.fail, onprogress: value => progress.push(value), onready: () => ready++});
+    try {
+        await controller.open("dx", {xml: "<map />"});
+        const nonce = new URL(frame.src).searchParams.get("playtest");
+        const send = (type, extra = {}, source = frame.contentWindow, origin = location.origin) => listeners.get("message")({origin, source, data: {type, nonce, ...extra}});
+        send("ctrdx-level-ready", {}, {});
+        send("ctrdx-runtime-ready", {}, frame.contentWindow, "https://elsewhere.example");
+        send("ctrdx-progress", {percent: 80, nonce: "stale"});
+        assert.equal(ready, 0);
+        assert.equal(progress.length, 0);
+        send("ctrdx-level-ready");
+        assert.equal(ready, 0);
+        send("ctrdx-progress", {percent: Infinity});
+        assert.equal(progress.length, 0);
+        send("ctrdx-progress", {percent: 120, stage: "images", loaded: 8, total: 10});
+        assert.deepEqual(progress, [{percent: 99, stage: "images", loaded: 8, total: 10}]);
+        send("ctrdx-runtime-ready");
+        send("ctrdx-level-ready");
+        assert.equal(ready, 1);
+        controller.close();
+        send("ctrdx-runtime-ready");
+        assert.equal(ready, 1);
+    } finally {controller.close()}
+});
+
 test("the published game can read its stored startup level when BroadcastChannel is blocked", async () => {
     const script = process.env.CTRDX_SOURCE
         ? path.join(process.env.CTRDX_SOURCE, "src/CutTheRopeDX.Browser/wwwroot/playtest.js")

@@ -14,6 +14,10 @@ export function setLoadingProgress(type, loaded, total) {
     const overall = band.from + stagefraction * (band.to - band.from);
     highwatermark = Math.max(highwatermark, overall);
 
+    if (globalThis.parent !== globalThis) {
+        globalThis.parent.postMessage({type: "ctrdx-progress", nonce: new URLSearchParams(location.search).get("playtest"), percent: Math.min(99, highwatermark), stage: type, loaded, total}, location.origin);
+    }
+
     const bar = document.querySelector(".previewprogress");
     if (bar !== null) {
         bar.style.width = `${highwatermark}%`;
