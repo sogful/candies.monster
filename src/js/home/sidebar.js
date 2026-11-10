@@ -28,7 +28,8 @@ function positionbuttons() {
     const bounds = buttonstoggle.getBoundingClientRect();
     const side = navigation.getBoundingClientRect();
     drawer.style.left = Math.max(4, Math.min(side.right, innerWidth - drawer.offsetWidth - 4)) + "px";
-    drawer.style.top = Math.max(4, Math.min(bounds.bottom - drawer.offsetHeight, innerHeight - drawer.offsetHeight - 4)) + "px";
+    const top = side.height < 100 && side.width > side.height ? side.bottom + 4 : bounds.bottom - drawer.offsetHeight;
+    drawer.style.top = Math.max(4, Math.min(top, innerHeight - drawer.offsetHeight - 4)) + "px";
 }
 
 function closebuttons() {
