@@ -26,6 +26,7 @@
     width: 32px; height: 28px;
     background-image: url("/assets/images/misc/depressingframe.png");
     background-size: 340px 266px; background-position: -280px -237px;
+    transform: rotate(var(--ringangle,0deg)); transform-origin: 50% 4px;
 }
 
 .ropecanvas {
@@ -36,7 +37,7 @@
 
 .frame {
     position: absolute; right: 0;
-    top: calc(-1 * var(--panelheight,221px) - 12px);
+    top: calc(-1 * var(--panelheight,221px));
     width: min(400px,calc(100% - 12px)); aspect-ratio: 1700 / 940;
     container-type: size; pointer-events: auto;
     overflow: hidden; transform-origin: 50% 50%;

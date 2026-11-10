@@ -8,12 +8,16 @@ export function spring(channel, target, rate) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function attachment(width, height, left, top, angle) {
-    const radians = angle * Math.PI / 180;
-    const x = width * (1486 / 1700 - 0.5);
-    const y = height * (900 / 940 - 0.5);
-    return {
-        x: left + width / 2 + x * Math.cos(radians) - y * Math.sin(radians),
-        y: top + height / 2 + x * Math.sin(radians) + y * Math.cos(radians)
-    };
+export function transition(from, to, opening) {
+    return {from, to, opening, elapsed: 0, finished: false};
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function advance(timeline) {
+    timeline.elapsed += 1 / 60;
+    const progress = Math.max(0, Math.min(1, (timeline.elapsed - (timeline.opening ? 0.1 : 0)) / 0.3));
+    const eased = timeline.opening ? 1 - (1 - progress) ** 2 : progress ** 2;
+    timeline.finished = progress >= 1;
+    return timeline.from + (timeline.to - timeline.from) * eased;
 }
