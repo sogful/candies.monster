@@ -1,16 +1,16 @@
 export function strand(count = 28) {
     const points = Array.from({length: count}, () => ({x: 50, y: 0, previousx: 50, previousy: 0}));
 
-    function reset(x, y) {
+    function reset(x, y, startx = 50, starty = -8) {
         for (let index = 0; index < count; index++) {
             const point = points[index];
-            point.x = point.previousx = 50 + (x - 50) * index / (count - 1);
-            point.y = point.previousy = -8 + (y + 8) * index / (count - 1);
+            point.x = point.previousx = startx + (x - startx) * index / (count - 1);
+            point.y = point.previousy = starty + (y - starty) * index / (count - 1);
         }
     }
 
-    function step(x, y) {
-        const length = Math.hypot(x - 50, y + 8) * 1.035 / (count - 1);
+    function step(x, y, startx = 50, starty = -8) {
+        const length = Math.hypot(x - startx, y - starty) * 1.035 / (count - 1);
         for (let index = 1; index < count - 1; index++) {
             const point = points[index];
             const nextx = point.x + (point.x - point.previousx) * 0.96;
@@ -20,8 +20,8 @@ export function strand(count = 28) {
             point.x = nextx;
             point.y = nexty;
         }
-        points[0].x = 50;
-        points[0].y = -8;
+        points[0].x = startx;
+        points[0].y = starty;
         points[count - 1].x = x;
         points[count - 1].y = y;
         for (let pass = 0; pass < 30; pass++) {
@@ -49,7 +49,7 @@ export function strand(count = 28) {
 /*//////////////////////////////////////////////////////////////////////*/
 
 export function paint(context, points) {
-    context.clearRect(0, 0, 100, context.canvas.height);
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.lineCap = "round";
     context.lineJoin = "round";
     context.beginPath();

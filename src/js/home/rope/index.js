@@ -1,4 +1,5 @@
 import {strand, paint} from "./physics.js";
+import {spring, attachment} from "./motion.js";
 
 export function morestuff() {
     const root = document.querySelector(".morestuff");
@@ -11,10 +12,15 @@ export function morestuff() {
     const context = canvas.getContext("2d");
     const rope = strand();
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    let drop = 0;
-    let sideways = 0;
-    let velocity = 0;
-    let horizontal = 0;
+    const lift = {value: 0, velocity: 0};
+    const sway = {value: 0, velocity: 0};
+    const bodylift = {value: 0, velocity: 0};
+    const bodysway = {value: 0, velocity: 0};
+    const tilt = {value: 0, velocity: 0};
+    const channels = [lift, sway, bodylift, bodysway, tilt];
+    let width = 400;
+    let height = width * 940 / 1700;
+    let origin = 0;
     let maximum = 300;
     let opened = false;
     let drag = null;
@@ -25,25 +31,30 @@ export function morestuff() {
     let suppress = false;
 
     function measure() {
-        const bounds = panel.getBoundingClientRect();
-        const width = bounds.width || Math.min(400, root.clientWidth - 12);
-        const height = bounds.height || width * 940 / 1700;
+        width = Math.min(400, root.clientWidth - 12);
+        height = width * 940 / 1700;
+        origin = root.clientWidth - width * (1 - 1486 / 1700);
         maximum = height + 24;
         root.style.setProperty("--panelheight", height + "px");
-        const right = width * 0.125 - 50;
-        canvas.style.right = handle.style.right = right + "px";
         const scale = Math.min(1.5, devicePixelRatio || 1);
-        canvas.width = Math.round(100 * scale);
+        canvas.width = Math.round(root.clientWidth * scale);
         canvas.height = Math.round((maximum + 110) * scale);
         canvas.style.height = maximum + 110 + "px";
         context.setTransform(scale, 0, 0, scale, 0, 0);
+        const mount = buckle();
+        rope.reset(origin + sway.value, lift.value + 60, mount.x, mount.y);
+        position();
         wake();
     }
 
+    function buckle() {
+        return attachment(width, height, root.clientWidth - width + bodysway.value, bodylift.value - height - 12, tilt.value);
+    }
+
     function position() {
-        root.style.setProperty("--drop", drop + "px");
-        handle.style.transform = "translate(" + sideways + "px," + (drop + 56) + "px)";
-        panel.hidden = !opened && !drag && drop < 0.5;
+        panel.style.transform = "translate3d(" + bodysway.value + "px," + bodylift.value + "px,0) rotate(" + tilt.value + "deg)";
+        handle.style.transform = "translate3d(" + sway.value + "px," + (lift.value + 56) + "px,0)";
+        panel.hidden = !opened && !drag && bodylift.value < 0.2 && lift.value < 0.2;
         paint(context, rope.points);
     }
 
@@ -56,23 +67,28 @@ export function morestuff() {
         while (accumulator >= 1 / 60) {
             const target = opened ? maximum : 0;
             if (!drag) {
-                velocity = (velocity + (target - drop) * 220 / 60) * Math.exp(-18 / 60);
-                drop += velocity / 60;
-                horizontal = (horizontal - sideways * 150 / 60) * Math.exp(-15 / 60);
-                sideways += horizontal / 60;
+                spring(lift, target, 16);
+                spring(sway, 0, 14);
             }
+            spring(bodylift, lift.value, 26);
+            spring(bodysway, sway.value * 0.35, 18);
+            const angle = Math.max(-4, Math.min(4, sway.value * 0.1 - bodylift.velocity * 0.002));
+            spring(tilt, angle, 14);
             if (reduced.matches && !drag) {
-                drop = target;
-                sideways = velocity = horizontal = 0;
-                rope.reset(50, drop + 56);
+                for (const channel of channels) channel.value = channel.velocity = 0;
+                lift.value = bodylift.value = target;
+                const mount = buckle();
+                rope.reset(origin, target + 60, mount.x, mount.y);
             }
-            rope.step(50 + sideways, drop + 56);
-            motion = Math.abs(target - drop) + Math.abs(velocity) + Math.abs(sideways) + Math.abs(horizontal);
+            const mount = buckle();
+            rope.step(origin + sway.value, lift.value + 60, mount.x, mount.y);
+            motion = Math.abs(target - lift.value) + Math.abs(target - bodylift.value) + Math.abs(bodysway.value) + Math.abs(sway.value) + Math.abs(tilt.value);
+            for (const channel of channels) motion += Math.abs(channel.velocity);
             accumulator -= 1 / 60;
         }
         position();
         quiet = !drag && motion < 0.05 ? quiet + 1 : 0;
-        if (quiet < 24) frame = requestAnimationFrame(tick);
+        if (quiet < 12) frame = requestAnimationFrame(tick);
         else root.dataset.resting = "true";
     }
 
@@ -89,6 +105,7 @@ export function morestuff() {
         opened = value;
         root.dataset.open = String(value);
         handle.setAttribute("aria-expanded", String(value));
+        handle.setAttribute("aria-label", value ? "hide links" : "show links");
         if (value) panel.hidden = false;
         panel.inert = !value;
         wake();
@@ -98,7 +115,8 @@ export function morestuff() {
 
     handle.addEventListener("pointerdown", event => {
         if (event.button !== 0) return;
-        drag = {id: event.pointerId, x: event.clientX, y: event.clientY, start: drop, moved: false};
+        drag = {id: event.pointerId, x: event.clientX, y: event.clientY, start: lift.value, moved: false};
+        lift.velocity = sway.velocity = 0;
         handle.setPointerCapture(event.pointerId);
         wake();
     });
@@ -106,8 +124,8 @@ export function morestuff() {
         if (!drag || drag.id !== event.pointerId) return;
         const distance = event.clientY - drag.y;
         if (Math.abs(distance) + Math.abs(event.clientX - drag.x) > 5) drag.moved = true;
-        drop = Math.max(0, Math.min(maximum + 28, drag.start + distance));
-        sideways = Math.max(-28, Math.min(28, event.clientX - drag.x));
+        lift.value = Math.max(0, Math.min(maximum + 28, drag.start + distance));
+        sway.value = Math.max(-28, Math.min(28, event.clientX - drag.x));
         wake();
     });
     function release(event) {
@@ -115,7 +133,7 @@ export function morestuff() {
         const moved = drag.moved;
         drag = null;
         suppress = moved;
-        if (moved) open(drop > maximum * 0.35);
+        if (moved) open(lift.value > maximum * 0.35);
         else wake();
     }
     handle.addEventListener("pointerup", release);
