@@ -420,5 +420,11 @@
     "ctr/limeclassic": "png",
     "ctr/limeearly": "png",
     "ctrmagic/androidcmcc116": "png",
-    "ctr/androidv244": "png"
+    "ctr/androidv244": "png",
+    "ctrmagic/evilwizard": "png",
+    "ctr/noevent": "png",
+    "ctr/communitymodern": "png",
+    "ctr/communityclassic": "png",
+    "ctrholiday/party": "png",
+    "ctr/communityios10": "png"
 }

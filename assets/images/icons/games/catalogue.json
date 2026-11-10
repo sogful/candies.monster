@@ -6486,5 +6486,77 @@
     "packages": [
       "com.zeptolab.ctr.ads"
     ]
+  },
+  {
+    "game": "ctrmagic",
+    "variant": "evilwizard",
+    "raw": "/assets/images/icons/games/ctrmagic/evilwizard/raw.png",
+    "width": 2260,
+    "height": 2260,
+    "format": "png",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctrmevilwizardstrap"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "noevent",
+    "raw": "/assets/images/icons/games/ctr/noevent/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctror.subscr.ctrh"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "communitymodern",
+    "raw": "/assets/images/icons/games/ctr/communitymodern/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctror.subscr.ctrp"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "communityclassic",
+    "raw": "/assets/images/icons/games/ctr/communityclassic/raw.png",
+    "width": 256,
+    "height": 256,
+    "format": "png",
+    "sources": [],
+    "packages": [
+      "com.zeptolab.ctr.hd.ctrhome.pack"
+    ]
+  },
+  {
+    "game": "ctrholiday",
+    "variant": "party",
+    "raw": "/assets/images/icons/games/ctrholiday/party/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sources": [],
+    "packages": [
+      "com.ctrhome.ctr.holidayparty"
+    ]
+  },
+  {
+    "game": "ctr",
+    "variant": "communityios10",
+    "raw": "/assets/images/icons/games/ctr/communityios10/raw.png",
+    "width": 180,
+    "height": 180,
+    "format": "png",
+    "sources": [],
+    "packages": [
+      "com.ctrhome.cuttheropecommunity"
+    ]
   }
 ]
