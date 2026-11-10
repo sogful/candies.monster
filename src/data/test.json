@@ -5,7 +5,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/1_1.xml",
-        "background": "/assets/images/levelrenderer/box1.webp",
+        "background": "/assets/images/level/box1.webp",
         "features": [],
         "description": "Cardboard Box, level 1",
         "objects": 15,
@@ -19,7 +19,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/2_1.xml",
-        "background": "/assets/images/levelrenderer/box2.webp",
+        "background": "/assets/images/level/box2.webp",
         "features": [
             "aircushion"
         ],
@@ -35,7 +35,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/3_1.xml",
-        "background": "/assets/images/levelrenderer/box3.webp",
+        "background": "/assets/images/level/box3.webp",
         "features": [
             "bubble"
         ],
@@ -51,7 +51,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/4_1.xml",
-        "background": "/assets/images/levelrenderer/box4.webp",
+        "background": "/assets/images/level/box4.webp",
         "features": [
             "magichat"
         ],
@@ -67,7 +67,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/8_1.xml",
-        "background": "/assets/images/levelrenderer/box8.webp",
+        "background": "/assets/images/level/box8.webp",
         "features": [
             "gravity"
         ],
@@ -83,7 +83,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/9_1.xml",
-        "background": "/assets/images/levelrenderer/box9.webp",
+        "background": "/assets/images/level/box9.webp",
         "features": [],
         "description": "Tool Box, level 1",
         "objects": 8,
@@ -97,7 +97,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/10_1.xml",
-        "background": "/assets/images/levelrenderer/box10.webp",
+        "background": "/assets/images/level/box10.webp",
         "features": [],
         "description": "Buzz Box, level 1",
         "objects": 10,
@@ -111,7 +111,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/11_1.xml",
-        "background": "/assets/images/levelrenderer/box11.webp",
+        "background": "/assets/images/level/box11.webp",
         "features": [
             "disc"
         ],
@@ -127,7 +127,7 @@
         "creator": "sample",
         "rating": 0,
         "file": "/assets/static/levels/samples/experiments.xml",
-        "background": "/assets/images/levelrenderer/box7.webp",
+        "background": "/assets/images/level/box7.webp",
         "features": [],
         "description": "Renderer sample",
         "objects": 9,
@@ -141,7 +141,7 @@
         "creator": "sample",
         "rating": 0,
         "file": "/assets/static/levels/samples/timetravel.xml",
-        "background": "/assets/images/levelrenderer/box1.webp",
+        "background": "/assets/images/level/box1.webp",
         "features": [
             "blade"
         ],
@@ -157,7 +157,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/5_1.xml",
-        "background": "/assets/images/levelrenderer/box5.webp",
+        "background": "/assets/images/level/box5.webp",
         "features": [],
         "description": "Valentine Box, level 1",
         "objects": 12,
@@ -171,7 +171,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/6_1.xml",
-        "background": "/assets/images/levelrenderer/box6.webp",
+        "background": "/assets/images/level/box6.webp",
         "features": [],
         "description": "Toy Box, level 1",
         "objects": 7,
@@ -185,7 +185,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/7_1.xml",
-        "background": "/assets/images/levelrenderer/box7.webp",
+        "background": "/assets/images/level/box7.webp",
         "features": [
             "aircushion",
             "bubble"
@@ -202,7 +202,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/12_1.xml",
-        "background": "/assets/images/levelrenderer/box12.webp",
+        "background": "/assets/images/level/box12.webp",
         "features": [
             "ghost"
         ],
@@ -218,7 +218,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/13_1.xml",
-        "background": "/assets/images/levelrenderer/box13.webp",
+        "background": "/assets/images/level/box13.webp",
         "features": [
             "steam"
         ],
@@ -234,7 +234,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/14_1.xml",
-        "background": "/assets/images/levelrenderer/box14.webp",
+        "background": "/assets/images/level/box14.webp",
         "features": [
             "lantern"
         ],
@@ -250,7 +250,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/15_1.xml",
-        "background": "/assets/images/levelrenderer/box15.webp",
+        "background": "/assets/images/level/box15.webp",
         "features": [
             "mouse"
         ],
@@ -266,7 +266,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/16_1.xml",
-        "background": "/assets/images/levelrenderer/box16.webp",
+        "background": "/assets/images/level/box16.webp",
         "features": [
             "nightlight"
         ],
@@ -282,7 +282,7 @@
         "creator": "ZeptoLab",
         "rating": 0,
         "file": "/assets/static/levels/samples/17_1.xml",
-        "background": "/assets/images/levelrenderer/box17.webp",
+        "background": "/assets/images/level/box17.webp",
         "features": [
             "bubble"
         ],
@@ -298,7 +298,7 @@
         "creator": "sample",
         "rating": 0,
         "file": "/assets/static/levels/samples/underwater.xml",
-        "background": "/assets/images/levelrenderer/box2.webp",
+        "background": "/assets/images/level/box2.webp",
         "features": [
             "bubble",
             "aircushion"

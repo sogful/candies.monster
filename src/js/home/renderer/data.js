@@ -29,8 +29,8 @@ export function artwork(reduced = false) {
     const name = reduced ? "objectslow" : "objects";
     if (!sprites.has(name)) {
         sprites.set(name, Promise.all([
-            picture("/assets/images/levelrenderer/" + name + ".webp"),
-            fetch("/assets/images/levelrenderer/objects.json").then(response => {
+            picture("/assets/images/level/" + name + ".webp"),
+            fetch("/assets/images/level/objects.json").then(response => {
                 if (!response.ok) throw new Error("Sprites unavailable");
                 return response.json();
             })
