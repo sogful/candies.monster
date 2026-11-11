@@ -8,7 +8,7 @@ morestuff();
 const list = document.querySelector(".levels");
 const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
-const pagesize = 10;
+let pagesize = 1;
 const detail = leveldetails();
 let entries = [];
 let page = 0;
@@ -49,7 +49,7 @@ function createlevel(entry) {
     header.append(element("p", "title", entry.title), element("p", "creator", `by ${entry.creator}`));
     const footer = element("div", "footer");
     const rating = element("div", "rating");
-    rating.append(element("p", "", String(entry.rating ?? "--")), picture("/assets/images/stars/star1.png", "", "stars"));
+    rating.append(element("p", "", String(entry.rating ?? "--")), element("span", "staricon", "\u2b50\ufe0f"));
     const features = element("div", "features");
     for (const name of entry.features || []) {
         if (!/^[a-z]+$/.test(name)) continue;
@@ -81,6 +81,28 @@ function showpage(number) {
     previous.disabled = page === 0;
     next.disabled = page >= pages - 1;
 }
+
+function layout() {
+    const width = list.clientWidth;
+    const height = list.clientHeight;
+    if (!width || !height) return;
+    const gap = Number.parseFloat(getComputedStyle(list).columnGap) || 0;
+    const columns = Math.max(1, Math.floor((width + gap) / 332));
+    const cardwidth = (width - gap * (columns - 1)) / columns;
+    const rows = Math.max(1, Math.floor((height - 28 + gap) / (cardwidth * 9 / 16 + gap)));
+    const capacity = rows * columns;
+    list.style.setProperty("--columns", String(columns));
+    if (capacity === pagesize) return;
+    const first = page * pagesize;
+    pagesize = capacity;
+    if (entries.length) showpage(Math.floor(first / pagesize));
+}
+
+if (window.ResizeObserver) new ResizeObserver(layout).observe(list);
+window.addEventListener("resize", layout, {passive: true});
+layout();
+
+/*//////////////////////////////////////////////////////////////////////*/
 
 for (const [control, offset, sprite] of [[previous, -1, "up"], [next, 1, "down"]]) {
     const arrow = control.querySelector(".arrow");

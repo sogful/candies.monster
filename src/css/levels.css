@@ -46,23 +46,25 @@
 }
 
 .levels {
-    display: flex; flex-direction: column;
-    align-items: center; gap: 8px;
+    display: grid; grid-template-columns: repeat(var(--columns,1),minmax(0,1fr));
+    align-content: center; gap: 12px;
     box-sizing: border-box; height: 100%;
-    width: calc(100% - 104px); padding: 14px 0;
-    overflow-x: hidden; overflow-y: auto;
-    overscroll-behavior-y: contain; pointer-events: auto;
-    scrollbar-width: none;
+    width: calc(100% - 128px); padding: 14px 0;
+    margin-right: 24px;
+    overflow: auto; overscroll-behavior: contain;
+    pointer-events: auto; scrollbar-width: none;
 }
 
 .level {
-    position: relative; flex-shrink: 0;
-    width: 100%; max-width: 560px;
-    min-height: 116px; box-sizing: border-box;
-    padding: 18px 24px 22px; border: 0 solid transparent;
+    position: relative; width: 100%;
+    aspect-ratio: 16 / 9; box-sizing: border-box;
+    padding: 16px 20px; border: 0 solid transparent;
     border-image-source: url("/assets/images/coolbox.svg");
     border-image-slice: 100 fill; border-image-width: 32px;
-    isolation: isolate;
+    isolation: isolate; container-type: inline-size;
+    display: flex; flex-direction: column;
+    justify-content: space-between; min-width: 0;
+    min-height: 0; align-self: start;
 }
 
 .levelbg {
@@ -74,35 +76,51 @@
 }
 
 .header {
-    display: flex; gap: 10px;
-    align-items: baseline; min-width: 0;
+    display: flex; flex-direction: column;
+    gap: 2px; min-width: 0;
 }
 
 .title, .creator {
     margin: 0; color: #fff;
-    white-space: nowrap; overflow: hidden;
-    text-overflow: ellipsis; min-width: 0;
+    min-width: 0; line-height: 1.1;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.15em 0 #000;
     padding: 3px 2px;
 }
 
 .title {
-    font-size: 28px; flex: 1 1 auto;
+    font-size: 26px; font-size: clamp(18px,7cqw,30px);
+    white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .creator {
-    font-size: 16px; max-width: 100px;
-    flex-shrink: 0;
+    font-size: 16px; font-size: clamp(12px,4.5cqw,18px);
+    white-space: normal; overflow-wrap: anywhere;
 }
 
 .footer {
     position: relative; display: flex;
     align-items: center; gap: 8px;
-    margin-top: 8px;
+    margin-top: 4px;
 }
 
 .rating, .features {
+    display: flex; align-items: center;
+    color: #fff; font-size: 24px;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 3px 0 #000;
+}
+
+.rating {flex-shrink: 0}
+.rating p {margin: 0}
+.staricon {
+    font-family: "Segoe UI Emoji",sans-serif; font-size: 0.9em;
+    -webkit-text-stroke: 0; text-shadow: none;
+    color: #ffd84a;
+}
+
+.features {
     display: flex; align-items: center;
     color: #fff; font-size: 24px;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
@@ -178,18 +196,14 @@
 
 @media (max-width: 700px) {
     .levels {
-        width: calc(100% - 68px); gap: 8px;
+        width: calc(100% - 98px); gap: 8px;
+        margin-right: 30px;
     }
-    .level {padding: 14px 16px 22px}
-    .title {font-size: 23px}
-    .creator {
-        max-width: 75px; font-size: 14px;
-    }
+    .level {padding: 12px 16px}
     .features img {
         height: 25px; margin: 0 1px;
     }
     .rating {font-size: 21px}
-    .rating img {height: 28px}
     .controls {inset: 0 2px}
     .previous, .next {width: 30px}
     .arrow {width: 30px}
