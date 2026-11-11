@@ -5,7 +5,15 @@
     <script>
         (() => {
             const view = location.hash.slice(1).toLowerCase();
-            if (/^\d+$/.test(view) || /^level\/\d+$/.test(view)) document.documentElement.classList.add("levelopen");
+            if (/^\d+$/.test(view) || /^level\/\d+$/.test(view)) {
+                document.documentElement.classList.add("levelopen");
+                document.documentElement.style.setProperty("--levelbackground", "url(/assets/images/level/box1.webp)");
+                const background = document.createElement("link");
+                background.rel = "preload";
+                background.as = "image";
+                background.href = "/assets/images/level/box1.webp";
+                document.head.append(background);
+            }
             if (view === "preview") {
                 document.documentElement.classList.add("previewopen");
                 const parameters = new URLSearchParams(location.search);
@@ -50,6 +58,7 @@
     <link rel="stylesheet" href="/src/css/editor.css">
     <link rel="stylesheet" href="/src/css/documents.css">
     <link rel="stylesheet" href="/src/css/effects.css">
+    <link rel="stylesheet" href="/src/css/browsertext.css">
     <script src="/assets/static/fontcompat.js"></script>
 
 </head>
@@ -67,7 +76,9 @@
             <aside aria-label="site navigation" class="sidebar">
                 <div class="sitenavigation">
                 <div class="sidebarlogo">
-                    <img alt="candies dot monster" draggable="false" fetchpriority="high" height="400" src="/assets/images/branding/logotiny.webp" title="candies dot monster (the site you&#x27;re on right now!)" width="600">
+                    <a class="homelink clickable" href="/" aria-label="back to levels">
+                        <img alt="candies dot monster" draggable="false" fetchpriority="high" height="400" src="/assets/images/branding/logotiny.webp" title="candies dot monster (the site you&#x27;re on right now!)" width="600">
+                    </a>
                     <div class="fun"></div>
                 </div>
                 <div class="buttons bignav">

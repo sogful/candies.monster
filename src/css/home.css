@@ -4,6 +4,7 @@
 }
 
 .homepage {
+    --navigationwidth: 88px;
     margin: 0; padding: 0;
     height: 100vh; height: 100dvh;
     overflow: hidden; background-color: #e9a856;
@@ -37,11 +38,12 @@
 }
 
 .sidebar {
+    position: relative;
     display: flex; flex-direction: column;
     align-items: center; gap: 6px;
     width: 88px; flex: 0 0 88px;
     height: 100%; box-sizing: border-box;
-    padding: 6px 0; overflow: hidden;
+    padding: 6px 0 38px; overflow: hidden;
     overscroll-behavior: contain; pointer-events: auto;
     background: rgba(0,0,0,0.5); font-size: 16px;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
@@ -137,13 +139,13 @@
 }
 
 .sidebartoggle {
-    position: absolute; bottom: 14px;
-    left: 88px; z-index: 6;
+    position: absolute; bottom: 4px;
+    right: 0; z-index: 6;
     display: grid; place-items: center;
-    width: 24px; height: 44px;
-    padding: 0 3px 0 0; border: 0;
-    border-radius: 0 100% 100% 0; background: rgba(0,0,0,0.5);
-    pointer-events: auto; transition: left 260ms ease;
+    width: 24px; height: 28px;
+    padding: 0; border: 0;
+    border-radius: 8px 0 0 8px; background: none;
+    pointer-events: auto;
 }
 
 .sidebartoggle img {
@@ -151,8 +153,9 @@
     pointer-events: none; transition: transform 260ms ease;
 }
 
-.navigationhidden .sidebar {margin-left: -88px}
-.navigationhidden .sidebartoggle {left: 0}
+.navigationhidden .homepage {--navigationwidth: 24px}
+.navigationhidden .sidebar {margin-left: -64px}
+.navigationhidden .sitenavigation, .navigationhidden .sidelinks {visibility: hidden}
 .navigationhidden .sidebartoggle img {transform: scaleX(-1)}
 
 .documentcredits .sidebartoggle {visibility: hidden}
@@ -195,7 +198,7 @@
     display: none; width: 110px;
     height: 32px; pointer-events: none;
     position: absolute; top: -34px;
-    left: 50%; transform: translateX(-50%);
+    left: calc(50% + 9px); transform: translateX(-50%);
 }
 
 @media (hover: hover) {
@@ -237,31 +240,31 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 @media (max-width: 700px) and (min-height: 501px) {
+    .homepage, .navigationhidden .homepage {--navigationwidth: 0px}
     .site {flex-direction: column}
     .middleclick {display: none}
     .sidebar {
         flex-direction: row; align-items: center;
         width: 100%; height: 76px;
-        flex: 0 0 76px; padding: 4px 0;
-        gap: 8px; overflow-x: auto;
+        flex: 0 0 76px; padding: 4px 28px 4px 0;
+        gap: 8px; overflow-x: hidden;
         overflow-y: hidden; white-space: nowrap;
         pointer-events: none;
         transition: margin-top 260ms ease;
     }
     .sidebar > * {pointer-events: auto}
     .navigationhidden .sidebar {
-        margin-left: 0; margin-top: -76px;
+        margin-left: 0; margin-top: -52px;
     }
     .sidebartoggle {
-        top: 76px; bottom: auto;
-        left: auto; right: 10px;
-        width: 44px; height: 24px;
-        padding: 0 0 3px; border-radius: 0 0 100% 100%;
-        transition: top 260ms ease;
+        top: auto; bottom: 0;
+        left: auto; right: 0;
+        width: 28px; height: 24px;
+        padding: 0; border-radius: 8px 0 0;
     }
     .sidebartoggle img {transform: rotate(90deg)}
     .navigationhidden .sidebartoggle {
-        top: 0; left: auto;
+        top: auto; left: auto;
     }
     .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}
     .github {
@@ -272,7 +275,11 @@
         width: 39.2px; height: 68.6px;
     }
     .navigationhidden .github {top: 28px}
-    .sitenavigation {display: contents}
+    .sitenavigation {
+        flex-direction: row; align-items: center;
+        gap: 8px; height: 100%;
+        min-width: 0; overflow: auto;
+    }
     .sidebarlogo {
         width: 64px; align-self: center;
     }
@@ -300,6 +307,7 @@
     .sidelinks {
         order: 4; margin-left: auto;
         font-size: 12px; padding: 0 5px;
+        width: auto;
     }
     .buttondrawer {
         border-radius: 8px;

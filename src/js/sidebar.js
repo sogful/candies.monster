@@ -9,14 +9,25 @@ arrow.src = "/assets/images/buttons/back.png";
 arrow.alt = "";
 arrow.draggable = false;
 toggle.append(arrow);
-navigation.after(toggle);
+navigation.append(toggle);
+
+const homelink = document.querySelector(".homelink");
+homelink.addEventListener("click", event => {
+    if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    const oldurl = location.href;
+    history.pushState(null, "", location.pathname + location.search);
+    window.dispatchEvent(new HashChangeEvent("hashchange", {oldURL: oldurl, newURL: location.href}));
+});
 
 toggle.addEventListener("click", () => {
     const hidden = document.documentElement.classList.toggle("navigationhidden");
     toggle.setAttribute("aria-expanded", String(!hidden));
     toggle.setAttribute("aria-label", hidden ? "show navigation" : "hide navigation");
-    navigation.inert = hidden;
-    navigation.setAttribute("aria-hidden", String(hidden));
+    for (const section of navigation.querySelectorAll(".sitenavigation, .sidelinks")) {
+        section.inert = hidden;
+        section.setAttribute("aria-hidden", String(hidden));
+    }
     if (hidden) closebuttons();
 });
 
