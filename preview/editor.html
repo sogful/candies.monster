@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" class="previewroot">
+<head>
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
+
+    <title>Level Preview</title>
+    <link rel="icon" type="image/png" href="/assets/images/candies/candy.png">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script async src="/assets/static/global.js"></script>
+    <script src="/assets/static/dependencies/fflate.js"></script>
+    <script src="/assets/static/conversion.js"></script>
+
+    <script src="/assets/static/dependencies/prism.js"></script>
+    <link href="/assets/static/dependencies/prism.css" rel="stylesheet" />
+    <link href="/assets/static/dependencies/vscdarkplus.css" rel="stylesheet" />
+
+    <meta property="og:image" content="/assets/images/branding/embeds/preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="/assets/images/branding/embeds/preview.png">
+
+    <!-- search engines (practically no one is gonna find this through google but still) -->
+    <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="bingbot" content="index, follow">
+    <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
+
+    <link rel="stylesheet" href="index.css">
+    <script src="/assets/static/fontcompat.js"></script>
+</head>
+<body class="previewpage">
+
+    <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
+    <audio class="oopsaudio" src="assets/audio/oops.mp3" preload="auto"></audio>
+
+    <div class="bg"></div>
+
+    <div class="drag">Drop here!</div>
+    <input type="file" class="fileinput" accept=".xml,.json,.txt" style="display:none">
+    
+    <div class="loading">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <path fill="#fbfbfb" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm1 18-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
+            <path fill="#080808" d="M90 29h13l8 7 7 8 5 10 1 6v14l-4 11-3 5 8-6 8-9 7-12 5-16 4 1 9 10 8 15 4 13v9l-8 11-11 8-12 5-4 1h-15l-6-3-7-6-2-4 2 10 7 11 7 6 9 5 16 6 6 1-2 4-12 10-15 7-7 2h-9l-10-5-8-7-7-12-3-11v-15l4-10 4-6 3-4-10 8-9 10-9 15-8 20-4-2-9-10-8-16v-8l5-16 6-11 8-7 10-6 12-4h12l10 4 3 1-5-9-8-7-10-4-5-1H45l4-6 12-10 16-8 6-2Zm0 4-12 3-16 8-7 6v1l17 1 13 4 9 6 6 8 3 7v5l-4 1-9-6-4-1H74l-6 2-8 4-9 6-8 11-5 16-1 8 6 12 7 9h2l9-19 10-14 9-10 7-5 3-1h7l-1 5-7 6-4 8-2 6v13l4 14 7 9 6 5 8 4h8l14-5 10-7 4-4-21-9-8-6-7-7-5-10-2-8v-8l5-1 5 9 7 6 11 2 13-3 11-6 9-8 4-6v-8l-6-17-7-10-5-5-5 12-6 10-8 10-10 8-5 1-1-5 6-13 1-4V59l-4-10-6-9-8-7Z"/>
+            <path fill="#060606" d="M89 15h22l17 4 14 6 10 7 10 9 9 11 6 11 4 9 3 14 1 9v9l-3 19-5 14-8 13-11 12-9 8-17 9-21 5H89l-18-4-16-8-6-4-10-9-9-10-6-10-6-16-2-9-1-17 2-16 4-14 5-10 6-9 9-10 9-8 16-9 18-5Zm4 3-16 3-16 7-11 7-11 10-8 11-8 16-3 12-1 7v17l2 12 5 14 6 11 9 11 10 9 15 9 14 5 11 2h18l13-3 14-5 14-9 12-11 9-13 7-16 2-7 1-9V90l-3-15-7-16-8-11-8-9-12-9-17-8-12-3-7-1Z"/>
+          </svg>          
+    </div>
+    <noscript><style>
+        html, body {margin: 0; padding: 0; height: 100%}
+        .nojs {
+            display: flex; position: fixed; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            inset: 0; width: 100vw; height: 100vh;
+            z-index: 6553565535; padding: 0;
+            background-color: black; color: white; font-size: 2em; 
+        }
+        .nojs img {width: 400px; max-width: 80vw; padding-bottom: 0.5em}
+        .nojs a {width: 500px; max-width: 80vw}
+        .nojsbg {
+            position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;
+            background-image: url("/assets/images/bgs/tile.webp");
+            background-repeat: repeat; background-size: auto;
+            opacity: 0.25; z-index: -1; pointer-events: none;
+        }
+    </style> <div class="nojs">
+    <div class="nojsbg"></div> <img src="/assets/images/omnom/nojs.webp" draggable="false">
+    <a>Please enable Javascript in your browser to use this page.</a></div></noscript>
+
+    <div class="errors"></div>
+    <div class="fatal">
+        <a>fatal error</a>
+        <sup>see the error log for more information.</sup>
+        <img src="assets/svgs/oops.svg">
+    </div>
+
+    <!-- <div class="yetanothernotice hidden">
+        <div class="noticestuff">
+            <a>Please note that testing on web is <i>very</i> unreliable! Every release of the game for any platform has different physics, so this will never be 100% accurate.</a> <br>
+            <a>Check out the</a>
+            <a href="https://youtube.com/playlist?list=PL1wczAyOgNTVdFh06Vl29aRouh4QY0_cu">CTR Home tutorials</a> 
+            <a>on how to patch your level into the game, this is even faster than online testing on Windows.</a>
+        </div>
+        <label class="button clickable noticeclose">
+            <img src="/assets/images/buttons/wide/lbutton.webp" draggable="false">
+            <span>Don't show again</span>
+        </label>
+    </div> -->
+
+    <div class="page">
+        <div class="panel datapanel">
+            <img src="assets/images/boughthat.png" width="150px" draggable="false">
+            <a class="title">Level Preview</a>
+            <div class="multi fulleditor">
+                <div class="paste">
+                    <div class="input xml theotherbox language-xml" contenteditable="true" placeholder='<map>
+    <layer name="settings">
+        <map gridSize="32" width="320" height="480" />
+        <gameDesign ropePhysicsSpeed="1.0" special="1" twoParts="false" />
+    </layer>
+    <layer name="Objects">
+        <candy x="158" y="147" />
+        <grab x="159" y="45" length="90" wheel="false" gun="false" radius="-1" moveLength="-1" moveVertical="false" moveOffset="0" spider="false" part="L" hidePath="false" />
+        <target x="161" y="427" />
+        <star x="162" y="230" timeout="-1" />
+        <star x="161" y="295" timeout="-1" />
+        <star x="161" y="361" timeout="-1" />
+    </layer>
+</map>'></div>
+                </div>
+
+                <div class="upload">
+                    <div class="input uploadinput">
+                        <a>Click to open file explorer or drag the file here...</a>
+                    </div>
+                </div>
+            </div>
+            <label class="button clickable loadbutton">
+                <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                <span>Load Level</span>
+            </label>
+        </div>
+
+        <div class="panel choicepanel hidden">
+            <a>choose the version to test on:</a>
+            <div class="choice" data-game="dx">
+                <img src="assets/images/dxbanner.png">
+                <div class="creditwhereitsdue">
+                    <a>by yell0wsuit •&nbsp;</a>
+                    <a href="https://github.com/yell0wsuit/cuttherope-dx" target="_blank" rel="noopener">github</a>
+                    <a>&nbsp;•&nbsp;</a>
+                    <a href="https://github.com/sponsors/yell0wsuit" target="_blank" rel="noopener">sponsor</a>
+                </div>
+            </div>
+            <div class="choice" data-game="h5dx">
+                <img src="assets/images/h5dxbanner.png">
+                <div class="creditwhereitsdue">
+                    <a>by yell0wsuit •&nbsp;</a>
+                    <a href="https://github.com/yell0wsuit/cuttherope-h5dx/tree/main" target="_blank" rel="noopener">github</a>
+                    <a>&nbsp;•&nbsp;</a>
+                    <a href="https://github.com/sponsors/yell0wsuit" target="_blank" rel="noopener">sponsor</a>
+                </div>
+            </div>
+            <div class="choice" data-game="famobi">
+                <img src="assets/images/famobibanner.png">
+                <div class="creditwhereitsdue">
+                    <a>by famobi •&nbsp;</a>
+                    <a href="https://play.famobi.com/cut-the-rope" target="_blank" rel="noopener">original</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="details hidden">
+        <a class="detailstext"></a>
+        <a type="button" class="resetdata clickable">
+            <img src="assets/images/edit.png">
+        </a>
+    </div>
+
+    <a type="button" class="changever clickable">Change<br>Version</a>
+    <div class="linkbar">
+        <img class="back clickable" src="assets/images/back.png">
+        <img class="link clickable" src="assets/images/share.png">
+    </div>
+    <div class="linkpopup">
+        <div class="linkitem">
+            <div class="linklabel">Shortened Link:</div>
+            <div class="linkrow">
+                <a class="shorturl" href="" target="_blank">Loading...</a>
+                <label class="button clickable copybtn" data-copy="shorturl">
+                    <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                    <span>Copy</span>
+                </label>
+            </div>
+        </div>
+        <div class="linkitem">
+            <div class="linklabel">Full Link:</div>
+            <div class="linkrow">
+                <a class="fullurl" href="" target="_blank">Loading...</a>
+                <label class="button clickable copybtn" data-copy="fullurl">
+                    <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                    <span>Copy</span>
+                </label>
+            </div>
+            <div class="linkcharcount tiny">??? chars (???kb)</div>
+        </div>
+        <div class="toolong">
+            <div><img src="assets/images/warning.png"><a>Warning!</a></div>
+            <a>The resulting link is above 16kb. Due to Cloudflare and Github limitations it will likely not work.</a>
+        </div>
+    </div>
+    <iframe class="gameframe"></iframe>
+    <div class="YOURTOOLONG">
+        <a class="YOURTOOLONGtitle">level too large</a>
+        <a class="YOURTOOLONGbody">the server, whether it be github pages or not, can't accept this much data through the url as of now :(</a>
+    </div>
+
+    <script type="module" src="src/index.js"></script>
+</body>
+</html>

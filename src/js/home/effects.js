@@ -105,7 +105,7 @@ function tick(now) {
 
 function resume() {
     stop();
-    const covered = document.documentElement.matches(".documentopen.documentdocumentation, .gameloading, .gameopen");
+    const covered = document.documentElement.matches(".documentopen.documentdocumentation, .gameloading, .gameopen, .previewopen");
     shadow?.classList.toggle("paused", document.hidden || suspended || covered);
     if (document.hidden || suspended || covered || !canvas?.isConnected) return;
     if (motion.matches) paint(0);
@@ -152,6 +152,7 @@ if (context) {
     resume();
     document.addEventListener("visibilitychange", resume);
     document.addEventListener("homeviewchange", resume);
+    document.addEventListener("previewviewchange", resume);
     document.addEventListener("gameviewchange", resume);
     window.addEventListener("resize", resize, {passive: true});
     window.addEventListener("pagehide", () => {suspended = true; resume()});

@@ -38,7 +38,7 @@ function render() {
     if (view === "credits") panel.setAttribute("aria-modal", "true");
     else panel.removeAttribute("aria-modal");
     document.querySelector(".levelbrowser").setAttribute("aria-label", view || "custom levels");
-    document.querySelector(".levelcontent > .main").inert = Boolean(view);
+    document.querySelector(".levelcontent > .main").inert = Boolean(view) || root.classList.contains("previewopen") || root.classList.contains("levelopen");
     document.querySelector(".morestuff").inert = Boolean(view);
     for (const link of links) {
         if (link.hash === "#" + view) link.setAttribute("aria-current", "page");

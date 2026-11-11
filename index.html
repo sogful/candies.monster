@@ -5,6 +5,13 @@
     <script>
         (() => {
             const view = location.hash.slice(1).toLowerCase();
+            if (/^\d+$/.test(view) || /^level\/\d+$/.test(view)) document.documentElement.classList.add("levelopen");
+            if (view === "preview") {
+                document.documentElement.classList.add("previewopen");
+                const parameters = new URLSearchParams(location.search);
+                const minimal = ["noui", "nu", "u"].find(name => parameters.has(name));
+                if (minimal !== undefined && ["", "true", "1"].includes(parameters.get(minimal).trim().toLowerCase())) document.documentElement.classList.add("previewminimal");
+            }
             if (["credits", "documentation"].includes(view)) {
                 document.documentElement.classList.add("documentopen", "document" + view);
             }
@@ -40,6 +47,7 @@
 
     <link rel="stylesheet" href="/src/css/home.css">
     <link rel="stylesheet" href="/src/css/levels.css">
+    <link rel="stylesheet" href="/src/css/editor.css">
     <link rel="stylesheet" href="/src/css/documents.css">
     <link rel="stylesheet" href="/src/css/effects.css">
     <script src="/assets/static/fontcompat.js"></script>
@@ -85,7 +93,7 @@
                     </a>
                 </div>
                 <div class="buttons small smallnav">
-                    <a aria-label="preview custom levels online" class="navlink" href="/preview">
+                    <a aria-label="preview custom levels online" class="navlink" href="#preview">
                         <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/preview.webp" title="preview custom levels online">
                         <span class="buttonlabel">preview</span>
                     </a>
@@ -150,9 +158,6 @@
                             </a>
                             <a hidden="" href="https://theawesomeblue.nekoweb.org/links.html" rel="noopener noreferrer" target="_blank">
                                 <img decoding="async" draggable="false" loading="lazy" src="/assets/images/ads/misc/blue.png">
-                            </a>
-                            <a hidden="" href="https://spiritaccount.net" rel="noopener noreferrer" target="_blank">
-                                <img decoding="async" draggable="false" loading="lazy" src="/assets/images/ads/misc/spiritaccount.png">
                             </a>
                         </div>
                         <div class="adfooter">
@@ -315,5 +320,6 @@
         <script src="/src/js/home/documents.js" type="module"></script>
         <script src="/src/js/home/sidebar.js" type="module"></script>
         <script src="/src/js/home/levels.js" type="module"></script>
+        <script src="/src/js/home/editor.js" type="module"></script>
     </body>
 </html>

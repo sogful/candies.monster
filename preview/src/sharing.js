@@ -1,4 +1,4 @@
-export function createsharing({getlevel, onerror}) {
+export function createsharing({getlevel, onerror, container = document, geturl = data => location.origin + "/?data=" + data + "#preview"}) {
     const shortcodecachekey = "yourlevels";
 
     function getcachedshortcode(b64data) {
@@ -83,11 +83,11 @@ export function createsharing({getlevel, onerror}) {
 
     function generatelinks() {
         if (!getlevel()) return;
-        const fullurl = window.location.origin + window.location.pathname + "?data=" + getlevel();
-        const fullurlelem = document.querySelector(".fullurl");
-        const shorturlelem = document.querySelector(".shorturl");
-        const toolongelem = document.querySelector(".toolong");
-        const charcountelem = document.querySelector(".linkcharcount");
+        const fullurl = geturl(getlevel());
+        const fullurlelem = container.querySelector(".fullurl");
+        const shorturlelem = container.querySelector(".shorturl");
+        const toolongelem = container.querySelector(".toolong");
+        const charcountelem = container.querySelector(".linkcharcount");
         
         if (fullurlelem) {
             const cleanurl = fullurl.replace(/^https?:\/\//, "");
@@ -118,7 +118,7 @@ export function createsharing({getlevel, onerror}) {
     }
 
     function requestshorten(b64data) {
-        const shorturl = document.querySelector(".shorturl");
+        const shorturl = container.querySelector(".shorturl");
         if (!shorturl) return;
         
         const cachedcode = getcachedshortcode(b64data);
@@ -158,24 +158,28 @@ export function createsharing({getlevel, onerror}) {
 
     /*//////////////////////////////////////////////////////////////////////*/
 
-    function copyurl(element) {
-        if (!element) return;
-        
-        let text = "";
-        if (element.tagName && element.tagName.toLowerCase() === "a" && element.href) {
-            text = element.href;
-        } else {
-            text = element.value || element.textContent || "";
+    async function copyurl(element) {
+        if (!element) return false;
+        const text = element.tagName?.toLowerCase() === "a" && element.href ? element.href : element.value || element.textContent || "";
+        if (navigator.clipboard?.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch {}
         }
-        
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(() => {
-            }).catch(() => {});
-        } else if (element.select) {
-            element.select();
-            element.setSelectionRange(0, 99999);
-            document.execCommand("copy");
-        }
+        const input = document.createElement("textarea");
+        input.className = "clipboardinput";
+        input.value = text;
+        input.style.position = "fixed";
+        input.style.left = "-10000px";
+        const focused = document.activeElement;
+        document.body.append(input);
+        input.select();
+        let copied = false;
+        try {copied = document.execCommand("copy")} catch {}
+        input.remove();
+        focused?.focus({preventScroll: true});
+        return copied;
     }
 
     return {fetchlevelbycode, generatelinks, copyurl};
