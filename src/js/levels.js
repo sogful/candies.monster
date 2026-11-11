@@ -150,7 +150,7 @@ list.addEventListener("keydown", event => {
 
 function loadfeatures() {
     if (!loading) {
-        loading = fetch(new URL("../../data/features.json", import.meta.url)).then(response => {
+        loading = fetch(new URL("../data/features.json", import.meta.url)).then(response => {
             if (!response.ok) throw new Error("Feature descriptions unavailable");
             return response.json();
         }).then(data => {

@@ -1,1 +1,1 @@
-import "./js/home/effects.js";
+import "./js/effects.js";

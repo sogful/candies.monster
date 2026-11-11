@@ -1,9 +1,9 @@
 export async function catalogue() {
-    const configuration = await fetch(new URL("../../data/levels.json", import.meta.url));
+    const configuration = await fetch(new URL("../data/levels.json", import.meta.url));
     if (!configuration.ok) throw new Error("Catalogue unavailable");
     const {endpoint} = await configuration.json();
     if (!endpoint) {
-        const response = await fetch(new URL("../../data/test.json", import.meta.url));
+        const response = await fetch(new URL("../data/test.json", import.meta.url));
         if (!response.ok) throw new Error("Levels unavailable");
         return response.json();
     }
