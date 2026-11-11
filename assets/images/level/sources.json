@@ -222,6 +222,114 @@
     "rotatespikefour": [
       "obj_spikes",
       3
+    ],
+    "supportone": [
+      "char_supports",
+      0
+    ],
+    "supporttwo": [
+      "char_supports",
+      1
+    ],
+    "supportthree": [
+      "char_supports",
+      2
+    ],
+    "supportfour": [
+      "char_supports",
+      3
+    ],
+    "supportfive": [
+      "char_supports",
+      4
+    ],
+    "supportsix": [
+      "char_supports",
+      5
+    ],
+    "supportseven": [
+      "char_supports",
+      6
+    ],
+    "supporteight": [
+      "char_supports",
+      7
+    ],
+    "supportnine": [
+      "char_supports",
+      8
+    ],
+    "supportten": [
+      "char_supports",
+      9
+    ],
+    "supporteleven": [
+      "char_supports",
+      10
+    ],
+    "supporttwelve": [
+      "char_supports",
+      11
+    ],
+    "supportthirteen": [
+      "char_supports",
+      12
+    ],
+    "supportfourteen": [
+      "char_supports",
+      13
+    ],
+    "supportfifteen": [
+      "char_supports",
+      14
+    ],
+    "supportsixteen": [
+      "char_supports",
+      15
+    ],
+    "supportseventeen": [
+      "char_supports",
+      16
+    ],
+    "starglow": [
+      "obj_star_idle",
+      0
+    ],
+    "starclock": [
+      "obj_star_idle",
+      19
+    ],
+    "bubblebody": [
+      "obj_bubble",
+      1
+    ],
+    "grabfront": [
+      "obj_hook",
+      1
+    ],
+    "beltmiddle": [
+      "obj_conveyor",
+      2
+    ],
+    "beltside": [
+      "obj_conveyor",
+      3
+    ],
+    "beltcorner": [
+      "obj_conveyor",
+      1
+    ],
+    "belthighlight": [
+      "obj_conveyor",
+      6
+    ],
+    "spikebuttonone": [
+      "obj_spikes",
+      4
+    ],
+    "spikebuttontwo": [
+      "obj_spikes",
+      6
     ]
   },
   "ancestor": "animations/om_nom_prehistoric.xml timeline 0, first frame; FlashXmlScale 1.56, BaseTargetScale 1.73"

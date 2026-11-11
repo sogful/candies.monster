@@ -8,8 +8,12 @@ let working = false;
 let detail = null;
 let resize;
 
+function paused() {
+    return document.hidden || root.classList.contains("gameloading") || root.classList.contains("gameopen") || root.classList.contains("previewopen") || root.classList.contains("documentopen");
+}
+
 function queue(record) {
-    if (!record.visible || !record.canvas.isConnected || document.hidden || root.classList.contains("gameopen")) return;
+    if (!record.visible || !record.canvas.isConnected || paused()) return;
     pending.add(record);
     if (!working) void render();
 }
@@ -17,7 +21,7 @@ function queue(record) {
 async function render() {
     working = true;
     while (pending.size) {
-        if (document.hidden || root.classList.contains("gameopen")) break;
+        if (paused()) break;
         const record = pending.values().next().value;
         pending.delete(record);
         if (!record.visible || !record.canvas.isConnected) continue;
@@ -27,10 +31,11 @@ async function render() {
                 level(record.entry.file), artwork(true),
                 record.entry.background ? picture(record.entry.background).catch(() => null) : null
             ]);
-            if (version !== record.version || !record.canvas.isConnected || !record.visible || root.classList.contains("gameopen")) continue;
+            if (version !== record.version || !record.canvas.isConnected || !record.visible || paused()) continue;
             const box = record.canvas.getBoundingClientRect();
             if (box.width < 1 || box.height < 1) continue;
-            draw(record.canvas, map, art, background, box.width, box.height, 0.6, record.detail);
+            const pack = Number(record.entry.background?.match(/\/box(\d+)\.webp$/)?.[1]) || 1;
+            draw(record.canvas, {...map, box: pack}, art, background, box.width, box.height, 0.6, record.detail);
             record.canvas.dataset.ready = "true";
             delete record.canvas.dataset.error;
         } catch {
@@ -116,8 +121,13 @@ document.addEventListener("visibilitychange", () => {
 
 document.addEventListener("homeviewchange", () => {
     if (root.classList.contains("documentopen")) scene(null);
+    else if (!paused()) for (const record of records.values()) queue(record);
 });
 
 document.addEventListener("gameviewchange", () => {
-    if (!root.classList.contains("gameopen")) for (const record of records.values()) queue(record);
+    if (!paused()) for (const record of records.values()) queue(record);
+});
+
+document.addEventListener("previewviewchange", () => {
+    if (!paused()) for (const record of records.values()) queue(record);
 });

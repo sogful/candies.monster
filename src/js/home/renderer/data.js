@@ -67,6 +67,9 @@ export function parse(text) {
             object.x = number(object.x);
             object.y = number(object.y);
             object.angle = number(object.angle);
+            if (object.type === "star" && /^R[CW]\d+$/.test(object.path || "")) {
+                object.x += Math.trunc(number(object.path.slice(2)));
+            }
             objects.push(object);
             if (objects.length > 2000) throw new Error("Level object limit exceeded");
         }
