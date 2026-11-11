@@ -166,3 +166,35 @@ test("the published game can read its stored startup level when BroadcastChannel
         globalThis.BroadcastChannel = originalchannel;
     }
 });
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+test("editor pause actions require an editor session and its current origin, frame and nonce", async () => {
+    const listeners = new Map();
+    globalThis.location = {origin: "https://candies.monster"};
+    globalThis.window = {addEventListener: (name, callback) => listeners.set(name, callback)};
+    const frame = {src: "about:blank", contentWindow: {}, classList: {add() {}, remove() {}}};
+    const actions = [];
+    const controller = createcontroller({frame, onerror: assert.fail, onclose() {}, ontoolong: assert.fail, onaction: action => actions.push(action)});
+    try {
+        await controller.open("dx", {xml: "<map />", view: "editor"});
+        const url = new URL(frame.src);
+        assert.equal(url.searchParams.get("view"), "editor");
+        const nonce = url.searchParams.get("playtest");
+        const send = (action, extra = {}) => listeners.get("message")({origin: location.origin, source: frame.contentWindow, data: {type: "ctrdx-editor-action", action, nonce}, ...extra});
+        send("edit", {origin: "https://elsewhere.example"});
+        send("edit", {source: {}});
+        send("edit", {data: {type: "ctrdx-editor-action", action: "edit", nonce: "stale"}});
+        send("unknown");
+        assert.deepEqual(actions, []);
+        send("version");
+        send("edit");
+        assert.deepEqual(actions, ["version", "edit"]);
+        await controller.open("dx", {xml: "<map />", view: "level"});
+        send("edit", {data: {type: "ctrdx-editor-action", action: "edit", nonce: new URL(frame.src).searchParams.get("playtest")}});
+        assert.deepEqual(actions, ["version", "edit"]);
+        controller.close();
+        send("edit");
+        assert.deepEqual(actions, ["version", "edit"]);
+    } finally {controller.close()}
+});

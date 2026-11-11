@@ -1,8 +1,8 @@
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
-index 5cd44d7..f2cfcf4 100644
+index 5cd44d7..31ab916 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
-@@ -65,7 +65,12 @@ namespace CutTheRopeDX.Browser
+@@ -65,7 +65,19 @@ namespace CutTheRopeDX.Browser
          public string LevelEditorUrl => "https://yell0wsuit.github.io/ctrdx-editor/";
  
          /// <inheritdoc />
@@ -12,6 +12,13 @@ index 5cd44d7..f2cfcf4 100644
 +        public void levelready()
 +        {
 +            PlaytestInterop.loaded();
++        }
++
++        public bool previeweditor => PlaytestInterop.editor();
++
++        public void previewaction(string action)
++        {
++            PlaytestInterop.action(action);
 +        }
  
          /// <inheritdoc />
@@ -83,16 +90,22 @@ index d27ce9e..ace414e 100644
          private static partial string MenuFromQuery();
      }
 diff --git a/src/CutTheRopeDX.Browser/Browser/PlaytestInterop.cs b/src/CutTheRopeDX.Browser/Browser/PlaytestInterop.cs
-index c41e3f1..093951b 100644
+index c41e3f1..5fc371a 100644
 --- a/src/CutTheRopeDX.Browser/Browser/PlaytestInterop.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/PlaytestInterop.cs
-@@ -41,5 +41,8 @@ namespace CutTheRopeDX.Browser
+@@ -41,5 +41,14 @@ namespace CutTheRopeDX.Browser
          /// <summary>Closes the playtest window.</summary>
          [JSImport("closeWindow", "playtest")]
          public static partial void CloseWindow();
 +
 +        [JSImport("loaded", "playtest")]
 +        public static partial void loaded();
++
++        [JSImport("editor", "playtest")]
++        public static partial bool editor();
++
++        [JSImport("action", "playtest")]
++        public static partial void action(string action);
      }
  }
 diff --git a/src/CutTheRopeDX.Browser/Program.cs b/src/CutTheRopeDX.Browser/Program.cs
@@ -526,7 +539,7 @@ index a05c64d..3de9809 100644
 +    globalThis.parent.postMessage({type: "ctrdx-edge-proximity", near}, location.origin);
 +}, {passive: true});
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/playtest.js b/src/CutTheRopeDX.Browser/wwwroot/playtest.js
-index 2728635..5b880d6 100644
+index 2728635..c07eec1 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/playtest.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/playtest.js
 @@ -20,7 +20,11 @@ export function open() {
@@ -542,7 +555,7 @@ index 2728635..5b880d6 100644
      channel.onmessage = (event) => {
          // Everything on this channel is a JSON string; anything else is not ours.
          if (typeof event.data === "string") {
-@@ -64,5 +68,16 @@ export function drain() {
+@@ -64,5 +68,25 @@ export function drain() {
   * navigated to themselves ignores this, which is why the caller falls back to doing nothing.
   */
  export function closeWindow() {
@@ -558,6 +571,15 @@ index 2728635..5b880d6 100644
 +export function loaded() {
 +    if (globalThis.parent === globalThis) return;
 +    globalThis.parent.postMessage({type: "ctrdx-level-ready", nonce: nonceFromQuery()}, location.origin);
++}
++
++export function editor() {
++    return new URLSearchParams(globalThis.location.search).get("view") === "editor";
++}
++
++export function action(action) {
++    if (!editor() || !["version", "edit"].includes(action) || globalThis.parent === globalThis) return;
++    globalThis.parent.postMessage({type: "ctrdx-editor-action", action, nonce: nonceFromQuery()}, location.origin);
 +}
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/runtime-mode.js b/src/CutTheRopeDX.Browser/wwwroot/runtime-mode.js
 index 6628ead..8ff53c9 100644
@@ -1058,14 +1080,18 @@ index 33ffd1c..00caeb0 100644
              {
                  return;
 diff --git a/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs b/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
-index 7f0fd69..de02ea2 100644
+index 7f0fd69..ab294ad 100644
 --- a/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
 +++ b/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
-@@ -26,6 +26,8 @@ namespace CutTheRopeDX.Framework.Platform
+@@ -26,6 +26,12 @@ namespace CutTheRopeDX.Framework.Platform
  
          void Exit();
  
 +        void levelready() {}
++
++        bool previeweditor => false;
++
++        void previewaction(string action) {}
 +
          /// <summary>Returns whether <paramref name="key"/> transitioned from up to down this frame.</summary>
          /// <param name="key">The key to check.</param>
@@ -1100,7 +1126,7 @@ index 597afdd..68750f7 100644
                  0 => Resources.Img.ObjCandy01New,
                  1 => Resources.Img.ObjCandy02,
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameController.cs b/src/CutTheRopeDX.Core/GameMain/GameController.cs
-index bc8a2d7..f489ed9 100644
+index bc8a2d7..dbb4e84 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameController.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameController.cs
 @@ -26,6 +26,12 @@ namespace CutTheRopeDX.GameMain
@@ -1135,7 +1161,19 @@ index bc8a2d7..f489ed9 100644
  
              if (CustomLevelSession.IsActive && levelWatcher == null)
              {
-@@ -187,17 +198,15 @@ namespace CutTheRopeDX.GameMain
+@@ -180,6 +191,11 @@ namespace CutTheRopeDX.GameMain
+             pauseMenuPlate = image;
+             Button continueButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("CONTINUE"), GameControllerButtonId.Continue, this);
+             _ = vBox.AddChild(continueButton);
++            if (CustomLevelSession.IsActive && PlatformServices.Host?.previeweditor == true)
++            {
++                _ = vBox.AddChild(MenuController.CreateButtonWithTextIDDelegate("Change Version", GameControllerButtonId.changeversion, this));
++                _ = vBox.AddChild(MenuController.CreateButtonWithTextIDDelegate("Edit", GameControllerButtonId.editlevel, this));
++            }
+             if (!CustomLevelSession.IsActive)
+             {
+                 Button skipLevelButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("SKIP_LEVEL"), GameControllerButtonId.SkipLevel, this);
+@@ -187,17 +203,15 @@ namespace CutTheRopeDX.GameMain
                  Button levelSelectButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("LEVEL_SELECT"), GameControllerButtonId.LevelSelect, this);
                  _ = vBox.AddChild(levelSelectButton);
              }
@@ -1161,7 +1199,7 @@ index bc8a2d7..f489ed9 100644
              if (MenuTheme.IsExperiments)
              {
                  ToggleButton voiceToggle = MenuController.CreateExperimentsVoiceToggle(this, GameControllerButtonId.ToggleVoice);
-@@ -213,11 +222,11 @@ namespace CutTheRopeDX.GameMain
+@@ -213,11 +227,11 @@ namespace CutTheRopeDX.GameMain
              bool musicOn = Preferences.GetBooleanForKey("MUSIC_ON");
              if (!soundOn)
              {
@@ -1175,7 +1213,7 @@ index bc8a2d7..f489ed9 100644
              }
              _ = gameView.AddChildwithID(image, 3);
  
-@@ -367,6 +376,17 @@ namespace CutTheRopeDX.GameMain
+@@ -367,6 +381,17 @@ namespace CutTheRopeDX.GameMain
              View view = GetView(0);
              GameScene gameScene = (GameScene)view.GetChild(0);
              BoxOpenClose boxOpenClose = (BoxOpenClose)view.GetChild(4);
@@ -1193,7 +1231,22 @@ index bc8a2d7..f489ed9 100644
              Image star1 = (Image)boxOpenClose.result.GetChildWithName("star1");
              Image star2 = (Image)boxOpenClose.result.GetChildWithName("star2");
              Image star3 = (Image)boxOpenClose.result.GetChildWithName("star3");
-@@ -596,33 +616,11 @@ namespace CutTheRopeDX.GameMain
+@@ -524,6 +549,14 @@ namespace CutTheRopeDX.GameMain
+             View view = GetView(0);
+             switch (n)
+             {
++                case var id when id == GameControllerButtonId.changeversion:
++                case var editid when editid == GameControllerButtonId.editlevel:
++                    if (CustomLevelSession.IsActive && PlatformServices.Host?.previeweditor == true)
++                    {
++                        SoundMgr.StopAll();
++                        PlatformServices.Host.previewaction(n == GameControllerButtonId.changeversion ? "version" : "edit");
++                    }
++                    return;
+                 case var id when id == GameControllerButtonId.Restart:
+                     GameScene restartScene = (GameScene)view.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
+                     if (overlayMode != GameControllerOverlayMode.Gameplay
+@@ -596,33 +629,11 @@ namespace CutTheRopeDX.GameMain
                      ExperimentsVoice.Toggle();
                      return;
                  case var id when id == GameControllerButtonId.ToggleMusic:
@@ -1231,7 +1284,7 @@ index bc8a2d7..f489ed9 100644
                  default:
                      return;
              }
-@@ -637,6 +635,50 @@ namespace CutTheRopeDX.GameMain
+@@ -637,6 +648,50 @@ namespace CutTheRopeDX.GameMain
              RootController.LogEvent(n != GameControllerButtonId.ExitFromLose ? "IG_REPLAY_PRESSED" : "LC_REPLAY_PRESSED");
          }
  
@@ -1282,7 +1335,7 @@ index bc8a2d7..f489ed9 100644
          /// <summary>Resolves an input source against the authoritative controller and level-flow state.</summary>
          /// <param name="input">Input source to resolve.</param>
          /// <returns>The semantic command allowed in the current state.</returns>
-@@ -1264,6 +1306,8 @@ namespace CutTheRopeDX.GameMain
+@@ -1264,6 +1319,8 @@ namespace CutTheRopeDX.GameMain
  
          /// <summary>Pause-menu label that displays the active map or best score.</summary>
          private Text mapNameLabel;
@@ -1291,6 +1344,21 @@ index bc8a2d7..f489ed9 100644
  
          /// <summary>The plate the pause menu is drawn on; the best-score label hangs off its edge.</summary>
          private Image pauseMenuPlate;
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
+index 23a8e97..5320dac 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
+@@ -73,6 +73,10 @@ namespace CutTheRopeDX.GameMain
+         /// </summary>
+         public static GameControllerButtonId ToggleVoice => new(12);
+ 
++        public static GameControllerButtonId changeversion => new(13);
++
++        public static GameControllerButtonId editlevel => new(14);
++
+         /// <summary>
+         /// Converts a raw integer button value to a game-controller button identifier.
+         /// </summary>
 diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
 index 3f5f05f..de0bfa3 100644
 --- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs

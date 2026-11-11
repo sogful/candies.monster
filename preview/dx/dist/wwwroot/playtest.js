@@ -81,3 +81,12 @@ export function loaded() {
     if (globalThis.parent === globalThis) return;
     globalThis.parent.postMessage({type: "ctrdx-level-ready", nonce: nonceFromQuery()}, location.origin);
 }
+
+export function editor() {
+    return new URLSearchParams(globalThis.location.search).get("view") === "editor";
+}
+
+export function action(action) {
+    if (!editor() || !["version", "edit"].includes(action) || globalThis.parent === globalThis) return;
+    globalThis.parent.postMessage({type: "ctrdx-editor-action", action, nonce: nonceFromQuery()}, location.origin);
+}

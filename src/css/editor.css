@@ -17,3 +17,13 @@
 .editorback img {width: 100%}
 .previewopen .levelcontent > .main, .previewopen .morestuff, .previewopen .github {visibility: hidden}
 .previewminimal .sidebar, .previewminimal .sidebartoggle, .previewminimal .editorback {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.previewopen .homepage {
+    background-color: #000;
+    background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url("/preview/assets/images/tile.webp");
+    background-size: auto; background-repeat: repeat;
+    background-position: 0 0;
+}
+.previewopen .shadow, .previewopen .effects {visibility: hidden}

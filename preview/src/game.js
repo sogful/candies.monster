@@ -2,13 +2,14 @@ import {createsession} from "./playtest.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function createcontroller({frame, onerror, onclose, ontoolong, onprogress = () => {}, onready = () => {}}) {
+export function createcontroller({frame, onerror, onclose, ontoolong, onprogress = () => {}, onready = () => {}, onaction = () => {}}) {
     const session = createsession({onerror, onclose});
     let sequence = 0;
     let nonce = null;
     let runtime = false;
     let level = false;
     let ready = false;
+    let editor = false;
     const keys = new Set(["KeyQ", "Escape", "KeyP", "KeyM", "KeyR", "Space", "Enter", "ArrowLeft", "ArrowRight"]);
     const held = new Set();
 
@@ -39,6 +40,7 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
         session.close();
         nonce = null;
         runtime = level = ready = false;
+        editor = false;
         frame.classList.remove("active");
         frame.src = "about:blank";
     }
@@ -63,7 +65,8 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
         if (candy) url.searchParams.set("candy", candy);
         if (jolly) url.searchParams.set("jolly", "");
         if (background != null) url.searchParams.set("background", String(background));
-        if (view === "level") url.searchParams.set("view", view);
+        editor = view === "editor";
+        if (["level", "editor"].includes(view)) url.searchParams.set("view", view);
         url.searchParams.set("_", Date.now().toString());
         if (game !== "dx" && new TextEncoder().encode(url.href).length > 16384) {
             ontoolong();
@@ -89,6 +92,7 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
             || !nonce || event.data?.nonce !== nonce) return;
         const data = event.data;
         if (data.type === "ctrdx-exit") onclose();
+        else if (data.type === "ctrdx-editor-action" && editor && ["version", "edit"].includes(data.action)) onaction(data.action);
         else if (data.type === "ctrdx-error") onerror("Game could not load.");
         else if (data.type === "ctrdx-progress" && Number.isFinite(data.percent)) {
             onprogress({percent: Math.max(0, Math.min(99, data.percent)), stage: String(data.stage || ""), loaded: data.loaded, total: data.total});

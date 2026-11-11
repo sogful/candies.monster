@@ -518,6 +518,10 @@ import {createsharing} from "./sharing.js";
         frame,
         onerror: (message) => showerror(message),
         onclose: () => closegame(),
+        onaction: action => {
+            if (action === "version") closegame();
+            else if (action === "edit") resetbutton.click();
+        },
         ontoolong: () => gametoolong?.classList.add("active"),
     });
 
@@ -530,6 +534,7 @@ import {createsharing} from "./sharing.js";
         try {localStorage.setItem(gameversionkey, game)} catch {}
         changeverbtn.classList.add("active");
         document.body.classList.add("playing");
+        document.body.classList.toggle("nativeplaying", game === "dx");
         choicepanel?.classList.add("hidden");
         datapanel?.classList.remove("show");
         gametoolong?.classList.remove("active");
@@ -537,7 +542,7 @@ import {createsharing} from "./sharing.js";
             await gamecontroller.open(game, {
                 xml: decodebase64utf8(levelbase64), base64: levelbase64,
                 nomusic: levelnomusic, candy: levelcandy,
-                jolly: leveljolly, background: levelbackground,
+                jolly: leveljolly, background: levelbackground, view: "editor",
             });
         } catch (error) {
             closegame();
@@ -550,7 +555,7 @@ import {createsharing} from "./sharing.js";
         gamecontroller.close();
         changeverbtn.classList.remove("active");
         gametoolong?.classList.remove("active");
-        document.body.classList.remove("playing");
+        document.body.classList.remove("playing", "nativeplaying");
         if (levelbase64) {
             if (nopicker) {
                 datapanel?.classList.add("show");

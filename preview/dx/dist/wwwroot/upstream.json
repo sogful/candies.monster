@@ -1,9 +1,9 @@
 {
-    "repository": "https://github.com/yell0wsuit/cuttherope-dx.git",
-    "revision": "3fb70e70a92dc13da263cee0db5f4ef19c686bc6",
-    "patch": "e6574f8deae67d5bf3a6c9416b1bb4be41e3aff2d03a3a02d42bc29d2a7048cc",
-    "overlay": "34e28d58edcde15512c6736a347de1ef080510aabaade18f2a608684118e833a",
-    "content": "6d5be21def2433427c3d65618c7fecc4f7c767931b1679273c29ac57d439d5e1",
-    "runtime": "single",
-    "aot": true
+  "repository": "https://github.com/yell0wsuit/cuttherope-dx.git",
+  "revision": "3fb70e70a92dc13da263cee0db5f4ef19c686bc6",
+  "patch": "d4fd76d0c32d2119dfb26fd298be2cb3f6eaed04095b329d1ffd82c4b1d0e86b",
+  "overlay": "34e28d58edcde15512c6736a347de1ef080510aabaade18f2a608684118e833a",
+  "content": "6d5be21def2433427c3d65618c7fecc4f7c767931b1679273c29ac57d439d5e1",
+  "runtime": "single",
+  "aot": true
 }

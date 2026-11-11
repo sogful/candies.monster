@@ -20,6 +20,9 @@ body {
     cursor: url("/assets/static/cursors/idle.cur"), default !important;
 }
 body.playing {overflow: hidden}
+.hosted .previewpage {background-color: transparent}
+.hosted .bg {display: none}
+.previewpage.nativeplaying .changever, .previewpage.nativeplaying .resetdata {display: none}
 .previewroot:has(.playing) {overflow: clip}
 .previewpage.playing {
     position: fixed; inset: 0;

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" class="previewroot">
 <head>
+    <script>
+        if (window.parent !== window && new URLSearchParams(location.search).get("shell") === "1") {
+            document.documentElement.classList.add("hosted");
+        }
+    </script>
     <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
 
     <title>Level Preview</title>

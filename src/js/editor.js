@@ -32,7 +32,9 @@ function render() {
             frame.className = "editorframe";
             frame.title = "level preview";
             frame.allow = "autoplay; fullscreen; clipboard-write";
-            frame.src = "/preview/editor.html" + location.search;
+            const url = new URL("/preview/editor.html" + location.search, location.origin);
+            url.searchParams.set("shell", "1");
+            frame.src = url.href;
             host.append(frame);
         }
         document.title = "Level preview - candies.monster";
