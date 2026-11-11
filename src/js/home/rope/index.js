@@ -1,5 +1,5 @@
 import {strand, paint} from "./physics.js";
-import {spring, transition, advance} from "./motion.js";
+import {dangle, resist, transition, advance} from "./motion.js";
 
 export function morestuff() {
     const root = document.querySelector(".morestuff");
@@ -13,6 +13,10 @@ export function morestuff() {
     const rope = strand();
     const lift = {value: 0, velocity: 0};
     const sway = {value: 0, velocity: 0};
+    const shade = document.createElement("div");
+    shade.className = "addim";
+    shade.setAttribute("aria-hidden", "true");
+    root.before(shade);
     let bodylift = 0;
     let timeline = null;
     let width = 400;
@@ -52,10 +56,12 @@ export function morestuff() {
     function position() {
         panel.style.transform = "translate3d(0," + bodylift + "px,0)";
         handle.style.transform = "translate3d(" + sway.value + "px," + (lift.value + 56) + "px,0)";
-        const tail = rope.points.at(-1);
-        const previous = rope.points.at(-2);
-        const angle = Math.atan2(tail.y - previous.y, tail.x - previous.x) * 180 / Math.PI - 90;
+        const mount = buckle();
+        const angle = Math.atan2(-sway.value, lift.value + 60 - mount.y) * 180 / Math.PI;
         handle.style.setProperty("--ringangle", angle + "deg");
+        const openness = Math.max(0, Math.min(1, bodylift / maximum));
+        shade.style.opacity = String(openness * 0.5);
+        shade.style.pointerEvents = openness > 0.01 ? "auto" : "none";
         panel.hidden = !opened && !drag && bodylift < 0.2;
         paint(context, rope.points);
     }
@@ -68,18 +74,19 @@ export function morestuff() {
         let motion = 0;
         while (accumulator >= 1 / 60) {
             const target = opened ? maximum : 0;
+            const previous = bodylift;
             if (!drag) {
                 if (!timeline && Math.abs(target - bodylift) > 0.01) timeline = transition(bodylift, target, opened);
                 if (timeline) {
                     bodylift = advance(timeline);
                     if (timeline.finished) timeline = null;
                 }
-                spring(lift, bodylift, 16);
-                spring(sway, 0, 14);
+                const mount = buckle();
+                dangle(sway, lift, mount, 55 + height * (1 - 900 / 940), (bodylift - previous) * 60);
             }
             const mount = buckle();
             rope.step(origin + sway.value, lift.value + 60, mount.x, mount.y);
-            motion = (timeline ? 1 : 0) + Math.abs(target - lift.value) + Math.abs(target - bodylift) + Math.abs(sway.value) + Math.abs(lift.velocity) + Math.abs(sway.velocity);
+            motion = (timeline ? 1 : 0) + Math.abs(target - bodylift) + Math.abs(lift.velocity) + Math.abs(sway.velocity);
             accumulator -= 1 / 60;
         }
         position();
@@ -112,7 +119,7 @@ export function morestuff() {
 
     handle.addEventListener("pointerdown", event => {
         if (event.button !== 0) return;
-        drag = {id: event.pointerId, x: event.clientX, y: event.clientY, start: lift.value, sideways: sway.value, body: bodylift, opened, moved: false};
+        drag = {id: event.pointerId, x: event.clientX, y: event.clientY, start: lift.value, sideways: sway.value, body: bodylift, opened, moved: false, time: event.timeStamp};
         timeline = null;
         lift.velocity = sway.velocity = 0;
         handle.setPointerCapture(event.pointerId);
@@ -122,15 +129,21 @@ export function morestuff() {
         if (!drag || drag.id !== event.pointerId) return;
         const distance = event.clientY - drag.y;
         if (Math.abs(distance) + Math.abs(event.clientX - drag.x) > 5) drag.moved = true;
-        lift.value = drag.start + distance;
-        sway.value = drag.sideways + event.clientX - drag.x;
         bodylift = Math.max(0, Math.min(maximum, drag.body + distance));
+        const offset = resist(drag.sideways + event.clientX - drag.x, drag.start + distance - bodylift);
+        const elapsed = Math.max(1 / 120, (event.timeStamp - drag.time) / 1000);
+        sway.velocity = Math.max(-1200, Math.min(1200, (offset.x - sway.value) / elapsed));
+        lift.velocity = Math.max(-1200, Math.min(1200, (bodylift + offset.y - lift.value) / elapsed));
+        drag.time = event.timeStamp;
+        lift.value = bodylift + offset.y;
+        sway.value = offset.x;
         wake();
     });
     function release(event) {
         if (!drag || drag.id !== event.pointerId) return;
         const moved = drag.moved;
         const wasopened = drag.opened;
+        if (event.timeStamp - drag.time > 100) lift.velocity = sway.velocity = 0;
         drag = null;
         suppress = moved;
         if (moved) open(!wasopened);
@@ -152,6 +165,7 @@ export function morestuff() {
         open(false);
         handle.focus({preventScroll: true});
     });
+    shade.addEventListener("click", () => open(false));
     document.addEventListener("keydown", event => {
         if (event.key === "Escape" && opened) open(false);
     });
@@ -159,6 +173,8 @@ export function morestuff() {
         if (opened && !root.contains(event.target)) open(false);
     });
     document.addEventListener("homeviewchange", () => open(false));
+    window.addEventListener("hashchange", () => open(false));
+    window.addEventListener("popstate", () => open(false));
     window.addEventListener("resize", measure, {passive: true});
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) {

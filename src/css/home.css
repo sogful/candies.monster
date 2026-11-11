@@ -219,6 +219,7 @@
     position: fixed; top: 0;
     right: 0; z-index: 1;
     width: 40px; height: 40px;
+    overflow: hidden;
 }
 
 .github img {
@@ -252,16 +253,25 @@
         margin-left: 0; margin-top: -76px;
     }
     .sidebartoggle {
-        bottom: 10px; left: 10px;
+        top: 76px; bottom: auto;
+        left: auto; right: 10px;
         width: 44px; height: 24px;
         padding: 0 0 3px; border-radius: 0 0 100% 100%;
-        transition: none;
+        transition: top 260ms ease;
     }
     .sidebartoggle img {transform: rotate(90deg)}
     .navigationhidden .sidebartoggle {
-        left: 10px;
+        top: 0; left: auto;
     }
     .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}
+    .github {
+        top: 104px; width: 28px;
+        height: 28px;
+    }
+    .github img {
+        width: 39.2px; height: 68.6px;
+    }
+    .navigationhidden .github {top: 28px}
     .sitenavigation {display: contents}
     .sidebarlogo {
         width: 64px; align-self: center;

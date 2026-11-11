@@ -1,10 +1,16 @@
 .morestuff {
     position: absolute; top: 0;
-    left: 0; right: 60px;
+    left: 0; right: 0;
     height: 0; z-index: 6;
     pointer-events: none; color: #fff;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.15em 0 #000;
+}
+
+.addim {
+    position: fixed; inset: 0;
+    background: #000; opacity: 0;
+    z-index: 5; pointer-events: none;
 }
 
 .ropehandle {
@@ -58,8 +64,8 @@
 }
 
 .adclose {
-    position: absolute; top: 2.5%;
-    right: 3%; width: 6%;
+    position: absolute; top: 1.2%;
+    right: 4.2%; width: 6%;
     aspect-ratio: 1; z-index: 3;
 }
 
@@ -72,6 +78,7 @@
     left: 6.12%; width: 87.41%;
     height: 75%; display: flex;
     align-items: center; justify-content: center;
+    background: #ba793f;
 }
 
 .carousel a {
@@ -84,7 +91,7 @@
 }
 
 .adfooter {
-    position: absolute; top: 74%;
+    position: absolute; top: 72%;
     left: 5%; right: 5%;
     height: 14%; align-items: center;
     display: flex; justify-content: space-between;
@@ -104,3 +111,5 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+
+.levelopen .addim, .documentopen .addim, .previewopen .addim {visibility: hidden}

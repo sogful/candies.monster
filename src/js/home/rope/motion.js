@@ -1,9 +1,30 @@
-export function spring(channel, target, rate) {
-    const distance = channel.value - target;
-    const impulse = (channel.velocity + distance * rate) / 60;
-    const decay = Math.exp(-rate / 60);
-    channel.value = target + (distance + impulse) * decay;
-    channel.velocity = (channel.velocity - rate * impulse) * decay;
+export function dangle(horizontal, vertical, mount, length, speed) {
+    const step = 1 / 240;
+    for (let index = 0; index < 4; index++) {
+        const dx = horizontal.value;
+        const dy = vertical.value + 60 - mount.y;
+        const distance = Math.max(0.001, Math.hypot(dx, dy));
+        const extension = Math.max(0, distance - length);
+        const radial = (horizontal.velocity * dx + (vertical.velocity - speed) * dy) / distance;
+        const tension = extension ? Math.max(0, extension * 180 + radial * 14) : 0;
+        horizontal.velocity += -dx / distance * tension * step;
+        vertical.velocity += (900 - dy / distance * tension) * step;
+        const decay = Math.exp(-1.6 * step);
+        horizontal.velocity *= decay;
+        vertical.velocity *= decay;
+        horizontal.value += horizontal.velocity * step;
+        vertical.value += vertical.velocity * step;
+    }
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function resist(x, y) {
+    const distance = Math.hypot(x, y);
+    if (distance <= 40) return {x, y};
+    const length = 40 + 100 * (1 - Math.exp(-(distance - 40) / 100));
+    const scale = length / distance;
+    return {x: x * scale, y: y * scale};
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
