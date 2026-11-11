@@ -20,7 +20,12 @@ export async function catalogue() {
             id: level.id, title: level.title, creator: level.author?.name || level.author?.id || "unknown",
             description: level.description || "", file: new URL(`/levels/${level.id}/files/${file.id}`, base).href,
             filename: file.name, background: "/assets/images/level/box1.webp", features: [],
-            rating: null, downloads: null, likes: null, objects: null
+            detailurl: new URL(`/levels/${level.id}`, base).href,
+            playurl: new URL(`/levels/${level.id}/plays`, base).href,
+            rating: Number.isSafeInteger(level.rating) && level.rating >= 0 ? level.rating : null,
+            reactions: Array.isArray(level.reactions) ? level.reactions : [],
+            plays: Number.isSafeInteger(level.plays) && level.plays >= 0 ? level.plays : null,
+            downloads: null, likes: null, objects: null
         }];
     });
 }
