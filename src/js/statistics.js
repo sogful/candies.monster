@@ -4,6 +4,9 @@ export async function refresh(entry) {
     if (!response.ok) throw new Error("Level information unavailable");
     const data = await response.json();
     if (data.id !== entry.id) throw new Error("Invalid level information");
+    entry.title = typeof data.title === "string" ? data.title : entry.title;
+    entry.tags = Array.isArray(data.tags) ? data.tags : entry.tags;
+    entry.created = typeof data.created === "string" ? data.created : entry.created;
     entry.rating = Number.isSafeInteger(data.rating) && data.rating >= 0 ? data.rating : entry.rating;
     entry.reactions = Array.isArray(data.reactions) ? data.reactions : entry.reactions;
     entry.plays = Number.isSafeInteger(data.plays) && data.plays >= 0 ? data.plays : entry.plays;

@@ -23,6 +23,8 @@ export async function catalogue() {
             detailurl: new URL(`/levels/${level.id}`, base).href,
             playurl: new URL(`/levels/${level.id}/plays`, base).href,
             rating: Number.isSafeInteger(level.rating) && level.rating >= 0 ? level.rating : null,
+            tags: Array.isArray(level.tags) ? level.tags : [],
+            created: level.created || new Date(Number((BigInt(level.id) >> 22n) + 1420070400000n)).toISOString(),
             reactions: Array.isArray(level.reactions) ? level.reactions : [],
             plays: Number.isSafeInteger(level.plays) && level.plays >= 0 ? level.plays : null,
             downloads: null, likes: null, objects: null
