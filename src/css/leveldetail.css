@@ -1,5 +1,8 @@
+@import url("./discordmd.css");
+
 .leveldetail {
     position: absolute; inset: 0;
+    display: flex; flex-direction: column;
     box-sizing: border-box; padding: 30px 60px 24px;
     overflow-y: auto; overscroll-behavior: contain;
     pointer-events: auto; scrollbar-width: none;
@@ -29,7 +32,8 @@
 
 .levelheading {
     padding: 0 36px; margin: 0 auto;
-    max-width: 760px;
+    width: 100%; max-width: 760px;
+    box-sizing: border-box;
 }
 
 .levelname {
@@ -46,21 +50,14 @@
 .levelhero {
     display: grid; grid-template-columns: 1fr 180px 1fr;
     align-items: center; gap: 32px;
-    max-width: 680px; margin: 28px auto;
-}
-
-.levelnom {
-    width: 112px; max-width: 100%;
+    width: 100%; max-width: 680px;
+    margin: 28px auto;
 }
 
 .levelstars {
     display: flex; justify-content: center;
     align-items: center; gap: 5px;
-    font-size: 28px; margin-top: 6px;
-}
-
-.levelstars img {
-    width: 68px; height: auto;
+    font-size: 36px;
 }
 
 .levelplay {
@@ -96,34 +93,26 @@
     font-size: 19px; color: #e3f7ff;
 }
 
-.levelprogress {
-    max-width: 540px; margin: 0 auto 20px;
+.levelreactions {
+    display: flex; flex-wrap: wrap;
+    gap: 4px; max-width: 200px;
 }
-
-.levelprogressrow {font-size: 24px}
-
-.levelprogressbar {
-    position: relative; height: 28px;
-    border-radius: 16px; overflow: hidden;
-    background: rgba(0,0,0,0.5); margin-top: 5px;
+.levelreaction {
+    display: inline-flex; align-items: center;
+    gap: 4px; padding: 3px 6px;
+    border-radius: 6px; background: rgba(0,0,0,0.4);
+    font-size: 17px;
 }
-
-.levelprogressfill {
-    position: absolute; inset: 0 auto 0 0;
-    background: #8ed93d;
-}
-
-.levelprogresstext {
-    position: relative; display: block;
-    line-height: 28px; font-size: 22px;
-}
-
-.levelbest {
-    margin: 12px 0 0; font-size: 22px;
+.reactionemoji {
+    width: 20px; height: 20px;
+    object-fit: contain; line-height: 20px;
+    -webkit-text-stroke: 0; text-shadow: none;
+    font-family: "Segoe UI Emoji",sans-serif;
 }
 
 .levelinformation {
     box-sizing: border-box; max-width: 660px;
+    width: 100%;
     margin: 0 auto; padding: 22px 28px;
     border: 0 solid transparent;
     border-image-source: url("/assets/images/coolbox.svg");
@@ -135,26 +124,57 @@
     overflow-wrap: anywhere;
 }
 
-.levelfeatures {
-    display: flex; justify-content: center;
-    flex-wrap: wrap; gap: 8px;
-    margin-bottom: 16px;
+.levelactions {
+    position: sticky; bottom: 0;
+    display: flex; align-items: center;
+    gap: 12px; align-self: flex-start;
+    margin-top: auto; padding-top: 24px;
+    margin-left: -48px; z-index: 2;
 }
-
-.levelfeatures img {
-    width: 30px; height: 30px;
-    object-fit: contain;
-}
-
-.levelaction {
+.leveldownload, .levelsharebutton {
     display: inline-flex; align-items: center;
-    justify-content: center; width: 180px;
-    min-height: 66px; background: url("/assets/images/buttons/wide/sbutton.webp") center / 100% 100% no-repeat;
-    color: #fff; font-size: 25px;
-    text-decoration: none;
+    justify-content: center; width: 52px;
+    height: 52px; padding: 0;
+    border: 0; background: none;
 }
-
-.levelaction:active {background-image: url("/assets/images/buttons/wide/sbuttonactive.webp")}
+.leveldownload img {
+    width: 100%; height: 100%;
+}
+.levelsharebutton img {
+    width: 34px; height: 34px;
+}
+.leveldownload:active, .levelsharebutton:active {transform: scale(0.96)}
+.levelshare {
+    position: absolute; bottom: 62px;
+    left: 0; width: min(430px,calc(100vw - 128px));
+    max-height: calc(100vh - 160px); overflow: auto;
+    padding: 14px; box-sizing: border-box;
+    background: rgba(0,0,0,0.5); border-radius: 12px;
+    text-align: left; font-size: 20px;
+}
+.levelshare[hidden] {display: none}
+.sharerow {
+    display: grid; grid-template-columns: minmax(0,1fr) auto;
+    align-items: center; gap: 5px;
+    margin-bottom: 12px;
+}
+.sharelabel {
+    grid-column: 1 / -1; color: #fff;
+}
+.forumurl, .fullurl, .shorturl {
+    min-width: 0; overflow-wrap: anywhere;
+}
+.sharecopy {
+    background: rgba(0,0,0,0.4); color: #8feeff;
+    border: 0; border-radius: 6px;
+    font: inherit; padding: 4px 8px;
+    -webkit-text-stroke: inherit; paint-order: inherit;
+    text-shadow: inherit;
+}
+.sharestatus {
+    margin: 0; font-size: 18px;
+}
+.sharestatus:empty {display: none}
 .levelstatus {
     font-size: 24px; margin: 14px 0 0;
 }
@@ -175,11 +195,9 @@
         margin: 24px auto;
     }
     .levelplay {width: 104px}
-    .levelnom {width: 76px}
     .levelstars {
         font-size: 21px; gap: 0;
     }
-    .levelstars img {width: 48px}
     .levelstatistics {gap: 8px}
     .levelstat {
         flex-direction: column; gap: 0;
@@ -187,13 +205,15 @@
     }
     .levelvalue {font-size: 24px}
     .levellabel {font-size: 15px}
-    .levelprogressrow, .levelbest {font-size: 22px}
     .levelinformation {padding: 18px 20px}
     .leveldescription {font-size: 23px}
-    .levelfeatures {gap: 6px}
-    .levelfeatures img {
-        width: 26px; height: 26px;
+    .levelactions {margin-left: -8px}
+    .levelshare {width: calc(100vw - 32px)}
+    .levelreactions {gap: 3px}
+    .levelreaction {
+        padding: 2px 4px; font-size: 15px;
     }
+
 }
 
 @media (max-height: 600px) and (min-width: 701px) {
@@ -201,5 +221,4 @@
     .levelname {font-size: 32px}
     .levelhero {margin: 14px auto}
     .levelplay {width: 140px}
-    .levelnom {width: 90px}
 }

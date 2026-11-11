@@ -1,0 +1,49 @@
+.discordmd {
+    text-align: left; white-space: normal;
+    overflow-wrap: anywhere;
+}
+.mdparagraph, .mdsmall {
+    margin: 0 0 0.35em; white-space: pre-wrap;
+}
+.mdheading {
+    margin: 0.5em 0 0.25em; font-weight: normal;
+    line-height: 1.15;
+}
+.mdlarge {font-size: 1.6em}
+.mdmedium {font-size: 1.3em}
+.mdsmallheading {font-size: 1.1em}
+.mdsmall {
+    font-size: 0.75em; opacity: 0.75;
+}
+.mdquote {
+    margin: 0.3em 0; padding-left: 0.5em;
+    border-left: 3px solid rgba(255,255,255,0.5);
+}
+.mdlist {
+    margin: 0.3em 0; padding-left: 1em;
+}
+.mdblockcode, .mdcode {
+    background: rgba(0,0,0,0.4); border-radius: 4px;
+    font-size: 0.75em; font-family: monospace;
+    -webkit-text-stroke: 0; text-shadow: none;
+}
+.mdcode {padding: 0 0.2em}
+.mdblockcode {
+    padding: 0.5em; overflow: auto;
+    white-space: pre-wrap; margin: 0.4em 0;
+}
+.mdspoiler {
+    font: inherit; border: 0;
+    border-radius: 4px; color: transparent;
+    text-shadow: none; -webkit-text-stroke: 0;
+    background: #333; padding: 0 0.2em;
+    cursor: pointer;
+}
+.mdrevealed {
+    color: inherit; text-shadow: inherit;
+    -webkit-text-stroke: inherit; background: rgba(0,0,0,0.25);
+}
+.mdemoji {
+    width: 1.1em; height: 1.1em;
+    object-fit: contain; vertical-align: -0.15em;
+}

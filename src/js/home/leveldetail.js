@@ -1,5 +1,9 @@
 import {scene} from "./renderer/index.js";
 import {player} from "./play/index.js";
+import {level} from "./renderer/data.js";
+import {discordmd} from "./discordmd.js";
+import {refresh} from "./statistics.js";
+import {share} from "./share.js";
 
 export function leveldetails() {
     const root = document.documentElement;
@@ -56,15 +60,36 @@ export function leveldetails() {
 
     /*//////////////////////////////////////////////////////////////////////*/
 
+    function reactions(entry, row) {
+        row.replaceChildren();
+        for (const reaction of (entry.reactions || []).slice(0, 5)) {
+            if (!Number.isSafeInteger(reaction.count) || reaction.count < 1) continue;
+            const item = create("span", "levelreaction");
+            if (/^\d{17,22}$/.test(reaction.id || "")) {
+                item.append(image("https://cdn.discordapp.com/emojis/" + reaction.id + ".webp?size=32", "reactionemoji", reaction.name));
+            } else item.append(create("span", "reactionemoji", reaction.name));
+            item.append(create("span", "reactioncount", String(reaction.count)));
+            row.append(item);
+        }
+    }
+
+    function update(entry) {
+        if (panel.hidden || current !== entry.id) return;
+        panel.querySelector(".levelstars .levelvalue").textContent = String(entry.rating ?? "--");
+        panel.querySelector(".levelplays .levelvalue").textContent = String(entry.plays ?? "--");
+        panel.querySelector(".levelauthor").textContent = "by " + entry.creator;
+        panel.querySelector(".leveldescription").replaceChildren(discordmd(entry.description || entry.title));
+        reactions(entry, panel.querySelector(".levelreactions"));
+        const rating = document.querySelector('.level[data-level="' + entry.id + '"] .rating p');
+        if (rating) rating.textContent = String(entry.rating ?? "--");
+    }
+
     function content(entry) {
         const heading = create("header", "levelheading");
         heading.append(create("h1", "levelname", entry.title), create("p", "levelauthor", `by ${entry.creator}`));
         const hero = create("div", "levelhero");
-        const rating = create("div", "levelscore");
-        rating.append(image("/assets/images/omnom/omnom.webp", "levelnom", "Om Nom"));
         const stars = create("div", "levelstars");
-        stars.append(create("span", "", String(entry.rating ?? "--")), image("/assets/images/stars/star1.png", "", "stars"));
-        rating.append(stars);
+        stars.append(create("span", "levelvalue", String(entry.rating ?? "--")), create("span", "staricon", "\u2b50\ufe0f"));
         const play = create("button", "levelplay clickable");
         play.type = "button";
         play.setAttribute("aria-label", "play " + entry.title);
@@ -74,41 +99,46 @@ export function leveldetails() {
             void game.open(entry, play, status);
         });
         const statistics = create("div", "levelstatistics");
-        statistics.append(stat("downloads", entry.downloads ?? "--"), stat("likes", entry.likes ?? "--"), stat("objects", entry.objects ?? "--"));
-        hero.append(rating, play, statistics);
-        const progress = create("div", "levelprogress");
-        const collected = create("div", "levelprogressrow");
-        collected.append(create("span", "", "stars collected"));
-        const bar = create("div", "levelprogressbar");
-        const fill = create("span", "levelprogressfill");
-        const amount = Math.max(0, Math.min(3, Number(entry.stars) || 0));
-        fill.style.width = amount / 3 * 100 + "%";
-        bar.append(fill, create("span", "levelprogresstext", `${amount} / 3`));
-        collected.append(bar);
-        progress.append(collected, create("p", "levelbest", "best time: " + (entry.besttime || "--")));
+        const plays = stat("plays", entry.plays ?? "--");
+        plays.classList.add("levelplays");
+        const objects = stat("objects", entry.objects ?? "--");
+        const reactionrow = create("div", "levelreactions");
+        reactions(entry, reactionrow);
+        statistics.append(plays, objects, reactionrow);
+        hero.append(stars, play, statistics);
         const information = create("div", "levelinformation");
-        information.append(create("p", "leveldescription", entry.description || entry.title));
-        const features = create("div", "levelfeatures");
-        for (const name of entry.features || []) {
-            if (!/^[a-z]+$/.test(name)) continue;
-            features.append(image(`/assets/images/objects/${name}.png`, "", name));
-        }
-        information.append(features);
-        const download = create("a", "levelaction clickable", "download level");
+        const description = create("div", "leveldescription");
+        description.append(discordmd(entry.description || entry.title));
+        information.append(description);
+        const actions = create("div", "levelactions");
+        const download = create("a", "leveldownload clickable");
         download.href = entry.file;
-        download.download = entry.filename || entry.file.split("/").pop();
-        information.append(download);
+        download.download = entry.filename || "level.xml";
+        download.setAttribute("aria-label", "download level");
+        download.append(image("/assets/images/buttons/downloadnew.png", "", ""));
+        const sharing = create("button", "levelsharebutton clickable");
+        sharing.type = "button";
+        sharing.setAttribute("aria-label", "share level");
+        sharing.setAttribute("aria-expanded", "false");
+        sharing.append(image("/preview/assets/images/share.png", "", ""));
+        actions.append(download, sharing, share(entry, sharing));
         const status = create("p", "levelstatus");
         status.setAttribute("role", "status");
-        panel.append(control(), heading, hero, progress, information, status);
+        panel.append(control(), heading, hero, information, status, actions);
+        void refresh(entry).then(() => update(entry)).catch(() => {});
+        void level(entry.file).then(map => {
+            entry.objects = map.objects.length;
+            if (current === entry.id && objects.isConnected) objects.querySelector(".levelvalue").textContent = String(entry.objects);
+        }).catch(() => {});
     }
 
     function render() {
         game.stop();
-        const match = /^#level\/(\d+)$/.exec(location.hash);
+        const match = /^#(?:level\/)?(\d+)$/.exec(location.hash);
+        if (match && location.hash.startsWith("#level/")) history.replaceState(null, "", location.pathname + location.search + "#" + match[1]);
         const open = Boolean(match);
         root.classList.toggle("levelopen", open);
-        main.inert = open || root.classList.contains("documentopen");
+        main.inert = open || root.classList.contains("documentopen") || root.classList.contains("previewopen");
         const wasopen = !panel.hidden;
         panel.hidden = !open;
         if (!open) {
@@ -134,6 +164,7 @@ export function leveldetails() {
 
     /*//////////////////////////////////////////////////////////////////////*/
 
+    document.addEventListener("levelstatistics", event => update(event.detail));
     window.addEventListener("hashchange", render);
     window.addEventListener("popstate", render);
     document.addEventListener("homeviewchange", render);
@@ -151,7 +182,7 @@ export function leveldetails() {
             render();
         },
         open(id) {
-            history.pushState(null, "", location.pathname + location.search + "#level/" + encodeURIComponent(id));
+            history.pushState(null, "", location.pathname + location.search + "#" + encodeURIComponent(id));
             render();
             panel.querySelector(".levelback")?.focus({preventScroll: true});
         }

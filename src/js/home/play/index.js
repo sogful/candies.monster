@@ -1,6 +1,7 @@
 import {createcontroller} from "/preview/src/game.js";
 import {source} from "../source.js";
 import {loading} from "./loading.js";
+import {played} from "../statistics.js";
 
 export function player() {
     const root = document.documentElement;
@@ -17,6 +18,7 @@ export function player() {
     let control = null;
     let status = null;
     let timeout;
+    let selected = null;
 
     function stop(focus = false) {
         sequence++;
@@ -28,7 +30,7 @@ export function player() {
         frame.setAttribute("aria-hidden", "true");
         progress.stop();
         if (focus && control?.isConnected) control.focus({preventScroll: true});
-        control = status = null;
+        control = status = selected = null;
     }
 
     function fail() {
@@ -54,6 +56,8 @@ export function player() {
         onready() {
             if (!root.classList.contains("gameloading")) return;
             clearTimeout(timeout);
+            const entry = selected;
+            if (entry) void played(entry).then(() => document.dispatchEvent(new CustomEvent("levelstatistics", {detail: entry}))).catch(() => {});
             progress.update(100, "ready");
             root.classList.add("gameopen");
             root.classList.remove("gameloading");
@@ -69,6 +73,7 @@ export function player() {
         if (root.classList.contains("gameloading")) return;
         stop();
         const current = sequence;
+        selected = entry;
         control = button;
         status = message;
         status.textContent = "";
