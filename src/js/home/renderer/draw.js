@@ -1,4 +1,7 @@
-import {painter, object, rope} from "./objects.js";
+import {painter, object} from "./objects.js";
+import {rope} from "./rope.js";
+import {glow, bulb} from "./lighting.js";
+import {grabback, grabmiddle, grabfront, graboverlay} from "./grab.js";
 import {camera, backdrop} from "./camera.js";
 
 const order = {
@@ -29,6 +32,7 @@ const order = {
     star: 19,
     rocket: 20,
     candy: 21,
+    axe: 21,
     load: 22,
     candyleft: 23,
     candyright: 23
@@ -51,8 +55,23 @@ export function draw(canvas, map, art, background, width, height, density, detai
     backdrop(context, map, background, view);
     const sprite = painter(context, art);
     const objects = [...map.objects].sort((first, second) => (order[first.type] ?? 16) - (order[second.type] ?? 16));
+    const grabs = objects.filter(item => item.type === "grab");
+    let hooks = false;
     for (const item of objects) {
-        if (item.type === "grab") rope(context, item, map);
+        if (item.type === "grab") {
+            if (!hooks) {
+                for (const grab of grabs) grabback(context, sprite, grab);
+                hooks = true;
+            }
+            grabmiddle(context, sprite, item, map);
+            rope(context, item, map, sprite);
+            grabfront(context, sprite, item);
+            continue;
+        }
+        if (item.type === "lightbulb") {
+            glow(context, sprite, item);
+            continue;
+        }
         object(context, sprite, item, map);
     }
     if (map.water > 0) {
@@ -65,11 +84,9 @@ export function draw(canvas, map, art, background, width, height, density, detai
         context.lineTo(map.width, map.height - map.water);
         context.stroke();
     }
+    for (const item of objects) if (item.type === "lightbulb") bulb(context, sprite, item);
+    for (const item of grabs) graboverlay(context, sprite, item);
     context.restore();
-    if (map.night) {
-        context.fillStyle = "rgba(5,16,40,0.3)";
-        context.fillRect(0, 0, width, height);
-    }
     if (detail) {
         context.fillStyle = "rgba(0,0,0,0.5)";
         context.fillRect(0, 0, width, height);

@@ -10,7 +10,7 @@ export function number(value, fallback = 0) {
 }
 
 export function enabled(value) {
-    return value === "true" || value === "1";
+    return String(value).toLowerCase() === "true" || value === "1";
 }
 
 export function picture(url) {
@@ -80,6 +80,7 @@ export function parse(text) {
         water: number(design?.getAttribute("water")),
         night: enabled(design?.getAttribute("nightLevel")),
         split: enabled(design?.getAttribute("twoParts")),
+        mobile: enabled(design?.getAttribute("useMobilePhysics")),
         objects
     };
 }

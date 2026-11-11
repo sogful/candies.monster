@@ -330,7 +330,106 @@
     "spikebuttontwo": [
       "obj_spikes",
       6
+    ],
+    "handarm": [
+      "obj_robohand",
+      3
+    ],
+    "handfixed": [
+      "obj_robohand",
+      2
+    ],
+    "axebase": [
+      "obj_axe",
+      0
+    ],
+    "chainpoint": [
+      "obj_exp_chain",
+      0
+    ],
+    "chainmiddle": [
+      "obj_exp_chain",
+      1
+    ],
+    "firefly": [
+      "obj_lighter",
+      3
+    ],
+    "nightglow": [
+      "obj_star_night",
+      0
+    ],
+    "nightstar": [
+      "obj_star_night",
+      1
+    ],
+    "railleft": [
+      "obj_hook",
+      6
+    ],
+    "railright": [
+      "obj_hook",
+      7
+    ],
+    "railmiddle": [
+      "obj_hook",
+      8
+    ],
+    "railgrab": [
+      "obj_hook",
+      10
+    ],
+    "automaticfront": [
+      "obj_hook",
+      5
+    ],
+    "wheelarm": [
+      "obj_hook",
+      12
+    ],
+    "wheelindicator": [
+      "obj_hook",
+      14
+    ],
+    "gunarrow": [
+      "obj_gun",
+      1
+    ],
+    "stickerback": [
+      "obj_sticker",
+      3
+    ],
+    "stickerfront": [
+      "obj_sticker",
+      4
+    ],
+    "stickerdetachedback": [
+      "obj_sticker",
+      1
+    ],
+    "stickerdetachedfront": [
+      "obj_sticker",
+      2
+    ],
+    "chainback": [
+      "obj_hook_chain",
+      0
+    ],
+    "chainfront": [
+      "obj_hook_chain",
+      1
+    ],
+    "chainautomaticback": [
+      "obj_hook_auto_chain",
+      0
+    ],
+    "chainautomaticfront": [
+      "obj_hook_auto_chain",
+      1
     ]
   },
-  "ancestor": "animations/om_nom_prehistoric.xml timeline 0, first frame; FlashXmlScale 1.56, BaseTargetScale 1.73"
+  "ancestor": "animations/om_nom_prehistoric.xml timeline 0, first frame; FlashXmlScale 1.56, BaseTargetScale 1.73",
+  "premultiplied": [
+    "light"
+  ]
 }
