@@ -170,3 +170,11 @@ function slinit() {
 }
 if (document.body) slinit();
 else document.addEventListener("DOMContentLoaded", slinit, {once: true});
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+(() => {
+    const emoji = document.createElement("script");
+    emoji.src = "/assets/static/emoji.js";
+    document.head.append(emoji);
+})();

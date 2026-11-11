@@ -1,0 +1,11 @@
+.siteemoji {
+    display: inline-block; width: 1em;
+    height: 1em; vertical-align: -0.12em;
+    margin: 0 0.04em; object-fit: contain;
+    -webkit-text-stroke: 0; text-shadow: none;
+}
+
+.siteemojiimage {
+    display: block; width: 100%;
+    height: 100%; object-fit: contain;
+}
