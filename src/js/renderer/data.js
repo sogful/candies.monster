@@ -27,8 +27,10 @@ export function picture(url) {
     return images.get(url);
 }
 
-export function artwork(reduced = false) {
-    const name = reduced ? "objectslow" : "objects";
+export function artwork(quality = "normal") {
+    const reduced = quality === true || quality === "low";
+    const ultra = quality === "ultra";
+    const name = ultra ? "objectsultra" : reduced ? "objectslow" : "objects";
     if (!sprites.has(name)) {
         sprites.set(name, Promise.all([
             picture("/assets/images/level/" + name + ".webp"),
@@ -36,7 +38,7 @@ export function artwork(reduced = false) {
                 if (!response.ok) throw new Error("Sprites unavailable");
                 return response.json();
             })
-        ]).then(([image, frames]) => ({image, frames, ratio: reduced ? 0.5 : 1})).catch(error => {
+        ]).then(([image, frames]) => ({image, frames, ratio: ultra ? 0.25 : reduced ? 0.5 : 1})).catch(error => {
             sprites.delete(name);
             throw error;
         }));

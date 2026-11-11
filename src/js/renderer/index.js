@@ -28,14 +28,14 @@ async function render() {
         const version = record.version;
         try {
             const [map, art, background] = await Promise.all([
-                level(record.entry.file), artwork(true),
+                level(record.entry.file), artwork(record.detail ? "low" : "ultra"),
                 record.entry.background ? picture(record.entry.background).catch(() => null) : null
             ]);
             if (version !== record.version || !record.canvas.isConnected || !record.visible || paused()) continue;
             const box = record.canvas.getBoundingClientRect();
             if (box.width < 1 || box.height < 1) continue;
             const pack = Number(record.entry.background?.match(/\/box(\d+)\.webp$/)?.[1]) || 1;
-            draw(record.canvas, {...map, box: pack}, art, background, box.width, box.height, 0.6, record.detail);
+            draw(record.canvas, {...map, box: pack}, art, background, box.width, box.height, record.detail ? 0.6 : 0.45, record.detail);
             record.canvas.dataset.ready = "true";
             delete record.canvas.dataset.error;
         } catch {
@@ -69,7 +69,12 @@ function create(entry, expanded) {
     canvas.setAttribute("aria-hidden", "true");
     const record = {canvas, entry, detail: expanded, visible: expanded || !observer, version: 0};
     records.set(canvas, record);
-    if (expanded) document.body.prepend(canvas);
+    if (expanded) {
+        const background = /^\/assets\/images\/level\/box\d+\.webp$/.test(entry.background || "") ? entry.background : "/assets/images/level/box1.webp";
+        root.style.setProperty("--levelbackground", `url("${background}")`);
+        canvas.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url("${background}")`;
+        document.body.prepend(canvas);
+    } else if (/^\/assets\/images\/level\/box\d+\.webp$/.test(entry.background || "")) canvas.style.backgroundImage = `url("${entry.background}")`;
     observer?.observe(canvas);
     sizes?.observe(canvas);
     if (record.visible) queue(record);

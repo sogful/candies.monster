@@ -1,9 +1,9 @@
 .levelcanvas {
-    opacity: 0.3; mix-blend-mode: normal;
-    background: #956c3d;
+    opacity: 1; mix-blend-mode: normal;
+    background-color: #29231b; background-size: cover;
+    background-position: center;
 }
 
-.levelcanvas:not([data-ready]) {opacity: 0}
 .levelcanvas[hidden] {display: none}
 
 .levelscene {
@@ -11,9 +11,12 @@
     width: 100%; height: 100%;
     z-index: 0; pointer-events: none;
     opacity: 1;
+    background-size: cover; background-position: center;
 }
 
-.levelscene:not([data-ready]) {opacity: 0}
+.levelopen .homepage {
+    background-image: var(--levelbackground,url("/assets/images/level/box1.webp")); background-color: #101010;
+}
 .levelscene[hidden] {display: none}
 .levelopen .shadow, .levelopen .effects {opacity: 0}
 .documentopen .levelscene {display: none}
