@@ -9,7 +9,7 @@ arrow.src = "/assets/images/buttons/back.png";
 arrow.alt = "";
 arrow.draggable = false;
 toggle.append(arrow);
-navigation.append(toggle);
+navigation.after(toggle);
 
 const homelink = document.querySelector(".homelink");
 homelink.addEventListener("click", event => {
@@ -68,11 +68,34 @@ document.addEventListener("homeviewchange", closebuttons);
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-document.querySelectorAll(".clickable").forEach(function(element) {
-    element.addEventListener("click", function() {
-        document.querySelector(".click").currentTime = 0;
-        document.querySelector(".click").play().catch(() => {});
-    });
+const scroller = document.querySelector(".sitenavigation");
+const compact = matchMedia("(max-width: 700px) and (min-height: 501px)");
+const items = scroller.querySelectorAll(".sidebarlogo, .navlink, .resourceblurb");
+
+function fitnavigation() {
+    const bounds = scroller.getBoundingClientRect();
+    for (const item of items) {
+        const box = item.getBoundingClientRect();
+        const clipped = compact.matches && (box.left < bounds.left - 0.5 || box.right > bounds.right + 0.5);
+        item.classList.toggle("navclipped", clipped);
+    }
+}
+
+scroller.addEventListener("scroll", fitnavigation, {passive: true});
+window.addEventListener("resize", fitnavigation, {passive: true});
+if (window.ResizeObserver) new ResizeObserver(fitnavigation).observe(scroller);
+fitnavigation();
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+document.addEventListener("click", event => {
+    const control = event.target.closest(".clickable, button, a[href]");
+    if (!control || control.disabled || control.getAttribute("aria-disabled") === "true") return;
+    if (control.closest(".level") && !getSelection().isCollapsed) return;
+    const sound = document.querySelector(".click");
+    if (!sound) return;
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
 });
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -167,7 +190,7 @@ document.addEventListener("auxclick", (e) => {
         if (window.sheetimg) window.sheetimg.src = "/assets/images/misc/wonderful.png";
 
         document.querySelector(".sbuttons").remove();
-        document.querySelector(".github").remove();
+        document.querySelector(".github")?.remove();
         document.querySelector(".effects").remove();
         document.querySelector("p").remove();
         var weird = new Audio("assets/audio/weird.ogg");

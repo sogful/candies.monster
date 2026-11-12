@@ -43,7 +43,7 @@
     align-items: center; gap: 6px;
     width: 88px; flex: 0 0 88px;
     height: 100%; box-sizing: border-box;
-    padding: 6px 0 38px; overflow: hidden;
+    padding: 6px 0; overflow: hidden;
     overscroll-behavior: contain; pointer-events: auto;
     background: rgba(0,0,0,0.5); font-size: 16px;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
@@ -93,11 +93,11 @@
 }
 
 .smallnav {
-    grid-template-columns: repeat(2,44px); gap: 2px 0;
+    grid-template-columns: repeat(2,43px); gap: 2px;
 }
 
 .smallnav .navlink {
-    width: 44px; height: auto;
+    width: 43px; height: auto;
 }
 
 .buttonlabel {
@@ -139,22 +139,26 @@
 }
 
 .sidebartoggle {
-    position: absolute; bottom: 4px;
-    right: 0; z-index: 6;
+    position: absolute; bottom: 0;
+    left: 68px; z-index: 6;
     display: grid; place-items: center;
-    width: 24px; height: 28px;
+    width: 20px; height: 24px;
     padding: 0; border: 0;
     border-radius: 8px 0 0 8px; background: none;
-    pointer-events: auto;
+    pointer-events: auto; transition: left 260ms ease;
 }
 
 .sidebartoggle img {
-    width: 19px; height: auto;
+    width: 15px; height: auto;
     pointer-events: none; transition: transform 260ms ease;
 }
 
-.navigationhidden .homepage {--navigationwidth: 24px}
-.navigationhidden .sidebar {margin-left: -64px}
+.navigationhidden .homepage {--navigationwidth: 0px}
+.navigationhidden .sidebar {margin-left: -88px}
+.navigationhidden .sidebartoggle {
+    left: 0; border-radius: 0 100% 100% 0;
+    background: rgba(0,0,0,0.5);
+}
 .navigationhidden .sitenavigation, .navigationhidden .sidelinks {visibility: hidden}
 .navigationhidden .sidebartoggle img {transform: scaleX(-1)}
 
@@ -218,19 +222,6 @@
     text-shadow: 0 0.15em 0 #000;
 }
 
-.github {
-    position: fixed; top: 0;
-    right: 0; z-index: 1;
-    width: 40px; height: 40px;
-    overflow: hidden;
-}
-
-.github img {
-    position: absolute; top: 0;
-    right: 0; width: 56px;
-    height: 98px; pointer-events: none;
-}
-
 .effects {
     position: fixed; inset: 0;
     width: 100%; height: 100%;
@@ -254,27 +245,21 @@
     }
     .sidebar > * {pointer-events: auto}
     .navigationhidden .sidebar {
-        margin-left: 0; margin-top: -52px;
+        margin-left: 0; margin-top: -76px;
     }
     .sidebartoggle {
-        top: auto; bottom: 0;
+        top: 58px; bottom: auto;
         left: auto; right: 0;
-        width: 28px; height: 24px;
+        width: 24px; height: 18px;
         padding: 0; border-radius: 8px 0 0;
+        transition: top 260ms ease;
     }
     .sidebartoggle img {transform: rotate(90deg)}
     .navigationhidden .sidebartoggle {
-        top: auto; left: auto;
+        top: 0; left: auto;
+        border-radius: 0 0 100% 100%;
     }
     .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}
-    .github {
-        top: 104px; width: 28px;
-        height: 28px;
-    }
-    .github img {
-        width: 39.2px; height: 68.6px;
-    }
-    .navigationhidden .github {top: 28px}
     .sitenavigation {
         flex-direction: row; align-items: center;
         gap: 8px; height: 100%;
@@ -292,21 +277,23 @@
         flex-shrink: 0;
     }
     .smallnav {
-        grid-template-columns: repeat(3,32px); grid-template-rows: repeat(2,32px);
-        grid-auto-flow: column; gap: 0;
+        grid-template-columns: repeat(3,31px); grid-template-rows: repeat(2,31px);
+        grid-auto-flow: column; gap: 2px;
         order: 1;
     }
     .smallnav .navlink {
-        width: 32px; height: 32px;
+        width: 31px; height: 31px;
     }
     .buttonlabel {display: none}
+    .navclipped {visibility: hidden}
     .resourceblurb {
         width: 88px; flex: 0 0 88px;
         white-space: normal; order: 3;
     }
     .sidelinks {
         order: 4; margin-left: auto;
-        font-size: 12px; padding: 0 5px;
+        font-size: 11px; padding: 1px 5px;
+        line-height: 1; box-sizing: border-box;
         width: auto;
     }
     .buttondrawer {
