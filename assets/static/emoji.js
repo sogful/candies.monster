@@ -8,6 +8,30 @@
     const pending = new Set();
     let scheduled = false;
     let parser;
+    let names;
+
+    function title(wrapper, emoji) {
+        wrapper.title = emoji;
+        if (!names) names = fetch("/assets/static/data/emojis.json").then(response => response.ok ? response.json() : {}).catch(() => ({}));
+        names.then(data => {
+            const name = data[emoji.replace(/\ufe0f/g, "")];
+            if (!name) return;
+            wrapper.title = ":" + name + ":";
+            const image = wrapper.querySelector("img");
+            if (image) image.title = wrapper.title;
+        });
+    }
+
+    function custom(root) {
+        const selector = "img[src*='/emojis/']";
+        const images = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)];
+        for (const image of images) {
+            const url = new URL(image.src, location.href);
+            if (!["cdn.discordapp.com", "media.discordapp.net"].includes(url.hostname)) continue;
+            const name = image.alt.replace(/^:|:$/g, "");
+            if (/^[a-z\d_]+$/i.test(name)) image.title = ":" + name + ":";
+        }
+    }
 
     function replace(text) {
         if (!text.parentElement || text.parentElement.closest(excluded)) return;
@@ -22,13 +46,14 @@
             const wrapper = document.createElement("span");
             wrapper.className = "siteemoji";
             wrapper.textContent = emoji;
+            title(wrapper, emoji);
             if (!failed.has(code)) {
                 const image = document.createElement("img");
                 image.className = "siteemojiimage";
                 image.alt = emoji;
                 image.draggable = false;
                 image.decoding = "async";
-                image.onload = () => {wrapper.replaceChildren(image)};
+                image.onload = () => {image.title = wrapper.title; wrapper.replaceChildren(image)};
                 image.onerror = () => {failed.add(code)};
                 image.src = "https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.3/assets/svg/" + code + ".svg";
             }
@@ -44,6 +69,7 @@
         if (!parser || !root) return;
         if (root.nodeType === Node.TEXT_NODE) {replace(root); return}
         if (root.nodeType !== Node.ELEMENT_NODE || root.closest(excluded)) return;
+        custom(root);
         const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
             acceptNode: text => text.parentElement.closest(excluded) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
         });
