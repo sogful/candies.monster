@@ -2,6 +2,7 @@ import {leveldetails} from "./leveldetail.js";
 import {thumbnail, clearthumbnails} from "./renderer/index.js";
 import {morestuff} from "./rope/index.js";
 import {catalogue} from "./catalogue.js";
+import {filters} from "./filters.js";
 
 morestuff();
 
@@ -11,6 +12,7 @@ const next = document.querySelector(".next");
 let pagesize = 1;
 const detail = leveldetails();
 let entries = [];
+let visible = [];
 let page = 0;
 let definitions = null;
 let loading = null;
@@ -19,6 +21,10 @@ const tooltip = document.createElement("div");
 tooltip.className = "tooltip";
 tooltip.hidden = true;
 document.body.appendChild(tooltip);
+const search = filters(result => {
+    visible = result;
+    showpage(0);
+});
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -49,7 +55,9 @@ function createlevel(entry) {
     header.append(element("p", "title", entry.title), element("p", "creator", `by ${entry.creator}`));
     const footer = element("div", "footer");
     const rating = element("div", "rating");
-    rating.append(element("p", "", String(entry.rating ?? "--")), element("span", "staricon", "\u2b50\ufe0f"));
+    rating.append(element("p", "", String(entry.rating ?? 0)), picture("/assets/images/level/star.webp", "staricon", "stars"));
+    const plays = element("div", "cardplays");
+    plays.append(element("p", "", String(entry.plays ?? 0)), picture("/assets/images/icons/right.png", "playcounticon", "plays"));
     const features = element("div", "features");
     for (const name of entry.features || []) {
         if (!/^[a-z]+$/.test(name)) continue;
@@ -61,20 +69,20 @@ function createlevel(entry) {
         more.setAttribute("aria-expanded", "false");
         features.append(more);
     }
-    footer.append(rating, features);
+    footer.append(rating, plays, features);
     card.append(thumbnail(entry));
     card.append(header, footer);
     return card;
 }
 
 function showpage(number) {
-    const pages = Math.max(1, Math.ceil(entries.length / pagesize));
+    const pages = Math.max(1, Math.ceil(visible.length / pagesize));
     page = Math.max(0, Math.min(number, pages - 1));
     hide();
     clearthumbnails();
     const content = document.createDocumentFragment();
-    for (const entry of entries.slice(page * pagesize, (page + 1) * pagesize)) content.append(createlevel(entry));
-    if (!entries.length) content.append(element("p", "levelnotice", "no levels yet"));
+    for (const entry of visible.slice(page * pagesize, (page + 1) * pagesize)) content.append(createlevel(entry));
+    if (!visible.length) content.append(element("p", "levelnotice", entries.length ? "no results :(" : "no levels yet"));
     list.replaceChildren(content);
     list.scrollTop = 0;
     list.setAttribute("aria-label", `levels, page ${page + 1} of ${pages}`);
@@ -87,9 +95,9 @@ function layout() {
     const height = list.clientHeight;
     if (!width || !height) return;
     const gap = Number.parseFloat(getComputedStyle(list).columnGap) || 0;
-    const columns = Math.max(1, Math.floor((width + gap) / 332));
+    const columns = innerWidth < 320 ? 1 : Math.max(2, Math.floor((width + gap) / 260));
     const cardwidth = (width - gap * (columns - 1)) / columns;
-    const rows = Math.max(1, Math.floor((height - 28 + gap) / (cardwidth * 9 / 16 + gap)));
+    const rows = Math.max(1, Math.floor((height - 12 + gap) / (cardwidth * 9 / 16 + gap)));
     const capacity = rows * columns;
     list.style.setProperty("--columns", String(columns));
     if (capacity === pagesize) return;
@@ -122,7 +130,7 @@ catalogue().then(data => {
     if (!Array.isArray(data)) throw new Error("Invalid level data");
     entries = data;
     detail.setentries(data);
-    showpage(0);
+    search.setentries(data);
 }).catch(() => {
     list.replaceChildren(element("p", "levelnotice", "levels could not be loaded"));
 }).finally(() => list.setAttribute("aria-busy", "false"));
@@ -131,7 +139,7 @@ catalogue().then(data => {
 
 list.addEventListener("click", event => {
     const card = event.target.closest(".level");
-    if (!card || event.target.closest(".features")) return;
+    if (!card || event.target.closest(".features") || !getSelection().isCollapsed) return;
     detail.open(card.dataset.level);
 });
 
