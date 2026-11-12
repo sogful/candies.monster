@@ -4,6 +4,8 @@ import {level} from "./renderer/data.js";
 import {discordmd} from "./discordmd.js";
 import {refresh} from "./statistics.js";
 import {share} from "./share.js";
+import {tags} from "./tags.js";
+import {downloadlevel, filename} from "./download.js";
 
 export function leveldetails() {
     const root = document.documentElement;
@@ -78,10 +80,16 @@ export function leveldetails() {
         panel.querySelector(".levelstars .levelvalue").textContent = String(entry.rating ?? "--");
         panel.querySelector(".levelplays .levelvalue").textContent = String(entry.plays ?? "--");
         panel.querySelector(".levelauthor").textContent = "by " + entry.creator;
+        panel.querySelector(".levelname").textContent = entry.title;
+        panel.querySelector(".leveldownload").download = filename(entry);
+        document.title = entry.title + " by " + entry.creator + " - candies.monster";
         panel.querySelector(".leveldescription").replaceChildren(discordmd(entry.description || entry.title));
+        tags(entry, panel.querySelector(".leveltags"));
         reactions(entry, panel.querySelector(".levelreactions"));
         const rating = document.querySelector('.level[data-level="' + entry.id + '"] .rating p');
         if (rating) rating.textContent = String(entry.rating ?? "--");
+        const plays = document.querySelector('.level[data-level="' + entry.id + '"] .cardplays p');
+        if (plays) plays.textContent = String(entry.plays ?? 0);
     }
 
     function content(entry) {
@@ -89,11 +97,11 @@ export function leveldetails() {
         heading.append(create("h1", "levelname", entry.title), create("p", "levelauthor", `by ${entry.creator}`));
         const hero = create("div", "levelhero");
         const stars = create("div", "levelstars");
-        stars.append(create("span", "levelvalue", String(entry.rating ?? "--")), create("span", "staricon", "\u2b50\ufe0f"));
+        stars.append(create("span", "levelvalue", String(entry.rating ?? 0)), image("/assets/images/level/star.webp", "staricon", "stars"));
         const play = create("button", "levelplay clickable");
         play.type = "button";
         play.setAttribute("aria-label", "play " + entry.title);
-        play.append(image("/assets/images/misc/play.png", "", "play"));
+        play.append(image("/assets/images/buttons/play.svg", "", "play"));
         play.addEventListener("click", event => {
             event.preventDefault();
             void game.open(entry, play, status);
@@ -110,12 +118,13 @@ export function leveldetails() {
         const description = create("div", "leveldescription");
         description.append(discordmd(entry.description || entry.title));
         information.append(description);
+        const labels = create("div", "leveltags");
+        tags(entry, labels);
+        information.append(labels);
         const actions = create("div", "levelactions");
         const download = create("a", "leveldownload clickable");
-        download.href = entry.file;
-        download.download = entry.filename || "level.xml";
         download.setAttribute("aria-label", "download level");
-        download.append(image("/assets/images/buttons/downloadnew.png", "", ""));
+        download.append(image("/assets/images/buttons/download.png", "", ""));
         const sharing = create("button", "levelsharebutton clickable");
         sharing.type = "button";
         sharing.setAttribute("aria-label", "share level");
@@ -124,7 +133,8 @@ export function leveldetails() {
         actions.append(download, sharing, share(entry, sharing));
         const status = create("p", "levelstatus");
         status.setAttribute("role", "status");
-        panel.append(control(), heading, hero, information, status, actions);
+        downloadlevel(download, entry, status);
+        panel.append(control(), heading, hero, status, actions, information);
         void refresh(entry).then(() => update(entry)).catch(() => {});
         void level(entry.file).then(map => {
             entry.objects = map.objects.length;
@@ -155,7 +165,7 @@ export function leveldetails() {
         const entry = entries.find((item, index) => String(item.id ?? index + 1) === id);
         if (entry) {
             scene(entry);
-            document.title = entry.title + " - candies.monster";
+            document.title = entry.title + " by " + entry.creator + " - candies.monster";
             content(entry);
         } else {
             panel.append(control(), create("p", "levelstatus", ready ? "level not found" : "loading level..."));

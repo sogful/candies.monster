@@ -11,7 +11,7 @@ export function share(entry, button) {
     const status = document.createElement("p");
     status.className = "sharestatus";
     status.setAttribute("role", "status");
-    for (const [classname, label] of [["forumurl", "level link"], ["shorturl", "play link"], ["fullurl", "full play link"]]) {
+    for (const [classname, label] of [["forumurl", "Level Link:"], ["shorturl", "Play Link:"]]) {
         const row = document.createElement("div");
         row.className = "sharerow";
         const name = document.createElement("span");
@@ -24,7 +24,13 @@ export function share(entry, button) {
         const copy = document.createElement("button");
         copy.className = "sharecopy clickable";
         copy.type = "button";
-        copy.textContent = "copy";
+        const graphic = document.createElement("img");
+        graphic.src = "/assets/images/buttons/wide/sbutton.webp";
+        graphic.alt = "";
+        graphic.draggable = false;
+        const caption = document.createElement("span");
+        caption.textContent = "Copy";
+        copy.append(graphic, caption);
         copy.addEventListener("click", () => {
             if (!link.getAttribute("href")) return;
             void sharing.copyurl(link).then(copied => {status.textContent = copied ? "copied!" : "could not copy link"});

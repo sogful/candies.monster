@@ -3,7 +3,7 @@
 .leveldetail {
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
-    box-sizing: border-box; padding: 30px 60px 24px;
+    box-sizing: border-box; padding: 30px 60px 0;
     overflow-y: auto; overscroll-behavior: contain;
     pointer-events: auto; scrollbar-width: none;
     color: #fff; text-align: center;
@@ -43,7 +43,7 @@
 }
 
 .levelauthor {
-    color: #8feeff; font-size: 25px;
+    color: #fff; font-size: 25px;
     margin: 5px 0 0;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .levellabel {
-    font-size: 19px; color: #e3f7ff;
+    font-size: 19px; color: #fff;
 }
 
 .levelreactions {
@@ -113,10 +113,11 @@
 .levelinformation {
     box-sizing: border-box; max-width: 660px;
     width: 100%;
-    margin: 0 auto; padding: 22px 28px;
+    margin: auto auto 0; padding: 22px 28px 76px;
     border: 0 solid transparent;
     border-image-source: url("/assets/images/coolbox.svg");
     border-image-slice: 100 fill; border-image-width: 32px;
+    border-image-outset: 0 0 32px;
 }
 
 .leveldescription {
@@ -125,11 +126,12 @@
 }
 
 .levelactions {
-    position: sticky; bottom: 0;
+    position: fixed; bottom: 8px;
+    left: calc(var(--navigationwidth,88px) + 8px);
     display: flex; align-items: center;
     gap: 12px; align-self: flex-start;
-    margin-top: auto; padding-top: 24px;
-    margin-left: -48px; z-index: 2;
+    margin: 0; padding: 0;
+    z-index: 2;
 }
 .leveldownload, .levelsharebutton {
     display: inline-flex; align-items: center;
@@ -146,7 +148,7 @@
 .leveldownload:active, .levelsharebutton:active {transform: scale(0.96)}
 .levelshare {
     position: absolute; bottom: 62px;
-    left: 0; width: min(430px,calc(100vw - 128px));
+    left: 0; width: min(430px,calc(100vw - var(--navigationwidth,88px) - 24px));
     max-height: calc(100vh - 160px); overflow: auto;
     padding: 14px; box-sizing: border-box;
     background: rgba(0,0,0,0.5); border-radius: 12px;
@@ -161,16 +163,26 @@
 .sharelabel {
     grid-column: 1 / -1; color: #fff;
 }
-.forumurl, .fullurl, .shorturl {
+.forumurl, .shorturl {
     min-width: 0; overflow-wrap: anywhere;
 }
 .sharecopy {
-    background: rgba(0,0,0,0.4); color: #8feeff;
-    border: 0; border-radius: 6px;
-    font: inherit; padding: 4px 8px;
+    position: relative; display: inline-flex;
+    background: none; color: #fff;
+    border: 0; width: 70px;
+    font: inherit; padding: 0;
     -webkit-text-stroke: inherit; paint-order: inherit;
     text-shadow: inherit;
 }
+.sharecopy img {
+    width: 100%; display: block;
+}
+.sharecopy span {
+    position: absolute; inset: 0 0 3px;
+    display: flex; align-items: center;
+    justify-content: center;
+}
+.sharecopy:active {transform: scale(0.96)}
 .sharestatus {
     margin: 0; font-size: 18px;
 }
@@ -183,7 +195,7 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 @media (max-width: 700px) {
-    .leveldetail {padding: 26px 16px 20px}
+    .leveldetail {padding: 26px 16px 0}
     .levelback {
         left: 8px; width: 32px;
     }
@@ -205,10 +217,8 @@
     }
     .levelvalue {font-size: 24px}
     .levellabel {font-size: 15px}
-    .levelinformation {padding: 18px 20px}
+    .levelinformation {padding: 18px 20px 76px}
     .leveldescription {font-size: 23px}
-    .levelactions {margin-left: -8px}
-    .levelshare {width: calc(100vw - 32px)}
     .levelreactions {gap: 3px}
     .levelreaction {
         padding: 2px 4px; font-size: 15px;
