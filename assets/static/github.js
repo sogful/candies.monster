@@ -1,0 +1,10 @@
+const repository = document.createElement("a");
+repository.className = "github clickable";
+repository.href = "https://github.com/sogful/candies.monster";
+repository.setAttribute("aria-label", "github repository");
+const mark = document.createElement("img");
+mark.src = "/assets/images/github.png";
+mark.alt = "";
+mark.draggable = false;
+repository.append(mark);
+document.body.append(repository);

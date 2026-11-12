@@ -1,0 +1,23 @@
+.github {
+    position: fixed; top: 0;
+    right: 0; z-index: 20;
+    width: 40px; height: 40px;
+    margin: 0; padding: 0;
+    overflow: hidden; cursor: url("/assets/static/cursors/link.cur"), pointer;
+}
+.github img {
+    position: absolute; top: 0;
+    right: 0; width: 56px;
+    height: 98px; pointer-events: none;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+@media (max-width: 700px) {
+    .github {
+        width: 28px; height: 28px;
+    }
+    .github img {
+        width: 39.2px; height: 68.6px;
+    }
+}
