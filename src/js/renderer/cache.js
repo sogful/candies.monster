@@ -37,12 +37,12 @@ export function prefetch(entries, width, height) {
         if (!entry) return;
         if (!cached(entry, width, height)) {
             try {
-                const [map, art] = await Promise.all([level(entry.file), artwork("ultra")]);
+                const [map, art] = await Promise.all([level(entry.file), artwork("low")]);
                 const backdrop = entry.background ? await background(entry.background, map).catch(() => null) : null;
                 if (current !== generation) return;
                 const canvas = document.createElement("canvas");
                 const pack = Number(entry.background?.match(/\/box(\d+)\.webp$/)?.[1]) || 1;
-                draw(canvas, {...map, box: pack}, art, backdrop, width, height, 0.45, false);
+                draw(canvas, {...map, box: pack}, art, backdrop, width, height, 0.65, false);
                 remember(entry, width, height, canvas);
             } catch {}
         }

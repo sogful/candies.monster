@@ -3,8 +3,12 @@ let details;
 let copied;
 let previous;
 let audio;
+let timer;
+let focus;
 
 function close() {
+    clearTimeout(timer);
+    clearTimeout(focus);
     panel.hidden = true;
     audio.pause();
     if (previous?.isConnected) previous.focus({preventScroll: true});
@@ -29,8 +33,8 @@ export function crash(message, level) {
         details = create("pre", "failuredetails");
         details.tabIndex = 0;
         const actions = create("div", "failureactions");
-        copied = create("button", "failurebutton clickable", "Copy error");
-        const dismiss = create("button", "failurebutton clickable", "Close");
+        copied = create("button", "failurebutton descbutton clickable", "Copy error");
+        const dismiss = create("button", "failurebutton descbutton clickable", "Close");
         copied.type = dismiss.type = "button";
         copied.addEventListener("click", async () => {
             try {
@@ -61,8 +65,13 @@ export function crash(message, level) {
     previous = document.activeElement;
     details.textContent = [level, String(message).slice(0, 8000)].filter(Boolean).join("\n\n");
     copied.textContent = "Copy error";
+    clearTimeout(timer);
+    clearTimeout(focus);
+    panel.hidden = true;
+    void panel.offsetWidth;
     panel.hidden = false;
-    panel.focus({preventScroll: true});
+    focus = setTimeout(() => panel.focus({preventScroll: true}), 500);
+    audio.pause();
     audio.currentTime = 0;
-    void audio.play().catch(() => {});
+    timer = setTimeout(() => {void audio.play().catch(() => {})}, 1000);
 }

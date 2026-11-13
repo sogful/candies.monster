@@ -38,7 +38,10 @@ function render() {
 }
 
 function exit() {
-    history.pushState(null, "", location.pathname);
+    const query = new URLSearchParams(location.search);
+    for (const key of [...query.keys()]) if (!["search", "sort", "tags", "creator", "page", "features", "author"].includes(key)) query.delete(key);
+    const suffix = query.toString();
+    history.pushState(null, "", location.pathname + (suffix ? "?" + suffix : ""));
     render();
     document.dispatchEvent(new Event("homeviewchange"));
 }

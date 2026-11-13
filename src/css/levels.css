@@ -27,6 +27,7 @@
     position: absolute; inset: auto 12px 8px;
     display: flex; justify-content: space-between;
     align-items: center; pointer-events: none;
+    min-height: 36px;
 }
 
 .previous, .next {
@@ -51,7 +52,7 @@
     align-content: center; gap: 12px;
     box-sizing: border-box; height: calc(100% - var(--filterheight,54px) - 70px);
     width: calc(100% - 48px); padding: 6px 0;
-    margin: calc(var(--filterheight,54px) + 16px) 28px 54px 0;
+    margin: calc(var(--filterheight,54px) + 16px) auto 54px;
     overflow: auto; overscroll-behavior: contain;
     pointer-events: auto; scrollbar-width: none;
 }
@@ -59,12 +60,13 @@
 .level {
     position: relative; width: 100%;
     aspect-ratio: 16 / 9; box-sizing: border-box;
-    padding: 10px 12px; border: 3px solid #111;
+    padding: 5px 6px; border: 3px solid #111;
     border-radius: 15px; background: #111;
     box-shadow: 0 2px 3px rgba(0,0,0,0.7);
     isolation: isolate; container-type: inline-size;
-    display: flex; flex-direction: column;
-    justify-content: space-between; min-width: 0;
+    display: grid; grid-template-columns: minmax(0,1fr) auto;
+    grid-template-rows: auto auto 1fr auto; min-width: 0;
+    column-gap: 4px;
     min-height: 0; align-self: start;
 }
 
@@ -77,8 +79,7 @@
 }
 
 .header {
-    display: flex; flex-direction: column;
-    gap: 0; min-width: 0;
+    display: contents;
 }
 
 .title, .creator {
@@ -90,6 +91,7 @@
 }
 
 .title {
+    grid-column: 1; grid-row: 1;
     font-size: 18px; font-size: clamp(12px,7cqw,26px);
     overflow-wrap: anywhere;
     display: -webkit-box; -webkit-line-clamp: 2;
@@ -97,28 +99,32 @@
 }
 
 .creator {
+    grid-column: 1 / -1; grid-row: 2;
     font-size: 13px; font-size: clamp(10px,4.5cqw,18px);
     white-space: normal; overflow-wrap: anywhere;
 }
 
 .footer {
     position: relative; display: flex;
+    grid-column: 2; grid-row: 1;
     align-items: center; gap: 8px;
-    align-self: flex-end; flex-shrink: 0;
+    align-self: start; flex-shrink: 0;
     margin: 0 0 2px;
 }
 
 .cardtags {
+    grid-column: 1 / -1; grid-row: 4;
     display: flex; gap: 3px;
     overflow-x: auto; flex-shrink: 0;
     margin-top: auto; padding-top: 2px;
-    max-width: 100%; scrollbar-width: none;
+    max-width: 100%; min-width: 0;
+    scrollbar-width: none;
     touch-action: pan-x;
 }
 .cardtags[hidden] {display: none}
 .cardtags::-webkit-scrollbar {display: none}
 .cardtags .leveltag {
-    font-size: clamp(8px,3.6cqw,14px); padding: 1px 4px;
+    font-size: clamp(10px,4cqw,16px); padding: 1px 4px;
     min-width: 0; flex-shrink: 0;
 }
 .cardtags .tagemoji {
@@ -227,18 +233,20 @@
 @media (max-width: 700px) {
     .levels {
         width: calc(100% - 44px); gap: 8px;
-        margin-right: 24px;
+        margin-left: auto; margin-right: auto;
     }
-    .level {padding: 5px 6px}
+    .level {padding: 3px 4px}
     .header {gap: 0}
     .title, .creator {padding: 0.1em 0.15em 0.14em}
     .footer {
-        gap: 5px; margin-top: 1px;
+        gap: 5px; margin-top: 0;
     }
     .features img {
         height: clamp(12px,8cqw,25px); margin: 0 1px;
     }
-    .controls {inset: auto 12px 8px}
+    .controls {
+        inset: auto 12px 8px; min-height: 36px;
+    }
     .previous, .next {width: 30px}
     .arrow {width: 30px}
 }
@@ -260,6 +268,7 @@
 .next {margin-left: auto}
 .levelpagination {
     position: absolute; left: 50%;
-    transform: translateX(-50%); color: #fff;
+    top: 50%; transform: translate(-50%,-50%);
+    color: #fff;
     font-size: 19px; white-space: nowrap;
 }

@@ -22,3 +22,13 @@
 .documentopen .levelscene {display: none}
 
 .levelback:focus:not(:focus-visible) {outline: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+
+.cardloading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    pointer-events: none; font-size: 24px;
+}
+.levelcanvas[data-ready="true"] + .cardloading, .levelcanvas[data-error="true"] + .cardloading {display: none}

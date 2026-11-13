@@ -16,7 +16,10 @@ homelink.addEventListener("click", event => {
     if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     const oldurl = location.href;
-    history.pushState(null, "", location.pathname + location.search);
+    const url = new URL(location.href);
+    url.hash = "";
+    url.searchParams.delete("revision");
+    history.pushState(null, "", url);
     window.dispatchEvent(new HashChangeEvent("hashchange", {oldURL: oldurl, newURL: location.href}));
 });
 
@@ -91,6 +94,7 @@ fitnavigation();
 /*//////////////////////////////////////////////////////////////////////*/
 
 document.addEventListener("click", event => {
+    if (event.soundplayed) return;
     const control = event.target.closest(".clickable, button, a[href]");
     if (!control || control.disabled || control.getAttribute("aria-disabled") === "true") return;
     if (control.closest(".level") && !getSelection().isCollapsed) return;

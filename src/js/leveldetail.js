@@ -1,3 +1,4 @@
+import {unsupported} from "./unsupported.js";
 import {scene} from "./renderer/index.js";
 import {player} from "./play/index.js";
 import {level} from "./renderer/data.js";
@@ -8,6 +9,8 @@ import {tags} from "./tags.js";
 import {downloadlevel, filename} from "./download.js";
 import {inspection} from "./inspection.js";
 import {comments} from "./comments.js";
+import {discordbutton} from "./discordlink.js";
+import {creatorlink} from "./creator.js";
 import {features} from "./features.js";
 
 export function leveldetails() {
@@ -42,7 +45,10 @@ export function leveldetails() {
 
     function back() {
         game.stop();
-        history.pushState(null, "", location.pathname + location.search);
+        const url = new URL(location.href);
+        url.hash = "";
+        url.searchParams.delete("revision");
+        history.pushState(null, "", url);
         render();
         const card = document.querySelector('.level[data-level="' + current + '"]');
         card?.focus({preventScroll: true});
@@ -80,9 +86,17 @@ export function leveldetails() {
 
     function update(entry) {
         if (panel.hidden || current !== entry.id) return;
+        if (entry.filechanged) {
+            entry.filechanged = false;
+            panel.replaceChildren();
+            scene(null);
+            scene(entry);
+            content(entry);
+            return;
+        }
         panel.querySelector(".levelfavourites .levelvalue").textContent = String(entry.rating ?? 0);
         panel.querySelector(".levelplays .levelvalue").textContent = String(entry.plays ?? "--");
-        panel.querySelector(".levelauthor").textContent = "by " + entry.creator;
+        panel.querySelector(".levelauthor").replaceWith(creatorlink(entry, "levelauthor"));
         panel.querySelector(".levelname").textContent = entry.title;
         panel.querySelector(".leveldownload").download = filename(entry);
         document.title = entry.title + " by " + entry.creator;
@@ -97,15 +111,21 @@ export function leveldetails() {
 
     function content(entry) {
         const heading = create("header", "levelheading");
-        heading.append(create("h1", "levelname", entry.title), create("p", "levelauthor", `by ${entry.creator}`));
+        heading.append(create("h1", "levelname", entry.title), creatorlink(entry, "levelauthor"));
         const hero = create("div", "levelhero");
         const primary = create("div", "levelprimary");
         const play = create("button", "levelplay clickable");
         play.type = "button";
+        if (entry.engine || !entry.file) {
+            play.setAttribute("aria-disabled", "true");
+            play.setAttribute("aria-description", entry.engine ? "Requires " + entry.engine : "Level file unavailable");
+        }
         play.setAttribute("aria-label", "play " + entry.title);
         play.append(image("/assets/images/misc/play.png", "", "play"));
+        if (entry.engine || !entry.file) unsupported(play, entry.engine);
         play.addEventListener("click", event => {
             event.preventDefault();
+            if (entry.engine || !entry.file) return;
             void game.open(entry, play, status);
         });
         const statistics = create("div", "levelstatistics");
@@ -114,6 +134,7 @@ export function leveldetails() {
         const plays = stat("plays", entry.plays ?? "--");
         plays.classList.add("levelplays");
         const objects = stat("objects", entry.objects ?? "--");
+        objects.classList.add("levelobjects");
         const reactionrow = create("div", "levelreactions");
         reactions(entry, reactionrow);
         statistics.append(favourites, plays, objects, reactionrow);
@@ -129,6 +150,30 @@ export function leveldetails() {
         const labels = create("div", "leveltags");
         tags(entry, labels);
         body.append(labels);
+        if (entry.revisions?.length) {
+            const label = create("label", "levelrevisions", "Revision ");
+            const choices = create("select", "revisionselect clickable");
+            choices.setAttribute("aria-label", "Level revision");
+            const original = create("option", "", "Original");
+            original.value = "";
+            choices.append(original);
+            for (const file of entry.revisions) {
+                const created = new Date(Number((BigInt(file.id) >> 22n) + 1420070400000n));
+                const option = create("option", "", file.name + " (" + created.toLocaleDateString() + ")");
+                option.value = file.id;
+                choices.append(option);
+            }
+            choices.value = entry.revision || "";
+            choices.addEventListener("change", () => {
+                const url = new URL(location.href);
+                if (choices.value) url.searchParams.set("revision", choices.value);
+                else url.searchParams.delete("revision");
+                history.pushState(null, "", url);
+                render();
+            });
+            label.append(choices);
+            body.append(label);
+        }
         information.append(body);
         const actions = create("div", "levelactions");
         const download = create("a", "leveldownload clickable");
@@ -140,11 +185,14 @@ export function leveldetails() {
         sharing.setAttribute("aria-expanded", "false");
         sharing.append(image("/preview/assets/images/share.png", "", ""));
         actions.append(download, sharing, share(entry, sharing));
-        primary.append(play, actions);
+        const utilities = create("div", "levelutilities");
+        utilities.append(inspection(entry), actions, discordbutton(entry));
+        primary.append(play);
         const status = create("p", "levelstatus");
         status.setAttribute("role", "status");
+
         downloadlevel(download, entry, status);
-        panel.append(control(), inspection(entry), heading, hero, status, comments(entry), information);
+        panel.append(control(), utilities, heading, hero, status, comments(entry), information);
         void refresh(entry).then(() => update(entry)).catch(() => {});
         void level(entry.file).then(map => {
             entry.objects = map.objects.length;
@@ -170,16 +218,20 @@ export function leveldetails() {
             return;
         }
         const id = match[1];
-        if (wasopen && current === id && panel.dataset.ready === String(ready)) return;
+        const revision = new URLSearchParams(location.search).get("revision") || "";
+        if (wasopen && current === id && panel.dataset.ready === String(ready) && panel.dataset.revision === revision) return;
         current = id;
+        panel.dataset.revision = revision;
         panel.dataset.ready = String(ready);
         panel.replaceChildren();
         panel.scrollTop = 0;
         const entry = entries.find((item, index) => String(item.id ?? index + 1) === id);
         if (entry) {
-            scene(entry);
+            const selected = entry.revisions?.find(file => file.id === revision);
+            const shown = selected ? {...entry, revision, filename: selected.name, objects: null, file: new URL("/levels/" + (selected.thread || id) + "/files/" + selected.id, entry.detailurl).href} : entry;
+            scene(shown);
             document.title = entry.title + " by " + entry.creator;
-            content(entry);
+            content(shown);
         } else {
             panel.append(control());
             if (ready) panel.append(create("p", "levelstatus", "level not found"));

@@ -1,4 +1,5 @@
 .levelfilters {
+    --filterinset: 12px;
     position: absolute; top: 8px;
     left: 0; right: 0;
     display: flex; flex-direction: column;
@@ -9,7 +10,7 @@
 .filtertop {
     display: flex; align-items: center;
     flex-wrap: nowrap; gap: 6px 8px;
-    padding: 0 48px 0 12px;
+    padding: 0 48px 0 var(--filterinset);
 }
 .levelsearch {
     width: 260px; min-width: 0;
@@ -41,7 +42,7 @@
     overflow-x: auto; overflow-y: hidden;
     display: flex; align-items: center;
     flex-wrap: nowrap; gap: 6px;
-    padding: 4px 2px 6px; scrollbar-width: none;
+    padding: 2px 0 3px; scrollbar-width: none;
     touch-action: pan-x; overscroll-behavior-x: contain;
 }
 .tagoptions::-webkit-scrollbar {display: none}
@@ -51,7 +52,7 @@
 }
 .leveltag {
     display: inline-flex; align-items: center;
-    gap: 5px; padding: 3px 8px;
+    gap: 5px; padding: 2px 7px;
     border: 0; border-radius: 7px;
     background: rgba(0,0,0,0.4); color: #fff;
     font: inherit; font-size: 18px;
@@ -59,7 +60,7 @@
     -webkit-text-stroke: inherit; paint-order: inherit;
     text-shadow: inherit;
 }
-.levelsort[aria-pressed="true"], .tagoptions .leveltag[aria-pressed="true"] {
+.levelsort[aria-pressed="true"], .tagoptions .leveltag[aria-pressed="true"], .featureoptions .leveltag[aria-pressed="true"] {
     color: #fff; background: rgba(70,70,70,0.5);
 }
 .tagemoji {
@@ -73,6 +74,7 @@
     margin-top: 12px;
 }
 .leveltags[hidden], .tagoptions[hidden] {display: none}
+.filterreset[hidden] {display: none}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -124,7 +126,7 @@
 .creatorsearch[aria-pressed="true"] {filter: brightness(1.3) sepia(0.7)}
 @media (max-width: 700px) {
     .levelsearchfield {flex: 1 1 0}
-    .filtertop {padding: 0 48px 0 6px}
+    .levelfilters {--filterinset: 6px}
     .creatorsearch {
         width: 26px; height: 26px;
         flex-basis: 26px; padding: 5px;
@@ -132,4 +134,90 @@
     .levelsearchfield > img {
         width: 14px; height: 14px;
     }
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.featurebar {
+    display: flex; gap: 6px;
+    min-width: 0; align-items: center;
+}
+.featureoptions {
+    display: flex; gap: 6px;
+    overflow: auto hidden; scrollbar-width: none;
+    padding: 2px 0 3px; min-width: 0;
+    touch-action: pan-x; overscroll-behavior-x: contain;
+}
+.featureoptions::-webkit-scrollbar {display: none}
+.featureoptions .leveltag, .filterreset {flex-shrink: 0}
+.filterreset {margin-right: 6px}
+.creatorprofile {
+    display: flex; align-items: center;
+    padding: 4px 12px; gap: 12px;
+}
+.creatorprofile[hidden] {display: none}
+.creatoravatar {
+    width: 64px; height: 64px;
+    border-radius: 50%; object-fit: cover;
+}
+.creatortext p {margin: 0}
+.creatorname {font-size: 28px}
+.creatorusername {font-size: 20px}
+.creatorid {
+    font-size: 16px; opacity: 0.5;
+}
+.creatorlink {color: var(--linkcolor,#70dcff)}
+@media (max-width: 700px) {
+    .featureoptions .leveltag, .filterreset {font-size: 16px}
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.creatoravatar {
+    position: relative; flex: 0 0 64px;
+    display: grid; place-items: center;
+    background: rgba(0,0,0,0.5); overflow: hidden;
+}
+.creatorpicture {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+.creatorpicture[hidden] {display: none}
+.creatorback {
+    width: 42px; flex: 0 0 42px;
+    padding: 0; border: 0;
+    background: none; line-height: 0;
+}
+.creatorback img {width: 100%}
+.creatorsubline {
+    display: flex; align-items: baseline;
+    flex-wrap: wrap; gap: 5px;
+}
+.creatorsubline .creatorid {font-size: 14px}
+.creatortext {
+    min-width: 0; overflow-wrap: anywhere;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.tagbar {position: relative}
+.tagbar, .featurebar {
+    margin-left: var(--filterinset); width: calc(100% - var(--filterinset));
+}
+.tagbar .tagoptions {
+    width: 100%; padding: 4px 34px 7px 4px;
+}
+.featureoptions {
+    flex: 1 1 auto; padding: 4px 4px 7px;
+}
+.filterreset {
+    position: absolute; right: 6px;
+    top: 4px; width: 20px;
+    height: 20px; padding: 0;
+    border: 0; background: none;
+    margin: 0; line-height: 0;
+}
+.filterreset img {
+    width: 100%; height: 100%;
 }

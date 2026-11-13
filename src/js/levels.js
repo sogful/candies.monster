@@ -1,10 +1,13 @@
+import {spinner} from "/assets/static/spinner.js";
 import {leveldetails} from "./leveldetail.js";
 import {thumbnail, clearthumbnails} from "./renderer/index.js";
 import {morestuff} from "./rope/index.js";
 import {catalogue} from "./catalogue.js";
+import {creatorlink} from "./creator.js";
 import {filters} from "./filters.js";
 import {prefetch} from "./renderer/cache.js";
 import {tags} from "./tags.js";
+import {readposition, storeposition} from "./listposition.js";
 
 morestuff();
 
@@ -20,6 +23,7 @@ const detail = leveldetails();
 let entries = [];
 let visible = [];
 let page = 0;
+let positionkey = "";
 let definitions = null;
 let loading = null;
 let active = null;
@@ -27,9 +31,12 @@ const tooltip = document.createElement("div");
 tooltip.className = "tooltip";
 tooltip.hidden = true;
 document.body.appendChild(tooltip);
-const search = filters(result => {
-    visible = result;
-    showpage(0);
+const search = filters((result, {restore = false} = {}) => {
+    saveposition();
+    visible = result.filter(entry => !entry.duplicateof);
+    const saved = restore ? readposition() : {page: 0, scroll: 0};
+    showpage(saved.page, false);
+    list.scrollTop = saved.scroll;
 });
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -58,7 +65,7 @@ function createlevel(entry) {
     card.setAttribute("role", "link");
     card.setAttribute("aria-label", "open " + entry.title);
     const header = element("div", "header");
-    header.append(element("p", "title", entry.title), element("p", "creator", `by ${entry.creator}`));
+    header.append(element("p", "title", entry.title), creatorlink(entry, "creator"));
     const footer = element("div", "footer");
     const rating = element("div", "rating");
     rating.append(element("p", "", String(entry.rating ?? 0)), picture("/assets/images/level/star.webp", "staricon", "stars"));
@@ -78,14 +85,32 @@ function createlevel(entry) {
     footer.append(rating, plays, features);
     const labels = element("div", "cardtags");
     tags(entry, labels);
-    card.append(thumbnail(entry));
+    const loading = element("div", "cardloading");
+    spinner(loading, "Loading level preview");
+    card.append(thumbnail(entry), loading);
     card.append(footer, header, labels);
     return card;
 }
 
-function showpage(number) {
+function saveposition() {
+    if (positionkey) storeposition(positionkey, page, list.scrollTop);
+}
+
+list.addEventListener("scroll", saveposition, {passive: true});
+window.addEventListener("pagehide", saveposition, {capture: true});
+
+function showpage(number, write = "push") {
+    saveposition();
     const pages = Math.max(1, Math.ceil(visible.length / pagesize));
     page = Math.max(0, Math.min(number, pages - 1));
+    if (write) {
+        const url = new URL(location.href);
+        if (page) url.searchParams.set("page", String(page + 1));
+        else url.searchParams.delete("page");
+        if (url.href !== location.href) history[write === "replace" ? "replaceState" : "pushState"](null, "", url);
+    }
+    positionkey = location.pathname + location.search;
+    document.dispatchEvent(new Event("levelpagechange"));
     hide();
     clearthumbnails();
     const content = document.createDocumentFragment();
@@ -116,7 +141,7 @@ function layout() {
     if (capacity === pagesize) return;
     const first = page * pagesize;
     pagesize = capacity;
-    if (entries.length) showpage(Math.floor(first / pagesize));
+    if (entries.length) showpage(Math.floor(first / pagesize), "replace");
 }
 
 if (window.ResizeObserver) new ResizeObserver(layout).observe(list);
@@ -128,7 +153,15 @@ layout();
 for (const [control, offset, sprite] of [[previous, -1, "up"], [next, 1, "down"]]) {
     const arrow = control.querySelector(".arrow");
     function release() {arrow.src = `/assets/images/buttons/${sprite}.png`}
-    control.addEventListener("click", () => showpage(page + offset));
+    control.addEventListener("click", event => {
+        const sound = document.querySelector(".click");
+        if (sound) {
+            event.soundplayed = true;
+            sound.currentTime = 0;
+            void sound.play().catch(() => {});
+        }
+        showpage(page + offset);
+    });
     control.addEventListener("pointerdown", event => {
         if (event.button !== 0 || control.disabled) return;
         control.setPointerCapture(event.pointerId);
@@ -154,13 +187,15 @@ catalogue().then(data => {
 
 list.addEventListener("click", event => {
     const card = event.target.closest(".level");
-    if (!card || event.target.closest(".features,.leveltag") || !getSelection().isCollapsed) return;
+    if (!card || event.target.closest(".features,.leveltag,.creatorlink") || !getSelection().isCollapsed) return;
+    saveposition();
     detail.open(card.dataset.level);
 });
 
 list.addEventListener("keydown", event => {
     if (!event.target.matches(".level") || !["Enter", " "].includes(event.key)) return;
     event.preventDefault();
+    saveposition();
     detail.open(event.target.dataset.level);
 });
 

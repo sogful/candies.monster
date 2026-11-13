@@ -6,6 +6,8 @@
     padding: 24px; box-sizing: border-box;
     background: rgba(0,0,0,0.75); color: #ff7d7d;
     font-family: var(--sitefont,"Good Dog"),sans-serif;
+    opacity: 0; pointer-events: none;
+    animation: failureappear 0.1s linear 0.5s forwards;
 }
 .gamefailure[hidden] {display: none}
 .failuretitle {
@@ -30,9 +32,17 @@
     border: 0; border-radius: 8px;
     background: rgba(0,0,0,0.5); color: #fff;
     padding: 7px 14px; font: 24px var(--sitefont,"Good Dog"),sans-serif;
+    width: 140px; height: 44px;
+    background: none;
 }
 .failureimage {
     position: absolute; right: 16px;
-    bottom: 16px; width: min(160px,20vw);
+    bottom: 0; width: min(160px,20vw);
     pointer-events: none; z-index: -1;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+@keyframes failureappear {
+    to {opacity: 1; pointer-events: auto}
 }

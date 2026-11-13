@@ -1,3 +1,4 @@
+@import url("./discordlink.css");
 @import url("./discordmd.css");
 @import url("/assets/static/sharing.css");
 @import url("./inspection.css");
@@ -56,6 +57,7 @@
     align-items: center; gap: 32px;
     width: 100%; max-width: 680px;
     margin: 28px auto;
+    min-height: 180px;
 }
 
 .levelplay {
@@ -142,10 +144,7 @@
     text-align: left;
 }
 .levelfeatures[hidden] {display: none}
-.levelfeature {
-    padding: 3px 6px; border-radius: 6px;
-    background: rgba(0,0,0,0.3); font-size: 17px;
-}
+.levelfeatures .leveltag {white-space: normal}
 
 .leveldescription {
     margin: 0; font-size: 25px;
@@ -195,9 +194,6 @@
 @keyframes levelloadingspin {
     to {transform: rotate(360deg)}
 }
-@media (prefers-reduced-motion: reduce) {
-    .levelloading {animation: none}
-}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -211,7 +207,7 @@
     .levelauthor {font-size: 20px}
     .levelhero {
         grid-template-columns: 1fr 104px 1fr; gap: 12px;
-        margin: 24px auto;
+        margin: 24px auto; min-height: 104px;
     }
     .levelplay {width: 104px}
     .levelstatistics {gap: 3px}
@@ -232,7 +228,9 @@
 @media (max-height: 600px) and (min-width: 701px) {
     .leveldetail {padding-top: 18px}
     .levelname {font-size: 32px}
-    .levelhero {margin: 14px auto}
+    .levelhero {
+        margin: 14px auto; min-height: 140px;
+    }
     .levelplay {width: 140px}
 }
 
@@ -242,7 +240,7 @@
     .levelauthor {font-size: 17px}
     .levelhero {
         grid-template-columns: 1fr 94px 1fr; gap: 8px;
-        margin: 8px auto;
+        margin: 8px auto; min-height: 94px;
     }
     .levelplay {width: 94px}
     .levelstat {
@@ -252,3 +250,73 @@
     .levelvalue {font-size: 20px}
     .levellabel {font-size: 13px}
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.levelutilities {
+    position: absolute; right: 8px;
+    top: 8px; display: flex;
+    flex-direction: column; align-items: center;
+    gap: 6px;
+    z-index: 6;
+}
+.levelutilities .levelinspect {
+    position: static; width: 42px;
+}
+.leveldiscord {
+    display: flex; align-items: center;
+    justify-content: center; padding: 0;
+    width: 28px; height: 28px;
+    background: none; border: 0;
+}
+.leveldiscord img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+}
+.levelobjects .levelvalue {font-size: 21px}
+.levelobjects .levellabel {font-size: 16px}
+.levelheading {padding-top: 14px}
+@media (max-width: 700px) {
+    .levelobjects .levelvalue {font-size: 18px}
+    .levelobjects .levellabel {font-size: 13px}
+}
+
+.levelutilities .levelactions {flex-direction: column}
+.levelutilities .leveldownload, .levelutilities .levelsharebutton, .levelutilities .leveldiscord {
+    width: 42px; height: 42px;
+}
+@media (max-width: 700px) {
+    .levelutilities .levelinspect {width: 32px}
+    .levelutilities .leveldownload, .levelutilities .levelsharebutton, .levelutilities .leveldiscord {
+        width: 32px; height: 32px;
+    }
+}
+
+.levelrevisions {
+    display: flex; align-items: center;
+    gap: 6px; margin-top: 8px;
+    font-size: 18px;
+}
+.revisionselect {
+    min-width: 0; max-width: 100%;
+    border: 0; border-radius: 6px;
+    background: #282828; color: #fff;
+    padding: 4px 6px; font: inherit;
+}
+.leveldownload[aria-disabled="true"] {
+    opacity: 0.3; pointer-events: none;
+}
+
+.unsupportednotice {
+    position: fixed; z-index: 25;
+    max-width: calc(100vw - 32px); padding: 8px 14px;
+    box-sizing: border-box; border-radius: 10px;
+    background: rgba(0,0,0,0.5); color: #fff;
+    font: 22px var(--sitefont,"Good Dog"),sans-serif; text-align: center;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: -0.08em 0.15em #000,0.08em 0.15em #000,0 0.23em #000;
+    pointer-events: none;
+}
+.unsupportednotice[hidden] {display: none}
+.unsupportednotice p {margin: 0}
+.unsupportedengine {font-size: 18px}

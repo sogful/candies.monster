@@ -1,3 +1,6 @@
+import {creatorlink} from "./creator.js";
+import {spinner} from "/assets/static/spinner.js";
+import {imageviewer} from "./inspection.js";
 import {discordmd} from "./discordmd.js";
 
 function attachment(file) {
@@ -21,6 +24,11 @@ function attachment(file) {
         if (file.width > 0 && file.height > 0) image.style.aspectRatio = file.width + " / " + file.height;
         image.addEventListener("error", () => image.remove(), {once: true});
         link.append(image);
+        link.addEventListener("click", event => {
+            if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            imageviewer(url.href, name, link);
+        });
     }
     const label = document.createElement("span");
     label.className = "commentfilename";
@@ -33,7 +41,7 @@ function attachment(file) {
 
 export function comments(entry) {
     const section = document.createElement("section");
-    section.className = "levelcomments";
+    section.className = "levelcomments commentempty";
     section.setAttribute("aria-label", "Comments");
     section.tabIndex = 0;
     if (!entry.detailurl) {section.hidden = true; return section}
@@ -46,8 +54,24 @@ export function comments(entry) {
     list.className = "commentlist";
     const status = document.createElement("p");
     status.className = "commentstatus";
-    status.textContent = "Loading comments...";
+    spinner(status, "Loading comments");
     section.append(earlier, list, status);
+    const content = new WeakMap();
+    const visibility = window.IntersectionObserver ? new IntersectionObserver(records => {
+        for (const record of records) {
+            const item = record.target;
+            const selection = getSelection();
+            if (selection?.type === "Range" && item.contains(selection.anchorNode)) continue;
+            if (record.isIntersecting) {
+                if (item.childNodes.length) continue;
+                content.get(item)?.();
+                item.style.minHeight = "";
+            } else if (item.childNodes.length) {
+                item.style.minHeight = Math.ceil(item.getBoundingClientRect().height) + "px";
+                item.replaceChildren();
+            }
+        }
+    }, {root: section, rootMargin: "400px"}) : null;
     let before = null;
     let loading = false;
     async function load() {
@@ -60,31 +84,37 @@ export function comments(entry) {
             const response = await fetch(url);
             if (!response.ok) throw new Error("Comments unavailable");
             const data = await response.json();
+            if (!section.isConnected) return;
             const fragment = document.createDocumentFragment();
             for (const message of data.messages) {
                 const item = document.createElement("article");
                 item.className = "levelcomment";
-                const author = document.createElement("p");
-                author.className = "commentauthor";
-                author.textContent = message.author;
-                const body = document.createElement("div");
-                body.className = "commentbody";
-                body.append(discordmd(message.content, 0, message.mentions));
-                for (const file of message.attachments || []) {
-                    const link = attachment(file);
-                    if (link) body.append(link);
+                function render() {
+                    const author = creatorlink({creator: message.author, creatorid: message.authorid, detailurl: entry.detailurl}, "commentauthor", "");
+                    const body = document.createElement("div");
+                    body.className = "commentbody";
+                    body.append(discordmd(message.content, 0, message.mentions));
+                    for (const file of message.attachments || []) {
+                        const link = attachment(file);
+                        if (link) body.append(link);
+                    }
+                    item.append(author, body);
                 }
-                item.append(author, body);
+                content.set(item, render);
+                if (visibility) {item.style.minHeight = "76px"; visibility.observe(item)}
+                else render();
                 fragment.append(item);
             }
             const height = section.scrollHeight;
             const position = section.scrollTop;
             const initial = !list.children.length;
             list.prepend(fragment);
+            section.classList.toggle("commentempty", !list.children.length);
             before = data.before;
-            earlier.hidden = !before;
+            earlier.hidden = true;
             status.textContent = list.children.length ? "" : "No comments yet";
             if (!initial) section.scrollTop = position + section.scrollHeight - height;
+            else section.scrollTop = section.scrollHeight;
         } catch {
             status.textContent = "Comments could not be loaded";
             earlier.textContent = "Retry";
@@ -92,9 +122,24 @@ export function comments(entry) {
         } finally {
             loading = false;
             earlier.disabled = false;
+            if (earlier.hidden) requestAnimationFrame(scroll);
         }
     }
+    function scroll() {
+        if (before && section.scrollTop < 140 && !loading && earlier.hidden) void load();
+    }
+    section.addEventListener("scroll", scroll, {passive: true});
+    const sizes = window.ResizeObserver ? new ResizeObserver(scroll) : null;
+    sizes?.observe(section);
     earlier.addEventListener("click", load);
+    const removal = new MutationObserver(() => {
+        if (section.isConnected) return;
+        visibility?.disconnect();
+        sizes?.disconnect();
+        removal.disconnect();
+    });
+    const panel = document.querySelector(".leveldetail");
+    if (panel) removal.observe(panel, {childList: true});
     void load();
     return section;
 }

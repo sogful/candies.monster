@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "Good Dog"; font-display: swap;
+    src: url("/assets/fonts/gooddog.woff2");
+}
+.discordbridge {
+    margin: 0; min-height: 100vh;
+    min-height: 100dvh; display: grid;
+    place-items: center; background: #252121;
+    color: #fff; font: 28px "Good Dog",sans-serif;
+}
+.discordstatus {text-align: center}
+.discordlabel {margin: 12px}

@@ -10,7 +10,9 @@
 }
 .levelcomments[hidden], .earliercomments[hidden] {display: none}
 .levelcomments::-webkit-scrollbar {display: none}
-.levelcomment {padding: 3px 4px}
+.levelcomment {
+    padding: 3px 4px; box-sizing: border-box;
+}
 .commentauthor {
     margin: 0 0 2px; font-size: 21px;
 }
@@ -38,3 +40,14 @@
 .commentfilename {
     font-size: 0.9em; overflow-wrap: anywhere;
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.levelcomments.commentempty {
+    display: grid; place-items: center;
+}
+.commentstatus {
+    width: 100%; text-align: center;
+    align-self: center;
+}
+.levelcomments.commentempty .commentlist {display: none}

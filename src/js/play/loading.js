@@ -1,3 +1,5 @@
+import {spinner} from "/assets/static/spinner.js";
+
 export function loading() {
     const sidebar = document.querySelector(".sidebar");
     let overlays = [];
@@ -10,11 +12,14 @@ export function loading() {
     function create(parent, classname) {
         const node = document.createElement("span");
         node.className = classname;
+        const candy = document.createElement("span");
+        candy.className = "loadcandy";
+        spinner(candy);
         const percent = document.createElement("span");
         percent.className = "loadpercent";
         const info = document.createElement("span");
         info.className = "loadinfo";
-        node.append(percent, info);
+        node.append(candy, percent, info);
         parent.append(node);
         return {node, percent, info};
     }
@@ -51,7 +56,7 @@ export function loading() {
         for (const [control] of controls) control.inert = true;
         overlays = [create(button, "playloading")];
         overlays[0].node.setAttribute("role", "status");
-        update(0, "loading level");
+        update(0, "level");
     }
 
     function press() {

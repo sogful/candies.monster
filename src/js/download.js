@@ -1,4 +1,4 @@
-import {source} from "./source.js";
+import {original} from "./source.js";
 
 export function filename(entry) {
     const name = String(entry.title || "level") + " by " + String(entry.creator || "unknown");
@@ -7,13 +7,15 @@ export function filename(entry) {
 
 export function downloadlevel(button, entry, status) {
     button.href = entry.file;
+    if (!entry.file) button.setAttribute("aria-disabled", "true");
     button.download = filename(entry);
     button.addEventListener("click", async event => {
         event.preventDefault();
+        if (!entry.file) return;
         if (button.getAttribute("aria-busy") === "true") return;
         button.setAttribute("aria-busy", "true");
         try {
-            const xml = await source(entry.file);
+            const xml = await original(entry.file);
             if (!button.isConnected) return;
             const url = URL.createObjectURL(new Blob([xml], {type: "application/xml;charset=utf-8"}));
             const link = document.createElement("a");

@@ -1,22 +1,34 @@
 import {enabled, number} from "./renderer/data.js";
 
-export function features(map, container) {
+export const featuretypes = {
+    gravity: "Different gravity", flying: "Flying candy", water: "Water",
+    split: "Split candy", night: "Night", connected: "Connected candies", timefreeze: "Time freeze"
+};
+
+export function featurekeys(map) {
     const settings = map.settings || {};
     const objects = map.objects || [];
-    const labels = [];
-    if (number(settings.globalGravityX) !== 0 || number(settings.globalGravityY, 784) !== 784) labels.push("Different gravity");
-    if (objects.some(item => enabled(item.isdriven))) labels.push("Flying candy");
-    if (map.water > 0) labels.push("Water");
-    if (map.split) labels.push("Split candy");
-    if (map.night) labels.push("Night");
-    if (enabled(settings.candiesConnected)) labels.push("Connected candies");
-    if (objects.some(item => item.type === "pauseswitcher")) labels.push("Time freeze");
+    const keys = [];
+    if (number(settings.globalGravityX) !== 0 || number(settings.globalGravityY, 784) !== 784) keys.push("gravity");
+    if (objects.some(item => enabled(item.isdriven))) keys.push("flying");
+    if (map.water > 0) keys.push("water");
+    if (map.split) keys.push("split");
+    if (map.night) keys.push("night");
+    if (enabled(settings.candiesConnected)) keys.push("connected");
+    if (objects.some(item => item.type === "pauseswitcher")) keys.push("timefreeze");
+    return keys;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function features(map, container) {
+    const keys = featurekeys(map);
     container.replaceChildren();
-    for (const label of labels) {
+    for (const key of keys) {
         const item = document.createElement("span");
-        item.className = "levelfeature";
-        item.textContent = label;
+        item.className = "leveltag";
+        item.textContent = featuretypes[key];
         container.append(item);
     }
-    container.hidden = !labels.length;
+    container.hidden = !keys.length;
 }

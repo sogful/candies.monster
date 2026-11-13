@@ -1,5 +1,9 @@
+import {filterscroll} from "./filterscroll.js";
 import {tagcontent} from "./tags.js";
 import {matches} from "./searchmatch.js";
+import {featuretypes} from "./features.js";
+import {profile} from "./creator.js";
+import {recentplays} from "./recently.js";
 
 function recent(first, second) {
     const difference = Date.parse(second.created || "") - Date.parse(first.created || "");
@@ -61,10 +65,15 @@ export function filters(changed) {
     let order = "recent";
     let entries = [];
     const selected = new Set();
-    for (const [key, label] of [["recent", "Recent"], ["rating", "Liked"], ["plays", "Popular"]]) {
+    const chosen = new Set();
+    let authorid = "";
+    let profilereturn = "";
+    for (const [key, label] of [["recent", "Recent"], ["rating", "Liked"], ["plays", "Popular"], ["played", "Played"]]) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "levelsort clickable";
+        button.dataset.order = key;
+        if (key === "played") {button.title = "Recently played"; button.setAttribute("aria-label", "Recently played")}
         button.textContent = label;
         button.setAttribute("aria-pressed", String(key === order));
         button.addEventListener("click", () => {
@@ -81,66 +90,118 @@ export function filters(changed) {
     const options = document.createElement("div");
     options.className = "tagoptions";
     options.setAttribute("aria-label", "Filter by tags");
-    bar.append(top, options);
-    let drag = null;
-    let ignoreclick = false;
-    options.addEventListener("pointerdown", event => {
-        if (event.button !== 0 || event.pointerType === "touch") return;
-        drag = {id: event.pointerId, start: event.clientX, scroll: options.scrollLeft, moved: false};
-        ignoreclick = false;
+    const playedbutton = sorts.querySelector("[data-order=played]");
+    playedbutton.classList.add("leveltag");
+    playedbutton.textContent = "Recently played";
+    options.append(playedbutton);
+    const reset = document.createElement("button");
+    reset.type = "button";
+    reset.className = "leveltag filterreset clickable";
+    reset.setAttribute("aria-label", "Reset filters");
+    reset.title = "Reset filters";
+    const reseticon = document.createElement("img");
+    reseticon.src = "/assets/images/icons/x.png";
+    reseticon.alt = "";
+    reset.append(reseticon);
+    reset.hidden = true;
+    reset.addEventListener("click", () => {
+        search.value = "";
+        order = "recent";
+        selected.clear();
+        chosen.clear();
+        authorid = "";
+        creator.setAttribute("aria-pressed", "false");
+        apply();
     });
-    options.addEventListener("pointermove", event => {
-        if (!drag || event.pointerId !== drag.id) return;
-        const distance = event.clientX - drag.start;
-        if (!drag.moved && Math.abs(distance) < 5) return;
-        if (!drag.moved) {
-            drag.moved = true;
-            options.setPointerCapture(event.pointerId);
-            options.classList.add("tagdragging");
-        }
-        options.scrollLeft = drag.scroll - distance;
-        event.preventDefault();
-    });
-    function released(event) {
-        if (!drag || event.pointerId !== drag.id) return;
-        ignoreclick = drag.moved;
-        drag = null;
-        options.classList.remove("tagdragging");
-        if (options.hasPointerCapture(event.pointerId)) options.releasePointerCapture(event.pointerId);
+    const featurerow = document.createElement("div");
+    featurerow.className = "featureoptions";
+    featurerow.setAttribute("aria-label", "Filter by features");
+    for (const [key, label] of Object.entries(featuretypes)) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "leveltag clickable";
+        button.dataset.feature = key;
+        button.textContent = label;
+        button.setAttribute("aria-pressed", "false");
+        button.addEventListener("click", () => {
+            if (chosen.has(key)) chosen.delete(key);
+            else chosen.add(key);
+            apply();
+        });
+        featurerow.append(button);
     }
-    options.addEventListener("pointerup", released);
-    options.addEventListener("pointercancel", released);
-    options.addEventListener("lostpointercapture", released);
-    options.addEventListener("click", event => {
-        if (!ignoreclick) return;
-        ignoreclick = false;
-        event.preventDefault();
-        event.stopPropagation();
-    }, true);
-    options.addEventListener("wheel", event => {
-        const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-        const distance = delta * (event.deltaMode === 1 ? 18 : event.deltaMode === 2 ? options.clientWidth : 1);
-        const previous = options.scrollLeft;
-        options.scrollLeft += distance;
-        if (options.scrollLeft !== previous) event.preventDefault();
-    }, {passive: false});
+    const lower = document.createElement("div");
+    lower.className = "featurebar";
+    lower.append(featurerow);
+    const tagrow = document.createElement("div");
+    tagrow.className = "tagbar";
+    tagrow.append(options, reset);
+    const header = document.createElement("section");
+    header.className = "creatorprofile";
+    header.hidden = true;
+    bar.append(header, top, tagrow, lower);
+    let routed = location.search;
+
+    function readroute() {
+        const query = new URLSearchParams(location.search);
+        search.value = query.get("search") || "";
+        order = ({liked: "rating", popular: "plays", played: "played"})[query.get("sort")] || "recent";
+        creator.setAttribute("aria-pressed", String(query.get("creator") === "1"));
+        selected.clear();
+        for (const id of (query.get("tags") || "").split(",")) if (/^\d{1,22}$/.test(id)) selected.add(id);
+        authorid = /^\d{17,22}$/.test(query.get("author") || "") ? query.get("author") : "";
+        chosen.clear();
+        for (const key of (query.get("features") || "").split(",")) if (Object.prototype.hasOwnProperty.call(featuretypes, key)) chosen.add(key);
+        routed = location.search;
+    }
+    readroute();
+    filterscroll(options);
+    filterscroll(featurerow);
     const main = document.querySelector(".levelcontent > .main");
     main.prepend(bar);
     function measure() {
         main.style.setProperty("--filterheight", Math.ceil(bar.getBoundingClientRect().height) + "px");
     }
-    if (window.ResizeObserver) new ResizeObserver(measure).observe(bar);
+    if (window.ResizeObserver) {
+        const observer = new ResizeObserver(measure);
+        for (const element of [bar, field, sorts]) observer.observe(element);
+    }
     else window.addEventListener("resize", measure, {passive: true});
     measure();
 
-    function apply() {
+    function apply(write = true, restore = false, replace = false) {
+        if (write) {
+            const url = new URL(location.href);
+            for (const key of ["search", "sort", "tags", "creator", "page", "features", "author", "revision"]) url.searchParams.delete(key);
+            if (search.value) url.searchParams.set("search", search.value);
+            if (authorid) url.searchParams.set("author", authorid);
+            if (chosen.size) url.searchParams.set("features", [...chosen].sort().join(","));
+            if (order !== "recent") url.searchParams.set("sort", ({rating: "liked", plays: "popular", played: "played"})[order]);
+            if (selected.size) url.searchParams.set("tags", [...selected].sort().join(","));
+            if (creator.getAttribute("aria-pressed") === "true") url.searchParams.set("creator", "1");
+            if (url.href !== location.href) history[replace ? "replaceState" : "pushState"](null, "", url);
+            routed = location.search;
+        }
+        search.placeholder = creator.getAttribute("aria-pressed") === "true" ? "Search creators" : "Search levels";
+        search.setAttribute("aria-label", search.placeholder);
+        for (const button of sorts.children) button.setAttribute("aria-pressed", String(button.dataset.order === order));
+        playedbutton.setAttribute("aria-pressed", String(order === "played"));
+        for (const button of options.querySelectorAll("[data-tag]")) button.setAttribute("aria-pressed", String(selected.has(button.dataset.tag)));
+        if (header.dataset.creator !== authorid) {header.dataset.creator = authorid; profile(header, authorid, entries)}
+        for (const button of featurerow.children) button.setAttribute("aria-pressed", String(chosen.has(button.dataset.feature)));
+        reset.hidden = !authorid && !chosen.size && !search.value && order === "recent" && !selected.size && creator.getAttribute("aria-pressed") !== "true";
+        options.hidden = false;
         clear.hidden = !search.value;
+        const played = recentplays();
         const result = entries.filter(entry => {
+            if (entry.duplicateof || authorid && entry.creatorid !== authorid) return false;
+            if (![...chosen].every(key => (entry.notable || []).includes(key))) return false;
+            if (order === "played" && !played[entry.id]) return false;
             const text = creator.getAttribute("aria-pressed") === "true" ? entry.creator : entry.title;
             return matches(search.value, text) && [...selected].every(id => (entry.tags || []).some(tag => tag.id === id));
         });
-        result.sort((first, second) => (order === "recent" ? 0 : (Number(second[order]) || 0) - (Number(first[order]) || 0)) || recent(first, second));
-        changed(result);
+        result.sort((first, second) => (order === "played" ? played[second.id] - played[first.id] : order === "recent" ? 0 : (Number(second[order]) || 0) - (Number(first[order]) || 0)) || recent(first, second));
+        changed(result, {restore});
     }
 
     document.addEventListener("leveltagfilter", event => {
@@ -153,7 +214,49 @@ export function filters(changed) {
         apply();
     });
 
-    search.addEventListener("input", apply);
+    document.addEventListener("levelprofileback", () => {
+        if (profilereturn) {
+            history.pushState(null, "", profilereturn);
+            profilereturn = "";
+            readroute();
+            apply(false, true);
+            window.dispatchEvent(new HashChangeEvent("hashchange"));
+        } else {authorid = ""; apply()}
+    });
+    document.addEventListener("levelcreator", event => {
+        const id = String(event.detail || "");
+        if (!/^\d{17,22}$/.test(id)) return;
+        if (!authorid) profilereturn = location.pathname + location.search + location.hash;
+        authorid = id;
+        search.value = "";
+        selected.clear();
+        chosen.clear();
+        order = "recent";
+        const url = new URL(location.href);
+        url.hash = "";
+        history.pushState(null, "", url);
+        apply();
+        window.dispatchEvent(new HashChangeEvent("hashchange"));
+    });
+
+    search.addEventListener("input", () => apply(true, false, true));
+    document.addEventListener("levelpagechange", () => {routed = location.search});
+    window.addEventListener("popstate", () => {
+        if (routed === location.search) return;
+        readroute();
+        apply(false, true);
+    });
+    document.addEventListener("levelplayed", () => {if (order === "played") apply(false, true)});
+    document.addEventListener("keydown", event => {
+        if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey || event.target?.isContentEditable || event.target?.closest?.("input,textarea,select")) return;
+        if (document.documentElement.matches(".gameopen,.gameloading,.previewopen,.documentopen")) return;
+        event.preventDefault();
+        if (location.hash) {
+            history.pushState(null, "", location.pathname + location.search);
+            window.dispatchEvent(new HashChangeEvent("hashchange"));
+        }
+        search.focus({preventScroll: true});
+    });
     search.addEventListener("keydown", event => {
         if (event.key !== "Escape" || !search.value) return;
         event.stopPropagation();
@@ -165,8 +268,8 @@ export function filters(changed) {
             entries = data;
             const all = new Map();
             for (const entry of data) for (const tag of entry.tags || []) if (tag.id && tag.name) all.set(tag.id, tag);
-            options.replaceChildren();
-            options.hidden = !all.size;
+            options.replaceChildren(playedbutton);
+            options.hidden = false;
             for (const id of selected) if (!all.has(id)) selected.delete(id);
             for (const tag of [...all.values()].sort((first, second) => first.name.localeCompare(second.name))) {
                 const button = document.createElement("button");
@@ -183,7 +286,7 @@ export function filters(changed) {
                 });
                 options.append(button);
             }
-            apply();
+            apply(false, true);
         }
     };
 }

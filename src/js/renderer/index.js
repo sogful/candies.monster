@@ -41,7 +41,7 @@ async function render() {
             const [map, art, backdrop] = await record.resources;
             if (version !== record.version || !record.canvas.isConnected || !record.visible || paused()) continue;
             const pack = Number(record.entry.background?.match(/\/box(\d+)\.webp$/)?.[1]) || 1;
-            draw(record.canvas, {...map, box: pack}, art, backdrop, box.width, box.height, record.detail ? 0.6 : 0.45, record.detail);
+            draw(record.canvas, {...map, box: pack}, art, backdrop, box.width, box.height, record.detail ? 0.6 : 0.65, record.detail);
             if (!record.detail) remember(record.entry, box.width, box.height, record.canvas);
             record.canvas.dataset.ready = "true";
             delete record.canvas.dataset.error;
@@ -75,9 +75,9 @@ function create(entry, expanded) {
     canvas.className = expanded ? "levelscene" : "levelbg levelcanvas";
     canvas.setAttribute("aria-hidden", "true");
     const record = {canvas, entry, detail: expanded, visible: expanded || !observer, version: 0};
-    const map = level(entry.file);
+    const map = entry.file ? level(entry.file) : Promise.reject(new Error("Level file unavailable"));
     record.resources = Promise.all([
-        map, artwork(expanded ? "low" : "ultra"),
+        map, artwork("low"),
         map.then(data => entry.background ? background(entry.background, data).catch(() => null) : null)
     ]);
     record.resources.catch(() => {});

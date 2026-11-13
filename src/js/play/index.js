@@ -3,6 +3,7 @@ import {source} from "../source.js";
 import {loading} from "./loading.js";
 import {played} from "../statistics.js";
 import {crash} from "./errors.js";
+import {rememberlevel} from "../recently.js";
 
 export function player() {
     const root = document.documentElement;
@@ -48,10 +49,11 @@ export function player() {
     }
 
     const game = createcontroller({
-        frame, onerror: fail, ontoolong: fail, onclose: () => stop(true),
+        frame, onerror: fail, ontoolong: fail,
+        onclose: () => stop(true),
         onprogress(value) {
             if (!root.classList.contains("gameloading")) return;
-            const stage = {runtime: "loading game", metadata: "loading level", images: "loading images", sounds: "loading audio"}[value.stage] || "preparing game";
+            const stage = {runtime: "game", metadata: "level", images: "images", sounds: "audio"}[value.stage] || "preparing game";
             const counts = Number.isFinite(value.loaded) && value.total > 0 ? ` ${value.loaded}/${value.total}` : "";
             progress.update(value.percent, stage + counts);
             watch();
@@ -70,6 +72,7 @@ export function player() {
             if (!root.classList.contains("gameloading")) return;
             clearTimeout(timeout);
             const entry = selected;
+            if (entry) rememberlevel(entry);
             if (entry) void played(entry).then(() => document.dispatchEvent(new CustomEvent("levelstatistics", {detail: entry}))).catch(() => {});
             progress.update(100, "ready");
             root.classList.add("gameopen");

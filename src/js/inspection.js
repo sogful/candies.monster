@@ -1,3 +1,4 @@
+import {spinner} from "/assets/static/spinner.js";
 export function inspection(entry) {
     const button = document.createElement("button");
     button.className = "levelinspect clickable";
@@ -7,25 +8,25 @@ export function inspection(entry) {
     icon.src = "/assets/images/icons/search.png";
     icon.alt = "";
     button.append(icon);
-    button.addEventListener("click", () => open(entry, button));
+    button.addEventListener("click", () => imageviewer("https://levels.candies.monster/thumb/" + encodeURIComponent(entry.id), entry.title, button));
     return button;
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function open(entry, trigger) {
+export function imageviewer(url, label, trigger) {
     const dialog = document.createElement("dialog");
     dialog.className = "levelinspection";
-    dialog.setAttribute("aria-label", entry.title + " preview");
+    dialog.setAttribute("aria-label", label);
     const viewport = document.createElement("div");
     viewport.className = "inspectionview";
     const image = document.createElement("img");
     image.className = "inspectionimage";
-    image.alt = entry.title;
+    image.alt = label;
     image.draggable = false;
     const status = document.createElement("p");
     status.className = "inspectionstatus";
-    status.textContent = "loading preview...";
+    spinner(status, "Loading preview");
     status.setAttribute("role", "status");
     const closebutton = document.createElement("button");
     closebutton.type = "button";
@@ -137,5 +138,5 @@ function open(entry, trigger) {
     window.addEventListener("resize", fit, options);
     dialog.showModal();
     requestAnimationFrame(() => dialog.classList.add("visible"));
-    image.src = "https://levels.candies.monster/thumb/" + encodeURIComponent(entry.id);
+    image.src = url;
 }

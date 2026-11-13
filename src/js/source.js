@@ -1,4 +1,6 @@
+import {repairxml} from "/assets/static/levelrepair.js";
 const sources = new Map();
+const originals = new Map();
 
 async function read(file) {
     const response = await fetch(file);
@@ -31,16 +33,26 @@ async function read(file) {
         await import("/assets/static/conversion.js");
         text = window.ctrconversion.jsonleveltoxml(JSON.parse(text));
     }
-    const parsed = new DOMParser().parseFromString(text, "application/xml");
-    if (parsed.querySelector("parsererror") || parsed.documentElement.localName !== "map") throw new Error("Invalid level");
     return text;
+}
+
+export function original(file) {
+    if (!originals.has(file)) {
+        originals.set(file, read(file).catch(error => {originals.delete(file); throw error}));
+        if (originals.size > 40) originals.delete(originals.keys().next().value);
+    }
+    return originals.get(file);
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 export function source(file) {
     if (!sources.has(file)) {
-        sources.set(file, read(file).catch(error => {
+        sources.set(file, original(file).then(repairxml).then(text => {
+            const parsed = new DOMParser().parseFromString(text, "application/xml");
+            if (parsed.querySelector("parsererror") || parsed.documentElement.localName !== "map") throw new Error("Invalid level");
+            return text;
+        }).catch(error => {
             sources.delete(file);
             throw error;
         }));

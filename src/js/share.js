@@ -1,3 +1,4 @@
+import {spinner} from "/assets/static/spinner.js";
 import {createsharing} from "/preview/src/sharing.js";
 import {encodeurl} from "/preview/src/data.js";
 import {source} from "./source.js";
@@ -11,7 +12,7 @@ export function share(entry, button) {
     const status = document.createElement("p");
     status.className = "sharestatus";
     status.setAttribute("role", "status");
-    for (const [classname, label] of [["forumurl", "Level Link:"], ["shorturl", "Play Link:"]]) {
+    for (const [classname, label] of [["forumurl", "Level Link:"], ["shorturl", "Direct Link:"]]) {
         const row = document.createElement("div");
         row.className = "sharerow";
         const name = document.createElement("span");
@@ -40,7 +41,7 @@ export function share(entry, button) {
         popup.append(row);
     }
     const forum = popup.querySelector(".forumurl");
-    forum.href = location.origin + location.pathname.replace(/index\.html$/i, "") + "#" + entry.id;
+    forum.href = location.origin + location.pathname.replace(/index\.html$/i, "") + (entry.revision ? "?revision=" + encodeURIComponent(entry.revision) : "") + "#" + entry.id;
     forum.textContent = forum.href.replace(/^https?:\/\//, "");
     popup.append(status);
     let data = "";
@@ -63,7 +64,7 @@ export function share(entry, button) {
         position();
         popup.querySelector(".forumurl").focus({preventScroll: true});
         if (data) return;
-        status.textContent = "loading links...";
+        spinner(status, "Loading links");
         try {
             data = encodeurl(await source(entry.file));
             sharing.generatelinks();
