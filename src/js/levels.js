@@ -3,12 +3,17 @@ import {thumbnail, clearthumbnails} from "./renderer/index.js";
 import {morestuff} from "./rope/index.js";
 import {catalogue} from "./catalogue.js";
 import {filters} from "./filters.js";
+import {prefetch} from "./renderer/cache.js";
 
 morestuff();
 
 const list = document.querySelector(".levels");
 const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
+const pagination = document.createElement("span");
+pagination.className = "levelpagination";
+pagination.setAttribute("role", "status");
+previous.after(pagination);
 let pagesize = 1;
 const detail = leveldetails();
 let entries = [];
@@ -57,7 +62,7 @@ function createlevel(entry) {
     const rating = element("div", "rating");
     rating.append(element("p", "", String(entry.rating ?? 0)), picture("/assets/images/level/star.webp", "staricon", "stars"));
     const plays = element("div", "cardplays");
-    plays.append(element("p", "", String(entry.plays ?? 0)), picture("/assets/images/icons/right.png", "playcounticon", "plays"));
+    plays.append(element("p", "", String(entry.plays ?? 0)), picture("/assets/images/buttons/up.png", "playcounticon", "plays"));
     const features = element("div", "features");
     for (const name of entry.features || []) {
         if (!/^[a-z]+$/.test(name)) continue;
@@ -88,6 +93,11 @@ function showpage(number) {
     list.setAttribute("aria-label", `levels, page ${page + 1} of ${pages}`);
     previous.disabled = page === 0;
     next.disabled = page >= pages - 1;
+    previous.hidden = previous.disabled;
+    next.hidden = next.disabled;
+    pagination.textContent = `${visible.length ? page + 1 : 0} of ${visible.length ? pages : 0} (${visible.length} levels)`;
+    const box = list.querySelector(".levelbg")?.getBoundingClientRect();
+    prefetch(visible.slice((page + 1) * pagesize, (page + 2) * pagesize), box?.width, box?.height);
 }
 
 function layout() {
@@ -128,9 +138,11 @@ for (const [control, offset, sprite] of [[previous, -1, "up"], [next, 1, "down"]
 
 catalogue().then(data => {
     if (!Array.isArray(data)) throw new Error("Invalid level data");
-    entries = data;
-    detail.setentries(data);
-    search.setentries(data);
+    entries = data.filter(entry => !(entry.tags || []).some(tag =>
+        tag.id === "1515043686046498997" || /pudding\s*monsters/i.test(tag.name || "")
+    ));
+    detail.setentries(entries);
+    search.setentries(entries);
 }).catch(() => {
     list.replaceChildren(element("p", "levelnotice", "levels could not be loaded"));
 }).finally(() => list.setAttribute("aria-busy", "false"));

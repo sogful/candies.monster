@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="828" height="428" viewBox="0 0 828 428">
+    <defs>
+        <linearGradient id="rim" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="-36" y2="428">
+            <stop stop-color="#aaa"/>
+            <stop offset="1" stop-color="#ccc"/>
+        </linearGradient>
+        <linearGradient id="face" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="-36" y2="428">
+            <stop stop-color="#999"/>
+            <stop offset="1" stop-color="#ccc"/>
+        </linearGradient>
+        <filter id="shadow" x="-10%" y="-20%" width="120%" height="140%">
+            <feGaussianBlur stdDeviation="8"/>
+        </filter>
+        <filter id="shine" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="1.3"/>
+        </filter>
+        <path id="outline" d="M76 22H752Q806 22 806 76V352Q806 406 752 406H76Q22 406 22 352V76Q22 22 76 22Z"/>
+    </defs>
+    <use href="#outline" stroke="#000" stroke-width="16" filter="url(#shadow)"/>
+    <use href="#outline" stroke="#000" stroke-width="16"/>
+    <use href="#outline" fill="url(#rim)"/>
+    <path fill="url(#face)" d="M93 41H735Q789 41 789 95V352Q789 406 735 406H93Q39 406 39 352V95Q39 41 93 41Z"/>
+    <path fill="#fff" filter="url(#shine)" d="M52 27C62 24 68 30 69 39C70 45 60 54 52 63C46 71 40 74 32 69C23 64 23 57 27 49C33 39 41 30 52 27Z"/>
+</svg>
+
