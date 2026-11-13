@@ -169,28 +169,24 @@
         <img class="back clickable" src="assets/images/back.png">
         <img class="link clickable" src="assets/images/share.png">
     </div>
-    <div class="linkpopup">
-        <div class="linkitem">
-            <div class="linklabel">Shortened Link:</div>
-            <div class="linkrow">
-                <a class="shorturl" href="" target="_blank">Loading...</a>
-                <label class="button clickable copybtn" data-copy="shorturl">
-                    <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
-                    <span>Copy</span>
-                </label>
-            </div>
+    <div class="linkpopup sharepanel" role="dialog" aria-label="share level">
+        <div class="sharerow">
+            <span class="sharelabel">Shortened Link:</span>
+            <a class="shorturl sharelink" href="" target="_blank" rel="noopener noreferrer">Loading...</a>
+            <button type="button" class="sharecopy clickable copybtn" data-copy="shorturl">
+                <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false" alt="">
+                <span>Copy</span>
+            </button>
         </div>
-        <div class="linkitem">
-            <div class="linklabel">Full Link:</div>
-            <div class="linkrow">
-                <a class="fullurl" href="" target="_blank">Loading...</a>
-                <label class="button clickable copybtn" data-copy="fullurl">
-                    <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
-                    <span>Copy</span>
-                </label>
-            </div>
-            <div class="linkcharcount tiny">??? chars (???kb)</div>
+        <div class="sharerow">
+            <span class="sharelabel">Full Link:</span>
+            <a class="fullurl sharelink" href="" target="_blank" rel="noopener noreferrer">Loading...</a>
+            <button type="button" class="sharecopy clickable copybtn" data-copy="fullurl">
+                <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false" alt="">
+                <span>Copy</span>
+            </button>
         </div>
+        <div class="linkcharcount tiny">??? chars (???kb)</div>
         <div class="toolong">
             <div><img src="assets/images/warning.png"><a>Warning!</a></div>
             <a>The resulting link is above 16kb. Due to Cloudflare and Github limitations it will likely not work.</a>

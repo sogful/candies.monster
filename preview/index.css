@@ -1,3 +1,5 @@
+@import url("/assets/static/sharing.css");
+
 @font-face {
     font-family: "Good Dog";
     src: /*universal*/ url("/assets/fonts/gooddog.woff2");
@@ -241,49 +243,10 @@ body.shareonly .back {display: inline}
 .linkpopup {
     position: fixed; display: none;
     bottom: 3.5em; left: 0.5em;
-    z-index: 9999999999;
-    flex-direction: column; background: rgba(0,0,0,0.5);
-    border-radius: 1em; padding: 0.75em;
-    min-width: 300px; max-width: 90vw;
+    z-index: 9999999999; width: min(340px,calc(100vw - 16px));
 }
-.linkpopup.active {display: flex}
-.linkpopup .linkitem {
-    display: flex;
-    flex-direction: column;
-}
-.linkpopup .linkitem .linklabel {
-    font-size: 0.8em;
-    color: white
-}
-.linkpopup .linkitem .linkrow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5em;
-}
-.linkpopup .linkitem a {
-    color: #8feeff;
-    font-size: 0.75em;
-    word-break: break-all;
-    text-decoration: underline;
-    flex: 1;
-    min-width: 0;
-}
-.linkpopup .copybtn {
-    display: flex; position: relative;
-    flex-direction: column; align-items: center;
-    cursor: pointer; background: none;
-    border: none;
-    flex-shrink: 0;
-}
-.linkpopup .copybtn img {height: 2em}
-.linkpopup .copybtn span {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff; font-size: 1em;
-    pointer-events: none;
-    white-space: nowrap; user-select: none;
-}
+.linkpopup.active {display: block}
+.hosted .previewpage.shareonly .back {display: none}
 .linkcharcount {
     color: rgba(255,255,255,0.6);
     font-size: 0.5em;

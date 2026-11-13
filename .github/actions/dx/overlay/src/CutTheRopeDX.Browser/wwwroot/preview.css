@@ -1,14 +1,10 @@
 .previewgame,
 .previewmovie {
-    max-width: calc(100vh * 16 / 9); max-height: calc(100vw * 9 / 16);
+    max-width: var(--previewwidth,calc(100vh * 16 / 9)); max-height: var(--previewheight,calc(100vw * 9 / 16));
     margin: auto;
 }
 
 .previewpointer:focus {outline: none}
-
-.levelbrowsergame .previewgame, .levelbrowsergame .previewmovie {
-    max-width: none; max-height: none;
-}
 
 /*//////////////////////////////////////////////////////////////////////*/
 

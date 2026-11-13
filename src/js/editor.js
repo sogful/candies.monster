@@ -3,15 +3,6 @@ const host = document.createElement("section");
 host.className = "editorview";
 host.setAttribute("aria-label", "level preview");
 host.hidden = true;
-const back = document.createElement("button");
-back.className = "editorback clickable";
-back.type = "button";
-back.setAttribute("aria-label", "back to levels");
-const arrow = document.createElement("img");
-arrow.src = "/assets/images/buttons/back.png";
-arrow.alt = "";
-back.append(arrow);
-host.append(back);
 document.querySelector(".levelcontent").append(host);
 let frame = null;
 
@@ -46,15 +37,15 @@ function render() {
     }
 }
 
-back.addEventListener("click", () => {
+function exit() {
     history.pushState(null, "", location.pathname);
     render();
     document.dispatchEvent(new Event("homeviewchange"));
-});
+}
 window.addEventListener("message", event => {
     if (!frame || event.source !== frame.contentWindow || event.origin !== location.origin || event.data !== "exitpreview") return;
     if (window.parent !== window) window.parent.postMessage("exitpreview", "*");
-    else back.click();
+    else exit();
 });
 window.addEventListener("hashchange", render);
 window.addEventListener("popstate", render);

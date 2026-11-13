@@ -90,3 +90,11 @@ export function action(action) {
     if (!editor() || !["version", "edit"].includes(action) || globalThis.parent === globalThis) return;
     globalThis.parent.postMessage({type: "ctrdx-editor-action", action, nonce: nonceFromQuery()}, location.origin);
 }
+
+export function aspect() {
+    return globalThis.ctrdxaspect.get();
+}
+
+export function ratio(value) {
+    globalThis.ctrdxaspect.set(value);
+}
