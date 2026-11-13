@@ -3,6 +3,7 @@ import {source} from "../source.js";
 const levels = new Map();
 const images = new Map();
 const sprites = new Map();
+let sections;
 
 export function number(value, fallback = 0) {
     const parsed = Number.parseFloat(value);
@@ -25,6 +26,20 @@ export function picture(url) {
         if (images.size > 32) images.delete(images.keys().next().value);
     }
     return images.get(url);
+}
+
+export async function background(url, map) {
+    const image = await picture(url);
+    if (map.height <= 480 || image.section) return image;
+    const name = url.match(/\/(box\d+)\.webp$/)?.[1];
+    if (!name) return image;
+    sections ||= fetch("/assets/images/level/backgrounds.json").then(response => response.json()).catch(() => ({}));
+    const section = (await sections)[name];
+    if (section) {
+        image.seam = await picture(url.replace(/\.webp$/, "seam.webp"));
+        image.section = section;
+    }
+    return image;
 }
 
 export function artwork(quality = "normal") {
@@ -56,7 +71,7 @@ export function parse(text) {
     const design = settings?.querySelector("gameDesign");
     const objects = [];
     for (const layer of document.querySelectorAll("layer")) {
-        if (layer === settings || !["objects", ""].includes((layer.getAttribute("name") || "").toLowerCase())) continue;
+        if ((layer.getAttribute("name") || "").toLowerCase() === "settings") continue;
         for (const node of layer.children) {
             if (!node.hasAttribute("x") || !node.hasAttribute("y")) continue;
             const object = {type: node.localName.toLowerCase()};

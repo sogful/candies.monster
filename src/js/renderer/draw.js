@@ -38,8 +38,16 @@ const order = {
     candyright: 23
 };
 
-export function draw(canvas, map, art, background, width, height, density, detail) {
-    const scale = Math.min(density, Math.sqrt((detail ? 2400000 : 220000) / Math.max(1, width * height)));
+export function framing(map) {
+    const width = Math.max(map.width, 2560 / 3);
+    const height = Math.max(map.height, 480);
+    return {width, height, x: (map.width - width) / 2, y: (map.height - height) / 2};
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function draw(canvas, map, art, background, width, height, density, detail, full = false) {
+    const scale = Math.min(density, Math.sqrt((full ? 4000000 : detail ? 2400000 : 220000) / Math.max(1, width * height)));
     canvas.width = Math.max(1, Math.round(width * scale));
     canvas.height = Math.max(1, Math.round(height * scale));
     const context = canvas.getContext("2d", {alpha: false});
@@ -48,11 +56,12 @@ export function draw(canvas, map, art, background, width, height, density, detai
     context.imageSmoothingEnabled = true;
     context.fillStyle = "#b77d35";
     context.fillRect(0, 0, width, height);
-    const view = camera(map, width, height);
+    const bounds = full ? framing(map) : null;
+    const view = full ? {...bounds, scale: Math.min(width / bounds.width, height / bounds.height)} : camera(map, width, height);
     context.save();
     context.scale(view.scale, view.scale);
     context.translate(-view.x, -view.y);
-    backdrop(context, map, background, view);
+    backdrop(context, map, background, view, full);
     const sprite = painter(context, art);
     const objects = [...map.objects].sort((first, second) => (order[first.type] ?? 16) - (order[second.type] ?? 16));
     const grabs = objects.filter(item => item.type === "grab");
@@ -87,7 +96,7 @@ export function draw(canvas, map, art, background, width, height, density, detai
     for (const item of objects) if (item.type === "lightbulb") bulb(context, sprite, item);
     for (const item of grabs) graboverlay(context, sprite, item);
     context.restore();
-    if (detail) {
+    if (detail && !full) {
         context.fillStyle = "rgba(0,0,0,0.5)";
         context.fillRect(0, 0, width, height);
     }

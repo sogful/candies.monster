@@ -4,6 +4,7 @@ export function glow(context, sprite, item) {
     const frame = sprite.frames.light;
     if (!frame) return;
     const size = Math.max(0, Math.min(8192, number(item.litradius))) * 3;
+    if (!size) return;
     const scale = size / frame.size[0];
     context.save();
     context.globalCompositeOperation = "lighter";

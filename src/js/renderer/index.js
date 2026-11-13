@@ -1,5 +1,6 @@
-import {artwork, level, picture} from "./data.js";
+import {artwork, level, background} from "./data.js";
 import {draw} from "./draw.js";
+import {cached, remember} from "./cache.js";
 
 const records = new Map();
 const pending = new Set();
@@ -27,15 +28,21 @@ async function render() {
         if (!record.visible || !record.canvas.isConnected) continue;
         const version = record.version;
         try {
-            const [map, art, background] = await Promise.all([
-                level(record.entry.file), artwork(record.detail ? "low" : "ultra"),
-                record.entry.background ? picture(record.entry.background).catch(() => null) : null
-            ]);
-            if (version !== record.version || !record.canvas.isConnected || !record.visible || paused()) continue;
             const box = record.canvas.getBoundingClientRect();
             if (box.width < 1 || box.height < 1) continue;
+            const saved = !record.detail && cached(record.entry, box.width, box.height);
+            if (saved) {
+                record.canvas.width = saved.width;
+                record.canvas.height = saved.height;
+                record.canvas.getContext("2d").drawImage(saved, 0, 0);
+                record.canvas.dataset.ready = "true";
+                continue;
+            }
+            const [map, art, backdrop] = await record.resources;
+            if (version !== record.version || !record.canvas.isConnected || !record.visible || paused()) continue;
             const pack = Number(record.entry.background?.match(/\/box(\d+)\.webp$/)?.[1]) || 1;
-            draw(record.canvas, {...map, box: pack}, art, background, box.width, box.height, record.detail ? 0.6 : 0.45, record.detail);
+            draw(record.canvas, {...map, box: pack}, art, backdrop, box.width, box.height, record.detail ? 0.6 : 0.45, record.detail);
+            if (!record.detail) remember(record.entry, box.width, box.height, record.canvas);
             record.canvas.dataset.ready = "true";
             delete record.canvas.dataset.error;
         } catch {
@@ -68,6 +75,12 @@ function create(entry, expanded) {
     canvas.className = expanded ? "levelscene" : "levelbg levelcanvas";
     canvas.setAttribute("aria-hidden", "true");
     const record = {canvas, entry, detail: expanded, visible: expanded || !observer, version: 0};
+    const map = level(entry.file);
+    record.resources = Promise.all([
+        map, artwork(expanded ? "low" : "ultra"),
+        map.then(data => entry.background ? background(entry.background, data).catch(() => null) : null)
+    ]);
+    record.resources.catch(() => {});
     records.set(canvas, record);
     if (expanded) {
         const background = /^\/assets\/images\/level\/box\d+\.webp$/.test(entry.background || "") ? entry.background : "/assets/images/level/box1.webp";
