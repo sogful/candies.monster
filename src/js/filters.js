@@ -76,7 +76,8 @@ export function filters(changed) {
     }
     const top = document.createElement("div");
     top.className = "filtertop";
-    top.append(field, creator, sorts);
+    field.append(creator);
+    top.append(field, sorts);
     const options = document.createElement("div");
     options.className = "tagoptions";
     options.setAttribute("aria-label", "Filter by tags");

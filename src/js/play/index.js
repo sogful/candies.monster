@@ -53,6 +53,16 @@ export function player() {
             progress.update(value.percent, stage + counts);
             watch();
         },
+        onreload() {
+            if (!selected || !control) return;
+            root.classList.remove("gameopen");
+            root.classList.add("gameloading");
+            frame.inert = true;
+            frame.setAttribute("aria-hidden", "true");
+            progress.start(control);
+            document.dispatchEvent(new Event("gameviewchange"));
+            watch();
+        },
         onready() {
             if (!root.classList.contains("gameloading")) return;
             clearTimeout(timeout);
@@ -70,7 +80,7 @@ export function player() {
     });
 
     async function open(entry, button, message) {
-        if (root.classList.contains("gameloading")) return;
+        if (root.classList.contains("gameloading")) {progress.press(); return}
         stop();
         const current = sequence;
         selected = entry;

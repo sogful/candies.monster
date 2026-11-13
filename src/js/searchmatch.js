@@ -1,5 +1,5 @@
 export function normalized(value) {
-    return String(value || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase();
+    return String(value || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/['\u2018\u2019\u02bc\uff07]/g, "").toLocaleLowerCase();
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
