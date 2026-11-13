@@ -1,0 +1,23 @@
+.levelcomments {
+    width: 100%; max-width: 660px;
+    margin: 0 auto 12px; padding: 8px 12px;
+    box-sizing: border-box; border-radius: 12px;
+    background: rgba(0,0,0,0.5); text-align: left;
+    max-height: 30vh; overflow: auto;
+    flex: 0 0 auto; scrollbar-width: none;
+    font-size: 20px; user-select: text;
+}
+.levelcomments[hidden], .earliercomments[hidden] {display: none}
+.levelcomments::-webkit-scrollbar {display: none}
+.levelcomment {padding: 6px 4px}
+.commentauthor {
+    margin: 0 0 5px; font-size: 23px;
+}
+.commentbody {padding: 3px}
+.commentstatus {margin: 4px}
+.commentstatus:empty {display: none}
+.earliercomments {
+    font: inherit; color: #fff;
+    border: 0; border-radius: 6px;
+    padding: 5px 10px; background: rgba(255,255,255,0.15);
+}

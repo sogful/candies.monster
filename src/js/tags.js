@@ -23,9 +23,15 @@ export function tagcontent(tag) {
 export function tags(entry, container) {
     container.replaceChildren();
     for (const tag of entry.tags || []) {
-        const item = document.createElement("span");
-        item.className = "leveltag";
+        const item = document.createElement("button");
+        item.className = "leveltag clickable";
+        item.type = "button";
         item.append(tagcontent(tag));
+        item.addEventListener("click", () => {
+            history.pushState(null, "", location.pathname + location.search);
+            window.dispatchEvent(new HashChangeEvent("hashchange"));
+            document.dispatchEvent(new CustomEvent("leveltagfilter", {detail: {id: tag.id, selected: true}}));
+        });
         container.append(item);
     }
     container.hidden = !container.childElementCount;

@@ -1,0 +1,44 @@
+.sharepanel {
+    padding: 8px; box-sizing: border-box;
+    background: rgba(0,0,0,0.5); border-radius: 9px;
+    text-align: left; font-size: 18px;
+    line-height: 1.15; color: #fff;
+}
+
+.sharerow {
+    display: grid; grid-template-columns: minmax(0,1fr) auto;
+    align-items: center; gap: 3px 6px;
+    margin: 0 0 6px;
+}
+.sharerow:last-child {margin-bottom: 0}
+.sharelabel {
+    grid-column: 1 / -1; color: #fff;
+}
+.sharelink {
+    min-width: 0; overflow-wrap: anywhere;
+    color: #8feeff; font-size: inherit;
+}
+.sharecopy {
+    position: relative; display: inline-flex;
+    background: none; color: #fff;
+    border: 0; width: 64px;
+    font: inherit; padding: 0;
+}
+.sharecopy img {
+    width: 100%; height: auto;
+    display: block;
+}
+.sharecopy span {
+    position: absolute; inset: 0 0 3px;
+    display: flex; align-items: center;
+    justify-content: center;
+}
+.sharecopy:active {transform: scale(0.96)}
+.sharepanel, .sharelabel, .sharelink, .sharecopy {
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+.sharestatus {
+    margin: 0; font-size: 16px;
+}
+.sharestatus:empty {display: none}

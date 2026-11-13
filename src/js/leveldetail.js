@@ -6,6 +6,8 @@ import {refresh} from "./statistics.js";
 import {share} from "./share.js";
 import {tags} from "./tags.js";
 import {downloadlevel, filename} from "./download.js";
+import {inspection} from "./inspection.js";
+import {comments} from "./comments.js";
 
 export function leveldetails() {
     const root = document.documentElement;
@@ -77,7 +79,7 @@ export function leveldetails() {
 
     function update(entry) {
         if (panel.hidden || current !== entry.id) return;
-        panel.querySelector(".levelstars .levelvalue").textContent = String(entry.rating ?? "--");
+        panel.querySelector(".levelfavourites .levelvalue").textContent = String(entry.rating ?? 0);
         panel.querySelector(".levelplays .levelvalue").textContent = String(entry.plays ?? "--");
         panel.querySelector(".levelauthor").textContent = "by " + entry.creator;
         panel.querySelector(".levelname").textContent = entry.title;
@@ -96,31 +98,34 @@ export function leveldetails() {
         const heading = create("header", "levelheading");
         heading.append(create("h1", "levelname", entry.title), create("p", "levelauthor", `by ${entry.creator}`));
         const hero = create("div", "levelhero");
-        const stars = create("div", "levelstars");
-        stars.append(create("span", "levelvalue", String(entry.rating ?? 0)), image("/assets/images/level/star.webp", "staricon", "stars"));
+        const primary = create("div", "levelprimary");
         const play = create("button", "levelplay clickable");
         play.type = "button";
         play.setAttribute("aria-label", "play " + entry.title);
-        play.append(image("/assets/images/buttons/play.svg", "", "play"));
+        play.append(image("/assets/images/misc/play.png", "", "play"));
         play.addEventListener("click", event => {
             event.preventDefault();
             void game.open(entry, play, status);
         });
         const statistics = create("div", "levelstatistics");
+        const favourites = stat("favourites", entry.rating ?? 0);
+        favourites.classList.add("levelfavourites");
         const plays = stat("plays", entry.plays ?? "--");
         plays.classList.add("levelplays");
         const objects = stat("objects", entry.objects ?? "--");
         const reactionrow = create("div", "levelreactions");
         reactions(entry, reactionrow);
-        statistics.append(plays, objects, reactionrow);
-        hero.append(stars, play, statistics);
+        statistics.append(favourites, plays, objects, reactionrow);
+        hero.append(create("div", "levelspace"), primary, statistics);
         const information = create("div", "levelinformation");
+        const body = create("div", "levelbody");
         const description = create("div", "leveldescription");
         description.append(discordmd(entry.description || entry.title));
-        information.append(description);
+        body.append(description);
         const labels = create("div", "leveltags");
         tags(entry, labels);
-        information.append(labels);
+        body.append(labels);
+        information.append(body);
         const actions = create("div", "levelactions");
         const download = create("a", "leveldownload clickable");
         download.setAttribute("aria-label", "download level");
@@ -131,10 +136,11 @@ export function leveldetails() {
         sharing.setAttribute("aria-expanded", "false");
         sharing.append(image("/preview/assets/images/share.png", "", ""));
         actions.append(download, sharing, share(entry, sharing));
+        primary.append(play, actions);
         const status = create("p", "levelstatus");
         status.setAttribute("role", "status");
         downloadlevel(download, entry, status);
-        panel.append(control(), heading, hero, status, actions, information);
+        panel.append(control(), inspection(entry), heading, hero, status, comments(entry), information);
         void refresh(entry).then(() => update(entry)).catch(() => {});
         void level(entry.file).then(map => {
             entry.objects = map.objects.length;

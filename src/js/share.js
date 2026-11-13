@@ -4,7 +4,7 @@ import {source} from "./source.js";
 
 export function share(entry, button) {
     const popup = document.createElement("div");
-    popup.className = "levelshare";
+    popup.className = "levelshare sharepanel";
     popup.hidden = true;
     popup.setAttribute("role", "dialog");
     popup.setAttribute("aria-label", "share level");
@@ -18,7 +18,7 @@ export function share(entry, button) {
         name.className = "sharelabel";
         name.textContent = label;
         const link = document.createElement("a");
-        link.className = classname;
+        link.className = classname + " sharelink";
         link.target = "_blank";
         link.rel = "noopener noreferrer";
         const copy = document.createElement("button");
@@ -39,15 +39,27 @@ export function share(entry, button) {
         popup.append(row);
     }
     const forum = popup.querySelector(".forumurl");
-    forum.href = location.origin + location.pathname + "#" + entry.id;
+    forum.href = location.origin + location.pathname.replace(/index\.html$/i, "") + "#" + entry.id;
     forum.textContent = forum.href.replace(/^https?:\/\//, "");
     popup.append(status);
     let data = "";
     const sharing = createsharing({getlevel: () => data, container: popup, onerror: message => {status.textContent = message}});
+    function position() {
+        if (popup.hidden || !popup.isConnected) return;
+        const anchor = button.getBoundingClientRect();
+        const box = popup.getBoundingClientRect();
+        const sidebar = Number.parseFloat(getComputedStyle(popup).getPropertyValue("--navigationwidth")) || 0;
+        const left = Math.max(sidebar + 8, Math.min(innerWidth - box.width - 8, anchor.left + anchor.width / 2 - box.width / 2));
+        const below = anchor.bottom + 6;
+        const top = below + box.height <= innerHeight - 8 ? below : Math.max(8, anchor.top - box.height - 6);
+        popup.style.left = left + "px";
+        popup.style.top = top + "px";
+    }
     button.addEventListener("click", async () => {
         popup.hidden = !popup.hidden;
         button.setAttribute("aria-expanded", String(!popup.hidden));
         if (popup.hidden) return;
+        position();
         popup.querySelector(".forumurl").focus({preventScroll: true});
         if (data) return;
         status.textContent = "loading links...";
@@ -65,6 +77,10 @@ export function share(entry, button) {
         button.focus({preventScroll: true});
     });
     const controller = new AbortController();
+    window.addEventListener("resize", position, {signal: controller.signal});
+    document.addEventListener("scroll", position, {capture: true, passive: true, signal: controller.signal});
+    const sizes = window.ResizeObserver ? new ResizeObserver(position) : null;
+    sizes?.observe(popup);
     document.addEventListener("pointerdown", event => {
         if (!popup.contains(event.target) && !button.contains(event.target)) {
             popup.hidden = true;
@@ -74,6 +90,7 @@ export function share(entry, button) {
     const observer = new MutationObserver(() => {
         if (popup.isConnected) return;
         controller.abort();
+        sizes?.disconnect();
         observer.disconnect();
     });
     observer.observe(document.querySelector(".leveldetail"), {childList: true});
