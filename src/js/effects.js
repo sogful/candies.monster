@@ -59,7 +59,7 @@ function paint(seconds) {
     if (!context) return;
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
     context.clearRect(0, 0, width, height);
-    if (!motion.matches && sheet) {
+    if (sheet) {
         for (let index = 0; index < drops.length; index++) {
             let drop = drops[index];
             drop.y += drop.speed * seconds;
@@ -105,12 +105,12 @@ function tick(now) {
 
 function resume() {
     stop();
-    const covered = document.documentElement.matches(".documentopen.documentdocumentation, .gameloading, .gameopen, .previewopen");
+    const covered = document.documentElement.matches(".documentopen.documentdocumentation, .gameloading, .gameopen, .previewopen, .levelopen");
     shadow?.classList.toggle("paused", document.hidden || suspended || covered);
     if (document.hidden || suspended || covered || !canvas?.isConnected) return;
+    loadrain();
     if (motion.matches) paint(0);
     else {
-        loadrain();
         frame = requestAnimationFrame(tick);
     }
 }
@@ -155,6 +155,8 @@ if (context) {
     document.addEventListener("previewviewchange", resume);
     document.addEventListener("gameviewchange", resume);
     window.addEventListener("resize", resize, {passive: true});
+    window.addEventListener("hashchange", resume);
+    window.addEventListener("popstate", resume);
     window.addEventListener("pagehide", () => {suspended = true; resume()});
     window.addEventListener("pageshow", () => {suspended = false; resume()});
     if (motion.addEventListener) motion.addEventListener("change", resume);

@@ -166,7 +166,15 @@ export function morestuff() {
         open(false);
         handle.focus({preventScroll: true});
     });
-    shade.addEventListener("click", () => open(false));
+    shade.addEventListener("click", event => {
+        const sound = document.querySelector(".click");
+        if (sound) {
+            event.soundplayed = true;
+            sound.currentTime = 0;
+            void sound.play().catch(() => {});
+        }
+        open(false);
+    });
     document.addEventListener("keydown", event => {
         if (event.key === "Escape" && opened) open(false);
     });
