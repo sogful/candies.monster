@@ -25,7 +25,8 @@ export function share(entry, button) {
         copy.className = "sharecopy clickable";
         copy.type = "button";
         const graphic = document.createElement("img");
-        graphic.src = "/assets/images/buttons/wide/sbutton.webp";
+        graphic.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E";
+        graphic.className = "buttonart";
         graphic.alt = "";
         graphic.draggable = false;
         const caption = document.createElement("span");
