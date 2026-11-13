@@ -25,6 +25,7 @@ export async function catalogue() {
             notable: Array.isArray(level.features) ? level.features : [], levelerror: level.levelerror || null,
             description: level.description || "", file: file ? new URL(`/levels/${level.id}/files/${file.id}`, base).href : "",
             engine: requiredgame(level),
+            requirements: Array.isArray(level.requirements) ? level.requirements : [],
             filename: file?.name || "", revisions: Array.isArray(level.revisions) ? level.revisions : [], background: "/assets/images/level/box1.webp", features: [],
             detailurl: new URL(`/levels/${level.id}`, base).href,
             playurl: new URL(`/levels/${level.id}/plays`, base).href,

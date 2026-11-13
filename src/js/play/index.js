@@ -4,6 +4,8 @@ import {loading} from "./loading.js";
 import {played} from "../statistics.js";
 import {crash} from "./errors.js";
 import {rememberlevel} from "../recently.js";
+import {parse} from "../renderer/data.js";
+import {requiredgame, objectrequirements} from "../unsupported.js";
 
 export function player() {
     const root = document.documentElement;
@@ -100,6 +102,7 @@ export function player() {
         try {
             const xml = await source(entry.file);
             if (current !== sequence) return;
+            if (requiredgame({...entry, requirements: objectrequirements(parse(xml))})) {stop(); return}
             await game.open("dx", {xml, view: "level"});
         } catch {
             if (current === sequence) fail();

@@ -19,6 +19,7 @@ export async function refresh(entry) {
     entry.reactions = Array.isArray(data.reactions) ? data.reactions : entry.reactions;
     entry.plays = Number.isSafeInteger(data.plays) && data.plays >= 0 ? data.plays : entry.plays;
     entry.description = typeof data.description === "string" ? data.description : entry.description;
+    if (!entry.revision && entry.requirementsfile !== entry.file && Array.isArray(data.requirements)) entry.requirements = data.requirements;
     const engine = requiredgame(entry);
     if (engine !== entry.engine) {entry.engine = engine; entry.filechanged = true}
     entry.creator = data.author?.name || entry.creator || data.author?.id;

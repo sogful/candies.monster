@@ -1,4 +1,4 @@
-import {unsupported} from "./unsupported.js";
+import {unsupported, requiredgame, objectrequirements} from "./unsupported.js";
 import {scene} from "./renderer/index.js";
 import {player} from "./play/index.js";
 import {level} from "./renderer/data.js";
@@ -116,13 +116,25 @@ export function leveldetails() {
         const primary = create("div", "levelprimary");
         const play = create("button", "levelplay clickable");
         play.type = "button";
-        if (entry.engine || !entry.file) {
-            play.setAttribute("aria-disabled", "true");
-            play.setAttribute("aria-description", entry.engine ? "Requires " + entry.engine : "Level file unavailable");
-        }
         play.setAttribute("aria-label", "play " + entry.title);
         play.append(image("/assets/images/misc/play.png", "", "play"));
-        if (entry.engine || !entry.file) unsupported(play, entry.engine);
+        let notice = null;
+        function restrict() {
+            const engine = requiredgame(entry);
+            if (engine === entry.engine && Boolean(notice) === Boolean(engine || !entry.file)) return;
+            notice?.();
+            notice = null;
+            entry.engine = engine;
+            if (engine || !entry.file) {
+                play.setAttribute("aria-disabled", "true");
+                play.setAttribute("aria-description", engine ? "Requires " + engine : "Level file unavailable");
+                notice = unsupported(play, engine);
+            } else {
+                play.removeAttribute("aria-disabled");
+                play.removeAttribute("aria-description");
+            }
+        }
+        restrict();
         play.addEventListener("click", event => {
             event.preventDefault();
             if (entry.engine || !entry.file) return;
@@ -196,7 +208,10 @@ export function leveldetails() {
         void refresh(entry).then(() => update(entry)).catch(() => {});
         void level(entry.file).then(map => {
             entry.objects = map.objects.length;
+            entry.requirements = objectrequirements(map);
+            entry.requirementsfile = entry.file;
             if (current === entry.id && objects.isConnected) {
+                restrict();
                 objects.querySelector(".levelvalue").textContent = String(entry.objects);
                 features(map, notable);
             }
@@ -228,7 +243,7 @@ export function leveldetails() {
         const entry = entries.find((item, index) => String(item.id ?? index + 1) === id);
         if (entry) {
             const selected = entry.revisions?.find(file => file.id === revision);
-            const shown = selected ? {...entry, revision, filename: selected.name, objects: null, file: new URL("/levels/" + (selected.thread || id) + "/files/" + selected.id, entry.detailurl).href} : entry;
+            const shown = selected ? {...entry, revision, requirements: [], filename: selected.name, objects: null, file: new URL("/levels/" + (selected.thread || id) + "/files/" + selected.id, entry.detailurl).href} : entry;
             scene(shown);
             document.title = entry.title + " by " + entry.creator;
             content(shown);

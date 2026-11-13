@@ -4,7 +4,17 @@ export function requiredgame(entry) {
     if (/github\.com\/swordjhon\/cuttherope-dx/i.test(text)) return "SwordJhon's DX fork";
     if ((entry.tags || []).some(tag => /^cut the rope 2$/i.test(tag.name || ""))) return "Cut the Rope 2";
     if ((entry.tags || []).some(tag => /^magic$/i.test(tag.name || ""))) return "Cut the Rope: Magic";
+    const names = entry.requirements || [];
+    if (names.some(name => ["shieldtrigger", "p_magnetswitcher"].includes(name))) return "a compatible mod";
+    if (names.some(name => ["clock", "fan", "laser", "discoball"].includes(name))) return "Cut the Rope: Time Travel";
     return "";
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function objectrequirements(map) {
+    const names = new Set(["clock", "fan", "laser", "discoball", "shieldtrigger", "p_magnetswitcher"]);
+    return [...new Set(map.objects.map(item => item.type).filter(name => names.has(name)))].sort();
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -58,9 +68,13 @@ export function unsupported(button, engine) {
     document.addEventListener("scroll", position, {...options, capture: true, passive: true});
     const removal = new MutationObserver(() => {
         if (button.isConnected) return;
+        dispose();
+    });
+    function dispose() {
         controller.abort();
         popup.remove();
         removal.disconnect();
-    });
+    }
     removal.observe(document.querySelector(".leveldetail"), {childList: true});
+    return dispose;
 }
