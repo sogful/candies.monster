@@ -10,7 +10,6 @@ startfavicon({onimage(image) {
 const canvas = document.querySelector(".effects");
 const context = canvas?.getContext("2d");
 const shadow = document.querySelector(".shadow");
-const motion = matchMedia("(prefers-reduced-motion: reduce)");
 const drops = [];
 let sprites = [];
 let sheet = null;
@@ -85,7 +84,7 @@ function stop() {
 
 function tick(now) {
     frame = 0;
-    if (document.hidden || suspended || !canvas.isConnected || motion.matches) return;
+    if (document.hidden || suspended || !canvas.isConnected) return;
     if (!previous || now - previous >= interval - 1) {
         const elapsed = previous ? Math.min((now - previous) / 1000, 0.1) : 0;
         previous = now;
@@ -109,10 +108,7 @@ function resume() {
     shadow?.classList.toggle("paused", document.hidden || suspended || covered);
     if (document.hidden || suspended || covered || !canvas?.isConnected) return;
     loadrain();
-    if (motion.matches) paint(0);
-    else {
-        frame = requestAnimationFrame(tick);
-    }
+    frame = requestAnimationFrame(tick);
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -159,6 +155,4 @@ if (context) {
     window.addEventListener("popstate", resume);
     window.addEventListener("pagehide", () => {suspended = true; resume()});
     window.addEventListener("pageshow", () => {suspended = false; resume()});
-    if (motion.addEventListener) motion.addEventListener("change", resume);
-    else motion.addListener(resume);
 }
