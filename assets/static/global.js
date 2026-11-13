@@ -1,4 +1,19 @@
+document.documentElement.classList.add("textselection");
+const selectionstyle = document.createElement("link");
+selectionstyle.rel = "stylesheet";
+selectionstyle.href = "/assets/static/selection.css";
+document.head.append(selectionstyle);
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 import("./buttons/index.js");
+import("./spinner.js").then(({spinner}) => {
+    function initialize() {
+        for (const element of document.querySelectorAll(".loading")) spinner(element);
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initialize, {once: true});
+    else initialize();
+}).catch(error => console.warn("Loading indicator unavailable.", error));
 
 /*//////////////////////////////////////////////////////////////////////*/
 

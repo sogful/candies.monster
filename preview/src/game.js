@@ -3,7 +3,7 @@ import {createsession} from "./playtest.js";
 /*//////////////////////////////////////////////////////////////////////*/
 
 export function createcontroller({frame, onerror, onclose, ontoolong, onprogress = () => {}, onready = () => {}, onaction = () => {}, onreload = () => {}}) {
-    const session = createsession({onerror, onclose});
+    const session = createsession({onerror, onclose: leave});
     let sequence = 0;
     let nonce = null;
     let runtime = false;
@@ -12,6 +12,13 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
     let editor = false;
     const keys = new Set(["KeyQ", "Escape", "KeyP", "KeyM", "KeyR", "Space", "Enter", "ArrowLeft", "ArrowRight"]);
     const held = new Set();
+
+    function leave() {
+        if (!nonce) return;
+        const sound = typeof document === "undefined" ? null : document.querySelector(".click");
+        if (sound) {sound.currentTime = 0; void sound.play().catch(() => {})}
+        onclose();
+    }
 
     function forward(event, down) {
         if (!ready || !nonce || !frame.classList.contains("active") || !keys.has(event.code)
@@ -97,7 +104,9 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
             onreload();
             return;
         }
-        if (data.type === "ctrdx-exit") onclose();
+        if (data.type === "ctrdx-exit") {
+            leave();
+        }
         else if (data.type === "ctrdx-editor-action" && editor && ["version", "edit"].includes(data.action)) onaction(data.action);
         else if (data.type === "ctrdx-error") {
             onerror(typeof data.message === "string" && data.message.trim()

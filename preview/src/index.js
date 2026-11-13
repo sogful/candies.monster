@@ -1,3 +1,4 @@
+import {repairxml} from "/assets/static/levelrepair.js";
 import {createcontroller} from "./game.js";
 import {createerrors} from "./errors.js";
 import {encodeurl, decodebase64utf8, analyzexml, calculategzipped, normalizetoxml} from "./data.js";
@@ -350,13 +351,13 @@ import {createsharing} from "./sharing.js";
     
     /*//////////////////////////////////////////////////////////////////////*/
 
-    function setlevelfromxml(xml, showchoice = false) {
+    async function setlevelfromxml(xml, showchoice = false) {
         if (!xml) {
             showerror("No XML data provided");
             return;
         }
         try {
-            const trimmed = xml.trim();
+            const trimmed = await repairxml(xml.trim());
             if (!trimmed.match(/<map[\s>]/)) {
                 throw new Error("xml doesn't contain <map> element");
             }

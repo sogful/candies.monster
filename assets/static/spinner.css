@@ -1,0 +1,15 @@
+.candyloading {
+    display: inline-flex; vertical-align: middle;
+    width: 1.4em; height: 1.4em;
+    min-width: 24px; min-height: 24px;
+}
+.candyloading svg {
+    display: block; width: 100%;
+    height: 100%; animation: candyturn 1s linear infinite;
+}
+.loading > .candyloading {
+    width: 100px; height: 100px;
+}
+@keyframes candyturn {
+    to {transform: rotate(360deg)}
+}

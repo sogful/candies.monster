@@ -27,9 +27,6 @@ style.textContent = `
         to {transform: translate(-50%,-50%) rotate(360deg)}
     }
 
-    @media (prefers-reduced-motion: reduce) {
-        .imageloadingspinner {animation: none; transform: translate(-50%,-50%)}
-    }
 `;
 (document.head || document.documentElement).appendChild(style);
 

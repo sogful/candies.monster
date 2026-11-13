@@ -1,4 +1,8 @@
+import {spinner} from "/assets/static/spinner.js";
 export function createsharing({getlevel, onerror, container = document, geturl = data => location.origin + "/?data=" + data + "#preview"}) {
+    for (const element of container.querySelectorAll(".shorturl,.fullurl")) {
+        if (element.textContent.trim() === "Loading...") spinner(element, "Loading link");
+    }
     const shortcodecachekey = "yourlevels";
 
     function getcachedshortcode(b64data) {
@@ -111,7 +115,7 @@ export function createsharing({getlevel, onerror, container = document, geturl =
         }
 
         if (shorturlelem) {
-            shorturlelem.textContent = "Loading...";
+            spinner(shorturlelem, "Loading link");
             shorturlelem.href = "";
             requestshorten(getlevel());
         }
