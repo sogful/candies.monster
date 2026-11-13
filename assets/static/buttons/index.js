@@ -8,7 +8,7 @@ function resize(node) {
     const width = node.clientWidth;
     const height = node.clientHeight;
     if (!width || !height) return;
-    const scale = Math.min(height / 138, width / 210);
+    const scale = Math.min(height / 138, width / 328);
     node.style.setProperty("--buttonvertical", Math.min(48 * scale, height / 2) + "px");
     node.style.setProperty("--buttonhorizontal", Math.min(105 * scale, width / 2) + "px");
 }
