@@ -613,34 +613,34 @@
                 <div class="configlines">
                     <div class="configline">
                         <button class="fontbutton active clickable" data-font="Good Dog">
-                            <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                            <img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false">
                             <span>GoodDog</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog Cool">
-                            <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                            <img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false">
                             <span>Cool</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog Bones">
-                            <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                            <img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false">
                             <span>Bones</span>
                         </button>
                         <button class="fontbutton clickable" data-font="Good Dog New">
-                            <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                            <img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false">
                             <span>New</span>
                         </button>
                     </div>
 
                     <div class="configline">
                         <button class="preset clickable" data-preset="default">
-                            <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                            <img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false">
                             <span>Default</span>
                         </button>
                         <button class="preset clickable" data-preset="plain">
-                            <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                            <img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false">
                             <span>Plain</span>
                         </button>
                         <button class="preset clickable" data-preset="cyan">
-                            <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                            <img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false">
                             <span>Cyan</span>
                         </button>
                     </div>
@@ -724,7 +724,7 @@
                     <input type="number" class="settinginput imagesize" value="1000" min="100" max="5000" step="100">
                 </div>
                 <a class="sbutton clickable downloadbutton">
-                    <img src="/assets/images/buttons/wide/sbutton.webp" draggable="false">
+                    <img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false">
                     <span>Download</span>
                 </a>
             </div>
@@ -841,7 +841,8 @@
         fontbuttons.forEach(btn => {
             if (!btn.querySelector("img")) {
                 const img = document.createElement("img")
-                img.src = "/assets/images/buttons/wide/sbutton.webp"
+                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E"
+                img.classList.add("buttonart")
                 img.draggable = false
                 btn.insertBefore(img, btn.firstChild)
                 const span = document.createElement("span")
@@ -1032,6 +1033,7 @@
        
         function updatebuttoncolorchecks() {
             const showcolorstuff = state.addtexttobutton
+            document.querySelector(".buttondimensions")?.toggleAttribute("hidden", !showcolorstuff)
             const buttoncolorcontainer = document.getElementById("buttoncolorcontainer")
             if (buttoncolorcontainer) {
                 buttoncolorcontainer.style.display = showcolorstuff ? "flex" : "none"
@@ -1236,6 +1238,7 @@
 
         let buttonimagecache = {}
         let currentbuttonvariant = null
+        let buttonrevision = 0
         let currenttextscale = 1
 
         function updateshadowtransform(textscale) {
@@ -1269,6 +1272,7 @@
         }
 
         async function updatebuttonpreview() {
+            const request = ++buttonrevision
             const buttonbg = document.querySelector(".buttonbackground")
             const textpreview = document.querySelector(".textpreview")
             const textshadow = document.querySelector(".textshadow")
@@ -1317,20 +1321,10 @@
             
             try {
                 const img = await loadbuttonimage(variant, state.useactivebutton)
+                if (request !== buttonrevision) return
 
-                if (state.buttoncolor) {
-                    const canvas = document.createElement('canvas')
-                    const ctx = canvas.getContext('2d')
-                    canvas.width = img.width
-                    canvas.height = img.height
-                    ctx.drawImage(img, 0, 0)
-                    buttonbg.src = canvas.toDataURL()
-                } else {
-                    const activesuffix = state.useactivebutton ? "active" : ""
-                    const filename = `${variant}button${activesuffix}.png`
-                    buttonbg.src = `/assets/images/buttons/wide/${filename}`
-                }
-                
+                buttonbg.src = img.src
+
                 buttonbg.style.display = "block"
         
                 const paddingpch = 0.05
@@ -1623,53 +1617,58 @@
             void textpreview.offsetHeight
         }
 
-        // button helper
-        async function determinebuttonvariant(textwidth, textheight) {
-            const textaspectratio = textwidth / textheight
-            const variants = ['s', 'm', 'l']
-            const buttonaspectratios = {}
-            
-            for (const variant of variants) {
-                const buttonpath = `/assets/images/buttons/wide/${variant}button.png`
-                try {
-                    const img = new Image()
-                    await new Promise((resolve, reject) => {
-                        img.onload = resolve
-                        img.onerror = reject
-                        img.src = buttonpath
-                    })
-                    buttonaspectratios[variant] = img.width / img.height
-                } catch (e) {
-                    buttonaspectratios[variant] = variant === 's' ? 1.5 : variant === 'm' ? 2.0 : 2.5
-                }
-            }
+        /*//////////////////////////////////////////////////////////////////////*/
 
-            let bestvariant = 'm'
-            let mindiff = Infinity
-            
-            for (const variant of variants) {
-                const diff = Math.abs(buttonaspectratios[variant] - textaspectratio)
-                if (diff < mindiff) {
-                    mindiff = diff
-                    bestvariant = variant
-                }
-            }
-            
-            return bestvariant
+        const buttonrenderer = import("/assets/static/buttons/render.js")
+        const buttondimensions = document.createElement("div")
+        buttondimensions.className = "configline buttondimensions"
+        buttondimensions.hidden = !state.addtexttobutton
+        for (const name of ["width", "height"]) {
+            const label = document.createElement("label")
+            label.className = "settinglabel"
+            label.textContent = "Button " + name + " "
+            const input = document.createElement("input")
+            input.type = "number"
+            input.className = "settinginput numberinput button" + name
+            input.min = "0"
+            input.max = "4096"
+            input.placeholder = "Auto"
+            input.addEventListener("input", updatepreview)
+            label.append(input)
+            buttondimensions.append(label)
         }
-        async function loadbuttonimage(variant, active) {
-            const activesuffix = active ? "active" : ""
-            const filename = `${variant}button${activesuffix}.png`
-            const img = new Image()
-            await new Promise((resolve, reject) => {
-                img.onload = resolve
-                img.onerror = reject
-                img.src = `/assets/images/buttons/wide/${filename}`
-            })
-            if (state.buttoncolor) {
-                return await applyhueshift(img, state.buttoncolor)
+        const palette = document.createElement("select")
+        palette.className = "settinginput buttonpalette"
+        palette.setAttribute("aria-label", "Button color")
+        for (const name of ["red", "gold", "green", "purple", "custom"]) {
+            const option = document.createElement("option")
+            option.value = name
+            option.textContent = name[0].toUpperCase() + name.slice(1)
+            palette.append(option)
+        }
+        palette.addEventListener("change", updatepreview)
+        document.querySelector(".buttoncolor").addEventListener("input", () => {palette.value = "custom"; updatepreview()})
+        document.querySelector(".buttoncolorpicker").addEventListener("input", () => {palette.value = "custom"; updatepreview()})
+        buttondimensions.append(palette)
+        document.querySelector(".numberline").before(buttondimensions)
+
+        async function determinebuttonvariant(textwidth, textheight) {
+            const width = Number(document.querySelector(".buttonwidth").value)
+            const height = Number(document.querySelector(".buttonheight").value)
+            return {
+                width: Math.max(32, Math.min(4096, width || (state.imagesize || 1000))),
+                height: Math.max(32, Math.min(4096, height || (width || state.imagesize || 1000) / Math.max(0.3, textwidth / 0.9 / (textheight / 0.7)) ))
             }
-            return img
+        }
+
+        async function loadbuttonimage(variant, active) {
+            const {render} = await buttonrenderer
+            const color = active ? "gold" : palette.value
+            const canvas = await render(variant.width, variant.height, color)
+            const img = new Image()
+            img.src = canvas.toDataURL()
+            await img.decode()
+            return color === "custom" && state.buttoncolor ? applyhueshift(img, state.buttoncolor) : img
         }
 
         document.querySelector(".downloadbutton").addEventListener("click", async function() {
@@ -1732,7 +1731,7 @@
                 const scaley = previewavailableheight / textheight
                 const textscale = Math.min(scalex, scaley, 1)
     
-                const exportbuttonwidth = state.imagesize || 1000
+                const exportbuttonwidth = variant.width
                 const buttonwidth = exportbuttonwidth
                 const buttonheight = buttonwidth / buttonaspectratio
                 
