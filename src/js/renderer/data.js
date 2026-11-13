@@ -98,6 +98,7 @@ export function parse(text) {
         night: enabled(design?.getAttribute("nightLevel")),
         split: enabled(design?.getAttribute("twoParts")),
         mobile: enabled(design?.getAttribute("useMobilePhysics")),
+        timetravel: enabled(design?.getAttribute("useTimeTravelRocketPhysics")),
         objects
     };
 }

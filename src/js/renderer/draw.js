@@ -3,6 +3,7 @@ import {rope} from "./rope.js";
 import {glow, bulb} from "./lighting.js";
 import {grabback, grabmiddle, grabfront, graboverlay} from "./grab.js";
 import {camera, backdrop} from "./camera.js";
+import {water} from "./water.js";
 
 const order = {
     gravityswitch: 1,
@@ -20,6 +21,7 @@ const order = {
     electro: 8,
     bouncer1: 9,
     bouncer2: 9,
+    pauseswitcher: 8.5,
     pipe: 10,
     hand: 11,
     gap: 12,
@@ -33,6 +35,7 @@ const order = {
     rocket: 20,
     candy: 21,
     axe: 21,
+    bomb: 21,
     load: 22,
     candyleft: 23,
     candyright: 23
@@ -63,6 +66,7 @@ export function draw(canvas, map, art, background, width, height, density, detai
     context.translate(-view.x, -view.y);
     backdrop(context, map, background, view, full);
     const sprite = painter(context, art);
+    water(context, sprite, map, view);
     const objects = [...map.objects].sort((first, second) => (order[first.type] ?? 16) - (order[second.type] ?? 16));
     const grabs = objects.filter(item => item.type === "grab");
     let hooks = false;
@@ -83,16 +87,7 @@ export function draw(canvas, map, art, background, width, height, density, detai
         }
         object(context, sprite, item, map);
     }
-    if (map.water > 0) {
-        context.fillStyle = "rgba(73,181,234,0.3)";
-        context.fillRect(0, map.height - map.water, map.width, map.water);
-        context.strokeStyle = "#b1f4ff";
-        context.lineWidth = 2;
-        context.beginPath();
-        context.moveTo(0, map.height - map.water);
-        context.lineTo(map.width, map.height - map.water);
-        context.stroke();
-    }
+    water(context, sprite, map, view, true);
     for (const item of objects) if (item.type === "lightbulb") bulb(context, sprite, item);
     for (const item of grabs) graboverlay(context, sprite, item);
     context.restore();

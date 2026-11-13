@@ -164,7 +164,7 @@
     ],
     "rocket": [
       "obj_rocket",
-      1
+      10
     ],
     "handbase": [
       "obj_robohand",
@@ -445,6 +445,46 @@
     "chainautomaticfront": [
       "obj_hook_auto_chain",
       1
+    ],
+    "pipeback": [
+      "obj_bamboo_tube",
+      1
+    ],
+    "pipefront": [
+      "obj_bamboo_tube",
+      2
+    ],
+    "bomb": [
+      "obj_bomb",
+      0
+    ],
+    "pauseswitcher": [
+      "obj_pause",
+      0
+    ],
+    "candywings": [
+      "obj_candy_timetravel",
+      0
+    ],
+    "candywingroot": [
+      "obj_candy_timetravel",
+      4
+    ],
+    "waterbottom": [
+      "water_tile",
+      0
+    ],
+    "watershadow": [
+      "water_tile",
+      1
+    ],
+    "waterback": [
+      "water_tile",
+      2
+    ],
+    "waterfront": [
+      "water_tile",
+      3
     ]
   },
   "characters": [
@@ -539,5 +579,5 @@
       "timeline": 0
     }
   ],
-  "characterframe": "native Skia renderer, idle timeline at time zero, transparent background"
+  "characterframe": "native Skia renderer, idle timeline after eight frames at 30 fps, transparent background"
 }

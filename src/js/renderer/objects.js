@@ -59,6 +59,10 @@ export function object(context, sprite, item, map) {
     if (type === "candy") {
         if (map.objects.some(value => value.type === "lantern" && enabled(value.candycaptured))) return;
         for (const name of ["candybase", "candy", "candytop"]) sprite(name, x, y, angle, 0.71);
+        if (enabled(item.isdriven)) {
+            sprite("candywings", x, y, angle, 0.8);
+            sprite("candywingroot", x, y, angle, 0.8);
+        }
         return;
     }
     if (type.startsWith("spike")) {
@@ -88,8 +92,8 @@ export function object(context, sprite, item, map) {
         return;
     }
     if (type === "rocket") {
-        sprite("rocketbase", x, y, angle);
-        sprite("rocket", x, y, angle);
+        if (enabled(item.isrotatable)) sprite("rocketbase", x, y);
+        sprite("rocket", x, y, angle - 180, map.timetravel ? 0.71 : 0.7);
         return;
     }
     if (type === "load") {

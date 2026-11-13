@@ -51,6 +51,20 @@ function hand(context, sprite, item) {
 /*//////////////////////////////////////////////////////////////////////*/
 
 export function compound(context, sprite, item) {
+    if (item.type === "pipe") {
+        sprite("pipe", item.x, item.y, 0, 0.9);
+        sprite("pipeback", item.x, item.y, item.angle, 0.9);
+        sprite("pipefront", item.x, item.y, item.angle, 0.9);
+        return true;
+    }
+    if (item.type === "pauseswitcher") {
+        centered(context, sprite, "pauseswitcher", item.x, item.y);
+        return true;
+    }
+    if (item.type === "bomb") {
+        centered(context, sprite, "bomb", item.x, item.y, item.angle);
+        return true;
+    }
     if (item.type === "hand") {
         hand(context, sprite, item);
         return true;
