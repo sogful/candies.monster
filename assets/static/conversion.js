@@ -75,13 +75,13 @@
             "56": "sock",
             "58": "spike2",
             "80": "spike3",
-            "53": "gravityswitch",
+            "53": "gravitySwitch",
             "60": "spike4",
             "81": "bouncer1",
             "82": "bouncer2",
-            "120": "rotatedcircle",
+            "120": "rotatedCircle",
             "130": "ghost",
-            "131": "steamtube",
+            "131": "steamTube",
             "132": "lantern",
             "133": "gap",
             "134": "lightbulb",
@@ -96,7 +96,7 @@
             "140": "hand",
             "141": "load",
 
-            "4": "tutorialtext",
+            "4": "tutorialText",
             "5": "tutorial01",
             "6": "tutorial02",
             "7": "tutorial03",
@@ -298,20 +298,17 @@
 
         let xml = "<map>\n  <layer name=\"settings\">\n";
 
-        const mapsettings = settings.find(s => s.name === 0);
-        xml += `    <map gridSize="${mapsettings?.gridSize ?? 32}" width="${mapsettings?.width ?? 320}" height="${mapsettings?.height ?? 480}" />\n`;
-
-        const gamedesign = settings.find(s => s.name === 1);
-        if (gamedesign) {
-            let gd = `ropePhysicsSpeed="${gamedesign.ropePhysicsSpeed ?? 1}" special="${gamedesign.special ?? 1}"`;
-            if (gamedesign.twoParts !== undefined) gd += ` twoParts="${gamedesign.twoParts}"`;
-            if (gamedesign.nightLevel !== undefined) gd += ` nightLevel="${gamedesign.nightLevel}"`;
-            if (gamedesign.water !== undefined) gd += ` water="${gamedesign.water}"`;
-            if (gamedesign.waterSpeed !== undefined) gd += ` waterSpeed="${gamedesign.waterSpeed}"`;
-            xml += `    <gameDesign ${gd} />\n`;
-        } else {
-            xml += "    <gameDesign ropePhysicsSpeed=\"1\" special=\"1\" twoParts=\"false\" />\n";
+        function attributes(values) {
+            return Object.entries(values)
+                .filter(([name, value]) => name !== "name" && /^[a-z_][a-z0-9_.-]*$/i.test(name) && value !== null && value !== undefined && typeof value !== "object")
+                .map(([name, value]) => `${name}="${escapeattr(value)}"`)
+                .join(" ");
         }
+        const mapsettings = {gridSize: 32, width: 320, height: 480, ...settings.find(item => item.name === 0)};
+        xml += `    <map ${attributes(mapsettings)} />\n`;
+
+        const gamedesign = {ropePhysicsSpeed: 1, special: 1, twoParts: false, ...settings.find(item => item.name === 1)};
+        xml += `    <gameDesign ${attributes(gamedesign)} />\n`;
 
         xml += "  </layer>\n  <layer name=\"Objects\">\n";
         for (const obj of objects) {
