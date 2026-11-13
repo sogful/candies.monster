@@ -542,7 +542,9 @@ async function updatebuttonpreview() {
     const shadowx = Math.abs(state.shadowx * fontsize / 68)
     const shadowy = Math.abs(state.shadowy * fontsize / 68)
     let textwidth = p_rect.width + stroke * 2 + shadowx * 2
-    let textheight = p_rect.height + stroke * 2 + shadowy * 2
+    const lineheight = parseFloat(getComputedStyle(p_el).lineHeight) || fontsize * 1.2
+    const linecount = (state.text || "Input here!").split("\n").length
+    let textheight = Math.max(p_rect.height, linecount * lineheight) + stroke * 2 + shadowy * 2
 
     if (textwidth === 0 || textheight === 0) {
         const computedfontsize = parseFloat(getComputedStyle(p_el).fontSize) || 68
@@ -563,8 +565,8 @@ async function updatebuttonpreview() {
 
         buttonbg.style.display = "block"
 
-        const paddingpch = 0.14
-        const paddingpcv = 0.2
+        const paddingpch = 0.1
+        const paddingpcv = 0.12
         const constrainedtextwidth = Math.min(950, Math.max(200, textwidth))
         const requiredbuttonwidth = constrainedtextwidth / (1 - paddingpch * 2)
         const maxbuttonwidth = Math.min(950, window.innerWidth * 0.9, requiredbuttonwidth)

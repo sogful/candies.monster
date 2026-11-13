@@ -38,8 +38,8 @@ document.querySelector(".downloadbutton").addEventListener("click", async functi
             return
         }
 
-        const paddingpch = 0.14
-        const paddingpcv = 0.2
+        const paddingpch = 0.1
+        const paddingpcv = 0.12
         const constrainedtextwidth = Math.min(950, Math.max(200, textwidth))
         const requiredbuttonwidth = constrainedtextwidth / (1 - paddingpch * 2)
         const previewmaxwidth = Math.min(950, window.innerWidth * 0.9, requiredbuttonwidth)
@@ -210,7 +210,7 @@ document.querySelector(".downloadbutton").addEventListener("click", async functi
                 cropctx.drawImage(textcanvas, minx, miny, cropwidth, cropheight, 0, 0, cropwidth, cropheight)
             }
 
-            const fit = Math.min(buttonwidth / previewwidth / 2, buttonwidth * 0.72 / croppedcanvas.width, buttonheight * 0.6 / croppedcanvas.height)
+            const fit = Math.min(buttonwidth / previewwidth / 2, buttonwidth * 0.8 / croppedcanvas.width, buttonheight * 0.76 / croppedcanvas.height)
             const finaltextcanvas = document.createElement("canvas")
             finaltextcanvas.width = Math.max(1, Math.floor(croppedcanvas.width * fit))
             finaltextcanvas.height = Math.max(1, Math.floor(croppedcanvas.height * fit))
