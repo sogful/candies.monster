@@ -2,6 +2,7 @@ import {createcontroller} from "/preview/src/game.js";
 import {source} from "../source.js";
 import {loading} from "./loading.js";
 import {played} from "../statistics.js";
+import {crash} from "./errors.js";
 
 export function player() {
     const root = document.documentElement;
@@ -33,10 +34,12 @@ export function player() {
         control = status = selected = null;
     }
 
-    function fail() {
+    function fail(error) {
         const message = status;
+        const title = selected ? selected.title + " by " + selected.creator : "";
         stop();
         if (message?.isConnected) message.textContent = "game could not load. try again.";
+        if (typeof error === "string" && error) crash(error, title);
     }
 
     function watch() {
