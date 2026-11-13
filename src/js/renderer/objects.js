@@ -2,6 +2,17 @@ import {number, enabled} from "./data.js";
 import {conveyor} from "./conveyor.js";
 import {compound} from "./compound.js";
 import {star} from "./lighting.js";
+import {disc} from "./disc.js";
+
+const characters = [
+    "targetoriginalflash", "targethalloween", "targetxmas",
+    "targetsuperpowers", "targetviking", "targetpainter",
+    "targetpirate", "targetpharaon", "targetcaesar",
+    "targetprehistoric", "targetdisco", "targetsherif",
+    "targetemperor", "targetinventor", "targetcyborg"
+];
+
+/*//////////////////////////////////////////////////////////////////////*/
 
 export function painter(context, art) {
     function sprite(name, x, y, angle = 0, scale = 1) {
@@ -42,7 +53,7 @@ export function object(context, sprite, item, map) {
         return;
     }
     if (type === "sock") {
-        sprite("sock", x, y, angle + 90, 0.7);
+        sprite(Math.max(0, Math.trunc(number(item.group))) % 2 ? "sockgreen" : "sock", x, y, angle + 90, 0.7);
         return;
     }
     if (type === "candy") {
@@ -60,14 +71,11 @@ export function object(context, sprite, item, map) {
     if (type === "target") {
         const names = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen"];
         sprite("support" + (names[(map.box || 1) - 1] || "one"), x, y);
-        sprite(number(item.targettype) === 11 ? "ancestor" : "target", x, y);
+        sprite(characters[number(item.targettype) - 2] || "target", x, y);
         return;
     }
     if (type === "rotatedcircle") {
-        const radius = Math.max(10, number(item.size, 80));
-        sprite("disc", x, y, number(item.handleangle), radius * 2 / (1066 / 3));
-        const radians = number(item.handleangle) * Math.PI / 180;
-        for (const side of enabled(item.onehandle) ? [-1] : [-1, 1]) sprite("dischandle", x + Math.cos(radians) * radius * side, y + Math.sin(radians) * radius * side);
+        disc(context, sprite, item);
         return;
     }
     if (type === "transporter" || type === "conveyorbelt") {

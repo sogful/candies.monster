@@ -2,6 +2,9 @@
   "source": "https://github.com/yell0wsuit/cuttherope-dx",
   "assets": "content/images",
   "scale": 3,
+  "premultiplied": [
+    "light"
+  ],
   "frames": {
     "target": [
       "char_animations",
@@ -51,6 +54,10 @@
       "obj_hat",
       0
     ],
+    "sockgreen": [
+      "obj_hat",
+      1
+    ],
     "grab": [
       "obj_hook",
       0
@@ -85,7 +92,19 @@
     ],
     "dischandle": [
       "obj_vinil",
-      4
+      5
+    ],
+    "dischighlight": [
+      "obj_vinil",
+      1
+    ],
+    "discsticker": [
+      "obj_vinil",
+      2
+    ],
+    "disccenter": [
+      "obj_vinil",
+      3
     ],
     "ghost": [
       "obj_ghost",
@@ -428,8 +447,97 @@
       1
     ]
   },
-  "ancestor": "animations/om_nom_prehistoric.xml timeline 0, first frame; FlashXmlScale 1.56, BaseTargetScale 1.73",
-  "premultiplied": [
-    "light"
-  ]
+  "characters": [
+    {
+      "type": 2,
+      "frame": "targetoriginalflash",
+      "animation": "om_nom_original.xml",
+      "timeline": 0
+    },
+    {
+      "type": 3,
+      "frame": "targethalloween",
+      "animation": "om_nom_halloween_hat.xml",
+      "timeline": 0
+    },
+    {
+      "type": 4,
+      "frame": "targetxmas",
+      "animation": "om_nom_new_year_hat.xml",
+      "timeline": 0
+    },
+    {
+      "type": 5,
+      "frame": "targetsuperpowers",
+      "animation": "om_nom_original.xml",
+      "timeline": 19
+    },
+    {
+      "type": 6,
+      "frame": "targetviking",
+      "animation": "om_nom_viking.xml",
+      "timeline": 0
+    },
+    {
+      "type": 7,
+      "frame": "targetpainter",
+      "animation": "om_nom_painter.xml",
+      "timeline": 0
+    },
+    {
+      "type": 8,
+      "frame": "targetpirate",
+      "animation": "om_nom_pirate.xml",
+      "timeline": 0
+    },
+    {
+      "type": 9,
+      "frame": "targetpharaon",
+      "animation": "om_nom_pharaon.xml",
+      "timeline": 0
+    },
+    {
+      "type": 10,
+      "frame": "targetcaesar",
+      "animation": "om_nom_caesar.xml",
+      "timeline": 0
+    },
+    {
+      "type": 11,
+      "frame": "targetprehistoric",
+      "animation": "om_nom_prehistoric.xml",
+      "timeline": 0
+    },
+    {
+      "type": 12,
+      "frame": "targetdisco",
+      "animation": "om_nom_disco.xml",
+      "timeline": 0
+    },
+    {
+      "type": 13,
+      "frame": "targetsherif",
+      "animation": "om_nom_sherif.xml",
+      "timeline": 0
+    },
+    {
+      "type": 14,
+      "frame": "targetemperor",
+      "animation": "om_nom_emperor.xml",
+      "timeline": 0
+    },
+    {
+      "type": 15,
+      "frame": "targetinventor",
+      "animation": "om_nom_inventor.xml",
+      "timeline": 0
+    },
+    {
+      "type": 16,
+      "frame": "targetcyborg",
+      "animation": "om_nom_cyborg.xml",
+      "timeline": 0
+    }
+  ],
+  "characterframe": "native Skia renderer, idle timeline at time zero, transparent background"
 }
