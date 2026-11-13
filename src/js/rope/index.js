@@ -44,7 +44,7 @@ export function morestuff() {
         canvas.style.height = available + "px";
         context.setTransform(scale, 0, 0, scale, 0, 0);
         const mount = buckle();
-        rope.reset(origin + sway.value, lift.value + 60, mount.x, mount.y);
+        rope.reset(origin + sway.value, lift.value + 40, mount.x, mount.y);
         position();
         wake();
     }
@@ -55,9 +55,9 @@ export function morestuff() {
 
     function position() {
         panel.style.transform = "translate3d(0," + bodylift + "px,0)";
-        handle.style.transform = "translate3d(" + sway.value + "px," + (lift.value + 56) + "px,0)";
+        handle.style.transform = "translate3d(" + sway.value + "px," + (lift.value + 36) + "px,0)";
         const mount = buckle();
-        const angle = Math.atan2(-sway.value, lift.value + 60 - mount.y) * 180 / Math.PI;
+        const angle = Math.atan2(-sway.value, lift.value + 40 - mount.y) * 180 / Math.PI;
         handle.style.setProperty("--ringangle", angle + "deg");
         const openness = Math.max(0, Math.min(1, bodylift / maximum));
         shade.style.opacity = String(openness * 0.5);
@@ -82,10 +82,10 @@ export function morestuff() {
                     if (timeline.finished) timeline = null;
                 }
                 const mount = buckle();
-                dangle(sway, lift, mount, 55 + height * (1 - 900 / 940), (bodylift - previous) * 60);
+                dangle(sway, lift, mount, 35 + height * (1 - 900 / 940), (bodylift - previous) * 60);
             }
             const mount = buckle();
-            rope.step(origin + sway.value, lift.value + 60, mount.x, mount.y);
+            rope.step(origin + sway.value, lift.value + 40, mount.x, mount.y);
             motion = (timeline ? 1 : 0) + Math.abs(target - bodylift) + Math.abs(lift.velocity) + Math.abs(sway.velocity);
             accumulator -= 1 / 60;
         }

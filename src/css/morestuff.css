@@ -1,6 +1,6 @@
 .morestuff {
     position: absolute; top: 0;
-    left: 0; right: 0;
+    left: 20px; right: -20px;
     height: 0; z-index: 6;
     pointer-events: none; color: #fff;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
@@ -24,7 +24,7 @@
     -webkit-text-stroke: inherit; paint-order: inherit;
     text-shadow: inherit; touch-action: none;
     user-select: none; pointer-events: auto;
-    transform: translateY(56px);
+    transform: translateY(36px);
 }
 
 .ropehandle::before {

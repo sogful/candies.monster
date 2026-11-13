@@ -2,7 +2,7 @@ export function dangle(horizontal, vertical, mount, length, speed) {
     const step = 1 / 240;
     for (let index = 0; index < 4; index++) {
         const dx = horizontal.value;
-        const dy = vertical.value + 60 - mount.y;
+        const dy = vertical.value + 40 - mount.y;
         const distance = Math.max(0.001, Math.hypot(dx, dy));
         const extension = Math.max(0, distance - length);
         const radial = (horizontal.velocity * dx + (vertical.velocity - speed) * dy) / distance;
