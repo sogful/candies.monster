@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <script src="./previewerrors.js"></script>
         <script src="./console-capture.js"></script>
         <script src="./aspect.js"></script>
         <script>
@@ -434,7 +435,7 @@
         </style>
         <link rel="stylesheet" href="./preview.css">
     </head>
-    <body>
+    <body class="previewbody">
         <canvas class="previewgame" id="game"></canvas>
         <video class="previewmovie" id="movie" playsinline hidden></video>
         <div class="previewloader" id="splash"><div class="previewart"><div class="previewtrack"><div class="previewprogress"></div></div></div>
@@ -542,7 +543,7 @@
                 reported = true;
 
                 if (globalThis.parent !== globalThis) {
-                    globalThis.parent.postMessage({type: "ctrdx-error", nonce: new URLSearchParams(location.search).get("playtest"), message: "Game could not load."}, location.origin);
+                    globalThis.ctrdxpreviewerror(`${id}: ${typeof detail === "string" ? detail : detail?.message || "Game could not load."}`);
                 }
 
                 console.error(`ctrdx-boot-failure: ${id}`, detail ?? "");

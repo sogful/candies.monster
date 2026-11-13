@@ -98,3 +98,13 @@ export function aspect() {
 export function ratio(value) {
     globalThis.ctrdxaspect.set(value);
 }
+
+export function quality() {
+    return globalThis.ctrdxquality.get();
+}
+
+export function setquality(value) {
+    if (!globalThis.ctrdxquality.set(value)) return;
+    globalThis.parent.postMessage({type: "ctrdx-reload", nonce: nonceFromQuery()}, location.origin);
+    location.reload();
+}

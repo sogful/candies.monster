@@ -38,7 +38,7 @@ async function loadBuffer(key, url) {
 
     const pending = (async () => {
         for (let attempt = 0; attempt < 2; attempt++) {
-            const response = await fetch(url, attempt === 0 ? undefined : {cache: "reload"});
+            const response = await fetch(globalThis.ctrdxquality?.url(url) ?? url, attempt === 0 ? undefined : {cache: "reload"});
             if (!response.ok) {
                 return null;
             }

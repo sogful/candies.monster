@@ -7,7 +7,7 @@ import { setLoadingProgress } from "./loading-progress.js";
 const stash = new Map();
 
 export async function fetchBytes(url) {
-    const response = await fetch(url);
+    const response = await fetch(globalThis.ctrdxquality?.url(url) ?? url);
     if (!response.ok) {
         return -1;
     }
@@ -27,7 +27,7 @@ export function takeStashed(url, destination) {
 }
 
 export async function fetchText(url) {
-    const response = await fetch(url);
+    const response = await fetch(globalThis.ctrdxquality?.url(url) ?? url);
     return response.ok ? await response.text() : null;
 }
 
