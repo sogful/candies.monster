@@ -1258,7 +1258,7 @@
             }
 
             if (state.outlinesize > 0) {
-                const outlinescale = textscale !== 1 ? textscale : 1
+                const outlinescale = 1
                 const scaledoutlinesize = state.outlinesize * scalefactor * outlinescale
                 const shadowhex = state.shadowcolor
                 const shadowrgb = hexrgbatohexrgb(shadowhex)
@@ -1305,8 +1305,12 @@
                 return range.getBoundingClientRect()
             }
             const p_rect = getactualbounds(p_el)
-            let textwidth = p_rect.width
-            let textheight = p_rect.height
+            const fontsize = parseFloat(getComputedStyle(p_el).fontSize) || 68
+            const stroke = Math.max(parseFloat(getComputedStyle(p_el).webkitTextStrokeWidth) || 0, fontsize * 0.08)
+            const shadowx = Math.abs(state.shadowx * fontsize / 68)
+            const shadowy = Math.abs(state.shadowy * fontsize / 68)
+            let textwidth = p_rect.width + stroke * 2 + shadowx * 2
+            let textheight = p_rect.height + stroke * 2 + shadowy * 2
 
             if (textwidth === 0 || textheight === 0) {
                 const computedfontsize = parseFloat(getComputedStyle(p_el).fontSize) || 68
@@ -1327,11 +1331,11 @@
 
                 buttonbg.style.display = "block"
         
-                const paddingpch = 0.05
-                const paddingpcv = 0.15
+                const paddingpch = 0.14
+                const paddingpcv = 0.2
                 const constrainedtextwidth = Math.min(950, Math.max(200, textwidth))
                 const requiredbuttonwidth = constrainedtextwidth / (1 - paddingpch * 2)
-                const maxbuttonwidth = Math.min(950, requiredbuttonwidth)
+                const maxbuttonwidth = Math.min(950, window.innerWidth * 0.9, requiredbuttonwidth)
                 const maxbuttonheight = window.innerHeight * 0.8
                 const buttonaspectratio = img.width / img.height
                 
@@ -1357,6 +1361,11 @@
                 const textscale = Math.min(scalex, scaley, 1)
                 currenttextscale = textscale
                 textpreview.style.transform = `translate(-50%, -50%) scale(${textscale})`
+                const focused = document.activeElement === textinput
+                updatecursoroverlay(textinput.selectionStart || 0, focused, !state.text, fontsize * textscale, textscale)
+                if (focused && textinput.selectionStart !== textinput.selectionEnd) {
+                    updateselectionoverlay(textinput.selectionStart, textinput.selectionEnd, fontsize * textscale, textscale)
+                }
                 
                 if (textshadow) {
                     updateshadowtransform(textscale)
@@ -1453,7 +1462,7 @@
                 textshadow.style.color = shadowrgbonly
                 textshadow.style.textShadow = "none"
                 if (state.outlinesize > 0) {
-                    const outlinescale = state.addtexttobutton && currenttextscale !== 1 ? currenttextscale : 1
+                    const outlinescale = 1
                     const scaledoutlinesize = state.outlinesize * scalefactor * outlinescale
                     textshadow.style.webkitTextStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
                     textshadow.style.textStroke = `${scaledoutlinesize}px ${shadowrgbonly}`
@@ -1674,6 +1683,9 @@
         document.querySelector(".downloadbutton").addEventListener("click", async function() {
             if (!state.text) return
             if (state.addtexttobutton) {
+                await updatebuttonpreview()
+                const previewwidth = document.querySelector(".buttonbackground").getBoundingClientRect().width
+                const previewscale = currenttextscale
                 const p_el = document.querySelector(".textpreview")
                 const s_el = document.querySelector(".textshadow")
                 const originaltransform = p_el.style.transform
@@ -1704,11 +1716,11 @@
                     return
                 }
                 
-                const paddingpch = 0.05
-                const paddingpcv = 0.15
+                const paddingpch = 0.14
+                const paddingpcv = 0.2
                 const constrainedtextwidth = Math.min(950, Math.max(200, textwidth))
                 const requiredbuttonwidth = constrainedtextwidth / (1 - paddingpch * 2)
-                const previewmaxwidth = Math.min(950, requiredbuttonwidth)
+                const previewmaxwidth = Math.min(950, window.innerWidth * 0.9, requiredbuttonwidth)
                 const previewmaxheight = window.innerHeight * 0.8
                 const buttonaspectratio = buttonimg.width / buttonimg.height
                 
@@ -1729,7 +1741,7 @@
                 const previewavailableheight = previewbuttonheight * (1 - paddingpcv * 2)
                 const scalex = previewavailablewidth / textwidth
                 const scaley = previewavailableheight / textheight
-                const textscale = Math.min(scalex, scaley, 1)
+                const textscale = previewscale
     
                 const exportbuttonwidth = variant.width
                 const buttonwidth = exportbuttonwidth
@@ -1876,18 +1888,15 @@
                         cropctx.drawImage(textcanvas, minx, miny, cropwidth, cropheight, 0, 0, cropwidth, cropheight)
                     }
                     
-                    const html2canvasscale = 2
-                    // IMPORTANT - this rescales the text so that it roughly matches the preview of it in the button
-                    // perhaps fixable but this should do for now
-                    const sizecorrection = 7/4
+                    const fit = Math.min(buttonwidth / previewwidth / 2, buttonwidth * 0.72 / croppedcanvas.width, buttonheight * 0.6 / croppedcanvas.height)
                     const finaltextcanvas = document.createElement("canvas")
-                    finaltextcanvas.width = Math.round((croppedcanvas.width / html2canvasscale) * sizecorrection)
-                    finaltextcanvas.height = Math.round((croppedcanvas.height / html2canvasscale) * sizecorrection)
+                    finaltextcanvas.width = Math.max(1, Math.floor(croppedcanvas.width * fit))
+                    finaltextcanvas.height = Math.max(1, Math.floor(croppedcanvas.height * fit))
                     const finalctx = finaltextcanvas.getContext("2d")
                     finalctx.imageSmoothingEnabled = true
                     finalctx.imageSmoothingQuality = "high"
-                    finalctx.drawImage(croppedcanvas, 0, 0, croppedcanvas.width, croppedcanvas.height, 0, 0, finaltextcanvas.width, finaltextcanvas.height)
-                    
+                    finalctx.drawImage(croppedcanvas, 0, 0, finaltextcanvas.width, finaltextcanvas.height)
+
                     const textx = (buttonwidth - finaltextcanvas.width) / 2
                     const texty = (buttonheight - finaltextcanvas.height) / 2
 
