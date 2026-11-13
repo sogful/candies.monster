@@ -88,8 +88,8 @@
 .button {
     display: block; width: 100%;
     height: auto; object-fit: contain;
-    background-image: url("/assets/images/buttons/pages/button.svg"); background-size: contain;
-    background-repeat: no-repeat;
+    background-image: url("/assets/images/buttons/pages/button.svg"); background-size: 110.55%;
+    background-repeat: no-repeat; background-position: center;
 }
 
 .smallnav {
@@ -114,6 +114,10 @@
 }
 
 .smallnav .buttonlabel {font-size: 9px}
+.smallnav .buttonlabel {
+    position: absolute; bottom: -3px;
+    margin-top: 0;
+}
 .buttons [fun] {display: none}
 
 .resourceblurb {
@@ -269,9 +273,19 @@
         width: 64px; align-self: center;
     }
     .bignav {
-        display: flex; gap: 4px;
+        display: grid; gap: 2px;
+        grid-template-rows: repeat(2,31px); grid-auto-columns: 31px;
+        grid-auto-flow: column dense;
         order: 2;
     }
+    .bignav .navlink {
+        grid-row: span 2; grid-column: span 2;
+    }
+    .bignav .navcompact {
+        grid-row: auto; grid-column: auto;
+        width: 31px; height: 31px;
+    }
+    .navminimal .sidebarlogo {width: 48px}
     .navlink {
         width: 64px; height: 64px;
         flex-shrink: 0;
@@ -285,7 +299,6 @@
         width: 31px; height: 31px;
     }
     .buttonlabel {display: none}
-    .navclipped {visibility: hidden}
     .resourceblurb {
         width: 88px; flex: 0 0 88px;
         white-space: normal; order: 3;

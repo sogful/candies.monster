@@ -70,20 +70,22 @@ document.addEventListener("homeviewchange", closebuttons);
 
 const scroller = document.querySelector(".sitenavigation");
 const compact = matchMedia("(max-width: 700px) and (min-height: 501px)");
-const items = scroller.querySelectorAll(".sidebarlogo, .navlink, .resourceblurb");
+const items = [...scroller.querySelectorAll(".bignav .navlink:not([fun])")];
 
 function fitnavigation() {
-    const bounds = scroller.getBoundingClientRect();
-    for (const item of items) {
-        const box = item.getBoundingClientRect();
-        const clipped = compact.matches && (box.left < bounds.left - 0.5 || box.right > bounds.right + 0.5);
-        item.classList.toggle("navclipped", clipped);
+    for (const item of items) item.classList.remove("navcompact");
+    scroller.classList.remove("navminimal");
+    if (!compact.matches) return;
+    for (let index = items.length - 1; index >= 0 && scroller.scrollWidth > scroller.clientWidth + 1; index -= 2) {
+        items[index].classList.add("navcompact");
+        items[index - 1]?.classList.add("navcompact");
     }
+    if (items.every(item => item.classList.contains("navcompact"))) scroller.classList.add("navminimal");
 }
 
-scroller.addEventListener("scroll", fitnavigation, {passive: true});
 window.addEventListener("resize", fitnavigation, {passive: true});
 if (window.ResizeObserver) new ResizeObserver(fitnavigation).observe(scroller);
+for (const image of scroller.querySelectorAll("img")) image.addEventListener("load", fitnavigation, {once: true});
 fitnavigation();
 
 /*//////////////////////////////////////////////////////////////////////*/
