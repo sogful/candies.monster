@@ -1,4 +1,8 @@
+using System;
+using System.IO;
+using System.Xml.Linq;
 using System.Collections.Generic;
+using CutTheRopeDX.Helpers;
 
 using CutTheRopeDX.Framework.Core;
 using CutTheRopeDX.GameMain;
@@ -9,6 +13,7 @@ namespace CutTheRopeDX.Browser
     {
         private readonly HashSet<string> optional = [];
         private readonly HashSet<string> selected = [];
+        private bool restrict;
 
         public previewcontent()
         {
@@ -17,6 +22,20 @@ namespace CutTheRopeDX.Browser
                 return;
             }
 
+            if (CustomLevelFile.TryLoad(CustomLevelSession.LevelPath, out XElement map, out _))
+            {
+                restrict = true;
+                foreach (string resource in LevelResourceScanner.GetRequiredResources(map, 0))
+                {
+                    string path = Resources.IsSound(resource) ? ContentPaths.GetSoundEffectPath(resource) + ".ogg" : ResourceMgr.ImageContentPath(resource) + BrowserAssetPlatform.ImageExtension;
+                    selected.Add(path.Replace('\\', '/'));
+                }
+                selected.Add("sounds/game_music.ogg");
+            }
+
+            add(selected, [Resources.Img.ObjCandyFx, Resources.Img.ObjSpider, Resources.Img.ObjBee,
+                Resources.Img.ObjGhost, Resources.Img.FxSleep, Resources.Img.FxHalloween,
+                Resources.Img.ConfettiParticles, Resources.Img.ConfettiParticlesExp, Resources.Img.ProfessorHand]);
             foreach (PackDefinition pack in PackConfig.Packs)
             {
                 add(optional, pack.BoxBackgrounds);
@@ -35,7 +54,13 @@ namespace CutTheRopeDX.Browser
 
         public bool includes(string path)
         {
-            return !optional.Contains(path) || selected.Contains(path);
+            if (selected.Contains(path)) return true;
+            if (optional.Contains(path)) return false;
+            if (!restrict) return true;
+            if (path.StartsWith("sounds/", StringComparison.Ordinal)) return false;
+            if (!path.StartsWith("images/", StringComparison.Ordinal)) return true;
+            string name = Path.GetFileNameWithoutExtension(path);
+            return name.StartsWith("zepto", StringComparison.Ordinal) || name.StartsWith("menu_", StringComparison.Ordinal) || name.StartsWith("font_", StringComparison.Ordinal) || name.StartsWith("hud_", StringComparison.Ordinal);
         }
 
         private static void add(HashSet<string> paths, IEnumerable<string> resources)

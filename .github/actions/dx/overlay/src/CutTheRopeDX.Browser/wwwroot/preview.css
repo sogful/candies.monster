@@ -46,3 +46,10 @@
     background: url("./loading/load-repeat.webp") repeat-x; background-size: auto 100%;
     border-radius: 18px; transition: width 0.3s ease-out;
 }
+
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.previewbody {
+    background: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)), url("/preview/assets/images/tile.webp");
+}

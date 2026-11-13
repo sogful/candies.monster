@@ -73,6 +73,12 @@ test("an embedded DX request stays short for large levels; legacy engines retain
     const key = {code: "KeyR", target: {}, preventDefault: () => prevented++};
     listeners.get("keydown")(key);
     listeners.get("keyup")(key);
+    assert.deepEqual(forwarded, []);
+    for (const type of ["ctrdx-runtime-ready", "ctrdx-level-ready"]) {
+        listeners.get("message")({origin: location.origin, source: frame.contentWindow, data: {type, nonce}});
+    }
+    listeners.get("keydown")(key);
+    listeners.get("keyup")(key);
     assert.deepEqual(forwarded, [{code: "KeyR", down: true}, {code: "KeyR", down: false}]);
     assert.equal(prevented, 2);
     listeners.get("keydown")({...key, ctrlKey: true});
@@ -196,5 +202,56 @@ test("editor pause actions require an editor session and its current origin, fra
         controller.close();
         send("edit");
         assert.deepEqual(actions, ["version", "edit"]);
+    } finally {controller.close()}
+});
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+test("quality reload requires the active frame and waits for both new ready signals", async () => {
+    const listeners = new Map();
+    globalThis.location = {origin: "https://candies.monster"};
+    globalThis.window = {addEventListener: (name, callback) => listeners.set(name, callback)};
+    const frame = {src: "about:blank", contentWindow: {}, classList: {add() {}, remove() {}}};
+    let ready = 0;
+    let reloads = 0;
+    const controller = createcontroller({frame, onerror: assert.fail, onclose() {}, ontoolong: assert.fail, onready: () => ready++, onreload: () => reloads++});
+    try {
+        await controller.open("dx", {xml: "<map />", view: "level"});
+        const nonce = new URL(frame.src).searchParams.get("playtest");
+        const send = (type, origin = location.origin) => listeners.get("message")({origin, source: frame.contentWindow, data: {type, nonce}});
+        send("ctrdx-runtime-ready");
+        send("ctrdx-level-ready");
+        assert.equal(ready, 1);
+        send("ctrdx-reload", "https://elsewhere.example");
+        assert.equal(reloads, 0);
+        send("ctrdx-reload");
+        assert.equal(reloads, 1);
+        send("ctrdx-level-ready");
+        assert.equal(ready, 1);
+        send("ctrdx-runtime-ready");
+        assert.equal(ready, 2);
+        assert(storage.has("ctrdx-playtest:" + nonce));
+    } finally {controller.close()}
+});
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+test("runtime errors preserve bounded text and reject non-string details", async () => {
+    const listeners = new Map();
+    globalThis.location = {origin: "https://candies.monster"};
+    globalThis.window = {addEventListener: (name, callback) => listeners.set(name, callback)};
+    const frame = {src: "about:blank", contentWindow: {}, classList: {add() {}, remove() {}}};
+    const errors = [];
+    const controller = createcontroller({frame, onerror: message => errors.push(message), onclose() {}, ontoolong: assert.fail});
+    try {
+        await controller.open("dx", {xml: "<map />", view: "level"});
+        const nonce = new URL(frame.src).searchParams.get("playtest");
+        const send = message => listeners.get("message")({origin: location.origin, source: frame.contentWindow, data: {type: "ctrdx-error", nonce, message}});
+        send("Missing texture\nGameScene.Initialize");
+        send({message: "invalid"});
+        send("x".repeat(9000));
+        assert.equal(errors[0], "Missing texture\nGameScene.Initialize");
+        assert.equal(errors[1], "Game could not load.");
+        assert.equal(errors[2].length, 8192);
     } finally {controller.close()}
 });

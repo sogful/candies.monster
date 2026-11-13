@@ -17,10 +17,10 @@ index 88e915a..24ac025 100644
                  if (string.Equals(category.Name, "sounds", StringComparison.Ordinal))
                  {
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
-index 5cd44d7..cb6b69d 100644
+index 5cd44d7..fc0b638 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
-@@ -65,7 +65,26 @@ namespace CutTheRopeDX.Browser
+@@ -65,7 +65,28 @@ namespace CutTheRopeDX.Browser
          public string LevelEditorUrl => "https://yell0wsuit.github.io/ctrdx-editor/";
  
          /// <inheritdoc />
@@ -35,6 +35,8 @@ index 5cd44d7..cb6b69d 100644
 +        public bool previeweditor => PlaytestInterop.editor();
 +
 +        public string previewaspect => PlaytestInterop.aspect();
++        public string previewquality => PlaytestInterop.quality();
++        public void previewsetquality(string quality) => PlaytestInterop.setquality(quality);
 +
 +        public void previewratio(string ratio)
 +        {
@@ -115,10 +117,10 @@ index d27ce9e..ace414e 100644
          private static partial string MenuFromQuery();
      }
 diff --git a/src/CutTheRopeDX.Browser/Browser/PlaytestInterop.cs b/src/CutTheRopeDX.Browser/Browser/PlaytestInterop.cs
-index c41e3f1..a2cc762 100644
+index c41e3f1..38a27dc 100644
 --- a/src/CutTheRopeDX.Browser/Browser/PlaytestInterop.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/PlaytestInterop.cs
-@@ -41,5 +41,20 @@ namespace CutTheRopeDX.Browser
+@@ -41,5 +41,25 @@ namespace CutTheRopeDX.Browser
          /// <summary>Closes the playtest window.</summary>
          [JSImport("closeWindow", "playtest")]
          public static partial void CloseWindow();
@@ -128,6 +130,11 @@ index c41e3f1..a2cc762 100644
 +
 +        [JSImport("editor", "playtest")]
 +        public static partial bool editor();
++
++        [JSImport("quality", "playtest")]
++        public static partial string quality();
++        [JSImport("setquality", "playtest")]
++        public static partial void setquality(string quality);
 +
 +        [JSImport("aspect", "playtest")]
 +        public static partial string aspect();
@@ -179,7 +186,7 @@ index 2e5cd1e..6c0f4b1 100644
  GameLoop.Host = host;
  InputRouter.Host = host;
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/audio.js b/src/CutTheRopeDX.Browser/wwwroot/audio.js
-index fe621d0..07e1163 100644
+index fe621d0..c0b94f3 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/audio.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/audio.js
 @@ -2,8 +2,10 @@
@@ -221,7 +228,7 @@ index fe621d0..07e1163 100644
 -        if (!response.ok) {
 -            return null;
 +        for (let attempt = 0; attempt < 2; attempt++) {
-+            const response = await fetch(url, attempt === 0 ? undefined : {cache: "reload"});
++            const response = await fetch(globalThis.ctrdxquality?.url(url) ?? url, attempt === 0 ? undefined : {cache: "reload"});
 +            if (!response.ok) {
 +                return null;
 +            }
@@ -357,6 +364,28 @@ index 176f532..26f941f 100644
 +for (const surface of surfaces) {
 +    surface.addEventListener("contextmenu", (event) => event.preventDefault());
 +}
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/fetch.js b/src/CutTheRopeDX.Browser/wwwroot/fetch.js
+index 88fce30..1186138 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/fetch.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/fetch.js
+@@ -7,7 +7,7 @@ import { setLoadingProgress } from "./loading-progress.js";
+ const stash = new Map();
+ 
+ export async function fetchBytes(url) {
+-    const response = await fetch(url);
++    const response = await fetch(globalThis.ctrdxquality?.url(url) ?? url);
+     if (!response.ok) {
+         return -1;
+     }
+@@ -27,7 +27,7 @@ export function takeStashed(url, destination) {
+ }
+ 
+ export async function fetchText(url) {
+-    const response = await fetch(url);
++    const response = await fetch(globalThis.ctrdxquality?.url(url) ?? url);
+     return response.ok ? await response.text() : null;
+ }
+ 
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/host-events.js b/src/CutTheRopeDX.Browser/wwwroot/host-events.js
 index 0f7420a..e27d240 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/host-events.js
@@ -379,12 +408,14 @@ index 0f7420a..e27d240 100644
 +    return Object.hasOwn(KEY_IDS, code);
  }
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/index.html b/src/CutTheRopeDX.Browser/wwwroot/index.html
-index 6facf5d..4dcf758 100644
+index 6facf5d..d7c63ee 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/index.html
 +++ b/src/CutTheRopeDX.Browser/wwwroot/index.html
-@@ -3,7 +3,11 @@
+@@ -2,8 +2,13 @@
+ <html lang="en">
      <head>
          <meta charset="utf-8" />
++        <script src="./previewerrors.js"></script>
          <script src="./console-capture.js"></script>
 -        <script src="./coi.js"></script>
 +        <script src="./aspect.js"></script>
@@ -395,7 +426,7 @@ index 6facf5d..4dcf758 100644
  
          <!-- Resolves to the directory this page is served from, so the app works from a domain
               root and from a GitHub Pages project subpath alike. It lives here rather than being
-@@ -105,7 +109,7 @@
+@@ -105,7 +110,7 @@
              body {
                  height: 100%;
                  margin: 0;
@@ -404,7 +435,7 @@ index 6facf5d..4dcf758 100644
                  overflow: hidden;
                  -webkit-user-select: none;
                  user-select: none;
-@@ -171,7 +175,7 @@
+@@ -171,7 +176,7 @@
                      calc(16px + env(safe-area-inset-right, 0px))
                      calc(24px + env(safe-area-inset-bottom, 0px))
                      calc(16px + env(safe-area-inset-left, 0px));
@@ -413,23 +444,24 @@ index 6facf5d..4dcf758 100644
                  color: var(--ink);
                  font-family:
                      "GoodDog New",
-@@ -428,11 +432,12 @@
+@@ -428,11 +433,12 @@
                  cursor: pointer;
              }
          </style>
 +        <link rel="stylesheet" href="./preview.css">
      </head>
-     <body>
+-    <body>
 -        <canvas id="game"></canvas>
 -        <video id="movie" playsinline hidden></video>
 -        <div id="splash">
++    <body class="previewbody">
 +        <canvas class="previewgame" id="game"></canvas>
 +        <video class="previewmovie" id="movie" playsinline hidden></video>
 +        <div class="previewloader" id="splash"><div class="previewart"><div class="previewtrack"><div class="previewprogress"></div></div></div>
              <canvas id="splash-bubbles" aria-hidden="true"></canvas>
              <img
                  id="splash-logo"
-@@ -488,8 +493,8 @@
+@@ -488,8 +494,8 @@
                  <button id="update-now">Update</button>
              </div>
          </dialog>
@@ -440,7 +472,7 @@ index 6facf5d..4dcf758 100644
          <script type="module">
              // Loading has two stretches with no reporting of their own — compiling what was
              // downloaded, and decoding the audio — so a slow device and a wedged one look alike
-@@ -516,7 +521,12 @@
+@@ -516,7 +522,12 @@
              globalThis.ctrdxReady = () => {
                  globalThis.ctrdxStopHint();
                  bubble.hidden = true;
@@ -454,12 +486,12 @@ index 6facf5d..4dcf758 100644
              };
              // The failure seam lives here, not in main.js, because main.js reaches its own
              // first statement only after its static imports have been fetched and evaluated.
-@@ -531,6 +541,10 @@
+@@ -531,6 +542,10 @@
                  }
                  reported = true;
  
 +                if (globalThis.parent !== globalThis) {
-+                    globalThis.parent.postMessage({type: "ctrdx-error", nonce: new URLSearchParams(location.search).get("playtest"), message: "Game could not load."}, location.origin);
++                    globalThis.ctrdxpreviewerror(`${id}: ${typeof detail === "string" ? detail : detail?.message || "Game could not load."}`);
 +                }
 +
                  console.error(`ctrdx-boot-failure: ${id}`, detail ?? "");
@@ -597,7 +629,7 @@ index a05c64d..3de9809 100644
 +    globalThis.parent.postMessage({type: "ctrdx-edge-proximity", near}, location.origin);
 +}, {passive: true});
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/playtest.js b/src/CutTheRopeDX.Browser/wwwroot/playtest.js
-index 2728635..98fab43 100644
+index 2728635..95cf03e 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/playtest.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/playtest.js
 @@ -20,7 +20,11 @@ export function open() {
@@ -613,7 +645,7 @@ index 2728635..98fab43 100644
      channel.onmessage = (event) => {
          // Everything on this channel is a JSON string; anything else is not ours.
          if (typeof event.data === "string") {
-@@ -64,5 +68,33 @@ export function drain() {
+@@ -64,5 +68,43 @@ export function drain() {
   * navigated to themselves ignores this, which is why the caller falls back to doing nothing.
   */
  export function closeWindow() {
@@ -646,6 +678,16 @@ index 2728635..98fab43 100644
 +
 +export function ratio(value) {
 +    globalThis.ctrdxaspect.set(value);
++}
++
++export function quality() {
++    return globalThis.ctrdxquality.get();
++}
++
++export function setquality(value) {
++    if (!globalThis.ctrdxquality.set(value)) return;
++    globalThis.parent.postMessage({type: "ctrdx-reload", nonce: nonceFromQuery()}, location.origin);
++    location.reload();
 +}
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/runtime-mode.js b/src/CutTheRopeDX.Browser/wwwroot/runtime-mode.js
 index 6628ead..8ff53c9 100644
@@ -1146,10 +1188,10 @@ index 33ffd1c..00caeb0 100644
              {
                  return;
 diff --git a/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs b/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
-index 7f0fd69..b815933 100644
+index 7f0fd69..1b806b3 100644
 --- a/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
 +++ b/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
-@@ -26,6 +26,16 @@ namespace CutTheRopeDX.Framework.Platform
+@@ -26,6 +26,18 @@ namespace CutTheRopeDX.Framework.Platform
  
          void Exit();
  
@@ -1160,12 +1202,35 @@ index 7f0fd69..b815933 100644
 +        void previewaction(string action) {}
 +
 +        string previewaspect => "";
++        string previewquality => "Medium";
++        void previewsetquality(string quality) {}
 +
 +        void previewratio(string ratio) {}
 +
          /// <summary>Returns whether <paramref name="key"/> transitioned from up to down this frame.</summary>
          /// <param name="key">The key to check.</param>
          bool IsKeyPressed(KeyCode key);
+diff --git a/src/CutTheRopeDX.Core/GameMain/BoxOpenClose.cs b/src/CutTheRopeDX.Core/GameMain/BoxOpenClose.cs
+index b994759..1c1bed6 100644
+--- a/src/CutTheRopeDX.Core/GameMain/BoxOpenClose.cs
++++ b/src/CutTheRopeDX.Core/GameMain/BoxOpenClose.cs
+@@ -350,8 +350,15 @@ namespace CutTheRopeDX.GameMain
+             Button replayButton = MenuController.CreateShortButtonWithTextIDDelegate(Application.GetString("REPLAY"), 8, b);
+             replayButton.anchor = 18;
+             // Custom levels hide the NEXT/MENU buttons, so replay takes the centered menu slot instead.
+-            Image.SetElementPositionWithQuadOffset(replayButton, Resources.Img.MenuResults, CustomLevelSession.IsActive ? 9 : 11);
++            Image.SetElementPositionWithQuadOffset(replayButton, Resources.Img.MenuResults, 11);
+             AddPanelPiece(replayButton);
++            if (CustomLevelSession.IsActive && PlatformServices.Host?.previeweditor != true)
++            {
++                Button quit = MenuController.CreateShortButtonWithTextIDDelegate(Application.GetString("QUIT_BUTTON"), GameControllerButtonId.MainMenu, b);
++                quit.anchor = 18;
++                Image.SetElementPositionWithQuadOffset(quit, Resources.Img.MenuResults, 10);
++                AddPanelPiece(quit);
++            }
+             if (!CustomLevelSession.IsActive)
+             {
+                 Button nextButton = MenuController.CreateShortButtonWithTextIDDelegate(Application.GetString("NEXT"), 9, b);
 diff --git a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs b/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
 index 597afdd..68750f7 100644
 --- a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
@@ -1196,31 +1261,29 @@ index 597afdd..68750f7 100644
                  0 => Resources.Img.ObjCandy01New,
                  1 => Resources.Img.ObjCandy02,
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameController.cs b/src/CutTheRopeDX.Core/GameMain/GameController.cs
-index bc8a2d7..e15a8e5 100644
+index bc8a2d7..94d627e 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameController.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameController.cs
-@@ -18,6 +18,31 @@ namespace CutTheRopeDX.GameMain
+@@ -18,6 +18,39 @@ namespace CutTheRopeDX.GameMain
      /// </summary>
      internal sealed class GameController : ViewController, IButtonDelegation, IGameSceneDelegate
      {
 +        private readonly List<(Button button, string ratio)> ratiobuttons = [];
++        private int previewbest;
 +
-+        private BaseElement createaspects(int width)
++        private BaseElement createrow(int width, string[] labels, int first, string selected, bool ratios = false)
 +        {
-+            ratiobuttons.Clear();
-+            string[] ratios = ["16:9", "4:3", "9:16", "Dynamic"];
 +            HBox row = new HBox().InitWithOffsetAlignHeight(12, 16, 0);
 +            row.anchor = row.parentAnchor = 9;
-+            for (int index = 0; index < ratios.Length; index++)
++            for (int index = 0; index < labels.Length; index++)
 +            {
-+                string ratio = ratios[index];
-+                Button button = MenuController.CreateShortButtonWithTextIDDelegate(ratio, (GameControllerButtonId)(15 + index), this, PlatformServices.Host.previewaspect == ratio);
++                Button button = MenuController.CreateShortButtonWithTextIDDelegate(labels[index], (GameControllerButtonId)(first + index), this, selected == labels[index]);
 +                button.SetTouchIncreaseLeftRightTopBottom(0, 0, 4, 4);
 +                row.height = button.height;
 +                _ = row.AddChild(button);
-+                ratiobuttons.Add((button, ratio));
++                if (ratios) ratiobuttons.Add((button, labels[index]));
 +            }
-+            float scale = (float)width / row.width;
++            float scale = (float)width / (labels.Length == 3 ? row.width : row.GetChild(0).width * 3 + 24);
 +            BaseElement slot = new() { width = width, height = (int)(row.height * scale) };
 +            FittedGroup group = new() { width = row.width, height = row.height, scaleX = scale, scaleY = scale, anchor = 18, parentAnchor = 18 };
 +            _ = group.AddChild(row);
@@ -1228,10 +1291,20 @@ index bc8a2d7..e15a8e5 100644
 +            return slot;
 +        }
 +
++        private BaseElement createaspects(int width)
++        {
++            ratiobuttons.Clear();
++            VBox rows = new VBox().InitWithOffsetAlignWidth(8, 2, width);
++            _ = rows.AddChild(createrow(width, ["16:9", "4:3", "9:16"], 15, PlatformServices.Host.previewaspect, true));
++            _ = rows.AddChild(createrow(width, ["Dynamic"], 18, PlatformServices.Host.previewaspect, true));
++            _ = rows.AddChild(createrow(width, ["High", "Medium", "Low"], 19, PlatformServices.Host.previewquality));
++            return rows;
++        }
++
          /// <inheritdoc />
          public override void Update(float t)
          {
-@@ -26,6 +51,12 @@ namespace CutTheRopeDX.GameMain
+@@ -26,6 +59,12 @@ namespace CutTheRopeDX.GameMain
              {
                  OnButtonPressed(GameControllerButtonId.Restart);
              }
@@ -1244,7 +1317,7 @@ index bc8a2d7..e15a8e5 100644
              base.Update(t);
  
              GameScene gameScene = (GameScene)GetView(0)?.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
-@@ -33,6 +64,10 @@ namespace CutTheRopeDX.GameMain
+@@ -33,6 +72,10 @@ namespace CutTheRopeDX.GameMain
              {
                  gameScene.UpdatePointerGestureVisuals(t);
              }
@@ -1255,7 +1328,7 @@ index bc8a2d7..e15a8e5 100644
  
              if (levelWatcher != null && levelWatcher.TryConsumeChange(DateTime.UtcNow))
              {
-@@ -102,6 +137,7 @@ namespace CutTheRopeDX.GameMain
+@@ -102,6 +145,7 @@ namespace CutTheRopeDX.GameMain
              MusicTracks.PlayGameMusic(Application.SharedRootController().Pack);
              LevelFirstStart();
              ShowView(0);
@@ -1263,7 +1336,7 @@ index bc8a2d7..e15a8e5 100644
  
              if (CustomLevelSession.IsActive && levelWatcher == null)
              {
-@@ -180,6 +216,11 @@ namespace CutTheRopeDX.GameMain
+@@ -180,6 +224,11 @@ namespace CutTheRopeDX.GameMain
              pauseMenuPlate = image;
              Button continueButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("CONTINUE"), GameControllerButtonId.Continue, this);
              _ = vBox.AddChild(continueButton);
@@ -1275,7 +1348,7 @@ index bc8a2d7..e15a8e5 100644
              if (!CustomLevelSession.IsActive)
              {
                  Button skipLevelButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("SKIP_LEVEL"), GameControllerButtonId.SkipLevel, this);
-@@ -187,17 +228,15 @@ namespace CutTheRopeDX.GameMain
+@@ -187,17 +236,15 @@ namespace CutTheRopeDX.GameMain
                  Button levelSelectButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("LEVEL_SELECT"), GameControllerButtonId.LevelSelect, this);
                  _ = vBox.AddChild(levelSelectButton);
              }
@@ -1301,15 +1374,16 @@ index bc8a2d7..e15a8e5 100644
              if (MenuTheme.IsExperiments)
              {
                  ToggleButton voiceToggle = MenuController.CreateExperimentsVoiceToggle(this, GameControllerButtonId.ToggleVoice);
-@@ -208,16 +247,20 @@ namespace CutTheRopeDX.GameMain
+@@ -208,16 +255,20 @@ namespace CutTheRopeDX.GameMain
                  }
              }
              _ = vBox.AddChild(hBox);
+-            vBox.y = (DesignBox.h - vBox.height) / 2f;
 +            if (CustomLevelSession.IsActive && !string.IsNullOrEmpty(PlatformServices.Host?.previewaspect))
 +            {
 +                _ = vBox.AddChild(createaspects(continueButton.width));
 +            }
-             vBox.y = (DesignBox.h - vBox.height) / 2f;
++            vBox.y = CustomLevelSession.IsActive ? MathF.Max(40, DesignBox.h - vBox.height - 80) : (DesignBox.h - vBox.height) / 2f;
              bool soundOn = Preferences.GetBooleanForKey("SOUND_ON");
              bool musicOn = Preferences.GetBooleanForKey("MUSIC_ON");
              if (!soundOn)
@@ -1324,11 +1398,12 @@ index bc8a2d7..e15a8e5 100644
              }
              _ = gameView.AddChildwithID(image, 3);
  
-@@ -367,6 +410,17 @@ namespace CutTheRopeDX.GameMain
+@@ -367,6 +418,18 @@ namespace CutTheRopeDX.GameMain
              View view = GetView(0);
              GameScene gameScene = (GameScene)view.GetChild(0);
              BoxOpenClose boxOpenClose = (BoxOpenClose)view.GetChild(4);
-+            if (CustomLevelSession.IsActive)
++            previewbest = Math.Max(previewbest, result.FinalScore);
++            if (CustomLevelSession.IsActive && PlatformServices.Host?.previeweditor == true)
 +            {
 +                if (overlayMode != GameControllerOverlayMode.Gameplay)
 +                {
@@ -1342,10 +1417,13 @@ index bc8a2d7..e15a8e5 100644
              Image star1 = (Image)boxOpenClose.result.GetChildWithName("star1");
              Image star2 = (Image)boxOpenClose.result.GetChildWithName("star2");
              Image star3 = (Image)boxOpenClose.result.GetChildWithName("star3");
-@@ -524,6 +578,27 @@ namespace CutTheRopeDX.GameMain
+@@ -524,6 +587,30 @@ namespace CutTheRopeDX.GameMain
              View view = GetView(0);
              switch (n)
              {
++                case var quality when quality >= 19 && quality <= 21:
++                    if (CustomLevelSession.IsActive) PlatformServices.Host?.previewsetquality(new[] { "High", "Medium", "Low" }[quality - 19]);
++                    return;
 +                case var id when id >= 15 && id <= 18:
 +                    if (CustomLevelSession.IsActive && ratiobuttons.Count == 4)
 +                    {
@@ -1370,7 +1448,7 @@ index bc8a2d7..e15a8e5 100644
                  case var id when id == GameControllerButtonId.Restart:
                      GameScene restartScene = (GameScene)view.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
                      if (overlayMode != GameControllerOverlayMode.Gameplay
-@@ -596,33 +671,11 @@ namespace CutTheRopeDX.GameMain
+@@ -596,33 +683,11 @@ namespace CutTheRopeDX.GameMain
                      ExperimentsVoice.Toggle();
                      return;
                  case var id when id == GameControllerButtonId.ToggleMusic:
@@ -1408,7 +1486,7 @@ index bc8a2d7..e15a8e5 100644
                  default:
                      return;
              }
-@@ -637,6 +690,50 @@ namespace CutTheRopeDX.GameMain
+@@ -637,6 +702,50 @@ namespace CutTheRopeDX.GameMain
              RootController.LogEvent(n != GameControllerButtonId.ExitFromLose ? "IG_REPLAY_PRESSED" : "LC_REPLAY_PRESSED");
          }
  
@@ -1459,7 +1537,16 @@ index bc8a2d7..e15a8e5 100644
          /// <summary>Resolves an input source against the authoritative controller and level-flow state.</summary>
          /// <param name="input">Input source to resolve.</param>
          /// <returns>The semantic command allowed in the current state.</returns>
-@@ -1264,6 +1361,8 @@ namespace CutTheRopeDX.GameMain
+@@ -784,7 +893,7 @@ namespace CutTheRopeDX.GameMain
+             }
+             else if (CustomLevelSession.IsActive)
+             {
+-                mapNameLabel.SetString(gameScene.ResolveLevelDisplayName() ?? string.Empty);
++                mapNameLabel.SetString(Application.GetString("BEST_SCORE") + ": " + previewbest);
+             }
+             else
+             {
+@@ -1264,6 +1373,8 @@ namespace CutTheRopeDX.GameMain
  
          /// <summary>Pause-menu label that displays the active map or best score.</summary>
          private Text mapNameLabel;
@@ -1483,6 +1570,22 @@ index 23a8e97..5320dac 100644
          /// <summary>
          /// Converts a raw integer button value to a game-controller button identifier.
          /// </summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
+index a5bcdcd..d6f88d9 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
+@@ -169,6 +169,11 @@ namespace CutTheRopeDX.GameMain
+         /// </summary>
+         public void StartCamera()
+         {
++            freezeCamera = false;
++            fastenCamera = false;
++            initialCameraToCandyDistance = -1f;
++            camera.type = CAMERATYPE.CAMERASPEEDDELAY;
++            camera.speed = 14f;
+             ViewportLayoutSnapshot snapshot = ScreenPresentation.Instance.Snapshot;
+             if (CameraCanTravel(snapshot))
+             {
 diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
 index 3f5f05f..de0bfa3 100644
 --- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs

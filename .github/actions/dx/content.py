@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+from quality import variants
 
 keepmenus = {
     "menu_buttons", "menu_level_ui", "menu_pause", "menu_results", "menu_options_packed",
@@ -50,3 +51,5 @@ def slim(site, excluded, source):
         quality = "3" if path.parent.name == "sfx" else "4"
         subprocess.run(["ffmpeg", "-v", "error", "-threads", "1", "-i", str(original), "-c:a", "libvorbis", "-q:a", quality, str(path)], check=True, timeout=60)
     print(f"Preview content: {len(catalog['images'])} images, {len(catalog['sounds'])} sounds, {len(metadata)} metadata entries; removed {len(removed)} assets.", flush=True)
+
+    variants(site)

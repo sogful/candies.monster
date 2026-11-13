@@ -2,7 +2,7 @@ import {createsession} from "./playtest.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function createcontroller({frame, onerror, onclose, ontoolong, onprogress = () => {}, onready = () => {}, onaction = () => {}}) {
+export function createcontroller({frame, onerror, onclose, ontoolong, onprogress = () => {}, onready = () => {}, onaction = () => {}, onreload = () => {}}) {
     const session = createsession({onerror, onclose});
     let sequence = 0;
     let nonce = null;
@@ -14,7 +14,7 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
     const held = new Set();
 
     function forward(event, down) {
-        if (!nonce || !frame.classList.contains("active") || !keys.has(event.code)
+        if (!ready || !nonce || !frame.classList.contains("active") || !keys.has(event.code)
             || event.ctrlKey || event.metaKey || event.altKey || event.repeat) return;
         const target = event.target;
         if (target?.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName)) return;
@@ -91,9 +91,18 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
         if (event.origin !== location.origin || event.source !== frame.contentWindow
             || !nonce || event.data?.nonce !== nonce) return;
         const data = event.data;
+        if (data.type === "ctrdx-reload") {
+            runtime = level = ready = false;
+            release();
+            onreload();
+            return;
+        }
         if (data.type === "ctrdx-exit") onclose();
         else if (data.type === "ctrdx-editor-action" && editor && ["version", "edit"].includes(data.action)) onaction(data.action);
-        else if (data.type === "ctrdx-error") onerror("Game could not load.");
+        else if (data.type === "ctrdx-error") {
+            onerror(typeof data.message === "string" && data.message.trim()
+                ? data.message.slice(0, 8192) : "Game could not load.");
+        }
         else if (data.type === "ctrdx-progress" && Number.isFinite(data.percent)) {
             onprogress({percent: Math.max(0, Math.min(99, data.percent)), stage: String(data.stage || ""), loaded: data.loaded, total: data.total});
         } else if (data.type === "ctrdx-runtime-ready") runtime = true;

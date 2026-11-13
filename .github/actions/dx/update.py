@@ -43,7 +43,7 @@ def overlayhash():
 
 
 def contenthash():
-    return hashlib.sha256((bundle / "content.py").read_bytes()).hexdigest()
+    return hashlib.sha256((bundle / "content.py").read_bytes() + (bundle / "quality.py").read_bytes()).hexdigest()
 
 
 def dotnet(source):
@@ -119,6 +119,7 @@ def build(stage):
     run([executable, "publish", "src/CutTheRopeDX.Browser/CutTheRopeDX.Browser.csproj",
          "-c", "Release", "-p:CtrdxSingleThreaded=true", "-p:RunAOTCompilation=true",
          "-p:EnableDefaultCompressionFormats=false", "-p:DisableBuildCompression=true",
+         "-p:WasmNativeDebugSymbols=false",
          "-o", str(stage / "publish")], source, timeout=3600)
     if (record["patch"] != hashlib.sha256((bundle / "preview.patch").read_bytes()).hexdigest()
             or record["overlay"] != overlayhash() or record.get("content") != contenthash()):

@@ -19,3 +19,28 @@
     set(current);
     globalThis.ctrdxaspect = Object.freeze({get: () => current, set});
 })();
+
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+(() => {
+    const options = ["High", "Medium", "Low"];
+    let current = "Medium";
+    try {
+        const saved = localStorage.getItem("ctrdxquality");
+        if (options.includes(saved)) current = saved;
+    } catch {}
+    globalThis.ctrdxquality = Object.freeze({
+        get: () => current,
+        set(value) {
+            if (!options.includes(value) || value === current) return false;
+            current = value;
+            try {localStorage.setItem("ctrdxquality", value)} catch {}
+            return true;
+        },
+        url(url) {
+            if (current === "High" || !/\/content\/(?:images|sounds)\//.test(url)) return url;
+            return url.replace("/content/", "/content/" + current.toLowerCase() + "/");
+        }
+    });
+})();

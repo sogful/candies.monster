@@ -16,7 +16,7 @@ function create(saved, blocked = false) {
         },
     };
     vm.runInNewContext(source, context);
-    return {api: context.ctrdxaspect, styles, storage};
+    return {api: context.ctrdxaspect, quality: context.ctrdxquality, styles, storage};
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -45,4 +45,21 @@ test("blocked storage keeps ratio switching usable and invalid values cannot rep
     current.api.set("constructor");
     assert.equal(current.api.get(), "9:16");
     assert.equal(current.styles.get("--previewheight"), "calc(100vw * 16 / 9)");
+});
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+test("quality defaults to medium, persists valid choices and only rewrites content", () => {
+    const current = create(null);
+    assert.equal(current.quality.get(), "Medium");
+    assert.equal(current.quality.url("./content/images/menu.webp"), "./content/medium/images/menu.webp");
+    assert.equal(current.quality.url("./content/tier0.json"), "./content/tier0.json");
+    assert.equal(current.quality.set("Low"), true);
+    assert.equal(current.storage.get("ctrdxquality"), "Low");
+    assert.equal(current.quality.url("./content/sounds/sfx/tap.ogg"), "./content/low/sounds/sfx/tap.ogg");
+    assert.equal(current.quality.set("Low"), false);
+    assert.equal(current.quality.set("invalid"), false);
+    current.quality.set("High");
+    assert.equal(current.quality.url("./content/images/menu.webp"), "./content/images/menu.webp");
+    assert.equal(create(null, true).quality.set("Low"), true);
 });
