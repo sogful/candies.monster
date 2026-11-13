@@ -47,3 +47,7 @@
     width: 1.1em; height: 1.1em;
     object-fit: contain; vertical-align: -0.15em;
 }
+.mdmention {
+    background: rgba(109,139,242,0.3); border-radius: 3px;
+    padding: 0 0.12em; white-space: nowrap;
+}

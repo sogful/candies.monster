@@ -14,7 +14,7 @@ function address(text) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function inline(text, parent, depth = 0) {
+function inline(text, parent, depth = 0, mentions = {}) {
     if (depth > 8) {parent.append(document.createTextNode(text)); return}
     let plain = "";
     function flush() {
@@ -28,11 +28,31 @@ function inline(text, parent, depth = 0) {
             continue;
         }
         const remaining = text.slice(index);
+        const mention = /^<(@[!&]?|#)(\d{17,22})>/.exec(remaining);
+        if (mention) {
+            flush();
+            const id = mention[2];
+            const channel = mention[1] === "#";
+            const role = mention[1] === "@&";
+            const details = (channel ? mentions.channels : role ? mentions.roles : mentions.users)?.[id];
+            const label = typeof details === "string" ? details : details?.name;
+            const element = node(role ? "span" : "a", "mdmention", (channel ? "#" : "@") + (label || (channel ? "channel" : role ? "role" : "user")));
+            element.title = element.textContent;
+            if (!role) {
+                element.href = channel ? "https://discord.com/channels/" + (mentions.guild || "@me") + "/" + id : "https://discord.com/users/" + id;
+                element.target = "_blank";
+                element.rel = "noopener noreferrer";
+            }
+            parent.append(element);
+            index += mention[0].length;
+            continue;
+        }
         const emoji = /^<(a?):([a-z\d_]{2,32}):(\d{17,22})>/i.exec(remaining);
         if (emoji) {
             flush();
             const image = node("img", "mdemoji");
             image.alt = ":" + emoji[2] + ":";
+            image.title = image.alt;
             image.src = "https://cdn.discordapp.com/emojis/" + emoji[3] + (emoji[1] ? ".gif" : ".webp") + "?size=32";
             image.loading = "lazy";
             parent.append(image);
@@ -51,7 +71,7 @@ function inline(text, parent, depth = 0) {
                 link.href = href;
                 link.target = "_blank";
                 link.rel = "noopener noreferrer";
-                inline(linked ? linked[1] : raw, link, linked ? depth + 1 : 9);
+                inline(linked ? linked[1] : raw, link, linked ? depth + 1 : 9, mentions);
                 parent.append(link);
                 index += (linked || match[0].startsWith("<")) ? match[0].length : raw.length;
                 continue;
@@ -66,7 +86,7 @@ function inline(text, parent, depth = 0) {
             const element = node(tag, classname);
             const content = text.slice(index + mark.length, end);
             if (mark === "`") element.textContent = content;
-            else inline(content, element, depth + 1);
+            else inline(content, element, depth + 1, mentions);
             if (mark === "||") {
                 element.type = "button";
                 element.setAttribute("aria-label", "show spoiler");
@@ -89,7 +109,7 @@ function inline(text, parent, depth = 0) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function discordmd(text, depth = 0) {
+export function discordmd(text, depth = 0, mentions = {}) {
     const root = node("div", "discordmd");
     const lines = String(text).slice(0, 20000).replace(/\r\n?/g, "\n").split("\n");
     for (let index = 0; index < lines.length;) {
@@ -107,7 +127,7 @@ export function discordmd(text, depth = 0) {
             const content = [];
             while (index < lines.length && /^> ?/.test(lines[index])) content.push(lines[index++].replace(/^> ?/, ""));
             const block = node("blockquote", "mdquote");
-            block.append(discordmd(content.join("\n"), depth + 1));
+            block.append(discordmd(content.join("\n"), depth + 1, mentions));
             root.append(block);
             continue;
         }
@@ -120,7 +140,7 @@ export function discordmd(text, depth = 0) {
                 const item = /^\s*(?:([-*])|(\d+)[.)])\s+(.+)$/.exec(lines[index]);
                 if (!item || Boolean(item[2]) !== ordered) break;
                 const element = node("li", "mditem");
-                inline(item[3], element);
+                inline(item[3], element, 0, mentions);
                 list.append(element);
                 index++;
             }
@@ -131,7 +151,7 @@ export function discordmd(text, depth = 0) {
         const small = /^-#\s+(.+)$/.exec(line);
         const classname = heading ? "mdheading " + ["mdlarge", "mdmedium", "mdsmallheading"][heading[1].length - 1] : small ? "mdsmall" : "mdparagraph";
         const element = node(heading ? "h" + heading[1].length : "p", classname);
-        inline(heading ? heading[2] : small ? small[1] : line, element);
+        inline(heading ? heading[2] : small ? small[1] : line, element, 0, mentions);
         root.append(element);
         index++;
     }
