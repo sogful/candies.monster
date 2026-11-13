@@ -1,0 +1,9 @@
+.buttonart, .descbutton {
+    border-image-source: url("/assets/images/buttons/red.webp");
+    border-image-slice: 48 105 fill;
+    border-image-width: var(--buttonvertical,16px) var(--buttonhorizontal,35px);
+}
+.buttonart.gold, .descbutton:active {border-image-source: url("/assets/images/buttons/gold.webp")}
+.buttonart.green {border-image-source: url("/assets/images/buttons/green.webp")}
+.buttonart.purple {border-image-source: url("/assets/images/buttons/purple.webp")}
+.buttondimensions[hidden] {display: none}
