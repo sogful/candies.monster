@@ -27,11 +27,11 @@
 .homepage .leveldescription h3, .homepage .leveldescription small,
 .homepage .leveldescription li, .homepage .leveldescription a,
 .homepage .sharelabel, .homepage .sharecopy, .homepage .sharestatus,
-.homepage .cardplays, .homepage .tagtoggle,
+.homepage .cardplays, .homepage .loadpercent, .homepage .loadinfo,
 .homepage .tooltiptitle, .homepage .tooltipdesc, .homepage .tooltipfooter,
 .homepage .levelnotice, .homepage .levelstatus, .homepage .forumurl, .homepage .shorturl,
-.homepage .levelfilters, .homepage .levelsort, .homepage .levelsearch,
+.homepage .levelcomments, .homepage .levelpagination, .homepage .levelfilters, .homepage .levelsort, .homepage .levelsearch,
 .homepage .leveltag, .homepage .levelreaction, .homepage .rating, .homepage .features {
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
-    text-shadow: 0 0.15em 0 #000;
+    text-shadow: -0.08em 0.15em 0 #000,0.08em 0.15em 0 #000,0 0.07em 0 #000,0 0.23em 0 #000,-0.057em 0.093em 0 #000,0.057em 0.093em 0 #000,-0.057em 0.207em 0 #000,0.057em 0.207em 0 #000;
 }
