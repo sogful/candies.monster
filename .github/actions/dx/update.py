@@ -93,7 +93,12 @@ def validate(site):
         if not path.is_file() or path.stat().st_size == 0:
             raise RuntimeError(f"Missing published file: {relative}")
     manifest = json.loads((site / "content/assets.json").read_text(encoding="utf-8"))
-    for paths in manifest.values():
+    dimensions = manifest.get("dimensions", {});
+    if not isinstance(dimensions, dict) or any(relative not in manifest["images"] or not isinstance(size, list) or len(size) != 2 or any(not isinstance(value, int) or value < 1 for value in size) for relative, size in dimensions.items()):
+        raise RuntimeError("Invalid texture dimensions.")
+    for category, paths in manifest.items():
+        if category == "dimensions":
+            continue
         if not isinstance(paths, list):
             raise RuntimeError("Upstream changed the content manifest format.")
         for relative in paths:

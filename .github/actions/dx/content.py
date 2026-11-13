@@ -21,6 +21,8 @@ def slim(site, excluded, source):
     catalog = json.loads((content / "assets.json").read_text(encoding="utf-8"))
     removed = set()
     for category, paths in catalog.items():
+        if category == "dimensions":
+            continue
         for relative in paths:
             path = Path(relative)
             reject = category == "sounds" and path.parent.as_posix() == "sounds" and path.stem != "game_music"

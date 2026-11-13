@@ -1,14 +1,72 @@
+diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserAssetPlatform.cs b/src/CutTheRopeDX.Browser/Browser/BrowserAssetPlatform.cs
+index ec07b8b..85b6fca 100644
+--- a/src/CutTheRopeDX.Browser/Browser/BrowserAssetPlatform.cs
++++ b/src/CutTheRopeDX.Browser/Browser/BrowserAssetPlatform.cs
+@@ -67,7 +67,8 @@ namespace CutTheRopeDX.Browser
+                 decoded.Dispose();
+             }
+ 
+-            SkiaTexture texture = new(image);
++            var size = (PlatformServices.Content as BrowserContentStore)?.dimensions(contentPath + ImageExtension);
++            SkiaTexture texture = new(image, logicalwidth: size?.w ?? image.Width, logicalheight: size?.h ?? image.Height);
+             _textures[contentPath] = texture;
+             return texture;
+         }
+@@ -103,9 +104,20 @@ namespace CutTheRopeDX.Browser
+             // give the shared tint the same pixels the desktop backend hands it.
+             SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
+             using SKBitmap region = new(info);
+-            if (!texture.Image.ReadPixels(info, region.GetPixels(), region.RowBytes, x, y))
++            if (texture.Width == texture.Image.Width && texture.Height == texture.Image.Height)
+             {
+-                return null;
++                if (!texture.Image.ReadPixels(info, region.GetPixels(), region.RowBytes, x, y)) return null;
++            }
++            else
++            {
++                using SKSurface target = SKSurface.Create(info);
++                float scalex = (float)texture.Image.Width / texture.Width;
++                float scaley = (float)texture.Image.Height / texture.Height;
++                target.Canvas.DrawImage(texture.Image,
++                    new SKRect(x * scalex, y * scaley, (x + width) * scalex, (y + height) * scaley),
++                    new SKRect(0, 0, width, height), SkiaTexture.LinearSampling);
++                using SKImage resized = target.Snapshot();
++                if (!resized.ReadPixels(info, region.GetPixels(), region.RowBytes, 0, 0)) return null;
+             }
+ 
+             byte[] pixels = region.Bytes;
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs b/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
-index 88e915a..24ac025 100644
+index 88e915a..8deb4b5 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
-@@ -67,11 +67,13 @@ namespace CutTheRopeDX.Browser
+@@ -21,6 +21,12 @@ namespace CutTheRopeDX.Browser
+         private const int PreloadConcurrency = 8;
+ 
+         private readonly ContentCache _cache = new();
++        private readonly System.Collections.Generic.Dictionary<string, (int w, int h)> sizes = [];
++
++        public (int w, int h)? dimensions(string path)
++        {
++            return sizes.TryGetValue(Normalize(path), out var size) ? size : null;
++        }
+ 
+         private static string Normalize(string relativePath)
+         {
+@@ -67,11 +73,21 @@ namespace CutTheRopeDX.Browser
                      + "Run scripts/build_web_content.py first.");
  
              using JsonDocument document = JsonDocument.Parse(json);
 +            previewcontent selection = new();
              foreach (JsonProperty category in document.RootElement.EnumerateObject())
              {
++                if (category.Name == "dimensions")
++                {
++                    foreach (JsonProperty image in category.Value.EnumerateObject())
++                    {
++                        sizes[Normalize(image.Name)] = (image.Value[0].GetInt32(), image.Value[1].GetInt32());
++                    }
++                    continue;
++                }
                  string[] paths = [.. category.Value
                      .EnumerateArray()
                      .Select(element => Normalize(element.GetString()))
@@ -384,6 +442,28 @@ index 88fce30..1186138 100644
 -    const response = await fetch(url);
 +    const response = await fetch(globalThis.ctrdxquality?.url(url) ?? url);
      return response.ok ? await response.text() : null;
+ }
+ 
+diff --git a/src/CutTheRopeDX.Browser/wwwroot/glcontext.js b/src/CutTheRopeDX.Browser/wwwroot/glcontext.js
+index 5644755..096158e 100644
+--- a/src/CutTheRopeDX.Browser/wwwroot/glcontext.js
++++ b/src/CutTheRopeDX.Browser/wwwroot/glcontext.js
+@@ -2,7 +2,7 @@ import * as hostEvents from "./host-events.js";
+ 
+ /** Returns the canvas box and its backing size, in the order managed code reads them. */
+ function measure(canvas) {
+-    const ratio = Math.min(globalThis.devicePixelRatio || 1, 2);
++    const ratio = Math.min(globalThis.devicePixelRatio || 1, globalThis.ctrdxquality?.get() === "Low" ? 1 : 2);
+     const cssWidth = Math.max(1, Math.round(canvas.clientWidth));
+     const cssHeight = Math.max(1, Math.round(canvas.clientHeight));
+     return [
+@@ -104,7 +104,7 @@ function report(canvas) {
+     hostEvents.resize(
+         Math.max(1, canvas.clientWidth),
+         Math.max(1, canvas.clientHeight),
+-        Math.min(globalThis.devicePixelRatio || 1, 2),
++        Math.min(globalThis.devicePixelRatio || 1, globalThis.ctrdxquality?.get() === "Low" ? 1 : 2),
+     );
  }
  
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/host-events.js b/src/CutTheRopeDX.Browser/wwwroot/host-events.js
@@ -1210,6 +1290,30 @@ index 7f0fd69..1b806b3 100644
          /// <summary>Returns whether <paramref name="key"/> transitioned from up to down this frame.</summary>
          /// <param name="key">The key to check.</param>
          bool IsKeyPressed(KeyCode key);
+diff --git a/src/CutTheRopeDX.Core/Framework/Visual/MultiParticles.cs b/src/CutTheRopeDX.Core/Framework/Visual/MultiParticles.cs
+index 405e119..201ed28 100644
+--- a/src/CutTheRopeDX.Core/Framework/Visual/MultiParticles.cs
++++ b/src/CutTheRopeDX.Core/Framework/Visual/MultiParticles.cs
+@@ -143,6 +143,7 @@ namespace CutTheRopeDX.Framework.Visual
+         /// <inheritdoc />
+         public override void Draw()
+         {
++            if (CutTheRopeDX.GameMain.previeweffects.reduced) return;
+             PreDraw();
+             if (blendAdditive)
+             {
+diff --git a/src/CutTheRopeDX.Core/Framework/Visual/Particles.cs b/src/CutTheRopeDX.Core/Framework/Visual/Particles.cs
+index 62461fe..73b4c92 100644
+--- a/src/CutTheRopeDX.Core/Framework/Visual/Particles.cs
++++ b/src/CutTheRopeDX.Core/Framework/Visual/Particles.cs
+@@ -124,6 +124,7 @@ namespace CutTheRopeDX.Framework.Visual
+         /// <inheritdoc />
+         public override void Draw()
+         {
++            if (CutTheRopeDX.GameMain.previeweffects.reduced) return;
+             PreDraw();
+             PostDraw();
+         }
 diff --git a/src/CutTheRopeDX.Core/GameMain/BoxOpenClose.cs b/src/CutTheRopeDX.Core/GameMain/BoxOpenClose.cs
 index b994759..1c1bed6 100644
 --- a/src/CutTheRopeDX.Core/GameMain/BoxOpenClose.cs
@@ -1231,6 +1335,41 @@ index b994759..1c1bed6 100644
              if (!CustomLevelSession.IsActive)
              {
                  Button nextButton = MenuController.CreateShortButtonWithTextIDDelegate(Application.GetString("NEXT"), 9, b);
+diff --git a/src/CutTheRopeDX.Core/GameMain/Bungee.cs b/src/CutTheRopeDX.Core/GameMain/Bungee.cs
+index 9dc4e7f..a609679 100644
+--- a/src/CutTheRopeDX.Core/GameMain/Bungee.cs
++++ b/src/CutTheRopeDX.Core/GameMain/Bungee.cs
+@@ -234,6 +234,10 @@ namespace CutTheRopeDX.GameMain
+             b.relaxed = StretchLevelFor(segmentLength);
+             bool useAlternateStripe = false;
+             int sampleCount = (count - 1) * points;
++            if (b.drawPts.Length < (sampleCount + 2) * 2)
++            {
++                Array.Resize(ref b.drawPts, Math.Max(b.drawPts.Length * 2, (sampleCount + 2) * 2));
++            }
+             float[] pointBuffer = new float[sampleCount * 2];
+             b.drawPtsCount = sampleCount * 2;
+             float sampleStep = 1f / sampleCount;
+@@ -1052,6 +1056,10 @@ namespace CutTheRopeDX.GameMain
+                     break;
+                 }
+ 
++                if (lightIdx >= lightFrames.Length)
++                {
++                    Array.Resize(ref lightFrames, Math.Max(lightFrames.Length * 2, lightIdx + 1));
++                }
+                 float x = drawPts[i];
+                 float y = drawPts[i + 1];
+ 
+@@ -1267,7 +1275,7 @@ namespace CutTheRopeDX.GameMain
+         /// Per-light frame indices, stored on first draw and reused for consistency.
+         /// The number of lights can go up to 200.
+         /// </summary>
+-        private readonly int[] lightFrames = new int[200];
++        private int[] lightFrames = new int[200];
+ 
+         /// <summary>
+         /// Number of lights determined on first draw (-1 = not yet determined).
 diff --git a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs b/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
 index 597afdd..68750f7 100644
 --- a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
@@ -1654,3 +1793,44 @@ index b36d49e..99d8739 100644
  
          #endregion
  
+diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
+index 60322f2..17ef0aa 100644
+--- a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
++++ b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
+@@ -780,8 +780,8 @@ namespace CutTheRopeDX.Rendering.Skia
+             {
+                 FlushQuads();
+                 _batchTexture = _boundTexture;
+-                _batchTextureWidth = _boundTexture?.Width ?? 1f;
+-                _batchTextureHeight = _boundTexture?.Height ?? 1f;
++                _batchTextureWidth = _boundTexture?.Image.Width ?? 1f;
++                _batchTextureHeight = _boundTexture?.Image.Height ?? 1f;
+                 _batchBlendMode = EffectiveBlendMode;
+                 _batchWeightsSourceByAlpha = WeightsSourceByAlpha;
+             }
+diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
+index 8b4234d..dc104c1 100644
+--- a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
++++ b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
+@@ -10,7 +10,7 @@ namespace CutTheRopeDX.Rendering.Skia
+     /// The device generation that uploaded the image, from <see cref="SkiaResourceRegistry"/>.
+     /// Left device-independent when nothing is tracking losses.
+     /// </param>
+-    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent) : ITextureHandle
++    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent, int logicalwidth = 0, int logicalheight = 0) : ITextureHandle
+     {
+         /// <summary>
+         /// Rewrites a color to opaque grey carrying its own alpha, so multiplying a texture by it
+@@ -48,10 +48,10 @@ namespace CutTheRopeDX.Rendering.Skia
+         public int Generation { get; } = generation;
+ 
+         /// <inheritdoc />
+-        public int Width => Image.Width;
++        public int Width => logicalwidth > 0 ? logicalwidth : Image.Width;
+ 
+         /// <inheritdoc />
+-        public int Height => Image.Height;
++        public int Height => logicalheight > 0 ? logicalheight : Image.Height;
+ 
+         /// <summary>
+         /// The shader a batch samples this texture through, optionally weighted by the texture's

@@ -35,6 +35,7 @@ namespace CutTheRopeDX.Browser
 
             add(selected, [Resources.Img.ObjCandyFx, Resources.Img.ObjSpider, Resources.Img.ObjBee,
                 Resources.Img.ObjGhost, Resources.Img.FxSleep, Resources.Img.FxHalloween,
+                Resources.Img.HatXmas, Resources.Img.HatHalloween, Resources.Img.ObjHook,
                 Resources.Img.ConfettiParticles, Resources.Img.ConfettiParticlesExp, Resources.Img.ProfessorHand]);
             foreach (PackDefinition pack in PackConfig.Packs)
             {

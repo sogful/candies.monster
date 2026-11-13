@@ -2,7 +2,7 @@ import * as hostEvents from "./host-events.js";
 
 /** Returns the canvas box and its backing size, in the order managed code reads them. */
 function measure(canvas) {
-    const ratio = Math.min(globalThis.devicePixelRatio || 1, 2);
+    const ratio = Math.min(globalThis.devicePixelRatio || 1, globalThis.ctrdxquality?.get() === "Low" ? 1 : 2);
     const cssWidth = Math.max(1, Math.round(canvas.clientWidth));
     const cssHeight = Math.max(1, Math.round(canvas.clientHeight));
     return [
@@ -104,7 +104,7 @@ function report(canvas) {
     hostEvents.resize(
         Math.max(1, canvas.clientWidth),
         Math.max(1, canvas.clientHeight),
-        Math.min(globalThis.devicePixelRatio || 1, 2),
+        Math.min(globalThis.devicePixelRatio || 1, globalThis.ctrdxquality?.get() === "Low" ? 1 : 2),
     );
 }
 

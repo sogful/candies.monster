@@ -54,6 +54,7 @@ test("quality defaults to medium, persists valid choices and only rewrites conte
     assert.equal(current.quality.get(), "Medium");
     assert.equal(current.quality.url("./content/images/menu.webp"), "./content/medium/images/menu.webp");
     assert.equal(current.quality.url("./content/tier0.json"), "./content/tier0.json");
+    assert.equal(current.quality.set("Medium"), false);
     assert.equal(current.quality.set("Low"), true);
     assert.equal(current.storage.get("ctrdxquality"), "Low");
     assert.equal(current.quality.url("./content/sounds/sfx/tap.ogg"), "./content/low/sounds/sfx/tap.ogg");

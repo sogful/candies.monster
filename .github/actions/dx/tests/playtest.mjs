@@ -255,3 +255,40 @@ test("runtime errors preserve bounded text and reject non-string details", async
         assert.equal(errors[2].length, 8192);
     } finally {controller.close()}
 });
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+test("both quit transports play parent audio before closing and ignore the second notification", async () => {
+    const previous = globalThis.document;
+    try {
+        for (const first of ["bye", "ctrdx-exit"]) {
+            const events = [];
+            const listeners = new Map();
+            globalThis.location = {origin: "https://candies.monster"};
+            globalThis.window = {addEventListener: (name, callback) => listeners.set(name, callback)};
+            globalThis.document = {querySelector: () => ({currentTime: 0, play: () => {events.push("tap"); return Promise.resolve()}})};
+            const frame = {src: "about:blank", contentWindow: {}, classList: {add() {}, remove() {}}};
+            let resolve;
+            const closed = new Promise(done => {resolve = done});
+            const controller = createcontroller({frame, onerror: assert.fail, ontoolong: assert.fail, onclose: () => {events.push("close"); controller.close(); resolve()}});
+            const channel = new BroadcastChannel("ctrdx-playtest");
+            try {
+                await controller.open("dx", {xml: "<map />"});
+                const nonce = new URL(frame.src).searchParams.get("playtest");
+                const message = () => listeners.get("message")({origin: location.origin, source: frame.contentWindow, data: {type: "ctrdx-exit", nonce}});
+                if (first === "bye") channel.postMessage(JSON.stringify({v: 1, type: "bye", nonce}));
+                else message();
+                const timeout = setTimeout(() => resolve(), 5000);
+                await closed;
+                clearTimeout(timeout);
+                message();
+                channel.postMessage(JSON.stringify({v: 1, type: "bye", nonce}));
+                await new Promise(done => setTimeout(done, 20));
+                assert.deepEqual(events, ["tap", "close"]);
+            } finally {controller.close(); channel.close()}
+        }
+    } finally {
+        if (previous === undefined) delete globalThis.document;
+        else globalThis.document = previous;
+    }
+});
