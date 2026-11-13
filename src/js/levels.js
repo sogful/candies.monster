@@ -4,6 +4,7 @@ import {morestuff} from "./rope/index.js";
 import {catalogue} from "./catalogue.js";
 import {filters} from "./filters.js";
 import {prefetch} from "./renderer/cache.js";
+import {tags} from "./tags.js";
 
 morestuff();
 
@@ -62,7 +63,7 @@ function createlevel(entry) {
     const rating = element("div", "rating");
     rating.append(element("p", "", String(entry.rating ?? 0)), picture("/assets/images/level/star.webp", "staricon", "stars"));
     const plays = element("div", "cardplays");
-    plays.append(element("p", "", String(entry.plays ?? 0)), picture("/assets/images/buttons/up.png", "playcounticon", "plays"));
+    plays.append(element("p", "", String(entry.plays ?? 0)), picture("/assets/images/buttons/playcount.svg", "playcounticon", "plays"));
     const features = element("div", "features");
     for (const name of entry.features || []) {
         if (!/^[a-z]+$/.test(name)) continue;
@@ -75,8 +76,10 @@ function createlevel(entry) {
         features.append(more);
     }
     footer.append(rating, plays, features);
+    const labels = element("div", "cardtags");
+    tags(entry, labels);
     card.append(thumbnail(entry));
-    card.append(header, footer);
+    card.append(footer, header, labels);
     return card;
 }
 
@@ -151,7 +154,7 @@ catalogue().then(data => {
 
 list.addEventListener("click", event => {
     const card = event.target.closest(".level");
-    if (!card || event.target.closest(".features") || !getSelection().isCollapsed) return;
+    if (!card || event.target.closest(".features,.leveltag") || !getSelection().isCollapsed) return;
     detail.open(card.dataset.level);
 });
 

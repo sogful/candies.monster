@@ -92,6 +92,7 @@ export function parse(text) {
         }
     }
     return {
+        settings: Object.fromEntries([...design?.attributes || []].map(attribute => [attribute.name, attribute.value])),
         width: Math.max(1, Math.min(8192, number(dimensions?.getAttribute("width"), 320))),
         height: Math.max(1, Math.min(8192, number(dimensions?.getAttribute("height"), 480))),
         water: number(design?.getAttribute("water")),

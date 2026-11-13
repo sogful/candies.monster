@@ -8,6 +8,7 @@ import {tags} from "./tags.js";
 import {downloadlevel, filename} from "./download.js";
 import {inspection} from "./inspection.js";
 import {comments} from "./comments.js";
+import {features} from "./features.js";
 
 export function leveldetails() {
     const root = document.documentElement;
@@ -84,7 +85,7 @@ export function leveldetails() {
         panel.querySelector(".levelauthor").textContent = "by " + entry.creator;
         panel.querySelector(".levelname").textContent = entry.title;
         panel.querySelector(".leveldownload").download = filename(entry);
-        document.title = entry.title + " by " + entry.creator + " - candies.monster";
+        document.title = entry.title + " by " + entry.creator;
         panel.querySelector(".leveldescription").replaceChildren(discordmd(entry.description || entry.title));
         tags(entry, panel.querySelector(".leveltags"));
         reactions(entry, panel.querySelector(".levelreactions"));
@@ -122,6 +123,9 @@ export function leveldetails() {
         const description = create("div", "leveldescription");
         description.append(discordmd(entry.description || entry.title));
         body.append(description);
+        const notable = create("div", "levelfeatures");
+        notable.hidden = true;
+        body.append(notable);
         const labels = create("div", "leveltags");
         tags(entry, labels);
         body.append(labels);
@@ -144,7 +148,10 @@ export function leveldetails() {
         void refresh(entry).then(() => update(entry)).catch(() => {});
         void level(entry.file).then(map => {
             entry.objects = map.objects.length;
-            if (current === entry.id && objects.isConnected) objects.querySelector(".levelvalue").textContent = String(entry.objects);
+            if (current === entry.id && objects.isConnected) {
+                objects.querySelector(".levelvalue").textContent = String(entry.objects);
+                features(map, notable);
+            }
         }).catch(() => {});
     }
 
@@ -171,10 +178,20 @@ export function leveldetails() {
         const entry = entries.find((item, index) => String(item.id ?? index + 1) === id);
         if (entry) {
             scene(entry);
-            document.title = entry.title + " by " + entry.creator + " - candies.monster";
+            document.title = entry.title + " by " + entry.creator;
             content(entry);
         } else {
-            panel.append(control(), create("p", "levelstatus", ready ? "level not found" : "loading level..."));
+            panel.append(control());
+            if (ready) panel.append(create("p", "levelstatus", "level not found"));
+            else {
+                const loading = create("div", "levelloading");
+                loading.setAttribute("role", "status");
+                loading.setAttribute("aria-label", "Loading level");
+                void import("/assets/static/imageloading.js").then(({loadingsvg}) => {
+                    if (loading.isConnected) loading.innerHTML = loadingsvg;
+                });
+                panel.append(loading);
+            }
         }
     }
 

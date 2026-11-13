@@ -78,7 +78,7 @@
 
 .header {
     display: flex; flex-direction: column;
-    gap: 2px; min-width: 0;
+    gap: 0; min-width: 0;
 }
 
 .title, .creator {
@@ -86,7 +86,7 @@
     min-width: 0; line-height: 1.1;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.15em 0 #000;
-    padding: 0.12em 0.15em 0.26em;
+    padding: 0.1em 0.15em 0.14em;
 }
 
 .title {
@@ -104,7 +104,29 @@
 .footer {
     position: relative; display: flex;
     align-items: center; gap: 8px;
-    margin-top: 4px;
+    align-self: flex-end; flex-shrink: 0;
+    margin: 0 0 2px;
+}
+
+.cardtags {
+    display: flex; gap: 3px;
+    overflow-x: auto; flex-shrink: 0;
+    margin-top: auto; padding-top: 2px;
+    max-width: 100%; scrollbar-width: none;
+    touch-action: pan-x;
+}
+.cardtags[hidden] {display: none}
+.cardtags::-webkit-scrollbar {display: none}
+.cardtags .leveltag {
+    font-size: clamp(8px,3.6cqw,14px); padding: 1px 4px;
+    min-width: 0; flex-shrink: 0;
+}
+.cardtags .tagemoji {
+    width: 1em; height: 1em;
+}
+
+@container (max-width: 180px) {
+    .title {-webkit-line-clamp: 1}
 }
 
 .rating, .features, .cardplays {
@@ -207,9 +229,9 @@
         width: calc(100% - 44px); gap: 8px;
         margin-right: 24px;
     }
-    .level {padding: 6px 8px}
+    .level {padding: 5px 6px}
     .header {gap: 0}
-    .title, .creator {padding: 0.12em 0.15em 0.26em}
+    .title, .creator {padding: 0.1em 0.15em 0.14em}
     .footer {
         gap: 5px; margin-top: 1px;
     }
@@ -219,6 +241,10 @@
     .controls {inset: auto 12px 8px}
     .previous, .next {width: 30px}
     .arrow {width: 30px}
+}
+
+@media (max-width: 350px) {
+    .level {padding: 3px 4px}
 }
 
 /*//////////////////////////////////////////////////////////////////////*/

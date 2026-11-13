@@ -17,6 +17,7 @@
 .leveldetail[hidden] {display: none}
 .leveldetail::-webkit-scrollbar {display: none}
 .levelopen .levelcontent > .main {visibility: hidden}
+.levelopen .levelbrowser {pointer-events: auto}
 .levelopen .morestuff {visibility: hidden}
 .levelopen .github {
     opacity: 0; visibility: hidden;
@@ -123,6 +124,7 @@
     border-image-source: url("/assets/images/coolbox.svg");
     border-image-slice: 100 fill; border-image-width: 32px;
     border-image-outset: 0 0 32px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.65));
 }
 
 .levelbody {
@@ -133,6 +135,16 @@
 .levelbody::-webkit-scrollbar {display: none}
 .levelinformation .leveltags {
     justify-content: flex-start; margin-top: 6px;
+}
+.levelfeatures {
+    display: flex; flex-wrap: wrap;
+    gap: 4px; margin-top: 6px;
+    text-align: left;
+}
+.levelfeatures[hidden] {display: none}
+.levelfeature {
+    padding: 3px 6px; border-radius: 6px;
+    background: rgba(0,0,0,0.3); font-size: 17px;
 }
 
 .leveldescription {
@@ -169,6 +181,23 @@
     font-size: 24px; margin: 14px 0 0;
 }
 .levelstatus:empty {display: none}
+
+.levelloading {
+    position: absolute; left: 50%;
+    top: 50%; width: 56px;
+    height: 56px; margin: -28px;
+    animation: levelloadingspin 1.5s linear infinite;
+}
+.levelloading svg {
+    display: block; width: 100%;
+    height: 100%;
+}
+@keyframes levelloadingspin {
+    to {transform: rotate(360deg)}
+}
+@media (prefers-reduced-motion: reduce) {
+    .levelloading {animation: none}
+}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
