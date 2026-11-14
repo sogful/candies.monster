@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cut the Rope leaderboards</title>
+    <link rel="icon" href="/assets/images/candies/favicon.png">
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/src/css/leaderboards/index.css">
+    <script src="/assets/static/js/text/fonts.js"></script>
+    <script async src="/assets/static/js/global.js"></script>
+</head>
+<body class="leaderboardpage">
+    <a class="backlink" href="/" aria-label="Back">
+        <img src="/assets/images/icons/left.svg" alt="" width="36" height="36">
+    </a>
+    <main class="scorepanel">
+        <h1 class="scoreheading">Cut the Rope</h1>
+        <p class="scoresubtitle">Google Play leaderboards</p>
+        <nav class="scoreboxes" aria-label="Boxes"></nav>
+        <div class="scorecontrols">
+            <p class="scoreperiod">All time</p>
+        </div>
+        <p class="scoredate"></p>
+        <div class="scorestatus" role="status"></div>
+        <table class="scoretable" hidden>
+            <thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">Score</th></tr></thead>
+            <tbody class="scorerows"></tbody>
+        </table>
+    </main>
+    <audio class="click" src="/assets/audio/tap.mp3" preload="none"></audio>
+    <script src="/src/js/leaderboards/index.js" type="module"></script>
+</body>
+</html>

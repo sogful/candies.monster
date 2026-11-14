@@ -1,0 +1,96 @@
+import {spinner} from "/assets/static/js/images/spinner.js";
+import {suspicious, formatscore} from "./scores.js";
+
+const navigation = document.querySelector(".scoreboxes");
+const rows = document.querySelector(".scorerows");
+const table = document.querySelector(".scoretable");
+const status = document.querySelector(".scorestatus");
+const date = document.querySelector(".scoredate");
+let boards = [];
+let reasons = new Map();
+let selected = "";
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+function sound() {
+    const audio = document.querySelector(".click");
+    audio.currentTime = 0;
+    void audio.play().catch(() => {});
+}
+
+function element(tag, classname, text) {
+    const node = document.createElement(tag);
+    node.className = classname;
+    if (text !== undefined) node.textContent = text;
+    return node;
+}
+
+function select(write = false) {
+    const board = boards.find(item => item.id === location.hash.slice(1)) || boards[0];
+    if (!board) return;
+    selected = board.id;
+    if (write) history.replaceState(null, "", "#" + selected);
+    for (const button of navigation.querySelectorAll("button")) button.setAttribute("aria-pressed", String(button.dataset.board === selected));
+    const visible = board.scores.filter(row => !reasons.has(board.id + ":" + row.rank));
+    rows.replaceChildren(...visible.map(row => {
+        const line = element("tr", "scorerow");
+        const rank = element("td", "scorerank", row.rank);
+        const player = element("td", "scoreplayer", row.name);
+        const score = element("td", "scorevalue", formatscore(row.score));
+        line.append(rank, player, score);
+        return line;
+    }));
+    table.hidden = !visible.length;
+    status.hidden = Boolean(visible.length);
+    status.replaceChildren();
+    if (!visible.length) {
+        const image = element("img", "scoreempty");
+        image.src = "/assets/images/omnom/404/404.gif";
+        image.alt = "";
+        status.append(image, element("p", "", "no results :("));
+    }
+    const stamp = new Date(board.captured);
+    date.textContent = "Captured " + stamp.toLocaleDateString(undefined, {year: "numeric", month: "short", day: "numeric"});
+    date.title = stamp.toISOString();
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+navigation.addEventListener("click", event => {
+    const button = event.target.closest("button[data-board]");
+    if (!button) return;
+    sound();
+    if (selected === button.dataset.board) return;
+    location.hash = button.dataset.board;
+});
+window.addEventListener("hashchange", () => select());
+
+spinner(status, "Loading leaderboards");
+try {
+    let data;
+    try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 8000);
+        try {
+            const response = await fetch("https://scores.cvowot.workers.dev/leaderboards", {signal: controller.signal});
+            if (!response.ok) throw new Error("Leaderboards unavailable");
+            data = await response.json();
+            if (!Array.isArray(data.boards)) throw new Error("Invalid leaderboards");
+        } finally {clearTimeout(timer)}
+    } catch {
+        const response = await fetch("/assets/static/data/leaderboards/classic.json");
+        if (!response.ok) throw new Error("Leaderboards unavailable");
+        data = await response.json();
+    }
+    boards = data.boards;
+    reasons = suspicious(boards);
+    navigation.replaceChildren(...boards.map(board => {
+        const button = element("button", "scorebox", board.title);
+        button.type = "button";
+        button.dataset.board = board.id;
+        return button;
+    }));
+    select(true);
+} catch {
+    status.textContent = "Couldn't load leaderboards.";
+}

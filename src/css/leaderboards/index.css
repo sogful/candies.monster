@@ -1,0 +1,120 @@
+@import url("../browser/text.css");
+
+@font-face {
+    font-family: "Good Dog"; font-display: swap;
+    src: url("/assets/fonts/gooddog.woff2") format("woff2");
+}
+
+.leaderboardpage {
+    margin: 0; padding: 24px 52px;
+    min-height: 100vh; box-sizing: border-box;
+    color: #fff; background: #e9a856;
+    background-image: url("/assets/images/bgs/original.webp"); background-size: cover;
+    background-position: center; background-attachment: fixed;
+    font-family: var(--sitefont,"Good Dog"),"Playpen","Maiyuan","Dongdong",sans-serif; font-size: 24px;
+    cursor: url("/assets/static/cursors/idle.cur"), default;
+}
+
+.leaderboardpage :is(a,button,input,label) {
+    cursor: url("/assets/static/cursors/link.cur"), pointer;
+}
+
+.scorepanel {
+    max-width: 820px; margin: auto;
+    padding: 18px 24px; border-radius: 24px;
+    background: rgba(0,0,0,0.5);
+}
+
+.scoreheading, .scoresubtitle, .scorebox, .scoreperiod,
+.scoredate, .scoretable, .scorestatus {
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: -0.08em 0.15em 0 #000,0.08em 0.15em 0 #000,0 0.07em 0 #000,0 0.23em 0 #000,-0.057em 0.093em 0 #000,0.057em 0.093em 0 #000,-0.057em 0.207em 0 #000,0.057em 0.207em 0 #000;
+}
+
+.scoreheading {
+    margin: 0; text-align: center;
+    font-size: 48px; font-weight: normal;
+}
+
+.scoresubtitle {
+    margin: 0 0 18px; text-align: center;
+    font-size: 27px;
+}
+
+.backlink {
+    position: fixed; top: 12px;
+    left: 10px; line-height: 0;
+}
+
+.scoreboxes {
+    display: flex; flex-wrap: wrap;
+    gap: 5px; justify-content: center;
+}
+
+.scorebox {
+    border: 0; border-radius: 14px;
+    padding: 4px 9px; font: inherit;
+    color: #fff; background: rgba(0,0,0,0.5);
+    font-size: 23px; line-height: 1.2;
+}
+
+.scorebox[aria-pressed="true"] {background: rgba(160,160,160,0.5)}
+
+.scorecontrols {
+    display: flex; justify-content: space-between;
+    align-items: center; gap: 12px;
+    flex-wrap: wrap; margin-top: 20px;
+}
+
+.scoreperiod {margin: 0}
+.scoredate {
+    margin: 4px 0 12px; font-size: 17px;
+    opacity: 0.7;
+}
+
+.scoretable {
+    width: 100%; border-collapse: collapse;
+    font-size: 27px; table-layout: fixed;
+}
+.scoretable th {
+    text-align: left; font-weight: normal;
+    padding: 5px; font-size: 23px;
+}
+.scoretable th:first-child {width: 50px}
+.scoretable th:last-child {
+    text-align: right; width: 42%;
+}
+.scorerow td {
+    padding: 7px 5px; border-top: 1px solid rgba(255,255,255,0.15);
+    overflow-wrap: anywhere;
+}
+.scorevalue {
+    text-align: right; font-variant-numeric: tabular-nums;
+}
+.scorestatus {
+    min-height: 160px; display: flex;
+    align-items: center; justify-content: center;
+    flex-direction: column; text-align: center;
+}
+.scoreempty {
+    max-width: 180px; height: 120px;
+    object-fit: contain;
+}
+.scorestatus p {margin: 0}
+.scorestatus[hidden], .scoretable[hidden] {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+@media (max-width: 560px) {
+    .leaderboardpage {padding: 58px 10px 12px}
+    .scorepanel {padding: 14px 10px}
+    .scoreheading {font-size: 38px}
+    .scoresubtitle {font-size: 23px}
+    .scorebox {
+        font-size: 19px; padding: 3px 7px;
+    }
+    .scoretable {font-size: 21px}
+    .scoretable th {font-size: 19px}
+    .scoretable th:first-child {width: 32px}
+    .scoretable th:last-child {width: 37%}
+    }
