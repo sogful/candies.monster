@@ -141,7 +141,7 @@ class musicplayer {
             downloadbutton.className = "downloadbutton clickable";
             downloadbutton.dataset.format = format;
             const displayformat = format === "dspadpcm.bcstm" ? "bcstm" : format;
-            downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/assets/images/icons/download.png">`;
+            downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/music/assets/images/icons/download.png">`;
             downloadbuttons.appendChild(downloadbutton);
         });
 
@@ -478,13 +478,13 @@ class musicplayer {
         const loopbutton = document.querySelector(".loopallbutton");
         if (this.isloopall) {
             loopbutton.classList.add("active");
-            loopbutton.querySelector("img").src = "/assets/images/icons/loop.png";
+            loopbutton.querySelector("img").src = "/music/assets/images/icons/loop.png";
         } else if (this.isloopone) {
             loopbutton.classList.add("active");
-            loopbutton.querySelector("img").src = "/assets/images/icons/loopone.png";
+            loopbutton.querySelector("img").src = "/music/assets/images/icons/loopone.png";
         } else {
             loopbutton.classList.remove("active");
-            loopbutton.querySelector("img").src = "/assets/images/icons/loop.png";
+            loopbutton.querySelector("img").src = "/music/assets/images/icons/loop.png";
         }
     }
 
@@ -598,7 +598,7 @@ class musicplayer {
     updateplaybutton() {
         const playpausebutton = document.querySelector(".playpausebutton");
         const img = playpausebutton.querySelector("img");
-        img.src = this.isplaying ? "/assets/images/icons/pause.png" : "/assets/images/icons/play.svg";
+        img.src = this.isplaying ? "/music/assets/images/icons/pause.png" : "/music/assets/images/icons/play.png";
     }
 
     updateprogress() {
