@@ -127,14 +127,14 @@ function image(url) {
 function loadrain() {
     if (sheet || loading) return;
     loading = Promise.all([
-        image("/assets/images/candies/candies.webp"),
+        image("/assets/images/candies/candieslow.webp"),
         fetch("/assets/images/candies/candies.json").then(response => {
             if (!response.ok) throw new Error("Candy metadata unavailable");
             return response.json();
         })
     ]).then(([bitmap, metadata]) => {
         sheet = bitmap;
-        sprites = metadata.frames.filter(sprite => {
+        sprites = metadata.frames.map(sprite => ({...sprite, frame: Object.fromEntries(Object.entries(sprite.frame).map(([key, value]) => [key, value / 2]))})).filter(sprite => {
             const frame = sprite.frame;
             return frame && frame.w > 0 && frame.h > 0 && frame.x >= 0 && frame.y >= 0;
         });
@@ -148,6 +148,7 @@ if (context) {
     resume();
     document.addEventListener("visibilitychange", resume);
     document.addEventListener("homeviewchange", resume);
+    document.addEventListener("levelviewchange", resume);
     document.addEventListener("previewviewchange", resume);
     document.addEventListener("gameviewchange", resume);
     window.addEventListener("resize", resize, {passive: true});
