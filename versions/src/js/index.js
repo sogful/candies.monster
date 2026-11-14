@@ -3,7 +3,7 @@ import {loadcataloguedata} from "./catalogue/data.js";
 import {loadversions} from "./catalogue/versions.js";
 import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
-import {startsearch} from "./search/index.js";
+import {startsearch} from "./search.js";
 import {preparekeys, packagekey, gameroute, readhash, revealroute, startlinks} from "./links.js";
 import "/assets/static/js/images/favicon.js";
 import "./quality.js";

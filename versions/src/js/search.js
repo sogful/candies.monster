@@ -1,5 +1,5 @@
-import {gameroute, readhash, routehash} from "../links.js";
-import {packageheader, versionpanel} from "../catalogue/versions.js";
+import {gameroute, readhash, routehash} from "./links.js";
+import {packageheader, versionpanel} from "./catalogue/versions.js";
 import {findresults, searchindex} from "./catalogue.js";
 
 /*//////////////////////////////////////////////////////////////////////*/

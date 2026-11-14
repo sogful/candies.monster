@@ -198,7 +198,7 @@ export function leveldetails() {
         sharing.type = "button";
         sharing.setAttribute("aria-label", "share level");
         sharing.setAttribute("aria-expanded", "false");
-        sharing.append(image("/preview/assets/images/share.png", "", ""));
+        sharing.append(image("/assets/images/preview/share.png", "", ""));
         actions.append(download, sharing, share(entry, sharing));
         const utilities = create("div", "levelutilities");
         utilities.append(inspection(entry), actions, discordbutton(entry));
@@ -247,7 +247,7 @@ export function leveldetails() {
         const entry = entries.find((item, index) => String(item.id ?? index + 1) === id);
         if (entry) {
             const selected = entry.revisions?.find(file => file.id === revision);
-            const shown = selected ? {...entry, revision, requirements: [], filename: selected.name, objects: null, file: new URL("/levels/" + (selected.thread || id) + "/files/" + selected.id, entry.detailurl).href} : entry;
+            const shown = selected ? {...entry, revision, requirements: [], filename: selected.name, objects: null, file: new URL("/levels" + (selected.thread || id) + "/files/" + selected.id, entry.detailurl).href} : entry;
             scene(shown);
             document.title = entry.title + " by " + entry.creator;
             content(shown);

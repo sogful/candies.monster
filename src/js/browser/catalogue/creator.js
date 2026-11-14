@@ -65,7 +65,7 @@ export function profile(container, id, entries) {
     container.append(back, avatar, text);
     if (!entry?.detailurl) return;
     if (!requests.has(id)) {
-        const url = new URL("/creators/" + id, entry.detailurl);
+        const url = new URL("/creators" + id, entry.detailurl);
         const request = fetch(url).then(response => {
             if (!response.ok) throw new Error("Profile unavailable");
             return response.json();

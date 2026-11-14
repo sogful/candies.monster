@@ -19,10 +19,13 @@
     <meta name="bingbot" content="index, follow">
     <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
 
-    <link rel="stylesheet" href="/src/css/music/layout.css">
+    <link rel="stylesheet" href="/music/src/style.css">
     <script src="/assets/static/js/text/fonts.js"></script>
+    <link rel="stylesheet" href="/assets/static/css/back.css">
+    <script defer src="/assets/static/js/back.js"></script>
 </head>
 <body>
+    <a class="pageback" href="/" aria-label="Back"><img src="/assets/images/buttons/back.png" alt="" width="42" height="42" draggable="false"></a>
     <div class="stupidbg"></div>
     <audio class="audioplayer" preload="auto"></audio>
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
@@ -54,23 +57,23 @@
 
     <div class="controlbar">
         <button class="controlbutton playpausebutton clickable">
-            <img src="/music/assets/images/icons/play.png">
+            <img src="/assets/images/music/icons/play.png">
         </button>
         
         <button class="controlbutton prevbutton clickable">
-            <img src="/music/assets/images/icons/previous.png">
+            <img src="/assets/images/music/icons/previous.png">
         </button>
         
         <button class="controlbutton nextbutton clickable">
-            <img src="/music/assets/images/icons/next.png">
+            <img src="/assets/images/music/icons/next.png">
         </button>
         
         <div class="playbackmodes">
             <button class="modebutton active loopallbutton clickable">
-                <img src="/music/assets/images/icons/loop.png">
+                <img src="/assets/images/music/icons/loop.png">
             </button>
             <button class="modebutton shufflebutton clickable">
-                <img src="/music/assets/images/icons/shuffle.png">
+                <img src="/assets/images/music/icons/shuffle.png">
             </button>
         </div>
         <div class="timedisplay">??:??/??:??</div>
@@ -89,10 +92,10 @@
         </div>
         
         <button class="fullscreenbutton clickable">
-            <img src="/music/assets/images/icons/fullscreen.png">
+            <img src="/assets/images/music/icons/fullscreen.png">
         </button>
     </div>
 
-    <script src="/src/js/music/index.js"></script>
+    <script src="/music/src/index.js"></script>
 </body>
 </html>

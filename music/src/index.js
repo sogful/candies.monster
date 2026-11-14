@@ -141,7 +141,7 @@ class musicplayer {
             downloadbutton.className = "downloadbutton clickable";
             downloadbutton.dataset.format = format;
             const displayformat = format === "dspadpcm.bcstm" ? "bcstm" : format;
-            downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/music/assets/images/icons/download.png">`;
+            downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/assets/images/music/icons/download.png">`;
             downloadbuttons.appendChild(downloadbutton);
         });
 
@@ -319,7 +319,7 @@ class musicplayer {
         const tryplay = () => {
             if (index >= sources.length) {return}
             const filename = sources[index];
-            const audiopath = filename.startsWith("/") ? filename : `assets/audio/${filename}`;
+            const audiopath = filename.startsWith("/") ? filename : `/assets/audio/music/${filename}`;
             this.triggeredloop = false;
             this.audio.src = audiopath;
             this.audio.load();
@@ -478,13 +478,13 @@ class musicplayer {
         const loopbutton = document.querySelector(".loopallbutton");
         if (this.isloopall) {
             loopbutton.classList.add("active");
-            loopbutton.querySelector("img").src = "/music/assets/images/icons/loop.png";
+            loopbutton.querySelector("img").src = "/assets/images/music/icons/loop.png";
         } else if (this.isloopone) {
             loopbutton.classList.add("active");
-            loopbutton.querySelector("img").src = "/music/assets/images/icons/loopone.png";
+            loopbutton.querySelector("img").src = "/assets/images/music/icons/loopone.png";
         } else {
             loopbutton.classList.remove("active");
-            loopbutton.querySelector("img").src = "/music/assets/images/icons/loop.png";
+            loopbutton.querySelector("img").src = "/assets/images/music/icons/loop.png";
         }
     }
 
@@ -562,7 +562,7 @@ class musicplayer {
             nextsong = this.songs[nextcategoryindex].tracks[nextsongindex];
         }
         if (nextsong && nextsong.path) {
-            const nextAudioPath = nextsong.path.startsWith("/") ? nextsong.path : `assets/audio/${nextsong.path}`;
+            const nextAudioPath = nextsong.path.startsWith("/") ? nextsong.path : `/assets/audio/music/${nextsong.path}`;
             this.nextAudio.src = nextAudioPath;
         }
     }
@@ -598,7 +598,7 @@ class musicplayer {
     updateplaybutton() {
         const playpausebutton = document.querySelector(".playpausebutton");
         const img = playpausebutton.querySelector("img");
-        img.src = this.isplaying ? "/music/assets/images/icons/pause.png" : "/music/assets/images/icons/play.png";
+        img.src = this.isplaying ? "/assets/images/music/icons/pause.png" : "/assets/images/music/icons/play.png";
     }
 
     updateprogress() {
@@ -641,7 +641,7 @@ class musicplayer {
     updatebackground(imageurl) {
         const stupidbg = document.querySelector(".stupidbg");
         if (imageurl) {
-            const bgpath = imageurl.startsWith("/") ? imageurl : `assets/images/bgs/${imageurl}`;
+            const bgpath = imageurl.startsWith("/") ? imageurl : `/assets/images/music/bgs/${imageurl}`;
             const currentbg = stupidbg.style.backgroundImage;
             if (currentbg === `url("${bgpath}")` || currentbg === `url(${bgpath})`) {return}
 
@@ -684,7 +684,7 @@ class musicplayer {
         const filename = song.path;
         if (!filename) {return}
 
-        const audiopath = filename.startsWith("/") ? filename : `assets/audio/${filename}`;
+        const audiopath = filename.startsWith("/") ? filename : `/assets/audio/music/${filename}`;
         const downloadurl = audiopath.replace(/\.\w+$/, `.${format}`);
 
         const link = document.createElement("a");

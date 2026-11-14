@@ -9,7 +9,7 @@ export async function refresh(entry) {
     entry.revisions = Array.isArray(data.revisions) ? data.revisions : entry.revisions;
     if (!entry.revision && data.primaryfile !== undefined) {
         const file = data.files?.find(file => file.id === data.primaryfile);
-        const url = file ? new URL("/levels/" + entry.id + "/files/" + file.id, entry.detailurl).href : "";
+        const url = file ? new URL("/levels" + entry.id + "/files/" + file.id, entry.detailurl).href : "";
         if (url !== entry.file) {entry.file = url; entry.filename = file?.name || ""; entry.objects = null; entry.filechanged = true}
     }
     entry.title = typeof data.title === "string" ? data.title : entry.title;

@@ -51,7 +51,7 @@ export function crash(message, level) {
         });
         dismiss.addEventListener("click", close);
         const image = create("img", "failureimage");
-        image.src = "/preview/assets/svgs/oops.svg";
+        image.src = "/assets/images/preview/oops.svg";
         image.alt = "";
         image.draggable = false;
         actions.append(copied, dismiss);
@@ -59,7 +59,7 @@ export function crash(message, level) {
         panel.addEventListener("keydown", event => {
             if (event.key === "Escape") {event.stopPropagation(); close()}
         });
-        audio = new Audio("/preview/assets/audio/oops.mp3");
+        audio = new Audio("/assets/audio/preview/oops.mp3");
         document.body.append(panel);
     }
     previous = document.activeElement;

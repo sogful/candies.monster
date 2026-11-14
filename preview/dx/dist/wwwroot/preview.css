@@ -51,5 +51,5 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 .previewbody {
-    background: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)), url("/preview/assets/images/tile.webp");
+    background: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)), url("/assets/images/preview/tile.webp");
 }

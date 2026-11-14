@@ -1,4 +1,4 @@
-import {versionsfor} from "../catalogue/versions.js";
+import {versionsfor} from "./catalogue/versions.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
