@@ -21,8 +21,8 @@ function create(saved, blocked = false) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-test("new or invalid preferences start at 16:9 and valid choices survive new visits", () => {
-    for (const saved of [null, "", "wrong", "__proto__"]) assert.equal(create(saved).api.get(), "16:9");
+test("new or invalid preferences start at Dynamic and valid choices survive new visits", () => {
+    for (const saved of [null, "", "wrong", "__proto__"]) assert.equal(create(saved).api.get(), "Dynamic");
     for (const ratio of ["16:9", "4:3", "9:16", "Dynamic"]) {
         const first = create(null);
         first.api.set(ratio);

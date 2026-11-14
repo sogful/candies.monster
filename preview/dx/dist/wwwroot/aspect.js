@@ -1,6 +1,6 @@
 (() => {
     const ratios = {"16:9": [16, 9], "4:3": [4, 3], "9:16": [9, 16], "Dynamic": null};
-    let current = "16:9";
+    let current = "Dynamic";
     try {
         const saved = localStorage.getItem("ctrdxaspect");
         if (Object.keys(ratios).includes(saved)) current = saved;

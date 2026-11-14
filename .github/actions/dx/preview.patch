@@ -1710,10 +1710,53 @@ index 23a8e97..5320dac 100644
          /// Converts a raw integer button value to a game-controller button identifier.
          /// </summary>
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
-index a5bcdcd..d6f88d9 100644
+index a5bcdcd..1e1fa96 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
-@@ -169,6 +169,11 @@ namespace CutTheRopeDX.GameMain
+@@ -30,6 +30,7 @@ namespace CutTheRopeDX.GameMain
+             LoadAllLevelMetadata(map, mapScale, mapOffsetY, out float mapOffsetX, out int mapGridOffsetX, out int mapGridOffsetY);
+             mapOriginX = mapOffsetX + mapGridOffsetX;
+             mapOriginY = mapOffsetY + mapGridOffsetY;
++            previewcamera(map, mapScale);
+ 
+             // Load all game objects from XML
+             LoadObjectsFromMap(map, mapScale, mapOffsetX, mapOffsetY, mapGridOffsetX, mapGridOffsetY);
+@@ -164,11 +165,46 @@ namespace CutTheRopeDX.GameMain
+             return string.IsNullOrWhiteSpace(levelName) ? null : Application.GetString(levelName);
+         }
+ 
++        private void previewcamera(XElement map, float scale)
++        {
++            if (!CustomLevelSession.IsActive) return;
++            float left = cameraBounds.x;
++            float top = cameraBounds.y;
++            float right = left + cameraBounds.w;
++            float bottom = top + cameraBounds.h;
++            foreach (XElement layer in map.Elements("layer"))
++            {
++                if (layer.Attribute("name")?.Value == "settings") continue;
++                foreach (XElement item in layer.Elements())
++                {
++                    if (item.Name.LocalName.StartsWith("tutorial", System.StringComparison.OrdinalIgnoreCase)) continue;
++                    if (!float.TryParse(item.Attribute("x")?.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out float x)
++                        || !float.TryParse(item.Attribute("y")?.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out float y)) continue;
++                    x = (x * scale) + mapOriginX;
++                    y = (y * scale) + mapOriginY;
++                    if (!float.IsFinite(x) || !float.IsFinite(y)) continue;
++                    float margin = 24f * scale;
++                    left = System.MathF.Min(left, x - margin);
++                    top = System.MathF.Min(top, y - margin);
++                    right = System.MathF.Max(right, x + margin);
++                    bottom = System.MathF.Max(bottom, y + margin);
++                }
++            }
++            cameraBounds = new Rectangle(left, top, right - left, bottom - top);
++            cameraWindow.w = System.MathF.Min(cameraBounds.w, SCREEN_WIDTH);
++            cameraWindow.h = System.MathF.Min(cameraBounds.h, SCREEN_HEIGHT);
++        }
++
+         /// <summary>
+         /// Positions the camera for the newly loaded map and sets the initial camera movement mode.
          /// </summary>
          public void StartCamera()
          {
@@ -1725,6 +1768,39 @@ index a5bcdcd..d6f88d9 100644
              ViewportLayoutSnapshot snapshot = ScreenPresentation.Instance.Snapshot;
              if (CameraCanTravel(snapshot))
              {
+@@ -186,14 +222,14 @@ namespace CutTheRopeDX.GameMain
+                 Rectangle range = CameraTrackingRange();
+                 float cameraStartX;
+                 float cameraStartY;
+-                if (mapWidth > SCREEN_WIDTH)
++                if (cameraBounds.w > cameraWindow.w)
+                 {
+-                    cameraStartX = constrainedPoint.pos.X > range.x + (mapWidth / 2f)
++                    cameraStartX = constrainedPoint.pos.X > range.x + (cameraBounds.w / 2f)
+                         ? range.x
+                         : range.x + range.w;
+                     cameraStartY = range.y;
+                 }
+-                else if (constrainedPoint.pos.Y > range.y + (mapHeight / 2f))
++                else if (constrainedPoint.pos.Y > range.y + (cameraBounds.h / 2f))
+                 {
+                     cameraStartX = range.x;
+                     cameraStartY = range.y;
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
+index 7c34873..de3a824 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
+@@ -423,8 +423,8 @@ namespace CutTheRopeDX.GameMain
+             return new Rectangle(
+                 cameraBounds.x,
+                 cameraBounds.y,
+-                MathF.Max(0f, mapWidth - SCREEN_WIDTH),
+-                MathF.Max(0f, mapHeight - SCREEN_HEIGHT));
++                MathF.Max(0f, cameraBounds.w - cameraWindow.w),
++                MathF.Max(0f, cameraBounds.h - cameraWindow.h));
+         }
+ 
+         /// <summary>Clamps a desired camera position into <see cref="CameraTrackingRange"/>.</summary>
 diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
 index 3f5f05f..de0bfa3 100644
 --- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
