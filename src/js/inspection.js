@@ -5,7 +5,7 @@ export function inspection(entry) {
     button.type = "button";
     button.setAttribute("aria-label", "view full-quality level preview");
     const icon = document.createElement("img");
-    icon.src = "/assets/images/icons/search.png";
+    icon.src = "/assets/images/icons/search.svg";
     icon.alt = "";
     button.append(icon);
     button.addEventListener("click", () => imageviewer("https://levels.candies.monster/thumb/" + encodeURIComponent(entry.id), entry.title, button));
@@ -33,7 +33,7 @@ export function imageviewer(url, label, trigger) {
     closebutton.className = "inspectionclose clickable";
     closebutton.setAttribute("aria-label", "close preview");
     const closeicon = document.createElement("img");
-    closeicon.src = "/assets/images/icons/x.png";
+    closeicon.src = "/assets/images/icons/x.svg";
     closeicon.alt = "";
     closebutton.append(closeicon);
     viewport.append(image, status);

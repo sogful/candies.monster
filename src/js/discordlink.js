@@ -34,7 +34,7 @@ function membership(button, joined) {
     dismiss.className = "membershipclose clickable";
     dismiss.setAttribute("aria-label", "Close");
     const cross = document.createElement("img");
-    cross.src = "/assets/images/icons/x.png";
+    cross.src = "/assets/images/icons/x.svg";
     cross.alt = "";
     dismiss.append(cross);
     dismiss.addEventListener("click", close);

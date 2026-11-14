@@ -296,7 +296,7 @@
 
     <div class="controlbar">
         <button class="controlbutton playpausebutton clickable">
-            <img src="assets/images/icons/play.png">
+            <img src="assets/images/icons/play.svg">
         </button>
         
         <button class="controlbutton prevbutton clickable">
@@ -937,7 +937,7 @@
             updateplaybutton() {
                 const playpausebutton = document.querySelector(".playpausebutton");
                 const img = playpausebutton.querySelector("img");
-                img.src = this.isplaying ? "assets/images/icons/pause.png" : "assets/images/icons/play.png";
+                img.src = this.isplaying ? "assets/images/icons/pause.png" : "assets/images/icons/play.svg";
             }
             
             updateprogress() {
