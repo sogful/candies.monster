@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
+
+    <title>Spritesheet Splitter</title>
+    <link rel="icon" type="image/png" href="/assets/images/candies/favicon.png">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script async src="/assets/static/js/global.js"></script>
+    <link rel="stylesheet" href="/assets/static/css/github.css">
+    <script defer src="/assets/static/js/github.js"></script>
+    <script src="/assets/static/dependencies/jszip.min.js"></script>
+    
+    <script src="/assets/static/dependencies/prism.js"></script>
+    <link href="/assets/static/dependencies/prism.css" rel="stylesheet" />
+    <link href="/assets/static/dependencies/vscdarkplus.css" rel="stylesheet" />
+
+    <meta property="og:image" content="/assets/images/branding/embeds/split.png">
+    <meta name="twitter:card" content="summary_largeimage">
+    <meta name="twitter:image" content="/assets/images/branding/embeds/split.png">
+
+    <!-- search engines (practically no one is gonna find this through google but still) -->
+    <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
+    <meta name="bingbot" content="index, follow">
+    <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
+
+    <link rel="stylesheet" href="/split/src/style.css">
+    <script type="module" src="/assets/static/js/images/favicon.js"></script>
+    <script src="/assets/static/js/text/fonts.js"></script>
+</head>
+<body>
+
+    <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
+    <noscript><style>
+        html, body {margin: 0; padding: 0; height: 100%}
+        .nojs {
+            display: flex; position: fixed; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            inset: 0; width: 100vw; height: 100vh;
+            z-index: 6553565535; padding: 0;
+            background-color: black; color: white; font-size: 2em; 
+        }
+        .nojs img {width: 400px; max-width: 80vw; padding-bottom: 0.5em}
+        .nojs a {width: 500px; max-width: 80vw}
+        .nojsbg {
+            position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;
+            background-image: url("/assets/images/bgs/tile.webp");
+            background-repeat: repeat; background-size: auto;
+            opacity: 0.25; z-index: -1; pointer-events: none;
+        }
+    </style> <div class="nojs">
+    <div class="nojsbg"></div> <img src="/assets/images/omnom/nojs.webp" draggable="false">
+    <a>Please enable Javascript in your browser to use this page.</a></div></noscript>
+
+	<div class="page">
+		<a class="title">Spritesheet Splitter</a>
+
+		<div class="multi">
+			<div class="paste">
+
+				<div class="xml thexml language-xml" contenteditable="true" placeholder="<info><quads>0,0,64,64,64,0,64,64,0,64,64,64</quads></info>"></div>
+			</div>
+			<div class="upload">
+				<div class="sheetwrap">
+					<div class="sheetinner">
+						<div class="uploadinput clickable imageupload"><a>Click to open file explorer or drag an image here...</a></div>
+						<img class="sheet" alt="spritesheet" />
+					</div>
+					<div class="overlay"></div>
+					<div class="backbutton clickable">
+						<img src="/assets/images/buttons/back.png" alt="Back" />
+					</div>
+					<div class="exportbutton clickable">
+						<img class="buttonart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E" draggable="false" alt="Export All" />
+						<span>Export All</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="drag">Drop file here!</div>
+	<input type="file" class="fileinput xmlfile" accept=".xml" style="display:none">
+	<input type="file" class="fileinput imgfile" accept="image/*" style="display:none">
+
+    <script type="module" src="/split/src/index.js"></script>
+
+</body>
+</html>
