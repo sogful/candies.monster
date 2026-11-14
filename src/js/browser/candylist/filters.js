@@ -17,12 +17,11 @@ export function candyfilters(changed) {
     element.append(options);
     filterscroll(options);
     function update() {
-        label.setAttribute("aria-pressed", String(active));
+        label.setAttribute("aria-pressed", String(active || selected.size > 0));
         for (const button of options.querySelectorAll("[data-candy]")) button.setAttribute("aria-pressed", String(selected.has(button.dataset.candy)));
     }
-    label.addEventListener("click", () => {active = !active; if (!active) selected.clear(); changed()});
+    label.addEventListener("click", () => {active = !(active || selected.size); if (!active) selected.clear(); changed()});
     document.addEventListener("candyfilter", event => {
-        active = true;
         selected.add(event.detail);
         history.pushState(null, "", location.pathname + location.search);
         window.dispatchEvent(new HashChangeEvent("hashchange"));
@@ -41,7 +40,6 @@ export function candyfilters(changed) {
             button.addEventListener("click", () => {
                 if (selected.has(tag)) selected.delete(tag);
                 else selected.add(tag);
-                active = true;
                 changed();
             });
             options.append(button);
@@ -65,7 +63,7 @@ export function candyfilters(changed) {
         write(url) {
             url.searchParams.delete("candylist");
             url.searchParams.delete("candy");
-            if (active || selected.size) url.searchParams.set("candylist", "1");
+            if (active) url.searchParams.set("candylist", "1");
             if (selected.size) url.searchParams.set("candy", [...selected].sort().join(","));
         },
         matches(entry) {

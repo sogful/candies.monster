@@ -5,14 +5,30 @@ export const tagdata = fetch("/assets/static/data/levels/tags.json").then(respon
 
 let tagicons = {};
 let tagnames = {};
-tagdata.then(data => {tagicons = data.features || {}; tagnames = data.icons || {}});
+let aliases = {};
+let definitions = new Map();
+tagdata.then(data => {
+    tagicons = data.features || {};
+    tagnames = data.icons || {};
+    aliases = data.aliases || {};
+    definitions = new Map((data.tags || []).map(tag => [tag.id, tag]));
+});
+
+export function tagid(id) {return aliases[id] || id}
+
+export function canonicaltags(tags) {
+    return [...new Map(tags.map(tag => {
+        const id = tagid(tag.id);
+        return [id, definitions.get(id) || {...tag, id}];
+    })).values()];
+}
 
 export function featurecontent(key, name) {
     return tagcontent({name, icon: tagicons[key]});
 }
 
 export function candycontent(name) {
-    return tagcontent({name: name[0].toUpperCase() + name.slice(1), icon: "/assets/images/candies/candy.png"});
+    return tagcontent({name: name[0].toUpperCase() + name.slice(1)});
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -112,12 +128,12 @@ let tagbackdrops = {};
 tagdata.then(data => {tagbackdrops = data.backdrops || {}});
 
 export function fallback(entry) {
-    if (entry.engine === "Cut the Rope: Time Travel") return tagbackdrops["time travel"]?.[0] || "/music/assets/images/bgs/cardboard.webp";
+    if (entry.engine === "Cut the Rope: Time Travel") return tagbackdrops["time travel"]?.[0] || "/assets/images/music/bgs/cardboard.webp";
     if (!/^Cut the Rope(?:: Magic| 2)$/.test(entry.engine || "")) return "/assets/images/bgs/rainbowtiny.webp";
     if (scenery.has(entry.id)) return scenery.get(entry.id);
     const key = entry.engine === "Cut the Rope: Magic" ? "magic" : "cut the rope 2";
     const choices = tagbackdrops[key] || [];
-    const image = choices[Math.floor(Math.random() * choices.length)] || "/music/assets/images/bgs/cardboard.webp";
+    const image = choices[Math.floor(Math.random() * choices.length)] || "/assets/images/music/bgs/cardboard.webp";
     scenery.set(entry.id, image);
     return image;
 }

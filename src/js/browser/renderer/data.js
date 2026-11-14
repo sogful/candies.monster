@@ -104,13 +104,14 @@ export function parse(text) {
     };
 }
 
-export function level(file) {
-    if (!levels.has(file)) {
-        levels.set(file, source(file).then(parse).catch(error => {
-            levels.delete(file);
+export function level(file, local = false) {
+    const key = (local ? "local:" : "") + file;
+    if (!levels.has(key)) {
+        levels.set(key, source(file, local).then(parse).catch(error => {
+            levels.delete(key);
             throw error;
         }));
         if (levels.size > 40) levels.delete(levels.keys().next().value);
     }
-    return levels.get(file);
+    return levels.get(key);
 }

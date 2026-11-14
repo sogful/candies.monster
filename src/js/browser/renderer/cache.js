@@ -40,7 +40,7 @@ export function prefetch(entries, width, height) {
         if (entry.engine) {idle(next); return}
         if (!cached(entry, width, height)) {
             try {
-                const [map, art] = await Promise.all([level(entry.file), artwork("low")]);
+                const [map, art] = await Promise.all([level(entry.file, true), artwork("low")]);
                 const backdrop = entry.background ? await background(entry.background, map).catch(() => null) : null;
                 if (current !== generation) return;
                 const canvas = document.createElement("canvas");

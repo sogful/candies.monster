@@ -1,5 +1,6 @@
 import {requiredgame} from "./unsupported.js";
 import {attach, candydata} from "../candylist/data.js";
+import {tagdata, canonicaltags} from "./metadata.js";
 
 export async function catalogue() {
     const configuration = await fetch(new URL("../../../../assets/static/data/levels/levels.json", import.meta.url));
@@ -15,6 +16,7 @@ export async function catalogue() {
     const response = await fetch(new URL("/levels", base));
     if (!response.ok) throw new Error("Levels unavailable");
     const data = await response.json();
+    await tagdata;
     if (!Array.isArray(data.levels)) throw new Error("Invalid catalogue");
     const names = new Map(data.levels.filter(level => level.author?.name).map(level => [level.author.id, level.author.name]));
     const entries = data.levels.flatMap(level => {
@@ -33,7 +35,7 @@ export async function catalogue() {
             detailurl: new URL(`/levels/${level.id}`, base).href,
             playurl: new URL(`/levels/${level.id}/plays`, base).href,
             rating: Number.isSafeInteger(level.rating) && level.rating >= 0 ? level.rating : null,
-            tags: Array.isArray(level.tags) ? level.tags : [],
+            tags: canonicaltags(Array.isArray(level.tags) ? level.tags : []),
             created: level.created || new Date(Number((BigInt(level.id) >> 22n) + 1420070400000n)).toISOString(),
             reactions: Array.isArray(level.reactions) ? level.reactions : [],
             plays: Number.isSafeInteger(level.plays) && level.plays >= 0 ? level.plays : null,

@@ -88,7 +88,7 @@ function create(entry, expanded) {
         }
         return record;
     }
-    const map = entry.file ? level(entry.file) : Promise.reject(new Error("Level file unavailable"));
+    const map = entry.file ? level(entry.file, !expanded) : Promise.reject(new Error("Level file unavailable"));
     record.resources = Promise.all([
         map, artwork("low"),
         map.then(data => entry.background ? background(entry.background, data).catch(() => null) : null)

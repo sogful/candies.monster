@@ -1,6 +1,6 @@
 import {contestfilters} from "./contests.js";
 import {filterscroll} from "./controls.js";
-import {tagcontent, featurecontent, tagdata} from "../catalogue/metadata.js";
+import {tagcontent, featurecontent, tagdata, tagid} from "../catalogue/metadata.js";
 import {matches} from "./controls.js";
 import {featuretypes} from "../catalogue/metadata.js";
 import {profile} from "../catalogue/creator.js";
@@ -158,7 +158,7 @@ export function filters(changed) {
         order = ({liked: "rating", popular: "plays", played: "played"})[query.get("sort")] || "recent";
         creator.setAttribute("aria-pressed", String(query.get("creator") === "1"));
         selected.clear();
-        for (const id of (query.get("tags") || "").split(",")) if (/^\d{1,22}$/.test(id)) selected.add(id);
+        for (const id of (query.get("tags") || "").split(",")) if (/^\d{1,22}$/.test(id)) selected.add(tagid(id));
         authorid = /^\d{17,22}$/.test(query.get("author") || "") ? query.get("author") : "";
         chosen.clear();
         for (const key of (query.get("features") || "").split(",")) if (Object.prototype.hasOwnProperty.call(featuretypes, key)) chosen.add(key);
@@ -239,7 +239,7 @@ export function filters(changed) {
         const id = String(event.detail?.id || event.detail || "");
         const button = [...options.children].find(control => control.dataset.tag === id);
         if (!button) return;
-        selected.add(id);
+        selected.add(tagid(id));
         lastrow = "tags";
         button.setAttribute("aria-pressed", "true");
         button.scrollIntoView({block: "nearest", inline: "nearest"});
@@ -331,6 +331,9 @@ export function filters(changed) {
     return {
         setentries(data) {
             entries = data;
+            const ids = [...selected].map(tagid);
+            selected.clear();
+            for (const id of ids) selected.add(tagid(id));
             unavailable.clear();
             const bytag = new Map();
             for (const entry of data) for (const tag of entry.tags || []) {

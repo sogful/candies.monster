@@ -107,6 +107,69 @@
                 "name": "obj_spider",
                 "animated": false
             }
+        },
+        {
+            "id": "1119727434716151848",
+            "name": "Quality Level",
+            "emoji": {
+                "id": "1112836580084818003",
+                "name": "obj_star",
+                "animated": false
+            }
+        },
+        {
+            "id": "1169778124683214899",
+            "name": "Winner",
+            "emoji": {
+                "id": "1112835256035315713",
+                "name": "candy_01",
+                "animated": false
+            }
+        },
+        {
+            "id": "1414325885611413694",
+            "name": "Disqualified",
+            "emoji": {
+                "id": "1112852283974234132",
+                "name": "",
+                "animated": false
+            }
+        },
+        {
+            "id": "1422739608503980082",
+            "name": "Invalid Submission",
+            "emoji": {
+                "id": null,
+                "name": "❌",
+                "animated": false
+            }
+        },
+        {
+            "id": "1428178421611237528",
+            "name": "Will be on the mod",
+            "emoji": {
+                "id": "1427396896149733467",
+                "name": "obj_star_blue",
+                "animated": false
+            }
+        },
+        {
+            "id": "1428178522874314936",
+            "name": "Denied",
+            "emoji": {
+                "id": "1112852283974234132",
+                "name": "",
+                "animated": false
+            }
+        },
+        {
+            "id": "1525149168514109561",
+            "name": "Finalist",
+            "emoji": {
+                "id": "1427396896149733467",
+                "name": "obj_star_blue",
+                "animated": false
+            }
         }
     ],
     "features": {
@@ -139,66 +202,89 @@
     },
     "backdrops": {
         "candy flick": [
-            "/music/assets/images/bgs/candyflick.webp"
+            "/assets/images/music/bgs/candyflick.webp"
         ],
         "cut the rope": [
-            "/music/assets/images/bgs/cardboard.webp",
-            "/music/assets/images/bgs/menu.webp"
+            "/assets/images/music/bgs/cardboard.webp",
+            "/assets/images/music/bgs/menu.webp"
         ],
         "cut the rope 2": [
-            "/music/assets/images/bgs/two1.webp",
-            "/music/assets/images/bgs/two2.webp",
-            "/music/assets/images/bgs/two4.webp",
-            "/music/assets/images/bgs/twomenu.webp"
+            "/assets/images/music/bgs/two1.webp",
+            "/assets/images/music/bgs/two2.webp",
+            "/assets/images/music/bgs/two4.webp",
+            "/assets/images/music/bgs/twomenu.webp"
         ],
         "experiments": [
-            "/music/assets/images/bgs/experiments1.webp",
-            "/music/assets/images/bgs/experimentsmenu.webp"
+            "/assets/images/music/bgs/experiments1.webp",
+            "/assets/images/music/bgs/experimentsmenu.webp"
         ],
         "daily": [
-            "/music/assets/images/bgs/daily.webp"
+            "/assets/images/music/bgs/daily.webp"
         ],
         "holiday gift": [
-            "/music/assets/images/bgs/holidaybox.webp",
-            "/music/assets/images/bgs/holidaymenu.webp"
+            "/assets/images/music/bgs/holidaybox.webp",
+            "/assets/images/music/bgs/holidaymenu.webp"
         ],
         "idle candy": [
-            "/music/assets/images/bgs/menu.webp",
-            "/music/assets/images/bgs/cardboard.webp"
+            "/assets/images/music/bgs/menu.webp",
+            "/assets/images/music/bgs/cardboard.webp"
         ],
         "magic": [
-            "/music/assets/images/bgs/magic4.webp",
-            "/music/assets/images/bgs/magic1.webp",
-            "/music/assets/images/bgs/magic2.webp",
-            "/music/assets/images/bgs/magic3.webp",
-            "/music/assets/images/bgs/magicmenu.webp"
+            "/assets/images/music/bgs/magic4.webp",
+            "/assets/images/music/bgs/magic1.webp",
+            "/assets/images/music/bgs/magic2.webp",
+            "/assets/images/music/bgs/magic3.webp",
+            "/assets/images/music/bgs/magicmenu.webp"
         ],
         "merge": [
-            "/music/assets/images/bgs/merge.webp"
+            "/assets/images/music/bgs/merge.webp"
         ],
         "my om nom": [
-            "/music/assets/images/bgs/disco.webp",
-            "/music/assets/images/bgs/mainroom.webp",
-            "/music/assets/images/bgs/match3.webp",
-            "/music/assets/images/bgs/memory.webp",
-            "/music/assets/images/bgs/space.webp"
+            "/assets/images/music/bgs/disco.webp",
+            "/assets/images/music/bgs/mainroom.webp",
+            "/assets/images/music/bgs/match3.webp",
+            "/assets/images/music/bgs/memory.webp",
+            "/assets/images/music/bgs/space.webp"
         ],
         "ringtone": [
-            "/music/assets/images/bgs/birthday.webp"
+            "/assets/images/music/bgs/birthday.webp"
         ],
         "time travel": [
-            "/music/assets/images/bgs/discott.webp",
-            "/music/assets/images/bgs/timetravel1.webp",
-            "/music/assets/images/bgs/timetravelmenu.webp"
+            "/assets/images/music/bgs/discott.webp",
+            "/assets/images/music/bgs/timetravel1.webp",
+            "/assets/images/music/bgs/timetravelmenu.webp"
         ],
         "triple treat": [
-            "/music/assets/images/bgs/menu.webp"
+            "/assets/images/music/bgs/menu.webp"
         ],
         "cut the rope 3": [
-            "/music/assets/images/bgs/ctr3.webp"
+            "/assets/images/music/bgs/ctr3.webp"
         ],
         "cut the rope remastered": [
-            "/music/assets/images/bgs/remastered.webp"
+            "/assets/images/music/bgs/remastered.webp"
         ]
+    },
+    "aliases": {
+        "1129171606254649475": "1119727434716151848",
+        "1158041257696833638": "1119727434716151848",
+        "1169721367743180820": "1119727434716151848",
+        "1205268871422939237": "1119727434716151848",
+        "1205268923671388170": "1169778124683214899",
+        "1363970883424620673": "1119727434716151848",
+        "1414323383625322546": "1119727434716151848",
+        "1414323506446860519": "1169778124683214899",
+        "1420193713354833990": "1119727434716151848",
+        "1420193744547872829": "1169778124683214899",
+        "1428178581057441832": "1439019886662647898",
+        "1428178665866268673": "1439020249990041673",
+        "1525149388366938204": "1169778124683214899",
+        "1525149446600523786": "1439020421461577871",
+        "1525149492360380427": "1439223737789579285",
+        "1525149535771430973": "1513291363486269451",
+        "1525845267499188354": "1422739608503980082",
+        "1548707769039716383": "1428178421611237528",
+        "1548707837608337449": "1428178522874314936",
+        "1548707935138488491": "1439020249990041673",
+        "1548711158414966784": "1439019886662647898"
     }
 }

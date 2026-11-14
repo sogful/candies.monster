@@ -226,7 +226,7 @@
 
 .hasreset > .filterreset {
     z-index: 2; border-radius: 7px;
-    background: rgba(0,0,0,0.6);
+    background: none;
 }
 .levelfilters :is(.tagoptions,.featureoptions,.candyoptions) .leveltag {
     padding: 1px 6px; line-height: 1.1;
