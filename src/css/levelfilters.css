@@ -3,13 +3,13 @@
     position: absolute; top: 8px;
     left: 0; right: 0;
     display: flex; flex-direction: column;
-    align-items: stretch; gap: 5px;
+    align-items: stretch;
     z-index: 4; pointer-events: auto;
     color: #fff; font-size: 20px;
 }
 .filtertop {
     display: flex; align-items: center;
-    flex-wrap: nowrap; gap: 6px 8px;
+    flex-wrap: nowrap; gap: 4px;
     padding: 0 48px 0 var(--filterinset);
 }
 .levelsearch {
@@ -26,7 +26,7 @@
     color: #fff; opacity: 1;
 }
 .levelsorts {
-    display: flex; gap: 10px;
+    display: flex; gap: 4px;
     flex-wrap: nowrap; flex-shrink: 0;
 }
 .levelsort {
@@ -41,7 +41,7 @@
     width: 100%; box-sizing: border-box;
     overflow-x: auto; overflow-y: hidden;
     display: flex; align-items: center;
-    flex-wrap: nowrap; gap: 6px;
+    flex-wrap: nowrap; gap: 3px;
     padding: 2px 0 3px; scrollbar-width: none;
     touch-action: pan-x; overscroll-behavior-x: contain;
 }
@@ -139,13 +139,13 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 .featurebar {
-    display: flex; gap: 6px;
+    display: flex; gap: 3px;
     min-width: 0; align-items: center;
 }
 .featureoptions {
-    display: flex; gap: 6px;
+    display: flex; gap: 3px;
     overflow: auto hidden; scrollbar-width: none;
-    padding: 2px 0 3px; min-width: 0;
+    min-width: 0;
     touch-action: pan-x; overscroll-behavior-x: contain;
 }
 .featureoptions::-webkit-scrollbar {display: none}
@@ -153,7 +153,7 @@
 .filterreset {margin-right: 6px}
 .creatorprofile {
     display: flex; align-items: center;
-    padding: 4px 12px; gap: 12px;
+    padding: 4px 4px 12px 4px; gap: 12px;
 }
 .creatorprofile[hidden] {display: none}
 .creatoravatar {
@@ -201,23 +201,58 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.tagbar {position: relative}
+.tagbar, .featurebar {position: relative}
 .tagbar, .featurebar {
-    margin-left: var(--filterinset); width: calc(100% - var(--filterinset));
+    margin-left: var(--filterinset); 
+    width: calc(100% - var(--filterinset));
 }
 .tagbar .tagoptions {
-    width: 100%; padding: 4px 34px 7px 4px;
+    width: 100%;
 }
 .featureoptions {
-    flex: 1 1 auto; padding: 4px 4px 7px;
+    flex: 1 1 auto;
 }
 .filterreset {
     position: absolute; right: 6px;
-    top: 4px; width: 20px;
-    height: 20px; padding: 0;
+    top: 0; width: 32px;
+    height: 28px; padding: 5px 7px;
     border: 0; background: none;
     margin: 0; line-height: 0;
 }
 .filterreset img {
     width: 100%; height: 100%;
+    object-fit: contain;
+}
+
+.hasreset > :is(.tagoptions,.featureoptions,.candyoptions) {
+    width: calc(100% - 34px); flex: 0 1 calc(100% - 34px);
+    box-sizing: border-box; padding-right: 4px;
+}
+.tagoptions, .featureoptions {padding: 3px 4px 5px}
+.levelfilters :is(.tagoptions,.featureoptions,.candyoptions) .leveltag {
+    padding: 1px 6px; line-height: 1.1;
+    font-size: 17px;
+}
+.levelsort, .levelsearchfield {
+    height: 30px; box-sizing: border-box;
+}
+.levelsort {
+    line-height: 1.1; padding: 2px 7px;
+}
+.levelsearchfield {padding: 2px 5px}
+.levelsearchfield .levelsearch {
+    padding: 0 2px; height: 100%;
+}
+.creatorsearch {
+    width: 24px; height: 24px;
+    flex-basis: 24px; padding: 4px;
+}
+@media (max-width: 700px) {
+    .levelsort, .levelsearchfield {height: 26px}
+    .levelsort {padding: 2px 5px}
+    .creatorsearch {
+        width: 22px; height: 22px;
+        flex-basis: 22px;
+    }
+    .levelfilters :is(.tagoptions,.featureoptions,.candyoptions) .leveltag {font-size: 15px}
 }

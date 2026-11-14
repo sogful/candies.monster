@@ -58,6 +58,7 @@
 }
 
 .level {
+    user-select: none; -webkit-user-select: none;
     position: relative; width: 100%;
     aspect-ratio: 16 / 9; box-sizing: border-box;
     padding: 5px 6px; border: 3px solid #111;
@@ -68,6 +69,10 @@
     grid-template-rows: auto auto 1fr auto; min-width: 0;
     column-gap: 4px;
     min-height: 0; align-self: start;
+}
+.level :is(p,a,span) {
+    user-select: none; -webkit-user-select: none;
+    cursor: inherit;
 }
 
 .levelbg {
@@ -137,8 +142,9 @@
 
 .rating, .features, .cardplays {
     display: flex; align-items: center;
-    color: #fff; font-size: clamp(12px,6cqw,24px);
-    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    color: #fff;
+    -webkit-text-stroke: 0.175em #000; 
+    paint-order: stroke fill;
     text-shadow: 0 3px 0 #000;
 }
 
@@ -147,11 +153,11 @@
 }
 .rating p, .cardplays p {margin: 0}
 .staricon {
-    width: 0.9em; height: 1em;
+    width: 1em; height: 1em;
     object-fit: contain;
 }
 .playcounticon {
-    height: 0.8em; width: 0.8em;
+    height: 1em; width: 1em;
     object-fit: contain; margin-left: 3px;
     transform: rotate(90deg);
 }

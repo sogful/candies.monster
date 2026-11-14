@@ -4,6 +4,7 @@ import {matches} from "./searchmatch.js";
 import {featuretypes} from "./features.js";
 import {profile} from "./creator.js";
 import {recentplays} from "./recently.js";
+import {candyfilters} from "./candylist/filters.js";
 
 function recent(first, second) {
     const difference = Date.parse(second.created || "") - Date.parse(first.created || "");
@@ -26,7 +27,7 @@ export function filters(changed) {
     const field = document.createElement("div");
     field.className = "levelsearchfield";
     const icon = document.createElement("img");
-    icon.src = "/assets/images/icons/search.png";
+    icon.src = "/assets/images/icons/search.svg";
     icon.alt = "";
     const clear = document.createElement("button");
     clear.type = "button";
@@ -34,7 +35,7 @@ export function filters(changed) {
     clear.setAttribute("aria-label", "Clear search");
     clear.hidden = true;
     const cross = document.createElement("img");
-    cross.src = "/assets/images/icons/x.png";
+    cross.src = "/assets/images/icons/x.svg";
     cross.alt = "";
     clear.append(cross);
     field.append(icon, search, clear);
@@ -44,7 +45,7 @@ export function filters(changed) {
     creator.setAttribute("aria-label", "Search creators only");
     creator.setAttribute("aria-pressed", "false");
     const account = document.createElement("img");
-    account.src = "/assets/images/icons/user.png";
+    account.src = "/assets/images/icons/user.svg";
     account.alt = "";
     creator.append(account);
     creator.addEventListener("click", () => {
@@ -52,7 +53,7 @@ export function filters(changed) {
         creator.setAttribute("aria-pressed", String(active));
         search.placeholder = active ? "Search creators" : "Search levels";
         search.setAttribute("aria-label", search.placeholder);
-        apply();
+        apply(true, false, false, !search.value.trim());
     });
     clear.addEventListener("click", () => {
         search.value = "";
@@ -68,6 +69,9 @@ export function filters(changed) {
     const chosen = new Set();
     let authorid = "";
     let profilereturn = "";
+    let lastrow = "tags";
+    let signature;
+    const candy = candyfilters(() => {lastrow = "candy"; apply()});
     for (const [key, label] of [["recent", "Recent"], ["rating", "Liked"], ["plays", "Popular"], ["played", "Played"]]) {
         const button = document.createElement("button");
         button.type = "button";
@@ -100,7 +104,7 @@ export function filters(changed) {
     reset.setAttribute("aria-label", "Reset filters");
     reset.title = "Reset filters";
     const reseticon = document.createElement("img");
-    reseticon.src = "/assets/images/icons/x.png";
+    reseticon.src = "/assets/images/icons/x.svg";
     reseticon.alt = "";
     reset.append(reseticon);
     reset.hidden = true;
@@ -109,6 +113,7 @@ export function filters(changed) {
         order = "recent";
         selected.clear();
         chosen.clear();
+        candy.reset();
         authorid = "";
         creator.setAttribute("aria-pressed", "false");
         apply();
@@ -126,6 +131,7 @@ export function filters(changed) {
         button.addEventListener("click", () => {
             if (chosen.has(key)) chosen.delete(key);
             else chosen.add(key);
+            lastrow = "features";
             apply();
         });
         featurerow.append(button);
@@ -139,7 +145,7 @@ export function filters(changed) {
     const header = document.createElement("section");
     header.className = "creatorprofile";
     header.hidden = true;
-    bar.append(header, top, tagrow, lower);
+    bar.append(header, top, tagrow, lower, candy.element);
     let routed = location.search;
 
     function readroute() {
@@ -152,6 +158,7 @@ export function filters(changed) {
         authorid = /^\d{17,22}$/.test(query.get("author") || "") ? query.get("author") : "";
         chosen.clear();
         for (const key of (query.get("features") || "").split(",")) if (Object.prototype.hasOwnProperty.call(featuretypes, key)) chosen.add(key);
+        candy.read(query);
         routed = location.search;
     }
     readroute();
@@ -169,10 +176,13 @@ export function filters(changed) {
     else window.addEventListener("resize", measure, {passive: true});
     measure();
 
-    function apply(write = true, restore = false, replace = false) {
+    function apply(write = true, restore = false, replace = false, preserve = false) {
+        const beforepage = new URLSearchParams(location.search).get("page");
         if (write) {
             const url = new URL(location.href);
-            for (const key of ["search", "sort", "tags", "creator", "page", "features", "author", "revision"]) url.searchParams.delete(key);
+            for (const key of ["search", "sort", "tags", "creator", "features", "author", "revision"]) url.searchParams.delete(key);
+            if (!preserve) url.searchParams.delete("page");
+            candy.write(url);
             if (search.value) url.searchParams.set("search", search.value);
             if (authorid) url.searchParams.set("author", authorid);
             if (chosen.size) url.searchParams.set("features", [...chosen].sort().join(","));
@@ -189,19 +199,30 @@ export function filters(changed) {
         for (const button of options.querySelectorAll("[data-tag]")) button.setAttribute("aria-pressed", String(selected.has(button.dataset.tag)));
         if (header.dataset.creator !== authorid) {header.dataset.creator = authorid; profile(header, authorid, entries)}
         for (const button of featurerow.children) button.setAttribute("aria-pressed", String(chosen.has(button.dataset.feature)));
-        reset.hidden = !authorid && !chosen.size && !search.value && order === "recent" && !selected.size && creator.getAttribute("aria-pressed") !== "true";
+        candy.update();
+        reset.hidden = !authorid && !chosen.size && !search.value && order === "recent" && !selected.size && !candy.active && creator.getAttribute("aria-pressed") !== "true";
+        const rows = {tags: tagrow, features: lower, candy: candy.element};
+        const active = [selected.size ? "tags" : "", chosen.size ? "features" : "", candy.active ? "candy" : ""].filter(Boolean);
+        const placement = active.includes(lastrow) ? lastrow : active.at(-1) || "tags";
+        rows[placement].append(reset);
+        for (const row of Object.values(rows)) row.classList.toggle("hasreset", !reset.hidden && row === rows[placement]);
         options.hidden = false;
         clear.hidden = !search.value;
         const played = recentplays();
         const result = entries.filter(entry => {
             if (entry.duplicateof || authorid && entry.creatorid !== authorid) return false;
+            if (!candy.matches(entry)) return false;
             if (![...chosen].every(key => (entry.notable || []).includes(key))) return false;
             if (order === "played" && !played[entry.id]) return false;
             const text = creator.getAttribute("aria-pressed") === "true" ? entry.creator : entry.title;
             return matches(search.value, text) && [...selected].every(id => (entry.tags || []).some(tag => tag.id === id));
         });
         result.sort((first, second) => (order === "played" ? played[second.id] - played[first.id] : order === "recent" ? 0 : (Number(second[order]) || 0) - (Number(first[order]) || 0)) || recent(first, second));
-        changed(result, {restore});
+        const next = result.map(entry => entry.id).join(",");
+        if (signature !== next || restore || beforepage !== new URLSearchParams(location.search).get("page")) {
+            signature = next;
+            changed(result, {restore});
+        }
     }
 
     document.addEventListener("leveltagfilter", event => {
@@ -209,6 +230,7 @@ export function filters(changed) {
         const button = [...options.children].find(control => control.dataset.tag === id);
         if (!button) return;
         selected.add(id);
+        lastrow = "tags";
         button.setAttribute("aria-pressed", "true");
         button.scrollIntoView({block: "nearest", inline: "nearest"});
         apply();
@@ -231,6 +253,7 @@ export function filters(changed) {
         search.value = "";
         selected.clear();
         chosen.clear();
+        candy.reset();
         order = "recent";
         const url = new URL(location.href);
         url.hash = "";
@@ -266,6 +289,7 @@ export function filters(changed) {
     return {
         setentries(data) {
             entries = data;
+            candy.setentries(data);
             const all = new Map();
             for (const entry of data) for (const tag of entry.tags || []) if (tag.id && tag.name) all.set(tag.id, tag);
             options.replaceChildren(playedbutton);
@@ -281,6 +305,7 @@ export function filters(changed) {
                 button.addEventListener("click", () => {
                     if (selected.has(tag.id)) selected.delete(tag.id);
                     else selected.add(tag.id);
+                    lastrow = "tags";
                     button.setAttribute("aria-pressed", String(selected.has(tag.id)));
                     apply();
                 });

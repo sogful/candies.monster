@@ -1,4 +1,5 @@
 import {requiredgame} from "./unsupported.js";
+import {attach, candydata} from "./candylist/data.js";
 
 export async function catalogue() {
     const configuration = await fetch(new URL("../data/levels.json", import.meta.url));
@@ -10,12 +11,13 @@ export async function catalogue() {
         return response.json();
     }
     const base = new URL(endpoint);
+    const additional = candydata(base);
     const response = await fetch(new URL("/levels", base));
     if (!response.ok) throw new Error("Levels unavailable");
     const data = await response.json();
     if (!Array.isArray(data.levels)) throw new Error("Invalid catalogue");
     const names = new Map(data.levels.filter(level => level.author?.name).map(level => [level.author.id, level.author.name]));
-    return data.levels.flatMap(level => {
+    const entries = data.levels.flatMap(level => {
         if (!/^\d{17,22}$/.test(level.id) || !Array.isArray(level.files)) return [];
         const file = level.files.find(file => /^\d{17,22}$/.test(file.id) && (level.primaryfile === undefined ? /\.(xml|json)$/i.test(file.name) : file.id === level.primaryfile));
         if (!file && !level.files.some(file => /\.(xml|json)$/i.test(file.name))) return [];
@@ -37,4 +39,5 @@ export async function catalogue() {
             downloads: null, likes: null, objects: Number.isSafeInteger(level.objects) ? level.objects : null
         }];
     });
+    return attach(entries, await additional);
 }

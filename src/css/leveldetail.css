@@ -3,6 +3,7 @@
 @import url("/assets/static/sharing.css");
 @import url("./inspection.css");
 @import url("./comments.css");
+@import url("./candylist.css");
 
 .leveldetail {
     position: absolute; inset: 0;

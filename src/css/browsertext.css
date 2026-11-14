@@ -32,6 +32,7 @@
 .homepage .levelnotice, .homepage .levelstatus, .homepage .forumurl, .homepage .shorturl,
 .homepage .levelcomments, .homepage .levelpagination, .homepage .levelfilters, .homepage .levelsort, .homepage .levelsearch,
 .homepage .creatorname, .homepage .creatorusername, .homepage .creatorid,
+.homepage .candyrank, .homepage .candylabel,
 .homepage .leveltag, .homepage .levelreaction, .homepage .rating, .homepage .features {
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: -0.08em 0.15em 0 #000,0.08em 0.15em 0 #000,0 0.07em 0 #000,0 0.23em 0 #000,-0.057em 0.093em 0 #000,0.057em 0.093em 0 #000,-0.057em 0.207em 0 #000,0.057em 0.207em 0 #000;

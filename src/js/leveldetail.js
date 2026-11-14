@@ -12,6 +12,7 @@ import {comments} from "./comments.js";
 import {discordbutton} from "./discordlink.js";
 import {creatorlink} from "./creator.js";
 import {features} from "./features.js";
+import {rankings, candyinfo} from "./candylist/view.js";
 
 export function leveldetails() {
     const root = document.documentElement;
@@ -150,7 +151,7 @@ export function leveldetails() {
         const reactionrow = create("div", "levelreactions");
         reactions(entry, reactionrow);
         statistics.append(favourites, plays, objects, reactionrow);
-        hero.append(create("div", "levelspace"), primary, statistics);
+        hero.append(rankings(entry), primary, statistics);
         const information = create("div", "levelinformation");
         const body = create("div", "levelbody");
         const description = create("div", "leveldescription");
@@ -187,6 +188,7 @@ export function leveldetails() {
             body.append(label);
         }
         information.append(body);
+        candyinfo(entry, information);
         const actions = create("div", "levelactions");
         const download = create("a", "leveldownload clickable");
         download.setAttribute("aria-label", "download level");
@@ -228,6 +230,7 @@ export function leveldetails() {
         const wasopen = !panel.hidden;
         panel.hidden = !open;
         if (!open) {
+            for (const frame of panel.querySelectorAll(".candyframe")) frame.remove();
             scene(null);
             if (current && !location.hash) document.title = "candies.monster";
             return;
