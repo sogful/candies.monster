@@ -11,13 +11,15 @@
 .levelcomments[hidden], .earliercomments[hidden] {display: none}
 .levelcomments::-webkit-scrollbar {display: none}
 .levelcomment {
-    padding: 3px 4px; box-sizing: border-box;
+    padding: 2px 4px; box-sizing: border-box;
 }
 .commentauthor {
-    margin: 0 0 2px; font-size: 21px;
+    margin: 0; font-size: 19px;
 }
-.commentbody {padding: 2px}
-.commentbody .mdparagraph {margin-bottom: 0.15em}
+.commentbody {
+    padding: 1px 2px; line-height: 1.05;
+}
+.commentbody .mdparagraph {margin-bottom: 0.05em}
 .commentstatus {margin: 4px}
 .commentstatus:empty {display: none}
 .earliercomments {
@@ -51,3 +53,9 @@
     align-self: center;
 }
 .levelcomments.commentempty .commentlist {display: none}
+
+@media (max-width: 700px) {
+    .levelcomments {font-size: 15px}
+    .commentauthor {font-size: 17px}
+    .commentimage {max-height: 140px}
+}

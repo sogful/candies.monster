@@ -102,7 +102,7 @@ export function leveldetails() {
         panel.querySelector(".leveldownload").download = filename(entry);
         document.title = entry.title + " by " + entry.creator;
         panel.querySelector(".leveldescription").replaceChildren(discordmd(entry.description || entry.title));
-        tags(entry, panel.querySelector(".leveltags"));
+        tags(entry, panel.querySelector(".levelinfotags > .leveltags"));
         reactions(entry, panel.querySelector(".levelreactions"));
         const rating = document.querySelector('.level[data-level="' + entry.id + '"] .rating p');
         if (rating) rating.textContent = String(entry.rating ?? "--");
@@ -159,10 +159,11 @@ export function leveldetails() {
         body.append(description);
         const notable = create("div", "levelfeatures");
         notable.hidden = true;
-        body.append(notable);
+        const tagrows = create("div", "levelinfotags");
+        tagrows.append(notable);
         const labels = create("div", "leveltags");
         tags(entry, labels);
-        body.append(labels);
+        tagrows.append(labels);
         if (entry.revisions?.length) {
             const label = create("label", "levelrevisions", "Revision ");
             const choices = create("select", "revisionselect clickable");
@@ -187,7 +188,7 @@ export function leveldetails() {
             label.append(choices);
             body.append(label);
         }
-        information.append(body);
+        information.append(body, tagrows);
         candyinfo(entry, information);
         const actions = create("div", "levelactions");
         const download = create("a", "leveldownload clickable");

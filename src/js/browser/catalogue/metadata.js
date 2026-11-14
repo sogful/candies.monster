@@ -74,7 +74,7 @@ export function tags(entry, container) {
 import {enabled, number} from "/src/js/browser/renderer/data.js";
 
 export const featuretypes = {
-    gravity: "Different gravity", flying: "Flying candy", water: "Water",
+    gravity: "Custom gravity", flying: "Flying candy", water: "Water",
     split: "Split candy", night: "Night", connected: "Connected candies", timefreeze: "Time freeze"
 };
 
@@ -104,4 +104,20 @@ export function features(map, container) {
         container.append(item);
     }
     container.hidden = !keys.length;
+}
+
+
+const scenery = new Map();
+let tagbackdrops = {};
+tagdata.then(data => {tagbackdrops = data.backdrops || {}});
+
+export function fallback(entry) {
+    if (entry.engine === "Cut the Rope: Time Travel") return tagbackdrops["time travel"]?.[0] || "/music/assets/images/bgs/cardboard.webp";
+    if (!/^Cut the Rope(?:: Magic| 2)$/.test(entry.engine || "")) return "/assets/images/bgs/rainbowtiny.webp";
+    if (scenery.has(entry.id)) return scenery.get(entry.id);
+    const key = entry.engine === "Cut the Rope: Magic" ? "magic" : "cut the rope 2";
+    const choices = tagbackdrops[key] || [];
+    const image = choices[Math.floor(Math.random() * choices.length)] || "/music/assets/images/bgs/cardboard.webp";
+    scenery.set(entry.id, image);
+    return image;
 }

@@ -323,3 +323,24 @@
     25%, 75% {transform: translate(-5px,-5px) rotate(-0.1deg)}
     50% {transform: translate(5px,5px) rotate(0.1deg)}
 }
+
+.resourceblurb[hidden], .ctrhomefooter[hidden] {display: none}
+@media (min-width: 701px), (max-height: 500px) {
+    .bignav {
+        grid-template-columns: repeat(2,43px); column-gap: 2px;
+    }
+    .bignav .navlink {grid-column: span 2}
+    .bignav .navcompact {
+        grid-column: span 1; width: 43px;
+    }
+    .bignav .navcompact .buttonlabel {
+        position: absolute; bottom: -3px;
+        font-size: 9px; margin-top: 0;
+    }
+}
+
+@media (max-width: 700px) and (min-height: 501px) {
+    .sidelinks {
+        font-size: 10px; line-height: 0.9;
+    }
+}

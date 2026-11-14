@@ -258,3 +258,52 @@
         font-size: 15px; height: 23px;
     }
 }
+
+.levelfilters :is(.tagoptions,.featureoptions,.candyoptions,.contestoptions) {
+    box-sizing: border-box; padding: 1px 4px 2px;
+    scroll-padding-inline: 4px;
+}
+.levelfilters .tagoptions .leveltag {
+    height: 22px; font-size: 15px;
+    gap: 3px; padding: 1px 5px;
+}
+.levelfilters :is(.featureoptions,.candyoptions,.contestoptions) .leveltag {
+    height: 16px; font-size: 11px;
+    gap: 3px; padding: 1px 5px;
+}
+.levelfilters .tagoptions .tagemoji {
+    width: 17px; height: 17px;
+}
+.levelfilters :is(.featureoptions,.candyoptions,.contestoptions) .tagemoji {
+    width: 12px; height: 12px;
+}
+.levelfilters .candyoptions > .candylabel {font-family: "Lexend Deca",sans-serif}
+.unsupportedtag {opacity: 0.5}
+.contestbar {
+    position: relative; margin-left: var(--filterinset);
+    width: calc(100% - var(--filterinset));
+}
+.contestoptions {
+    display: flex; gap: 3px;
+    overflow: auto hidden; scrollbar-width: none;
+    min-width: 0; touch-action: pan-x;
+}
+.contestoptions > * {flex-shrink: 0}
+.contestoptions::-webkit-scrollbar {display: none}
+.contestoptions [aria-pressed="true"] {background: rgba(70,70,70,0.5)}
+
+.levelfilters .leveltag {background: rgba(0,0,0,0.5)}
+.levelfilters .leveltag[aria-pressed="true"] {background: rgba(70,70,70,0.5)}
+.tagbar, .featurebar, .candybar, .contestbar {
+    margin-left: calc(var(--filterinset) - 4px);
+    width: calc(100% - var(--filterinset) + 4px);
+}
+
+.contestoptions .tagemoji {
+    display: inline-grid; place-items: center;
+    line-height: 1;
+}
+.contestoptions .tagemoji img {
+    width: 100%; height: 100%;
+    margin: 0; vertical-align: middle;
+}

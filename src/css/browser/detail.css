@@ -321,3 +321,15 @@
 .unsupportednotice[hidden] {display: none}
 .unsupportednotice p {margin: 0}
 .unsupportedengine {font-size: 18px}
+
+@media (max-width: 700px) {
+    .leveldescription {font-size: 18px}
+    .leveldescription .mdheading {font-size: 1.15em}
+}
+.levelinfotags {
+    display: flex; flex-direction: column;
+    grid-column: 1 / -1; min-width: 0;
+    max-height: 90px; overflow-y: auto;
+    scrollbar-width: none;
+}
+.levelinfotags::-webkit-scrollbar {display: none}

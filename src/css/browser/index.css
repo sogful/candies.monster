@@ -99,8 +99,9 @@
     grid-column: 1; grid-row: 1;
     font-size: 18px; font-size: clamp(12px,7cqw,26px);
     overflow-wrap: anywhere;
-    display: -webkit-box; -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical; overflow: hidden;
+    display: block; overflow: hidden;
+    line-height: 1.15; max-height: none;
+    text-overflow: clip; box-sizing: content-box;
 }
 
 .creator {
@@ -136,9 +137,6 @@
     width: 1em; height: 1em;
 }
 
-@container (max-width: 180px) {
-    .title {-webkit-line-clamp: 1}
-}
 
 .rating, .features, .cardplays {
     display: flex; align-items: center;
@@ -159,7 +157,7 @@
 .playcounticon {
     height: 1em; width: 1em;
     object-fit: contain; margin-left: 3px;
-    transform: rotate(90deg);
+    transform: none;
 }
 
 .features {
@@ -206,7 +204,7 @@
 
 @container (max-width: 110px) {
     .title {
-        font-size: 9px; -webkit-line-clamp: 1;
+        font-size: 9px;
     }
     .creator {font-size: 8px}
     .rating, .cardplays {font-size: 9px}
@@ -278,3 +276,19 @@
     color: #fff;
     font-size: 19px; white-space: nowrap;
 }
+
+.levelfiltercount {
+    display: block; font-size: 13px;
+    line-height: 1; opacity: 0.75;
+    text-align: center;
+}
+.levelempty {
+    grid-column: 1 / -1; text-align: center;
+    display: grid; place-items: center;
+}
+.levelempty img {
+    width: 100px; height: 100px;
+    object-fit: contain;
+}
+
+.levelfiltercount[hidden] {display: none}

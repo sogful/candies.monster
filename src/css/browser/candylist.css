@@ -45,7 +45,7 @@
 }
 .levelinformation.candyinformation {
     display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-    grid-template-rows: minmax(0,1fr);
+    grid-template-rows: minmax(0,1fr) auto;
     gap: 10px; align-items: stretch;
 }
 .candyvideo {
@@ -73,4 +73,17 @@
     .levelinformation.candyinformation {gap: 6px}
     .candyframe {min-height: 90px}
     .candylabel {font-size: 12px}
+}
+
+.candyinformation > .levelbody {
+    grid-row: 1; grid-column: 1;
+}
+.candyinformation > .candyvideo {
+    grid-row: 1; grid-column: 2;
+}
+.candyinformation > .levelinfotags {grid-row: 2}
+.candyrankings > .candylabel {font-size: 20px}
+.homepage .candyoptions > .candylabel {font-family: "Lexend Deca",sans-serif}
+@media (max-width: 700px) {
+    .candyrankings > .candylabel {font-size: 17px}
 }

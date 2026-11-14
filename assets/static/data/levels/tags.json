@@ -136,5 +136,69 @@
         "uses bugs": "/assets/images/objects/spider.png",
         "kaizo": "/assets/images/objects/blade.png",
         "modded": "/assets/images/stars/star0.png"
+    },
+    "backdrops": {
+        "candy flick": [
+            "/music/assets/images/bgs/candyflick.webp"
+        ],
+        "cut the rope": [
+            "/music/assets/images/bgs/cardboard.webp",
+            "/music/assets/images/bgs/menu.webp"
+        ],
+        "cut the rope 2": [
+            "/music/assets/images/bgs/two1.webp",
+            "/music/assets/images/bgs/two2.webp",
+            "/music/assets/images/bgs/two4.webp",
+            "/music/assets/images/bgs/twomenu.webp"
+        ],
+        "experiments": [
+            "/music/assets/images/bgs/experiments1.webp",
+            "/music/assets/images/bgs/experimentsmenu.webp"
+        ],
+        "daily": [
+            "/music/assets/images/bgs/daily.webp"
+        ],
+        "holiday gift": [
+            "/music/assets/images/bgs/holidaybox.webp",
+            "/music/assets/images/bgs/holidaymenu.webp"
+        ],
+        "idle candy": [
+            "/music/assets/images/bgs/menu.webp",
+            "/music/assets/images/bgs/cardboard.webp"
+        ],
+        "magic": [
+            "/music/assets/images/bgs/magic4.webp",
+            "/music/assets/images/bgs/magic1.webp",
+            "/music/assets/images/bgs/magic2.webp",
+            "/music/assets/images/bgs/magic3.webp",
+            "/music/assets/images/bgs/magicmenu.webp"
+        ],
+        "merge": [
+            "/music/assets/images/bgs/merge.webp"
+        ],
+        "my om nom": [
+            "/music/assets/images/bgs/disco.webp",
+            "/music/assets/images/bgs/mainroom.webp",
+            "/music/assets/images/bgs/match3.webp",
+            "/music/assets/images/bgs/memory.webp",
+            "/music/assets/images/bgs/space.webp"
+        ],
+        "ringtone": [
+            "/music/assets/images/bgs/birthday.webp"
+        ],
+        "time travel": [
+            "/music/assets/images/bgs/discott.webp",
+            "/music/assets/images/bgs/timetravel1.webp",
+            "/music/assets/images/bgs/timetravelmenu.webp"
+        ],
+        "triple treat": [
+            "/music/assets/images/bgs/menu.webp"
+        ],
+        "cut the rope 3": [
+            "/music/assets/images/bgs/ctr3.webp"
+        ],
+        "cut the rope remastered": [
+            "/music/assets/images/bgs/remastered.webp"
+        ]
     }
 }

@@ -48,7 +48,12 @@
     function rules(list) {
         const result = [];
         for (const rule of list) {
-            if (rule.cssRules && rule.cssRules.length) {
+            if (rule.styleSheet) {
+                try {
+                    const content = rules(rule.styleSheet.cssRules);
+                    if (content) result.push(rule.media?.mediaText ? "@media " + rule.media.mediaText + " {\n" + content + "\n}" : content);
+                } catch {}
+            } else if (rule.cssRules && rule.cssRules.length) {
                 const content = rules(rule.cssRules);
                 if (content) result.push(`${rule.cssText.slice(0, rule.cssText.indexOf("{"))}{${content}}`);
             } else if (rule.selectorText && rule.style) {

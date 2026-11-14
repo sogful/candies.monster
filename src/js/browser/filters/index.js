@@ -1,3 +1,4 @@
+import {contestfilters} from "./contests.js";
 import {filterscroll} from "./controls.js";
 import {tagcontent, featurecontent, tagdata} from "../catalogue/metadata.js";
 import {matches} from "./controls.js";
@@ -72,6 +73,8 @@ export function filters(changed) {
     let lastrow = "tags";
     let signature;
     const candy = candyfilters(() => {lastrow = "candy"; apply()});
+    const contests = contestfilters(() => {lastrow = "contests"; apply()});
+    const unavailable = new Set();
     for (const [key, label] of [["recent", "Recent"], ["rating", "Liked"], ["plays", "Popular"], ["played", "Played"]]) {
         const button = document.createElement("button");
         button.type = "button";
@@ -114,6 +117,7 @@ export function filters(changed) {
         selected.clear();
         chosen.clear();
         candy.reset();
+        contests.reset();
         authorid = "";
         creator.setAttribute("aria-pressed", "false");
         apply();
@@ -145,7 +149,7 @@ export function filters(changed) {
     const header = document.createElement("section");
     header.className = "creatorprofile";
     header.hidden = true;
-    bar.append(header, top, tagrow, lower, candy.element);
+    bar.append(header, top, tagrow, lower, candy.element, contests.element);
     let routed = location.search;
 
     function readroute() {
@@ -159,6 +163,7 @@ export function filters(changed) {
         chosen.clear();
         for (const key of (query.get("features") || "").split(",")) if (Object.prototype.hasOwnProperty.call(featuretypes, key)) chosen.add(key);
         candy.read(query);
+        contests.read(query);
         routed = location.search;
     }
     readroute();
@@ -183,6 +188,7 @@ export function filters(changed) {
             for (const key of ["search", "sort", "tags", "creator", "features", "author", "revision"]) url.searchParams.delete(key);
             if (!preserve) url.searchParams.delete("page");
             candy.write(url);
+            contests.write(url);
             if (search.value) url.searchParams.set("search", search.value);
             if (authorid) url.searchParams.set("author", authorid);
             if (chosen.size) url.searchParams.set("features", [...chosen].sort().join(","));
@@ -200,9 +206,10 @@ export function filters(changed) {
         if (header.dataset.creator !== authorid) {header.dataset.creator = authorid; profile(header, authorid, entries)}
         for (const button of featurerow.children) button.setAttribute("aria-pressed", String(chosen.has(button.dataset.feature)));
         candy.update();
-        reset.hidden = !authorid && !chosen.size && !search.value && order === "recent" && !selected.size && !candy.active && creator.getAttribute("aria-pressed") !== "true";
-        const rows = {tags: tagrow, features: lower, candy: candy.element};
-        const active = [selected.size ? "tags" : "", chosen.size ? "features" : "", candy.active ? "candy" : ""].filter(Boolean);
+        contests.update();
+        reset.hidden = !authorid && !chosen.size && !search.value && order === "recent" && !selected.size && !candy.active && !contests.count && creator.getAttribute("aria-pressed") !== "true";
+        const rows = {tags: tagrow, features: lower, candy: candy.element, contests: contests.element};
+        const active = [selected.size ? "tags" : "", chosen.size ? "features" : "", candy.active ? "candy" : "", contests.count ? "contests" : ""].filter(Boolean);
         const placement = active.includes(lastrow) ? lastrow : active.at(-1) || "tags";
         rows[placement].append(reset);
         for (const row of Object.values(rows)) row.classList.toggle("hasreset", !reset.hidden && row === rows[placement]);
@@ -211,13 +218,16 @@ export function filters(changed) {
         const played = recentplays();
         const result = entries.filter(entry => {
             if (entry.duplicateof || authorid && entry.creatorid !== authorid) return false;
-            if (!candy.matches(entry)) return false;
+            if (!candy.matches(entry) || !contests.matches(entry)) return false;
+            if (entry.engine && !search.value.trim() && !authorid && ![...selected].some(id => unavailable.has(id))) return false;
             if (![...chosen].every(key => (entry.notable || []).includes(key))) return false;
             if (order === "played" && !played[entry.id]) return false;
             const text = creator.getAttribute("aria-pressed") === "true" ? entry.creator : entry.title;
             return matches(search.value, text) && [...selected].every(id => (entry.tags || []).some(tag => tag.id === id));
         });
         result.sort((first, second) => (order === "played" ? played[second.id] - played[first.id] : order === "recent" ? 0 : (Number(second[order]) || 0) - (Number(first[order]) || 0)) || recent(first, second));
+        const count = selected.size + chosen.size + contests.count + candy.count;
+        document.dispatchEvent(new CustomEvent("levelfiltercount", {detail: count}));
         const next = result.map(entry => entry.id).join(",");
         if (signature !== next || restore || beforepage !== new URLSearchParams(location.search).get("page")) {
             signature = next;
@@ -254,6 +264,7 @@ export function filters(changed) {
         selected.clear();
         chosen.clear();
         candy.reset();
+        contests.reset();
         order = "recent";
         const url = new URL(location.href);
         url.hash = "";
@@ -291,11 +302,12 @@ export function filters(changed) {
         const all = new Map(data.filter(tag => tag.id && tag.name).map(tag => [tag.id, tag]));
         options.replaceChildren(playedbutton);
         options.hidden = false;
-        for (const tag of [...all.values()].sort((first, second) => first.name.localeCompare(second.name))) {
+        for (const tag of [...all.values()].sort((first, second) => Number(unavailable.has(first.id)) - Number(unavailable.has(second.id)) || first.name.localeCompare(second.name))) {
             const button = document.createElement("button");
             button.type = "button";
             button.className = "leveltag clickable";
             button.dataset.tag = tag.id;
+            button.classList.toggle("unsupportedtag", unavailable.has(tag.id));
             button.setAttribute("aria-pressed", String(selected.has(tag.id)));
             button.append(tagcontent(tag));
             button.addEventListener("click", () => {
@@ -319,6 +331,14 @@ export function filters(changed) {
     return {
         setentries(data) {
             entries = data;
+            unavailable.clear();
+            const bytag = new Map();
+            for (const entry of data) for (const tag of entry.tags || []) {
+                if (!bytag.has(tag.id)) bytag.set(tag.id, []);
+                bytag.get(tag.id).push(entry);
+                if (/^(?:magic|modded|cut the rope 2)$/i.test(tag.name)) unavailable.add(tag.id);
+            }
+            for (const [id, levels] of bytag) if (levels.every(entry => entry.engine)) unavailable.add(id);
             candy.setentries(data);
             rendertags(data.flatMap(entry => entry.tags || []));
             apply(false, true);

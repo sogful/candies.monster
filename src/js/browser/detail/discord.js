@@ -2,7 +2,7 @@ const guild = "1112531659078762617";
 
 export function appopen(route) {
     const link = document.createElement("a");
-    link.href = "/assets/static/discord/?route=" + encodeURIComponent(route);
+    link.href = "/assets/static/widgets/discord/?route=" + encodeURIComponent(route);
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     document.body.append(link);

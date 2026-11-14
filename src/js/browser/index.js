@@ -18,6 +18,15 @@ const pagination = document.createElement("span");
 pagination.className = "levelpagination";
 pagination.setAttribute("role", "status");
 previous.after(pagination);
+const pagecount = document.createElement("span");
+const filtercount = document.createElement("small");
+filtercount.className = "levelfiltercount";
+filtercount.hidden = true;
+pagination.append(pagecount, filtercount);
+document.addEventListener("levelfiltercount", event => {
+    filtercount.hidden = !event.detail;
+    filtercount.textContent = "(" + event.detail + " filters)";
+});
 let pagesize = 1;
 const detail = leveldetails();
 let entries = [];
@@ -92,6 +101,29 @@ function createlevel(entry) {
     return card;
 }
 
+function fitcard(card) {
+    const title = card.querySelector(".title");
+    title.style.fontSize = "";
+    const base = Number.parseFloat(getComputedStyle(title).fontSize) || 18;
+    const creator = card.querySelector(".creator").getBoundingClientRect().height;
+    const tags = card.querySelector(".cardtags").getBoundingClientRect().height;
+    const available = Math.max(18, Math.min(card.clientHeight * 0.55, card.clientHeight - creator - tags - 12));
+    if (title.scrollHeight <= available) return;
+    let low = 7;
+    let high = base;
+    for (let step = 0; step < 7; step++) {
+        const size = (low + high) / 2;
+        title.style.fontSize = size + "px";
+        if (title.scrollHeight > available) high = size;
+        else low = size;
+    }
+    title.style.fontSize = Math.floor(low * 2) / 2 + "px";
+}
+
+function fitcards() {
+    for (const card of list.querySelectorAll(".level")) fitcard(card);
+}
+
 function saveposition() {
     if (positionkey) storeposition(positionkey, page, list.scrollTop);
 }
@@ -115,15 +147,20 @@ function showpage(number, write = "push") {
     clearthumbnails();
     const content = document.createDocumentFragment();
     for (const entry of visible.slice(page * pagesize, (page + 1) * pagesize)) content.append(createlevel(entry));
-    if (!visible.length) content.append(element("p", "levelnotice", entries.length ? "no results :(" : "no levels yet"));
+    if (!visible.length) {
+        const empty = element("div", "levelempty");
+        empty.append(picture("/assets/images/omnom/404/404.gif", "", ""), element("p", "levelnotice", entries.length ? "no results :(" : "no levels yet"));
+        content.append(empty);
+    }
     list.replaceChildren(content);
+    fitcards();
     list.scrollTop = 0;
     list.setAttribute("aria-label", `levels, page ${page + 1} of ${pages}`);
     previous.disabled = page === 0;
     next.disabled = page >= pages - 1;
     previous.hidden = previous.disabled;
     next.hidden = next.disabled;
-    pagination.textContent = `${visible.length ? page + 1 : 0} of ${visible.length ? pages : 0} (${visible.length} levels)`;
+    pagecount.textContent = `${visible.length ? page + 1 : 0} of ${visible.length ? pages : 0} (${visible.length} levels)`;
     const box = list.querySelector(".levelbg")?.getBoundingClientRect();
     prefetch(visible.slice((page + 1) * pagesize, (page + 2) * pagesize), box?.width, box?.height);
 }
@@ -138,7 +175,7 @@ function layout() {
     const rows = Math.max(1, Math.floor((height - 12 + gap) / (cardwidth * 9 / 16 + gap)));
     const capacity = rows * columns;
     list.style.setProperty("--columns", String(columns));
-    if (capacity === pagesize) return;
+    if (capacity === pagesize) {fitcards(); return}
     const first = page * pagesize;
     pagesize = capacity;
     if (entries.length) showpage(Math.floor(first / pagesize), "replace");
@@ -147,6 +184,7 @@ function layout() {
 if (window.ResizeObserver) new ResizeObserver(layout).observe(list);
 window.addEventListener("resize", layout, {passive: true});
 layout();
+document.fonts?.ready.then(fitcards);
 
 /*//////////////////////////////////////////////////////////////////////*/
 

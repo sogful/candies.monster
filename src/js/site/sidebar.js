@@ -76,14 +76,19 @@ const compact = matchMedia("(max-width: 700px) and (min-height: 501px)");
 const items = [...scroller.querySelectorAll(".bignav .navlink:not([fun])")];
 
 function fitnavigation() {
+    const blurb = scroller.querySelector(".resourceblurb");
+    const footer = document.querySelector(".ctrhomefooter");
     for (const item of items) item.classList.remove("navcompact");
     scroller.classList.remove("navminimal");
-    if (!compact.matches) return;
-    for (let index = items.length - 1; index >= 0 && scroller.scrollWidth > scroller.clientWidth + 1; index -= 2) {
+    blurb.hidden = false;
+    footer.hidden = true;
+    const exceeds = () => compact.matches ? scroller.scrollWidth > scroller.clientWidth + 1 : scroller.scrollHeight > scroller.clientHeight + 1;
+    for (let index = items.length - 1; index >= 0 && exceeds(); index -= 2) {
         items[index].classList.add("navcompact");
         items[index - 1]?.classList.add("navcompact");
     }
     if (items.every(item => item.classList.contains("navcompact"))) scroller.classList.add("navminimal");
+    if (exceeds()) {blurb.hidden = true; footer.hidden = false}
 }
 
 window.addEventListener("resize", fitnavigation, {passive: true});

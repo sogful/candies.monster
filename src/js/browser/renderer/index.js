@@ -1,6 +1,7 @@
+import {fallback} from "../catalogue/metadata.js";
 import {artwork, level, background} from "./data.js";
 import {draw} from "./draw.js";
-import {cached, remember} from "./cache.js";
+import {cached, remember, density} from "./cache.js";
 
 const records = new Map();
 const pending = new Set();
@@ -14,7 +15,7 @@ function paused() {
 }
 
 function queue(record) {
-    if (!record.visible || !record.canvas.isConnected || paused()) return;
+    if (record.static || !record.visible || !record.canvas.isConnected || paused()) return;
     pending.add(record);
     if (!working) void render();
 }
@@ -41,7 +42,7 @@ async function render() {
             const [map, art, backdrop] = await record.resources;
             if (version !== record.version || !record.canvas.isConnected || !record.visible || paused()) continue;
             const pack = Number(record.entry.background?.match(/\/box(\d+)\.webp$/)?.[1]) || 1;
-            draw(record.canvas, {...map, box: pack}, art, backdrop, box.width, box.height, record.detail ? 0.6 : 0.65, record.detail);
+            draw(record.canvas, {...map, box: pack}, art, backdrop, box.width, box.height, record.detail ? 0.6 : density(), record.detail);
             if (!record.detail) remember(record.entry, box.width, box.height, record.canvas);
             record.canvas.dataset.ready = "true";
             delete record.canvas.dataset.error;
@@ -75,6 +76,18 @@ function create(entry, expanded) {
     canvas.className = expanded ? "levelscene" : "levelbg levelcanvas";
     canvas.setAttribute("aria-hidden", "true");
     const record = {canvas, entry, detail: expanded, visible: expanded || !observer, version: 0};
+    if (entry.engine) {
+        record.static = true;
+        records.set(canvas, record);
+        const image = fallback(entry);
+        canvas.dataset.ready = "true";
+        canvas.style.backgroundImage = (expanded ? "linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5))," : "") + 'url("' + image + '")';
+        if (expanded) {
+            root.style.setProperty("--levelbackground", 'url("' + image + '")');
+            document.body.prepend(canvas);
+        }
+        return record;
+    }
     const map = entry.file ? level(entry.file) : Promise.reject(new Error("Level file unavailable"));
     record.resources = Promise.all([
         map, artwork("low"),

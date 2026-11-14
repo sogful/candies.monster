@@ -24,6 +24,7 @@ export async function catalogue() {
         return [{
             id: level.id, title: level.title, creator: level.author?.name || names.get(level.author?.id) || level.author?.id || "unknown",
             creatorid: level.author?.id || "", duplicateof: level.duplicateof || null,
+            contests: Array.isArray(level.contests) ? level.contests : [],
             notable: Array.isArray(level.features) ? level.features : [], levelerror: level.levelerror || null,
             description: level.description || "", file: file ? new URL(`/levels/${level.id}/files/${file.id}`, base).href : "",
             engine: requiredgame(level),

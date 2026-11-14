@@ -17,12 +17,18 @@ function attachment(file) {
     if (picture) {
         const image = document.createElement("img");
         image.className = "commentimage";
-        image.src = url.href;
+        const preview = new URL(url);
+        preview.hostname = "media.discordapp.net";
+        preview.searchParams.set("width", String(Math.min(320, file.width || 320)));
+        preview.searchParams.set("height", String(Math.min(240, file.height || 240)));
+        preview.searchParams.set("quality", "lossy");
+        preview.searchParams.set("format", "webp");
+        image.src = preview.href;
         image.alt = name;
         image.loading = "lazy";
         image.decoding = "async";
         if (file.width > 0 && file.height > 0) image.style.aspectRatio = file.width + " / " + file.height;
-        image.addEventListener("error", () => image.remove(), {once: true});
+        image.addEventListener("error", () => {image.src = url.href}, {once: true});
         link.append(image);
         link.addEventListener("click", event => {
             if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;

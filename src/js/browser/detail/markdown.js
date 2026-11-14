@@ -42,6 +42,15 @@ function inline(text, parent, depth = 0, mentions = {}) {
                 element.href = channel ? "https://discord.com/channels/" + (mentions.guild || "@me") + "/" + id : "https://discord.com/users/" + id;
                 element.target = "_blank";
                 element.rel = "noopener noreferrer";
+                if (!channel) {
+                    element.href = "/?author=" + id;
+                    element.removeAttribute("target");
+                    element.addEventListener("click", event => {
+                        if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                        event.preventDefault();
+                        document.dispatchEvent(new CustomEvent("levelcreator", {detail: id}));
+                    });
+                }
             }
             parent.append(element);
             index += mention[0].length;

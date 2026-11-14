@@ -48,7 +48,7 @@ export function candyinfo(entry, information) {
         button.addEventListener("click", () => document.dispatchEvent(new CustomEvent("candyfilter", {detail: name})));
         tags.append(button);
     }
-    information.querySelector(".levelbody").append(tags);
+    information.querySelector(".levelinfotags").append(tags);
     const videos = rows.filter(row => /^[\w-]{11}$/.test(row.video || ""));
     if (!videos.length) return;
     information.classList.add("candyinformation");

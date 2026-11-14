@@ -15,7 +15,7 @@
 }
 
 .levelopen .homepage {
-    background-image: var(--levelbackground,url("/assets/images/level/box1.webp")); background-color: #101010;
+    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),var(--levelbackground,url("/assets/images/level/box1.webp")); background-color: #101010;
 }
 .levelscene[hidden] {display: none}
 .levelopen .shadow, .levelopen .effects {opacity: 0}
@@ -30,5 +30,6 @@
     position: absolute; inset: 0;
     display: grid; place-items: center;
     pointer-events: none; font-size: 24px;
+    z-index: -1;
 }
 .levelcanvas[data-ready="true"] + .cardloading, .levelcanvas[data-error="true"] + .cardloading {display: none}

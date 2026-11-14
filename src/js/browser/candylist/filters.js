@@ -53,6 +53,7 @@ export function candyfilters(changed) {
     tagdata.then(data => {if (!loaded) rendertags(data.candylist || [])});
     return {
         element,
+        get count() {return selected.size + (active && !selected.size ? 1 : 0)},
         get active() {return active || selected.size > 0},
         update,
         reset() {active = false; selected.clear()},

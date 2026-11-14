@@ -4,8 +4,10 @@ import {draw} from "./draw.js";
 const images = new Map();
 let generation = 0;
 
+export function density() {return Math.min(2, Math.max(1, devicePixelRatio || 1))}
+
 function key(entry, width, height) {
-    return [entry.file, entry.background, Math.round(width), Math.round(height)].join("|");
+    return [entry.file, entry.background, Math.round(width), Math.round(height), density()].join("|");
 }
 
 export function cached(entry, width, height) {
@@ -35,6 +37,7 @@ export function prefetch(entries, width, height) {
         if (current !== generation || document.hidden || document.documentElement.matches(".levelopen,.gameopen,.gameloading,.previewopen")) return;
         const entry = queue.shift();
         if (!entry) return;
+        if (entry.engine) {idle(next); return}
         if (!cached(entry, width, height)) {
             try {
                 const [map, art] = await Promise.all([level(entry.file), artwork("low")]);
@@ -42,7 +45,7 @@ export function prefetch(entries, width, height) {
                 if (current !== generation) return;
                 const canvas = document.createElement("canvas");
                 const pack = Number(entry.background?.match(/\/box(\d+)\.webp$/)?.[1]) || 1;
-                draw(canvas, {...map, box: pack}, art, backdrop, width, height, 0.65, false);
+                draw(canvas, {...map, box: pack}, art, backdrop, width, height, density(), false);
                 remember(entry, width, height, canvas);
             } catch {}
         }
