@@ -13,7 +13,7 @@ export async function decode(bytes) {
     const packed = view.getUint32(11, true);
     if (view.getUint32(7, true) !== expected) throw new Error("Texture dimensions and declared pixel size disagree.");
     if (bytes.length < packed + 15) throw new Error("Missing texture parts. Select the folder containing all parts.");
-    const {Decompress: decompressor} = await import("./dependencies/fzstd.js");
+    const {Decompress: decompressor} = await import("/assets/static/dependencies/fzstd.js");
     const parts = [];
     let length = 0;
     const stream = new decompressor(part => {

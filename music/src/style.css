@@ -7,7 +7,7 @@
 body {
     font-family: var(--sitefont, "Good Dog"); background-color: black;
     min-height: 100vh; overflow-x: hidden;
-    user-select: none; cursor: url("/assets/static/cursors/idle.cur"), default !important;
+    user-select: none; cursor: url("/assets/images/cursors/idle.cur"), default !important;
     position: relative;
 }
 
@@ -20,11 +20,11 @@ body {
     z-index: -1; filter: brightness(0.25) blur(2px);
 }
 body:active, body:focus, body:focus-within, body:target, body:active * {
-    cursor: url("/assets/static/cursors/active.cur"), default !important;
+    cursor: url("/assets/images/cursors/active.cur"), default !important;
 }
 :any-link {
     color: #8feeff; text-decoration: none !important;
-    cursor: url("/assets/static/cursors/link.cur"), default !important;
+    cursor: url("/assets/images/cursors/link.cur"), default !important;
 }
 * {
     margin: 0; padding: 0;

@@ -106,7 +106,7 @@
     }
 
     const library = document.createElement("script");
-    library.src = "/assets/static/vendor/emoji/twemoji.js";
+    library.src = "/assets/static/dependencies/twemoji.js";
     library.onload = () => {
         if (document.body) start();
         else document.addEventListener("DOMContentLoaded", start, {once: true});

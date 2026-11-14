@@ -9,7 +9,7 @@ import {createsharing} from "./sharing.js";
     let favicons = []; let index = 0; const delay = 300;
     let sheetimg = null;
 
-    fetch("/assets/static/data/images/icon.json")
+    fetch("/assets/images/candies/icon.json")
         .then(response => response.json()).then(data => {
             spritejson = data.frames; sheetimg = new Image();
             sheetimg.onload = () => {

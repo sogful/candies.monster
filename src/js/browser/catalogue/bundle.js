@@ -2,7 +2,7 @@ let loading;
 let fallback;
 
 function inflate(bytes) {
-    fallback ||= import("/assets/static/vendor/libraries/fflate.js").then(() => window.fflate);
+    fallback ||= import("/assets/static/dependencies/fflate.js").then(() => window.fflate);
     return fallback.then(library => library.gunzipSync(bytes));
 }
 

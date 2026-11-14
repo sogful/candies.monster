@@ -51,7 +51,7 @@ export async function candydata(endpoint) {
         if (!Array.isArray(data.levels)) throw new Error("Invalid Candylist data");
         return data;
     } catch {
-        const response = await fetch(new URL("../../../../assets/static/data/candylist/levels.json", import.meta.url));
+        const response = await fetch(new URL("../../../../assets/static/data/candylist.json", import.meta.url));
         return response.ok ? response.json() : {levels: []};
     } finally {clearTimeout(timer)}
 }

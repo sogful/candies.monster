@@ -33,7 +33,7 @@ export async function background(url, map) {
     if (map.height <= 480 || image.section) return image;
     const name = url.match(/\/(box\d+)\.webp$/)?.[1];
     if (!name) return image;
-    sections ||= fetch("/assets/static/data/renderer/backgrounds.json").then(response => response.json()).catch(() => ({}));
+    sections ||= fetch("/assets/static/data/backgrounds.json").then(response => response.json()).catch(() => ({}));
     const section = (await sections)[name];
     if (section) {
         image.seam = await picture(url.replace(/\.webp$/, "seam.webp"));
@@ -49,7 +49,7 @@ export function artwork(quality = "normal") {
     if (!sprites.has(name)) {
         sprites.set(name, Promise.all([
             picture("/assets/images/level/" + name + ".webp"),
-            fetch("/assets/static/data/renderer/objects.json").then(response => {
+            fetch("/assets/images/level/objects.json").then(response => {
                 if (!response.ok) throw new Error("Sprites unavailable");
                 return response.json();
             })

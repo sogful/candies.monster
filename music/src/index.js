@@ -698,7 +698,7 @@ class musicplayer {
 }
 
 window.addEventListener("DOMContentLoaded", function() {
-    fetch("/assets/static/data/music/tracks.json")
+    fetch("/assets/static/data/tracks.json")
         .then(function(response) {return response.json()})
         .then(function(data) {
             window.musicplayer = new musicplayer(data);

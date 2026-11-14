@@ -45,14 +45,14 @@
             background-position: center center;
             background-repeat: no-repeat; background-size: cover;
 
-            cursor: url("/assets/static/cursors/idle.cur"), default !important;
+            cursor: url("/assets/images/cursors/idle.cur"), default !important;
         }
         body:active, body:focus, body:focus-within, body:target, body:active * {
-            cursor: url("/assets/static/cursors/active.cur"), default !important;
+            cursor: url("/assets/images/cursors/active.cur"), default !important;
         }
         :any-link {
             color: #8feeff; text-decoration: none !important;
-            cursor: url("/assets/static/cursors/link.cur"), default !important;
+            cursor: url("/assets/images/cursors/link.cur"), default !important;
         }
         * {
             cursor: inherit !important; 
@@ -346,7 +346,7 @@
             let favicons = []; let index = 0; const delay = 300;
             let sheetimg = null;
 
-            fetch("/assets/static/data/images/icon.json")
+            fetch("/assets/images/candies/icon.json")
                 .then(response => response.json()).then(data => {
                     spritejson = data.frames; sheetimg = new Image();
                     sheetimg.onload = () => {

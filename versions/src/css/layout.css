@@ -110,7 +110,7 @@
 .gamecircle .gameicon, .gamecircle .gameicon *,
 .scrollnav:hover, .scrollnav:hover *,
 .backbutton:hover, .backbutton:hover * {
-    cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+    cursor: url("/assets/images/cursors/link.cur"), pointer !important;
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -129,7 +129,7 @@
 }
 
 .sharetitle .sharelink, .sharetitle .sharelink * {
-    cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+    cursor: url("/assets/images/cursors/link.cur"), pointer !important;
 }
 
 .sharelink svg {

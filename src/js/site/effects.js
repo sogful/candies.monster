@@ -128,7 +128,7 @@ function loadrain() {
     if (sheet || loading) return;
     loading = Promise.all([
         image("/assets/images/candies/candies.webp"),
-        fetch("/assets/static/data/images/candies.json").then(response => {
+        fetch("/assets/images/candies/candies.json").then(response => {
             if (!response.ok) throw new Error("Candy metadata unavailable");
             return response.json();
         })

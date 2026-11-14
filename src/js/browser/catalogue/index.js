@@ -6,11 +6,7 @@ export async function catalogue() {
     const configuration = await fetch(new URL("../../../../assets/static/data/levels/levels.json", import.meta.url));
     if (!configuration.ok) throw new Error("Catalogue unavailable");
     const {endpoint} = await configuration.json();
-    if (!endpoint) {
-        const response = await fetch(new URL("../../../../assets/static/data/levels/test.json", import.meta.url));
-        if (!response.ok) throw new Error("Levels unavailable");
-        return response.json();
-    }
+    if (!endpoint) return [];
     const base = new URL(endpoint);
     const additional = candydata(base);
     const response = await fetch(new URL("/levels", base));

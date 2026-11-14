@@ -198,7 +198,7 @@ export function morestuff() {
 
     const ads = [];
     const carousel = root.querySelector(".carousel");
-    fetch("/assets/static/data/site/ads.json").then(response => {
+    fetch("/assets/static/data/ads.json").then(response => {
         if (!response.ok) throw new Error("Links unavailable");
         return response.json();
     }).then(entries => {

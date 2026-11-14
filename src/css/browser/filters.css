@@ -48,7 +48,7 @@
 .tagoptions::-webkit-scrollbar {display: none}
 .tagoptions .leveltag {flex-shrink: 0}
 .tagdragging, .tagdragging .leveltag {
-    cursor: url("/assets/static/cursors/active.cur"), grabbing;
+    cursor: url("/assets/images/cursors/active.cur"), grabbing;
 }
 .leveltag {
     display: inline-flex; align-items: center;

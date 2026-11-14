@@ -12,19 +12,19 @@
     background-position: center; background-repeat: no-repeat;
     font-family: var(--sitefont,"Good Dog"); color: #fff;
     user-select: none; -webkit-user-drag: none;
-    cursor: url("/assets/static/cursors/idle.cur"), default;
+    cursor: url("/assets/images/cursors/idle.cur"), default;
 }
 
 .homepage :any-link {
     color: #8feeff; text-decoration: none;
-    cursor: url("/assets/static/cursors/link.cur"), pointer;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
 
 .homepage .clickable, .homepage .navlink, .homepage .fun {
-    cursor: url("/assets/static/cursors/link.cur"), pointer;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
 
-.homepage :active {cursor: url("/assets/static/cursors/active.cur"), default}
+.homepage :active {cursor: url("/assets/images/cursors/active.cur"), default}
 
 .homepage * {scrollbar-width: none}
 .homepage ::-webkit-scrollbar {display: none}

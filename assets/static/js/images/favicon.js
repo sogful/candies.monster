@@ -71,7 +71,7 @@ function animate() {
 
 function getframes() {
     if (!metadata) {
-        metadata = fetch("/assets/static/data/images/icon.json")
+        metadata = fetch("/assets/images/candies/icon.json")
             .then(response => {
                 if (!response.ok) throw new Error("favicon frames unavailable");
                 return response.json();

@@ -84,5 +84,5 @@
 }
 
 .downloadpopup a, .downloadpopup a * {
-    cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+    cursor: url("/assets/images/cursors/link.cur"), pointer !important;
 }

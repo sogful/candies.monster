@@ -39,7 +39,7 @@
 .searchclear[hidden] {display: none}
 
 .searchclear, .searchclear * {
-    cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+    cursor: url("/assets/images/cursors/link.cur"), pointer !important;
 }
 
 .gameopen .archivesearch {display: none}
@@ -96,7 +96,7 @@
 }
 
 .searchjump, .searchjump * {
-    color: #8feeff; cursor: url("/assets/static/cursors/link.cur"), pointer !important;
+    color: #8feeff; cursor: url("/assets/images/cursors/link.cur"), pointer !important;
 }
 
 .searchresults .downloadbutton.searchdim {opacity: 0.25}
