@@ -162,7 +162,10 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.gamename .sharelink {margin-left: 0.5rem}
+.gamename .sharelink {
+    margin-left: 0.5rem; width: 1.333334rem;
+    height: 1.333334rem;
+}
 
 .versioncontent {
     display: flex; align-items: center;
@@ -205,3 +208,20 @@
 .versionscreen {padding: 0.85em 0.8em}
 
 .gameinfo .gamename {font-size: 2.3em}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.versionidentity {
+    display: flex; flex-direction: column;
+    align-items: center; flex: 0 0 auto;
+    max-width: 80px; margin-right: 5px;
+}
+.versionidentity .versionicon {margin-right: 0}
+.versionidentity .version {
+    font-size: 1em; line-height: 1.15;
+    color: #fff;
+    text-align: center; overflow-wrap: anywhere;
+    padding: 0.12em 0.1em 0.2em;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.175em 0 #000;
+}
