@@ -1,4 +1,5 @@
 import {spinner} from "/assets/static/js/images/spinner.js";
+import {pagegestures} from "./pages.js";
 import {leveldetails} from "./detail/index.js";
 import {thumbnail, clearthumbnails} from "./renderer/index.js";
 import {morestuff} from "../site/rope/index.js";
@@ -14,6 +15,7 @@ morestuff();
 const list = document.querySelector(".levels");
 const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
+pagegestures(list, previous, next);
 const pagination = document.createElement("span");
 pagination.className = "levelpagination";
 pagination.setAttribute("role", "status");
@@ -25,7 +27,7 @@ filtercount.hidden = true;
 pagination.append(pagecount, filtercount);
 document.addEventListener("levelfiltercount", event => {
     filtercount.hidden = !event.detail;
-    filtercount.textContent = "(" + event.detail + " filters)";
+    filtercount.textContent = "(" + event.detail + (event.detail === 1 ? " filter)" : " filters)");
 });
 let pagesize = 1;
 const detail = leveldetails();

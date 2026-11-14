@@ -165,15 +165,17 @@ export function leveldetails() {
         tags(entry, labels);
         tagrows.append(labels);
         if (entry.revisions?.length) {
-            const label = create("label", "levelrevisions", "Revision ");
+            const label = create("label", "levelrevisions");
             const choices = create("select", "revisionselect clickable");
             choices.setAttribute("aria-label", "Level revision");
-            const original = create("option", "", "Original");
+            const initial = entry.file.match(/files\/(\d+)/)?.[1];
+            const date = id => new Date(Number((BigInt(id) >> 22n) + 1420070400000n)).toLocaleDateString();
+            const original = create("option", "", initial ? date(initial) : "Original");
             original.value = "";
             choices.append(original);
             for (const file of entry.revisions) {
                 const created = new Date(Number((BigInt(file.id) >> 22n) + 1420070400000n));
-                const option = create("option", "", file.name + " (" + created.toLocaleDateString() + ")");
+                const option = create("option", "", created.toLocaleDateString());
                 option.value = file.id;
                 choices.append(option);
             }
@@ -186,7 +188,7 @@ export function leveldetails() {
                 render();
             });
             label.append(choices);
-            body.append(label);
+            primary.append(label);
         }
         information.append(body, tagrows);
         candyinfo(entry, information);
@@ -227,6 +229,7 @@ export function leveldetails() {
         if (match && location.hash.startsWith("#level/")) history.replaceState(null, "", location.pathname + location.search + "#" + match[1]);
         const open = Boolean(match);
         root.classList.toggle("levelopen", open);
+        document.dispatchEvent(new Event("levelviewchange"));
         main.inert = open || root.classList.contains("documentopen") || root.classList.contains("previewopen");
         const wasopen = !panel.hidden;
         panel.hidden = !open;
@@ -247,7 +250,7 @@ export function leveldetails() {
         const entry = entries.find((item, index) => String(item.id ?? index + 1) === id);
         if (entry) {
             const selected = entry.revisions?.find(file => file.id === revision);
-            const shown = selected ? {...entry, revision, requirements: [], filename: selected.name, objects: null, file: new URL("/levels" + (selected.thread || id) + "/files/" + selected.id, entry.detailurl).href} : entry;
+            const shown = selected ? {...entry, revision, requirements: [], filename: selected.name, objects: null, file: new URL("/levels/" + (selected.thread || id) + "/files/" + selected.id, entry.detailurl).href} : entry;
             scene(shown);
             document.title = entry.title + " by " + entry.creator;
             content(shown);
