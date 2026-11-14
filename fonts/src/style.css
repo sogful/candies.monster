@@ -541,3 +541,26 @@ p {margin: 0}
     padding: 0; margin: 0;
 }
 .checkboxinput:checked {background-image: url("/assets/images/buttons/checked.png")}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.textdisplay .textpreview, .textdisplay .textshadow {
+    width: max-content; max-width: none;
+}
+.textdisplay .textinput {
+    min-width: 0; max-width: none;
+    width: auto; height: auto;
+    line-height: 1.2; white-space: pre;
+    padding: 0; margin: 0;
+    box-sizing: content-box; opacity: 1;
+    color: transparent; caret-color: #fff;
+    -webkit-text-fill-color: transparent; -webkit-text-stroke: 0;
+    text-shadow: none; scrollbar-width: none;
+    user-select: text; -webkit-user-select: text;
+}
+.textdisplay .textinput::-webkit-scrollbar {display: none}
+.textdisplay .textinput::selection {
+    color: transparent; background: rgba(92,161,255,0.4);
+    -webkit-text-fill-color: transparent;
+}
+.textdisplay .cursoroverlay, .textdisplay .selectionoverlay {display: none}
