@@ -1,3 +1,4 @@
+import {candycontent} from "../tags.js";
 import {filterscroll} from "../filterscroll.js";
 
 export function candyfilters(changed) {
@@ -7,7 +8,7 @@ export function candyfilters(changed) {
     options.className = "candyoptions";
     const label = document.createElement("button");
     label.type = "button";
-    label.className = "candylabel clickable";
+    label.className = "candylabel leveltag clickable";
     label.textContent = "Candylist";
     label.setAttribute("aria-label", "Show Candylist levels");
     const selected = new Set();
@@ -54,7 +55,7 @@ export function candyfilters(changed) {
                 button.type = "button";
                 button.className = "leveltag clickable";
                 button.dataset.candy = tag;
-                button.textContent = tag;
+                button.append(candycontent(tag));
                 button.addEventListener("click", () => {
                     if (selected.has(tag)) selected.delete(tag);
                     else selected.add(tag);

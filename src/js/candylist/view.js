@@ -1,8 +1,14 @@
-import {tagcontent} from "../tags.js";
+import {candycontent} from "../tags.js";
 
 export function rankings(entry) {
     const container = document.createElement("div");
     container.className = "levelspace candyrankings";
+    if (entry.candylist?.length) {
+        const label = document.createElement("span");
+        label.className = "candylabel";
+        label.textContent = "Candylist";
+        container.append(label);
+    }
     for (const row of entry.candylist || []) {
         const link = document.createElement("a");
         link.className = "candyrank clickable";
@@ -38,7 +44,7 @@ export function candyinfo(entry, information) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "leveltag clickable";
-        button.append(tagcontent({name}));
+        button.append(candycontent(name));
         button.addEventListener("click", () => document.dispatchEvent(new CustomEvent("candyfilter", {detail: name})));
         tags.append(button);
     }

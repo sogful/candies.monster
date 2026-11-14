@@ -6,13 +6,12 @@
 .candylabel {
     font-family: "Lexend Deca",sans-serif; font-size: 14px;
     font-weight: 500; white-space: nowrap;
+    padding: 0; margin: 0;
     color: #fff; -webkit-text-stroke: 0.175em #000;
     paint-order: stroke fill; text-shadow: inherit;
 }
-.candyoptions > .candylabel {
-    border: 0; background: rgba(0,0,0,0.4);
-    border-radius: 7px; padding: 2px 6px;
-}
+.candyoptions > .candylabel {font-size: 1em}
+.candytags > .candylabel {font-size: 1em}
 .candybar {
     position: relative; margin-left: var(--filterinset);
     width: calc(100% - var(--filterinset));
@@ -21,7 +20,7 @@
     display: flex; align-items: center;
     gap: 3px; overflow: auto hidden;
     scrollbar-width: none; min-width: 0;
-    padding: 3px 4px 5px; touch-action: pan-x;
+    padding: 2px 0 3px; touch-action: pan-x;
 }
 .candyoptions::-webkit-scrollbar {display: none}
 .candyoptions > * {flex-shrink: 0}

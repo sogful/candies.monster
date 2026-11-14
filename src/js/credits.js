@@ -1,14 +1,11 @@
 export function credits(scroll, article) {
     const sequence = article.querySelector(".creditssequence");
-    const motion = matchMedia("(prefers-reduced-motion: reduce)");
     let ready = false;
     let active = false;
-    let automatic = true;
     let period = 0;
     let position = 0;
     let frame = 0;
     let previous = 0;
-    let pause = 0;
     let pointer = null;
 
     function measure() {
@@ -26,14 +23,15 @@ export function credits(scroll, article) {
 
     function tick(time) {
         frame = 0;
-        if (!active || !automatic || document.hidden || motion.matches) return;
+        if (!active || document.hidden) return;
         if (previous && time - previous < 32) {
             frame = requestAnimationFrame(tick);
             return;
         }
-        if (previous && !pointer && time >= pause && period) {
+        if (previous && period) {
             position = normalize(position + Math.min(time - previous, 100) * 0.024);
             scroll.scrollTop = position;
+            if (pointer) {pointer.start = position; pointer.y = pointer.current}
         }
         previous = time;
         frame = requestAnimationFrame(tick);
@@ -43,19 +41,12 @@ export function credits(scroll, article) {
         cancelAnimationFrame(frame);
         frame = 0;
         previous = 0;
-        if (active && automatic && !document.hidden && !motion.matches) frame = requestAnimationFrame(tick);
-    }
-
-    function interact() {
-        if (!active) return;
-        automatic = false;
-        resume();
+        if (active && !document.hidden) frame = requestAnimationFrame(tick);
     }
 
     function stopdrag(event) {
         if (!pointer || event.pointerId !== pointer.id) return;
         pointer = null;
-        pause = performance.now() + 1200;
     }
 
     /*//////////////////////////////////////////////////////////////////////*/
@@ -65,17 +56,15 @@ export function credits(scroll, article) {
         position = normalize(scroll.scrollTop);
         scroll.scrollTop = position;
     }, {passive: true});
-    scroll.addEventListener("wheel", interact, {passive: true});
-    scroll.addEventListener("keydown", interact);
     scroll.addEventListener("pointerdown", event => {
         if (!active) return;
-        interact();
         if (event.pointerType === "touch" || event.button || event.target.closest("a, button")) return;
-        pointer = {id: event.pointerId, y: event.clientY, start: position};
+        pointer = {id: event.pointerId, y: event.clientY, current: event.clientY, start: position};
         scroll.setPointerCapture(event.pointerId);
     });
     scroll.addEventListener("pointermove", event => {
         if (!pointer || event.pointerId !== pointer.id) return;
+        pointer.current = event.clientY;
         position = normalize(pointer.start + pointer.y - event.clientY);
         scroll.scrollTop = position;
     });
@@ -84,8 +73,6 @@ export function credits(scroll, article) {
     scroll.addEventListener("lostpointercapture", stopdrag);
     document.addEventListener("visibilitychange", resume);
     window.addEventListener("resize", measure, {passive: true});
-    if (motion.addEventListener) motion.addEventListener("change", resume);
-    else motion.addListener(resume);
     if (window.ResizeObserver) new ResizeObserver(measure).observe(sequence);
     document.fonts?.ready.then(measure);
 
@@ -102,10 +89,8 @@ export function credits(scroll, article) {
                 ready = true;
             }
             active = true;
-            automatic = true;
             position = 0;
             measure();
-            pause = performance.now() + 1400;
             resume();
         },
         close() {

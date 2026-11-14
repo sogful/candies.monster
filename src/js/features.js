@@ -1,4 +1,5 @@
 import {enabled, number} from "./renderer/data.js";
+import {featurecontent} from "./tags.js";
 
 export const featuretypes = {
     gravity: "Different gravity", flying: "Flying candy", water: "Water",
@@ -27,7 +28,7 @@ export function features(map, container) {
     for (const key of keys) {
         const item = document.createElement("span");
         item.className = "leveltag";
-        item.textContent = featuretypes[key];
+        item.append(featurecontent(key, featuretypes[key]));
         container.append(item);
     }
     container.hidden = !keys.length;

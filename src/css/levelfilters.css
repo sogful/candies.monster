@@ -224,13 +224,13 @@
     object-fit: contain;
 }
 
-.hasreset > :is(.tagoptions,.featureoptions,.candyoptions) {
-    width: calc(100% - 34px); flex: 0 1 calc(100% - 34px);
-    box-sizing: border-box; padding-right: 4px;
+.hasreset > .filterreset {
+    z-index: 2; border-radius: 7px;
+    background: rgba(0,0,0,0.6);
 }
-.tagoptions, .featureoptions {padding: 3px 4px 5px}
 .levelfilters :is(.tagoptions,.featureoptions,.candyoptions) .leveltag {
     padding: 1px 6px; line-height: 1.1;
+    height: 24px; box-sizing: border-box;
     font-size: 17px;
 }
 .levelsort, .levelsearchfield {
@@ -254,5 +254,7 @@
         width: 22px; height: 22px;
         flex-basis: 22px;
     }
-    .levelfilters :is(.tagoptions,.featureoptions,.candyoptions) .leveltag {font-size: 15px}
+    .levelfilters :is(.tagoptions,.featureoptions,.candyoptions) .leveltag {
+        font-size: 15px; height: 23px;
+    }
 }

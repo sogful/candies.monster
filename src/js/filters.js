@@ -1,5 +1,5 @@
 import {filterscroll} from "./filterscroll.js";
-import {tagcontent} from "./tags.js";
+import {tagcontent, featurecontent, tagdata} from "./tags.js";
 import {matches} from "./searchmatch.js";
 import {featuretypes} from "./features.js";
 import {profile} from "./creator.js";
@@ -126,7 +126,7 @@ export function filters(changed) {
         button.type = "button";
         button.className = "leveltag clickable";
         button.dataset.feature = key;
-        button.textContent = label;
+        button.append(featurecontent(key, label));
         button.setAttribute("aria-pressed", "false");
         button.addEventListener("click", () => {
             if (chosen.has(key)) chosen.delete(key);
@@ -286,31 +286,42 @@ export function filters(changed) {
         search.value = "";
         apply();
     });
+    function rendertags(data) {
+        const offset = options.scrollLeft;
+    const all = new Map(data.filter(tag => tag.id && tag.name).map(tag => [tag.id, tag]));
+    options.replaceChildren(playedbutton);
+    options.hidden = false;
+    for (const tag of [...all.values()].sort((first, second) => first.name.localeCompare(second.name))) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "leveltag clickable";
+        button.dataset.tag = tag.id;
+        button.setAttribute("aria-pressed", String(selected.has(tag.id)));
+        button.append(tagcontent(tag));
+        button.addEventListener("click", () => {
+            if (selected.has(tag.id)) selected.delete(tag.id);
+            else selected.add(tag.id);
+            lastrow = "tags";
+            button.setAttribute("aria-pressed", String(selected.has(tag.id)));
+            apply();
+        });
+        options.append(button);
+    }
+        options.scrollLeft = offset;
+    }
+
+    tagdata.then(data => {
+        if (!entries.length) rendertags(data.tags || []);
+        for (const button of featurerow.children) {
+            button.replaceChildren(featurecontent(button.dataset.feature, featuretypes[button.dataset.feature]));
+        }
+    });
+
     return {
         setentries(data) {
             entries = data;
             candy.setentries(data);
-            const all = new Map();
-            for (const entry of data) for (const tag of entry.tags || []) if (tag.id && tag.name) all.set(tag.id, tag);
-            options.replaceChildren(playedbutton);
-            options.hidden = false;
-            for (const id of selected) if (!all.has(id)) selected.delete(id);
-            for (const tag of [...all.values()].sort((first, second) => first.name.localeCompare(second.name))) {
-                const button = document.createElement("button");
-                button.type = "button";
-                button.className = "leveltag clickable";
-                button.dataset.tag = tag.id;
-                button.setAttribute("aria-pressed", String(selected.has(tag.id)));
-                button.append(tagcontent(tag));
-                button.addEventListener("click", () => {
-                    if (selected.has(tag.id)) selected.delete(tag.id);
-                    else selected.add(tag.id);
-                    lastrow = "tags";
-                    button.setAttribute("aria-pressed", String(selected.has(tag.id)));
-                    apply();
-                });
-                options.append(button);
-            }
+            rendertags(data.flatMap(entry => entry.tags || []));
             apply(false, true);
         }
     };

@@ -196,9 +196,31 @@ export function morestuff() {
 
     /*//////////////////////////////////////////////////////////////////////*/
 
-    const ads = [...root.querySelectorAll(".carousel a")];
+    const ads = [];
+    const carousel = root.querySelector(".carousel");
+    fetch("/src/data/ads.json").then(response => {
+        if (!response.ok) throw new Error("Links unavailable");
+        return response.json();
+    }).then(entries => {
+        for (const entry of entries) {
+            const link = document.createElement("a");
+            link.href = entry.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.hidden = ads.length > 0;
+            const image = document.createElement("img");
+            image.src = entry.image;
+            image.alt = "";
+            image.draggable = false;
+            image.decoding = "async";
+            link.append(image);
+            ads.push(link);
+            carousel.append(link);
+        }
+    }).catch(() => {});
     let current = 0;
     function show(change) {
+        if (!ads.length) return;
         current = (current + change + ads.length) % ads.length;
         ads.forEach((link, index) => {link.hidden = index !== current});
     }
