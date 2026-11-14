@@ -49,8 +49,8 @@ export function framing(map) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function draw(canvas, map, art, background, width, height, density, detail, full = false) {
-    const scale = Math.min(density, Math.sqrt((full ? 4000000 : detail ? 2400000 : 220000) / Math.max(1, width * height)));
+export function draw(canvas, map, art, background, width, height, density, detail, full = false, budget = 4000000) {
+    const scale = Math.min(density, Math.sqrt((full ? budget : detail ? 2400000 : 220000) / Math.max(1, width * height)));
     canvas.width = Math.max(1, Math.round(width * scale));
     canvas.height = Math.max(1, Math.round(height * scale));
     const context = canvas.getContext("2d", {alpha: false});

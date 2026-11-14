@@ -52,3 +52,22 @@
 @media (prefers-reduced-motion: reduce) {
     .levelinspection {transition: none}
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.inspectionexports {
+    position: absolute; bottom: 12px;
+    left: 12px; right: 12px;
+    display: flex; justify-content: center;
+    gap: 8px; flex-wrap: wrap;
+}
+.inspectionexport {
+    font: inherit; font-size: 20px;
+    color: #fff; background: none;
+    padding: 9px 18px; border: 0;
+    --buttonvertical: 12px; --buttonhorizontal: 25px;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.175em 0 #000;
+}
+.inspectionexport:disabled {opacity: 0.3}
+.levelexport .inspectionview {bottom: 64px}

@@ -1,4 +1,5 @@
 import {spinner} from "/assets/static/js/images/spinner.js";
+import {renderlevel} from "../renderer/export.js";
 export function inspection(entry) {
     const button = document.createElement("button");
     button.className = "levelinspect clickable";
@@ -8,19 +9,20 @@ export function inspection(entry) {
     icon.src = "/assets/images/icons/search.svg";
     icon.alt = "";
     button.append(icon);
-    button.addEventListener("click", () => imageviewer("https://levels.candies.monster/thumb/" + encodeURIComponent(entry.id), entry.title, button));
+    button.addEventListener("click", () => imageviewer(null, entry.title, button, entry));
     return button;
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function imageviewer(url, label, trigger) {
+export function imageviewer(url, label, trigger, entry = null) {
     const dialog = document.createElement("dialog");
     dialog.className = "levelinspection";
+    dialog.classList.toggle("levelexport", Boolean(entry));
     dialog.setAttribute("aria-label", label);
     const viewport = document.createElement("div");
     viewport.className = "inspectionview";
-    const image = document.createElement("img");
+    const image = document.createElement(entry ? "canvas" : "img");
     image.className = "inspectionimage";
     image.alt = label;
     image.draggable = false;
@@ -46,20 +48,26 @@ export function imageviewer(url, label, trigger) {
     let x = 0;
     let y = 0;
     let closing = false;
+    let naturalwidth = 0;
+    let naturalheight = 0;
+    let displaywidth = 0;
+    let displayheight = 0;
 
     function paint() {
-        const limitx = Math.max(0, (image.width * scale - viewport.clientWidth) / 2) + viewport.clientWidth / 3;
-        const limity = Math.max(0, (image.height * scale - viewport.clientHeight) / 2) + viewport.clientHeight / 3;
+        const limitx = Math.max(0, (displaywidth * scale - viewport.clientWidth) / 2) + viewport.clientWidth / 3;
+        const limity = Math.max(0, (displayheight * scale - viewport.clientHeight) / 2) + viewport.clientHeight / 3;
         x = Math.max(-limitx, Math.min(limitx, x));
         y = Math.max(-limity, Math.min(limity, y));
         image.style.transform = `translate(-50%,-50%) translate(${x}px,${y}px) scale(${scale})`;
     }
 
     function fit() {
-        if (!image.naturalWidth) return;
-        const ratio = Math.min((viewport.clientWidth - 24) / image.naturalWidth, (viewport.clientHeight - 24) / image.naturalHeight);
-        image.width = Math.max(1, Math.round(image.naturalWidth * ratio));
-        image.height = Math.max(1, Math.round(image.naturalHeight * ratio));
+        if (!naturalwidth) return;
+        const ratio = Math.min((viewport.clientWidth - 24) / naturalwidth, (viewport.clientHeight - 24) / naturalheight);
+        displaywidth = Math.max(1, Math.round(naturalwidth * ratio));
+        displayheight = Math.max(1, Math.round(naturalheight * ratio));
+        image.style.width = displaywidth + "px";
+        image.style.height = displayheight + "px";
         scale = 1;
         x = y = 0;
         paint();
@@ -90,6 +98,8 @@ export function imageviewer(url, label, trigger) {
 
     image.onload = () => {
         if (closing) return;
+        naturalwidth = image.naturalWidth;
+        naturalheight = image.naturalHeight;
         status.hidden = true;
         dialog.classList.add("ready");
         fit();
@@ -138,5 +148,41 @@ export function imageviewer(url, label, trigger) {
     window.addEventListener("resize", fit, options);
     dialog.showModal();
     requestAnimationFrame(() => dialog.classList.add("visible"));
-    image.src = url;
+    if (entry) {
+        const exports = document.createElement("div");
+        exports.className = "inspectionexports";
+        for (const size of [1280, 2560, 4096]) {
+            const button = document.createElement("button");
+            button.className = "inspectionexport clickable buttonart";
+            button.type = "button";
+            button.textContent = "PNG " + size + "px";
+            button.addEventListener("click", async () => {
+                button.disabled = true;
+                try {
+                    const output = document.createElement("canvas");
+                    await renderlevel(entry, output, size);
+                    const blob = await new Promise(resolve => output.toBlob(resolve, "image/png"));
+                    if (!blob || closing) return;
+                    const link = document.createElement("a");
+                    const url = URL.createObjectURL(blob);
+                    link.href = url;
+                    link.download = (entry.title + " by " + entry.creator).replace(/[<>:"/\\|?*]/g, "") + ".png";
+                    link.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    output.width = output.height = 1;
+                } catch {status.hidden = false; status.textContent = "could not export preview"}
+                finally {button.disabled = false}
+            }, options);
+            exports.append(button);
+        }
+        dialog.append(exports);
+        void renderlevel(entry, image, 2560).then(() => {
+            if (closing) return;
+            naturalwidth = image.width;
+            naturalheight = image.height;
+            status.hidden = true;
+            dialog.classList.add("ready");
+            fit();
+        }).catch(() => {status.textContent = "could not load preview"});
+    } else image.src = url;
 }

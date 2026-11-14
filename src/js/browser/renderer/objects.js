@@ -16,13 +16,17 @@ const characters = [
 
 export function painter(context, art) {
     function sprite(name, x, y, angle = 0, scale = 1) {
+        if (art.candy && name === "candytop") return;
         const frame = art.frames[name];
         if (!frame) return;
         context.save();
         context.translate(x, y);
         context.rotate(angle * Math.PI / 180);
         context.scale(scale, scale);
-        context.drawImage(art.image, ...frame.rect.map(value => value * art.ratio), ...frame.offset, ...frame.size);
+        if (art.candy && name === "candy") {
+            const top = art.frames.candytop;
+            context.drawImage(art.candy, ...top.offset, ...top.size);
+        } else context.drawImage(art.image, ...frame.rect.map(value => value * art.ratio), ...frame.offset, ...frame.size);
         context.restore();
     }
     sprite.region = (name, x, y, width, height, horizontal = false, vertical = false) => {
