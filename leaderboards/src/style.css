@@ -1,4 +1,4 @@
-@import url("../browser/text.css");
+@import url("../../assets/static/css/text.css");
 
 @font-face {
     font-family: "Good Dog"; font-display: swap;
@@ -21,8 +21,7 @@
 
 .scorepanel {
     max-width: 820px; margin: auto;
-    padding: 18px 24px; border-radius: 24px;
-    background: rgba(0,0,0,0.5);
+    padding: 18px 24px;
 }
 
 .scoreheading, .scoresubtitle, .scorebox, .scoreperiod,
@@ -54,11 +53,11 @@
 .scorebox {
     border: 0; border-radius: 14px;
     padding: 4px 9px; font: inherit;
-    color: #fff; background: rgba(0,0,0,0.5);
+    color: #fff; background: none;
     font-size: 23px; line-height: 1.2;
 }
 
-.scorebox[aria-pressed="true"] {background: rgba(160,160,160,0.5)}
+.scorebox[aria-pressed="true"] {border-image-source: url("/assets/images/buttons/gold.webp")}
 
 .scorecontrols {
     display: flex; justify-content: space-between;
@@ -118,3 +117,41 @@
     .scoretable th:first-child {width: 32px}
     .scoretable th:last-child {width: 37%}
     }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.scorepage, .leaderboardpage {scrollbar-width: none}
+.scorepage::-webkit-scrollbar, .leaderboardpage::-webkit-scrollbar {display: none}
+.scoreheader {
+    margin: -24px -52px 0; padding: 18px 58px;
+    background: rgba(0,0,0,0.5);
+}
+.scoreheading {margin-bottom: 10px}
+.scorebox {
+    display: inline-flex; align-items: center;
+    gap: 4px; min-height: 46px;
+    padding: 4px 12px 7px 6px; font-size: 22px;
+    --buttonvertical: 12px; --buttonhorizontal: 24px;
+}
+.scoreboximage {
+    width: 44px; height: 44px;
+    object-fit: contain;
+}
+.backlink {z-index: 2}
+.backlink img {
+    width: 42px; height: 42px;
+    object-fit: contain;
+}
+@media (max-width: 560px) {
+    .scoreheader {
+        margin: -58px -10px 0; padding: 54px 8px 12px;
+    }
+    .scoreheading {font-size: 30px}
+    .scorebox {
+        font-size: 18px; gap: 2px;
+        padding: 3px 10px 6px 5px;
+    }
+    .scoreboximage {
+        width: 34px; height: 34px;
+    }
+}

@@ -5,7 +5,6 @@ const navigation = document.querySelector(".scoreboxes");
 const rows = document.querySelector(".scorerows");
 const table = document.querySelector(".scoretable");
 const status = document.querySelector(".scorestatus");
-const date = document.querySelector(".scoredate");
 let boards = [];
 let reasons = new Map();
 let selected = "";
@@ -32,9 +31,9 @@ function select(write = false) {
     if (write) history.replaceState(null, "", "#" + selected);
     for (const button of navigation.querySelectorAll("button")) button.setAttribute("aria-pressed", String(button.dataset.board === selected));
     const visible = board.scores.filter(row => !reasons.has(board.id + ":" + row.rank));
-    rows.replaceChildren(...visible.map(row => {
+    rows.replaceChildren(...visible.map((row, index) => {
         const line = element("tr", "scorerow");
-        const rank = element("td", "scorerank", row.rank);
+        const rank = element("td", "scorerank", "#" + (index + 1));
         const player = element("td", "scoreplayer", row.name);
         const score = element("td", "scorevalue", formatscore(row.score));
         line.append(rank, player, score);
@@ -49,9 +48,6 @@ function select(write = false) {
         image.alt = "";
         status.append(image, element("p", "", "no results :("));
     }
-    const stamp = new Date(board.captured);
-    date.textContent = "Captured " + stamp.toLocaleDateString(undefined, {year: "numeric", month: "short", day: "numeric"});
-    date.title = stamp.toISOString();
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -84,8 +80,14 @@ try {
     }
     boards = data.boards;
     reasons = suspicious(boards);
-    navigation.replaceChildren(...boards.map(board => {
-        const button = element("button", "scorebox", board.title);
+    navigation.replaceChildren(...boards.map((board, index) => {
+        const button = element("button", "scorebox buttonart");
+        const image = element("img", "scoreboximage");
+        image.src = "/assets/images/leaderboards/" + board.id + ".webp";
+        image.alt = "";
+        image.width = 44;
+        image.height = 44;
+        button.append(image, element("span", "", board.title.replace(/\s+Box$/i, "")));
         button.type = "button";
         button.dataset.board = board.id;
         return button;
