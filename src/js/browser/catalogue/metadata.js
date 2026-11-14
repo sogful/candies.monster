@@ -1,3 +1,5 @@
+import {filterscroll} from "../filters/controls.js";
+
 export const tagdata = fetch("/assets/static/data/levels/tags.json").then(response => {
     if (!response.ok) throw new Error("Tags unavailable");
     return response.json();
@@ -16,11 +18,24 @@ tagdata.then(data => {
 
 export function tagid(id) {return aliases[id] || id}
 
+const hiddenfilters = new Set(["denied", "finalist", "invalid submission", "will be on the mod", "winner"]);
+const tagorder = ["cut the rope", "experiments", "time travel", "cut the rope dx", "cut the rope 2", "magic", "modded", "quality level", "kaizo", "troll", "uses bugs", "night level", "garbage"];
+
+export function filtertag(tag) {return !hiddenfilters.has(tag.name.toLowerCase())}
+
+export function sorttags(tags) {
+    return [...tags].sort((first, second) => {
+        const left = tagorder.indexOf(first.name.toLowerCase());
+        const right = tagorder.indexOf(second.name.toLowerCase());
+        return (left < 0 ? 100 : left) - (right < 0 ? 100 : right) || first.name.localeCompare(second.name);
+    });
+}
+
 export function canonicaltags(tags) {
-    return [...new Map(tags.map(tag => {
+    return sorttags([...new Map(tags.map(tag => {
         const id = tagid(tag.id);
         return [id, definitions.get(id) || {...tag, id}];
-    })).values()];
+    })).values()]);
 }
 
 export function featurecontent(key, name) {
@@ -70,7 +85,7 @@ export function tagcontent(tag) {
 
 export function tags(entry, container) {
     container.replaceChildren();
-    for (const tag of entry.tags || []) {
+    for (const tag of sorttags(entry.tags || [])) {
         const item = document.createElement("button");
         item.className = "leveltag clickable";
         item.type = "button";
@@ -83,6 +98,7 @@ export function tags(entry, container) {
         container.append(item);
     }
     container.hidden = !container.childElementCount;
+    if (!container.dataset.scroller) {filterscroll(container); container.dataset.scroller = "true"}
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -90,8 +106,8 @@ export function tags(entry, container) {
 import {enabled, number} from "/src/js/browser/renderer/data.js";
 
 export const featuretypes = {
-    gravity: "Custom gravity", flying: "Flying candy", water: "Water",
-    split: "Split candy", night: "Night", connected: "Connected candies", timefreeze: "Time freeze"
+    gravity: "Custom gravity", water: "Water", night: "Night",
+    flying: "Flying candy", split: "Split candy", connected: "Connected candies", timefreeze: "Time freeze"
 };
 
 export function featurekeys(map) {
@@ -113,13 +129,14 @@ export function featurekeys(map) {
 export function features(map, container) {
     const keys = featurekeys(map);
     container.replaceChildren();
-    for (const key of keys) {
+    for (const key of Object.keys(featuretypes).filter(key => keys.includes(key))) {
         const item = document.createElement("span");
         item.className = "leveltag";
         item.append(featurecontent(key, featuretypes[key]));
         container.append(item);
     }
     container.hidden = !keys.length;
+    if (!container.dataset.scroller) {filterscroll(container); container.dataset.scroller = "true"}
 }
 
 

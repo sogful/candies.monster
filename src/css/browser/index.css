@@ -292,3 +292,13 @@
 }
 
 .levelfiltercount[hidden] {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.cardtags {
+    margin-left: -6px; margin-right: -6px;
+    max-width: none; width: calc(100% + 12px);
+    padding: 3px 6px 5px; box-sizing: border-box;
+    border-radius: 0 0 11px 11px;
+}
+.levels {touch-action: pan-y}

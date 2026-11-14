@@ -1,3 +1,4 @@
+import {filterscroll} from "../filters/controls.js";
 import {candycontent} from "../catalogue/metadata.js";
 
 export function rankings(entry) {
@@ -40,7 +41,7 @@ export function candyinfo(entry, information) {
     label.className = "candylabel";
     label.textContent = "Candylist";
     tags.append(label);
-    for (const name of [...new Set(rows.flatMap(row => row.tags || []))]) {
+    for (const name of [...new Set(rows.flatMap(row => row.tags || []))].sort()) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "leveltag clickable";
@@ -49,6 +50,7 @@ export function candyinfo(entry, information) {
         tags.append(button);
     }
     information.querySelector(".levelinfotags").append(tags);
+    filterscroll(tags);
     const videos = rows.filter(row => /^[\w-]{11}$/.test(row.video || ""));
     if (!videos.length) return;
     information.classList.add("candyinformation");

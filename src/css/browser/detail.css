@@ -333,3 +333,23 @@
     scrollbar-width: none;
 }
 .levelinfotags::-webkit-scrollbar {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.levelinfotags {
+    overflow: visible; max-height: none;
+    min-width: 0;
+}
+.levelinformation .leveltags, .levelinformation .levelfeatures {
+    margin-left: -8px; margin-right: -8px;
+    width: calc(100% + 16px); max-width: none;
+    padding: 3px 8px 5px;
+}
+.levelrevisions {
+    justify-content: center; margin-top: 4px;
+    font-size: 14px; max-width: 100%;
+}
+.revisionselect {
+    background: rgba(0,0,0,0.5); font-size: inherit;
+    padding: 2px 5px;
+}

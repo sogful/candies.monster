@@ -1,6 +1,6 @@
 import {contestfilters} from "./contests.js";
 import {filterscroll} from "./controls.js";
-import {tagcontent, featurecontent, tagdata, tagid} from "../catalogue/metadata.js";
+import {tagcontent, featurecontent, tagdata, tagid, filtertag, sorttags} from "../catalogue/metadata.js";
 import {matches} from "./controls.js";
 import {featuretypes} from "../catalogue/metadata.js";
 import {profile} from "../catalogue/creator.js";
@@ -210,9 +210,16 @@ export function filters(changed) {
         reset.hidden = !authorid && !chosen.size && !search.value && order === "recent" && !selected.size && !candy.active && !contests.count && creator.getAttribute("aria-pressed") !== "true";
         const rows = {tags: tagrow, features: lower, candy: candy.element, contests: contests.element};
         const active = [selected.size ? "tags" : "", chosen.size ? "features" : "", candy.active ? "candy" : "", contests.count ? "contests" : ""].filter(Boolean);
-        const placement = active.includes(lastrow) ? lastrow : active.at(-1) || "tags";
-        rows[placement].append(reset);
-        for (const row of Object.values(rows)) row.classList.toggle("hasreset", !reset.hidden && row === rows[placement]);
+        for (const [key, row] of Object.entries(rows)) {
+            let control = row.querySelector(":scope > .filterreset");
+            if (!control) {
+                control = reset.cloneNode(true);
+                control.addEventListener("click", () => reset.click());
+                row.append(control);
+            }
+            control.hidden = !active.includes(key) && !(key === "tags" && !active.length && !reset.hidden);
+            row.classList.toggle("hasreset", !control.hidden);
+        }
         options.hidden = false;
         clear.hidden = !search.value;
         const played = recentplays();
@@ -299,10 +306,10 @@ export function filters(changed) {
     });
     function rendertags(data) {
         const offset = options.scrollLeft;
-        const all = new Map(data.filter(tag => tag.id && tag.name).map(tag => [tag.id, tag]));
+        const all = new Map(data.filter(tag => tag.id && tag.name && filtertag(tag)).map(tag => [tag.id, tag]));
         options.replaceChildren(playedbutton);
         options.hidden = false;
-        for (const tag of [...all.values()].sort((first, second) => Number(unavailable.has(first.id)) - Number(unavailable.has(second.id)) || first.name.localeCompare(second.name))) {
+        for (const tag of sorttags([...all.values()]).sort((first, second) => Number(unavailable.has(first.id)) - Number(unavailable.has(second.id)))) {
             const button = document.createElement("button");
             button.type = "button";
             button.className = "leveltag clickable";

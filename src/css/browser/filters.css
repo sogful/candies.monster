@@ -307,3 +307,35 @@
     width: 100%; height: 100%;
     margin: 0; vertical-align: middle;
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.tagbar, .featurebar, .candybar, .contestbar {
+    margin-left: 0; width: 100%;
+}
+.levelfilters :is(.tagoptions,.featureoptions,.candyoptions,.contestoptions) {
+    padding-left: var(--filterinset); padding-right: var(--filterinset);
+    scroll-padding-inline: var(--filterinset);
+}
+.leveltags, .levelfeatures {
+    flex-wrap: nowrap; overflow: auto hidden;
+    min-width: 0; max-width: 100%;
+    scrollbar-width: none; touch-action: pan-x;
+    padding: 3px 4px 5px; box-sizing: border-box;
+}
+.leveltags > *, .levelfeatures > * {flex-shrink: 0}
+.leveltags::-webkit-scrollbar, .levelfeatures::-webkit-scrollbar {display: none}
+.levelfeatures .leveltag {white-space: nowrap}
+.tagemoji {
+    display: inline-flex; align-items: center;
+    justify-content: center; vertical-align: middle;
+    line-height: 1;
+}
+.tagemoji > img {
+    vertical-align: middle; margin: 0;
+}
+
+.tagemoji .siteemoji {
+    margin: 0; vertical-align: middle;
+    align-self: center;
+}
