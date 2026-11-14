@@ -63,21 +63,15 @@ window.addEventListener("hashchange", () => select());
 
 spinner(status, "Loading leaderboards");
 try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
     let data;
     try {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 8000);
-        try {
-            const response = await fetch("https://scores.cvowot.workers.dev/leaderboards", {signal: controller.signal});
-            if (!response.ok) throw new Error("Leaderboards unavailable");
-            data = await response.json();
-            if (!Array.isArray(data.boards)) throw new Error("Invalid leaderboards");
-        } finally {clearTimeout(timer)}
-    } catch {
-        const response = await fetch("/assets/static/data/leaderboards/classic.json");
+        const response = await fetch("https://leaderboard.candies.monster/leaderboards", {signal: controller.signal});
         if (!response.ok) throw new Error("Leaderboards unavailable");
         data = await response.json();
-    }
+        if (!Array.isArray(data.boards)) throw new Error("Invalid leaderboards");
+    } finally {clearTimeout(timer)}
     boards = data.boards;
     reasons = suspicious(boards);
     navigation.replaceChildren(...boards.map((board, index) => {

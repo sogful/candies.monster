@@ -12,11 +12,11 @@
     background-image: url("/assets/images/bgs/original.webp"); background-size: cover;
     background-position: center; background-attachment: fixed;
     font-family: var(--sitefont,"Good Dog"),"Playpen","Maiyuan","Dongdong",sans-serif; font-size: 24px;
-    cursor: url("/assets/static/cursors/idle.cur"), default;
+    cursor: url("/assets/images/cursors/idle.cur"), default;
 }
 
 .leaderboardpage :is(a,button,input,label) {
-    cursor: url("/assets/static/cursors/link.cur"), pointer;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
 
 .scorepanel {
