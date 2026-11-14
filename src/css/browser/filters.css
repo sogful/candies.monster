@@ -339,3 +339,9 @@
     margin: 0; vertical-align: middle;
     align-self: center;
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.levelfilters .filterreset, .levelfilters .filterreset[aria-pressed] {
+    background: none; box-shadow: none;
+}

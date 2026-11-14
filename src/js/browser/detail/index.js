@@ -1,3 +1,4 @@
+import {levelroute} from "./route.js";
 import {unsupported, requiredgame, objectrequirements} from "../catalogue/unsupported.js";
 import {scene} from "../renderer/index.js";
 import {player} from "../play/index.js";
@@ -228,6 +229,7 @@ export function leveldetails() {
         const match = /^#(?:level\/)?(\d+)$/.exec(location.hash);
         if (match && location.hash.startsWith("#level/")) history.replaceState(null, "", location.pathname + location.search + "#" + match[1]);
         const open = Boolean(match);
+        levelroute(open);
         root.classList.toggle("levelopen", open);
         document.dispatchEvent(new Event("levelviewchange"));
         main.inert = open || root.classList.contains("documentopen") || root.classList.contains("previewopen");

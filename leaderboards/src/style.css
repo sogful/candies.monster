@@ -155,3 +155,32 @@
         width: 34px; height: 34px;
     }
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.scoreheader {
+    margin: 0 auto 14px; padding: 0 8px;
+    background: none;
+}
+.scorepanel {
+    background: rgba(0,0,0,0.5); border-radius: 16px;
+}
+.scoreboxes {margin-bottom: 16px}
+.scorebox {
+    font-size: 19px; padding: 8px 15px 10px 10px;
+    min-height: 49px;
+}
+.scoreboximage {
+    width: 34px; height: 34px;
+    filter: drop-shadow(0 2px 1px #000);
+}
+@media (max-width: 560px) {
+    .scoreheading {font-size: 30px}
+    .scorebox {
+        font-size: 16px; min-height: 42px;
+        padding: 7px 12px 9px 8px;
+    }
+    .scoreboximage {
+        width: 27px; height: 27px;
+    }
+}

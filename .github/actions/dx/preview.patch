@@ -1710,7 +1710,7 @@ index 23a8e97..5320dac 100644
          /// Converts a raw integer button value to a game-controller button identifier.
          /// </summary>
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
-index a5bcdcd..1e1fa96 100644
+index a5bcdcd..efa7de7 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
 @@ -30,6 +30,7 @@ namespace CutTheRopeDX.GameMain
@@ -1721,7 +1721,7 @@ index a5bcdcd..1e1fa96 100644
  
              // Load all game objects from XML
              LoadObjectsFromMap(map, mapScale, mapOffsetX, mapOffsetY, mapGridOffsetX, mapGridOffsetY);
-@@ -164,11 +165,46 @@ namespace CutTheRopeDX.GameMain
+@@ -164,12 +165,47 @@ namespace CutTheRopeDX.GameMain
              return string.IsNullOrWhiteSpace(levelName) ? null : Application.GetString(levelName);
          }
  
@@ -1743,7 +1743,7 @@ index a5bcdcd..1e1fa96 100644
 +                    x = (x * scale) + mapOriginX;
 +                    y = (y * scale) + mapOriginY;
 +                    if (!float.IsFinite(x) || !float.IsFinite(y)) continue;
-+                    float margin = 24f * scale;
++                    float margin = 0f;
 +                    left = System.MathF.Min(left, x - margin);
 +                    top = System.MathF.Min(top, y - margin);
 +                    right = System.MathF.Max(right, x + margin);
@@ -1751,8 +1751,7 @@ index a5bcdcd..1e1fa96 100644
 +                }
 +            }
 +            cameraBounds = new Rectangle(left, top, right - left, bottom - top);
-+            cameraWindow.w = System.MathF.Min(cameraBounds.w, SCREEN_WIDTH);
-+            cameraWindow.h = System.MathF.Min(cameraBounds.h, SCREEN_HEIGHT);
++            previewwindow(ScreenPresentation.Instance.Snapshot);
 +        }
 +
          /// <summary>
@@ -1766,8 +1765,10 @@ index a5bcdcd..1e1fa96 100644
 +            camera.type = CAMERATYPE.CAMERASPEEDDELAY;
 +            camera.speed = 14f;
              ViewportLayoutSnapshot snapshot = ScreenPresentation.Instance.Snapshot;
++            previewwindow(snapshot);
              if (CameraCanTravel(snapshot))
              {
+                 ignoreTouches = true;
 @@ -186,14 +222,14 @@ namespace CutTheRopeDX.GameMain
                  Rectangle range = CameraTrackingRange();
                  float cameraStartX;
@@ -1787,20 +1788,56 @@ index a5bcdcd..1e1fa96 100644
                      cameraStartX = range.x;
                      cameraStartY = range.y;
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
-index 7c34873..de3a824 100644
+index 7c34873..0ad0914 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
-@@ -423,8 +423,8 @@ namespace CutTheRopeDX.GameMain
+@@ -418,13 +418,21 @@ namespace CutTheRopeDX.GameMain
+         /// position that shows the whole level on that axis.
+         /// </remarks>
+         /// <returns>The origin of the range and its extent on each axis.</returns>
++        private void previewwindow(ViewportLayoutSnapshot snapshot)
++        {
++            if (!CustomLevelSession.IsActive) return;
++            Rectangle viewport = snapshot.VisibleBounds;
++            cameraWindow.w = SCREEN_HEIGHT * viewport.w / viewport.h;
++            cameraWindow.h = SCREEN_HEIGHT;
++        }
++
+         private Rectangle CameraTrackingRange()
+         {
              return new Rectangle(
-                 cameraBounds.x,
-                 cameraBounds.y,
+-                cameraBounds.x,
+-                cameraBounds.y,
 -                MathF.Max(0f, mapWidth - SCREEN_WIDTH),
 -                MathF.Max(0f, mapHeight - SCREEN_HEIGHT));
++                cameraBounds.x + MathF.Min(0f, (cameraBounds.w - cameraWindow.w) / 2f),
++                cameraBounds.y + MathF.Min(0f, (cameraBounds.h - cameraWindow.h) / 2f),
 +                MathF.Max(0f, cameraBounds.w - cameraWindow.w),
 +                MathF.Max(0f, cameraBounds.h - cameraWindow.h));
          }
  
          /// <summary>Clamps a desired camera position into <see cref="CameraTrackingRange"/>.</summary>
+@@ -505,7 +513,9 @@ namespace CutTheRopeDX.GameMain
+                 return;
+             }
+ 
++            previewwindow(snapshot);
+             Rectangle viewport = snapshot.VisibleBounds;
++            Rectangle range = CameraTrackingRange();
+             Vector slack = CameraSlack(snapshot);
+             Vector scrollable = CameraScrollable();
+ 
+@@ -516,8 +526,8 @@ namespace CutTheRopeDX.GameMain
+             float anchorY = GameplayCamera.Anchor(camera.pos.Y, cameraBounds.y, scrollable.Y, slack.Y);
+ 
+             Rectangle window = new(
+-                cameraBounds.x + (scrollable.X * anchorX),
+-                cameraBounds.y + (scrollable.Y * anchorY),
++                range.x + (scrollable.X * anchorX),
++                range.y + (scrollable.Y * anchorY),
+                 cameraWindow.w,
+                 cameraWindow.h);
+ 
 diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
 index 3f5f05f..de0bfa3 100644
 --- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs

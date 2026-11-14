@@ -282,7 +282,9 @@ export function filters(changed) {
 
     search.addEventListener("input", () => apply(true, false, true));
     document.addEventListener("levelpagechange", () => {routed = location.search});
+    document.addEventListener("levelbrowserrestore", () => {readroute(); apply(false, true)});
     window.addEventListener("popstate", () => {
+        if (/^#(?:level\/)?\d+$/.test(location.hash)) return;
         if (routed === location.search) return;
         readroute();
         apply(false, true);
