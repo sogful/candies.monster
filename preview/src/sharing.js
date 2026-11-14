@@ -1,4 +1,4 @@
-import {spinner} from "/assets/static/spinner.js";
+import {spinner} from "/assets/static/js/images/spinner.js";
 export function createsharing({getlevel, onerror, container = document, geturl = data => location.origin + "/?data=" + data + "#preview"}) {
     for (const element of container.querySelectorAll(".shorturl,.fullurl")) {
         if (element.textContent.trim() === "Loading...") spinner(element, "Loading link");

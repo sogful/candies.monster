@@ -5,7 +5,7 @@ let loading = null;
 /*//////////////////////////////////////////////////////////////////////*/
 
 async function readjson(filename) {
-    const url = new URL(`../../../data/${filename}`, import.meta.url);
+    const url = new URL(`/assets/static/data/versions/${filename}`, location.origin);
     const response = await fetch(url);
     if (!response.ok) throw new Error(`${url.pathname}: HTTP ${response.status}`);
     return response.json();

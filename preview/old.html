@@ -8,7 +8,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script async src="/assets/static/global.js"></script>
+    <script async src="/assets/static/js/global.js"></script>
 
     <meta property="og:image" content="/assets/images/branding/embeds/preview.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -240,7 +240,7 @@
         }
 
     </style>
-    <script src="/assets/static/fontcompat.js"></script>
+    <script src="/assets/static/js/text/fonts.js"></script>
 </head>
 <body>
 
@@ -346,7 +346,7 @@
             let favicons = []; let index = 0; const delay = 300;
             let sheetimg = null;
 
-            fetch("/assets/images/candies/icon.json")
+            fetch("/assets/static/data/images/icon.json")
                 .then(response => response.json()).then(data => {
                     spritejson = data.frames; sheetimg = new Image();
                     sheetimg.onload = () => {

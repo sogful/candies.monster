@@ -1,0 +1,140 @@
+{
+    "tags": [
+        {
+            "id": "1439020421461577871",
+            "name": "Cut the Rope",
+            "emoji": {
+                "id": "1439801821186232491",
+                "name": "game_0_ctr",
+                "animated": false
+            }
+        },
+        {
+            "id": "1513289367903535215",
+            "name": "Cut the Rope 2",
+            "emoji": {
+                "id": "1439801916862369844",
+                "name": "game_4_ctr2",
+                "animated": false
+            }
+        },
+        {
+            "id": "1513291363486269451",
+            "name": "Cut the Rope DX",
+            "emoji": {
+                "id": "1481023335315013713",
+                "name": "game_ctrdx",
+                "animated": false
+            }
+        },
+        {
+            "id": "1439223737789579285",
+            "name": "Experiments",
+            "emoji": {
+                "id": "1439801844904759458",
+                "name": "game_1_experiments",
+                "animated": false
+            }
+        },
+        {
+            "id": "1439020249990041673",
+            "name": "Garbage",
+            "emoji": {
+                "id": "1229075363141783643",
+                "name": "omnom_blunt",
+                "animated": false
+            }
+        },
+        {
+            "id": "1439019886662647898",
+            "name": "Kaizo",
+            "emoji": {
+                "id": "1424542314629562541",
+                "name": "obj_spikes",
+                "animated": false
+            }
+        },
+        {
+            "id": "1513289428662095892",
+            "name": "Magic",
+            "emoji": {
+                "id": "1439801939050238003",
+                "name": "game_5_magic",
+                "animated": false
+            }
+        },
+        {
+            "id": "1570840851461185768",
+            "name": "Modded",
+            "emoji": {
+                "id": "1427396896149733467",
+                "name": "obj_star_blue",
+                "animated": false
+            }
+        },
+        {
+            "id": "1439635060562071572",
+            "name": "Night Level",
+            "emoji": {
+                "id": "1424545577110208583",
+                "name": "obj_lightbulb",
+                "animated": false
+            }
+        },
+        {
+            "id": "1513289248583712999",
+            "name": "Time Travel",
+            "emoji": {
+                "id": "1439801894166990848",
+                "name": "game_3_timetravel",
+                "animated": false
+            }
+        },
+        {
+            "id": "1439020307221577981",
+            "name": "Troll",
+            "emoji": {
+                "id": "1154479870357815437",
+                "name": "trollnom",
+                "animated": false
+            }
+        },
+        {
+            "id": "1439020116623888666",
+            "name": "Uses Bugs",
+            "emoji": {
+                "id": "1423490555941359667",
+                "name": "obj_spider",
+                "animated": false
+            }
+        }
+    ],
+    "features": {
+        "gravity": "/assets/images/objects/gravity.png",
+        "flying": "/assets/images/objects/flying.webp",
+        "water": "💧",
+        "split": "/assets/images/objects/splitcandy.png",
+        "night": "/assets/images/objects/nightlight.png",
+        "connected": "/assets/images/icons/link.svg",
+        "timefreeze": "/assets/images/objects/timed.png"
+    },
+    "candylist": [
+        "pauses",
+        "pauseless",
+        "gravity",
+        "pumps",
+        "gimmick",
+        "precision",
+        "fast",
+        "slow",
+        "long",
+        "short",
+        "complicated"
+    ],
+    "icons": {
+        "night level": "/assets/images/objects/nightlight.png",
+        "uses bugs": "/assets/images/objects/spider.png",
+        "kaizo": "/assets/images/objects/blade.png",
+        "modded": "/assets/images/stars/star0.png"
+    }
+}

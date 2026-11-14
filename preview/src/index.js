@@ -1,4 +1,4 @@
-import {repairxml} from "/assets/static/levelrepair.js";
+import {repairxml} from "/assets/static/js/levels/repair.js";
 import {createcontroller} from "./game.js";
 import {createerrors} from "./errors.js";
 import {encodeurl, decodebase64utf8, analyzexml, calculategzipped, normalizetoxml} from "./data.js";
@@ -9,7 +9,7 @@ import {createsharing} from "./sharing.js";
     let favicons = []; let index = 0; const delay = 300;
     let sheetimg = null;
 
-    fetch("/assets/images/candies/icon.json")
+    fetch("/assets/static/data/images/icon.json")
         .then(response => response.json()).then(data => {
             spritejson = data.frames; sheetimg = new Image();
             sheetimg.onload = () => {

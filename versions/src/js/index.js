@@ -5,14 +5,14 @@ import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
 import {startsearch} from "./search/index.js";
 import {preparekeys, packagekey, gameroute, readhash, revealroute, startlinks} from "./links.js";
-import "/assets/static/favicon.js";
+import "/assets/static/js/images/favicon.js";
 import "./quality.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 const platforms = [
-    {name: "android", label: "Android", url: "data/android.csv", circle: document.querySelector("#gamecircle"), screen: document.querySelector("#gamescreen")},
-    {name: "ios", label: "iOS", url: "data/ios.csv", circle: document.querySelector("#gamecircle-ios"), screen: document.querySelector("#gamescreenios")}
+    {name: "android", label: "Android", url: "/assets/static/data/versions/android.csv", circle: document.querySelector("#gamecircle"), screen: document.querySelector("#gamescreen")},
+    {name: "ios", label: "iOS", url: "/assets/static/data/versions/ios.csv", circle: document.querySelector("#gamecircle-ios"), screen: document.querySelector("#gamescreenios")}
 ];
 const container = document.querySelector(".container");
 const elements = new WeakMap();

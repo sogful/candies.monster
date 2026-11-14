@@ -94,7 +94,7 @@ function loadlegacyicons() {
     if (legacyicons) return Promise.resolve(legacyicons);
     if (!legacypromise) {
         legacypromise = (async () => {
-            const response = await fetch("data/legacy.json");
+            const response = await fetch("/assets/static/data/versions/legacy.json");
             if (!response.ok) throw new Error(`data/legacy.json: HTTP ${response.status}`);
             const legacy = await response.json();
             legacyicons = Object.fromEntries(legacy.filter(item => item?.version && item.icon).map(item => [String(item.version), item.icon]));

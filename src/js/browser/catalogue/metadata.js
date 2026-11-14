@@ -1,0 +1,107 @@
+export const tagdata = fetch("/assets/static/data/levels/tags.json").then(response => {
+    if (!response.ok) throw new Error("Tags unavailable");
+    return response.json();
+}).catch(() => ({tags: [], features: {}}));
+
+let tagicons = {};
+let tagnames = {};
+tagdata.then(data => {tagicons = data.features || {}; tagnames = data.icons || {}});
+
+export function featurecontent(key, name) {
+    return tagcontent({name, icon: tagicons[key]});
+}
+
+export function candycontent(name) {
+    return tagcontent({name: name[0].toUpperCase() + name.slice(1), icon: "/assets/images/candies/candy.png"});
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function tagcontent(tag) {
+    const content = document.createDocumentFragment();
+    const emoji = tag.emoji;
+    const icon = tag.icon || (!emoji?.id && !emoji?.name ? tagnames[(tag.name || "").toLowerCase()] : "");
+    if (icon?.startsWith("/")) {
+        const image = document.createElement("img");
+        image.className = "tagemoji";
+        image.src = icon;
+        image.alt = "";
+        image.draggable = false;
+        content.append(image);
+    } else if (icon) {
+        const span = document.createElement("span");
+        span.className = "tagemoji";
+        span.textContent = icon;
+        content.append(span);
+    } else if (emoji?.id && /^\d{17,22}$/.test(emoji.id)) {
+        const image = document.createElement("img");
+        image.className = "tagemoji";
+        image.src = "https://cdn.discordapp.com/emojis/" + emoji.id + ".webp?size=32";
+        image.alt = emoji.name || "";
+        image.draggable = false;
+        content.append(image);
+    } else if (emoji?.name) {
+        const image = document.createElement("span");
+        image.className = "tagemoji";
+        image.textContent = emoji.name;
+        content.append(image);
+    }
+    const name = document.createElement("span");
+    name.textContent = tag.name || "";
+    content.append(name);
+    return content;
+}
+
+export function tags(entry, container) {
+    container.replaceChildren();
+    for (const tag of entry.tags || []) {
+        const item = document.createElement("button");
+        item.className = "leveltag clickable";
+        item.type = "button";
+        item.append(tagcontent(tag));
+        item.addEventListener("click", () => {
+            history.pushState(null, "", location.pathname + location.search);
+            window.dispatchEvent(new HashChangeEvent("hashchange"));
+            document.dispatchEvent(new CustomEvent("leveltagfilter", {detail: {id: tag.id, selected: true}}));
+        });
+        container.append(item);
+    }
+    container.hidden = !container.childElementCount;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+import {enabled, number} from "/src/js/browser/renderer/data.js";
+
+export const featuretypes = {
+    gravity: "Different gravity", flying: "Flying candy", water: "Water",
+    split: "Split candy", night: "Night", connected: "Connected candies", timefreeze: "Time freeze"
+};
+
+export function featurekeys(map) {
+    const settings = map.settings || {};
+    const objects = map.objects || [];
+    const keys = [];
+    if (number(settings.globalGravityX) !== 0 || number(settings.globalGravityY, 784) !== 784) keys.push("gravity");
+    if (objects.some(item => enabled(item.isdriven))) keys.push("flying");
+    if (map.water > 0) keys.push("water");
+    if (map.split) keys.push("split");
+    if (map.night) keys.push("night");
+    if (enabled(settings.candiesConnected)) keys.push("connected");
+    if (objects.some(item => item.type === "pauseswitcher")) keys.push("timefreeze");
+    return keys;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function features(map, container) {
+    const keys = featurekeys(map);
+    container.replaceChildren();
+    for (const key of keys) {
+        const item = document.createElement("span");
+        item.className = "leveltag";
+        item.append(featurecontent(key, featuretypes[key]));
+        container.append(item);
+    }
+    container.hidden = !keys.length;
+}

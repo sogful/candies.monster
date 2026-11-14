@@ -34,7 +34,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script async src="/assets/static/global.js"></script>
+    <script async src="/assets/static/js/global.js"></script>
     <script type="module" src="/src/effects.js"></script>
 
     <meta property="twitter:title" content="candies.monster" />
@@ -53,13 +53,14 @@
     <meta name="bingbot" content="index, follow">
     <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
 
-    <link rel="stylesheet" href="/src/css/home.css">
-    <link rel="stylesheet" href="/src/css/levels.css">
-    <link rel="stylesheet" href="/src/css/editor.css">
-    <link rel="stylesheet" href="/src/css/documents.css">
-    <link rel="stylesheet" href="/src/css/effects.css">
-    <link rel="stylesheet" href="/src/css/browsertext.css">
-    <script src="/assets/static/fontcompat.js"></script>
+    <link rel="preload" href="/assets/static/data/levels/tags.json" as="fetch" crossorigin="anonymous">
+    <link rel="stylesheet" href="/src/css/site/home.css">
+    <link rel="stylesheet" href="/src/css/browser/index.css">
+    <link rel="stylesheet" href="/src/css/site/editor.css">
+    <link rel="stylesheet" href="/src/css/site/documents.css">
+    <link rel="stylesheet" href="/src/css/site/effects.css">
+    <link rel="stylesheet" href="/src/css/browser/text.css">
+    <script src="/assets/static/js/text/fonts.js"></script>
 
 </head>
 <body class="homepage">
@@ -318,9 +319,9 @@
                 </div>
             </main>
         </div>
-        <script src="/src/js/documents.js" type="module"></script>
-        <script src="/src/js/sidebar.js" type="module"></script>
-        <script src="/src/js/levels.js" type="module"></script>
-        <script src="/src/js/editor.js" type="module"></script>
+        <script src="/src/js/site/documents.js" type="module"></script>
+        <script src="/src/js/site/sidebar.js" type="module"></script>
+        <script src="/src/js/browser/index.js" type="module"></script>
+        <script src="/src/js/site/editor.js" type="module"></script>
     </body>
 </html>

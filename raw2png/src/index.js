@@ -50,7 +50,7 @@ function group(files) {
 async function zipclass() {
     if (!zipready) zipready = new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = "/assets/static/dependencies/jszip.min.js";
+        script.src = "/assets/static/vendor/libraries/jszip.min.js";
         script.onload = () => resolve(window.JSZip);
         script.onerror = () => {
             zipready = null;

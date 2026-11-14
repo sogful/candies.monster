@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import test from "node:test";
 
-const source = await fs.readFile(new URL("../../../../src/js/unsupported.js", import.meta.url), "utf8");
+const source = await fs.readFile(new URL("../../../../src/js/browser/catalogue/unsupported.js", import.meta.url), "utf8");
 const {requiredgame, objectrequirements} = await import("data:text/javascript;base64," + Buffer.from(source).toString("base64"));
 
 test("unsupported games and named forks retain their specific requirements", () => {

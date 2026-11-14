@@ -8,7 +8,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script async src="/assets/static/global.js"></script>
+    <script async src="/assets/static/js/global.js"></script>
 
     <meta property="og:image" content="/assets/images/branding/embeds/versions.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -172,7 +172,7 @@
         .button {height: 35px}
 
     </style>
-    <script src="/assets/static/fontcompat.js"></script>
+    <script src="/assets/static/js/text/fonts.js"></script>
 </head>
 <body>
 
@@ -238,7 +238,7 @@
             let favicons = []; let index = 0; const delay = 300;
             let sheetimg = null;
 
-            fetch("/assets/images/candies/icon.json")
+            fetch("/assets/static/data/images/icon.json")
                 .then(response => response.json()).then(data => {
                     spritejson = data.frames; sheetimg = new Image();
                     sheetimg.onload = () => {
@@ -282,7 +282,7 @@
 
         // load from versions.json
         async function loadjson() {
-            const response = await fetch("data/legacy.json"); const games = await response.json();
+            const response = await fetch("../assets/static/data/versions/legacy.json"); const games = await response.json();
             const container = document.querySelector(".games")
             
             games.forEach(game => {

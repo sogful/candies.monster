@@ -1,0 +1,240 @@
+@font-face {
+    font-display: swap;
+    font-family: "Good Dog";
+    src: url("/assets/fonts/gooddog.woff2");
+}
+
+body {
+    font-family: var(--sitefont, "Good Dog"); background-color: black;
+    min-height: 100vh; overflow-x: hidden;
+    user-select: none; cursor: url("/assets/static/cursors/idle.cur"), default !important;
+    position: relative;
+}
+
+.stupidbg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover; background-attachment: fixed;
+    background-position: center; background-repeat: no-repeat;
+    transition: opacity 0.5s ease-in-out; 
+    z-index: -1; filter: brightness(0.25) blur(2px);
+}
+body:active, body:focus, body:focus-within, body:target, body:active * {
+    cursor: url("/assets/static/cursors/active.cur"), default !important;
+}
+:any-link {
+    color: #8feeff; text-decoration: none !important;
+    cursor: url("/assets/static/cursors/link.cur"), default !important;
+}
+* {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+}
+*::-webkit-scrollbar {width: 0px}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.songlistcontainer {
+    padding: 2em; max-width: 1200px;
+    margin-bottom: 5em;
+}
+
+.songlist {
+    display: flex; flex-wrap: wrap;
+    justify-content: flex-start; gap: 1em;
+}
+.songblockheader {
+    display: flex; align-items: center;
+    gap: 0.3em; padding-bottom: 0.5em;
+}
+.songblockicon {width: 1.25em; height: 1.25em; border-radius: 0.2em}
+.songblocktitle {
+    color: white; font-size: 1em;
+    text-shadow: 0 1px 0 black;
+    -webkit-text-stroke: 0.13em black;
+    text-shadow: 0 0.13em 0 black;
+    paint-order: stroke fill;
+}
+
+.songitem {
+    display: flex; flex-direction: column;
+    padding: 0em; border-radius: 1em; height: 15px;
+    transition: background-color 0.2s; /* no other buttons on the site have smooth effect but it just fits here */
+}
+.songitem:hover {background-color: rgba(255, 255, 255, 0.05)}
+.songnamecontainer {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 0.5em;
+}
+.songname {
+    color: white; font-size: 0.75em;
+    -webkit-text-stroke: 0.2em black;
+    text-shadow: 0 0.05em 0 black;
+    paint-order: stroke fill;
+}
+.downloadbuttons {
+    display: flex; gap: 0.25em;
+}
+.downloadbutton {
+    width: 1.5em; height: 2em;
+    background: none; border: none;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    border-radius: 0.25em; font-size: 0.75em;
+    transition: background-color 0.2s;
+    position: relative;
+}
+.downloadbutton img:hover {background-color: rgba(255, 255, 255, 0.2)}
+.downloadbutton img {
+    width: 1em; height: 1em;
+    opacity: 0.35;
+    display: block;
+}
+.extensionlabel {
+    color: white; font-family: var(--sitefont, "Good Dog");
+    font-size: 0.75em; -webkit-text-stroke: 0.2em black;
+    text-shadow: 0 0.05em 0 black;
+    paint-order: stroke fill; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none; text-align: center; margin: 0;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.subcategory {
+    margin-left: 1em;
+}
+.subcategoryheader {
+    display: flex; align-items: center;
+    gap: 0.5em;
+}
+.subcategorytitle {
+    color: white; font-size: 0.75em;
+    text-shadow: 0 1px 0 black;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.controlbar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    padding: 15px 15px; display: flex;
+    align-items: center; gap: 5px; z-index: 1000;
+    height: 80px;
+}
+.controlbar img {width: 2em !important; height: 2em !important}
+
+.controlbutton {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: none; border: none; display: flex;
+    align-items: center; justify-content: center;
+
+}
+
+.controlbutton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.playbackmodes {display: flex; gap: 5px}
+.modebutton {
+    width: 40px; height: 40px; border-radius: 50%; 
+    background: none; border: none; display: flex;
+    align-items: center; justify-content: center;
+}
+
+.modebutton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.modebutton.active {
+    background-color: rgba(143, 238, 255, 0.2);
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.timedisplay {
+    color: white; font-size: 1.5em;
+    text-align: center; width: 5em;
+    -webkit-text-stroke: 0.13em black;
+    text-shadow: 0 0.13em 0 black;
+    paint-order: stroke fill;
+}
+
+.progresscontainer {
+    flex: 1; display: flex;
+    align-items: center; height: 20px;
+    position: relative;
+}
+.progressbar {
+    width: 100%; height: 20px;
+    position: relative; 
+}
+
+.progressbody {
+    width: 100%; height: 100%;
+    position: relative; display: flex;
+}
+.progressleft {
+    width: 20px; height: 20px;
+    background: url("/assets/images/progress/leftbody.png") no-repeat center;
+    background-size: contain; flex-shrink: 0;
+}
+.progresscenter {
+    flex: 1; height: 20px;
+    background: url("/assets/images/progress/body.png") repeat-x center;
+    background-size: auto 100%;
+}
+.progressright {
+    width: 20px; height: 20px;
+    background: url("/assets/images/progress/rightbody.png") no-repeat center;
+    background-size: contain; flex-shrink: 0;
+}
+
+.progressfillcontainer {
+    position: absolute; top: 0;
+    left: 0; height: 100%;
+    overflow: hidden; border-radius: 1em;
+    padding: 2px; width: 0%;
+}
+.progressfill {
+    height: 16px; background: url("/assets/images/progress/fill.png") repeat-x center;
+    background-size: auto 100%; border-radius: 0.5em;
+    z-index: 9999; width: 100%; min-width: 1em;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.fullscreenbutton {
+    width: 40px; height: 40px;
+    background: none; border: none;
+     display: flex;
+    align-items: center; justify-content: center;
+    border-radius: 50%;
+}
+
+.fullscreenbutton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.fullscreenbutton img {
+    width: 24px; height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.visualizer {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%; height: 200px;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding: 0 20px; box-sizing: border-box;
+    z-index: 0; pointer-events: none;
+}
+.bar {
+    width: 4%; margin: 0 0.5%;
+    background: rgba(255, 255, 255, 0.15);
+    transition: height 0.1s ease-out;
+}

@@ -1,0 +1,100 @@
+import {spinner} from "/assets/static/js/images/spinner.js";
+import {createsharing} from "/preview/src/sharing.js";
+import {encodeurl} from "/preview/src/data.js";
+import {source} from "../catalogue/source.js";
+
+export function share(entry, button) {
+    const popup = document.createElement("div");
+    popup.className = "levelshare sharepanel";
+    popup.hidden = true;
+    popup.setAttribute("role", "dialog");
+    popup.setAttribute("aria-label", "share level");
+    const status = document.createElement("p");
+    status.className = "sharestatus";
+    status.setAttribute("role", "status");
+    for (const [classname, label] of [["forumurl", "Level Link:"], ["shorturl", "Direct Link:"]]) {
+        const row = document.createElement("div");
+        row.className = "sharerow";
+        const name = document.createElement("span");
+        name.className = "sharelabel";
+        name.textContent = label;
+        const link = document.createElement("a");
+        link.className = classname + " sharelink";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        const copy = document.createElement("button");
+        copy.className = "sharecopy clickable";
+        copy.type = "button";
+        const graphic = document.createElement("img");
+        graphic.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='328' height='138'/%3E";
+        graphic.className = "buttonart";
+        graphic.alt = "";
+        graphic.draggable = false;
+        const caption = document.createElement("span");
+        caption.textContent = "Copy";
+        copy.append(graphic, caption);
+        copy.addEventListener("click", () => {
+            if (!link.getAttribute("href")) return;
+            void sharing.copyurl(link).then(copied => {status.textContent = copied ? "copied!" : "could not copy link"});
+        });
+        row.append(name, link, copy);
+        popup.append(row);
+    }
+    const forum = popup.querySelector(".forumurl");
+    forum.href = location.origin + location.pathname.replace(/index\.html$/i, "") + (entry.revision ? "?revision=" + encodeURIComponent(entry.revision) : "") + "#" + entry.id;
+    forum.textContent = forum.href.replace(/^https?:\/\//, "");
+    popup.append(status);
+    let data = "";
+    const sharing = createsharing({getlevel: () => data, container: popup, onerror: message => {status.textContent = message}});
+    function position() {
+        if (popup.hidden || !popup.isConnected) return;
+        const anchor = button.getBoundingClientRect();
+        const box = popup.getBoundingClientRect();
+        const sidebar = Number.parseFloat(getComputedStyle(popup).getPropertyValue("--navigationwidth")) || 0;
+        const left = Math.max(sidebar + 8, Math.min(innerWidth - box.width - 8, anchor.left + anchor.width / 2 - box.width / 2));
+        const below = anchor.bottom + 6;
+        const top = below + box.height <= innerHeight - 8 ? below : Math.max(8, anchor.top - box.height - 6);
+        popup.style.left = left + "px";
+        popup.style.top = top + "px";
+    }
+    button.addEventListener("click", async () => {
+        popup.hidden = !popup.hidden;
+        button.setAttribute("aria-expanded", String(!popup.hidden));
+        if (popup.hidden) return;
+        position();
+        popup.querySelector(".forumurl").focus({preventScroll: true});
+        if (data) return;
+        spinner(status, "Loading links");
+        try {
+            data = encodeurl(await source(entry.file));
+            sharing.generatelinks();
+            status.textContent = "";
+        } catch {status.textContent = "could not load links"}
+    });
+    popup.addEventListener("keydown", event => {
+        if (event.key !== "Escape") return;
+        event.stopPropagation();
+        popup.hidden = true;
+        button.setAttribute("aria-expanded", "false");
+        button.focus({preventScroll: true});
+    });
+    const controller = new AbortController();
+    window.addEventListener("resize", position, {signal: controller.signal});
+    document.addEventListener("scroll", position, {capture: true, passive: true, signal: controller.signal});
+    const sizes = window.ResizeObserver ? new ResizeObserver(position) : null;
+    sizes?.observe(popup);
+    document.addEventListener("pointerdown", event => {
+        if (!popup.contains(event.target) && !button.contains(event.target)) {
+            popup.hidden = true;
+            button.setAttribute("aria-expanded", "false");
+        }
+    }, {signal: controller.signal});
+    const observer = new MutationObserver(() => {
+        if (popup.isConnected) return;
+        controller.abort();
+        sizes?.disconnect();
+        observer.disconnect();
+    });
+    observer.observe(document.querySelector(".leveldetail"), {childList: true});
+    return popup;
+}

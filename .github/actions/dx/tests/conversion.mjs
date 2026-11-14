@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import test from "node:test";
 import vm from "node:vm";
 
-const source = await fs.readFile(new URL("../../../../assets/static/conversion.js", import.meta.url), "utf8");
+const source = await fs.readFile(new URL("../../../../assets/static/js/levels/conversion.js", import.meta.url), "utf8");
 
 function convert(value) {
     const context = {window: {}};
