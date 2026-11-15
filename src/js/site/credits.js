@@ -43,6 +43,7 @@ export function rendercredits(data) {
         }
         const list = document.createElement("ul");
         list.className = "documentcontributors";
+        if (section.entries?.length > 8) list.classList.add("creditscolumns");
         for (const entry of section.entries || []) {
             const item = document.createElement("li");
             item.className = "documententry";

@@ -11,7 +11,7 @@ let detail = null;
 let resize;
 
 function paused() {
-    return document.hidden || root.classList.contains("gameloading") || root.classList.contains("gameopen") || root.classList.contains("previewopen") || root.classList.contains("documentopen");
+    return document.hidden || root.classList.contains("gameloading") || root.classList.contains("gameopen") || root.classList.contains("previewopen") || root.classList.contains("documentdocumentation");
 }
 
 function queue(record) {
@@ -152,7 +152,7 @@ document.addEventListener("visibilitychange", () => {
 
 document.addEventListener("homeviewchange", () => {
     if (root.classList.contains("documentopen")) scene(null);
-    else if (!paused()) for (const record of records.values()) queue(record);
+    if (!paused()) for (const record of records.values()) queue(record);
 });
 
 document.addEventListener("gameviewchange", () => {
