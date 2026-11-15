@@ -32,7 +32,7 @@
 
 .scoreheading {
     margin: 0; text-align: center;
-    font-size: 48px; font-weight: normal;
+    font-size: 36px; font-weight: normal;
 }
 
 .scoresubtitle {
@@ -47,7 +47,7 @@
 
 .scoreboxes {
     display: flex; flex-wrap: wrap;
-    gap: 5px; justify-content: center;
+    gap: 4px; justify-content: center;
 }
 
 .scorebox {
@@ -90,6 +90,7 @@
 .scorevalue {
     text-align: right; font-variant-numeric: tabular-nums;
 }
+.scorerank {white-space: nowrap}
 .scorestatus {
     min-height: 160px; display: flex;
     align-items: center; justify-content: center;
@@ -114,7 +115,7 @@
     }
     .scoretable {font-size: 21px}
     .scoretable th {font-size: 19px}
-    .scoretable th:first-child {width: 32px}
+    .scoretable th:first-child {width: 44px}
     .scoretable th:last-child {width: 37%}
     }
 
@@ -126,7 +127,7 @@
     margin: -24px -52px 0; padding: 18px 58px;
     background: rgba(0,0,0,0.5);
 }
-.scoreheading {margin-bottom: 10px}
+.scoreheading {margin-bottom: 6px}
 .scorebox {
     display: inline-flex; align-items: center;
     gap: 4px; min-height: 46px;
@@ -159,28 +160,28 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 .scoreheader {
-    margin: 0 auto 14px; padding: 0 8px;
+    margin: 0 auto 10px; padding: 0 8px;
     background: none;
 }
 .scorepanel {
     background: rgba(0,0,0,0.5); border-radius: 16px;
 }
-.scoreboxes {margin-bottom: 16px}
+.scoreboxes {margin-bottom: 12px}
 .scorebox {
-    font-size: 19px; padding: 8px 15px 10px 10px;
-    min-height: 49px;
+    font-size: 16px; padding: 6px 12px 8px 8px;
+    min-height: 40px; box-sizing: border-box;
 }
 .scoreboximage {
-    width: 34px; height: 34px;
+    width: 28px; height: 28px;
     filter: drop-shadow(0 2px 1px #000);
 }
 @media (max-width: 560px) {
-    .scoreheading {font-size: 30px}
+    .scoreheading {font-size: 26px}
     .scorebox {
-        font-size: 16px; min-height: 42px;
-        padding: 7px 12px 9px 8px;
+        font-size: 14px; min-height: 34px;
+        padding: 5px 9px 7px 6px;
     }
     .scoreboximage {
-        width: 27px; height: 27px;
+        width: 23px; height: 23px;
     }
 }
