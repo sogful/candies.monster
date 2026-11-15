@@ -15,6 +15,7 @@ import {creatorlink} from "../catalogue/creator.js";
 import {features} from "../catalogue/metadata.js";
 import {rankings, candyinfo} from "../candylist/view.js";
 import {communitycontrols, communitybase} from "./community.js";
+import {homeemojis} from "./emojis.js";
 import {filterscroll} from "../filters/controls.js";
 
 export function leveldetails() {
@@ -80,15 +81,16 @@ export function leveldetails() {
 
     function reactions(entry, row) {
         row.replaceChildren();
-        for (const reaction of (entry.reactions || []).slice(0, 5)) {
-            if (!Number.isSafeInteger(reaction.count) || reaction.count < 1) continue;
-            const item = create("span", "levelreaction");
-            if (/^\d{17,22}$/.test(reaction.id || "")) {
+        void homeemojis.then(emojis => {
+            row.replaceChildren();
+            for (const reaction of (entry.reactions || []).filter(item => emojis.has(item.id)).slice(0, 5)) {
+                if (!Number.isSafeInteger(reaction.count) || reaction.count < 1) continue;
+                const item = create("span", "levelreaction");
                 item.append(image("https://cdn.discordapp.com/emojis/" + reaction.id + ".webp?size=32", "reactionemoji", reaction.name));
-            } else item.append(create("span", "reactionemoji", reaction.name));
-            item.append(create("span", "reactioncount", String(reaction.count)));
-            row.append(item);
-        }
+                item.append(create("span", "reactioncount", String(reaction.count)));
+                row.append(item);
+            }
+        }).catch(() => {});
     }
 
     function update(entry) {

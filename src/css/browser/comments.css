@@ -14,6 +14,7 @@
     width: 100%; min-height: 0;
     overflow: hidden; scrollbar-width: none;
     flex: 1; overscroll-behavior: contain;
+    position: relative;
 }
 .commentthread {
     display: flex; flex-direction: column;

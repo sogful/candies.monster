@@ -1,27 +1,26 @@
 let active = null;
 
+export const homeemojis = fetch("/assets/static/data/levels/homeemojis.json").then(response => {
+    if (!response.ok) throw new Error("Reactions unavailable");
+    return response.json();
+}).then(items => new Set(items));
+
 export function emojipicker(anchor, emojis, selected) {
     active?.();
     const popup = document.createElement("section");
     popup.className = "emojipicker";
     popup.setAttribute("role", "dialog");
     popup.setAttribute("aria-label", "Choose a reaction");
-    const search = document.createElement("input");
-    search.className = "emojisearch";
-    search.type = "search";
-    search.placeholder = "Find an emoji";
-    search.setAttribute("aria-label", "Find an emoji");
     const list = document.createElement("div");
     list.className = "emojiitems";
     const status = document.createElement("p");
     status.className = "emojistatus";
     status.setAttribute("role", "status");
-    popup.append(search, list, status);
+    popup.append(list, status);
     document.body.append(popup);
     function render() {
         list.replaceChildren();
-        const query = search.value.trim().toLowerCase();
-        for (const emoji of emojis.filter(item => item.name.toLowerCase().includes(query))) {
+        for (const emoji of emojis.filter(item => item.listed !== false)) {
             const button = document.createElement("button");
             button.type = "button";
             button.className = "emojichoice clickable";
@@ -82,7 +81,6 @@ export function emojipicker(anchor, emojis, selected) {
         window.removeEventListener("resize", position);
         if (active === close) active = null;
     }
-    search.addEventListener("input", () => {render(); position()});
     document.addEventListener("pointerdown", outside);
     document.addEventListener("keydown", key, true);
     document.addEventListener("levelviewchange", close);
@@ -90,5 +88,5 @@ export function emojipicker(anchor, emojis, selected) {
     active = close;
     render();
     position();
-    search.focus({preventScroll: true});
+    list.querySelector("button")?.focus({preventScroll: true});
 }

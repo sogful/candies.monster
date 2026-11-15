@@ -81,7 +81,8 @@
     "key": "1476662721620611145",
     "id": "1476662721620611145",
     "name": "omnom_minecraft",
-    "animated": true
+    "animated": true,
+    "listed": false
   },
   {
     "key": "1437955902438117496",
@@ -123,7 +124,8 @@
     "key": "1446594805705605130",
     "id": "1446594805705605130",
     "name": "omnom_True",
-    "animated": false
+    "animated": false,
+    "listed": false
   },
   {
     "key": "1484743154723983430",
@@ -177,6 +179,7 @@
     "key": "1557901757290647612",
     "id": "1557901757290647612",
     "name": "uvula",
-    "animated": true
+    "animated": true,
+    "listed": false
   }
 ]

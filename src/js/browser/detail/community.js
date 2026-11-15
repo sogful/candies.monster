@@ -1,6 +1,6 @@
 import {configuration} from "../catalogue/service.js";
 import {commenteditor} from "./editor/index.js";
-import {emojipicker} from "./emojis.js";
+import {emojipicker, homeemojis} from "./emojis.js";
 
 export const communitybase = (await configuration).community || "";
 const reactiondata = fetch("/assets/static/data/levels/reactions.json").then(response => {
@@ -57,6 +57,7 @@ export function communitycontrols(entry) {
     status.className = "communitystatus";
     status.setAttribute("role", "status");
     let choices = [];
+    let homes = new Set();
     let state = {counts: [], selected: []};
     function render() {
         const favourite = row.closest(".leveldetail")?.querySelector(".levelfavourites");
@@ -70,11 +71,12 @@ export function communitycontrols(entry) {
         row.replaceChildren();
         const displayed = new Map();
         for (const reaction of entry.reactions || []) {
+            if (!homes.has(reaction.id)) continue;
             const key = reaction.id || reaction.name;
             displayed.set(key, {...reaction, key, count: reaction.count || 0});
         }
         for (const reaction of state.counts) {
-            if (reaction.emoji === "⭐" || !reaction.count) continue;
+            if (!homes.has(reaction.emoji) || !reaction.count) continue;
             const previous = displayed.get(reaction.emoji);
             displayed.set(reaction.emoji, {...(choices.find(item => item.key === reaction.emoji) || {name: reaction.emoji}), ...previous, key: reaction.emoji, count: (previous?.count || 0) + reaction.count});
         }
@@ -127,7 +129,7 @@ export function communitycontrols(entry) {
         row.append(plus);
         row.append(status);
     }
-    void Promise.all([identity(), reactiondata]).then(([, items]) => {choices = items; return communityrequest("/community/" + entry.id + "/reactions")}).then(value => {state = value; render()}).catch(error => {status.textContent = error.message; row.append(status)});
+    void Promise.all([identity(), reactiondata, homeemojis]).then(([, items, emojis]) => {choices = items; homes = emojis; return communityrequest("/community/" + entry.id + "/reactions")}).then(value => {state = value; render()}).catch(error => {status.textContent = error.message; row.append(status)});
     return row;
 }
 

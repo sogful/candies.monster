@@ -61,6 +61,8 @@
 .editorcontent li {margin: 0}
 .editorcontent p, .editorcontent div {margin: 0}
 .editorcontent a {color: #8feeff}
+.editorcontent s, .editorcontent strike, .editorcontent del,
+.editorcontent [style*="line-through"] {text-decoration-color: #fff}
 .editorcontent pre {
     white-space: pre-wrap; font-family: monospace;
     font-size: 0.8em; -webkit-text-stroke: 0;
