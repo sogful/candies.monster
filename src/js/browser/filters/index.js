@@ -107,7 +107,7 @@ export function filters(changed) {
     reset.setAttribute("aria-label", "Reset filters");
     reset.title = "Reset filters";
     const reseticon = document.createElement("img");
-    reseticon.src = "/assets/images/icons/x.svg";
+    reseticon.src = "/assets/images/buttons/xbutton.png";
     reseticon.alt = "";
     reset.append(reseticon);
     reset.hidden = true;

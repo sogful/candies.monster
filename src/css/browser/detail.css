@@ -358,6 +358,15 @@
     width: 100%; height: 100%;
     object-fit: contain;
 }
+.levelfavourites {position: relative}
+.favouritehint {
+    position: absolute; bottom: calc(100% + 5px);
+    left: 50%; width: 134px;
+    height: auto; opacity: 0;
+    transform: translateX(-50%); transition: opacity 150ms;
+    pointer-events: none;
+}
+.levelfavourites[role="button"]:hover .favouritehint, .levelfavourites[role="button"]:focus-visible .favouritehint {opacity: 1}
 .levelfavourites[role="button"] .levelstaticon::before, .levelfavourites[role="button"] .levelstaticon::after {
     content: ""; position: absolute;
     inset: -100%; background-image: url("/assets/images/level/starglow.webp");
@@ -384,6 +393,10 @@
     .levelfavourites {flex-wrap: nowrap}
     .levelstaticon {
         width: 18px; height: 18px;
+    }
+    .favouritehint {
+        width: 90px; left: -12px;
+        transform: none;
     }
 }
 .levelrevisions {

@@ -16,7 +16,10 @@ export function emojipicker(anchor, emojis, selected) {
     const status = document.createElement("p");
     status.className = "emojistatus";
     status.setAttribute("role", "status");
-    popup.append(list, status);
+    const note = document.createElement("p");
+    note.className = "emojinote";
+    note.textContent = "This reaction will display in the level browser but not the actual Discord thread due to technical limitations.";
+    popup.append(list, status, note);
     document.body.append(popup);
     function render() {
         list.replaceChildren();

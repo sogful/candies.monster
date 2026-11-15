@@ -70,7 +70,7 @@ export function leveldetails() {
 
     function stat(label, value) {
         const row = create("div", "levelstat");
-        const icons = {favourites: "/assets/images/level/star.webp", plays: "/assets/images/buttons/playcount.svg", objects: "/assets/images/objects/aircushion.png"};
+        const icons = {favourites: "/assets/images/level/star.webp", plays: "/assets/images/buttons/playcount.svg", objects: "/assets/images/objects/spider.png"};
         const icon = create("span", "levelstaticon");
         icon.append(image(icons[label], "", ""));
         row.append(icon, create("strong", "levelvalue", String(value)), create("span", "levellabel", label));
@@ -86,7 +86,9 @@ export function leveldetails() {
             for (const reaction of (entry.reactions || []).filter(item => emojis.has(item.id)).slice(0, 5)) {
                 if (!Number.isSafeInteger(reaction.count) || reaction.count < 1) continue;
                 const item = create("span", "levelreaction");
+                item.title = ":" + reaction.name + ":\n" + reaction.count + " from discord\n0 from level browser";
                 item.append(image("https://cdn.discordapp.com/emojis/" + reaction.id + ".webp?size=32", "reactionemoji", reaction.name));
+                item.querySelector("img").title = item.title;
                 item.append(create("span", "reactioncount", String(reaction.count)));
                 row.append(item);
             }
@@ -152,6 +154,7 @@ export function leveldetails() {
         const statistics = create("div", "levelstatistics");
         const favourites = stat("favourites", entry.rating ?? 0);
         favourites.classList.add("levelfavourites");
+        favourites.append(image("/assets/images/clicktofav.png", "favouritehint", "Click to favourite"));
         if (communitybase) {
             favourites.classList.add("clickable");
             favourites.setAttribute("role", "button");

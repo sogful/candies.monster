@@ -73,12 +73,12 @@ export function communitycontrols(entry) {
         for (const reaction of entry.reactions || []) {
             if (!homes.has(reaction.id)) continue;
             const key = reaction.id || reaction.name;
-            displayed.set(key, {...reaction, key, count: reaction.count || 0});
+            displayed.set(key, {...reaction, key, count: reaction.count || 0, discord: reaction.count || 0});
         }
         for (const reaction of state.counts) {
             if (!homes.has(reaction.emoji) || !reaction.count) continue;
             const previous = displayed.get(reaction.emoji);
-            displayed.set(reaction.emoji, {...(choices.find(item => item.key === reaction.emoji) || {name: reaction.emoji}), ...previous, key: reaction.emoji, count: (previous?.count || 0) + reaction.count});
+            displayed.set(reaction.emoji, {...(choices.find(item => item.key === reaction.emoji) || {name: reaction.emoji}), ...previous, key: reaction.emoji, count: (previous?.count || 0) + reaction.count, browser: reaction.count});
         }
         for (const reaction of [{key: "⭐", name: "star"}, ...displayed.values()]) {
             const emoji = reaction.key;
@@ -91,10 +91,10 @@ export function communitycontrols(entry) {
                 image.className = "reactionemoji";
                 image.src = "https://cdn.discordapp.com/emojis/" + reaction.id + ".webp?size=32";
                 image.alt = ":" + reaction.name + ":";
-                image.title = image.alt;
                 item.append(image, document.createTextNode(" " + count));
             } else item.textContent = emoji + " " + count;
-            item.title = ":" + reaction.name + ":";
+            item.title = ":" + reaction.name + ":\n" + (reaction.discord || 0) + " from discord\n" + (reaction.browser || 0) + " from level browser";
+            item.querySelector("img")?.setAttribute("title", item.title);
             item.setAttribute("aria-label", emoji === "⭐" ? "Favourite" : "React " + reaction.name);
             item.setAttribute("aria-pressed", String(state.selected.includes(emoji)));
             item.addEventListener("click", async () => {
@@ -167,7 +167,12 @@ export function composer(entry, reload, section) {
                 await reload();
             }, section);
         });
-        if (person) form.append(label, logout);
+        if (person) {
+            const account = document.createElement("div");
+            account.className = "commentaccount";
+            account.append(label, logout);
+            form.append(account);
+        }
         form.append(input, status);
     }).catch(error => {status.textContent = error.message; form.append(status)});
     return form;

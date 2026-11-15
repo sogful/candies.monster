@@ -7,3 +7,4 @@
 .buttonart.green {border-image-source: url("/assets/images/buttons/green.webp")}
 .buttonart.purple {border-image-source: url("/assets/images/buttons/purple.webp")}
 .buttondimensions[hidden] {display: none}
+.iconpress:active {scale: 0.96}

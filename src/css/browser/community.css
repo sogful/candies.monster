@@ -19,12 +19,16 @@
 .commentcomposer {
     position: absolute; bottom: 0;
     left: 0; right: 0;
-    display: flex; flex-wrap: wrap;
-    align-items: center; gap: 4px;
+    display: flex; flex-direction: column;
+    align-items: flex-end; gap: 3px;
     padding: 4px 0; z-index: 1;
     margin-top: 0; flex-shrink: 0;
 }
 .commentcomposer[hidden], .communityreactions[hidden] {display: none}
+.commentaccount {
+    display: flex; align-items: center;
+    gap: 4px;
+}
 .communityidentity {font-size: 14px}
 .communitylogout {font-size: 14px}
 .commentadd, .communitylogout {
@@ -68,7 +72,7 @@
 }
 .emojiitems {
     display: grid; grid-template-columns: repeat(8,minmax(0,1fr));
-    gap: 3px; max-height: min(264px,calc(100vh - 32px));
+    gap: 3px; max-height: min(264px,calc(100vh - 84px));
     overflow-y: auto; scrollbar-width: thin;
 }
 .emojichoice {
@@ -90,4 +94,10 @@
 .emojistatus img {
     display: block; width: 90px;
     margin: 0 auto;
+}
+.emojinote {
+    font-family: Arial,sans-serif; font-size: 11px;
+    line-height: 1.25; color: #bbb;
+    margin: 6px 2px 1px; text-align: left;
+    -webkit-text-stroke: 0; text-shadow: none;
 }

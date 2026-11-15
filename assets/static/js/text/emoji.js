@@ -26,6 +26,7 @@
         const selector = "img[src*='/emojis/']";
         const images = root.matches(selector) ? [root] : [...root.querySelectorAll(selector)];
         for (const image of images) {
+            if (image.title) continue;
             const url = new URL(image.src, location.href);
             if (!["cdn.discordapp.com", "media.discordapp.net"].includes(url.hostname)) continue;
             const name = image.alt.replace(/^:|:$/g, "");

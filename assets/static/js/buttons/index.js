@@ -35,3 +35,13 @@ new MutationObserver(changes => {
 }).observe(document.documentElement, {childList: true, subtree: true});
 window.addEventListener("resize", () => {for (const node of tracked) resize(node)}, {passive: true});
 scan(document);
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+function iconpress(event) {
+    const node = event.target.closest?.("button,a,[role=button]");
+    if (!node || node.textContent.trim() || !node.querySelector("img,svg") || node.matches(".leveldownload,.levelsharebutton,.levelplay")) return;
+    node.classList.add("iconpress");
+}
+document.addEventListener("pointerdown", iconpress, {passive: true});
+document.addEventListener("focusin", iconpress);
