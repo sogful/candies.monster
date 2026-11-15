@@ -22,13 +22,14 @@
     border: 0; border-radius: 8px;
     padding: 5px 18px; background: rgba(255,255,255,0.2);
     color: inherit; font: inherit;
-    background: none; width: 150px;
+    background: none; width: 190px;
     height: 48px;
     -webkit-text-stroke: inherit; paint-order: inherit;
     text-shadow: inherit;
     display: flex; align-items: center;
     justify-content: center; text-decoration: none;
     box-sizing: border-box;
+    white-space: nowrap;
 }
 .membershipclose {
     position: absolute; top: 6px;
