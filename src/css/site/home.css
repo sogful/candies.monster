@@ -67,6 +67,10 @@
     width: 100%; height: auto;
 }
 
+.navlink .button {
+    width: 94%; height: auto;
+}
+
 .fun {
     position: absolute; width: 4%;
     height: 8%; bottom: 55%;
@@ -207,7 +211,7 @@
     display: none; width: 110px;
     height: 32px; pointer-events: none;
     position: absolute; top: -34px;
-    left: calc(50% + 9px); transform: translateX(-50%);
+    left: calc(50% + 59px); transform: translateX(-50%);
 }
 
 @media (hover: hover) {

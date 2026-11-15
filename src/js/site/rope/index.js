@@ -45,7 +45,7 @@ export function morestuff() {
         canvas.style.height = available + "px";
         context.setTransform(scale, 0, 0, scale, 0, 0);
         const mount = buckle();
-        rope.reset(origin + sway.value, lift.value + hang, mount.x, mount.y);
+        rope.reset(origin + sway.value, lift.value + hanging(), mount.x, mount.y);
         position();
         wake();
     }
@@ -54,11 +54,15 @@ export function morestuff() {
         return {x: origin, y: bodylift - height * (1 - 900 / 940)};
     }
 
+    function hanging() {
+        return hang + 64 * Math.max(0, Math.min(1, bodylift / maximum));
+    }
+
     function position() {
         panel.style.transform = "translate3d(0," + bodylift + "px,0)";
-        handle.style.transform = "translate3d(" + sway.value + "px," + (lift.value + hang - 4) + "px,0)";
+        handle.style.transform = "translate3d(" + sway.value + "px," + (lift.value + hanging() - 4) + "px,0)";
         const mount = buckle();
-        const angle = Math.atan2(-sway.value, lift.value + hang - mount.y) * 180 / Math.PI;
+        const angle = Math.atan2(-sway.value, lift.value + hanging() - mount.y) * 180 / Math.PI;
         handle.style.setProperty("--ringangle", angle + "deg");
         const openness = Math.max(0, Math.min(1, bodylift / maximum));
         shade.style.opacity = String(openness * 0.5);
@@ -83,10 +87,10 @@ export function morestuff() {
                     if (timeline.finished) timeline = null;
                 }
                 const mount = buckle();
-                dangle(sway, lift, mount, hang - 5 + height * (1 - 900 / 940), (bodylift - previous) * 60, hang);
+                dangle(sway, lift, mount, hanging() - 5 + height * (1 - 900 / 940), (bodylift - previous) * 60, hanging());
             }
             const mount = buckle();
-            rope.step(origin + sway.value, lift.value + hang, mount.x, mount.y);
+            rope.step(origin + sway.value, lift.value + hanging(), mount.x, mount.y);
             motion = (timeline ? 1 : 0) + Math.abs(target - bodylift) + Math.abs(lift.velocity) + Math.abs(sway.velocity);
             accumulator -= 1 / 60;
         }

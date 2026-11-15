@@ -148,7 +148,7 @@
 .levelfeatures .leveltag {white-space: normal}
 
 .leveldescription {
-    margin: 0; font-size: 25px;
+    margin: 0; font-size: 21px;
     overflow-wrap: anywhere;
 }
 
@@ -327,9 +327,9 @@
     .leveldescription .mdheading {font-size: 1.15em}
 }
 .levelinfotags {
-    display: flex; flex-direction: column;
+    display: flex; flex-direction: row;
     grid-column: 1 / -1; min-width: 0;
-    max-height: 90px; overflow-y: auto;
+    max-height: 48px; overflow: auto hidden;
     scrollbar-width: none;
 }
 .levelinfotags::-webkit-scrollbar {display: none}
@@ -337,13 +337,54 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 .levelinfotags {
-    overflow: visible; max-height: none;
-    min-width: 0;
+    overflow: auto hidden; max-height: none;
+    min-width: 0; gap: 4px;
+    margin-top: 2px; padding: 3px 0 5px;
+    touch-action: pan-x; align-items: center;
 }
-.levelinformation .leveltags, .levelinformation .levelfeatures {
-    margin-left: -8px; margin-right: -8px;
-    width: calc(100% + 16px); max-width: none;
-    padding: 3px 8px 5px;
+.levelinfotags > .leveltags:not([hidden]), .levelinfotags > .levelfeatures:not([hidden]) {
+    display: contents;
+}
+.levelinfotags .leveltag, .levelinfotags .candylabel {flex-shrink: 0}
+.levelbody {max-height: 24vh}
+.leveldescription {font-size: 21px}
+.levelstaticon {
+    display: inline-flex; align-self: center;
+    position: relative; width: 24px;
+    height: 24px; flex-shrink: 0;
+    isolation: isolate;
+}
+.levelstaticon > img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+}
+.levelfavourites[role="button"] .levelstaticon::before, .levelfavourites[role="button"] .levelstaticon::after {
+    content: ""; position: absolute;
+    inset: -100%; background-image: url("/assets/images/level/starglow.webp");
+    background-size: contain; background-repeat: no-repeat;
+    background-position: center; opacity: 0.5;
+    z-index: -1; animation: favouriteshine 12s linear infinite;
+    pointer-events: none;
+}
+.levelfavourites[role="button"] .levelstaticon::after {
+    animation-name: favouriteglow; animation-duration: 15s;
+}
+@keyframes favouriteshine {
+    from {transform: rotateX(35deg) rotateY(-20deg) rotate(0deg)}
+    to {transform: rotateX(35deg) rotateY(-20deg) rotate(360deg)}
+}
+@keyframes favouriteglow {
+    from {transform: rotateX(-35deg) rotateY(20deg) rotate(70deg)}
+    to {transform: rotateX(-35deg) rotateY(20deg) rotate(-290deg)}
+}
+.homepage :focus {outline: none}
+@media (max-width: 700px) {
+    .leveldescription {font-size: 16px}
+    .levelfavourites .levellabel {font-size: 13px}
+    .levelfavourites {flex-wrap: nowrap}
+    .levelstaticon {
+        width: 18px; height: 18px;
+    }
 }
 .levelrevisions {
     justify-content: center; margin-top: 4px;

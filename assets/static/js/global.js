@@ -4,6 +4,10 @@ selectionstyle.rel = "stylesheet";
 selectionstyle.href = "/assets/static/css/selection.css";
 document.head.append(selectionstyle);
 
+document.addEventListener("focusin", event => {
+    if (event.target.matches("select,input,textarea,button,[contenteditable=true]")) event.target.classList.add("browserfocus");
+});
+
 /*//////////////////////////////////////////////////////////////////////*/
 
 import("./buttons/index.js");

@@ -3,3 +3,4 @@
     text-shadow: none; -webkit-text-stroke: 0;
     -webkit-text-fill-color: #fff;
 }
+.browserfocus:focus {outline: none}
