@@ -10,3 +10,6 @@
 }
 .discordstatus {text-align: center}
 .discordlabel {margin: 12px}
+.discordweb {
+    color: #8feeff; text-decoration: none;
+}

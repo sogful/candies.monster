@@ -1,4 +1,4 @@
-import {spinner} from "../../js/images/spinner.js";
+import {spinner} from "/assets/static/js/images/spinner.js";
 
 const route = new URLSearchParams(location.search).get("route") || "";
 const valid = /^(?:channels\/\d{17,22}\/\d{17,22}|invite\/[a-zA-Z0-9_-]{2,40})$/.test(route);
@@ -8,10 +8,14 @@ else {
     spinner(loading, "Opening Discord");
     document.querySelector(".discordstatus").prepend(loading);
     const website = route.startsWith("invite/") ? "https://discord.gg/" + route.slice(7) : "https://discord.com/" + route;
+    const link = document.createElement("a");
+    link.className = "discordweb";
+    link.href = website;
+    link.textContent = "Open in browser";
+    document.querySelector(".discordstatus").append(link);
     let timer;
     let hidden = false;
     function fallback() {clearTimeout(timer); timer = setTimeout(() => location.replace(website), 1800)}
-    window.addEventListener("blur", () => clearTimeout(timer));
     window.addEventListener("focus", () => {if (!hidden) fallback()});
     document.addEventListener("visibilitychange", () => {
         if (!document.hidden) return;
