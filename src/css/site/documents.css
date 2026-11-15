@@ -216,3 +216,10 @@
     .homepage::before, .documentviews, .levelcontent > .main,
     .morestuff, .github, .effects, .shadow {transition: none}
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.creditsloading {
+    display: flex; align-items: center;
+    justify-content: center; min-height: 96px;
+}

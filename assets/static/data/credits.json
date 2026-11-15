@@ -1,0 +1,261 @@
+{
+    "sections": [
+        {
+            "entries": [
+                {
+                    "name": "Bingies24",
+                    "subtitle": "uhq vector of the candy"
+                },
+                {
+                    "name": "yell0wsuit",
+                    "subtitle": "Cut the Rope DX and most of the raw2png script work"
+                }
+            ]
+        },
+        {
+            "title": "game version archiving/help",
+            "heading": "major",
+            "entries": [
+                {
+                    "name": "saulfabreg",
+                    "subtitle": "amazing patch/search work over the last year",
+                    "size": "large"
+                },
+                {
+                    "name": "dragonland3030",
+                    "subtitle": "tons of drives with apks and ipas",
+                    "size": "large"
+                },
+                {
+                    "name": "jul.mik",
+                    "size": "small"
+                },
+                {
+                    "name": "itsme_lis",
+                    "size": "small"
+                },
+                {
+                    "name": "PigDoggo",
+                    "size": "small"
+                },
+                {
+                    "name": "Bingies24"
+                },
+                {
+                    "name": "SwordJhon"
+                },
+                {
+                    "name": "sami9999999999"
+                },
+                {
+                    "name": "propplayer"
+                },
+                {
+                    "name": "Bioux_2024"
+                },
+                {
+                    "name": "TheAwesomeBlue",
+                    "subtitle": "archived Android versions and the CTR files collection",
+                    "url": "https://github.com/TheAwesomeBlue/ctrfiles"
+                },
+                {
+                    "name": "supernibblenomfan9000",
+                    "subtitle": "rare version finds and archive leads",
+                    "url": "https://archive.org/details/@supernibblenomfan9000"
+                },
+                {
+                    "name": "stuffed18",
+                    "subtitle": "the searchable IPA archive index",
+                    "url": "https://stuffed18.github.io/ipa-archive-updated/"
+                }
+            ]
+        },
+        {
+            "title": "internet archive uploaders",
+            "heading": "major",
+            "entries": [
+                {
+                    "name": "AlexanderTheVideo MakerGuy2008",
+                    "subtitle": "older iOS apps and Cut the Rope 2 builds",
+                    "url": "https://archive.org/details/@chloethevideo_makerguy2008"
+                },
+                {
+                    "name": "Louis Martualas",
+                    "subtitle": "Cut the Rope: Magic iOS versions",
+                    "url": "https://archive.org/details/@louis_martualas"
+                },
+                {
+                    "name": "ios_archives",
+                    "subtitle": "the Cut the Rope HD archive",
+                    "url": "https://archive.org/details/@ios_archives"
+                },
+                {
+                    "name": "fahrenheight",
+                    "subtitle": "the iOSObscura collection",
+                    "url": "https://archive.org/details/@fahrenheight"
+                },
+                {
+                    "name": "TrashGAMING",
+                    "subtitle": "older iPhone and iPad versions",
+                    "url": "https://archive.org/details/@trashgaming"
+                },
+                {
+                    "name": "Dan1el31",
+                    "subtitle": "the iOS IPA collection",
+                    "url": "https://archive.org/details/@dan1el31"
+                },
+                {
+                    "name": "NextLine",
+                    "subtitle": "the NextLine IPA archive",
+                    "url": "https://archive.org/details/@nextline"
+                },
+                {
+                    "name": "ipaMaster",
+                    "subtitle": "iOS game archives, including My Om Nom",
+                    "url": "https://archive.org/details/@ipa_master"
+                },
+                {
+                    "name": "th_i_nguy_n_v_n",
+                    "subtitle": "Android builds scattered across game collections",
+                    "url": "https://archive.org/details/@th_i_nguy_n_v_n"
+                },
+                {
+                    "name": "iPhone OS/iOS App Store Archive USA",
+                    "subtitle": "early Cut the Rope Free, Lite and HD versions",
+                    "url": "https://archive.org/details/@seychell_s_phone_collection_000"
+                },
+                {
+                    "name": "mopintot",
+                    "subtitle": "Chinese Om Nom iPad versions",
+                    "url": "https://archive.org/details/@threesmokepatrick441"
+                },
+                {
+                    "name": "llucarius",
+                    "subtitle": "extra iOS archive mirrors",
+                    "url": "https://archive.org/details/@llucarius"
+                },
+                {
+                    "name": "selfmader",
+                    "subtitle": "the Selfmader IPA collection",
+                    "url": "https://archive.org/details/@selfmader"
+                },
+                {
+                    "name": "Yudra Cyivian",
+                    "subtitle": "early Cut the Rope iOS releases",
+                    "url": "https://archive.org/details/@yudra_cyivian"
+                },
+                {
+                    "name": "digitalsergey",
+                    "subtitle": "the iKlassika app archive",
+                    "url": "https://archive.org/details/@digitalsergey"
+                }
+            ]
+        },
+        {
+            "title": "merch findings",
+            "heading": "major",
+            "entries": [
+                {
+                    "name": "trosde.quoniam",
+                    "subtitle": "lots of previously unknown plushies discovered",
+                    "size": "large"
+                },
+                {
+                    "name": "345rusl",
+                    "size": "small"
+                },
+                {
+                    "name": "mr.hi9051"
+                },
+                {
+                    "name": "MrCatz"
+                }
+            ]
+        },
+        {
+            "title": "artwork, fonts and tools",
+            "heading": "major",
+            "entries": [
+                {
+                    "name": "HeHe169",
+                    "subtitle": "preserving the original artwork archive",
+                    "url": "https://archive.org/details/ctr-protoplay-assets"
+                },
+                {
+                    "name": "ZeptoLab",
+                    "subtitle": "the game artwork and original assets",
+                    "url": "https://www.zeptolab.com/"
+                },
+                {
+                    "name": "Ethan Dunham",
+                    "subtitle": "the GoodDog fonts"
+                },
+                {
+                    "name": "Kingnam Type Foundry",
+                    "subtitle": "the Maiyuan Chinese font",
+                    "url": "https://github.com/maoken-fonts/KNMaiyuan"
+                },
+                {
+                    "name": "thkim & Cafe24",
+                    "subtitle": "the Dongdong Korean font",
+                    "url": "https://fonts.cafe24.com/"
+                },
+                {
+                    "name": "101arrowz",
+                    "subtitle": "fflate and fzstd compression tools",
+                    "url": "https://github.com/101arrowz"
+                },
+                {
+                    "name": "Twitter, jdecked and Twemoji contributors",
+                    "subtitle": "the emoji artwork and renderer",
+                    "url": "https://github.com/jdecked/twemoji"
+                },
+                {
+                    "name": "Niklas von Hertzen",
+                    "subtitle": "html2canvas for font image exports",
+                    "url": "https://html2canvas.hertzen.com/"
+                },
+                {
+                    "name": "Stuart Knightley and JSZip contributors",
+                    "subtitle": "zip downloads and spritesheet exports",
+                    "url": "https://stuk.github.io/jszip/"
+                },
+                {
+                    "name": "debugging.games",
+                    "subtitle": "the game debug symbols archive",
+                    "url": "https://debugging.games/"
+                }
+            ]
+        },
+        {
+            "title": "CTR Home team",
+            "heading": "normal",
+            "entries": [
+                {
+                    "name": "aidrum"
+                },
+                {
+                    "name": "Bingies24"
+                },
+                {
+                    "name": "Genji"
+                },
+                {
+                    "name": "MlopsFunny"
+                },
+                {
+                    "name": "MrCatz"
+                },
+                {
+                    "name": "saulfabreg"
+                },
+                {
+                    "name": "TheAwesomeBlue"
+                },
+                {
+                    "name": "yell0wsuit"
+                }
+            ]
+        }
+    ]
+}

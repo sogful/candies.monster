@@ -1,3 +1,5 @@
+import {loadcredits} from "./credits.js";
+
 export function credits(scroll, article) {
     const sequence = article.querySelector(".creditssequence");
     let ready = false;
@@ -7,6 +9,7 @@ export function credits(scroll, article) {
     let frame = 0;
     let previous = 0;
     let pointer = null;
+    let generation = 0;
 
     function measure() {
         const offset = period ? position % period : 0;
@@ -77,8 +80,12 @@ export function credits(scroll, article) {
     document.fonts?.ready.then(measure);
 
     return {
-        open() {
+        async open() {
+            active = true;
+            const request = ++generation;
             if (!ready) {
+                try {await loadcredits(sequence.querySelector(".creditscontent"))} catch {return}
+                if (!active || request !== generation) return;
                 for (let count = 0; count < 2; count++) {
                     const clone = sequence.cloneNode(true);
                     clone.setAttribute("aria-hidden", "true");
@@ -95,6 +102,7 @@ export function credits(scroll, article) {
         },
         close() {
             active = false;
+            generation++;
             pointer = null;
             resume();
         }
