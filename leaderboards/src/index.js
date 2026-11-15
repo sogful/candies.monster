@@ -30,7 +30,7 @@ function select(write = false) {
     selected = board.id;
     if (write) history.replaceState(null, "", "#" + selected);
     for (const button of navigation.querySelectorAll("button")) button.setAttribute("aria-pressed", String(button.dataset.board === selected));
-    const visible = board.scores.filter(row => !reasons.has(board.id + ":" + row.rank));
+    const visible = board.scores.filter(row => !reasons.has(board.id + ":" + row.rank)).slice(0, 250);
     rows.replaceChildren(...visible.map((row, index) => {
         const line = element("tr", "scorerow");
         const rank = element("td", "scorerank", "#" + (index + 1));
