@@ -51,7 +51,7 @@ export function profile(container, id, entries) {
     text.className = "creatortext";
     const name = document.createElement("p");
     name.className = "creatorname";
-    name.textContent = entry?.creator || id;
+    name.textContent = entry?.creator || "Deleted User";
     const username = document.createElement("p");
     username.className = "creatorusername";
     username.textContent = "@...";

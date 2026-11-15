@@ -1,7 +1,0 @@
-Twemoji by Twitter and contributors
-https://github.com/jdecked/twemoji
-
-Version 17.0.3. JavaScript: MIT (twemoji-license.txt).
-Graphics: CC BY 4.0 (twemoji-graphics-license.txt).
-https://creativecommons.org/licenses/by/4.0/
-Graphics are served unchanged through jsDelivr.

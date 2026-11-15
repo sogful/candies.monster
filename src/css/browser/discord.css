@@ -26,6 +26,9 @@
     height: 48px;
     -webkit-text-stroke: inherit; paint-order: inherit;
     text-shadow: inherit;
+    display: flex; align-items: center;
+    justify-content: center; text-decoration: none;
+    box-sizing: border-box;
 }
 .membershipclose {
     position: absolute; top: 6px;

@@ -14,13 +14,13 @@ export async function catalogue() {
     const data = await response.json();
     await tagdata;
     if (!Array.isArray(data.levels)) throw new Error("Invalid catalogue");
-    const names = new Map(data.levels.filter(level => level.author?.name).map(level => [level.author.id, level.author.name]));
+    const names = new Map(data.levels.filter(level => level.author?.name && !/^\d{17,22}$/.test(level.author.name)).map(level => [level.author.id, level.author.name]));
     const entries = data.levels.flatMap(level => {
         if (!/^\d{17,22}$/.test(level.id) || !Array.isArray(level.files)) return [];
         const file = level.files.find(file => /^\d{17,22}$/.test(file.id) && (level.primaryfile === undefined ? /\.(xml|json)$/i.test(file.name) : file.id === level.primaryfile));
-        if (!file && !level.files.some(file => /\.(xml|json)$/i.test(file.name))) return [];
+        if (!file) return [];
         return [{
-            id: level.id, title: level.title, creator: level.author?.name || names.get(level.author?.id) || level.author?.id || "unknown",
+            id: level.id, title: level.title, creator: names.get(level.author?.id) || "Deleted User",
             creatorid: level.author?.id || "", duplicateof: level.duplicateof || null,
             contests: Array.isArray(level.contests) ? level.contests : [],
             notable: Array.isArray(level.features) ? level.features : [], levelerror: level.levelerror || null,

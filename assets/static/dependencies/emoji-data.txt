@@ -1,3 +1,0 @@
-Emoji short names from iamcal/emoji-data, Emoji 17.0.
-https://github.com/iamcal/emoji-data
-MIT license: emoji-data-license.txt

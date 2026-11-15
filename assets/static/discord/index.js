@@ -1,29 +1,15 @@
-import {spinner} from "/assets/static/js/images/spinner.js";
-
 const route = new URLSearchParams(location.search).get("route") || "";
 const valid = /^(?:channels\/\d{17,22}\/\d{17,22}|invite\/[a-zA-Z0-9_-]{2,40})$/.test(route);
 if (!valid) document.querySelector(".discordlabel").textContent = "Invalid Discord link";
 else {
-    const loading = document.createElement("div");
-    spinner(loading, "Opening Discord");
-    document.querySelector(".discordstatus").prepend(loading);
+    document.querySelector(".discordlabel").textContent = "Open Discord";
     const website = route.startsWith("invite/") ? "https://discord.gg/" + route.slice(7) : "https://discord.com/" + route;
-    const link = document.createElement("a");
-    link.className = "discordweb";
-    link.href = website;
-    link.textContent = "Open in browser";
-    document.querySelector(".discordstatus").append(link);
-    let timer;
-    let hidden = false;
-    function fallback() {clearTimeout(timer); timer = setTimeout(() => location.replace(website), 1800)}
-    window.addEventListener("focus", () => {if (!hidden) fallback()});
-    document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) return;
-        hidden = true;
-        clearTimeout(timer);
-        setTimeout(() => window.close(), 250);
-    });
-    window.addEventListener("pagehide", () => clearTimeout(timer), {once: true});
-    fallback();
-    try {location.href = "discord://-/" + route} catch {location.replace(website)}
+    for (const [label, address] of [["Open app", "discord://-/" + route], ["Open in browser", website]]) {
+        const link = document.createElement("a");
+        link.className = "discordweb";
+        link.href = address;
+        link.textContent = label;
+        link.rel = "noopener noreferrer";
+        document.querySelector(".discordstatus").append(link);
+    }
 }

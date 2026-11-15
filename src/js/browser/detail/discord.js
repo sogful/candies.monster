@@ -1,34 +1,31 @@
 const guild = "1112531659078762617";
 
 export function appopen(route) {
-    const link = document.createElement("a");
-    link.href = "/assets/static/discord/?route=" + encodeURIComponent(route);
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    document.body.append(link);
-    link.click();
-    link.remove();
+    if (!/^(?:channels\/\d{17,22}\/\d{17,22}|invite\/[a-zA-Z0-9_-]{2,40})$/.test(route)) return;
+    const website = route.startsWith("invite/") ? "https://discord.gg/" + route.slice(7) : "https://discord.com/" + route;
+    const {dialog, actions, close} = popup(document.activeElement, "Open Discord");
+    for (const [label, address] of [["Open app", "discord://-/" + route], ["Open in browser", website]]) {
+        const link = document.createElement("a");
+        link.className = "membershipbutton descbutton clickable";
+        link.href = address;
+        link.textContent = label;
+        if (address === website) {link.target = "_blank"; link.rel = "noopener noreferrer"; link.addEventListener("click", close)}
+        actions.append(link);
+    }
+    dialog.showModal();
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function membership(button, joined) {
+function popup(button, label) {
     const dialog = document.createElement("dialog");
     dialog.className = "discordmembership";
     const question = document.createElement("p");
     question.className = "membershipquestion";
-    question.textContent = "Are you in Cut the Rope Home?";
+    question.textContent = label;
     const actions = document.createElement("div");
     actions.className = "membershipactions";
-    function close() {dialog.close(); dialog.remove(); if (button.isConnected) button.focus({preventScroll: true})}
-    for (const [label, action] of [["Yes", joined], ["Join", () => appopen("invite/Rc6tZUqVkV")]]) {
-        const control = document.createElement("button");
-        control.type = "button";
-        control.className = "membershipbutton descbutton clickable";
-        control.textContent = label;
-        control.addEventListener("click", () => {close(); action()});
-        actions.append(control);
-    }
+    function close() {dialog.close(); dialog.remove(); if (button?.isConnected) button.focus({preventScroll: true})}
     const dismiss = document.createElement("button");
     dismiss.type = "button";
     dismiss.className = "membershipclose clickable";
@@ -46,6 +43,21 @@ function membership(button, joined) {
         if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) close();
     });
     document.body.append(dialog);
+    return {dialog, actions, close};
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+function membership(button, joined) {
+    const {dialog, actions, close} = popup(button, "Are you in Cut the Rope Home?");
+    for (const [label, action] of [["Yes", joined], ["Join", () => appopen("invite/Rc6tZUqVkV")]]) {
+        const control = document.createElement("button");
+        control.type = "button";
+        control.className = "membershipbutton descbutton clickable";
+        control.textContent = label;
+        control.addEventListener("click", () => {close(); action()});
+        actions.append(control);
+    }
     dialog.showModal();
 }
 

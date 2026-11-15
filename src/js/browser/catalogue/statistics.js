@@ -22,7 +22,8 @@ export async function refresh(entry) {
     if (!entry.revision && entry.requirementsfile !== entry.file && Array.isArray(data.requirements)) entry.requirements = data.requirements;
     const engine = requiredgame(entry);
     if (engine !== entry.engine) {entry.engine = engine; entry.filechanged = true}
-    entry.creator = data.author?.name || entry.creator || data.author?.id;
+    const name = data.author?.name;
+    entry.creator = name && !/^\d{17,22}$/.test(name) ? name : entry.creator || "Deleted User";
     entry.creatorid = data.author?.id || entry.creatorid;
     return entry;
 }

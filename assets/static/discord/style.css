@@ -12,4 +12,5 @@
 .discordlabel {margin: 12px}
 .discordweb {
     color: #8feeff; text-decoration: none;
+    display: block; margin: 12px;
 }

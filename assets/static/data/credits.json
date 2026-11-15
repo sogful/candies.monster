@@ -8,7 +8,12 @@
                 },
                 {
                     "name": "yell0wsuit",
-                    "subtitle": "Cut the Rope DX and most of the raw2png script work"
+                    "subtitle": "cut the rope dx and most of the raw2png script work"
+                },
+                {
+                    "name": "debugging.games",
+                    "subtitle": "debug symbols archive",
+                    "url": "https://debugging.games/"
                 }
             ]
         },
@@ -18,25 +23,18 @@
             "entries": [
                 {
                     "name": "saulfabreg",
-                    "subtitle": "amazing patch/search work over the last year",
+                    "subtitle": "amazing patch/search work over the last year, rare internet archive uploads",
                     "size": "large"
                 },
                 {
                     "name": "dragonland3030",
-                    "subtitle": "tons of drives with apks and ipas",
+                    "subtitle": "provided a gigantic amount of drives with apks and ipas",
                     "size": "large"
                 },
-                {
-                    "name": "jul.mik",
-                    "size": "small"
-                },
-                {
-                    "name": "itsme_lis",
-                    "size": "small"
-                },
-                {
-                    "name": "PigDoggo",
-                    "size": "small"
+                                {
+                    "name": "TheAwesomeBlue",
+                    "subtitle": "android archives and reuploads for ctr home",
+                    "size": "large"
                 },
                 {
                     "name": "Bingies24"
@@ -54,64 +52,68 @@
                     "name": "Bioux_2024"
                 },
                 {
-                    "name": "TheAwesomeBlue",
-                    "subtitle": "archived Android versions and the CTR files collection",
-                    "url": "https://github.com/TheAwesomeBlue/ctrfiles"
+                    "name": "jul.mik",
+                    "size": "small"
                 },
                 {
-                    "name": "supernibblenomfan9000",
-                    "subtitle": "rare version finds and archive leads",
-                    "url": "https://archive.org/details/@supernibblenomfan9000"
+                    "name": "itsme_lis",
+                    "size": "small"
+                },
+                {
+                    "name": "PigDoggo",
+                    "size": "small"
                 },
                 {
                     "name": "stuffed18",
-                    "subtitle": "the searchable IPA archive index",
-                    "url": "https://stuffed18.github.io/ipa-archive-updated/"
+                    "subtitle": "ipa archive",
+                    "url": "https://stuffed18.github.io/ipa-archive-updated/",
+                    "size": "small"
                 }
             ]
         },
         {
             "title": "internet archive uploaders",
-            "heading": "major",
+            "heading": "normal",
             "entries": [
                 {
                     "name": "AlexanderTheVideo MakerGuy2008",
-                    "subtitle": "older iOS apps and Cut the Rope 2 builds",
+                    "subtitle": "ios apps and ctr 2 builds",
                     "url": "https://archive.org/details/@chloethevideo_makerguy2008"
                 },
                 {
                     "name": "Louis Martualas",
-                    "subtitle": "Cut the Rope: Magic iOS versions",
+                    "subtitle": "ctr magic ios versions",
                     "url": "https://archive.org/details/@louis_martualas"
                 },
                 {
                     "name": "ios_archives",
-                    "subtitle": "the Cut the Rope HD archive",
+                    "subtitle": "ctr hd archive",
                     "url": "https://archive.org/details/@ios_archives"
                 },
                 {
                     "name": "fahrenheight",
-                    "subtitle": "the iOSObscura collection",
-                    "url": "https://archive.org/details/@fahrenheight"
+                    "subtitle": "iosobscura collection",
+                    "url": "https://archive.org/details/@fahrenheight",
+                    "size": "large"
                 },
                 {
                     "name": "TrashGAMING",
-                    "subtitle": "older iPhone and iPad versions",
+                    "subtitle": "older iphone/ipad versions",
                     "url": "https://archive.org/details/@trashgaming"
                 },
                 {
                     "name": "Dan1el31",
-                    "subtitle": "the iOS IPA collection",
+                    "subtitle": "ios ipa collection",
                     "url": "https://archive.org/details/@dan1el31"
                 },
                 {
                     "name": "NextLine",
-                    "subtitle": "the NextLine IPA archive",
+                    "subtitle": "nextline ipa archive",
                     "url": "https://archive.org/details/@nextline"
                 },
                 {
                     "name": "ipaMaster",
-                    "subtitle": "iOS game archives, including My Om Nom",
+                    "subtitle": "ios game archives, particularly my om nom",
                     "url": "https://archive.org/details/@ipa_master"
                 },
                 {
@@ -173,58 +175,31 @@
             ]
         },
         {
-            "title": "artwork, fonts and tools",
-            "heading": "major",
+            "title": "artwork/fonts/tools",
+            "heading": "normal",
             "entries": [
                 {
                     "name": "HeHe169",
-                    "subtitle": "preserving the original artwork archive",
+                    "subtitle": "zeptolab protoplay asset archive",
                     "url": "https://archive.org/details/ctr-protoplay-assets"
                 },
-                {
-                    "name": "ZeptoLab",
-                    "subtitle": "the game artwork and original assets",
-                    "url": "https://www.zeptolab.com/"
-                },
-                {
-                    "name": "Ethan Dunham",
-                    "subtitle": "the GoodDog fonts"
-                },
-                {
-                    "name": "Kingnam Type Foundry",
-                    "subtitle": "the Maiyuan Chinese font",
-                    "url": "https://github.com/maoken-fonts/KNMaiyuan"
-                },
-                {
-                    "name": "thkim & Cafe24",
-                    "subtitle": "the Dongdong Korean font",
-                    "url": "https://fonts.cafe24.com/"
-                },
+
                 {
                     "name": "101arrowz",
-                    "subtitle": "fflate and fzstd compression tools",
+                    "subtitle": "fflate/fzstd",
                     "url": "https://github.com/101arrowz"
                 },
                 {
-                    "name": "Twitter, jdecked and Twemoji contributors",
-                    "subtitle": "the emoji artwork and renderer",
-                    "url": "https://github.com/jdecked/twemoji"
-                },
-                {
                     "name": "Niklas von Hertzen",
-                    "subtitle": "html2canvas for font image exports",
+                    "subtitle": "html2canvas",
                     "url": "https://html2canvas.hertzen.com/"
                 },
                 {
-                    "name": "Stuart Knightley and JSZip contributors",
-                    "subtitle": "zip downloads and spritesheet exports",
+                    "name": "Stuart Knightley & project contributors",
+                    "subtitle": "jszip",
                     "url": "https://stuk.github.io/jszip/"
-                },
-                {
-                    "name": "debugging.games",
-                    "subtitle": "the game debug symbols archive",
-                    "url": "https://debugging.games/"
                 }
+                
             ]
         },
         {
@@ -256,6 +231,10 @@
                     "name": "yell0wsuit"
                 }
             ]
+        },
+        {
+            "title": "Thank you for visiting!",
+            "heading": "normal"
         }
     ]
 }

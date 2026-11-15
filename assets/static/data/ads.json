@@ -1,14 +1,18 @@
 [
     {
         "url": "https://adriandrummis.github.io/CutTheRopeEditor",
-        "image": "/assets/images/ads/misc/ctreditor.png"
+        "image": "/assets/images/ads/ctreditor.webp"
     },
     {
         "url": "https://x.com/mushroomfromgd",
-        "image": "/assets/images/ads/misc/aidrum.png"
+        "image": "/assets/images/ads/aidrum.webp"
     },
     {
         "url": "https://theawesomeblue.nekoweb.org/links.html",
-        "image": "/assets/images/ads/misc/blue.png"
+        "image": "/assets/images/ads/blue.webp"
+    },
+    {
+        "url": "https://twitter.com/cvsilly_",
+        "image": "/assets/images/ads/-.webp"
     }
 ]
