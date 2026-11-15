@@ -1,13 +1,13 @@
 import {requiredgame} from "./unsupported.js";
 import {attach, candydata} from "../candylist/data.js";
 import {tagdata, canonicaltags} from "./metadata.js";
+import {communitybase} from "../detail/community.js";
+import {configuration} from "./service.js";
 
 export async function catalogue() {
-    const configuration = await fetch(new URL("../../../../assets/static/data/levels/levels.json", import.meta.url));
-    if (!configuration.ok) throw new Error("Catalogue unavailable");
-    const {endpoint} = await configuration.json();
+    const {endpoint} = await configuration;
     if (!endpoint) return [];
-    const base = new URL(endpoint);
+    const base = new URL(communitybase || endpoint);
     const additional = candydata(base);
     const response = await fetch(new URL("/levels", base));
     if (!response.ok) throw new Error("Levels unavailable");
@@ -31,6 +31,7 @@ export async function catalogue() {
             detailurl: new URL(`/levels/${level.id}`, base).href,
             playurl: new URL(`/levels/${level.id}/plays`, base).href,
             rating: Number.isSafeInteger(level.rating) && level.rating >= 0 ? level.rating : null,
+            discordrating: level.discordrating, sitefavourites: level.sitefavourites,
             tags: canonicaltags(Array.isArray(level.tags) ? level.tags : []),
             created: level.created || new Date(Number((BigInt(level.id) >> 22n) + 1420070400000n)).toISOString(),
             reactions: Array.isArray(level.reactions) ? level.reactions : [],

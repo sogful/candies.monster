@@ -16,6 +16,7 @@ export async function refresh(entry) {
     entry.tags = Array.isArray(data.tags) ? data.tags : entry.tags;
     entry.created = typeof data.created === "string" ? data.created : entry.created;
     entry.rating = Number.isSafeInteger(data.rating) && data.rating >= 0 ? data.rating : entry.rating;
+    if (data.discordrating !== undefined) {entry.discordrating = data.discordrating; entry.sitefavourites = data.sitefavourites}
     entry.reactions = Array.isArray(data.reactions) ? data.reactions : entry.reactions;
     entry.plays = Number.isSafeInteger(data.plays) && data.plays >= 0 ? data.plays : entry.plays;
     entry.description = typeof data.description === "string" ? data.description : entry.description;

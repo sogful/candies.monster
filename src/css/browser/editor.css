@@ -1,0 +1,114 @@
+.commenteditor {
+    position: relative; width: 100%;
+    min-height: 0; flex: 1;
+    box-sizing: border-box; color: #fff;
+    font: 18px var(--sitefont,"Good Dog"),sans-serif;
+    -webkit-text-stroke: 0.14em #000; paint-order: stroke fill;
+    text-shadow: 0 0.12em 0 #000;
+}
+.levelcomments.commentediting {min-height: 220px}
+.editorlayout {
+    display: flex; flex-direction: column;
+    gap: 5px; height: 100%;
+    min-height: 0; padding: 4px 0;
+    box-sizing: border-box;
+}
+.commenteditor[aria-busy="true"] .editorlayout {
+    opacity: 0.25; pointer-events: none;
+}
+.editorloading {
+    display: grid; place-items: center;
+    position: absolute; inset: 0;
+    pointer-events: none;
+}
+.editorloading[hidden] {display: none}
+.editorheading, .editorfooter {
+    display: flex; align-items: center;
+    gap: 10px; flex-shrink: 0;
+}
+.editorheading {align-items: flex-start}
+.editorclose, .editortool, .editorremove {
+    padding: 3px; border: 0;
+    background: none; line-height: 0;
+}
+.editorclose img {
+    width: 22px; height: 22px;
+}
+.editortoolbar {
+    display: flex; flex-wrap: wrap;
+    gap: 3px; flex: 1;
+}
+.editortool {
+    border-radius: 5px; background: rgba(255,255,255,0.13);
+    width: 36px; height: 36px;
+}
+.editortool img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+}
+.editorcontent {
+    flex: 1; overflow: auto;
+    min-height: 32px; padding: 8px;
+    border: 0; border-radius: 4px;
+    background: rgba(0,0,0,0.35); user-select: text;
+    overflow-wrap: anywhere; outline: none;
+    font-size: 19px; line-height: 1.3;
+    scrollbar-width: thin; box-shadow: none;
+}
+.editorcontent ul, .editorcontent ol {
+    margin: 0; padding-left: 1.1em;
+}
+.editorcontent li {margin: 0}
+.editorcontent p, .editorcontent div {margin: 0}
+.editorcontent a {color: #8feeff}
+.editorcontent pre {
+    white-space: pre-wrap; font-family: monospace;
+    font-size: 0.8em; -webkit-text-stroke: 0;
+    text-shadow: none;
+}
+.editorsmall {font-size: 0.75em}
+.editorfooter {flex-wrap: wrap}
+.editorstatus {
+    flex: 1; margin: 0;
+    font-size: 18px;
+}
+.editorsend, .editorlinkbox button {
+    font: inherit; color: #fff;
+    background: rgba(255,255,255,0.15); border: 0;
+    border-radius: 6px; padding: 5px 12px;
+    -webkit-text-stroke: inherit; text-shadow: inherit;
+    paint-order: inherit;
+}
+.editorsend {
+    min-height: 34px; background: none;
+}
+.editorsend:disabled {opacity: 0.5}
+.editorlinkbox {
+    display: flex; gap: 5px;
+}
+.editorlinkinput {
+    flex: 1; min-width: 0;
+    font: inherit; padding: 4px;
+}
+.editorattachment {
+    display: inline-block; position: relative;
+    margin: 6px; max-width: 90%;
+    vertical-align: top;
+}
+.editorattachment > img {
+    display: block; max-width: 100%;
+    max-height: 240px; border-radius: 6px;
+}
+.editorremove {
+    position: absolute; right: 3px;
+    top: 3px; background: rgba(0,0,0,0.5);
+    border-radius: 5px;
+}
+.editorremove img {
+    width: 22px; height: 22px;
+}
+@media (max-width: 700px) {
+    .editorcontent {
+        font-size: 16px; padding: 6px;
+    }
+}

@@ -14,6 +14,8 @@ import {discordbutton} from "./discord.js";
 import {creatorlink} from "../catalogue/creator.js";
 import {features} from "../catalogue/metadata.js";
 import {rankings, candyinfo} from "../candylist/view.js";
+import {communitycontrols, communitybase} from "./community.js";
+import {filterscroll} from "../filters/controls.js";
 
 export function leveldetails() {
     const root = document.documentElement;
@@ -67,7 +69,10 @@ export function leveldetails() {
 
     function stat(label, value) {
         const row = create("div", "levelstat");
-        row.append(create("strong", "levelvalue", String(value)), create("span", "levellabel", label));
+        const icons = {favourites: "/assets/images/level/star.webp", plays: "/assets/images/buttons/playcount.svg", objects: "/assets/images/objects/aircushion.png"};
+        const icon = create("span", "levelstaticon");
+        icon.append(image(icons[label], "", ""));
+        row.append(icon, create("strong", "levelvalue", String(value)), create("span", "levellabel", label));
         return row;
     }
 
@@ -145,13 +150,25 @@ export function leveldetails() {
         const statistics = create("div", "levelstatistics");
         const favourites = stat("favourites", entry.rating ?? 0);
         favourites.classList.add("levelfavourites");
+        if (communitybase) {
+            favourites.classList.add("clickable");
+            favourites.setAttribute("role", "button");
+            favourites.setAttribute("aria-label", "Favourite level");
+            favourites.tabIndex = 0;
+        }
+        favourites.addEventListener("click", () => panel.querySelector('.communityreaction[aria-label="Favourite"]')?.click());
+        favourites.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {event.preventDefault(); favourites.click()}
+        });
         const plays = stat("plays", entry.plays ?? "--");
         plays.classList.add("levelplays");
         const objects = stat("objects", entry.objects ?? "--");
         objects.classList.add("levelobjects");
         const reactionrow = create("div", "levelreactions");
+        reactionrow.hidden = Boolean(communitybase);
         reactions(entry, reactionrow);
         statistics.append(favourites, plays, objects, reactionrow);
+        statistics.append(communitycontrols(entry));
         hero.append(rankings(entry), primary, statistics);
         const information = create("div", "levelinformation");
         const body = create("div", "levelbody");
@@ -161,6 +178,7 @@ export function leveldetails() {
         const notable = create("div", "levelfeatures");
         notable.hidden = true;
         const tagrows = create("div", "levelinfotags");
+        filterscroll(tagrows);
         tagrows.append(notable);
         const labels = create("div", "leveltags");
         tags(entry, labels);

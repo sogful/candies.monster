@@ -1,0 +1,99 @@
+.communityreactions {
+    display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 3px;
+    max-width: 210px; margin-top: 4px;
+}
+.communityreaction {
+    font: inherit; color: #fff;
+    border: 0; border-radius: 6px;
+    background: rgba(0,0,0,0.5); padding: 3px 7px;
+}
+.communityreaction[aria-pressed="true"] {background: rgba(255,255,255,0.35)}
+.communityreaction:disabled {opacity: 0.5}
+.levelfavourites[aria-busy="true"] {opacity: 0.5}
+.communitystatus {
+    font-size: 15px; margin: 2px 0;
+    flex-basis: 100%; text-align: center;
+}
+.communitystatus:empty {display: none}
+.commentcomposer {
+    position: relative;
+    display: flex; flex-wrap: wrap;
+    align-items: center; gap: 4px;
+    padding: 4px 0; z-index: 1;
+    margin-top: 0; flex-shrink: 0;
+}
+.commentcomposer[hidden], .communityreactions[hidden] {display: none}
+.communityidentity {font-size: 14px}
+.communitylogout {font-size: 14px}
+.commentadd, .communitylogout {
+    font: inherit; color: #fff;
+    min-height: 32px; padding: 4px 12px;
+    background: none; border: 0;
+    -webkit-text-stroke: inherit; paint-order: inherit;
+    text-shadow: inherit;
+}
+.commentadd {
+    margin-left: auto; font-size: 17px;
+}
+.levelcomments.commentwriting {
+    display: flex; flex-direction: column;
+}
+.levelcomments.commentwriting .commentlist {flex: 1 0 auto}
+.commentavatar {
+    width: 32px; height: 32px;
+    border-radius: 50%; vertical-align: middle;
+    margin-right: 5px;
+}
+.communityreaction[aria-label="Favourite"] {display: none}
+.levelreactions[hidden] {display: none}
+.reactionadd {
+    display: inline-flex; align-items: center;
+    justify-content: center; width: 30px;
+    height: 30px; padding: 4px;
+    border: 0; border-radius: 6px;
+    background: rgba(0,0,0,0.5);
+}
+.reactionadd img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+}
+.emojipicker {
+    position: fixed; z-index: 100000010;
+    width: min(304px,calc(100vw - 16px)); padding: 8px;
+    max-height: calc(100vh - 16px); box-sizing: border-box;
+    background: rgba(25,23,21,0.97); border-radius: 10px;
+    color: #fff; box-shadow: 0 3px 12px #000;
+}
+.emojisearch {
+    width: 100%; box-sizing: border-box;
+    color: #fff; font: 18px var(--sitefont,"Good Dog"),sans-serif;
+    background: rgba(255,255,255,0.1); border: 0;
+    border-radius: 5px; padding: 5px 8px;
+    outline: none; margin-bottom: 6px;
+}
+.emojiitems {
+    display: grid; grid-template-columns: repeat(8,minmax(0,1fr));
+    gap: 3px; max-height: min(264px,calc(100vh - 90px));
+    overflow-y: auto; scrollbar-width: thin;
+}
+.emojichoice {
+    width: 100%; aspect-ratio: 1;
+    display: grid; place-items: center;
+    border: 0; border-radius: 5px;
+    padding: 2px; background: none;
+}
+.emojichoice:hover, .emojichoice:focus {background: rgba(255,255,255,0.15)}
+.emojichoice img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+}
+.emojistatus {
+    margin: 3px 0; font-size: 18px;
+    text-align: center;
+}
+.emojistatus:empty {display: none}
+.emojistatus img {
+    display: block; width: 90px;
+    margin: 0 auto;
+}

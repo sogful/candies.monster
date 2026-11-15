@@ -2,6 +2,7 @@ import {creatorlink} from "../catalogue/creator.js";
 import {spinner} from "/assets/static/js/images/spinner.js";
 import {imageviewer} from "./inspection.js";
 import {discordmd} from "./markdown.js";
+import {composer} from "./community.js";
 
 function attachment(file) {
     let url;
@@ -35,6 +36,7 @@ function attachment(file) {
             event.preventDefault();
             imageviewer(url.href, name, link);
         });
+        return link;
     }
     const label = document.createElement("span");
     label.className = "commentfilename";
@@ -51,6 +53,11 @@ export function comments(entry) {
     section.setAttribute("aria-label", "Comments");
     section.tabIndex = 0;
     if (!entry.detailurl) {section.hidden = true; return section}
+    const view = document.createElement("div");
+    view.className = "commentview";
+    section.append(view);
+    const thread = document.createElement("div");
+    thread.className = "commentthread";
     const earlier = document.createElement("button");
     earlier.type = "button";
     earlier.className = "earliercomments clickable";
@@ -61,7 +68,14 @@ export function comments(entry) {
     const status = document.createElement("p");
     status.className = "commentstatus";
     spinner(status, "Loading comments");
-    section.append(earlier, list, status);
+    const writing = composer(entry, async () => {
+        before = null;
+        list.replaceChildren();
+        await load();
+    }, section);
+    if (!writing.hidden) section.classList.add("commentwriting");
+    thread.append(earlier, list, status);
+    view.append(thread, writing);
     const content = new WeakMap();
     const visibility = window.IntersectionObserver ? new IntersectionObserver(records => {
         for (const record of records) {
@@ -77,7 +91,7 @@ export function comments(entry) {
                 item.replaceChildren();
             }
         }
-    }, {root: section, rootMargin: "400px"}) : null;
+    }, {root: thread, rootMargin: "400px"}) : null;
     let before = null;
     let loading = false;
     async function load() {
@@ -97,6 +111,16 @@ export function comments(entry) {
                 item.className = "levelcomment";
                 function render() {
                     const author = creatorlink({creator: message.author, creatorid: message.authorid, detailurl: entry.detailurl}, "commentauthor", "");
+                    if (message.avatar && /^https:\/\/cdn\.discordapp\.com\//.test(message.avatar)) {
+                        const avatar = document.createElement("img");
+                        avatar.className = "commentavatar";
+                        avatar.src = message.avatar;
+                        avatar.alt = "";
+                        avatar.loading = "lazy";
+                        avatar.width = 32;
+                        avatar.height = 32;
+                        author.prepend(avatar);
+                    }
                     const body = document.createElement("div");
                     body.className = "commentbody";
                     body.append(discordmd(message.content, 0, message.mentions));
@@ -111,16 +135,25 @@ export function comments(entry) {
                 else render();
                 fragment.append(item);
             }
-            const height = section.scrollHeight;
-            const position = section.scrollTop;
+            const height = thread.scrollHeight;
+            const position = thread.scrollTop;
             const initial = !list.children.length;
             list.prepend(fragment);
             section.classList.toggle("commentempty", !list.children.length);
             before = data.before;
             earlier.hidden = true;
-            status.textContent = list.children.length ? "" : "No comments yet";
-            if (!initial) section.scrollTop = position + section.scrollHeight - height;
-            else section.scrollTop = section.scrollHeight;
+            status.replaceChildren();
+            status.classList.toggle("commentsad", !list.children.length);
+            if (!list.children.length) {
+                const image = document.createElement("img");
+                image.src = "/assets/images/omnom/404/404.gif";
+                image.alt = "";
+                const label = document.createElement("span");
+                label.textContent = "No comments yet";
+                status.append(image, label);
+            }
+            if (!initial) thread.scrollTop = position + thread.scrollHeight - height;
+            else thread.scrollTop = thread.scrollHeight;
         } catch {
             status.textContent = "Comments could not be loaded";
             earlier.textContent = "Retry";
@@ -132,11 +165,12 @@ export function comments(entry) {
         }
     }
     function scroll() {
-        if (before && section.scrollTop < 140 && !loading && earlier.hidden) void load();
+        if (view.hidden) return;
+        if (before && thread.scrollTop < 140 && !loading && earlier.hidden) void load();
     }
-    section.addEventListener("scroll", scroll, {passive: true});
+    thread.addEventListener("scroll", scroll, {passive: true});
     const sizes = window.ResizeObserver ? new ResizeObserver(scroll) : null;
-    sizes?.observe(section);
+    sizes?.observe(thread);
     earlier.addEventListener("click", load);
     const removal = new MutationObserver(() => {
         if (section.isConnected) return;

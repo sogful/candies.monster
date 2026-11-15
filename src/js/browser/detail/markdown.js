@@ -28,6 +28,13 @@ function inline(text, parent, depth = 0, mentions = {}) {
             continue;
         }
         const remaining = text.slice(index);
+        const code = /^(`+)([\s\S]*?)\1(?!`)/.exec(remaining);
+        if (code) {
+            flush();
+            parent.append(node("code", "mdcode", code[2]));
+            index += code[0].length;
+            continue;
+        }
         const mention = /^<(@[!&]?|#)(\d{17,22})>/.exec(remaining);
         if (mention) {
             flush();
@@ -126,8 +133,9 @@ export function discordmd(text, depth = 0, mentions = {}) {
         if (!line.trim()) {index++; continue}
         if (line.startsWith("```")) {
             const code = [];
+            const fence = /^`+/.exec(line)[0];
             index++;
-            while (index < lines.length && !lines[index].startsWith("```")) code.push(lines[index++]);
+            while (index < lines.length && !lines[index].startsWith(fence)) code.push(lines[index++]);
             if (index < lines.length) index++;
             root.append(node("pre", "mdblockcode", code.join("\n")));
             continue;

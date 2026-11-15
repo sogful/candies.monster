@@ -3,11 +3,28 @@
     margin: 0 auto 8px; padding: 4px 10px;
     box-sizing: border-box; border-radius: 12px;
     background: rgba(0,0,0,0.5); text-align: left;
-    min-height: 96px; overflow-y: auto;
+    min-height: 96px; overflow: hidden;
     flex: 1 1 96px; scrollbar-width: none;
     font-size: 18px; user-select: text;
     overscroll-behavior: contain; touch-action: pan-y;
+    display: flex; position: relative;
 }
+.commentview {
+    display: flex; flex-direction: column;
+    width: 100%; min-height: 0;
+    overflow: hidden; scrollbar-width: none;
+    flex: 1; overscroll-behavior: contain;
+}
+.commentthread {
+    display: flex; flex-direction: column;
+    flex: 1; min-height: 0;
+    overflow-y: auto; scrollbar-width: none;
+    overscroll-behavior: contain;
+}
+.commentthread::-webkit-scrollbar {display: none}
+.commentview[hidden] {display: none}
+.commentview::-webkit-scrollbar {display: none}
+.commentview .commentlist {flex: 1 0 auto}
 .levelcomments[hidden], .earliercomments[hidden] {display: none}
 .levelcomments::-webkit-scrollbar {display: none}
 .levelcomment {
@@ -45,12 +62,18 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.levelcomments.commentempty {
-    display: grid; place-items: center;
-}
 .commentstatus {
     width: 100%; text-align: center;
     align-self: center;
+}
+.commentstatus:not(:empty) {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    flex: 1; min-height: 0;
+}
+.commentstatus.commentsad img {
+    width: 110px; max-height: 110px;
+    object-fit: contain; flex-shrink: 1;
 }
 .levelcomments.commentempty .commentlist {display: none}
 

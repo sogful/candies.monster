@@ -3,6 +3,8 @@
 @import url("./renderer.css");
 @import url("../site/morestuff.css");
 @import url("./filters.css");
+@import url("./community.css");
+@import url("./editor.css");
 
 .levelbrowser {
     position: relative; flex: 1 1 auto;
