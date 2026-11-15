@@ -106,9 +106,9 @@
     align-items: center; justify-content: center;
 }
 
-.adfooter img {
-    height: 85%; width: auto;
-    max-width: 100%;
+.adfooter img, .adfooter svg {
+    height: 85%; width: 100%;
+    max-width: 100%; object-fit: contain;
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
