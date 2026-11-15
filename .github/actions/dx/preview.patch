@@ -1710,7 +1710,7 @@ index 23a8e97..5320dac 100644
          /// Converts a raw integer button value to a game-controller button identifier.
          /// </summary>
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
-index a5bcdcd..efa7de7 100644
+index a5bcdcd..601a2aa 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
 @@ -30,6 +30,7 @@ namespace CutTheRopeDX.GameMain
@@ -1743,11 +1743,11 @@ index a5bcdcd..efa7de7 100644
 +                    x = (x * scale) + mapOriginX;
 +                    y = (y * scale) + mapOriginY;
 +                    if (!float.IsFinite(x) || !float.IsFinite(y)) continue;
-+                    float margin = 0f;
-+                    left = System.MathF.Min(left, x - margin);
-+                    top = System.MathF.Min(top, y - margin);
-+                    right = System.MathF.Max(right, x + margin);
-+                    bottom = System.MathF.Max(bottom, y + margin);
++                    float tolerance = 32f * scale;
++                    if (x < left - tolerance) left = x;
++                    if (y < top - tolerance) top = y;
++                    if (x > right + tolerance) right = x;
++                    if (y > bottom + tolerance) bottom = y;
 +                }
 +            }
 +            cameraBounds = new Rectangle(left, top, right - left, bottom - top);
@@ -1787,6 +1787,32 @@ index a5bcdcd..efa7de7 100644
                  {
                      cameraStartX = range.x;
                      cameraStartY = range.y;
+@@ -204,8 +240,8 @@ namespace CutTheRopeDX.GameMain
+                     cameraStartY = range.y + range.h;
+                 }
+                 Vector boundedCamera = BoundedCameraPosition(
+-                    constrainedPoint.pos.X - (SCREEN_WIDTH / 2f),
+-                    constrainedPoint.pos.Y - (SCREEN_HEIGHT / 2f));
++                    constrainedPoint.pos.X - ((CustomLevelSession.IsActive ? cameraWindow.w : SCREEN_WIDTH) / 2f),
++                    constrainedPoint.pos.Y - ((CustomLevelSession.IsActive ? cameraWindow.h : SCREEN_HEIGHT) / 2f));
+ 
+                 // Seat the tracked position at the authored start point and let the fit derive the
+                 // rest from it, the way every later frame does.
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
+index 0961f52..bb4a326 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
+@@ -1796,8 +1796,8 @@ namespace CutTheRopeDX.GameMain
+         private void UpdateCameraTracking(float delta)
+         {
+             ConstrainedPoint focusPoint = CameraFocusPoint();
+-            float targetCameraX = focusPoint.pos.X - (SCREEN_WIDTH / 2f);
+-            float targetCameraY = focusPoint.pos.Y - (SCREEN_HEIGHT / 2f);
++            float targetCameraX = focusPoint.pos.X - ((CustomLevelSession.IsActive ? cameraWindow.w : SCREEN_WIDTH) / 2f);
++            float targetCameraY = focusPoint.pos.Y - ((CustomLevelSession.IsActive ? cameraWindow.h : SCREEN_HEIGHT) / 2f);
+             Vector boundedCamera = BoundedCameraPosition(targetCameraX, targetCameraY);
+             float boundedCameraX = boundedCamera.X;
+             float boundedCameraY = boundedCamera.Y;
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
 index 7c34873..0ad0914 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.cs
