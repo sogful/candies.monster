@@ -1,8 +1,8 @@
 .archivesearch {
     position: fixed; top: 0.5em;
-    left: 0.5em; z-index: 100000002;
+    left: 3.8rem; z-index: 100000002;
     display: flex; align-items: center;
-    width: min(18rem, calc(100vw - 4rem)); box-sizing: border-box;
+    width: min(18rem, calc(100vw - 7rem)); box-sizing: border-box;
     gap: 0.4em; padding: 0.35em 0.55em;
     border-radius: 0.6em; background: rgba(0,0,0,0.5);
 }
@@ -43,6 +43,8 @@
 }
 
 .gameopen .archivesearch {display: none}
+.versionhome {z-index: 100000003}
+.gameopen .versionhome {display: none}
 
 .gameicon.searchdim {opacity: 0.25}
 

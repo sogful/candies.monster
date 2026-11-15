@@ -4,5 +4,9 @@ if (button) button.addEventListener("click", event => {
     event.preventDefault();
     const audio = new Audio("/assets/audio/tap.mp3");
     void audio.play().catch(() => {});
+    if (button.hasAttribute("data-previewback") && window.parent !== window) {
+        setTimeout(() => window.parent.postMessage("exitpreview", location.origin), 150);
+        return;
+    }
     setTimeout(() => location.assign(button.href), 150);
 });

@@ -430,3 +430,4 @@ body.shareonly .back {display: inline}
     paint-order: stroke fill; font-size: 4em;
 }
 .drag.visible {display: flex}
+.previewroot .pageback {z-index: 5500}
