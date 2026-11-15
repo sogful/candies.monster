@@ -59,7 +59,7 @@ export function crash(message, level) {
         panel.addEventListener("keydown", event => {
             if (event.key === "Escape") {event.stopPropagation(); close()}
         });
-        audio = new Audio("/assets/audio/preview/oops.mp3");
+        audio = new Audio("/assets/audio/oops.mp3");
         document.body.append(panel);
     }
     previous = document.activeElement;

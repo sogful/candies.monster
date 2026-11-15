@@ -77,7 +77,7 @@ try {
     navigation.replaceChildren(...boards.map((board, index) => {
         const button = element("button", "scorebox buttonart");
         const image = element("img", "scoreboximage");
-        image.src = "/assets/images/leaderboards/" + board.id + ".webp";
+        image.src = "/assets/images/boxes/" + board.id + ".webp";
         image.alt = "";
         image.width = 44;
         image.height = 44;

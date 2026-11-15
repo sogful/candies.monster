@@ -202,66 +202,66 @@
     },
     "backdrops": {
         "candy flick": [
-            "/assets/images/music/bgs/candyflick.webp"
+            "/assets/images/bgs/candyflick.webp"
         ],
         "cut the rope": [
-            "/assets/images/music/bgs/cardboard.webp",
-            "/assets/images/music/bgs/menu.webp"
+            "/assets/images/bgs/cardboard.webp",
+            "/assets/images/bgs/menu.webp"
         ],
         "cut the rope 2": [
-            "/assets/images/music/bgs/two1.webp",
-            "/assets/images/music/bgs/two2.webp",
-            "/assets/images/music/bgs/two4.webp",
-            "/assets/images/music/bgs/twomenu.webp"
+            "/assets/images/bgs/two1.webp",
+            "/assets/images/bgs/two2.webp",
+            "/assets/images/bgs/two4.webp",
+            "/assets/images/bgs/twomenu.webp"
         ],
         "experiments": [
-            "/assets/images/music/bgs/experiments1.webp",
-            "/assets/images/music/bgs/experimentsmenu.webp"
+            "/assets/images/bgs/experiments1.webp",
+            "/assets/images/bgs/experimentsmenu.webp"
         ],
         "daily": [
-            "/assets/images/music/bgs/daily.webp"
+            "/assets/images/bgs/daily.webp"
         ],
         "holiday gift": [
-            "/assets/images/music/bgs/holidaybox.webp",
-            "/assets/images/music/bgs/holidaymenu.webp"
+            "/assets/images/bgs/holidaybox.webp",
+            "/assets/images/bgs/holidaymenu.webp"
         ],
         "idle candy": [
-            "/assets/images/music/bgs/menu.webp",
-            "/assets/images/music/bgs/cardboard.webp"
+            "/assets/images/bgs/menu.webp",
+            "/assets/images/bgs/cardboard.webp"
         ],
         "magic": [
-            "/assets/images/music/bgs/magic4.webp",
-            "/assets/images/music/bgs/magic1.webp",
-            "/assets/images/music/bgs/magic2.webp",
-            "/assets/images/music/bgs/magic3.webp",
-            "/assets/images/music/bgs/magicmenu.webp"
+            "/assets/images/bgs/magic4.webp",
+            "/assets/images/bgs/magic1.webp",
+            "/assets/images/bgs/magic2.webp",
+            "/assets/images/bgs/magic3.webp",
+            "/assets/images/bgs/magicmenu.webp"
         ],
         "merge": [
-            "/assets/images/music/bgs/merge.webp"
+            "/assets/images/bgs/merge.webp"
         ],
         "my om nom": [
-            "/assets/images/music/bgs/disco.webp",
-            "/assets/images/music/bgs/mainroom.webp",
-            "/assets/images/music/bgs/match3.webp",
-            "/assets/images/music/bgs/memory.webp",
-            "/assets/images/music/bgs/space.webp"
+            "/assets/images/bgs/disco.webp",
+            "/assets/images/bgs/mainroom.webp",
+            "/assets/images/bgs/match3.webp",
+            "/assets/images/bgs/memory.webp",
+            "/assets/images/bgs/space.webp"
         ],
         "ringtone": [
-            "/assets/images/music/bgs/birthday.webp"
+            "/assets/images/bgs/birthday.webp"
         ],
         "time travel": [
-            "/assets/images/music/bgs/discott.webp",
-            "/assets/images/music/bgs/timetravel1.webp",
-            "/assets/images/music/bgs/timetravelmenu.webp"
+            "/assets/images/bgs/discott.webp",
+            "/assets/images/bgs/timetravel1.webp",
+            "/assets/images/bgs/timetravelmenu.webp"
         ],
         "triple treat": [
-            "/assets/images/music/bgs/menu.webp"
+            "/assets/images/bgs/menu.webp"
         ],
         "cut the rope 3": [
-            "/assets/images/music/bgs/ctr3.webp"
+            "/assets/images/bgs/ctr3.webp"
         ],
         "cut the rope remastered": [
-            "/assets/images/music/bgs/remastered.webp"
+            "/assets/images/bgs/remastered.webp"
         ]
     },
     "aliases": {

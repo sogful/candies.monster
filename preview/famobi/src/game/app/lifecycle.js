@@ -414,10 +414,10 @@
       // working without changes.
       var mixer = this.Sa;
       if (mixer == null) return;
-      fetch("/assets/audio/preview/sfx/manifest.json").then(function (Resources) { return Resources.json(); }).then(function (entries) {
+      fetch("/preview/famobi/assets/audio/sfx/manifest.json").then(function (Resources) { return Resources.json(); }).then(function (entries) {
         for (var i = 0; i < entries.length; i++) {
           (function (entry) {
-            fetch("/assets/audio/preview/sfx/" + entry.name + ".ogg")
+            fetch("/preview/famobi/assets/audio/sfx/" + entry.name + ".ogg")
               .then(function (Resources) { return Resources.arrayBuffer(); })
               .then(function (buf) {
                 mixer.names[entry.id] = entry.name;

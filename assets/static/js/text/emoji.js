@@ -12,7 +12,7 @@
 
     function title(wrapper, emoji) {
         wrapper.title = emoji;
-        if (!names) names = fetch("/assets/static/data/emojis.json").then(response => response.ok ? response.json() : {}).catch(() => ({}));
+        if (!names) names = fetch("/assets/static/data/emojinames.json").then(response => response.ok ? response.json() : {}).catch(() => ({}));
         names.then(data => {
             const name = data[emoji.replace(/\ufe0f/g, "")];
             if (!name) return;

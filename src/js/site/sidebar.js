@@ -198,13 +198,13 @@ document.addEventListener("auxclick", (e) => {
             document.title = funtitle.slice(0, titleidx);
             if (titleidx === funtitle.length) titleidx = 0;
         }, 10);
-        if (window.sheetimg) window.sheetimg.src = "/assets/images/misc/wonderful.png";
+        if (window.sheetimg) window.sheetimg.src = "/assets/images/wonderful.png";
 
         document.querySelector(".sbuttons").remove();
         document.querySelector(".github")?.remove();
         document.querySelector(".effects").remove();
         document.querySelector("p").remove();
-        var weird = new Audio("assets/audio/weird.ogg");
+        var weird = new Audio("assets/audio/music/weird.ogg");
         weird.loop = true; weird.play();
         if ("Notification" in window && Notification.requestPermission) {
             Notification.requestPermission().catch(()=>{});

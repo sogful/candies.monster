@@ -15,7 +15,7 @@
                 split: "/split/", cards: "/cards.html", comics: "/comics.html", font: "/fonts/", fonts: "/fonts/",
                 merch: "/merch/", snow: "/snow.html", levels: "/",
                 credits: "/#credits", documentation: "/#documentation",
-                "assets/static/discord": "/assets/static/widgets/discord/"
+                "assets/static/discord": "/assets/static/discord/"
             };
             let path = location.pathname;
             try {path = decodeURIComponent(path)} catch {}
@@ -212,7 +212,7 @@
 
     <div class="subtitles" aria-live="polite" aria-atomic="true"></div>
     <audio class="nightmail" preload="auto" crossorigin="anonymous">
-        <source src="https://candies.monster/assets/audio/nightmailbypmfour.ogg" type="audio/ogg">
+        <source src="https://candies.monster/assets/audio/music/nightmailbypmfour.ogg" type="audio/ogg">
     </audio>
 
     <script>
@@ -328,7 +328,7 @@
             let starttime = 0.02;
 
             function loadbuffer() {
-                return fetch("https://candies.monster/assets/audio/nightmailbypmfour.ogg")
+                return fetch("https://candies.monster/assets/audio/music/nightmailbypmfour.ogg")
                     .then(res => res.arrayBuffer())
                     .then(data =>
                         new Promise((resolve, reject) => {

@@ -141,7 +141,7 @@ class musicplayer {
             downloadbutton.className = "downloadbutton clickable";
             downloadbutton.dataset.format = format;
             const displayformat = format === "dspadpcm.bcstm" ? "bcstm" : format;
-            downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/assets/images/music/icons/download.png">`;
+            downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/assets/images/icons/download.png">`;
             downloadbuttons.appendChild(downloadbutton);
         });
 
@@ -478,13 +478,13 @@ class musicplayer {
         const loopbutton = document.querySelector(".loopallbutton");
         if (this.isloopall) {
             loopbutton.classList.add("active");
-            loopbutton.querySelector("img").src = "/assets/images/music/icons/loop.png";
+            loopbutton.querySelector("img").src = "/assets/images/icons/loop.png";
         } else if (this.isloopone) {
             loopbutton.classList.add("active");
-            loopbutton.querySelector("img").src = "/assets/images/music/icons/loopone.png";
+            loopbutton.querySelector("img").src = "/assets/images/icons/loopone.png";
         } else {
             loopbutton.classList.remove("active");
-            loopbutton.querySelector("img").src = "/assets/images/music/icons/loop.png";
+            loopbutton.querySelector("img").src = "/assets/images/icons/loop.png";
         }
     }
 
@@ -598,7 +598,7 @@ class musicplayer {
     updateplaybutton() {
         const playpausebutton = document.querySelector(".playpausebutton");
         const img = playpausebutton.querySelector("img");
-        img.src = this.isplaying ? "/assets/images/music/icons/pause.png" : "/assets/images/music/icons/play.png";
+        img.src = this.isplaying ? "/assets/images/icons/pause.png" : "/assets/images/icons/play.svg";
     }
 
     updateprogress() {
@@ -641,7 +641,7 @@ class musicplayer {
     updatebackground(imageurl) {
         const stupidbg = document.querySelector(".stupidbg");
         if (imageurl) {
-            const bgpath = imageurl.startsWith("/") ? imageurl : `/assets/images/music/bgs/${imageurl}`;
+            const bgpath = imageurl.startsWith("/") ? imageurl : `/assets/images/bgs/${imageurl}`;
             const currentbg = stupidbg.style.backgroundImage;
             if (currentbg === `url("${bgpath}")` || currentbg === `url(${bgpath})`) {return}
 
@@ -698,7 +698,7 @@ class musicplayer {
 }
 
 window.addEventListener("DOMContentLoaded", function() {
-    fetch("/assets/static/data/tracks.json")
+    fetch("/assets/static/data/music.json")
         .then(function(response) {return response.json()})
         .then(function(data) {
             window.musicplayer = new musicplayer(data);
