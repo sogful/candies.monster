@@ -23,9 +23,20 @@
             if (["credits", "documentation"].includes(view)) {
                 document.documentElement.classList.add("documentopen", "document" + view);
             }
+            if (!/^\d+$/.test(view) && !/^level\/\d+$/.test(view) && view !== "preview") {
+                const background = document.createElement("link");
+                background.rel = "preload";
+                background.as = "image";
+                background.fetchPriority = "high";
+                background.href = view === "documentation" ? "/assets/images/bgs/exp.webp" : "/assets/images/bgs/original.webp";
+                document.head.append(background);
+            }
         })();
     </script>
     <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="modulepreload" href="/assets/static/js/images/spinner.js">
+    <link rel="modulepreload" href="/assets/static/js/images/loading.js">
+    <link rel="stylesheet" href="/assets/static/css/spinner.css">
 
     <title>candies.monster</title>
     <meta name="title" content="candies.monster" />
@@ -81,57 +92,57 @@
                 </div>
                 <div class="buttons bignav">
                     <a aria-label="decompress pesky .raw files" class="navlink" href="/raw2png/">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/convert.webp" title="decompress pesky .raw files">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/convert.webp" title="decompress pesky .raw files">
                         <span class="buttonlabel">raw2png</span>
                     </a>
                     <a aria-label="download versions of various om nom games" class="navlink" href="/versions">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/versions.webp" title="download versions of various om nom games">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/versions.webp" title="download versions of various om nom games">
                         <span class="buttonlabel">game versions</span>
                     </a>
                     <a aria-label="split spritesheets with xml" class="navlink" href="/split/index.html">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/split.webp" title="split spritesheets with xml">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/split.webp" title="split spritesheets with xml">
                         <span class="buttonlabel">sheet splitter</span>
                     </a>
                     <a aria-label="generate the gooddog font with questionable accuracy" class="navlink" href="/fonts/">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/font.webp" title="generate the gooddog font with questionable accuracy">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/font.webp" title="generate the gooddog font with questionable accuracy">
                         <span class="buttonlabel">font generator</span>
                     </a>
                     <a aria-label="." class="navlink" fun="" href="//public.candies.monster/site">
-                        <img class="button clickable" draggable="false" loading="lazy" src="/assets/images/buttons/pages/public.webp" title=".">
+                        <img width="220" height="220" class="button clickable" draggable="false" loading="lazy" src="/assets/images/buttons/pages/public.webp" title=".">
                         <span class="buttonlabel">???|+???????!@???????-????????????????#@=???????????</span>
                     </a>
                 </div>
                 <div class="buttons small smallnav">
                     <a aria-label="Google Play leaderboards" class="navlink" href="/leaderboards/">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/leaderboard.webp" title="Google Play leaderboards">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/leaderboard.webp" title="Google Play leaderboards">
                         <span class="buttonlabel">leaderboards</span>
                     </a>
                     <a aria-label="music player" class="navlink" href="/music/">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/music.webp" title="music player">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/music.webp" title="music player">
                         <span class="buttonlabel">music</span>
                     </a>
                     <a aria-label="preview custom levels online" class="navlink" href="#preview">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/preview.webp" title="preview custom levels online">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/preview.webp" title="preview custom levels online">
                         <span class="buttonlabel">preview</span>
                     </a>
                     <a aria-label="winnable cards in newer cut the rope versions" class="navlink" href="/cards.html">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/cards.webp" title="winnable cards in newer cut the rope versions">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/cards.webp" title="winnable cards in newer cut the rope versions">
                         <span class="buttonlabel">cards</span>
                     </a>
                     <a aria-label="removed comics from cut the rope origins" class="navlink" href="/comics.html">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/comics.webp" title="removed comics from cut the rope origins">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/comics.webp" title="removed comics from cut the rope origins">
                         <span class="buttonlabel">comics</span>
                     </a>
                     <a aria-label="a simple cut the rope holiday gift snow effect!" class="navlink" href="/snow.html">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/snow.webp" title="a simple cut the rope holiday gift snow effect!">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/snow.webp" title="a simple cut the rope holiday gift snow effect!">
                         <span class="buttonlabel">snow!</span>
                     </a>
                     <a aria-label="om nom merch like plushies, figurines etc" class="navlink" href="/merch/">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/merch.webp" title="om nom merch like plushies, figurines etc">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/merch.webp" title="om nom merch like plushies, figurines etc">
                         <span class="buttonlabel">merch</span>
                     </a>
                     <a aria-label="convert between the two level formats. thankfully, there are only two! i hope." class="navlink" href="/xml2json/">
-                        <img class="button clickable" draggable="false" src="/assets/images/buttons/pages/convertlevels.webp" title="convert between the two level formats. thankfully, there are only two! i hope.">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/convertlevels.webp" title="convert between the two level formats. thankfully, there are only two! i hope.">
                         <span class="buttonlabel">xml2json</span>
                     </a>
                 </div>
@@ -276,11 +287,18 @@
                             <img class="arrow" draggable="false" src="/assets/images/buttons/down.png">
                         </button>
                     </div>
-                    <div class="levels" role="region" aria-label="levels" aria-busy="true" tabindex="0"></div>
+                    <div class="levels" role="region" aria-label="levels" aria-busy="true" tabindex="0">
+                        <div class="levelloading"></div>
+                    </div>
                 </div>
                 </div>
             </main>
         </div>
+        <script type="module">
+            import {spinner} from "/assets/static/js/images/spinner.js";
+            const status = document.querySelector(".levelloading");
+            if (status) spinner(status, "Loading levels");
+        </script>
         <script src="/src/js/site/documents.js" type="module"></script>
         <script src="/src/js/site/sidebar.js" type="module"></script>
         <script src="/src/js/browser/index.js" type="module"></script>

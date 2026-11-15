@@ -197,6 +197,16 @@
     color: #fff; text-align: center;
     font-size: 24px; grid-column: 1 / -1;
 }
+
+.levelloading {
+    display: flex; align-items: center;
+    justify-content: center; grid-column: 1 / -1;
+    min-height: 96px;
+}
+
+.levelloading .candyloading {
+    width: 48px; height: 48px;
+}
 .title, .creator, .levelname, .levelauthor, .leveldescription {
     user-select: text; -webkit-user-select: text;
     cursor: text;

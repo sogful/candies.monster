@@ -87,7 +87,8 @@
 
 .button {
     display: block; width: 100%;
-    height: auto; object-fit: contain;
+    height: auto; aspect-ratio: 1;
+    object-fit: contain;
     background-image: url("/assets/images/buttons/pages/button.svg"); background-size: 110.55%;
     background-repeat: no-repeat; background-position: center;
 }
