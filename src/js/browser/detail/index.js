@@ -77,6 +77,16 @@ export function leveldetails() {
         return row;
     }
 
+    function positionhint() {
+        const hint = panel.querySelector(".favouritehint");
+        if (!hint || panel.hidden) return;
+        hint.style.setProperty("--hintshift", "0px");
+        const bounds = hint.getBoundingClientRect();
+        const utilities = panel.querySelector(".levelutilities").getBoundingClientRect();
+        const edge = Math.min(innerWidth - 8, utilities.left - 8);
+        hint.style.setProperty("--hintshift", Math.min(50, edge - bounds.right) + "px");
+    }
+
     /*//////////////////////////////////////////////////////////////////////*/
 
     function reactions(entry, row) {
@@ -155,6 +165,8 @@ export function leveldetails() {
         const favourites = stat("favourites", entry.rating ?? 0);
         favourites.classList.add("levelfavourites");
         favourites.append(image("/assets/images/clicktofav.png", "favouritehint", "Click to favourite"));
+        favourites.addEventListener("pointerenter", positionhint);
+        favourites.addEventListener("focusin", positionhint);
         if (communitybase) {
             favourites.classList.add("clickable");
             favourites.setAttribute("role", "button");
@@ -297,6 +309,7 @@ export function leveldetails() {
     /*//////////////////////////////////////////////////////////////////////*/
 
     document.addEventListener("levelstatistics", event => update(event.detail));
+    window.addEventListener("resize", positionhint, {passive: true});
     window.addEventListener("hashchange", render);
     window.addEventListener("popstate", render);
     document.addEventListener("homeviewchange", render);

@@ -3,7 +3,7 @@ const guild = "1112531659078762617";
 export function appopen(route) {
     if (!/^(?:channels\/\d{17,22}\/\d{17,22}|invite\/[a-zA-Z0-9_-]{2,40})$/.test(route)) return;
     const website = route.startsWith("invite/") ? "https://discord.gg/" + route.slice(7) : "https://discord.com/" + route;
-    const {dialog, actions, close} = popup(document.activeElement, "Open Discord");
+    const {dialog, actions, close} = popup(document.activeElement, "");
     for (const [label, address] of [["Open app", "discord://-/" + route], ["Open in browser", website]]) {
         const link = document.createElement("a");
         link.className = "membershipbutton descbutton clickable";
@@ -20,9 +20,11 @@ export function appopen(route) {
 function popup(button, label) {
     const dialog = document.createElement("dialog");
     dialog.className = "discordmembership";
+    dialog.setAttribute("aria-label", label || "Open Discord");
     const question = document.createElement("p");
     question.className = "membershipquestion";
     question.textContent = label;
+    question.hidden = !label;
     const actions = document.createElement("div");
     actions.className = "membershipactions";
     function close() {dialog.close(); dialog.remove(); if (button?.isConnected) button.focus({preventScroll: true})}
