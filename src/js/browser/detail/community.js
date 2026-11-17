@@ -1,3 +1,4 @@
+import {sessiontoken} from "./session.js";
 import {configuration} from "../catalogue/service.js";
 import {commenteditor} from "./editor/index.js";
 import {emojipicker, homeemojis} from "./emojis.js";
@@ -11,7 +12,7 @@ const reactiondata = fetch("/assets/static/data/levels/reactions.json").then(res
 
 const callback = new URLSearchParams(location.hash.slice(1));
 if (communitybase && /^[\w-]{43}$/.test(callback.get("community") || "")) {
-    sessionStorage.setItem("communitysession", callback.get("community"));
+    sessiontoken(callback.get("community"));
     const level = callback.get("level") || "";
     history.replaceState(history.state, "", location.pathname + location.search + (/^\d{17,22}$/.test(level) ? "#" + level : ""));
 }
@@ -20,12 +21,20 @@ let user;
 let account;
 let checked = 0;
 
+window.addEventListener("storage", event => {
+    if (event.key !== "communitysession") return;
+    sessiontoken(event.newValue);
+    account = null;
+    user = null;
+    checked = 0;
+});
+
 export async function communityrequest(path, method = "GET", value) {
-    const token = sessionStorage.getItem("communitysession");
+    const token = sessiontoken();
     const response = await fetch(communitybase + path, {method, headers: {...(token ? {Authorization: "Bearer " + token} : {}), ...(value === undefined ? {} : {"Content-Type": "application/json"})}, body: value === undefined ? undefined : JSON.stringify(value), credentials: "omit"});
     const data = await response.json();
     if (!response.ok) {
-        if (response.status === 401) {sessionStorage.removeItem("communitysession"); account = null; user = null}
+        if (response.status === 401) {sessiontoken(null); account = null; user = null}
         throw new Error(data.error || "Request failed");
     }
     return data;
@@ -33,7 +42,11 @@ export async function communityrequest(path, method = "GET", value) {
 
 export function identity() {
     if (Date.now() - checked > 60000) {account = null; checked = Date.now()}
-    account ||= communityrequest("/session").then(value => {user = value.user; return user});
+    account ||= communityrequest("/session").then(value => {
+        user = value.user;
+        if (!user) sessiontoken(null);
+        return user;
+    }).catch(error => {account = null; throw error});
     return account;
 }
 
@@ -150,7 +163,7 @@ export function composer(entry, reload, section) {
         logout.addEventListener("click", async () => {
             try {
                 await communityrequest("/logout", "POST", {});
-                sessionStorage.removeItem("communitysession");
+                sessiontoken(null);
                 location.reload();
             } catch (error) {status.textContent = error.message}
         });
