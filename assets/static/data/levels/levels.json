@@ -1,3 +1,5 @@
 {
-    "endpoint": "https://levels.candies.monster"
+    "endpoint": "https://levels.candies.monster",
+    "community": "https://community.candies.monster",
+    "comments": true
 }

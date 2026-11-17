@@ -54,7 +54,7 @@ export function commenteditor(entry, submit, section, posting = true) {
     if (posting) footer.append(send);
     else {
         footer.classList.add("editorreadonly");
-        const notice = element("p", "editorunavailable", "comments disabled in this test, sorry!");
+        const notice = element("p", "editorunavailable", "Comments are temporarily unavailable");
         notice.setAttribute("role", "status");
         footer.append(notice);
     }

@@ -2,7 +2,7 @@ import {creatorlink} from "../catalogue/creator.js";
 import {spinner} from "/assets/static/js/images/spinner.js";
 import {imageviewer} from "./inspection.js";
 import {discordmd} from "./markdown.js";
-import {composer} from "./community.js";
+import {composer, communitybase} from "./community.js";
 
 function attachment(file) {
     let url;
@@ -112,7 +112,7 @@ export function comments(entry) {
                 item.className = "levelcomment";
                 function render() {
                     const author = creatorlink({creator: message.author, creatorid: message.authorid, detailurl: entry.detailurl}, "commentauthor", "");
-                    if (message.avatar && /^https:\/\/cdn\.discordapp\.com\//.test(message.avatar)) {
+                    if (message.avatar && (/^https:\/\/cdn\.discordapp\.com\//.test(message.avatar) || communitybase && message.avatar.startsWith(communitybase + "/avatars/"))) {
                         const avatar = document.createElement("img");
                         avatar.className = "commentavatar";
                         avatar.src = message.avatar;
