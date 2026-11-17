@@ -179,7 +179,7 @@
         "split": "/assets/images/objects/splitcandy.png",
         "night": "/assets/images/objects/nightlight.png",
         "connected": "/assets/images/icons/link.svg",
-        "timefreeze": "/assets/images/objects/timed.png"
+        "timefreeze": "/assets/images/objects/timefreeze.webp"
     },
     "candylist": [
         "pauses",
