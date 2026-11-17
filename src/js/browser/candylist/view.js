@@ -1,3 +1,4 @@
+import {dropdown} from "/assets/static/js/controls/dropdown.js";
 import {filterscroll} from "../filters/controls.js";
 import {candycontent} from "../catalogue/metadata.js";
 
@@ -56,6 +57,8 @@ export function candyinfo(entry, information) {
     information.classList.add("candyinformation");
     const video = document.createElement("div");
     video.className = "candyvideo";
+    const viewport = document.createElement("div");
+    viewport.className = "candyviewport";
     const frame = document.createElement("iframe");
     frame.className = "candyframe";
     frame.title = "Completion of " + entry.title;
@@ -63,7 +66,11 @@ export function candyinfo(entry, information) {
     frame.referrerPolicy = "strict-origin-when-cross-origin";
     frame.allow = "fullscreen; picture-in-picture; encrypted-media";
     frame.allowFullscreen = true;
-    function select(row) {frame.src = "https://www.youtube-nocookie.com/embed/" + row.video}
+    function select(row) {
+        const url = new URL("https://www.youtube-nocookie.com/embed/" + row.video);
+        url.search = new URLSearchParams({controls: "1", fs: "1", rel: "0", playsinline: "1", iv_load_policy: "3"});
+        frame.src = url.href;
+    }
     if (videos.length > 1) {
         const picker = document.createElement("select");
         picker.className = "candyvideos clickable";
@@ -76,8 +83,18 @@ export function candyinfo(entry, information) {
         }
         picker.addEventListener("change", () => select(videos.find(row => row.slug === picker.value)));
         video.append(picker);
+        dropdown(picker);
     }
     select(videos[0]);
-    video.append(frame);
+    viewport.append(frame);
+    video.append(viewport);
     information.append(video);
+    function fit() {viewport.style.setProperty("--videoscale", viewport.clientWidth / 640)}
+    if (window.ResizeObserver) {
+        const observer = new ResizeObserver(() => {
+            if (!viewport.isConnected) {observer.disconnect(); return}
+            fit();
+        });
+        observer.observe(viewport);
+    } else requestAnimationFrame(fit);
 }

@@ -7,7 +7,7 @@
     text-shadow: 0 0.15em 0 #000;
 }
 
-.addim {
+.linkshade {
     position: fixed; inset: 0;
     background: #000; opacity: 0;
     z-index: 5; pointer-events: none;
@@ -60,18 +60,18 @@
     z-index: 2; pointer-events: none;
 }
 
-.adclose, .adleft, .adright {
+.linkclose, .linkprevious, .linknext {
     border: 0; padding: 0;
     background: none; line-height: 0;
 }
 
-.adclose {
+.linkclose {
     position: absolute; top: 1.2%;
     right: 4.2%; width: 6%;
     aspect-ratio: 1; z-index: 3;
 }
 
-.adclose img {
+.linkclose img {
     width: 100%; height: auto;
 }
 
@@ -92,7 +92,7 @@
     object-fit: cover;
 }
 
-.adfooter {
+.linkcontrols {
     position: absolute; top: 72%;
     left: 5%; right: 5%;
     height: 14%; align-items: center;
@@ -100,18 +100,19 @@
     z-index: 3;
 }
 
-.adleft, .adright {
+.linkprevious, .linknext {
     width: 12%; min-width: 20px;
     height: 100%; display: flex;
     align-items: center; justify-content: center;
 }
 
-.adfooter img, .adfooter svg {
-    height: 85%; width: 100%;
-    max-width: 100%; object-fit: contain;
+.linkcontrols img {
+    display: block; width: 100%;
+    height: auto; max-height: 85%;
+    object-fit: contain;
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 
-.levelopen .addim, .documentopen .addim, .previewopen .addim {visibility: hidden}
+.levelopen .linkshade, .documentopen .linkshade, .previewopen .linkshade {visibility: hidden}

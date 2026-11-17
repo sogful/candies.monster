@@ -1,0 +1,7 @@
+.textfeather {
+    --fadetop: #000; --fadebottom: #000;
+    -webkit-mask-image: linear-gradient(to bottom,var(--fadetop),#000 12px,#000 calc(100% - 12px),var(--fadebottom));
+    mask-image: linear-gradient(to bottom,var(--fadetop),#000 12px,#000 calc(100% - 12px),var(--fadebottom));
+}
+.textfeather.fadeabove {--fadetop: transparent}
+.textfeather.fadebelow {--fadebottom: transparent}

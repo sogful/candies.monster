@@ -15,7 +15,7 @@ export function morestuff() {
     const lift = {value: 0, velocity: 0};
     const sway = {value: 0, velocity: 0};
     const shade = document.createElement("div");
-    shade.className = "addim";
+    shade.className = "linkshade";
     shade.setAttribute("aria-hidden", "true");
     root.before(shade);
     let bodylift = 0;
@@ -166,7 +166,7 @@ export function morestuff() {
         if (suppress) {suppress = false; return}
         open(!opened);
     });
-    root.querySelector(".adclose").addEventListener("click", () => {
+    root.querySelector(".linkclose").addEventListener("click", () => {
         open(false);
         handle.focus({preventScroll: true});
     });
@@ -228,8 +228,8 @@ export function morestuff() {
         current = (current + change + ads.length) % ads.length;
         ads.forEach((link, index) => {link.hidden = index !== current});
     }
-    root.querySelector(".adleft").addEventListener("click", () => show(-1));
-    root.querySelector(".adright").addEventListener("click", () => show(1));
+    root.querySelector(".linkprevious").addEventListener("click", () => show(-1));
+    root.querySelector(".linknext").addEventListener("click", () => show(1));
     panel.inert = true;
     measure();
 }

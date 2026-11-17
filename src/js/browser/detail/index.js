@@ -1,3 +1,5 @@
+import {dropdown} from "/assets/static/js/controls/dropdown.js";
+import {feather} from "/assets/static/js/controls/feather.js";
 import {levelroute} from "./route.js";
 import {unsupported, requiredgame, objectrequirements} from "../catalogue/unsupported.js";
 import {scene} from "../renderer/index.js";
@@ -192,6 +194,7 @@ export function leveldetails() {
         const description = create("div", "leveldescription");
         description.append(discordmd(entry.description || entry.title));
         body.append(description);
+        feather(body);
         const notable = create("div", "levelfeatures");
         notable.hidden = true;
         const tagrows = create("div", "levelinfotags");
@@ -200,18 +203,21 @@ export function leveldetails() {
         const labels = create("div", "leveltags");
         tags(entry, labels);
         tagrows.append(labels);
+        primary.append(play);
         if (entry.revisions?.length) {
-            const label = create("label", "levelrevisions");
+            const label = create("div", "levelrevisions");
             const choices = create("select", "revisionselect clickable");
             choices.setAttribute("aria-label", "Level revision");
             const initial = entry.file.match(/files\/(\d+)/)?.[1];
-            const date = id => new Date(Number((BigInt(id) >> 22n) + 1420070400000n)).toLocaleDateString();
+            const date = id => {
+                const created = new Date(Number((BigInt(id) >> 22n) + 1420070400000n));
+                return created.toLocaleDateString() + " " + String(created.getHours()).padStart(2, "0") + ":" + String(created.getMinutes()).padStart(2, "0");
+            };
             const original = create("option", "", initial ? date(initial) : "Original");
             original.value = "";
             choices.append(original);
             for (const file of entry.revisions) {
-                const created = new Date(Number((BigInt(file.id) >> 22n) + 1420070400000n));
-                const option = create("option", "", created.toLocaleDateString());
+                const option = create("option", "", date(file.id));
                 option.value = file.id;
                 choices.append(option);
             }
@@ -224,6 +230,7 @@ export function leveldetails() {
                 render();
             });
             label.append(choices);
+            dropdown(choices);
             primary.append(label);
         }
         information.append(body, tagrows);
@@ -240,7 +247,6 @@ export function leveldetails() {
         actions.append(download, sharing, share(entry, sharing));
         const utilities = create("div", "levelutilities");
         utilities.append(inspection(entry), actions, discordbutton(entry));
-        primary.append(play);
         const status = create("p", "levelstatus");
         status.setAttribute("role", "status");
 

@@ -87,3 +87,24 @@
 @media (max-width: 700px) {
     .candyrankings > .candylabel {font-size: 17px}
 }
+
+.levelinfotags .candylabel {
+    padding: 0.1em 0.1em 0.15em 0.25em;
+}
+.candyviewport {
+    position: relative; width: 100%;
+    aspect-ratio: 16 / 9; overflow: hidden;
+    border-radius: 7px; min-height: 0;
+}
+.candyviewport .candyframe {
+    position: absolute;
+    left: 0; top: 0;
+    width: 640px; height: 360px;
+    max-width: none; min-height: 0;
+    transform-origin: top left; border-radius: 0;
+    transform: scale(var(--videoscale,1));
+}
+.candyframe:fullscreen {
+    width: 100vw; height: 100vh;
+    transform: none;
+}

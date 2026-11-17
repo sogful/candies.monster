@@ -699,6 +699,7 @@ palette.addEventListener("change", updatepreview)
 document.querySelector(".buttoncolor").addEventListener("input", () => {palette.value = "custom"; updatepreview()})
 document.querySelector(".buttoncolorpicker").addEventListener("input", () => {palette.value = "custom"; updatepreview()})
 buttondimensions.append(palette)
+void import("/assets/static/js/controls/dropdown.js").then(({dropdown}) => dropdown(palette))
 document.querySelector(".numberline").before(buttondimensions)
 
 async function determinebuttonvariant(textwidth, textheight) {

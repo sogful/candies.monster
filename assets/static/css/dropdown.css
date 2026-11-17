@@ -1,0 +1,43 @@
+.dropdown {
+    display: inline-flex; min-width: 0;
+    max-width: 100%; vertical-align: middle;
+}
+.dropdownnative {display: none !important}
+.dropdown .dropdownbutton {
+    display: block; width: 100%;
+    border: 0; border-radius: 7px;
+    padding: 3px 8px; background: rgba(0,0,0,0.5);
+    color: #fff; font: inherit;
+    text-shadow: inherit; -webkit-text-stroke: inherit;
+    paint-order: inherit; cursor: inherit;
+    outline: none; white-space: normal;
+}
+.dropdownbutton::after {
+    content: ""; display: inline-block;
+    width: 6px; height: 6px;
+    border-right: 2px solid #fff; border-bottom: 2px solid #fff;
+    transform: translateY(-2px) rotate(45deg); margin-left: 9px;
+    vertical-align: middle;
+}
+.dropdownbutton:disabled {opacity: 0.5}
+.dropdownmenu {
+    position: fixed; z-index: 100000020;
+    box-sizing: border-box; padding: 4px;
+    border-radius: 8px; background: rgba(0,0,0,0.5);
+    overflow-y: auto; scrollbar-width: none;
+    color: #fff; line-height: 1.2;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: -0.08em 0.15em #000,0.08em 0.15em #000,0 0.23em #000;
+}
+.dropdownmenu::-webkit-scrollbar {display: none}
+.dropdownoption {
+    display: block; width: 100%;
+    border: 0; padding: 5px 8px;
+    border-radius: 5px; background: none;
+    font: inherit; color: inherit;
+    -webkit-text-stroke: inherit; paint-order: inherit;
+    text-shadow: inherit; text-align: left;
+    white-space: normal; outline: none;
+}
+.dropdownoption:hover, .dropdownoption:focus, .dropdownoption[aria-selected="true"] {background: rgba(255,255,255,0.2)}
+.dropdownoption:disabled {opacity: 0.5}
