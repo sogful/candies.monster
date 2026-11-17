@@ -19,7 +19,8 @@
 .commentcomposer {
     display: flex; flex-direction: column;
     align-items: flex-end; gap: 2px;
-    padding: 3px 0 0; flex-shrink: 0;
+    padding: 5px 0 2px; flex-shrink: 0;
+    position: relative; min-width: 0;
 }
 .commentcomposer[hidden], .communityreactions[hidden] {display: none}
 .commentediting > .commentcomposer {display: none}
@@ -39,9 +40,6 @@
     margin-left: auto; font-size: 15px;
 }
 .communitylogout {font-size: 13px}
-.levelcomments.commentwriting {
-    display: flex; flex-direction: column;
-}
 .levelcomments.commentwriting .commentlist {flex: 1 0 auto}
 .commentavatar {
     width: 32px; height: 32px;

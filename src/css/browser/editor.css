@@ -115,6 +115,12 @@
     width: 22px; height: 22px;
 }
 @media (max-width: 700px) {
+    .editortool {
+        width: 26px; height: 26px;
+        padding: 3px;
+    }
+    .editortoolbar {gap: 2px}
+    .editorheading {gap: 5px}
     .editorcontent {
         font-size: 16px; padding: 6px;
     }
