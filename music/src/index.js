@@ -141,7 +141,7 @@ class musicplayer {
             downloadbutton.className = "downloadbutton clickable";
             downloadbutton.dataset.format = format;
             const displayformat = format === "dspadpcm.bcstm" ? "bcstm" : format;
-            downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/assets/images/icons/download.png">`;
+            downloadbutton.innerHTML = `<div class="extensionlabel">.${displayformat}</div><img src="/assets/images/icons/download.svg">`;
             downloadbuttons.appendChild(downloadbutton);
         });
 
