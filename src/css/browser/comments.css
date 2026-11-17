@@ -1,6 +1,6 @@
 .levelcomments {
     width: 100%; max-width: 660px;
-    margin: 0 auto 8px; padding: 4px 10px;
+    margin: 0 auto 8px; padding: 0 10px;
     box-sizing: border-box; border-radius: 12px;
     background: rgba(0,0,0,0.5); text-align: left;
     min-height: 176px; overflow: hidden;
@@ -24,6 +24,9 @@
     overflow-y: auto; scrollbar-width: none;
     overscroll-behavior: contain; touch-action: pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
+}
+.levelcomments:not(.commentempty) .commentthread {
+    padding: 18px 0 28px; box-sizing: border-box;
 }
 .commentthread::-webkit-scrollbar {display: none}
 .commentview[hidden] {display: none}
