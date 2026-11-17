@@ -88,5 +88,5 @@ try {
     }));
     select(true);
 } catch {
-    status.textContent = "Couldn't load leaderboards.";
+    status.textContent = "Couldn't load leaderboards :(";
 }
