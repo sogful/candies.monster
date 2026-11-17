@@ -8,7 +8,7 @@
 .leveldetail {
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
-    box-sizing: border-box; padding: 30px 60px 0;
+    box-sizing: border-box; padding: 12px 60px 0;
     overflow-y: auto; overscroll-behavior: contain;
     pointer-events: auto; scrollbar-width: none;
     color: #fff; text-align: center;
@@ -50,14 +50,14 @@
 
 .levelauthor {
     color: #fff; font-size: 25px;
-    margin: 5px 0 0;
+    margin: 2px 0 0;
 }
 
 .levelhero {
     display: grid; grid-template-columns: 1fr 180px 1fr;
-    align-items: center; gap: 32px;
+    align-items: start; gap: 32px;
     width: 100%; max-width: 680px;
-    margin: 28px auto;
+    margin: 8px auto 12px;
     min-height: 180px;
 }
 
@@ -120,7 +120,7 @@
     box-sizing: border-box; max-width: 660px;
     display: flex; flex-direction: column;
     width: 100%;
-    margin: auto auto 0; padding: 12px 18px;
+    margin: auto auto 0; padding: 8px 14px;
     flex: 0 0 auto; min-height: 0;
     max-height: 40%;
     border: 0 solid transparent;
@@ -199,7 +199,7 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 @media (max-width: 700px) {
-    .leveldetail {padding: 26px 16px 0}
+    .leveldetail {padding: 12px 16px 0}
     .levelback {
         left: 8px; width: 32px;
     }
@@ -207,10 +207,11 @@
     .levelname {font-size: 28px}
     .levelauthor {font-size: 20px}
     .levelhero {
-        grid-template-columns: 1fr 104px 1fr; gap: 12px;
-        margin: 24px auto; min-height: 104px;
+        grid-template-columns: minmax(0,1fr) clamp(84px,26.7vw,104px) minmax(0,1fr); gap: 8px;
+        margin: 8px auto 10px; min-height: 104px;
+        padding-right: 32px; box-sizing: border-box;
     }
-    .levelplay {width: 104px}
+    .levelplay {width: clamp(84px,26.7vw,104px)}
     .levelstatistics {gap: 3px}
     .levelstat {
         flex-direction: row; gap: 4px;
@@ -218,7 +219,7 @@
     }
     .levelvalue {font-size: 24px}
     .levellabel {font-size: 15px}
-    .levelinformation {padding: 12px 16px}
+    .levelinformation {padding: 8px 12px}
     .leveldescription {font-size: 23px}
     .levelreactions {gap: 3px}
     .levelreaction {
@@ -226,7 +227,7 @@
     }
 }
 
-@media (max-height: 600px) and (min-width: 701px) {
+@media (max-height: 700px) and (min-width: 701px) {
     .leveldetail {padding-top: 18px}
     .levelname {font-size: 32px}
     .levelhero {
@@ -276,7 +277,7 @@
 }
 .levelobjects .levelvalue {font-size: 21px}
 .levelobjects .levellabel {font-size: 16px}
-.levelheading {padding-top: 14px}
+.levelheading {padding-top: 0}
 @media (max-width: 700px) {
     .levelobjects .levelvalue {font-size: 18px}
     .levelobjects .levellabel {font-size: 13px}
@@ -339,13 +340,17 @@
 .levelinfotags {
     overflow: auto hidden; max-height: none;
     min-width: 0; gap: 4px;
-    margin-top: 2px; padding: 3px 0 5px;
-    touch-action: pan-x; align-items: center;
+    margin-top: 0; padding: 2px 0;
+    touch-action: pan-x pinch-zoom; align-items: center;
 }
 .levelinfotags > .leveltags:not([hidden]), .levelinfotags > .levelfeatures:not([hidden]) {
     display: contents;
 }
 .levelinfotags .leveltag, .levelinfotags .candylabel {flex-shrink: 0}
+.levelinfotags .leveltag {
+    font-size: 16px; padding: 1px 5px;
+}
+.levelinfotags .candylabel {font-size: 16px}
 .levelbody {max-height: 24vh}
 .leveldescription {font-size: 21px}
 .levelstaticon {
@@ -390,8 +395,9 @@
 .homepage :focus {outline: none}
 @media (max-width: 700px) {
     .leveldescription {font-size: 16px}
+    .levelinfotags .leveltag, .levelinfotags .candylabel {font-size: 14px}
     .levelfavourites .levellabel {font-size: 13px}
-    .levelfavourites {flex-wrap: nowrap}
+    .levelfavourites {flex-wrap: wrap}
     .levelstaticon {
         width: 18px; height: 18px;
     }
@@ -407,4 +413,14 @@
 .revisionselect {
     background: rgba(0,0,0,0.5); font-size: inherit;
     padding: 2px 5px;
+}
+
+@media (max-width: 380px) {
+    .levelstat {gap: 3px}
+    .levelvalue {font-size: 20px}
+    .levelobjects .levelvalue {font-size: 16px}
+    .levellabel, .levelobjects .levellabel, .levelfavourites .levellabel {font-size: 11px}
+    .levelstaticon {
+        width: 16px; height: 16px;
+    }
 }

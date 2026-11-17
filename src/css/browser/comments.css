@@ -3,11 +3,12 @@
     margin: 0 auto 8px; padding: 4px 10px;
     box-sizing: border-box; border-radius: 12px;
     background: rgba(0,0,0,0.5); text-align: left;
-    min-height: 96px; overflow: hidden;
-    flex: 1 1 96px; scrollbar-width: none;
+    min-height: 176px; overflow: hidden;
+    flex: 1 1 176px; scrollbar-width: none;
     font-size: 18px; user-select: text;
-    overscroll-behavior: contain; touch-action: pan-y;
-    display: flex; position: relative;
+    overscroll-behavior: contain; touch-action: pan-y pinch-zoom;
+    display: flex; flex-direction: column;
+    position: relative;
 }
 .commentview {
     display: flex; flex-direction: column;
@@ -18,9 +19,10 @@
 }
 .commentthread {
     display: flex; flex-direction: column;
-    flex: 1; min-height: 0;
+    flex: 1 1 0; min-height: 0;
     overflow-y: auto; scrollbar-width: none;
-    overscroll-behavior: contain;
+    overscroll-behavior: contain; touch-action: pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
 }
 .commentthread::-webkit-scrollbar {display: none}
 .commentview[hidden] {display: none}

@@ -20,7 +20,7 @@
     display: flex; align-items: center;
     gap: 3px; overflow: auto hidden;
     scrollbar-width: none; min-width: 0;
-    padding: 2px 0 3px; touch-action: pan-x;
+    padding: 2px 0 3px; touch-action: pan-x pinch-zoom;
 }
 .candyoptions::-webkit-scrollbar {display: none}
 .candyoptions > * {flex-shrink: 0}

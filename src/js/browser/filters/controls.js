@@ -44,6 +44,7 @@ export function filterscroll(options) {
         event.stopPropagation();
     }, true);
     options.addEventListener("wheel", event => {
+        if (event.ctrlKey) return;
         const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
         const distance = delta * (event.deltaMode === 1 ? 18 : event.deltaMode === 2 ? options.clientWidth : 1);
         const previous = options.scrollLeft;

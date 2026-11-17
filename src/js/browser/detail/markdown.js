@@ -14,6 +14,28 @@ function address(text) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+function media(link, label) {
+    const url = new URL(link.href);
+    if (!/^https?:$/.test(url.protocol) || !/\.(?:png|jpe?g|gif|webp|avif)$/i.test(url.pathname)) return false;
+    const image = node("img", "mdimage");
+    image.src = url.href;
+    image.alt = label;
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.referrerPolicy = "no-referrer";
+    image.addEventListener("error", () => image.replaceWith(document.createTextNode(label)), {once: true});
+    link.classList.add("mdmedia");
+    link.append(image);
+    link.addEventListener("click", event => {
+        if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || !image.isConnected) return;
+        event.preventDefault();
+        void import("./inspection.js").then(({imageviewer}) => imageviewer(url.href, label, link));
+    });
+    return true;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 function inline(text, parent, depth = 0, mentions = {}) {
     if (depth > 8) {parent.append(document.createTextNode(text)); return}
     let plain = "";
@@ -87,7 +109,7 @@ function inline(text, parent, depth = 0, mentions = {}) {
                 link.href = href;
                 link.target = "_blank";
                 link.rel = "noopener noreferrer";
-                inline(linked ? linked[1] : raw, link, linked ? depth + 1 : 9, mentions);
+                if (!media(link, linked ? linked[1] : raw)) inline(linked ? linked[1] : raw, link, linked ? depth + 1 : 9, mentions);
                 parent.append(link);
                 index += (linked || match[0].startsWith("<")) ? match[0].length : raw.length;
                 continue;

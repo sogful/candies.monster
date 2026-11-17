@@ -75,7 +75,8 @@ export function comments(entry) {
     }, section);
     if (!writing.hidden) section.classList.add("commentwriting");
     thread.append(earlier, list, status);
-    view.append(thread, writing);
+    view.append(thread);
+    section.append(writing);
     const content = new WeakMap();
     const visibility = window.IntersectionObserver ? new IntersectionObserver(records => {
         for (const record of records) {

@@ -17,30 +17,28 @@
 }
 .communitystatus:empty {display: none}
 .commentcomposer {
-    position: absolute; bottom: 0;
-    left: 0; right: 0;
     display: flex; flex-direction: column;
-    align-items: flex-end; gap: 3px;
-    padding: 4px 0; z-index: 1;
-    margin-top: 0; flex-shrink: 0;
+    align-items: flex-end; gap: 2px;
+    padding: 3px 0 0; flex-shrink: 0;
 }
 .commentcomposer[hidden], .communityreactions[hidden] {display: none}
+.commentediting > .commentcomposer {display: none}
 .commentaccount {
     display: flex; align-items: center;
     gap: 4px;
 }
-.communityidentity {font-size: 14px}
-.communitylogout {font-size: 14px}
+.communityidentity {font-size: 13px}
 .commentadd, .communitylogout {
     font: inherit; color: #fff;
-    min-height: 32px; padding: 4px 12px;
+    min-height: 26px; padding: 2px 9px;
     background: none; border: 0;
     -webkit-text-stroke: inherit; paint-order: inherit;
     text-shadow: inherit;
 }
 .commentadd {
-    margin-left: auto; font-size: 17px;
+    margin-left: auto; font-size: 15px;
 }
+.communitylogout {font-size: 13px}
 .levelcomments.commentwriting {
     display: flex; flex-direction: column;
 }

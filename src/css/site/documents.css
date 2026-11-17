@@ -67,7 +67,7 @@
 
 .documentcredits .documentscroll {
     position: relative; z-index: 2;
-    cursor: grab; touch-action: pan-y;
+    cursor: grab; touch-action: pan-y pinch-zoom;
 }
 
 .documentcredits .documentscroll:active {cursor: grabbing}

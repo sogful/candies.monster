@@ -43,7 +43,7 @@
     display: flex; align-items: center;
     flex-wrap: nowrap; gap: 3px;
     padding: 2px 0 3px; scrollbar-width: none;
-    touch-action: pan-x; overscroll-behavior-x: contain;
+    touch-action: pan-x pinch-zoom; overscroll-behavior-x: contain;
 }
 .tagoptions::-webkit-scrollbar {display: none}
 .tagoptions .leveltag {flex-shrink: 0}
@@ -146,7 +146,7 @@
     display: flex; gap: 3px;
     overflow: auto hidden; scrollbar-width: none;
     min-width: 0;
-    touch-action: pan-x; overscroll-behavior-x: contain;
+    touch-action: pan-x pinch-zoom; overscroll-behavior-x: contain;
 }
 .featureoptions::-webkit-scrollbar {display: none}
 .featureoptions .leveltag, .filterreset {flex-shrink: 0}
@@ -286,7 +286,7 @@
 .contestoptions {
     display: flex; gap: 3px;
     overflow: auto hidden; scrollbar-width: none;
-    min-width: 0; touch-action: pan-x;
+    min-width: 0; touch-action: pan-x pinch-zoom;
 }
 .contestoptions > * {flex-shrink: 0}
 .contestoptions::-webkit-scrollbar {display: none}
@@ -320,7 +320,7 @@
 .leveltags, .levelfeatures {
     flex-wrap: nowrap; overflow: auto hidden;
     min-width: 0; max-width: 100%;
-    scrollbar-width: none; touch-action: pan-x;
+    scrollbar-width: none; touch-action: pan-x pinch-zoom;
     padding: 3px 4px 5px; box-sizing: border-box;
 }
 .leveltags > *, .levelfeatures > * {flex-shrink: 0}

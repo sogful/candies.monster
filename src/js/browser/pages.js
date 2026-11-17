@@ -11,6 +11,7 @@ export function pagegestures(list, previous, next) {
         list.animate([{opacity: 0.4, transform: `translateX(${offset * 15}px)`}, {opacity: 1, transform: "translateX(0)"}], {duration: 150, easing: "ease-out"});
     }
     list.addEventListener("pointerdown", event => {
+        if (!event.isPrimary) {drag = null; suppress = false; return}
         if (event.button !== 0 || event.target.closest(".cardtags,a,button")) return;
         drag = {id: event.pointerId, x: event.clientX, y: event.clientY};
         suppress = false;
@@ -41,6 +42,7 @@ export function pagegestures(list, previous, next) {
         event.stopImmediatePropagation();
     }, true);
     list.addEventListener("wheel", event => {
+        if (event.ctrlKey) return;
         if (event.target.closest(".cardtags") || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
         event.preventDefault();
         wheel += event.deltaX;
