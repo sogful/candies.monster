@@ -9,7 +9,7 @@ arrow.src = "/assets/images/buttons/back.png";
 arrow.alt = "";
 arrow.draggable = false;
 toggle.append(arrow);
-navigation.after(toggle);
+document.querySelector(".sidebarlogo").append(toggle);
 
 const homelink = document.querySelector(".homelink");
 homelink.addEventListener("click", event => {
@@ -25,6 +25,8 @@ homelink.addEventListener("click", event => {
 
 toggle.addEventListener("click", () => {
     const hidden = document.documentElement.classList.toggle("navigationhidden");
+    if (hidden) navigation.after(toggle);
+    else document.querySelector(".sidebarlogo").append(toggle);
     toggle.setAttribute("aria-expanded", String(!hidden));
     toggle.setAttribute("aria-label", hidden ? "show navigation" : "hide navigation");
     for (const section of navigation.querySelectorAll(".sitenavigation, .sidelinks")) {

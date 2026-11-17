@@ -148,7 +148,8 @@
 }
 
 .sidebartoggle {
-    position: absolute; top: 0;
+    position: absolute;
+    top: auto; bottom: 0;
     left: 0; z-index: 6;
     display: grid; place-items: center;
     width: 20px; height: 24px;
@@ -165,7 +166,9 @@
 .navigationhidden .homepage {--navigationwidth: 0px}
 .navigationhidden .sidebar {margin-left: -88px}
 .navigationhidden .sidebartoggle {
-    left: 0; border-radius: 0 100% 100% 0;
+    top: 0; bottom: auto;
+    left: 0; right: auto;
+    border-radius: 0 100% 100% 0;
     background: rgba(0,0,0,0.5);
 }
 .navigationhidden .sitenavigation, .navigationhidden .sidelinks {visibility: hidden}
@@ -246,7 +249,7 @@
     .sidebar {
         flex-direction: row; align-items: center;
         width: 100%; height: 76px;
-        flex: 0 0 76px; padding: 4px 28px 4px 0;
+        flex: 0 0 76px; padding: 4px 0;
         gap: 8px; overflow-x: hidden;
         overflow-y: hidden; white-space: nowrap;
         pointer-events: none;
@@ -258,7 +261,7 @@
     }
     .sidebartoggle {
         top: 0; bottom: auto;
-        left: 0; right: auto;
+        left: auto; right: 0;
         width: 24px; height: 18px;
         padding: 0; border-radius: 8px 0 0;
         transition: top 260ms ease;
@@ -266,6 +269,7 @@
     .sidebartoggle img {transform: rotate(90deg)}
     .navigationhidden .sidebartoggle {
         top: 0; left: 0;
+        right: auto;
         border-radius: 0 0 100% 100%;
     }
     .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}
@@ -310,6 +314,7 @@
     }
     .sidelinks {
         order: 4; margin-left: auto;
+        align-items: flex-end;
         font-size: 11px; padding: 1px 5px;
         line-height: 1; box-sizing: border-box;
         width: auto;
