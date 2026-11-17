@@ -15,9 +15,7 @@ function highart() {
 
 async function resources(entry) {
     extras ||= fetch("/assets/images/level/high/assets.json").then(response => response.ok ? response.json() : {}).catch(() => ({}));
-    const [map, original, high] = await Promise.all([level(entry.file), highart(), extras]);
-    const art = {...original};
-    if (high.candy) art.candy = await picture(high.candy).catch(() => null);
+    const [map, art, high] = await Promise.all([level(entry.file), highart(), extras]);
     const key = entry.background?.match(/\/(box\d+)\.webp$/)?.[1] || "box1";
     const backdrop = high[key] ? await picture(high[key]).catch(() => null) : null;
     if (backdrop && map.height > 480) {

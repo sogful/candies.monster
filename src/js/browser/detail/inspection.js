@@ -155,7 +155,7 @@ export function imageviewer(url, label, trigger, entry = null) {
             const button = document.createElement("button");
             button.className = "inspectionexport clickable buttonart";
             button.type = "button";
-            button.textContent = "PNG " + size + "px";
+            button.textContent = size + "p";
             button.addEventListener("click", async () => {
                 button.disabled = true;
                 try {
