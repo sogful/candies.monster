@@ -4,8 +4,10 @@ export function identity(name) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+const excluded = new Set(["zealousshumbh"]);
+
 export function suspicious(boards) {
-    const players = new Set();
+    const players = new Set(excluded);
     const reasons = new Map();
     for (const board of boards) {
         const limit = (board.levels || 25) * 6000;
@@ -21,7 +23,7 @@ export function suspicious(boards) {
     for (const board of boards) {
         for (const row of board.scores) {
             const key = board.id + ":" + row.rank;
-            if (!reasons.has(key) && players.has(identity(row.name))) reasons.set(key, "Impossible score on another box");
+            if (!reasons.has(key) && players.has(identity(row.name))) reasons.set(key, excluded.has(identity(row.name)) ? "Confirmed cheating" : "Impossible score on another box");
         }
     }
     return reasons;
