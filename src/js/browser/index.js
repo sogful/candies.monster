@@ -15,31 +15,20 @@ morestuff();
 const list = document.querySelector(".levels");
 const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
+const neighbors = new Map();
 const gestures = pagegestures(list, previous, next, {
-    prepare(offset) {
-        const adjacent = document.createElement("div");
-        adjacent.className = "levels pagepreview";
-        adjacent.inert = true;
-        adjacent.setAttribute("aria-hidden", "true");
-        adjacent.style.setProperty("--columns", getComputedStyle(list).getPropertyValue("--columns"));
-        adjacent.style.left = list.offsetLeft + "px";
-        adjacent.style.top = list.offsetTop + "px";
-        adjacent.style.width = list.clientWidth + "px";
-        adjacent.style.height = list.clientHeight + "px";
-        adjacent.append(pagecontent(page + offset));
-        list.after(adjacent);
-        fitcards(adjacent);
-        return adjacent;
-    },
-    discard(adjacent) {
-        clearthumbnails(adjacent);
-        adjacent.remove();
-    },
+    prepare(offset) {return neighbor(page + offset)},
+    discard(adjacent) {placepage(adjacent)},
     commit(offset, adjacent, silent) {
         if (!silent) {
             const sound = document.querySelector(".click");
             if (sound) {sound.currentTime = 0; void sound.play().catch(() => {})}
         }
+        saveposition();
+        const saved = pagebox(page);
+        saved.append(...list.childNodes);
+        neighbors.set(page, saved);
+        neighbors.delete(Number(adjacent.dataset.page));
         const content = document.createDocumentFragment();
         content.append(...adjacent.childNodes);
         adjacent.remove();
@@ -174,9 +163,57 @@ function pagecontent(number) {
     return content;
 }
 
+function placepage(adjacent) {
+    adjacent.style.setProperty("--columns", getComputedStyle(list).getPropertyValue("--columns"));
+    adjacent.style.left = list.offsetLeft + "px";
+    adjacent.style.top = list.offsetTop + "px";
+    adjacent.style.width = list.clientWidth + "px";
+    adjacent.style.height = list.clientHeight + "px";
+    adjacent.style.transform = `translate3d(${(Number(adjacent.dataset.page) - page) * list.clientWidth}px,0,0)`;
+}
+
+function pagebox(number) {
+    const adjacent = element("div", "levels pagepreview");
+    adjacent.dataset.page = String(number);
+    adjacent.inert = true;
+    adjacent.setAttribute("aria-hidden", "true");
+    list.after(adjacent);
+    placepage(adjacent);
+    return adjacent;
+}
+
+function neighbor(number) {
+    if (number < 0 || number * pagesize >= visible.length) return null;
+    let adjacent = neighbors.get(number);
+    if (!adjacent) {
+        adjacent = pagebox(number);
+        adjacent.append(pagecontent(number));
+        neighbors.set(number, adjacent);
+        fitcards(adjacent);
+    }
+    placepage(adjacent);
+    return adjacent;
+}
+
+function clearneighbors() {
+    for (const adjacent of neighbors.values()) {clearthumbnails(adjacent); adjacent.remove()}
+    neighbors.clear();
+}
+
+function nearby() {
+    for (const [number, adjacent] of neighbors) {
+        if (Math.abs(number - page) !== 1) {clearthumbnails(adjacent); adjacent.remove(); neighbors.delete(number)}
+    }
+    neighbor(page - 1);
+    neighbor(page + 1);
+    for (const adjacent of neighbors.values()) placepage(adjacent);
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 function showpage(number, write = "push", content) {
     gestures.reset();
-    saveposition();
+    if (!content) {clearneighbors(); saveposition()}
     const pages = Math.max(1, Math.ceil(visible.length / pagesize));
     page = Math.max(0, Math.min(number, pages - 1));
     if (write) {
@@ -191,6 +228,7 @@ function showpage(number, write = "push", content) {
     clearthumbnails(list);
     list.replaceChildren(content || pagecontent(page));
     fitcards();
+    nearby();
     list.scrollTop = 0;
     list.setAttribute("aria-label", `levels, page ${page + 1} of ${pages}`);
     previous.disabled = page === 0;
@@ -199,7 +237,7 @@ function showpage(number, write = "push", content) {
     next.hidden = next.disabled;
     pagecount.textContent = `${visible.length ? page + 1 : 0} of ${visible.length ? pages : 0} (${visible.length} levels)`;
     const box = list.querySelector(".levelbg")?.getBoundingClientRect();
-    prefetch(visible.slice((page + 1) * pagesize, (page + 2) * pagesize), box?.width, box?.height);
+    prefetch([...visible.slice(Math.max(0, page - 1) * pagesize, page * pagesize), ...visible.slice((page + 1) * pagesize, (page + 2) * pagesize)], box?.width, box?.height);
 }
 
 function layout() {
@@ -212,7 +250,11 @@ function layout() {
     const rows = Math.max(1, Math.floor((height - 12 + gap) / (cardwidth * 9 / 16 + gap)));
     const capacity = rows * columns;
     list.style.setProperty("--columns", String(columns));
-    if (capacity === pagesize) {fitcards(); return}
+    if (capacity === pagesize) {
+        fitcards();
+        for (const adjacent of neighbors.values()) {placepage(adjacent); fitcards(adjacent)}
+        return;
+    }
     const first = page * pagesize;
     pagesize = capacity;
     if (entries.length) showpage(Math.floor(first / pagesize), "replace");
@@ -221,7 +263,10 @@ function layout() {
 if (window.ResizeObserver) new ResizeObserver(layout).observe(list);
 window.addEventListener("resize", layout, {passive: true});
 layout();
-document.fonts?.ready.then(() => fitcards());
+document.fonts?.ready.then(() => {
+    fitcards();
+    for (const adjacent of neighbors.values()) fitcards(adjacent);
+});
 
 /*//////////////////////////////////////////////////////////////////////*/
 
