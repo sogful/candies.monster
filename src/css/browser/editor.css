@@ -70,6 +70,11 @@
 }
 .editorsmall {font-size: 0.75em}
 .editorfooter {flex-wrap: wrap}
+.editorreadonly .editorstatus:empty {display: none}
+.editorunavailable {
+    margin: 0 0 0 auto; font-size: 17px;
+    text-align: right; max-width: 100%;
+}
 .editorstatus {
     flex: 1; margin: 0;
     font-size: 18px;

@@ -2,7 +2,8 @@ import {configuration} from "../catalogue/service.js";
 import {commenteditor} from "./editor/index.js";
 import {emojipicker, homeemojis} from "./emojis.js";
 
-export const communitybase = (await configuration).community || "";
+const settings = await configuration;
+export const communitybase = settings.community || "";
 const reactiondata = fetch("/assets/static/data/levels/reactions.json").then(response => {
     if (!response.ok) throw new Error("Reactions unavailable");
     return response.json();
@@ -165,7 +166,7 @@ export function composer(entry, reload, section) {
                 await communityrequest("/community/" + entry.id + "/comments", "POST", {content, attachments, nonce});
                 nonce = "";
                 await reload();
-            }, section);
+            }, section, settings.comments !== false);
         });
         if (person) {
             const account = document.createElement("div");

@@ -11,7 +11,7 @@ function element(tag, classname, text) {
     return node;
 }
 
-export function commenteditor(entry, submit, section) {
+export function commenteditor(entry, submit, section, posting = true) {
     if (document.querySelector(".commenteditor")) return;
     const dialog = element("section", "commenteditor");
     dialog.setAttribute("aria-label", "Comment editor");
@@ -50,7 +50,14 @@ export function commenteditor(entry, submit, section) {
     status.setAttribute("role", "status");
     const send = element("button", "editorsend descbutton clickable", "Send");
     send.type = "button";
-    footer.append(count, status, send);
+    footer.append(count, status);
+    if (posting) footer.append(send);
+    else {
+        footer.classList.add("editorreadonly");
+        const notice = element("p", "editorunavailable", "comments disabled in this test, sorry!");
+        notice.setAttribute("role", "status");
+        footer.append(notice);
+    }
     layout.append(heading, root, footer);
     dialog.append(layout, loading);
     section.append(dialog);
@@ -59,7 +66,7 @@ export function commenteditor(entry, submit, section) {
     const changed = () => {
         const text = serialize(root);
         count.textContent = text.length + "/2000";
-        send.disabled = busy || text.length > 2000 || !text && !media.values().length;
+        send.disabled = !posting || busy || text.length > 2000 || !text && !media.values().length;
         root.contentEditable = String(!busy);
         for (const button of toolbar.querySelectorAll("button")) button.disabled = busy;
         close.disabled = busy;
@@ -172,7 +179,7 @@ export function commenteditor(entry, submit, section) {
     root.addEventListener("keydown", unbullet);
     root.addEventListener("beforeinput", unbullet);
     send.addEventListener("click", async () => {
-        if (busy) return;
+        if (!posting || busy) return;
         busy = true;
         changed();
         status.textContent = "";

@@ -1,3 +1,5 @@
+import {configuration} from "./service.js";
+
 let loading;
 let fallback;
 
@@ -29,7 +31,10 @@ async function read() {
 export async function bundled(file) {
     const url = new URL(file, location.href);
     const match = url.pathname.match(/^\/levels\/(\d+)\/files\/(\d+)$/);
-    if (!match || url.hostname !== "levels.candies.monster") return null;
+    if (!match) return null;
+    const settings = await configuration;
+    const origins = [settings.endpoint, settings.community].filter(Boolean).map(value => new URL(value).origin);
+    if (!origins.includes(url.origin)) return null;
     loading ||= read().catch(() => ({}));
     return (await loading)[match[1] + "/" + match[2]] ?? null;
 }

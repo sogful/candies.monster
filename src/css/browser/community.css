@@ -96,8 +96,9 @@
     margin: 0 auto;
 }
 .emojinote {
-    font-family: Arial,sans-serif; font-size: 11px;
-    line-height: 1.25; color: #bbb;
+    font-family: var(--sitefont,"Good Dog"),sans-serif; font-size: 15px;
+    line-height: 1.1; color: #fff;
     margin: 6px 2px 1px; text-align: left;
-    -webkit-text-stroke: 0; text-shadow: none;
+    -webkit-text-stroke: 0.14em #000; paint-order: stroke fill;
+    text-shadow: 0 0.12em #000;
 }
