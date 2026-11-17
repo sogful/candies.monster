@@ -38,6 +38,16 @@ function attachment(file) {
         });
         return link;
     }
+    if (/^video\//.test(file.type || "") || /\.(?:mp4|webm|mov|m4v)$/i.test(name)) {
+        const video = document.createElement("video");
+        video.className = "commentvideo";
+        video.src = url.href;
+        video.controls = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        video.setAttribute("aria-label", name);
+        return video;
+    }
     const label = document.createElement("span");
     label.className = "commentfilename";
     label.textContent = name;

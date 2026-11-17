@@ -102,7 +102,7 @@
     margin: 6px; max-width: 90%;
     vertical-align: top;
 }
-.editorattachment > img {
+.editorattachment > img, .editorvideo {
     display: block; max-width: 100%;
     max-height: 240px; border-radius: 6px;
 }
@@ -124,4 +124,10 @@
     .editorcontent {
         font-size: 16px; padding: 6px;
     }
+}
+
+.editorfile {
+    display: block; padding: 8px 32px 8px 8px;
+    border-radius: 6px; background: rgba(0,0,0,0.35);
+    overflow-wrap: anywhere;
 }

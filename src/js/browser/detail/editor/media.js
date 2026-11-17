@@ -2,7 +2,7 @@ export function attachments(root, status, changed, initial = []) {
     const files = new Map();
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "image/png,image/jpeg,image/gif,image/webp";
+    input.accept = "";
     input.multiple = true;
     input.hidden = true;
     input.className = "editorfiles";
@@ -13,15 +13,14 @@ export function attachments(root, status, changed, initial = []) {
         try {
             for (const file of selected) {
                 const present = [...files.values()].filter(item => root.querySelector('[data-attachment="' + item.key + '"]'));
-                if (present.length >= 3 || file.size + present.reduce((total, item) => total + item.bytes, 0) > 5 * 1024 * 1024) throw new Error("Use up to 3 images, 5mb total");
-                if (!["image/png", "image/jpeg", "image/gif", "image/webp"].includes(file.type)) throw new Error("Choose a PNG, JPEG, GIF or WebP image");
+                if (present.length >= 3 || file.size + present.reduce((total, item) => total + item.bytes, 0) > 5 * 1024 * 1024) throw new Error("Use up to 3 files, 5mb total");
                 const data = await new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.onload = () => resolve(reader.result);
                     reader.onerror = reject;
                     reader.readAsDataURL(file);
                 });
-                insert({key: crypto.randomUUID().replace(/-/g, ""), name: file.name, type: file.type, bytes: file.size, data: String(data).split(",")[1]});
+                insert({key: crypto.randomUUID().replace(/-/g, ""), name: file.name, type: file.type || "application/octet-stream", bytes: file.size, data: String(data).split(",")[1]});
             }
             changed();
         } catch (error) {status.textContent = error.message}
@@ -33,19 +32,31 @@ export function attachments(root, status, changed, initial = []) {
         figure.className = "editorattachment";
         figure.dataset.attachment = key;
         figure.contentEditable = "false";
-        const image = document.createElement("img");
-        image.src = "data:" + file.type + ";base64," + file.data;
-        image.alt = file.name;
+        const picture = /^image\/(png|jpeg|gif|webp)$/.test(file.type);
+        const video = /^video\//.test(file.type);
+        const preview = document.createElement(picture ? "img" : video ? "video" : "span");
+        if (picture || video) preview.src = "data:" + file.type + ";base64," + file.data;
+        if (picture) preview.alt = file.name;
+        else if (video) {
+            preview.className = "editorvideo";
+            preview.controls = true;
+            preview.playsInline = true;
+            preview.preload = "metadata";
+            preview.setAttribute("aria-label", file.name);
+        } else {
+            preview.className = "editorfile";
+            preview.textContent = file.name;
+        }
         const remove = document.createElement("button");
         remove.type = "button";
         remove.className = "editorremove clickable";
-        remove.setAttribute("aria-label", "Remove image");
+        remove.setAttribute("aria-label", "Remove attachment");
         const icon = document.createElement("img");
         icon.src = "/assets/images/icons/x.png";
         icon.alt = "";
         remove.append(icon);
         remove.addEventListener("click", () => {figure.remove(); files.delete(key); changed()});
-        figure.append(image, remove);
+        figure.append(preview, remove);
         root.append(figure);
     }
     for (const file of initial) insert(file);

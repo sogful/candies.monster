@@ -152,7 +152,7 @@ export function commenteditor(entry, submit, section, posting = true) {
         toolbar.after(box);
         input.focus();
     });
-    control("Add images or GIFs", "media", () => media.open());
+    control("Add attachments", "media", () => media.open());
     root.addEventListener("input", changed);
     root.addEventListener("keyup", selection);
     root.addEventListener("pointerup", selection);
