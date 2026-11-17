@@ -1709,6 +1709,37 @@ index 23a8e97..5320dac 100644
          /// <summary>
          /// Converts a raw integer button value to a game-controller button identifier.
          /// </summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
+index 159dea1..d0858cd 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
+@@ -186,16 +186,18 @@ namespace CutTheRopeDX.GameMain
+                 || parkedGhostBubble?.Bubble == bubbleObj;
+         }
+ 
+-        /// <summary>
+-        /// The point the camera follows: the primary candy's first active body, which is its left
+-        /// half while it is split and its whole body otherwise. Falls back to the whole body's point
+-        /// when the primary has no active body at all, so the camera never loses its target.
+-        /// </summary>
+-        /// <returns>The camera's focus point.</returns>
+         private ConstrainedPoint CameraFocusPoint()
+         {
+-            IReadOnlyList<CandyBody> primaryBodies = candies[0].Lifecycle.ActiveBodies;
+-            return primaryBodies.Count > 0 ? primaryBodies[0].Point : candies[0].WholeBody.Point;
++            foreach (CandyContext candy in candies)
++            {
++                if (candy.Lifecycle.Presence == CandyPresence.Removed)
++                {
++                    continue;
++                }
++                IReadOnlyList<CandyBody> bodies = candy.Lifecycle.ActiveBodies;
++                return bodies.Count > 0 ? bodies[0].Point : candy.WholeBody.Point;
++            }
++            return candies[0].WholeBody.Point;
+         }
+ 
+         private bool IsSpiderGrabbableCandyPoint(ConstrainedPoint point)
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
 index a5bcdcd..601a2aa 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
