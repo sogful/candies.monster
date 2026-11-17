@@ -232,8 +232,9 @@
 
     <script>
         
-        // animated favicon
         (function() {
+            const enabled = false;
+            if (!enabled) return;
             let spritejson = null; let sheetloaded = false;
             let favicons = []; let index = 0; const delay = 300;
             let sheetimg = null;

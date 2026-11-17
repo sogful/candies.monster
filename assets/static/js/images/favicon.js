@@ -1,3 +1,4 @@
+const enabled = false;
 let started = false;
 let loading = false;
 let pendingframe = 0;
@@ -155,6 +156,7 @@ function resume() {
 }
 
 function startfavicon({onimage} = {}) {
+    if (!enabled) return Promise.resolve(null);
     if (typeof onimage === "function") onimage(image);
     if (!started) {
         started = true;
