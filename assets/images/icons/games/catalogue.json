@@ -6558,5 +6558,24 @@
     "packages": [
       "com.ctrhome.cuttheropecommunity"
     ]
+  },
+  {
+    "game": "omnomrun2",
+    "variant": "androidv024",
+    "raw": "/assets/images/icons/games/omnomrun2/androidv024/raw.png",
+    "width": 192,
+    "height": 192,
+    "format": "png",
+    "sha256": "31510128827f9562bfcff2b2c6dbaf78a5006b94414780cb1a34fc503b2bcf2d",
+    "sources": [
+      {
+        "url": "https://cz.197942.com/cr10/omnomrun2944965.apk",
+        "file": "res/mipmap-xxxhdpi-v4/app_icon.png",
+        "apksha256": "23c9956056c901e1994e001f38e7ab4cac346d4b6e37426752022a7390219151"
+      }
+    ],
+    "packages": [
+      "com.zeptolab.omnomparkour.google"
+    ]
   }
 ]
