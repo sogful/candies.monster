@@ -8,11 +8,14 @@ export function serialize(root) {
         if (node.nodeType !== Node.ELEMENT_NODE || node.matches(".editorattachment")) return "";
         const tag = node.tagName.toLowerCase();
         if (tag === "br") return "\n";
-        const text = [...node.childNodes].map(child => render(child, literal || ["code", "pre"].includes(tag))).join("");
-        if (["b", "strong"].includes(tag)) return "**" + text + "**";
-        if (["i", "em"].includes(tag)) return "*" + text + "*";
-        if (tag === "u") return "__" + text + "__";
-        if (["s", "strike", "del"].includes(tag) || node.style.textDecoration.includes("line-through")) return "~~" + text + "~~";
+        let text = [...node.childNodes].map(child => render(child, literal || ["code", "pre"].includes(tag))).join("");
+        const decoration = node.style.textDecorationLine || node.style.textDecoration;
+        let formatted = false;
+        if (["b", "strong"].includes(tag)) {text = "**" + text + "**"; formatted = true}
+        if (["i", "em"].includes(tag)) {text = "*" + text + "*"; formatted = true}
+        if (tag === "u" || decoration.includes("underline")) {text = "__" + text + "__"; formatted = true}
+        if (["s", "strike", "del"].includes(tag) || decoration.includes("line-through")) {text = "~~" + text + "~~"; formatted = true}
+        if (formatted) return text;
         if (["code", "pre"].includes(tag)) {
             const runs = text.match(/`+/g) || [];
             const fence = "`".repeat(Math.max(tag === "pre" ? 3 : 1, ...runs.map(run => run.length + 1)));

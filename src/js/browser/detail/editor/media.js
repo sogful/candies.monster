@@ -52,7 +52,7 @@ export function attachments(root, status, changed, initial = []) {
         remove.className = "editorremove clickable";
         remove.setAttribute("aria-label", "Remove attachment");
         const icon = document.createElement("img");
-        icon.src = "/assets/images/icons/x.png";
+        icon.src = "/assets/images/icons/x.svg";
         icon.alt = "";
         remove.append(icon);
         remove.addEventListener("click", () => {figure.remove(); files.delete(key); changed()});

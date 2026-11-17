@@ -1,3 +1,4 @@
+import {feather} from "/assets/static/js/controls/feather.js";
 import {serialize} from "./serialize.js";
 import {attachments} from "./media.js";
 import {spinner} from "/assets/static/js/images/spinner.js";
@@ -29,7 +30,7 @@ export function commenteditor(entry, submit, section, posting = true) {
     close.type = "button";
     close.setAttribute("aria-label", "Close editor");
     const cross = element("img", "");
-    cross.src = "/assets/images/icons/x.png";
+    cross.src = "/assets/images/icons/x.svg";
     cross.alt = "";
     close.append(cross);
     const toolbar = element("div", "editortoolbar");
@@ -61,6 +62,7 @@ export function commenteditor(entry, submit, section, posting = true) {
     layout.append(heading, root, footer);
     dialog.append(layout, loading);
     section.append(dialog);
+    feather(root);
     let range = null;
     let busy = false;
     const changed = () => {
@@ -98,7 +100,7 @@ export function commenteditor(entry, submit, section, posting = true) {
         item.title = label;
         item.setAttribute("aria-label", label);
         const image = element("img", "");
-        image.src = "/assets/images/icons/editor/" + icon + ".png";
+        image.src = "/assets/images/icons/editor/" + icon + (/^h[123]$/.test(icon) ? ".svg" : ".png");
         image.alt = "";
         item.append(image);
         item.addEventListener("pointerdown", event => {selection(); event.preventDefault()});
@@ -106,7 +108,7 @@ export function commenteditor(entry, submit, section, posting = true) {
         toolbar.append(item);
     }
     for (const [label, icon, name] of [["Bold", "bold", "bold"], ["Italic", "italic", "italic"], ["Underline", "underline", "underline"], ["Strikethrough", "strikethrough", "strikeThrough"], ["Bullet list", "list", "insertUnorderedList"]]) control(label, icon, () => command(name));
-    for (const [label, icon, tag] of [["Heading 1", "h3", "h1"], ["Heading 2", "h4", "h2"], ["Heading 3", "h5", "h3"], ["Normal text", "text", "p"], ["Quote", "cite", "blockquote"], ["Code block", "code", "pre"]]) control(label, icon, () => command("formatBlock", tag));
+    for (const [label, icon, tag] of [["Heading 1", "h1", "h1"], ["Heading 2", "h2", "h2"], ["Heading 3", "h3", "h3"], ["Normal text", "text", "p"], ["Code block", "code", "pre"]]) control(label, icon, () => command("formatBlock", tag));
     control("Small text", "tiny", () => {
         command("formatBlock", "p");
         const node = getSelection().anchorNode;

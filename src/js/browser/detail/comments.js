@@ -1,3 +1,4 @@
+import {feather} from "/assets/static/js/controls/feather.js";
 import {creatorlink} from "../catalogue/creator.js";
 import {spinner} from "/assets/static/js/images/spinner.js";
 import {imageviewer} from "./inspection.js";
@@ -46,7 +47,19 @@ function attachment(file) {
         video.playsInline = true;
         video.preload = "metadata";
         video.setAttribute("aria-label", name);
-        return video;
+        const container = document.createElement("div");
+        container.className = "commentattachment commentvideowrap";
+        const expand = document.createElement("button");
+        expand.type = "button";
+        expand.className = "commentvideoopen clickable";
+        expand.setAttribute("aria-label", "Enlarge " + name);
+        const icon = document.createElement("img");
+        icon.src = "/assets/images/icons/search.svg";
+        icon.alt = "";
+        expand.append(icon);
+        expand.addEventListener("click", () => imageviewer(url.href, name, expand, null, "video"));
+        container.append(video, expand);
+        return container;
     }
     const label = document.createElement("span");
     label.className = "commentfilename";
@@ -86,6 +99,7 @@ export function comments(entry) {
     if (!writing.hidden) section.classList.add("commentwriting");
     thread.append(earlier, list, status);
     view.append(thread);
+    feather(thread);
     section.append(writing);
     const content = new WeakMap();
     const visibility = window.IntersectionObserver ? new IntersectionObserver(records => {

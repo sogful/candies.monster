@@ -15,14 +15,16 @@ export function inspection(entry) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function imageviewer(url, label, trigger, entry = null) {
+export function imageviewer(url, label, trigger, entry = null, type = "image") {
     const dialog = document.createElement("dialog");
     dialog.className = "levelinspection";
     dialog.classList.toggle("levelexport", Boolean(entry));
     dialog.setAttribute("aria-label", label);
     const viewport = document.createElement("div");
     viewport.className = "inspectionview";
-    const image = document.createElement(entry ? "canvas" : "img");
+    const video = !entry && type === "video";
+    const image = document.createElement(entry ? "canvas" : video ? "video" : "img");
+    if (video) {image.controls = true; image.playsInline = true; image.preload = "metadata"}
     image.className = "inspectionimage";
     image.alt = label;
     image.draggable = false;
@@ -52,6 +54,10 @@ export function imageviewer(url, label, trigger, entry = null) {
     let naturalheight = 0;
     let displaywidth = 0;
     let displayheight = 0;
+    let dragged = false;
+    let empty = true;
+    let startx = 0;
+    let starty = 0;
 
     function paint() {
         const limitx = Math.max(0, (displaywidth * scale - viewport.clientWidth) / 2) + viewport.clientWidth / 3;
@@ -74,7 +80,8 @@ export function imageviewer(url, label, trigger, entry = null) {
     }
 
     function zoom(value, pointx, pointy) {
-        const next = Math.max(1, Math.min(8, value));
+        if (!Number.isFinite(value) || value <= 0) return;
+        const next = value;
         const bounds = viewport.getBoundingClientRect();
         const localx = pointx - bounds.left - bounds.width / 2;
         const localy = pointy - bounds.top - bounds.height / 2;
@@ -88,6 +95,7 @@ export function imageviewer(url, label, trigger, entry = null) {
         if (closing) return;
         closing = true;
         controller.abort();
+        if (video) {image.pause(); image.removeAttribute("src"); image.load()}
         dialog.classList.remove("visible");
         setTimeout(() => {
             dialog.close();
@@ -96,14 +104,15 @@ export function imageviewer(url, label, trigger, entry = null) {
         }, 150);
     }
 
-    image.onload = () => {
+    const loaded = () => {
         if (closing) return;
-        naturalwidth = image.naturalWidth;
-        naturalheight = image.naturalHeight;
+        naturalwidth = video ? image.videoWidth : image.naturalWidth;
+        naturalheight = video ? image.videoHeight : image.naturalHeight;
         status.hidden = true;
         dialog.classList.add("ready");
         fit();
     };
+    image.addEventListener(video ? "loadedmetadata" : "load", loaded, options);
     image.onerror = () => {status.textContent = "could not load preview"};
     closebutton.addEventListener("click", close, options);
     dialog.addEventListener("cancel", event => {event.preventDefault(); close()}, options);
@@ -120,16 +129,21 @@ export function imageviewer(url, label, trigger, entry = null) {
         zoom(scale * Math.exp(-event.deltaY * 0.002), event.clientX, event.clientY);
     }, {...options, passive: false});
     viewport.addEventListener("dblclick", fit, options);
+    viewport.addEventListener("click", event => {if (event.target === viewport && !dragged && empty) close()}, options);
     viewport.addEventListener("pointerdown", event => {
         if (event.button !== 0) return;
+        if (video && event.target === image && event.offsetY >= image.clientHeight - 48) return;
+        if (!pointers.size) {dragged = false; empty = event.target === viewport; startx = event.clientX; starty = event.clientY}
         pointers.set(event.pointerId, {x: event.clientX, y: event.clientY});
         viewport.setPointerCapture(event.pointerId);
     }, options);
     viewport.addEventListener("pointermove", event => {
         const previous = pointers.get(event.pointerId);
         if (!previous) return;
+        if (Math.hypot(event.clientX - startx, event.clientY - starty) > 4) dragged = true;
         const other = [...pointers.entries()].find(([id]) => id !== event.pointerId)?.[1];
         if (other) {
+            dragged = true;
             const before = Math.hypot(previous.x - other.x, previous.y - other.y);
             const after = Math.hypot(event.clientX - other.x, event.clientY - other.y);
             x += (event.clientX - previous.x) / 2;

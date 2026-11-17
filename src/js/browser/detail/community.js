@@ -168,6 +168,8 @@ export function composer(entry, reload, section) {
             } catch (error) {status.textContent = error.message}
         });
         const input = button("Add a comment", "commentadd descbutton");
+        input.disabled = Boolean(entry.forum && entry.forum !== settings.forum);
+        if (input.disabled) input.title = "Comments are closed in archive forums";
         let nonce = "";
         let previous = "";
         input.addEventListener("click", async () => {

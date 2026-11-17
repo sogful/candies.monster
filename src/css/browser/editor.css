@@ -61,6 +61,9 @@
 }
 .editorcontent li {margin: 0}
 .editorcontent p, .editorcontent div {margin: 0}
+.editorcontent h1, .editorcontent h2, .editorcontent h3 {
+    margin: 0; line-height: 1.1;
+}
 .editorcontent a {color: #8feeff}
 .editorcontent s, .editorcontent strike, .editorcontent del,
 .editorcontent [style*="line-through"] {text-decoration-color: #fff}
@@ -131,4 +134,10 @@
     display: block; padding: 8px 32px 8px 8px;
     border-radius: 6px; background: rgba(0,0,0,0.35);
     overflow-wrap: anywhere;
+}
+
+.editorcontent u, .editorcontent [style*="underline"] {
+    text-decoration-line: underline; text-decoration-color: #fff;
+    text-decoration-thickness: 0.07em; text-underline-offset: 0.14em;
+    text-decoration-skip-ink: none;
 }
