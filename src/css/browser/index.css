@@ -313,4 +313,14 @@
     padding: 3px 6px 5px; box-sizing: border-box;
     border-radius: 0 0 11px 11px;
 }
-.levels {touch-action: pan-y}
+.levels {touch-action: pan-y pinch-zoom}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.pageswiping {overflow: hidden}
+.levels.pagepreview {
+    position: absolute; margin: 0;
+    pointer-events: none; overflow: hidden;
+    will-change: transform;
+}
+.levels.pageactive {will-change: transform}

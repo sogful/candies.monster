@@ -15,7 +15,37 @@ morestuff();
 const list = document.querySelector(".levels");
 const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
-pagegestures(list, previous, next);
+const gestures = pagegestures(list, previous, next, {
+    prepare(offset) {
+        const adjacent = document.createElement("div");
+        adjacent.className = "levels pagepreview";
+        adjacent.inert = true;
+        adjacent.setAttribute("aria-hidden", "true");
+        adjacent.style.setProperty("--columns", getComputedStyle(list).getPropertyValue("--columns"));
+        adjacent.style.left = list.offsetLeft + "px";
+        adjacent.style.top = list.offsetTop + "px";
+        adjacent.style.width = list.clientWidth + "px";
+        adjacent.style.height = list.clientHeight + "px";
+        adjacent.append(pagecontent(page + offset));
+        list.after(adjacent);
+        fitcards(adjacent);
+        return adjacent;
+    },
+    discard(adjacent) {
+        clearthumbnails(adjacent);
+        adjacent.remove();
+    },
+    commit(offset, adjacent, silent) {
+        if (!silent) {
+            const sound = document.querySelector(".click");
+            if (sound) {sound.currentTime = 0; void sound.play().catch(() => {})}
+        }
+        const content = document.createDocumentFragment();
+        content.append(...adjacent.childNodes);
+        adjacent.remove();
+        showpage(page + offset, "push", content);
+    }
+});
 const pagination = document.createElement("span");
 pagination.className = "levelpagination";
 pagination.setAttribute("role", "status");
@@ -122,8 +152,8 @@ function fitcard(card) {
     title.style.fontSize = Math.floor(low * 2) / 2 + "px";
 }
 
-function fitcards() {
-    for (const card of list.querySelectorAll(".level")) fitcard(card);
+function fitcards(container = list) {
+    for (const card of container.querySelectorAll(".level")) fitcard(card);
 }
 
 function saveposition() {
@@ -133,7 +163,19 @@ function saveposition() {
 list.addEventListener("scroll", saveposition, {passive: true});
 window.addEventListener("pagehide", saveposition, {capture: true});
 
-function showpage(number, write = "push") {
+function pagecontent(number) {
+    const content = document.createDocumentFragment();
+    for (const entry of visible.slice(number * pagesize, (number + 1) * pagesize)) content.append(createlevel(entry));
+    if (!visible.length) {
+        const empty = element("div", "levelempty");
+        empty.append(picture("/assets/images/omnom/404/404.gif", "", ""), element("p", "levelnotice", entries.length ? "no results :(" : "no levels yet"));
+        content.append(empty);
+    }
+    return content;
+}
+
+function showpage(number, write = "push", content) {
+    gestures.reset();
     saveposition();
     const pages = Math.max(1, Math.ceil(visible.length / pagesize));
     page = Math.max(0, Math.min(number, pages - 1));
@@ -146,15 +188,8 @@ function showpage(number, write = "push") {
     positionkey = location.pathname + location.search;
     document.dispatchEvent(new Event("levelpagechange"));
     hide();
-    clearthumbnails();
-    const content = document.createDocumentFragment();
-    for (const entry of visible.slice(page * pagesize, (page + 1) * pagesize)) content.append(createlevel(entry));
-    if (!visible.length) {
-        const empty = element("div", "levelempty");
-        empty.append(picture("/assets/images/omnom/404/404.gif", "", ""), element("p", "levelnotice", entries.length ? "no results :(" : "no levels yet"));
-        content.append(empty);
-    }
-    list.replaceChildren(content);
+    clearthumbnails(list);
+    list.replaceChildren(content || pagecontent(page));
     fitcards();
     list.scrollTop = 0;
     list.setAttribute("aria-label", `levels, page ${page + 1} of ${pages}`);
@@ -186,7 +221,7 @@ function layout() {
 if (window.ResizeObserver) new ResizeObserver(layout).observe(list);
 window.addEventListener("resize", layout, {passive: true});
 layout();
-document.fonts?.ready.then(fitcards);
+document.fonts?.ready.then(() => fitcards());
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -200,7 +235,7 @@ for (const [control, offset, sprite] of [[previous, -1, "up"], [next, 1, "down"]
             sound.currentTime = 0;
             void sound.play().catch(() => {});
         }
-        showpage(page + offset);
+        gestures.turn(offset, true);
     });
     control.addEventListener("pointerdown", event => {
         if (event.button !== 0 || control.disabled) return;

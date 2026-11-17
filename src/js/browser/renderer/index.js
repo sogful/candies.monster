@@ -124,8 +124,10 @@ export function thumbnail(entry) {
     return create(entry, false).canvas;
 }
 
-export function clearthumbnails() {
-    for (const record of records.values()) if (!record.detail) remove(record);
+export function clearthumbnails(container) {
+    for (const record of records.values()) {
+        if (!record.detail && (!container || container.contains(record.canvas))) remove(record);
+    }
 }
 
 export function scene(entry) {
