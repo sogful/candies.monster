@@ -121,9 +121,10 @@ def build(stage):
     executable = dotnet(source)
     run([executable, "run", "--project", "content/Builder", "--", "fetch"], source, timeout=1800)
     run([sys.executable, "scripts/build_web_content.py", "--skip-video", "--no-progress"], source, timeout=1800)
-    shutil.copy2(bundle / "tests/camera.cs", source / "src/CutTheRopeDX.Tests/previewcamera.cs")
-    run([executable, "run", "--project", "src/CutTheRopeDX.Tests/CutTheRopeDX.Tests.csproj",
-         "-c", "Release", "--", "-class", "CutTheRopeDX.Tests.previewcamera"], source, timeout=300)
+    for name, test in [("camera", "previewcamera"), ("stars", "previewstarcounts")]:
+        shutil.copy2(bundle / ("tests/" + name + ".cs"), source / ("src/CutTheRopeDX.Tests/preview" + name + ".cs"))
+        run([executable, "run", "--project", "src/CutTheRopeDX.Tests/CutTheRopeDX.Tests.csproj",
+             "-c", "Release", "--", "-class", "CutTheRopeDX.Tests." + test], source, timeout=300)
     run([executable, "publish", "src/CutTheRopeDX.Browser/CutTheRopeDX.Browser.csproj",
          "-c", "Release", "-p:CtrdxSingleThreaded=true", "-p:RunAOTCompilation=true",
          "-p:EnableDefaultCompressionFormats=false", "-p:DisableBuildCompression=true",

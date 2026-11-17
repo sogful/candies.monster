@@ -1399,8 +1399,178 @@ index 597afdd..68750f7 100644
              {
                  0 => Resources.Img.ObjCandy01New,
                  1 => Resources.Img.ObjCandy02,
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
+index 23a8e97..5320dac 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
+@@ -73,6 +73,10 @@ namespace CutTheRopeDX.GameMain
+         /// </summary>
+         public static GameControllerButtonId ToggleVoice => new(12);
+ 
++        public static GameControllerButtonId changeversion => new(13);
++
++        public static GameControllerButtonId editlevel => new(14);
++
+         /// <summary>
+         /// Converts a raw integer button value to a game-controller button identifier.
+         /// </summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
+index 159dea1..d0858cd 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
+@@ -186,16 +186,18 @@ namespace CutTheRopeDX.GameMain
+                 || parkedGhostBubble?.Bubble == bubbleObj;
+         }
+ 
+-        /// <summary>
+-        /// The point the camera follows: the primary candy's first active body, which is its left
+-        /// half while it is split and its whole body otherwise. Falls back to the whole body's point
+-        /// when the primary has no active body at all, so the camera never loses its target.
+-        /// </summary>
+-        /// <returns>The camera's focus point.</returns>
+         private ConstrainedPoint CameraFocusPoint()
+         {
+-            IReadOnlyList<CandyBody> primaryBodies = candies[0].Lifecycle.ActiveBodies;
+-            return primaryBodies.Count > 0 ? primaryBodies[0].Point : candies[0].WholeBody.Point;
++            foreach (CandyContext candy in candies)
++            {
++                if (candy.Lifecycle.Presence == CandyPresence.Removed)
++                {
++                    continue;
++                }
++                IReadOnlyList<CandyBody> bodies = candy.Lifecycle.ActiveBodies;
++                return bodies.Count > 0 ? bodies[0].Point : candy.WholeBody.Point;
++            }
++            return candies[0].WholeBody.Point;
+         }
+ 
+         private bool IsSpiderGrabbableCandyPoint(ConstrainedPoint point)
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
+index 0961f52..bb4a326 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
+@@ -1796,8 +1796,8 @@ namespace CutTheRopeDX.GameMain
+         private void UpdateCameraTracking(float delta)
+         {
+             ConstrainedPoint focusPoint = CameraFocusPoint();
+-            float targetCameraX = focusPoint.pos.X - (SCREEN_WIDTH / 2f);
+-            float targetCameraY = focusPoint.pos.Y - (SCREEN_HEIGHT / 2f);
++            float targetCameraX = focusPoint.pos.X - ((CustomLevelSession.IsActive ? cameraWindow.w : SCREEN_WIDTH) / 2f);
++            float targetCameraY = focusPoint.pos.Y - ((CustomLevelSession.IsActive ? cameraWindow.h : SCREEN_HEIGHT) / 2f);
+             Vector boundedCamera = BoundedCameraPosition(targetCameraX, targetCameraY);
+             float boundedCameraX = boundedCamera.X;
+             float boundedCameraY = boundedCamera.Y;
+diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
+index 3f5f05f..de0bfa3 100644
+--- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
++++ b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
+@@ -58,6 +58,7 @@ namespace CutTheRopeDX.GameMain
+         /// <returns>The candidate music resource names, empty when the pack names none.</returns>
+         public static string[] Game(int pack)
+         {
++            if (CustomLevelSession.IsActive) return [Resources.Music.GameMusic];
+             MusicOverride active = ActiveOverride();
+             if (active?.Game != null)
+             {
+@@ -87,6 +88,7 @@ namespace CutTheRopeDX.GameMain
+         /// </summary>
+         public static void PlayMenuMusic()
+         {
++            if (CustomLevelSession.IsActive) return;
+             SoundMgr.PlayMusic(Menu());
+         }
+ 
+diff --git a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
+index 0fa574a..1335a82 100644
+--- a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
++++ b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
+@@ -234,6 +234,13 @@ namespace CutTheRopeDX.GameMain
+             return pack >= 0 && pack < packs.Count ? packs[pack].SaveSlot : 0;
+         }
+ 
++        private static int? backgroundoverride;
++
++        public static void setbackgroundpackoverride(int? pack)
++        {
++            backgroundoverride = pack;
++        }
++
+         /// <summary>
+         /// Gets the background resource names for a pack.
+         /// </summary>
+@@ -241,7 +248,8 @@ namespace CutTheRopeDX.GameMain
+         /// <returns>The pack background resource names, or the empty resource sentinel when <paramref name="pack"/> is out of range.</returns>
+         public static string[] GetBoxBackgrounds(int pack)
+         {
+-            return pack >= 0 && pack < packs.Count ? packs[pack].BoxBackgrounds : EmptyResourceNames;
++            int effectivepack = backgroundoverride ?? pack;
++            return effectivepack >= 0 && effectivepack < packs.Count ? packs[effectivepack].BoxBackgrounds : EmptyResourceNames;
+         }
+ 
+         /// <summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
+index b36d49e..99d8739 100644
+--- a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
++++ b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
+@@ -29,7 +29,14 @@ namespace CutTheRopeDX.GameMain
+         /// Gets a value indicating whether the Christmas event period is active.
+         /// Includes December and January.
+         /// </summary>
+-        public static bool IsXmas => Today.Month is 12 or 1;
++        private static bool? xmasoverride;
++
++        public static void setxmasoverride(bool? value)
++        {
++            xmasoverride = value;
++        }
++
++        public static bool IsXmas => xmasoverride ?? (Today.Month is 12 or 1);
+ 
+         #endregion
+ 
+diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
+index 60322f2..17ef0aa 100644
+--- a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
++++ b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
+@@ -780,8 +780,8 @@ namespace CutTheRopeDX.Rendering.Skia
+             {
+                 FlushQuads();
+                 _batchTexture = _boundTexture;
+-                _batchTextureWidth = _boundTexture?.Width ?? 1f;
+-                _batchTextureHeight = _boundTexture?.Height ?? 1f;
++                _batchTextureWidth = _boundTexture?.Image.Width ?? 1f;
++                _batchTextureHeight = _boundTexture?.Image.Height ?? 1f;
+                 _batchBlendMode = EffectiveBlendMode;
+                 _batchWeightsSourceByAlpha = WeightsSourceByAlpha;
+             }
+diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
+index 8b4234d..dc104c1 100644
+--- a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
++++ b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
+@@ -10,7 +10,7 @@ namespace CutTheRopeDX.Rendering.Skia
+     /// The device generation that uploaded the image, from <see cref="SkiaResourceRegistry"/>.
+     /// Left device-independent when nothing is tracking losses.
+     /// </param>
+-    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent) : ITextureHandle
++    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent, int logicalwidth = 0, int logicalheight = 0) : ITextureHandle
+     {
+         /// <summary>
+         /// Rewrites a color to opaque grey carrying its own alpha, so multiplying a texture by it
+@@ -48,10 +48,10 @@ namespace CutTheRopeDX.Rendering.Skia
+         public int Generation { get; } = generation;
+ 
+         /// <inheritdoc />
+-        public int Width => Image.Width;
++        public int Width => logicalwidth > 0 ? logicalwidth : Image.Width;
+ 
+         /// <inheritdoc />
+-        public int Height => Image.Height;
++        public int Height => logicalheight > 0 ? logicalheight : Image.Height;
+ 
+         /// <summary>
+         /// The shader a batch samples this texture through, optionally weighted by the texture's
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameController.cs b/src/CutTheRopeDX.Core/GameMain/GameController.cs
-index bc8a2d7..94d627e 100644
+index bc8a2d7..a5ef51c 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameController.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameController.cs
 @@ -18,6 +18,39 @@ namespace CutTheRopeDX.GameMain
@@ -1537,10 +1707,23 @@ index bc8a2d7..94d627e 100644
              }
              _ = gameView.AddChildwithID(image, 3);
  
-@@ -367,6 +418,18 @@ namespace CutTheRopeDX.GameMain
+@@ -363,17 +414,25 @@ namespace CutTheRopeDX.GameMain
+             //RootController.SetHacked();
+             //}
+             SoundMgr.PlaySound(Resources.Snd.Win);
+-            ExperimentsVoice.LevelWon(result.StarsCollected);
              View view = GetView(0);
              GameScene gameScene = (GameScene)view.GetChild(0);
++            int grade = previewstars.grade(result.StarsCollected, gameScene.previewtotalstars);
++            ExperimentsVoice.LevelWon(grade);
              BoxOpenClose boxOpenClose = (BoxOpenClose)view.GetChild(4);
+-            Image star1 = (Image)boxOpenClose.result.GetChildWithName("star1");
+-            Image star2 = (Image)boxOpenClose.result.GetChildWithName("star2");
+-            Image star3 = (Image)boxOpenClose.result.GetChildWithName("star3");
+-            star1.SetDrawQuad(result.StarsCollected > 0 ? 13 : 14);
+-            star2.SetDrawQuad(result.StarsCollected > 1 ? 13 : 14);
+-            star3.SetDrawQuad(result.StarsCollected > 2 ? 13 : 14);
+-            string clearText = result.StarsCollected switch
 +            previewbest = Math.Max(previewbest, result.FinalScore);
 +            if (CustomLevelSession.IsActive && PlatformServices.Host?.previeweditor == true)
 +            {
@@ -1553,10 +1736,21 @@ index bc8a2d7..94d627e 100644
 +                EnterOverlayMode(GameControllerOverlayMode.Gameplay);
 +                return;
 +            }
-             Image star1 = (Image)boxOpenClose.result.GetChildWithName("star1");
-             Image star2 = (Image)boxOpenClose.result.GetChildWithName("star2");
-             Image star3 = (Image)boxOpenClose.result.GetChildWithName("star3");
-@@ -524,6 +587,30 @@ namespace CutTheRopeDX.GameMain
++            boxOpenClose.previewstarcount(result.StarsCollected, gameScene.previewtotalstars);
++            string clearText = grade switch
+             {
+                 1 => "LEVEL_CLEARED2",
+                 2 => "LEVEL_CLEARED3",
+@@ -404,7 +463,7 @@ namespace CutTheRopeDX.GameMain
+                     boxOpenClose.shouldShowImprovedResult = true;
+                 }
+             }
+-            boxOpenClose.shouldShowConfetti = result.StarsCollected == 3;
++            boxOpenClose.shouldShowConfetti = grade == 3;
+             boxOpenClose.delegateboxClosed = () =>
+             {
+                 // Freeze the game scene a bit after the door closing animation finishes
+@@ -524,6 +583,30 @@ namespace CutTheRopeDX.GameMain
              View view = GetView(0);
              switch (n)
              {
@@ -1587,7 +1781,7 @@ index bc8a2d7..94d627e 100644
                  case var id when id == GameControllerButtonId.Restart:
                      GameScene restartScene = (GameScene)view.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
                      if (overlayMode != GameControllerOverlayMode.Gameplay
-@@ -596,33 +683,11 @@ namespace CutTheRopeDX.GameMain
+@@ -596,33 +679,11 @@ namespace CutTheRopeDX.GameMain
                      ExperimentsVoice.Toggle();
                      return;
                  case var id when id == GameControllerButtonId.ToggleMusic:
@@ -1625,7 +1819,7 @@ index bc8a2d7..94d627e 100644
                  default:
                      return;
              }
-@@ -637,6 +702,50 @@ namespace CutTheRopeDX.GameMain
+@@ -637,6 +698,50 @@ namespace CutTheRopeDX.GameMain
              RootController.LogEvent(n != GameControllerButtonId.ExitFromLose ? "IG_REPLAY_PRESSED" : "LC_REPLAY_PRESSED");
          }
  
@@ -1676,7 +1870,7 @@ index bc8a2d7..94d627e 100644
          /// <summary>Resolves an input source against the authoritative controller and level-flow state.</summary>
          /// <param name="input">Input source to resolve.</param>
          /// <returns>The semantic command allowed in the current state.</returns>
-@@ -784,7 +893,7 @@ namespace CutTheRopeDX.GameMain
+@@ -784,7 +889,7 @@ namespace CutTheRopeDX.GameMain
              }
              else if (CustomLevelSession.IsActive)
              {
@@ -1685,7 +1879,7 @@ index bc8a2d7..94d627e 100644
              }
              else
              {
-@@ -1264,6 +1373,8 @@ namespace CutTheRopeDX.GameMain
+@@ -1264,6 +1369,8 @@ namespace CutTheRopeDX.GameMain
  
          /// <summary>Pause-menu label that displays the active map or best score.</summary>
          private Text mapNameLabel;
@@ -1694,57 +1888,24 @@ index bc8a2d7..94d627e 100644
  
          /// <summary>The plate the pause menu is drawn on; the best-score label hangs off its edge.</summary>
          private Image pauseMenuPlate;
-diff --git a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
-index 23a8e97..5320dac 100644
---- a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
-@@ -73,6 +73,10 @@ namespace CutTheRopeDX.GameMain
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Initialize.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Initialize.cs
+index e1157ea..7895482 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.Initialize.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Initialize.cs
+@@ -301,7 +301,7 @@ namespace CutTheRopeDX.GameMain
          /// </summary>
-         public static GameControllerButtonId ToggleVoice => new(12);
- 
-+        public static GameControllerButtonId changeversion => new(13);
-+
-+        public static GameControllerButtonId editlevel => new(14);
-+
-         /// <summary>
-         /// Converts a raw integer button value to a game-controller button identifier.
-         /// </summary>
-diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
-index 159dea1..d0858cd 100644
---- a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
-@@ -186,16 +186,18 @@ namespace CutTheRopeDX.GameMain
-                 || parkedGhostBubble?.Bubble == bubbleObj;
-         }
- 
--        /// <summary>
--        /// The point the camera follows: the primary candy's first active body, which is its left
--        /// half while it is split and its whole body otherwise. Falls back to the whole body's point
--        /// when the primary has no active body at all, so the camera never loses its target.
--        /// </summary>
--        /// <returns>The camera's focus point.</returns>
-         private ConstrainedPoint CameraFocusPoint()
+         private void InitializeHUDStars()
          {
--            IReadOnlyList<CandyBody> primaryBodies = candies[0].Lifecycle.ActiveBodies;
--            return primaryBodies.Count > 0 ? primaryBodies[0].Point : candies[0].WholeBody.Point;
-+            foreach (CandyContext candy in candies)
-+            {
-+                if (candy.Lifecycle.Presence == CandyPresence.Removed)
-+                {
-+                    continue;
-+                }
-+                IReadOnlyList<CandyBody> bodies = candy.Lifecycle.ActiveBodies;
-+                return bodies.Count > 0 ? bodies[0].Point : candy.WholeBody.Point;
-+            }
-+            return candies[0].WholeBody.Point;
-         }
- 
-         private bool IsSpiderGrabbableCandyPoint(ConstrainedPoint point)
+-            for (int i = 0; i < 3; i++)
++            for (int i = 0; i < hudStar.Length; i++)
+             {
+                 Timeline currentTimeline = hudStar[i].GetCurrentTimeline();
+                 currentTimeline?.StopTimeline();
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
-index a5bcdcd..601a2aa 100644
+index a5bcdcd..e313b6d 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Show.cs
-@@ -30,6 +30,7 @@ namespace CutTheRopeDX.GameMain
+@@ -30,10 +30,13 @@ namespace CutTheRopeDX.GameMain
              LoadAllLevelMetadata(map, mapScale, mapOffsetY, out float mapOffsetX, out int mapGridOffsetX, out int mapGridOffsetY);
              mapOriginX = mapOffsetX + mapGridOffsetX;
              mapOriginY = mapOffsetY + mapGridOffsetY;
@@ -1752,7 +1913,13 @@ index a5bcdcd..601a2aa 100644
  
              // Load all game objects from XML
              LoadObjectsFromMap(map, mapScale, mapOffsetX, mapOffsetY, mapGridOffsetX, mapGridOffsetY);
-@@ -164,12 +165,47 @@ namespace CutTheRopeDX.GameMain
+ 
++            previewstarcount(stars.Count);
++
+             // Claim candies that start inside a claw before a taut authored rope gets its first
+             // constraint pass. The normal hand update still owns all later catches and releases.
+             UpdateHands(0f);
+@@ -164,12 +167,47 @@ namespace CutTheRopeDX.GameMain
              return string.IsNullOrWhiteSpace(levelName) ? null : Application.GetString(levelName);
          }
  
@@ -1800,7 +1967,7 @@ index a5bcdcd..601a2aa 100644
              if (CameraCanTravel(snapshot))
              {
                  ignoreTouches = true;
-@@ -186,14 +222,14 @@ namespace CutTheRopeDX.GameMain
+@@ -186,14 +224,14 @@ namespace CutTheRopeDX.GameMain
                  Rectangle range = CameraTrackingRange();
                  float cameraStartX;
                  float cameraStartY;
@@ -1818,7 +1985,7 @@ index a5bcdcd..601a2aa 100644
                  {
                      cameraStartX = range.x;
                      cameraStartY = range.y;
-@@ -204,8 +240,8 @@ namespace CutTheRopeDX.GameMain
+@@ -204,8 +242,8 @@ namespace CutTheRopeDX.GameMain
                      cameraStartY = range.y + range.h;
                  }
                  Vector boundedCamera = BoundedCameraPosition(
@@ -1829,25 +1996,23 @@ index a5bcdcd..601a2aa 100644
  
                  // Seat the tracked position at the authored start point and let the fit derive the
                  // rest from it, the way every later frame does.
-diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
-index 0961f52..bb4a326 100644
---- a/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Update.cs
-@@ -1796,8 +1796,8 @@ namespace CutTheRopeDX.GameMain
-         private void UpdateCameraTracking(float delta)
-         {
-             ConstrainedPoint focusPoint = CameraFocusPoint();
--            float targetCameraX = focusPoint.pos.X - (SCREEN_WIDTH / 2f);
--            float targetCameraY = focusPoint.pos.Y - (SCREEN_HEIGHT / 2f);
-+            float targetCameraX = focusPoint.pos.X - ((CustomLevelSession.IsActive ? cameraWindow.w : SCREEN_WIDTH) / 2f);
-+            float targetCameraY = focusPoint.pos.Y - ((CustomLevelSession.IsActive ? cameraWindow.h : SCREEN_HEIGHT) / 2f);
-             Vector boundedCamera = BoundedCameraPosition(targetCameraX, targetCameraY);
-             float boundedCameraX = boundedCamera.X;
-             float boundedCameraY = boundedCamera.Y;
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
-index 7c34873..0ad0914 100644
+index 7c34873..0536303 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
+@@ -290,10 +290,10 @@ namespace CutTheRopeDX.GameMain
+         /// </remarks>
+         public void RelayoutHud()
+         {
+-            float hudScale = ContentScale;
++            float hudScale = Math.Min(ContentScale, SCREEN_WIDTH * 0.65f / Math.Max(1, hudStar.Length * hudStarSlotWidth));
+             PlaceLevelLabel();
+ 
+-            for (int i = 0; i < 3; i++)
++            for (int i = 0; i < hudStar.Length; i++)
+             {
+                 hudStar[i].x = ((hudStarSlotWidth * i) + (hudStarSlotWidth / 2)) * hudScale;
+                 hudStar[i].y = hudStarSlotHeight / 2f * hudScale;
 @@ -418,13 +418,21 @@ namespace CutTheRopeDX.GameMain
          /// position that shows the whole level on that axis.
          /// </remarks>
@@ -1895,112 +2060,12 @@ index 7c34873..0ad0914 100644
                  cameraWindow.w,
                  cameraWindow.h);
  
-diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
-index 3f5f05f..de0bfa3 100644
---- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
-@@ -58,6 +58,7 @@ namespace CutTheRopeDX.GameMain
-         /// <returns>The candidate music resource names, empty when the pack names none.</returns>
-         public static string[] Game(int pack)
-         {
-+            if (CustomLevelSession.IsActive) return [Resources.Music.GameMusic];
-             MusicOverride active = ActiveOverride();
-             if (active?.Game != null)
-             {
-@@ -87,6 +88,7 @@ namespace CutTheRopeDX.GameMain
+@@ -1300,7 +1310,7 @@ namespace CutTheRopeDX.GameMain
+         /// <summary>
+         /// The HUD star animations that show collected stars.
          /// </summary>
-         public static void PlayMenuMusic()
-         {
-+            if (CustomLevelSession.IsActive) return;
-             SoundMgr.PlayMusic(Menu());
-         }
- 
-diff --git a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
-index 0fa574a..1335a82 100644
---- a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
-@@ -234,6 +234,13 @@ namespace CutTheRopeDX.GameMain
-             return pack >= 0 && pack < packs.Count ? packs[pack].SaveSlot : 0;
-         }
- 
-+        private static int? backgroundoverride;
-+
-+        public static void setbackgroundpackoverride(int? pack)
-+        {
-+            backgroundoverride = pack;
-+        }
-+
-         /// <summary>
-         /// Gets the background resource names for a pack.
-         /// </summary>
-@@ -241,7 +248,8 @@ namespace CutTheRopeDX.GameMain
-         /// <returns>The pack background resource names, or the empty resource sentinel when <paramref name="pack"/> is out of range.</returns>
-         public static string[] GetBoxBackgrounds(int pack)
-         {
--            return pack >= 0 && pack < packs.Count ? packs[pack].BoxBackgrounds : EmptyResourceNames;
-+            int effectivepack = backgroundoverride ?? pack;
-+            return effectivepack >= 0 && effectivepack < packs.Count ? packs[effectivepack].BoxBackgrounds : EmptyResourceNames;
-         }
+-        private readonly Animation[] hudStar = new Animation[3];
++        private Animation[] hudStar = new Animation[3];
  
          /// <summary>
-diff --git a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
-index b36d49e..99d8739 100644
---- a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
-@@ -29,7 +29,14 @@ namespace CutTheRopeDX.GameMain
-         /// Gets a value indicating whether the Christmas event period is active.
-         /// Includes December and January.
-         /// </summary>
--        public static bool IsXmas => Today.Month is 12 or 1;
-+        private static bool? xmasoverride;
-+
-+        public static void setxmasoverride(bool? value)
-+        {
-+            xmasoverride = value;
-+        }
-+
-+        public static bool IsXmas => xmasoverride ?? (Today.Month is 12 or 1);
- 
-         #endregion
- 
-diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
-index 60322f2..17ef0aa 100644
---- a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
-+++ b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
-@@ -780,8 +780,8 @@ namespace CutTheRopeDX.Rendering.Skia
-             {
-                 FlushQuads();
-                 _batchTexture = _boundTexture;
--                _batchTextureWidth = _boundTexture?.Width ?? 1f;
--                _batchTextureHeight = _boundTexture?.Height ?? 1f;
-+                _batchTextureWidth = _boundTexture?.Image.Width ?? 1f;
-+                _batchTextureHeight = _boundTexture?.Image.Height ?? 1f;
-                 _batchBlendMode = EffectiveBlendMode;
-                 _batchWeightsSourceByAlpha = WeightsSourceByAlpha;
-             }
-diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
-index 8b4234d..dc104c1 100644
---- a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
-+++ b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
-@@ -10,7 +10,7 @@ namespace CutTheRopeDX.Rendering.Skia
-     /// The device generation that uploaded the image, from <see cref="SkiaResourceRegistry"/>.
-     /// Left device-independent when nothing is tracking losses.
-     /// </param>
--    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent) : ITextureHandle
-+    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent, int logicalwidth = 0, int logicalheight = 0) : ITextureHandle
-     {
-         /// <summary>
-         /// Rewrites a color to opaque grey carrying its own alpha, so multiplying a texture by it
-@@ -48,10 +48,10 @@ namespace CutTheRopeDX.Rendering.Skia
-         public int Generation { get; } = generation;
- 
-         /// <inheritdoc />
--        public int Width => Image.Width;
-+        public int Width => logicalwidth > 0 ? logicalwidth : Image.Width;
- 
-         /// <inheritdoc />
--        public int Height => Image.Height;
-+        public int Height => logicalheight > 0 ? logicalheight : Image.Height;
- 
-         /// <summary>
-         /// The shader a batch samples this texture through, optionally weighted by the texture's
+         /// Width of one slot in the HUD star row, taken from the empty star frame.
