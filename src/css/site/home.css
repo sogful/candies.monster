@@ -148,8 +148,8 @@
 }
 
 .sidebartoggle {
-    position: absolute; bottom: 0;
-    left: 68px; z-index: 6;
+    position: absolute; top: 0;
+    left: 0; z-index: 6;
     display: grid; place-items: center;
     width: 20px; height: 24px;
     padding: 0; border: 0;
@@ -257,15 +257,15 @@
         margin-left: 0; margin-top: -76px;
     }
     .sidebartoggle {
-        top: 58px; bottom: auto;
-        left: auto; right: 0;
+        top: 0; bottom: auto;
+        left: 0; right: auto;
         width: 24px; height: 18px;
         padding: 0; border-radius: 8px 0 0;
         transition: top 260ms ease;
     }
     .sidebartoggle img {transform: rotate(90deg)}
     .navigationhidden .sidebartoggle {
-        top: 0; left: auto;
+        top: 0; left: 0;
         border-radius: 0 0 100% 100%;
     }
     .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}

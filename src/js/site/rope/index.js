@@ -11,7 +11,7 @@ export function morestuff() {
     root.prepend(canvas);
     const context = canvas.getContext("2d");
     const rope = strand();
-    const hang = 16;
+    const hang = 10;
     const lift = {value: 0, velocity: 0};
     const sway = {value: 0, velocity: 0};
     const shade = document.createElement("div");
