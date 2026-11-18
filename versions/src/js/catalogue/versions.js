@@ -165,7 +165,7 @@ export function versionpanel(version, fallback, legacy, game, index) {
         <a class="versionicon clickable" href="${downloadattribute(resolverawiconpath(source))}" target="_blank" rel="noopener" aria-label="open original icon for ${downloadattribute(version.version)}">
             <img src="${icon}" srcset="${srcset}" alt="" draggable="false" loading="lazy" decoding="async" width="60" height="60"${historical ? ` data-legacyversion="${version.version}"` : ""}>
         </a>
-            <div class="version">${downloadattribute(version.version)}</div>
+            <div class="version" style="--versionlength:${version.version.length}">${downloadattribute(version.version)}</div>
         </div>
         <div class="versioninfo">
             ${version.details && !version.downloads.length ? `<div class="details">${downloadattribute(version.details)}</div>` : ""}
