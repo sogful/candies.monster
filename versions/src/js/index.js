@@ -309,6 +309,7 @@ async function restoreview(route) {
         if (request !== navigation) return;
         prepareplatform(platform);
         if (route.search && !route.game) {
+            container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
             document.documentElement.classList.remove("routepending");
             await search.restore(route.search);
             return;
@@ -339,10 +340,17 @@ async function restoreview(route) {
 const links = startlinks(restoreview);
 search = startsearch({
     platforms,
+    selected: () => activeplatform.name,
+    select: name => {
+        const platform = platforms.find(item => item.name === name);
+        activateplatform(platform, false, false);
+        container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
+    },
     ready: async () => {
         const platform = activeplatform;
         await fetchplatform(platform);
         mountplatform(platform);
+        if (platform.error) throw platform.error;
         return platform;
     },
     close: () => {

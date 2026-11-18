@@ -473,6 +473,7 @@
     <link rel="stylesheet" href="src/css/layout.css">
     <link rel="stylesheet" href="src/css/fonts.css">
     <link rel="stylesheet" href="src/css/search.css">
+    <link rel="stylesheet" href="/assets/static/css/buttons.css">
     <script src="/assets/static/js/text/fonts.js"></script>
     <link rel="stylesheet" href="/assets/static/css/back.css">
     <script defer src="/assets/static/js/back.js"></script>
@@ -490,6 +491,10 @@
         </button>
     </form>
     <section class="searchresults" hidden>
+        <div class="searchplatforms" role="group" aria-label="Search platform">
+            <button class="searchplatform buttonart clickable" type="button" data-platform="android" aria-pressed="false">Android</button>
+            <button class="searchplatform buttonart clickable" type="button" data-platform="ios" aria-pressed="false">iOS</button>
+        </div>
         <div class="searchstatus" role="status" aria-live="polite"></div>
         <div class="searchempty" hidden>
             <img src="/assets/images/omnom/404/404.gif" alt="" width="160" height="160" draggable="false" loading="lazy" decoding="async">

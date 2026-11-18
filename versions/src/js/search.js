@@ -13,6 +13,7 @@ export function startsearch(options) {
     const clear = form.querySelector(".searchclear");
     const list = screen.querySelector(".searchmatches");
     const more = screen.querySelector(".searchmore");
+    const platforms = [...screen.querySelectorAll(".searchplatform")];
     const columns = new Map();
     let shown = false;
     let request = 0;
@@ -43,6 +44,7 @@ export function startsearch(options) {
         const link = document.createElement("a");
         link.className = "searchjump clickable";
         link.href = routehash(route);
+        link.draggable = false;
         link.textContent = text;
         return link;
     }
@@ -112,6 +114,17 @@ export function startsearch(options) {
         document.querySelector(".backbutton").classList.add("active");
         if (write) options.write(query, replace);
         const current = ++request;
+        for (const button of platforms) {
+            const selected = button.dataset.platform === options.selected();
+            button.setAttribute("aria-pressed", String(selected));
+            button.classList.toggle("gold", selected);
+        }
+        entries = [];
+        offset = 0;
+        columns.clear();
+        list.replaceChildren();
+        more.hidden = true;
+        screen.scrollTop = 0;
         status.textContent = "Searching...";
         try {
             const platform = await options.ready();
@@ -122,10 +135,6 @@ export function startsearch(options) {
                 {...result, version: null},
                 ...result.versions.map(version => ({record: result.record, ...version}))
             ]);
-            offset = 0;
-            columns.clear();
-            list.replaceChildren();
-            screen.scrollTop = 0;
             const versions = found.results.reduce((count, result) => count + result.versions.length, 0);
             const games = found.results.length;
             status.textContent = games ? `${games} ${games === 1 ? "game" : "games"}, ${versions} ${versions === 1 ? "version" : "versions"}` : "";
@@ -139,6 +148,15 @@ export function startsearch(options) {
     }
 
     /*//////////////////////////////////////////////////////////////////////*/
+
+    for (const button of platforms) {
+        button.addEventListener("click", () => {
+            if (button.dataset.platform === options.selected()) return;
+            cancelAnimationFrame(frame);
+            options.select(button.dataset.platform);
+            void run();
+        });
+    }
 
     input.addEventListener("input", event => {
         if (event.isComposing) return;
@@ -162,6 +180,7 @@ export function startsearch(options) {
         const link = event.target.closest?.(".searchjump");
         if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
+        if (!getSelection().isCollapsed) return;
         hide(false);
         void options.open(readhash(link.hash));
     });

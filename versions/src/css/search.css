@@ -66,6 +66,21 @@
 
 .searchopen .archiveinfo, .searchopen .scrollnav {display: none !important}
 
+.searchplatforms {
+    display: flex; gap: 0.3em;
+    margin-bottom: 0.35em;
+}
+
+.searchplatform {
+    --buttonvertical: 15px; --buttonhorizontal: 26px;
+    min-width: 5em; min-height: 31px;
+    padding: 0.25em 0.75em; border: 0;
+    background: transparent; color: #fff;
+    font: inherit; cursor: url("/assets/images/cursors/link.cur"), pointer;
+    -webkit-text-stroke: 0.15em #000; paint-order: stroke fill;
+    text-shadow: 0 0.12em 0 #000;
+}
+
 .searchstatus, .searchempty {
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.15em 0 #000;
@@ -88,6 +103,7 @@
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 0.5em; text-align: center;
+    pointer-events: none;
 }
 
 .searchempty[hidden] {display: none}
