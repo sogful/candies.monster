@@ -5,7 +5,9 @@
     <script>
         (() => {
             const view = location.hash.slice(1).toLowerCase();
-            if (new URLSearchParams(location.search).get("old") === "1" && !view) document.documentElement.classList.add("oldhome");
+            let old = false;
+            try {old = localStorage.getItem("homeversion") === "old"} catch {}
+            if (old && !view) document.documentElement.classList.add("oldhome");
             if (/^\d+$/.test(view) || /^level\/\d+$/.test(view)) {
                 document.documentElement.classList.add("levelopen");
                 document.documentElement.style.setProperty("--levelbackground", "url(/assets/images/level/box1.webp)");

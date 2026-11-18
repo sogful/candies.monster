@@ -1,12 +1,17 @@
-const old = new URLSearchParams(location.search).get("old") === "1";
+let old = false;
+try {old = localStorage.getItem("homeversion") === "old"} catch {}
 const footer = document.querySelector(".sidelinks");
 const switcher = document.createElement("a");
-const destination = new URL(location.href);
-if (old) destination.searchParams.delete("old");
-else destination.searchParams.set("old", "1");
-destination.hash = "";
-switcher.href = destination.pathname + destination.search;
+switcher.href = location.pathname;
 switcher.textContent = old ? "new" : "old";
+switcher.addEventListener("click", event => {
+    event.preventDefault();
+    try {localStorage.setItem("homeversion", old ? "new" : "old")} catch {}
+    const destination = new URL(location.href);
+    destination.searchParams.delete("old");
+    destination.hash = "";
+    location.replace(destination.href);
+});
 footer.append(switcher);
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -23,7 +28,11 @@ if (old) {
     label.className = "buttonlabel";
     label.textContent = "levels";
     levels.append(image, label);
-    document.querySelector(".bignav").prepend(levels);
+    const buttons = document.querySelector(".bignav");
+    buttons.append(levels);
+    const music = document.querySelector('.smallnav a[href="/music/"]');
+    const smallbuttons = document.querySelector(".smallnav");
+    const musicnext = music?.nextSibling;
     const back = document.createElement("a");
     back.className = "legacyback clickable";
     back.href = "#";
@@ -36,8 +45,13 @@ if (old) {
     function render() {
         const home = !location.hash || location.hash === "#";
         document.documentElement.classList.toggle("oldhome", home);
+        if (music) {
+            if (home) buttons.querySelector("a[href^='/versions']")?.after(music);
+            else smallbuttons.insertBefore(music, musicnext);
+        }
         back.hidden = !location.hash.startsWith("#levels");
-        logo.src = home ? "/assets/images/branding/logo.webp" : "/assets/images/branding/logotiny.webp";
+        document.querySelector(".buttondrawer").hidden = !home;
+        logo.src = home ? "/assets/images/branding/logo.svg" : "/assets/images/branding/logotiny.webp";
         window.dispatchEvent(new Event("resize"));
     }
     window.addEventListener("hashchange", render);

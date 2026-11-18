@@ -41,6 +41,11 @@ const drawer = document.querySelector(".buttondrawer");
 
 function positionbuttons() {
     if (drawer.hidden) return;
+    if (document.documentElement.classList.contains("oldhome")) {
+        drawer.style.removeProperty("left");
+        drawer.style.removeProperty("top");
+        return;
+    }
     const bounds = buttonstoggle.getBoundingClientRect();
     const side = navigation.getBoundingClientRect();
     drawer.style.left = Math.max(4, Math.min(side.right, innerWidth - drawer.offsetWidth - 4)) + "px";
