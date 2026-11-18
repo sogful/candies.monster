@@ -326,3 +326,9 @@
     will-change: transform;
 }
 .levels.pageactive {will-change: transform}
+
+@media (min-width: 901px) {
+    html:not(.oldmode) .level .title {font-size: clamp(18px,7cqw,33px)}
+    html:not(.oldmode) .level .creator {font-size: clamp(14px,5cqw,22px)}
+    html:not(.oldmode) .level .footer {font-size: 22px}
+}

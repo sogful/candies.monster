@@ -305,7 +305,8 @@ function layout() {
     if (signature === dimensions) return;
     dimensions = signature;
     const gap = Number.parseFloat(getComputedStyle(list).columnGap) || 0;
-    const columns = innerWidth < 320 ? 1 : Math.max(2, Math.floor((width + gap) / 260));
+    const targetwidth = Number.parseFloat(getComputedStyle(list).getPropertyValue("--cardwidth")) || 260;
+    const columns = innerWidth < 320 ? 1 : Math.max(2, Math.floor((width + gap) / targetwidth));
     const cardwidth = (width - gap * (columns - 1)) / columns;
     const rows = Math.max(1, Math.floor((height - 12 + gap) / (cardwidth * 9 / 16 + gap)));
     const capacity = rows * columns;

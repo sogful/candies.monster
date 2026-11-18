@@ -75,13 +75,24 @@ export function filters(changed) {
     const candy = candyfilters(() => {lastrow = "candy"; apply()});
     const contests = contestfilters(() => {lastrow = "contests"; apply()});
     const unavailable = new Set();
-    for (const [key, label] of [["recent", "Recent"], ["rating", "Liked"], ["plays", "Popular"], ["played", "Played"]]) {
+    for (const [key, label, artwork] of [
+        ["recent", "Newest", "icons/upload.svg"],
+        ["rating", "Liked", "level/star.webp"],
+        ["plays", "Popular", "buttons/playcount.svg"],
+        ["played", "Recents", "objects/timefreeze.webp"]
+    ]) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "levelsort clickable";
         button.dataset.order = key;
-        if (key === "played") {button.title = "Recently played"; button.setAttribute("aria-label", "Recently played")}
-        button.textContent = label;
+        button.title = key === "played" ? "Recently played" : label;
+        button.setAttribute("aria-label", button.title);
+        const caption = document.createElement("span");
+        caption.textContent = label;
+        const icon = document.createElement("img");
+        icon.src = "/assets/images/" + artwork;
+        icon.alt = "";
+        button.append(icon, caption);
         button.setAttribute("aria-pressed", String(key === order));
         button.addEventListener("click", () => {
             order = key;
@@ -97,10 +108,6 @@ export function filters(changed) {
     const options = document.createElement("div");
     options.className = "tagoptions";
     options.setAttribute("aria-label", "Filter by tags");
-    const playedbutton = sorts.querySelector("[data-order=played]");
-    playedbutton.classList.add("leveltag");
-    playedbutton.textContent = "Recently played";
-    options.append(playedbutton);
     const reset = document.createElement("button");
     reset.type = "button";
     reset.className = "leveltag filterreset clickable";
@@ -201,7 +208,6 @@ export function filters(changed) {
         search.placeholder = creator.getAttribute("aria-pressed") === "true" ? "Search creators" : "Search levels";
         search.setAttribute("aria-label", search.placeholder);
         for (const button of sorts.children) button.setAttribute("aria-pressed", String(button.dataset.order === order));
-        playedbutton.setAttribute("aria-pressed", String(order === "played"));
         for (const button of options.querySelectorAll("[data-tag]")) button.setAttribute("aria-pressed", String(selected.has(button.dataset.tag)));
         if (header.dataset.creator !== authorid) {header.dataset.creator = authorid; profile(header, authorid, entries)}
         for (const button of featurerow.children) button.setAttribute("aria-pressed", String(chosen.has(button.dataset.feature)));
@@ -309,7 +315,7 @@ export function filters(changed) {
     function rendertags(data) {
         const offset = options.scrollLeft;
         const all = new Map(data.filter(tag => tag.id && tag.name && filtertag(tag)).map(tag => [tag.id, tag]));
-        options.replaceChildren(playedbutton);
+        options.replaceChildren();
         options.hidden = false;
         for (const tag of sorttags([...all.values()]).sort((first, second) => Number(unavailable.has(first.id)) - Number(unavailable.has(second.id)))) {
             const button = document.createElement("button");

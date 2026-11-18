@@ -345,3 +345,41 @@
 .levelfilters .filterreset, .levelfilters .filterreset[aria-pressed] {
     background: none; box-shadow: none;
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.levelsort img {
+    width: 1em; height: 1em;
+    vertical-align: -0.14em; margin-right: 0.22em;
+    object-fit: contain;
+}
+@media (min-width: 901px) {
+    html:not(.oldmode) .levels {--cardwidth: 330px}
+    html:not(.oldmode) .levelfilters {font-size: 24px}
+    html:not(.oldmode) :is(.levelsort,.levelsearchfield) {height: 42px}
+    html:not(.oldmode) .levelsort {padding-inline: 12px}
+    html:not(.oldmode) .creatorsearch {
+        width: 32px; height: 32px;
+        flex-basis: 32px;
+    }
+    html:not(.oldmode) .levelfilters .tagoptions .leveltag {
+        height: 32px; font-size: 20px;
+    }
+    html:not(.oldmode) .levelfilters :is(.featureoptions,.candyoptions,.contestoptions) .leveltag {
+        height: 25px; font-size: 16px;
+    }
+    html:not(.oldmode) :is(.previous,.next) {
+        width: 48px; height: 48px;
+    }
+    html:not(.oldmode) .arrow {width: 40px}
+}
+@media (max-width: 600px) {
+    .levelsort img {display: none}
+}
+@media (max-width: 415px) {
+    .levelsort:not([data-order="played"]) span {display: none}
+    .levelsort:not([data-order="played"]) img {
+        display: inline-block; margin: 0;
+        width: 18px; height: 18px;
+    }
+}
