@@ -94,7 +94,6 @@ export function findresults(records, query) {
         if (heading) games.add(record.game);
         if (heading || versions.length) results.push({
             record, versions,
-            package: detailmatches(record.package),
             description: detailmatches(record.description)
         });
     }

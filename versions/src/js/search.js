@@ -53,11 +53,10 @@ export function startsearch(options) {
         const record = match.record;
         const group = document.createElement("section");
         group.className = "packagecolumn searchgroup";
-        const heading = packageheader(record.game, record.index, record.package, false);
+        const heading = packageheader(record.game, record.index, record.package);
         const route = gameroute(record.game, record.index);
         const title = heading.querySelector(".gamename");
         title.firstChild.replaceWith(jump(record.name, route));
-        if (!match.package) heading.querySelector(".package")?.remove();
         if (!match.description) heading.querySelector(".description")?.remove();
         const versions = document.createElement("div");
         versions.className = "packageversions searchversions";

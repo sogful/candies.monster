@@ -323,15 +323,14 @@
         }
 
         .gameinfo {
-            color: white;
-            margin-bottom: 0.5em;
+            color: white; margin-bottom: 0.25em;
             -webkit-text-stroke: 0.175em black;
             text-shadow: 0 0.15em 0 black;
             paint-order: stroke fill;
         }
         .gameinfo .gamename {
-            font-size: 2.5em; line-height: 0.75;
-            margin-bottom: 0.2em;
+            font-size: 2.5em; line-height: 0.85;
+            margin-bottom: 0.1em;
             -webkit-text-stroke: 0.15em black;
             text-shadow: 0 0.125em 0 black;
             paint-order: stroke fill;
@@ -350,10 +349,15 @@
         .versionslist {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            padding-right: 0.5em; padding-bottom: 3em;
+            padding-bottom: 1em;
             width: 100%; box-sizing: border-box;
         }
-        .versionslist.multipackage {grid-template-columns: 1fr}
+        .versionslist.multipackage {
+            grid-template-columns: 1fr; row-gap: 0.2em;
+        }
+        @media (max-width: 650px) {
+            .versionslist {padding-bottom: 3em}
+        }
         .packagecolumn {
             display: flex;
             flex-direction: column;
@@ -361,7 +365,6 @@
         .packagecolumn .packageversions {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            padding-right: 0.5em; padding-bottom: 0.25em;
             width: 100%; box-sizing: border-box;
         }
 

@@ -143,7 +143,7 @@
     100% {outline-color: transparent}
 }
 
-@media (hover: none) {
+@media (max-width: 650px), (hover: none) {
     .sharetitle .sharelink {opacity: 0.5; pointer-events: auto}
 }
 
@@ -153,8 +153,15 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.gamename .sharelink {
-    margin-left: 0.5rem; width: 1.333334rem;
+.gamename {
+    display: grid; grid-template-columns: minmax(0,1fr) auto;
+    align-items: start; column-gap: 0.35rem;
+    width: fit-content; max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.gamename > .sharelink {
+    margin: 0; width: 1.333334rem;
     height: 1.333334rem;
 }
 
@@ -192,12 +199,12 @@
     cursor: text;
 }
 
-.versionscreen {padding: 0.85em 0.8em}
+.versionscreen {padding: 0.65em 0.7em}
 .gameinfo .gamename {font-size: 2.3em}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.versionpanel {padding-bottom: 0.45em}
+.versionpanel {padding-bottom: 0.35em}
 
 .versionidentity {
     position: relative; flex: 0 0 auto;
