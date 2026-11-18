@@ -5,6 +5,7 @@
     <script>
         (() => {
             const view = location.hash.slice(1).toLowerCase();
+            if (new URLSearchParams(location.search).get("old") === "1" && !view) document.documentElement.classList.add("oldhome");
             if (/^\d+$/.test(view) || /^level\/\d+$/.test(view)) {
                 document.documentElement.classList.add("levelopen");
                 document.documentElement.style.setProperty("--levelbackground", "url(/assets/images/level/box1.webp)");
@@ -66,6 +67,7 @@
 
     <link rel="preload" href="/assets/static/data/levels/tags.json" as="fetch" crossorigin="anonymous">
     <link rel="stylesheet" href="/src/css/site/home.css">
+    <link rel="stylesheet" href="/src/css/site/legacy.css">
     <link rel="stylesheet" href="/src/css/browser/index.css">
     <link rel="stylesheet" href="/src/css/site/editor.css">
     <link rel="stylesheet" href="/src/css/site/documents.css">
@@ -303,6 +305,7 @@
         </script>
         <script src="/src/js/site/documents.js" type="module"></script>
         <script src="/src/js/site/sidebar.js" type="module"></script>
+        <script src="/src/js/site/legacy.js" type="module"></script>
         <script src="/src/js/browser/index.js" type="module"></script>
         <script src="/src/js/site/editor.js" type="module"></script>
     </body>

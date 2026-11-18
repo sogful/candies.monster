@@ -280,6 +280,7 @@
     }
     .sidebarlogo {
         width: 64px; align-self: center;
+        padding-top: 18px; box-sizing: border-box;
     }
     .bignav {
         display: grid; gap: 2px;

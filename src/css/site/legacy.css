@@ -1,0 +1,76 @@
+.legacylevels {display: none}
+.oldhome .legacylevels {display: inline-flex}
+.legacyback {
+    width: 28px; flex: 0 0 28px;
+    line-height: 0;
+}
+.legacyback img {width: 100%}
+.legacyback[hidden] {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.oldhome .homepage {
+    overflow-y: auto; height: auto;
+    overflow-x: hidden;
+    min-height: 100dvh;
+}
+.oldhome .site {
+    display: block; height: auto;
+    min-height: 100dvh;
+}
+.oldhome .levelbrowser {
+    position: absolute; inset: 0;
+    overflow: hidden;
+}
+.oldhome .levelcontent, .oldhome .levelfilters {display: none}
+.oldhome .sidebar {
+    width: 100%; height: auto;
+    flex-direction: column; flex: none;
+    min-height: 100dvh; padding: 12px;
+    background: none; overflow: visible;
+    margin: 0;
+}
+.oldhome .sitenavigation {
+    overflow: visible; height: auto;
+    flex: none; flex-direction: column;
+    gap: 8px;
+}
+.oldhome .sidebarlogo {
+    width: min(360px,80vw); padding: 0;
+}
+.oldhome .bignav {
+    display: grid; grid-template-columns: repeat(3,minmax(0,1fr));
+    width: min(456px,94vw); gap: 4px;
+    grid-template-rows: none; grid-auto-flow: row;
+    grid-auto-columns: auto; order: initial;
+}
+.oldhome .bignav .navlink {
+    width: 100%; grid-column: auto;
+    grid-row: auto; height: auto;
+}
+.oldhome .smallnav {
+    grid-template-columns: repeat(6,minmax(0,1fr)); width: min(456px,94vw);
+    gap: 2px;
+    grid-template-rows: none;
+    grid-auto-flow: row; order: initial;
+}
+.oldhome .smallnav .navlink {
+    width: 100%; height: auto;
+}
+.oldhome .buttonlabel {
+    display: block; font-size: clamp(12px,3vw,23px);
+}
+.oldhome .smallnav .buttonlabel {font-size: clamp(10px,2.2vw,16px)}
+.oldhome .resourceblurb {
+    display: block; width: auto;
+    margin: 8px 0; white-space: normal;
+}
+.oldhome .sidelinks {
+    display: flex; flex-direction: row;
+    flex-wrap: wrap; justify-content: center;
+    width: auto; gap: 10px;
+    margin: 8px 0; font-size: 20px;
+}
+.oldhome .sidebartoggle {display: none}
+.oldhome .sitenavigation, .oldhome .sidelinks {visibility: visible}
+.oldhome .navminimal .sidebarlogo {width: min(360px,80vw)}
