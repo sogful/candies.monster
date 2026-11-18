@@ -202,6 +202,10 @@
     padding: 0.12em 0.1em; margin-left: -0.1em;
 }
 
+.gamename, .package, .description, .versioninfo .details, .infopopup {
+    user-select: text; -webkit-user-select: text;
+    cursor: text;
+}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -220,14 +224,15 @@
 }
 .versionidentity .version {
     position: absolute; inset-inline: 2px;
-    bottom: 3px; pointer-events: none;
+    bottom: 1px; cursor: text;
+    user-select: text; -webkit-user-select: text;
     font-size: clamp(0.5em,calc(6em / var(--versionlength,1)),0.84em); line-height: 1;
     color: #fff; margin: 0;
     text-align: center; overflow-wrap: anywhere;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.175em 0 #000;
+    filter: drop-shadow(0 0 0.2em #000);
 }
-.versionidentity .version a:not(.sharelink) {pointer-events: auto}
 .versionidentity .version .sharelink {
     position: absolute; right: 1px;
     bottom: calc(100% + 2px); margin: 0;
