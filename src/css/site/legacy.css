@@ -42,18 +42,18 @@
     filter: drop-shadow(0 0 12px rgba(0,0,0,0.33));
 }
 .oldhome .buttons {
-    display: flex; flex-wrap: wrap;
+    display: flex; flex-wrap: nowrap;
     justify-content: center; align-items: center;
     max-width: 700px; width: 100%;
     gap: 8px 0; order: initial;
 }
 .oldhome .bignav .navlink {
-    width: min(20vw,100px); height: auto;
-    flex: none;
+    width: 100px; height: auto;
+    flex: 0 1 100px; min-width: 0;
 }
 .oldhome .smallnav .navlink {
-    width: min(10vw,50px); height: auto;
-    flex: none;
+    width: 50px; height: auto;
+    flex: 0 1 50px; min-width: 0;
 }
 .oldhome .navlink .button {
     width: 100%; max-width: 100px;
@@ -88,7 +88,7 @@
 }
 .oldhome .buttondrawer {
     position: fixed; left: 50%;
-    bottom: 36px; top: auto;
+    bottom: 26px; top: auto;
     width: 750px; max-width: 90%;
     display: flex; flex-direction: row;
     flex-wrap: wrap; justify-content: center;

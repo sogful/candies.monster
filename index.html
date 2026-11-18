@@ -93,7 +93,20 @@
                 <div class="sitenavigation">
                 <div class="sidebarlogo">
                     <a class="homelink clickable" href="/" aria-label="back to levels">
-                        <img alt="candies dot monster" draggable="false" fetchpriority="high" height="400" src="/assets/images/branding/logotiny.webp" title="candies dot monster (the site you&#x27;re on right now!)" width="600">
+                        <script>
+                            {
+                                const old = document.documentElement.classList.contains("oldmode");
+                                const logo = document.createElement("img");
+                                logo.alt = "candies dot monster";
+                                logo.draggable = false;
+                                logo.fetchPriority = "high";
+                                logo.width = old ? 4717 : 600;
+                                logo.height = old ? 2362 : 400;
+                                logo.title = "candies dot monster (the site you're on right now!)";
+                                logo.src = "/assets/images/branding/" + (old ? "logo.svg" : "logotiny.webp");
+                                document.currentScript.before(logo);
+                            }
+                        </script>
                     </a>
                     <div class="fun"></div>
                 </div>

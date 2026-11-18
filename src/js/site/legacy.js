@@ -68,7 +68,7 @@ if (old) {
         }
         back.hidden = !location.hash.startsWith("#levels");
         document.querySelector(".buttondrawer").hidden = !home;
-        logo.src = home ? "/assets/images/branding/logo.svg" : "/assets/images/branding/logotiny.webp";
+        logo.src = "/assets/images/branding/logo.svg";
         window.dispatchEvent(new Event("resize"));
     }
     window.addEventListener("hashchange", render);
