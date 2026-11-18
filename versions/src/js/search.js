@@ -127,9 +127,9 @@ export function startsearch(options) {
         screen.scrollTop = 0;
         status.textContent = "Searching...";
         try {
-            const platform = await options.ready();
+            const ready = await options.ready();
             if (current !== request) return;
-            const found = findresults(searchindex([platform]), query);
+            const found = findresults(searchindex(ready), query);
             dim(found.games);
             entries = found.results.flatMap(result => [
                 {...result, version: null},

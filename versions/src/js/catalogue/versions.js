@@ -40,8 +40,9 @@ function uniquedownloads(downloads) {
         if (!seen.has(key)) seen.set(key, {...download});
         else {
             const existing = seen.get(key);
-            for (const field of ["note", "label"]) {
-                existing[field] = Array.from(new Set([existing[field], download[field]].filter(Boolean))).join("; ");
+            for (const field of ["note", "label", "flags"]) {
+                const separator = field === "flags" ? " " : "; ";
+                existing[field] = Array.from(new Set([existing[field], download[field]].filter(Boolean))).join(separator);
             }
         }
     }
@@ -182,20 +183,20 @@ export function versionpanel(version, fallback, legacy, game, index) {
     return panel;
 }
 
-function showversions(game, loadid, alreadyshown, iscurrent, containerscroll) {
+function showversions(screen, loadid, alreadyshown, iscurrent, containerscroll) {
     document.querySelector("#versionscreen").classList.add("active");
     document.querySelector(".backbutton").classList.add("active");
-    document.querySelector(game.iosstuff ? "#gamescreenios" : "#gamescreen").classList.add("slideleft");
-    if (!alreadyshown) requestAnimationFrame(() => {if (iscurrent(loadid)) containerscroll(game)});
+    screen.classList.add("slideleft");
+    if (!alreadyshown) requestAnimationFrame(() => {if (iscurrent(loadid)) containerscroll()});
 }
 
-export async function loadversions(packages, game, loadid, alreadyshown, cache, iscurrent, containerscroll) {
+export async function loadversions(packages, game, loadid, alreadyshown, cache, iscurrent, containerscroll, screen) {
     if (!iscurrent(loadid)) return;
     const list = document.querySelector("#versionslist");
     const info = document.querySelector("#gameinfo");
     if (lastview?.game === game && lastview.cache === cache && lastview.complete) {
         updatelegacyicons(list);
-        showversions(game, loadid, alreadyshown, iscurrent, containerscroll);
+        showversions(screen, loadid, alreadyshown, iscurrent, containerscroll);
         return;
     }
     const view = {game, cache, complete: false};
@@ -258,7 +259,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
                 });
                 section.target.appendChild(batch);
                 if (!shown) {
-                    showversions(game, loadid, alreadyshown, iscurrent, containerscroll);
+                    showversions(screen, loadid, alreadyshown, iscurrent, containerscroll);
                     shown = true;
                 }
                 if (offset + 32 < section.versions.length) await new Promise(resolve => setTimeout(resolve, 0));
@@ -271,7 +272,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
             empty.textContent = "no versions for this game?! i usually add some, please report this to cv";
             list.appendChild(empty);
         }
-        if (!shown) showversions(game, loadid, alreadyshown, iscurrent, containerscroll);
+        if (!shown) showversions(screen, loadid, alreadyshown, iscurrent, containerscroll);
         view.complete = true;
     } catch (error) {
         if (!iscurrent(loadid)) return;
@@ -281,6 +282,6 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
         message.setAttribute("role", "alert");
         message.textContent = "showing versions failed?! please report this to cv";
         list.replaceChildren(message);
-        showversions(game, loadid, alreadyshown, iscurrent, containerscroll);
+        showversions(screen, loadid, alreadyshown, iscurrent, containerscroll);
     }
 }

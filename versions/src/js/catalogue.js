@@ -12,6 +12,27 @@ function text(values) {
     return values.filter(value => value != null).join(" ").normalize("NFKC").toLowerCase();
 }
 
+function downloadflags(download) {
+    const flags = new Set((download.flags || "").toLowerCase().split(/\s+/));
+    if (/\bteraleak\b|\/leaks\/teraleak\//i.test(text([download.label, download.note, download.url]))) flags.add("teraleak");
+    if (/\bzeptoapp\b|\/leaks\/zeptoapp\//i.test(text([download.label, download.note, download.url]))) flags.add("zeptoapp");
+    if (/\bunlocked\b|\bunlock(?:s|ing)? all\b|\b(?:free|unlimited|infinite) (?:money|coins|currency|gems)\b/i.test(text([download.label, download.note]))) flags.add("unlocked");
+    return flags;
+}
+
+function searchbranches(query) {
+    return text([query]).trim().split(/\s+or\s+/).map(branch => {
+        const terms = [];
+        const flags = [];
+        for (const token of branch.split(/\s+/).filter(Boolean)) {
+            const flag = token.match(/^is(teraleak|zeptoapp|unlocked):true$/);
+            if (flag) flags.push(flag[1]);
+            else terms.push(token);
+        }
+        return {terms, flags};
+    }).filter(branch => branch.terms.length || branch.flags.length);
+}
+
 export function searchindex(platforms) {
     return platforms.flatMap(platform => {
         if (!platform.cache || !platform.games) return [];
@@ -24,7 +45,7 @@ export function searchindex(platforms) {
                 const heading = text([name, pkg, description]);
                 const versions = versionsfor(platform.cache, key).map(version => {
                     const common = text([heading, version.version, version.details]);
-                    const downloads = version.downloads.map(download => ({download, text: text(Object.values(download))}));
+                    const downloads = version.downloads.map(download => ({download, text: text(Object.values(download)), flags: downloadflags(download)}));
                     return {version, common, downloads, text: text([common, ...downloads.map(download => download.text)])};
                 });
                 return {game, index, platform: platform.name, name, package: pkg, description, heading, versions};
@@ -36,26 +57,45 @@ export function searchindex(platforms) {
 }
 
 export function findresults(records, query) {
-    const terms = text([query]).trim().split(/\s+/).filter(Boolean);
-    const matches = value => terms.every(term => value.includes(term));
+    const branches = searchbranches(query);
+    const matches = (branch, value) => branch.terms.every(term => value.includes(term));
+    const headingmatches = value => branches.some(branch => !branch.flags.length && matches(branch, value));
+    const detailmatches = value => branches.some(branch => branch.terms.length && matches(branch, text([value])));
     const games = new Set();
     const results = [];
     for (const record of records) {
-        const heading = matches(record.heading);
-        const versions = record.versions.filter(version => matches(version.text)).map(item => {
-            const required = terms.filter(term => !item.common.includes(term));
-            const downloads = new Set(item.downloads.filter(download => required.some(term => download.text.includes(term))).map(item => item.download));
+        const heading = headingmatches(record.heading);
+        const versions = record.versions.flatMap(item => {
+            let found = false;
+            let all = false;
+            const downloads = new Set();
+            for (const branch of branches) {
+                if (!matches(branch, item.text)) continue;
+                const required = branch.terms.filter(term => !item.common.includes(term));
+                if (!branch.flags.length) {
+                    found = true;
+                    all ||= !required.length;
+                }
+                for (const download of item.downloads) {
+                    if (!branch.flags.every(flag => download.flags.has(flag))) continue;
+                    if (branch.flags.length && !required.every(term => download.text.includes(term))) continue;
+                    if (!branch.flags.length && !required.some(term => download.text.includes(term))) continue;
+                    downloads.add(download.download);
+                    found = true;
+                }
+            }
+            if (!found) return [];
             return {
                 version: item.version,
-                details: matches(text([item.version.details])),
-                downloads: downloads.size ? downloads : null
+                details: detailmatches(item.version.details),
+                downloads: !all && downloads.size ? downloads : null
             };
         });
         if (heading) games.add(record.game);
         if (heading || versions.length) results.push({
             record, versions,
-            package: matches(text([record.package])),
-            description: matches(text([record.description]))
+            package: detailmatches(record.package),
+            description: detailmatches(record.description)
         });
     }
     return {results, games};

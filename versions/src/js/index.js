@@ -5,16 +5,14 @@ import {packcircle} from "./packing.js";
 import {updatecounts} from "./counts.js";
 import {startsearch} from "./search.js";
 import {preparekeys, packagekey, gameroute, readhash, revealroute, startlinks} from "./links.js";
+import {startlayers} from "./layers.js";
 import "/assets/static/js/images/favicon.js";
 import "./quality.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-const platforms = [
-    {name: "android", label: "Android", url: "/assets/static/data/versions/android.csv", circle: document.querySelector("#gamecircle"), screen: document.querySelector("#gamescreen")},
-    {name: "ios", label: "iOS", url: "/assets/static/data/versions/ios.csv", circle: document.querySelector("#gamecircle-ios"), screen: document.querySelector("#gamescreenios")}
-];
-const container = document.querySelector(".container");
+const layers = startlayers();
+const platforms = layers.groups.flatMap(group => group.platforms);
 const elements = new WeakMap();
 let activeplatform = platforms[0];
 let currentgame = null;
@@ -26,6 +24,11 @@ let search = null;
 
 document.body.classList.add("archivepage");
 document.querySelector(".loading")?.remove();
+layers.show(activeplatform.layer);
+
+function getplatform(layer, name) {
+    return platforms.find(platform => platform.layer === layer && platform.name === name) || platforms[0];
+}
 
 function platformstatus(platform, failed = false) {
     const status = document.createElement("div");
@@ -51,7 +54,7 @@ function platformfailure(platform, error) {
     platform.nodes = null;
     platform.stamp = null;
     platform.error = error;
-    updatecounts(platform.name, null);
+    if (platform.layer === "omnom") updatecounts(platform.name, null);
     console.error(`Unable to load ${platform.url}`, error);
     if (platform === activeplatform) platformstatus(platform, true);
 }
@@ -59,8 +62,8 @@ function platformfailure(platform, error) {
 function prepareplatform(platform) {
     if (platform.games || platform.text == null) return;
     const parsed = parsegamescsv(platform.text);
-    if (!parsed.games.length) throw new Error(`No games in ${platform.url}`);
-    platform.games = parsed.games.map(game => ({...game, iosstuff: platform.name === "ios"}));
+    if (!parsed.games.length && platform.layer === "omnom") throw new Error(`No games in ${platform.url}`);
+    platform.games = parsed.games.map(game => ({...game, layer: platform.layer, iosstuff: platform.name === "ios"}));
     platform.games.sort((first, second) => {
         const importance = second.importance - first.importance;
         if (importance) return importance;
@@ -75,7 +78,7 @@ function prepareplatform(platform) {
         const keys = Array.isArray(key) ? key : [key];
         game.available = keys.some(value => (platform.cache.get(value) || []).some(version => hasdownload(version.downloads)));
     });
-    updatecounts(platform.name, platform.cache);
+    if (platform.layer === "omnom") updatecounts(platform.name, platform.cache);
     platform.text = null;
 }
 
@@ -83,6 +86,13 @@ function mountplatform(platform) {
     prepareplatform(platform);
     if (!platform.games) return;
     if (!platform.nodes) {
+        if (!platform.games.length) {
+            const empty = document.createElement("p");
+            empty.className = "layerempty";
+            empty.textContent = "no versions yet";
+            platform.circle.replaceChildren(empty);
+            return;
+        }
         const fragment = document.createDocumentFragment();
         platform.nodes = platform.games.map((game, index) => {
             const icon = document.createElement("div");
@@ -136,7 +146,7 @@ function fetchplatform(platform) {
         else {
             const prepare = () => {
                 try {
-                    mountplatform(platform);
+                    prepareplatform(platform);
                 } catch (error) {
                     platformfailure(platform, error);
                 }
@@ -200,33 +210,39 @@ function layoutplatform(platform) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function containerscroll(game) {
-    const platform = platforms[game?.iosstuff ? 1 : 0];
-    container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
+function containerscroll() {
+    activeplatform.container.scrollTo({left: activeplatform.screen.offsetLeft, behavior: "instant"});
 }
 
-function activateplatform(platform, scroll = true, write = true) {
+function activateplatform(platform, scroll = true, write = true, animate = false) {
     if (currentgame) return;
+    const changed = activeplatform.layer !== platform.layer;
     activeplatform = platform;
-    if (write) {navigation++; document.documentElement.classList.remove("routepending"); links.write({platform: platform.name})}
+    if (changed) layers.show(platform.layer, animate);
+    if (write) {
+        navigation++;
+        document.documentElement.classList.remove("routepending");
+        links.write({platform: platform.name, layer: platform.layer});
+    }
     document.querySelector("#navios").style.display = platform.name === "ios" ? "none" : "flex";
     document.querySelector("#navandroid").style.display = platform.name === "ios" ? "flex" : "none";
     void fetchplatform(platform);
-    scrolltarget = scroll && Math.abs(container.scrollLeft - platform.screen.offsetLeft) > 1 ? platform : null;
-    if (scroll) container.scrollTo({left: platform.screen.offsetLeft, behavior: "smooth"});
+    const offset = platform.screen.offsetLeft;
+    scrolltarget = scroll && Math.abs(platform.container.scrollLeft - offset) > 1 ? platform : null;
+    if (changed || scroll) platform.container.scrollTo({left: offset, behavior: changed ? "instant" : "smooth"});
 }
 
 async function selectgame(game, write = true) {
     search?.hide(false);
     if (write) {navigation++; document.documentElement.classList.remove("routepending"); links.write(gameroute(game))}
     const loadid = ++currentloadid;
-    const platform = platforms[game.iosstuff ? 1 : 0];
+    const platform = getplatform(game.layer, game.iosstuff ? "ios" : "android");
     activeplatform = platform;
     currentgame = game;
     document.body.classList.add("gameopen");
     const alreadyshown = document.querySelector("#versionscreen").classList.contains("active");
     const packages = Array.isArray(game.package) ? game.package : [game.package];
-    await loadversions(packages, game, loadid, alreadyshown, platform.cache, id => id === currentloadid, containerscroll);
+    await loadversions(packages, game, loadid, alreadyshown, platform.cache, id => id === currentloadid, containerscroll, platform.screen);
 }
 
 function goback(write = true) {
@@ -237,10 +253,10 @@ function goback(write = true) {
     document.querySelector("#versionscreen").classList.remove("active");
     document.querySelector(".backbutton").classList.remove("active");
     currentgame = null;
-    activateplatform(game ? platforms[game.iosstuff ? 1 : 0] : activeplatform, false, false);
-    if (write) links.write({platform: activeplatform.name});
+    activateplatform(activeplatform, false, false);
+    if (write) links.write({platform: activeplatform.name, layer: activeplatform.layer});
     layoutplatform(activeplatform);
-    if (game) containerscroll(game);
+    if (game) containerscroll();
     document.body.classList.remove("gameopen");
 }
 
@@ -260,40 +276,43 @@ document.addEventListener("click", event => {
         if (search.shown) search.hide();
         else goback();
     } else if (control.classList.contains("retryplatform")) {
-        const platform = platforms.find(item => item.name === control.dataset.platform);
+        const platform = getplatform(activeplatform.layer, control.dataset.platform);
         if (platform) void fetchplatform(platform).then(() => links.restore(true));
     } else if (control.classList.contains("scrollnav")) {
-        activateplatform(platforms[control.id === "navios" ? 1 : 0]);
+        activateplatform(getplatform(activeplatform.layer, control.id === "navios" ? "ios" : "android"));
+    } else if (control.classList.contains("layerarrow")) {
+        document.querySelector(".archiveinfo").open = false;
+        activateplatform(getplatform(control.dataset.layer, activeplatform.name), true, true, true);
     }
 });
 
-container.addEventListener("scroll", () => {
-    if (currentgame) return;
-    if (scrolltarget) {
-        if (Math.abs(container.scrollLeft - scrolltarget.screen.offsetLeft) < 1) scrolltarget = null;
-        return;
+for (const group of layers.groups) {
+    const container = group.container;
+    function scrollplatform(event) {
+        if (currentgame || search?.shown || activeplatform.layer !== group.name) return;
+        if (event.type === "scrollend") scrolltarget = null;
+        if (scrolltarget) {
+            if (Math.abs(container.scrollLeft - scrolltarget.screen.offsetLeft) < 1) scrolltarget = null;
+            return;
+        }
+        const platform = group.platforms[container.scrollLeft >= group.platforms[1].screen.offsetLeft / 2 ? 1 : 0];
+        if (platform !== activeplatform) activateplatform(platform, false);
     }
-    const platform = platforms[container.scrollLeft >= platforms[1].screen.offsetLeft / 2 ? 1 : 0];
-    if (platform !== activeplatform) activateplatform(platform, false);
-}, {passive: true});
-
-container.addEventListener("scrollend", () => {
-    scrolltarget = null;
-    if (currentgame) return;
-    const platform = platforms[container.scrollLeft >= platforms[1].screen.offsetLeft / 2 ? 1 : 0];
-    if (platform !== activeplatform) activateplatform(platform, false);
-}, {passive: true});
+    container.addEventListener("scroll", scrollplatform, {passive: true});
+    container.addEventListener("scrollend", scrollplatform, {passive: true});
+}
 
 function schedulelayout() {
     if (resizeframe) return;
     resizeframe = requestAnimationFrame(() => {
         resizeframe = 0;
         if (!currentgame) platforms.forEach(layoutplatform);
-        container.scrollTo({left: activeplatform.screen.offsetLeft, behavior: "instant"});
+        containerscroll();
     });
 }
 
 window.addEventListener("resize", schedulelayout);
+window.addEventListener("resize", () => layers.show(activeplatform.layer), {passive: true});
 const boundsobserver = new ResizeObserver(schedulelayout);
 platforms.forEach(platform => boundsobserver.observe(platform.circle));
 
@@ -303,13 +322,13 @@ async function restoreview(route) {
     document.documentElement.classList.add("routepending");
     try {
         if (currentgame) goback(false);
-        const platform = platforms[route.platform === "ios" ? 1 : 0];
+        const platform = getplatform(route.layer, route.platform);
         activateplatform(platform, false, false);
         await fetchplatform(platform);
         if (request !== navigation) return;
         prepareplatform(platform);
         if (route.search && !route.game) {
-            container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
+            containerscroll();
             document.documentElement.classList.remove("routepending");
             await search.restore(route.search);
             return;
@@ -325,10 +344,10 @@ async function restoreview(route) {
         if (game) {
             await selectgame(game, false);
             if (request !== navigation) return;
-            containerscroll(game);
+            containerscroll();
             await revealroute(game, route, () => request === navigation);
         } else {
-            container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
+            containerscroll();
         }
         if (request !== navigation) return;
         document.querySelector(".archiveinfo").open = route.info;
@@ -342,26 +361,31 @@ search = startsearch({
     platforms,
     selected: () => activeplatform.name,
     select: name => {
-        const platform = platforms.find(item => item.name === name);
-        activateplatform(platform, false, false);
-        container.scrollTo({left: platform.screen.offsetLeft, behavior: "instant"});
+        activateplatform(getplatform(activeplatform.layer, name), false, false);
+        containerscroll();
     },
     ready: async () => {
-        const platform = activeplatform;
-        await fetchplatform(platform);
-        mountplatform(platform);
-        if (platform.error) throw platform.error;
-        return platform;
+        const selected = platforms.filter(platform => platform.name === activeplatform.name);
+        await Promise.all(selected.map(fetchplatform));
+        selected.forEach(prepareplatform);
+        if (!selected.some(platform => platform.games)) throw selected[0].error;
+        return selected;
     },
     close: () => {
         navigation++;
         document.documentElement.classList.remove("routepending");
         if (currentgame) goback(false);
     },
-    write: (query, replace) => links.write({platform: activeplatform.name, search: query}, replace),
+    write: (query, replace) => links.write({platform: activeplatform.name, layer: activeplatform.layer, search: query}, replace),
     open: async route => {links.write(route); await restoreview(route)}
 });
-if (!location.hash) links.write({platform: "android"}, true);
+const initial = new URL(location.href);
+const prefill = initial.searchParams.get("search");
+if (prefill !== null) {
+    initial.searchParams.delete("search");
+    history.replaceState(null, "", initial);
+    if (!readhash().game) links.write({...readhash(), search: prefill}, true);
+} else if (!location.hash) links.write({platform: "android"}, true);
 if (readhash().game) document.documentElement.classList.add("routepending");
-platforms.forEach(platform => {void fetchplatform(platform)});
+layers.groups[0].platforms.forEach(platform => {void fetchplatform(platform)});
 void links.restore(true);

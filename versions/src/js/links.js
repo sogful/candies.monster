@@ -1,3 +1,5 @@
+import {layers} from "./layers.js";
+
 function values(value) {
     return Array.isArray(value) ? value : [value];
 }
@@ -34,6 +36,7 @@ export function packagekey(game, index = 0) {
 export function gameroute(game, index = 0, version = "") {
     return {
         platform: game.iosstuff ? "ios" : "android",
+        layer: game.layer,
         game: game.routekey || basekey(game),
         package: index ? packagekey(game, index) : "",
         version,
@@ -43,6 +46,7 @@ export function gameroute(game, index = 0, version = "") {
 
 export function routehash(route) {
     const query = new URLSearchParams();
+    if (route.layer && route.layer !== "omnom") query.set("layer", route.layer);
     if (route.package) query.set("package", route.package);
     if (route.version) query.set("version", route.version);
     if (route.info) query.set("info", "1");
@@ -56,9 +60,12 @@ export function readhash(hash = location.hash) {
         const [path, query] = hash.slice(1).split("?");
         const [platform, game = ""] = path.split("/");
         const parameters = new URLSearchParams(query);
-        return {platform: platform === "ios" ? "ios" : "android", game: decodeURIComponent(game), package: parameters.get("package") || "", version: parameters.get("version") || "", info: parameters.get("info") === "1", search: parameters.get("search") || ""};
+        const layer = parameters.get("layer");
+        return {platform: platform === "ios" ? "ios" : "android", layer: layers.some(item => item.name === layer) ? layer : "omnom",
+            game: decodeURIComponent(game), package: parameters.get("package") || "", version: parameters.get("version") || "",
+            info: parameters.get("info") === "1", search: parameters.get("search") || ""};
     } catch {
-        return {platform: "android", game: "", package: "", version: "", info: false};
+        return {platform: "android", layer: "omnom", game: "", package: "", version: "", info: false};
     }
 }
 

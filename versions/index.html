@@ -473,6 +473,7 @@
     <link rel="stylesheet" href="src/css/layout.css">
     <link rel="stylesheet" href="src/css/fonts.css">
     <link rel="stylesheet" href="src/css/search.css">
+    <link rel="stylesheet" href="src/css/layers.css">
     <link rel="stylesheet" href="/assets/static/css/buttons.css">
     <script src="/assets/static/js/text/fonts.js"></script>
     <link rel="stylesheet" href="/assets/static/css/back.css">
@@ -526,21 +527,24 @@
     <div class="nojsbg"></div> <img src="/assets/images/omnom/nojs.webp" draggable="false">
     <a>Please enable Javascript in your browser to use this page.</a></div></noscript>
 
-        <div class="container">
-        <div class="backbutton clickable">
-            <img src="/assets/images/preview/back.png" draggable="false">
-        </div>
-
-        <div class="gamepanels">
-        <div class="gamescreen" id="gamescreen">
-            <div class="gamecircle" id="gamecircle"></div>
-        </div>
-        <div class="gamescreen" id="gamescreenios">
-            <div class="gamecircle" id="gamecircle-ios"></div>
-        </div>
-        </div>
-
+    <div class="backbutton clickable">
+        <img src="/assets/images/preview/back.png" draggable="false">
     </div>
+    <div class="archiveviewport"></div>
+    <template class="layertemplate">
+        <section class="archivelayer">
+            <div class="container">
+                <div class="gamepanels">
+                    <div class="gamescreen">
+                        <div class="gamecircle"></div>
+                    </div>
+                    <div class="gamescreen">
+                        <div class="gamecircle"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
 
     <div class="versionbackdrop" aria-hidden="true"></div>
     <div class="versionscreen" id="versionscreen">
@@ -562,17 +566,17 @@
                 <img src="/assets/images/buttons/pages/versions.webp" draggable="false">
                 <div class="infocopy">
                     <h1>app archive</h1>
-                    <p class="archivedescription">download versions of om nom games</p>
+                    <p class="archivedescription">download om nom games, zeptolab games and fangames</p>
                 </div>
             </header>
-            there are currently <i><span class="androidcount">...</span></i> android and <i><span class="ioscount">...</span></i> ios versions available! <br>
+            there are currently <i><span class="androidcount">...</span></i> android and <i><span class="ioscount">...</span></i> ios versions available in the om nom layer! <br>
             this collection also contains <i><span class="symbolcount">...</span></i> debug symbol downloads, which could be helpful for reverse engineering.
             <br><br>
             please note that most apps are <i>not</i> checked for malware! though unlikely to be malicious, if you want to ensure your device is safe, use <img width="15" src="/assets/images/buttons/download/apkmirror.webp"> apkmirror, <img width="15" src="/assets/images/buttons/download/apkpure.webp"> apkpure or <img width="15" src="/assets/images/buttons/download/ctrhome.webp"><img width="15" src="/assets/images/buttons/download/cdn.webp"> our own reuploads! some apps might be slightly modified, if the modifications are known they'll be mentioned beside the download links.
             <br>
             whether the smaller developers shown actually have rights to om nom or not is purely speculative.
             <br><br>
-            about <span class="missingcount">...</span> versions are <span style="color:#ffa5a5">missing</span>, and more are yet to be found, so if you have something to add you can:
+            about <span class="missingcount">...</span> om nom versions are <span style="color:#ffa5a5">missing</span>, and more are yet to be found, so if you have something to add you can:
             <br>
             <a class="descbutton clickable" href="https://discord.gg/CUXK9aUTdz" target="_blank" rel="noopener">
                 <span><img class="joinicon" src="https://cdn.discordapp.com/icons/1112531659078762617/a_76dd36a5ef79da45a0663306c812d61b.webp?animated=true&size=32" draggable="false">Join Cut the Rope Home on Discord!</span>
@@ -596,6 +600,16 @@
         <img src="/assets/images/buttons/back.png" draggable="false">
         <span>Android</span>
     </div>
+    <nav class="layernav" aria-label="Archive layers">
+        <button class="layerarrow layerup clickable" type="button" hidden>
+            <span></span>
+            <img src="/assets/images/buttons/back.png" alt="" draggable="false">
+        </button>
+        <button class="layerarrow layerdown clickable" type="button">
+            <span>Zeptolab</span>
+            <img src="/assets/images/buttons/back.png" alt="" draggable="false">
+        </button>
+    </nav>
 
     <script type="module" src="src/js/index.js"></script>
     <script type="module" src="src/js/info.js"></script>

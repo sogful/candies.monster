@@ -1,0 +1,53 @@
+.archiveviewport {
+    position: relative; overflow: hidden;
+    height: 100vh; height: 100dvh;
+    overscroll-behavior: none;
+}
+
+.archivelayer {
+    height: 100%; background-position: center;
+    background-size: cover; background-repeat: no-repeat;
+}
+
+.archivelayer[data-layer="omnom"] {background-image: url("/assets/images/bgs/original.avif")}
+.archivelayer.visited[data-layer="zeptolab"] {background-image: url("/assets/images/bgs/match3.webp")}
+.archivelayer.visited[data-layer="fangames"] {background-image: url("/assets/images/bgs/experimentsmenu.webp")}
+
+.layernav {
+    position: fixed; z-index: 1000;
+    left: 50%; bottom: 0.35em;
+    display: flex; gap: 0.8em;
+    transform: translateX(-50%);
+}
+
+.layerarrow {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-end;
+    min-width: 3.2em; min-height: 48px;
+    gap: 0.1em; padding: 0;
+    background: none; border: 0;
+    color: #fff; font: inherit;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000; white-space: nowrap;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+
+.layerarrow img {
+    display: block; width: 2em;
+    height: 2em; object-fit: contain;
+    pointer-events: none;
+}
+
+.layerdown img {rotate: -90deg}
+.layerup img {rotate: 90deg}
+.layerarrow[hidden], .gameopen .layernav, .searchopen .layernav {display: none}
+.layerarrow:active img {scale: 0.94}
+
+.archivelayer .gamescreen {padding-block: 56px}
+
+.layerempty {
+    color: #fff; text-align: center;
+    margin: 1em 0; font-size: 1.4em;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
