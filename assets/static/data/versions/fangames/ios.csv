@@ -1,0 +1,13 @@
+game,package/version,icon,description/url,importance/details,gallery/architectures,gallery/size,gallery/kind,gallery/label,gallery/note,gallery11,gallery12,gallery13,gallery14,gallery15,gallery16,gallery17,gallery18,gallery19,gallery20,gallery21,gallery22,gallery23,gallery24,gallery25,gallery26,gallery27,gallery28,gallery29,gallery30,gallery31
+Cut the Rope Community Package,com.ctrhome.cuttheropecommunity,ctr/communityios10,cut the rope community mod,1,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v1.2,ctr/communityios10,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/CommunityPackage1.2/CommunityPackage-iOS-1.2_64bit.ipa,,arm64,205.9mb,,,,,,,,,,,,,,,,,,,,,,,,
+,v1.2,,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/CommunityPackage1.2/CommunityPackageiOS-1.2_32Bit.ipa,,armv7,206.3mb,,,,,,,,,,,,,,,,,,,,,,,,
+,v1.1,ctr/communityios10,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/CommunityPackage1.1b/Cut.the.Rope.Community.Package.1.1.iOS.64.Bit.ipa,,arm64,206.5mb,,,,,,,,,,,,,,,,,,,,,,,,
+,v1.0,ctr/communityios10,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/CommunityPackage_1.0/Cut.the.Rope.Community.Package.iOS.ipa,,armv7,206.0mb,,,,,,,,,,,,,,,,,,,,,,,,
+,v1.1,,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/CommunityPackage1.1/Cut.the.Rope.Community.Package.iOS.ipa,,armv7,202.0mb,,,,,,,,,,,,,,,,,,,,,,,,
+Cut the Rope: Winterfest,com.zeptolab.winterfest,fangames/winterfest,,3,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v3.10.3,fangames/winterfest,https://drive.google.com/file/d/1UbtePtGJol2Ibxq6lnn2WO1yPcjYvf72/view,,arm64,154.5mb,,,,,,,,,,,,,,,,,,,,,,,,
+,v3.10.3,fangames/winterfest,https://drive.google.com/file/d/1wyEpEdr5Tchs8sDvRQan4tLQebAkv9kA/view,,armv7,154.7mb,,,,,,,,,,,,,,,,,,,,,,,,
+Cut the Rope: Restitched,com.zeptolab.restitched,fangames/restitched,,3,,,,,,,,,,,,,,,,,,,,,,,,,,
+,v3.10.3,fangames/restitched,https://drive.google.com/file/d/1U6ot-sNVfvDZCiAcASmU4QOyiizAuUWi/view,,arm64,153.6mb,,,,,,,,,,,,,,,,,,,,,,,,
+,v3.10.3,fangames/restitched,https://drive.google.com/file/d/1eJOEsYycDRHE3K6qFa-4coW3TfjbCPlF/view,,armv7,155.3mb,,,,,,,,,,,,,,,,,,,,,,,,
