@@ -4,7 +4,7 @@ const platforms = new Map();
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function updatecounts(name, cache) {
+export function updatecounts(layer, name, cache) {
     let available = 0;
     let missing = 0;
     const symbols = new Set();
@@ -19,11 +19,11 @@ export function updatecounts(name, cache) {
             }
         }
     }
-    platforms.set(name, cache ? {available, missing, symbols} : null);
-    for (const name of ["ios", "android"]) {
-        const element = document.querySelector(`.${name}count`);
-        if (element) element.textContent = platforms.has(name) ? platforms.get(name)?.available ?? "unavailable" : "...";
-    }
+    const element = document.querySelector(`[data-counts="${layer}"] .${name}count`);
+    if (element) element.textContent = cache ? available : "unavailable";
+    if (layer !== "omnom") return;
+
+    platforms.set(name, cache ? {missing, symbols} : null);
     const ios = platforms.get("ios");
     const android = platforms.get("android");
     const symbolcount = document.querySelector(".symbolcount");

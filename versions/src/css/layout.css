@@ -78,9 +78,16 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.scrollnav {
-    top: auto; bottom: 0.5em;
-    transform: none;
+@media (max-width: 650px) {
+    .gamescreen {padding-inline: 3.5em}
+
+    .scrollnav {
+        justify-content: center; width: 2.7em;
+    }
+    .scrollnav span {
+        position: absolute; top: 100%;
+        left: 50%; transform: translateX(-50%);
+    }
 }
 
 .backbutton {

@@ -40,7 +40,9 @@ function renderdownloadbutton(download, version, description) {
     let hostname = "";
     try {hostname = new URL(download.url).hostname} catch {}
     const source = hostname || "Download";
-    const note = [...new Set([description, download.kind === "symbols" ? "" : download.label, download.note].filter(Boolean))].join("\n");
+    const zeptoapp = download.flags?.split(/\s+/).includes("zeptoapp") ? "zeptoapp" : "";
+    const notes = [zeptoapp, description, download.kind === "symbols" ? "" : download.label, download.note];
+    const note = [...new Set(notes.filter(Boolean))].join("\n");
     const information = {
         version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
         symbols: download.kind === "symbols" ? (download.label || "symbols").replace(/^\((.*)\)$/, "$1") : "",

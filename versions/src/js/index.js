@@ -54,7 +54,7 @@ function platformfailure(platform, error) {
     platform.nodes = null;
     platform.stamp = null;
     platform.error = error;
-    if (platform.layer === "omnom") updatecounts(platform.name, null);
+    updatecounts(platform.layer, platform.name, null);
     console.error(`Unable to load ${platform.url}`, error);
     if (platform === activeplatform) platformstatus(platform, true);
 }
@@ -78,7 +78,7 @@ function prepareplatform(platform) {
         const keys = Array.isArray(key) ? key : [key];
         game.available = keys.some(value => (platform.cache.get(value) || []).some(version => hasdownload(version.downloads)));
     });
-    if (platform.layer === "omnom") updatecounts(platform.name, platform.cache);
+    updatecounts(platform.layer, platform.name, platform.cache);
     platform.text = null;
 }
 
@@ -356,6 +356,13 @@ async function restoreview(route) {
         if (request === navigation) document.documentElement.classList.remove("routepending");
     }
 }
+
+document.querySelector(".archiveinfo").addEventListener("toggle", event => {
+    if (!event.target.open) return;
+    for (const platform of platforms) {
+        if (platform.layer !== "omnom" && !platform.games) void fetchplatform(platform);
+    }
+});
 
 const links = startlinks(restoreview);
 search = startsearch({

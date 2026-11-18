@@ -114,6 +114,7 @@
         }
 
         .infopopup img {vertical-align: middle}
+        .layercounts {display: block}
         .infopopup p {
             max-height: none; overflow: visible;
         }
@@ -572,7 +573,9 @@
                     <p class="archivedescription">download om nom games, zeptolab games and fangames</p>
                 </div>
             </header>
-            there are currently <i><span class="androidcount">...</span></i> android and <i><span class="ioscount">...</span></i> ios versions available in the om nom layer! <br>
+            <span data-counts="omnom">there are currently <i><span class="androidcount">...</span></i> android and <i><span class="ioscount">...</span></i> ios versions available in the om nom layer!</span>
+            <small class="layercounts" data-counts="zeptolab"><i><span class="androidcount">...</span></i> android and <i><span class="ioscount">...</span></i> ios versions in the zeptolab layer.</small>
+            <small class="layercounts" data-counts="fangames"><i><span class="androidcount">...</span></i> android and <i><span class="ioscount">...</span></i> ios versions in the fangames layer.</small>
             this collection also contains <i><span class="symbolcount">...</span></i> debug symbol downloads, which could be helpful for reverse engineering.
             <br><br>
             please note that most apps are <i>not</i> checked for malware! though unlikely to be malicious, if you want to ensure your device is safe, use <img width="15" src="/assets/images/buttons/download/apkmirror.webp"> apkmirror, <img width="15" src="/assets/images/buttons/download/apkpure.webp"> apkpure or <img width="15" src="/assets/images/buttons/download/ctrhome.webp"><img width="15" src="/assets/images/buttons/download/cdn.webp"> our own reuploads! some apps might be slightly modified, if the modifications are known they'll be mentioned beside the download links.
