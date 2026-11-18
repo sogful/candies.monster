@@ -52,7 +52,7 @@ export function loading() {
         button.setAttribute("aria-busy", "true");
         button.classList.add("playpending");
         sidebar.inert = true;
-        controls = [...document.querySelectorAll(".site button,.site a,.site [role=button],.sidebartoggle")].filter(control => control !== button && !control.closest(".sidebar")).map(control => [control, control.inert]);
+        controls = [...document.querySelectorAll(".site button,.site a,.site [role=button],.sidebartoggle")].filter(control => control !== button && !control.matches(".levelback") && !control.closest(".sidebar")).map(control => [control, control.inert]);
         for (const [control] of controls) control.inert = true;
         overlays = [create(button, "playloading")];
         overlays[0].node.setAttribute("role", "status");
@@ -69,7 +69,7 @@ export function loading() {
     }
 
     for (const name of ["click", "auxclick"]) document.addEventListener(name, event => {
-        if (!button || button.contains(event.target)) return;
+        if (!button || button.contains(event.target) || event.target.closest(".levelback")) return;
         event.preventDefault();
         event.stopImmediatePropagation();
     }, true);

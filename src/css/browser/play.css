@@ -16,14 +16,18 @@
 }
 
 .gameopen .site, .gameopen .sidebartoggle {visibility: hidden}
-.gameloading .sidebartoggle {opacity: 0.25}
-.gameloading .sidebar {opacity: 0.25}
-.gameloading .leveldetail :is(button,a,[role="button"]):not(.levelplay) {
-    opacity: 0.25; pointer-events: none;
+.gameloading body::after {
+    content: ""; position: fixed;
+    inset: 0; z-index: 80;
+    background: rgba(0,0,0,0.5); pointer-events: auto;
 }
+.gameloading .site {z-index: auto}
+.gameloading .levelback, .gameloading .levelprimary {
+    z-index: 81;
+}
+.gameloading .levelprimary {position: relative}
 
 .playpending {position: relative}
-.playpending > img {opacity: 0.25}
 
 .playloading {
     position: absolute; inset: 0;

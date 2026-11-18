@@ -51,6 +51,7 @@ export function leveldetails() {
     }
 
     function back() {
+        if (root.classList.contains("gameloading")) {game.stop(true); return}
         game.stop();
         const url = new URL(location.href);
         url.hash = "";
