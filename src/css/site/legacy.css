@@ -95,6 +95,11 @@
     background: none; padding: 0;
     transform: translateX(-50%); box-shadow: none;
 }
+.oldhome .sidelinks a:not([hidden]) ~ a:not([hidden])::before {
+    content: "\2022"; color: #dfdfdf;
+    display: inline-block; margin-right: 6px;
+    pointer-events: none;
+}
 .oldhome .buttonstoggle, .oldhome .sidebartoggle {display: none}
 .oldhome .sitenavigation, .oldhome .sidelinks {visibility: visible}
 .oldmode:not(.oldhome) .sidebar,
