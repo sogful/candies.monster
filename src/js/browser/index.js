@@ -12,10 +12,15 @@ import {readposition, storeposition} from "./catalogue/storage.js";
 
 morestuff();
 
-const list = document.querySelector(".levels");
+let list = document.querySelector(".levels");
+const pagehost = list.parentElement;
+let sizeobserver = null;
+let dimensions = "";
 const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
 const neighbors = new Map();
+const building = new Map();
+let pagegeometry = null;
 const gestures = pagegestures(list, previous, next, {
     neighbors() {return neighbors.values()},
     position(distance) {
@@ -29,14 +34,22 @@ const gestures = pagegestures(list, previous, next, {
             if (sound) {sound.currentTime = 0; void sound.play().catch(() => {})}
         }
         saveposition();
-        const saved = pagebox(page);
-        saved.append(...list.childNodes);
+        const saved = list;
+        saved.dataset.page = String(page);
+        saved.classList.add("pagepreview");
+        saved.inert = true;
+        saved.setAttribute("aria-hidden", "true");
         neighbors.set(page, saved);
         neighbors.delete(Number(adjacent.dataset.page));
-        const content = document.createDocumentFragment();
-        content.append(...adjacent.childNodes);
-        adjacent.remove();
-        showpage(page + offset, "push", content);
+        sizeobserver?.unobserve(saved);
+        list = adjacent;
+        list.classList.remove("pagepreview");
+        list.inert = false;
+        list.removeAttribute("aria-hidden");
+        for (const property of ["left", "top", "width", "height", "transform"]) list.style.removeProperty(property);
+        gestures.setlist(list);
+        sizeobserver?.observe(list);
+        showpage(page + offset, "push", true);
     }
 });
 const pagination = document.createElement("span");
@@ -61,6 +74,7 @@ let positionkey = "";
 let definitions = null;
 let loading = null;
 let active = null;
+let neighborversion = 0;
 const tooltip = document.createElement("div");
 tooltip.className = "tooltip";
 tooltip.hidden = true;
@@ -126,34 +140,32 @@ function createlevel(entry) {
     return card;
 }
 
-function fitcard(card) {
-    const title = card.querySelector(".title");
-    title.style.fontSize = "";
-    const base = Number.parseFloat(getComputedStyle(title).fontSize) || 18;
-    const creator = card.querySelector(".creator").getBoundingClientRect().height;
-    const tags = card.querySelector(".cardtags").getBoundingClientRect().height;
-    const available = Math.max(18, Math.min(card.clientHeight * 0.55, card.clientHeight - creator - tags - 12));
-    if (title.scrollHeight <= available) return;
-    let low = 7;
-    let high = base;
-    for (let step = 0; step < 7; step++) {
-        const size = (low + high) / 2;
-        title.style.fontSize = size + "px";
-        if (title.scrollHeight > available) high = size;
-        else low = size;
-    }
-    title.style.fontSize = Math.floor(low * 2) / 2 + "px";
-}
-
 function fitcards(container = list) {
-    for (const card of container.querySelectorAll(".level")) fitcard(card);
+    const cards = container.matches(".level") ? [container] : [...container.querySelectorAll(".level")];
+    for (const card of cards) card.querySelector(".title").style.fontSize = "";
+    const records = cards.map(card => {
+        const title = card.querySelector(".title");
+        const creator = card.querySelector(".creator").getBoundingClientRect().height;
+        const tags = card.querySelector(".cardtags").getBoundingClientRect().height;
+        const available = Math.max(18, Math.min(card.clientHeight * 0.55, card.clientHeight - creator - tags - 12));
+        return {title, available, low: 7, high: Number.parseFloat(getComputedStyle(title).fontSize) || 18};
+    }).filter(record => record.title.scrollHeight > record.available);
+    for (let step = 0; step < 7; step++) {
+        for (const record of records) record.title.style.fontSize = (record.low + record.high) / 2 + "px";
+        for (const record of records) {
+            const size = (record.low + record.high) / 2;
+            if (record.title.scrollHeight > record.available) record.high = size;
+            else record.low = size;
+        }
+    }
+    for (const record of records) record.title.style.fontSize = Math.floor(record.low * 2) / 2 + "px";
 }
 
 function saveposition() {
     if (positionkey) storeposition(positionkey, page, list.scrollTop);
 }
 
-list.addEventListener("scroll", saveposition, {passive: true});
+pagehost.addEventListener("scroll", event => {if (event.target === list) saveposition()}, {passive: true, capture: true});
 window.addEventListener("pagehide", saveposition, {capture: true});
 
 function pagecontent(number) {
@@ -168,13 +180,18 @@ function pagecontent(number) {
 }
 
 function placepage(adjacent, distance = 0) {
-    adjacent.style.setProperty("--columns", getComputedStyle(list).getPropertyValue("--columns"));
-    adjacent.style.left = list.offsetLeft + "px";
-    adjacent.style.top = list.offsetTop + "px";
-    adjacent.style.width = list.clientWidth + "px";
-    adjacent.style.height = list.clientHeight + "px";
+    pagegeometry ||= measurepage();
+    adjacent.style.setProperty("--columns", pagegeometry.columns);
+    adjacent.style.left = pagegeometry.left + "px";
+    adjacent.style.top = pagegeometry.top + "px";
+    adjacent.style.width = pagegeometry.width + "px";
+    adjacent.style.height = pagegeometry.height + "px";
     adjacent.dataset.offset = String(Number(adjacent.dataset.page) - page);
-    adjacent.style.transform = `translate3d(${Number(adjacent.dataset.offset) * list.parentElement.clientWidth + distance}px,0,0)`;
+    adjacent.style.transform = `translate3d(${Number(adjacent.dataset.offset) * pagegeometry.pitch + distance}px,0,0)`;
+}
+
+function measurepage() {
+    return {columns: getComputedStyle(list).getPropertyValue("--columns"), left: list.offsetLeft, top: list.offsetTop, width: list.clientWidth, height: list.clientHeight, pitch: list.parentElement.clientWidth};
 }
 
 function pagebox(number) {
@@ -187,32 +204,65 @@ function pagebox(number) {
     return adjacent;
 }
 
-function neighbor(number) {
+function buildpage(adjacent, all = false) {
+    const queue = building.get(adjacent);
+    if (!queue || !adjacent.isConnected) {building.delete(adjacent); return}
+    do {
+        const entry = queue.shift();
+        if (!entry) break;
+        const card = createlevel(entry);
+        adjacent.append(card);
+    } while (all && queue.length);
+    if (!queue.length) {
+        fitcards(adjacent);
+        warmthumbnails(adjacent);
+        building.delete(adjacent);
+        delete adjacent.dataset.building;
+        return;
+    }
+    const next = () => buildpage(adjacent);
+    if (window.requestIdleCallback) requestIdleCallback(next, {timeout: 500});
+    else setTimeout(next, 16);
+}
+
+function neighbor(number, incremental = false) {
     if (number < 0 || number * pagesize >= visible.length) return null;
     let adjacent = neighbors.get(number);
     if (!adjacent) {
         adjacent = pagebox(number);
-        adjacent.append(pagecontent(number));
         neighbors.set(number, adjacent);
-        fitcards(adjacent);
-        warmthumbnails(adjacent);
+        adjacent.dataset.building = "true";
+        building.set(adjacent, visible.slice(number * pagesize, (number + 1) * pagesize));
+        buildpage(adjacent, !incremental);
     }
+    if (!incremental && building.has(adjacent)) buildpage(adjacent, true);
     placepage(adjacent);
     return adjacent;
 }
 
 function clearneighbors() {
+    neighborversion++;
     for (const adjacent of neighbors.values()) {clearthumbnails(adjacent); adjacent.remove()}
     neighbors.clear();
+    building.clear();
 }
 
-function nearby() {
+function nearby(defer = false) {
     for (const [number, adjacent] of neighbors) {
-        if (Math.abs(number - page) !== 1) {clearthumbnails(adjacent); adjacent.remove(); neighbors.delete(number)}
+        if (Math.abs(number - page) !== 1) {building.delete(adjacent); clearthumbnails(adjacent); adjacent.remove(); neighbors.delete(number)}
     }
-    neighbor(page - 1);
-    neighbor(page + 1);
     for (const adjacent of neighbors.values()) placepage(adjacent);
+    const version = ++neighborversion;
+    const create = () => {
+        if (version !== neighborversion) return;
+        neighbor(page - 1, defer);
+        neighbor(page + 1, defer);
+    };
+    if (!defer) {create(); return}
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (window.requestIdleCallback) requestIdleCallback(create, {timeout: 500});
+        else setTimeout(create, 0);
+    }));
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -231,31 +281,36 @@ function showpage(number, write = "push", content) {
     positionkey = location.pathname + location.search;
     document.dispatchEvent(new Event("levelpagechange"));
     hide();
-    clearthumbnails(list);
-    list.replaceChildren(content || pagecontent(page));
-    fitcards();
-    nearby();
-    list.scrollTop = 0;
+    if (!content) {clearthumbnails(list); list.replaceChildren(pagecontent(page))}
+    if (!content) fitcards();
+    nearby(Boolean(content));
+    if (!content) list.scrollTop = 0;
     list.setAttribute("aria-label", `levels, page ${page + 1} of ${pages}`);
     previous.disabled = page === 0;
     next.disabled = page >= pages - 1;
     previous.hidden = previous.disabled;
     next.hidden = next.disabled;
     pagecount.textContent = `${visible.length ? page + 1 : 0} of ${visible.length ? pages : 0} (${visible.length} levels)`;
-    const box = list.querySelector(".levelbg")?.getBoundingClientRect();
-    prefetch([...visible.slice(Math.max(0, page - 1) * pagesize, page * pagesize), ...visible.slice((page + 1) * pagesize, (page + 2) * pagesize)], box?.width, box?.height);
+    if (!content) {
+        const box = list.querySelector(".levelbg")?.getBoundingClientRect();
+        prefetch([...visible.slice(Math.max(0, page - 1) * pagesize, page * pagesize), ...visible.slice((page + 1) * pagesize, (page + 2) * pagesize)], box?.width, box?.height);
+    }
 }
 
 function layout() {
     const width = list.clientWidth;
     const height = list.clientHeight;
     if (!width || !height) return;
+    const signature = [width, height, innerWidth].join(":");
+    if (signature === dimensions) return;
+    dimensions = signature;
     const gap = Number.parseFloat(getComputedStyle(list).columnGap) || 0;
     const columns = innerWidth < 320 ? 1 : Math.max(2, Math.floor((width + gap) / 260));
     const cardwidth = (width - gap * (columns - 1)) / columns;
     const rows = Math.max(1, Math.floor((height - 12 + gap) / (cardwidth * 9 / 16 + gap)));
     const capacity = rows * columns;
     list.style.setProperty("--columns", String(columns));
+    pagegeometry = measurepage();
     if (capacity === pagesize) {
         fitcards();
         for (const adjacent of neighbors.values()) {placepage(adjacent); fitcards(adjacent)}
@@ -266,7 +321,7 @@ function layout() {
     if (entries.length) showpage(Math.floor(first / pagesize), "replace");
 }
 
-if (window.ResizeObserver) new ResizeObserver(layout).observe(list);
+if (window.ResizeObserver) {sizeobserver = new ResizeObserver(layout); sizeobserver.observe(list)}
 window.addEventListener("resize", layout, {passive: true});
 layout();
 document.fonts?.ready.then(() => {
@@ -311,21 +366,24 @@ catalogue().then(data => {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-list.addEventListener("click", event => {
+pagehost.addEventListener("click", event => {
+    if (!list.contains(event.target)) return;
     const card = event.target.closest(".level");
     if (!card || event.target.closest(".features,.leveltag,.creatorlink") || !getSelection().isCollapsed) return;
     saveposition();
     detail.open(card.dataset.level);
 });
 
-list.addEventListener("keydown", event => {
+pagehost.addEventListener("keydown", event => {
+    if (!list.contains(event.target)) return;
     if (!event.target.matches(".level") || !["Enter", " "].includes(event.key)) return;
     event.preventDefault();
     saveposition();
     detail.open(event.target.dataset.level);
 });
 
-list.addEventListener("keydown", event => {
+pagehost.addEventListener("keydown", event => {
+    if (!list.contains(event.target)) return;
     const more = event.target.closest(".morefeatures");
     if (!more || !["Enter", " "].includes(event.key)) return;
     event.preventDefault();
@@ -399,5 +457,5 @@ document.addEventListener("keydown", event => {
         features.querySelector(".morefeatures").setAttribute("aria-expanded", "false");
     }
 });
-list.addEventListener("scroll", hide, {passive: true});
+pagehost.addEventListener("scroll", event => {if (event.target === list) hide()}, {passive: true, capture: true});
 window.addEventListener("resize", hide, {passive: true});

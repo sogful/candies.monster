@@ -313,7 +313,9 @@
     padding: 3px 6px 5px; box-sizing: border-box;
     border-radius: 0 0 11px 11px;
 }
-.levels {touch-action: pan-y pinch-zoom}
+.levels {
+    touch-action: pan-y pinch-zoom; contain: layout style;
+}
 
 /*//////////////////////////////////////////////////////////////////////*/
 

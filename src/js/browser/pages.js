@@ -1,4 +1,5 @@
-export function pagegestures(list, previous, next, options) {
+export function pagegestures(initial, previous, next, options) {
+    let list = initial;
     let drag = null;
     let neighbor = null;
     let offset = 0;
@@ -77,7 +78,8 @@ export function pagegestures(list, previous, next, options) {
         void finish(true, silent);
     }
 
-    list.addEventListener("pointerdown", event => {
+    parent.addEventListener("pointerdown", event => {
+        if (!list.contains(event.target)) return;
         if (!event.isPrimary) {reset(); return}
         blocked = false;
         if (busy || event.button !== 0 || event.target.closest(".cardtags,a,button")) return;
@@ -108,13 +110,15 @@ export function pagegestures(list, previous, next, options) {
         void finish(Math.abs(distance) > width * 0.2 || Math.abs(distance) > 30 && Math.abs(speed) > 0.45);
     });
     window.addEventListener("pointercancel", () => {if (drag) void finish(false)});
-    list.addEventListener("click", event => {
+    parent.addEventListener("click", event => {
+        if (!list.contains(event.target)) return;
         if (!busy && (!blocked || event.detail === 0)) return;
         blocked = false;
         event.preventDefault();
         event.stopImmediatePropagation();
     }, true);
-    list.addEventListener("wheel", event => {
+    parent.addEventListener("wheel", event => {
+        if (!list.contains(event.target)) return;
         if (event.ctrlKey || event.target.closest(".cardtags") || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
         event.preventDefault();
         if (busy || drag?.id !== undefined) return;
@@ -127,5 +131,5 @@ export function pagegestures(list, previous, next, options) {
     window.addEventListener("blur", reset);
     window.addEventListener("resize", reset, {passive: true});
     document.addEventListener("homeviewchange", reset);
-    return {reset, turn};
+    return {reset, turn, setlist(value) {list = value}};
 }
