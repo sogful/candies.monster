@@ -15,6 +15,19 @@
     cursor: url("/assets/images/cursors/idle.cur"), default;
 }
 
+.chuzz:not(.levelopen,.previewopen) .homepage {
+    --coverheight: max(56.25vw,100vh);
+    background-image: url("/assets/images/bgs/chuzz.avif"), url("/assets/images/bgs/original.avif");
+    background-size: calc(var(--coverheight) * 84 / 1080) auto, cover;
+    background-position:
+        calc(50% - var(--coverheight) * 251 / 1080)
+        calc(50% - var(--coverheight) * 448.5 / 1080), center;
+}
+
+@supports (height: 100dvh) {
+    .chuzz:not(.oldhome) .homepage {--coverheight: max(56.25vw,100dvh)}
+}
+
 .homepage :any-link {
     color: #8feeff; text-decoration: none;
     cursor: url("/assets/images/cursors/link.cur"), pointer;

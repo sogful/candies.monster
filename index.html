@@ -4,6 +4,7 @@
     
     <script>
         (() => {
+            if (Math.random() < 1 / 1000) document.documentElement.classList.add("chuzz");
             const view = location.hash.slice(1).toLowerCase();
             let old = false;
             try {old = localStorage.getItem("homeversion") === "old"} catch {}
