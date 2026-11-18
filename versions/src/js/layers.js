@@ -9,6 +9,7 @@ export function startlayers() {
     const template = document.querySelector(".layertemplate");
     const above = document.querySelector(".layerup");
     const below = document.querySelector(".layerdown");
+    const search = document.querySelector(".archivesearch");
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
     const groups = layers.map(layer => {
         const element = template.content.firstElementChild.cloneNode(true);
@@ -30,6 +31,24 @@ export function startlayers() {
         button.querySelector("span").textContent = target?.label || "";
     }
 
+    function positionabove() {
+        if (above.hidden) return;
+        const button = above.getBoundingClientRect();
+        if (!button.width) return;
+        const bar = search.getBoundingClientRect();
+        const overlap = bar.width && button.left < bar.right + 4 && button.right > bar.left - 4;
+        const top = overlap ? Math.ceil(bar.bottom + 6) : 8;
+        above.style.setProperty("--layeruptop", `${top}px`);
+        viewport.style.setProperty("--layerpadding", `${Math.max(56, top + button.height + 4)}px`);
+    }
+
+    window.addEventListener("resize", positionabove, {passive: true});
+    if ("ResizeObserver" in window) {
+        const observer = new ResizeObserver(positionabove);
+        observer.observe(above);
+        observer.observe(search);
+    }
+
     function show(name, animate = false) {
         const index = Math.max(0, groups.findIndex(group => group.name === name));
         const group = groups[index];
@@ -37,6 +56,7 @@ export function startlayers() {
         group.element.classList.add("visited");
         arrow(above, groups[index - 1]);
         arrow(below, groups[index + 1]);
+        positionabove();
         viewport.scrollTo({top: group.element.offsetTop, behavior: animate && !reduced.matches ? "smooth" : "instant"});
     }
 

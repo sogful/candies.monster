@@ -19,7 +19,7 @@ style.textContent = `
         margin: 0; z-index: 1;
         transform: translate(-50%,-50%);
         background: center / contain no-repeat url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(loadingsvg)}");
-        animation: imagecandy 1s linear infinite;
+        animation: imagecandy 2.4s linear infinite;
     }
 
     @keyframes imagecandy {

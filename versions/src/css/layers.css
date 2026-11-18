@@ -5,22 +5,27 @@
 }
 
 .archivelayer {
-    height: 100%; background-position: center;
+    position: relative; height: 100%;
+    background-position: center;
     background-size: cover; background-repeat: no-repeat;
 }
 
 .archivelayer[data-layer="omnom"] {background-image: url("/assets/images/bgs/original.avif")}
 .archivelayer.visited[data-layer="zeptolab"] {background-image: url("/assets/images/bgs/match3.webp")}
-.archivelayer.visited[data-layer="fangames"] {background-image: url("/assets/images/bgs/experimentsmenu.webp")}
+.archivelayer.visited[data-layer="fangames"] {
+    background-image: url("/assets/images/bgs/exp.webp"); background-repeat: repeat;
+    background-size: auto;
+}
 
-.layernav {
-    position: fixed; z-index: 1000;
-    left: 50%; bottom: 0.35em;
-    display: flex; gap: 0.8em;
-    transform: translateX(-50%);
+.archivelayer[data-platform="ios"]::before {
+    content: ""; position: absolute;
+    inset: 0; background: rgba(0,0,0,0.15);
+    pointer-events: none;
 }
 
 .layerarrow {
+    position: fixed; z-index: 1000;
+    left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column;
     align-items: center; justify-content: flex-end;
     min-width: 3.2em; min-height: 48px;
@@ -38,12 +43,19 @@
     pointer-events: none;
 }
 
+.layerdown {bottom: 0.35em}
+.layerup {top: var(--layeruptop,8px)}
 .layerdown img {rotate: -90deg}
 .layerup img {rotate: 90deg}
 .layerarrow[hidden], .gameopen .layernav, .searchopen .layernav {display: none}
 .layerarrow:active img {scale: 0.94}
 
 .archivelayer .gamescreen {padding-block: 56px}
+.archivelayer:not([data-layer="omnom"]) .gamescreen {padding-block: var(--layerpadding,56px)}
+
+.gameicon > .imageloadingspinner, .versionicon > .imageloadingspinner,
+.packageicons .imageloadingspinner {width: 75%}
+.packageicons img {display: block}
 
 .layerempty {
     color: #fff; text-align: center;

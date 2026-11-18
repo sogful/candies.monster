@@ -186,7 +186,7 @@
     position: absolute; left: 50%;
     top: 50%; width: 56px;
     height: 56px; margin: -28px;
-    animation: levelloadingspin 1.5s linear infinite;
+    animation: levelloadingspin 2.4s linear infinite;
 }
 .levelloading svg {
     display: block; width: 100%;
