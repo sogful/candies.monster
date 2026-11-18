@@ -17,9 +17,21 @@ footer.append(switcher);
 /*//////////////////////////////////////////////////////////////////////*/
 
 if (old) {
+    document.documentElement.classList.add("oldmode");
+    function reload(anchor, view) {
+        anchor.addEventListener("click", event => {
+            if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            const destination = new URL(location.href);
+            destination.hash = view;
+            history.pushState(null, "", destination);
+            location.reload();
+        });
+    }
     const levels = document.createElement("a");
     levels.className = "navlink legacylevels";
     levels.href = "#levels";
+    reload(levels, "levels");
     const image = document.createElement("img");
     image.className = "button clickable";
     image.src = "/assets/images/buttons/pages/levels.webp";
@@ -41,6 +53,11 @@ if (old) {
     arrow.src = "/assets/images/buttons/back.png";
     arrow.alt = "";
     back.append(arrow);
+    reload(back, "");
+    const exit = back.cloneNode(true);
+    exit.className = "legacyexit clickable";
+    reload(exit, "");
+    document.querySelector(".site").append(exit);
     const logo = document.querySelector(".homelink img");
     function render() {
         const home = !location.hash || location.hash === "#";

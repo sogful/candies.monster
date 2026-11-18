@@ -358,7 +358,3 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.smallnav .navlink[href="/leaderboards/"] .buttonlabel {
-    font-size: 7px; white-space: nowrap;
-    overflow-wrap: normal; padding-inline: 1px;
-}

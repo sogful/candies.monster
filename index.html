@@ -7,6 +7,7 @@
             const view = location.hash.slice(1).toLowerCase();
             let old = false;
             try {old = localStorage.getItem("homeversion") === "old"} catch {}
+            if (old) document.documentElement.classList.add("oldmode");
             if (old && !view) document.documentElement.classList.add("oldhome");
             if (/^\d+$/.test(view) || /^level\/\d+$/.test(view)) {
                 document.documentElement.classList.add("levelopen");
@@ -121,7 +122,7 @@
                 <div class="buttons small smallnav">
                     <a aria-label="Google Play leaderboards" class="navlink" href="/leaderboards/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/leaderboard.webp" title="Google Play leaderboards">
-                        <span class="buttonlabel">leaderboards</span>
+                        <span class="buttonlabel">scores</span>
                     </a>
                     <a aria-label="music player" class="navlink" href="/music/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/music.webp" title="music player">

@@ -54,7 +54,7 @@ export function leveldetails() {
         if (root.classList.contains("gameloading")) {game.stop(true); return}
         game.stop();
         const url = new URL(location.href);
-        url.hash = "";
+        url.hash = root.classList.contains("oldmode") ? "levels" : "";
         url.searchParams.delete("revision");
         history.pushState(null, "", url);
         render();

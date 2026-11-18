@@ -68,6 +68,8 @@
     font-size: 11px; line-height: 1;
     white-space: nowrap; border-radius: 0 0 0.75em 0.75em;
     transform: translateX(-50%);
+    justify-content: center; align-items: flex-end;
+    text-align: center;
 }
 .oldhome .smallnav .buttonlabel {font-size: 10px}
 .oldhome .resourceblurb {
@@ -86,7 +88,7 @@
 }
 .oldhome .buttondrawer {
     position: fixed; left: 50%;
-    bottom: 15px; top: auto;
+    bottom: 36px; top: auto;
     width: 750px; max-width: 90%;
     display: flex; flex-direction: row;
     flex-wrap: wrap; justify-content: center;
@@ -95,6 +97,18 @@
 }
 .oldhome .buttonstoggle, .oldhome .sidebartoggle {display: none}
 .oldhome .sitenavigation, .oldhome .sidelinks {visibility: visible}
+.oldmode:not(.oldhome) .sidebar,
+.oldmode:not(.oldhome) .sidebartoggle,
+.oldmode:not(.oldhome) .buttondrawer {display: none}
+.oldmode:not(.oldhome) .homepage {--navigationwidth: 0px}
+.legacyexit {
+    display: none; position: fixed;
+    left: 8px; top: 8px;
+    width: 28px; z-index: 30;
+    line-height: 0; pointer-events: auto;
+}
+.legacyexit img {width: 100%}
+.oldmode.previewopen .legacyexit {display: block}
 @media (max-width: 400px) {
     .oldhome .buttonlabel {display: none}
 }
