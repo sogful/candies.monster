@@ -94,17 +94,8 @@
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.15em 0 #000;
 }
-
-.searchstatus {
-    margin-bottom: 0.75em; font-size: 1em;
-}
-
-.searchgroup {margin-bottom: 1em}
-
-.searchresults .gamename {
-    overflow-wrap: anywhere;
-}
-
+.searchstatus {margin-bottom: 0.5em; font-size: 1em}
+.searchresults .gamename {overflow-wrap: anywhere}
 .searchresults .package {overflow-wrap: anywhere}
 
 .searchempty {
@@ -114,7 +105,6 @@
     gap: 0.5em; text-align: center;
     pointer-events: none;
 }
-
 .searchempty[hidden] {display: none}
 
 .searchempty img {
@@ -148,15 +138,12 @@
 
     .archiveinfo .infobutton img {width: 36px}
     .archiveinfo .infopopup {top: calc(var(--archivecontrol) + 4px)}
-    .searchplatform {min-height: 40px}
 
     .searchresults {
         width: 100vw; padding-top: calc(var(--archivecontrol) + 2 * var(--archiveinset));
     }
 
     .searchempty {top: calc(var(--archivecontrol) + 2 * var(--archiveinset))}
-
     .searchopen .gamepanels {visibility: hidden}
-
     .searchopen .versionbackdrop {width: 100vw}
 }
