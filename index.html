@@ -38,6 +38,7 @@
             }
         })();
     </script>
+
     <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="modulepreload" href="/assets/static/js/images/spinner.js">
     <link rel="modulepreload" href="/assets/static/js/images/loading.js">
@@ -45,7 +46,7 @@
 
     <title>candies.monster</title>
     <meta name="title" content="candies.monster" />
-    <meta name="description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
+    <meta name="description" content="cut the rope levels, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <link rel="icon" type="image/png" href="/assets/images/candies/favicon.png">
 
     <meta charset="utf-8">
@@ -54,7 +55,7 @@
     <script type="module" src="/src/effects.js"></script>
 
     <meta property="twitter:title" content="candies.monster" />
-    <meta property="twitter:description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
+    <meta property="twitter:description" content="cut the rope levels, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://candies.monster/assets/images/branding/embeds/index.png">
     <meta property="twitter:url" content="https://candies.monster/" />
@@ -62,7 +63,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://candies.monster/" />
     <meta property="og:title" content="candies.monster" />
-    <meta property="og:description" content="cut the rope resources, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
+    <meta property="og:description" content="cut the rope levels, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <meta property="og:image" content="https://candies.monster/assets/images/branding/embeds/index.png">
     <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
     <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
@@ -83,12 +84,14 @@
     <link rel="stylesheet" href="/assets/static/css/feather.css">
 </head>
 <body class="homepage">
+
         <audio class="click" preload="auto" src="/assets/audio/tap.mp3"></audio>
         <canvas aria-hidden="true" class="effects"></canvas>
         <div aria-hidden="true" class="shadow"></div>
         <div class="copied" role="status">
             <a>copied!</a>
         </div>
+
         <div class="site">
             <aside aria-label="site navigation" class="sidebar">
                 <div class="sitenavigation">
@@ -122,11 +125,11 @@
                     </a>
                     <a aria-label="split spritesheets with xml" class="navlink" href="/split/index.html">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/split.webp" title="split spritesheets with xml">
-                        <span class="buttonlabel">sheet splitter</span>
+                        <span class="buttonlabel">splitter</span>
                     </a>
                     <a aria-label="generate the gooddog font with questionable accuracy" class="navlink" href="/fonts/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/font.webp" title="generate the gooddog font with questionable accuracy">
-                        <span class="buttonlabel">font generator</span>
+                        <span class="buttonlabel">font gen</span>
                     </a>
                     <a aria-label="." class="navlink" fun="" href="//public.candies.monster/site">
                         <img width="220" height="220" class="button clickable" draggable="false" loading="lazy" src="/assets/images/buttons/pages/public.webp" title=".">
@@ -134,8 +137,8 @@
                     </a>
                 </div>
                 <div class="buttons small smallnav">
-                    <a aria-label="Google Play leaderboards" class="navlink" href="/leaderboards/">
-                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/leaderboard.webp" title="Google Play leaderboards">
+                    <a class="navlink" aria-label="view all-time google play leaderboards for cut the rope" href="/leaderboards/">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/leaderboard.webp" title="view all-time google play leaderboards for cut the rope">
                         <span class="buttonlabel">scores</span>
                     </a>
                     <a aria-label="music player" class="navlink" href="/music/">
@@ -315,15 +318,18 @@
                 </div>
             </main>
         </div>
+        
         <script type="module">
             import {spinner} from "/assets/static/js/images/spinner.js";
             const status = document.querySelector(".levelloading");
             if (status) spinner(status, "Loading levels");
         </script>
+
         <script src="/src/js/site/documents.js" type="module"></script>
         <script src="/src/js/site/sidebar.js" type="module"></script>
         <script src="/src/js/site/legacy.js" type="module"></script>
         <script src="/src/js/browser/index.js" type="module"></script>
         <script src="/src/js/site/editor.js" type="module"></script>
+
     </body>
 </html>

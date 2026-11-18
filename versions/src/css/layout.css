@@ -1,17 +1,16 @@
 .container {overscroll-behavior: none}
 
 .overlaymasked {
-    -webkit-mask-image: var(--overlaymask); -webkit-mask-repeat: no-repeat;
+    -webkit-mask-image: var(--overlaymask); 
+    -webkit-mask-repeat: no-repeat;
     -webkit-mask-origin: border-box; -webkit-mask-clip: no-clip;
     mask-image: var(--overlaymask); mask-repeat: no-repeat;
     mask-origin: border-box; mask-clip: no-clip;
 }
-
 .overlayimage {
     -webkit-mask-size: calc(100% + 32px) calc(100% + 32px); -webkit-mask-position: -16px -16px;
     mask-size: calc(100% + 32px) calc(100% + 32px); mask-position: -16px -16px;
 }
-
 .overlaydefinitions {
     position: fixed; top: 0;
     left: 0; width: 0;
@@ -19,7 +18,6 @@
 }
 
 .gameopen .archiveinfo {display: none}
-
 .gamescreen, .gamecircle, .versionscreen {transition: none}
 
 .versionbackdrop {
@@ -33,15 +31,12 @@
 .gameopen .versionbackdrop {display: block}
 
 .versionscreen, .versionscreen.active {background: transparent}
-
 .versionscreen {
     display: none; height: 100dvh;
     overscroll-behavior: contain;
 }
 
 .versionscreen.active {display: flex}
-
-/*//////////////////////////////////////////////////////////////////////*/
 
 @media (max-width: 650px) {
     .versionbackdrop {width: 100vw}
@@ -63,9 +58,7 @@
 }
 
 .packagecolumn {min-width: 0}
-
 .packagepair .gameinfo {overflow-wrap: anywhere}
-
 .packagepair .packageversions {grid-template-columns: minmax(0, 1fr)}
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -104,8 +97,6 @@
     top: 2.5em; right: 0;
     bottom: auto; left: auto;
 }
-
-/*//////////////////////////////////////////////////////////////////////*/
 
 .gamecircle .gameicon, .gamecircle .gameicon *,
 .scrollnav:hover, .scrollnav:hover *,
@@ -186,31 +177,22 @@
 }
 
 .container, .gamepanels {min-height: 100dvh}
-
 .container {height: 100dvh}
 
-/*//////////////////////////////////////////////////////////////////////*/
-
 .versioncontent .versioninfo {overflow: visible}
-
 .versioninfo .version {
     line-height: 1.15; padding: 0.12em 0.1em 0.2em;
     margin: -0.12em -0.1em 0;
 }
 
-.gamename, .package, .description {
-    padding: 0.12em 0.1em; margin-left: -0.1em;
-}
+.gamename, .package, .description {margin-left: -0.1em}
 
 .gamename, .package, .description, .versioninfo .details, .infopopup {
     user-select: text; -webkit-user-select: text;
     cursor: text;
 }
 
-/*//////////////////////////////////////////////////////////////////////*/
-
 .versionscreen {padding: 0.85em 0.8em}
-
 .gameinfo .gamename {font-size: 2.3em}
 
 /*//////////////////////////////////////////////////////////////////////*/
