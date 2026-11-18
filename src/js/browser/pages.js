@@ -24,12 +24,13 @@ export function pagegestures(list, previous, next, options) {
         list.classList.remove("pageactive");
         parent.classList.remove("pageswiping");
         if (neighbor) options.discard(neighbor);
+        options.position(0);
         neighbor = null;
         offset = 0;
     }
 
     function position(value) {
-        width = list.clientWidth;
+        width = parent.clientWidth;
         const direction = value < 0 ? 1 : -1;
         if (offset !== direction) {
             if (neighbor) options.discard(neighbor);
@@ -41,7 +42,7 @@ export function pagegestures(list, previous, next, options) {
         parent.classList.add("pageswiping");
         list.classList.add("pageactive");
         list.style.transform = `translate3d(${distance}px,0,0)`;
-        if (neighbor) neighbor.style.transform = `translate3d(${distance + offset * width}px,0,0)`;
+        options.position(distance);
     }
 
     async function finish(commit, silent = false) {
@@ -53,7 +54,10 @@ export function pagegestures(list, previous, next, options) {
         const duration = Math.max(90, Math.min(220, Math.abs(target - distance) / Math.max(width, 1) * 220));
         const settings = {duration, easing: "cubic-bezier(0.2,0.7,0.2,1)", fill: "forwards"};
         animations = [list.animate([{transform: `translate3d(${distance}px,0,0)`}, {transform: `translate3d(${target}px,0,0)`}], settings)];
-        if (neighbor) animations.push(neighbor.animate([{transform: `translate3d(${distance + offset * width}px,0,0)`}, {transform: `translate3d(${target + offset * width}px,0,0)`}], settings));
+        for (const adjacent of options.neighbors()) {
+            const origin = Number(adjacent.dataset.offset) * width;
+            animations.push(adjacent.animate([{transform: `translate3d(${distance + origin}px,0,0)`}, {transform: `translate3d(${target + origin}px,0,0)`}], settings));
+        }
         await Promise.allSettled(animations.map(animation => animation.finished));
         if (generation !== current) return;
         const incoming = neighbor;

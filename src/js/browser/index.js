@@ -1,7 +1,7 @@
 import {spinner} from "/assets/static/js/images/spinner.js";
 import {pagegestures} from "./pages.js";
 import {leveldetails} from "./detail/index.js";
-import {thumbnail, clearthumbnails} from "./renderer/index.js";
+import {thumbnail, clearthumbnails, warmthumbnails} from "./renderer/index.js";
 import {morestuff} from "../site/rope/index.js";
 import {catalogue} from "./catalogue/index.js";
 import {creatorlink} from "./catalogue/creator.js";
@@ -17,6 +17,10 @@ const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
 const neighbors = new Map();
 const gestures = pagegestures(list, previous, next, {
+    neighbors() {return neighbors.values()},
+    position(distance) {
+        for (const adjacent of neighbors.values()) placepage(adjacent, distance);
+    },
     prepare(offset) {return neighbor(page + offset)},
     discard(adjacent) {placepage(adjacent)},
     commit(offset, adjacent, silent) {
@@ -163,13 +167,14 @@ function pagecontent(number) {
     return content;
 }
 
-function placepage(adjacent) {
+function placepage(adjacent, distance = 0) {
     adjacent.style.setProperty("--columns", getComputedStyle(list).getPropertyValue("--columns"));
     adjacent.style.left = list.offsetLeft + "px";
     adjacent.style.top = list.offsetTop + "px";
     adjacent.style.width = list.clientWidth + "px";
     adjacent.style.height = list.clientHeight + "px";
-    adjacent.style.transform = `translate3d(${(Number(adjacent.dataset.page) - page) * list.clientWidth}px,0,0)`;
+    adjacent.dataset.offset = String(Number(adjacent.dataset.page) - page);
+    adjacent.style.transform = `translate3d(${Number(adjacent.dataset.offset) * list.parentElement.clientWidth + distance}px,0,0)`;
 }
 
 function pagebox(number) {
@@ -190,6 +195,7 @@ function neighbor(number) {
         adjacent.append(pagecontent(number));
         neighbors.set(number, adjacent);
         fitcards(adjacent);
+        warmthumbnails(adjacent);
     }
     placepage(adjacent);
     return adjacent;

@@ -58,7 +58,7 @@ const observer = "IntersectionObserver" in window ? new IntersectionObserver(ent
     for (const entry of entries) {
         const record = records.get(entry.target);
         if (!record) continue;
-        record.visible = entry.isIntersecting;
+        record.visible = entry.isIntersecting || record.preload;
         if (record.visible && !record.canvas.dataset.ready) queue(record);
     }
 }, {rootMargin: "100px"}) : null;
@@ -122,6 +122,14 @@ function remove(record) {
 
 export function thumbnail(entry) {
     return create(entry, false).canvas;
+}
+
+export function warmthumbnails(container) {
+    for (const record of records.values()) {
+        if (!container.contains(record.canvas)) continue;
+        record.preload = record.visible = true;
+        queue(record);
+    }
 }
 
 export function clearthumbnails(container) {
