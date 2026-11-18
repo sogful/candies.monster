@@ -33,6 +33,10 @@
     cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
 
+.resourceblurb {
+    user-select: text; -webkit-user-select: text;
+}
+
 .homepage .clickable, .homepage .navlink, .homepage .fun {
     cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
@@ -273,16 +277,17 @@
         margin-left: 0; margin-top: -76px;
     }
     .sidebartoggle {
-        top: 0; bottom: auto;
-        left: auto; right: 0;
+        top: 50%; bottom: auto;
+        left: 0; right: auto;
         width: 24px; height: 18px;
         padding: 0; border-radius: 8px 0 0;
+        transform: translateY(-50%);
         transition: top 260ms ease;
     }
     .sidebartoggle img {transform: rotate(90deg)}
     .navigationhidden .sidebartoggle {
         top: 0; left: 0;
-        right: auto;
+        right: auto; transform: none;
         border-radius: 0 0 100% 100%;
     }
     .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}
@@ -293,7 +298,6 @@
     }
     .sidebarlogo {
         width: 64px; align-self: center;
-        padding-top: 18px; box-sizing: border-box;
     }
     .bignav {
         display: grid; gap: 2px;
@@ -328,8 +332,8 @@
     }
     .sidelinks {
         order: 4; margin-left: auto;
-        align-items: flex-end;
-        font-size: 11px; padding: 1px 5px;
+        align-items: flex-end; position: relative;
+        font-size: 11px; padding: 1px 5px 1px 24px;
         line-height: 1; box-sizing: border-box;
         width: auto;
     }

@@ -1,4 +1,7 @@
 const navigation = document.querySelector(".sidebar");
+const logo = navigation.querySelector(".sidebarlogo");
+const footer = navigation.querySelector(".sidelinks");
+const compact = matchMedia("(max-width: 700px) and (min-height: 501px)");
 const toggle = document.createElement("button");
 toggle.type = "button";
 toggle.className = "sidebartoggle clickable";
@@ -9,7 +12,15 @@ arrow.src = "/assets/images/buttons/back.png";
 arrow.alt = "";
 arrow.draggable = false;
 toggle.append(arrow);
-document.querySelector(".sidebarlogo").append(toggle);
+
+function placetoggle() {
+    if (document.documentElement.classList.contains("navigationhidden")) navigation.after(toggle);
+    else if (compact.matches) footer.prepend(toggle);
+    else logo.append(toggle);
+}
+
+placetoggle();
+compact.addEventListener("change", placetoggle);
 
 const homelink = document.querySelector(".homelink");
 homelink.addEventListener("click", event => {
@@ -25,8 +36,7 @@ homelink.addEventListener("click", event => {
 
 toggle.addEventListener("click", () => {
     const hidden = document.documentElement.classList.toggle("navigationhidden");
-    if (hidden) navigation.after(toggle);
-    else document.querySelector(".sidebarlogo").append(toggle);
+    placetoggle();
     toggle.setAttribute("aria-expanded", String(!hidden));
     toggle.setAttribute("aria-label", hidden ? "show navigation" : "hide navigation");
     for (const section of navigation.querySelectorAll(".sitenavigation, .sidelinks")) {
@@ -79,7 +89,6 @@ document.addEventListener("homeviewchange", closebuttons);
 /*//////////////////////////////////////////////////////////////////////*/
 
 const scroller = document.querySelector(".sitenavigation");
-const compact = matchMedia("(max-width: 700px) and (min-height: 501px)");
 const items = [...scroller.querySelectorAll(".bignav .navlink:not([fun])")];
 
 function fitnavigation() {
