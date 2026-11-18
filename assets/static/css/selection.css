@@ -3,4 +3,9 @@
     text-shadow: none; -webkit-text-stroke: 0;
     -webkit-text-fill-color: #fff;
 }
+.textselection ::search-text {
+    color: #fff; background-color: #276bca;
+    -webkit-text-fill-color: #fff;
+}
+.textselection ::search-text:current {background-color: #96400b}
 .browserfocus:focus {outline: none}
