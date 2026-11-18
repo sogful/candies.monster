@@ -19,11 +19,11 @@ namespace CutTheRopeDX.Tests
         [Theory]
         [InlineData(0, 6, 0)]
         [InlineData(1, 6, 1)]
-        [InlineData(3, 6, 2)]
-        [InlineData(5, 6, 2)]
+        [InlineData(3, 6, 3)]
+        [InlineData(5, 6, 3)]
         [InlineData(6, 6, 3)]
-        [InlineData(1, 1, 3)]
-        [InlineData(1, 2, 2)]
+        [InlineData(1, 1, 1)]
+        [InlineData(1, 2, 1)]
         [InlineData(0, 0, 0)]
         [InlineData(1, 3, 1)]
         [InlineData(2, 3, 2)]
@@ -55,16 +55,26 @@ namespace CutTheRopeDX.Tests
                         GameScene scene = HeadlessGame.LoadScenarioMap(map);
                         Assert.Equal(count, scene.previewtotalstars);
                         Animation[] stars = (Animation[])typeof(GameScene).GetField("hudStar", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(scene);
-                        Assert.Equal(count, stars.Length);
+                        Assert.Equal(Math.Min(3, count), stars.Length);
                         if (count > 0) Assert.True(stars[^1].x + stars[^1].width * stars[^1].scaleX / 2f <= CutTheRopeDX.Framework.FrameworkTypes.SCREEN_WIDTH * 0.65f + 1);
                         BoxOpenClose box = new BoxOpenClose().InitWithButtonDelegate(new buttons());
                         box.previewstarcount(count, count);
-                        for (int index = 0; index < count; index++)
+                        for (int index = 0; index < Math.Min(3, count); index++)
                         {
                             Image star = (Image)box.result.GetChildWithName("previewstar" + index);
                             Assert.Equal(13, star.quadToDraw);
                             Assert.InRange(star.scaleX, 0.001f, 1f);
                         }
+                        Assert.Null(box.result.GetChildWithName("previewstar3"));
+                        Text extra = (Text)box.result.GetChildWithName("previewextra");
+                        Assert.NotNull(extra);
+                        Assert.Equal(count > 3 ? "+" + (count - 3) : "", extra.string_);
+                        Assert.Equal("Star Overload!!!", previewstars.message(10));
+                        Assert.Equal(previewstars.message(3), previewstars.message(8));
+                        scene.starsCollected = count;
+                        typeof(GameScene).GetMethod("previewstartext", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(scene, null);
+                        Text hudextra = (Text)typeof(GameScene).GetField("previewextra", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(scene);
+                        Assert.Equal(count > 3 ? "+" + (count - 3) : "", hudextra.string_);
                         box.previewstarcount(0, 1);
                         Assert.Equal(14, ((Image)box.result.GetChildWithName("previewstar0")).quadToDraw);
                         Assert.Null(box.result.GetChildWithName("previewstar1"));
