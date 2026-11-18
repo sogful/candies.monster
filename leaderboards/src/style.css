@@ -73,13 +73,13 @@
 
 .scoretable {
     width: 100%; border-collapse: collapse;
-    font-size: 27px; table-layout: fixed;
+    font-size: 21px; table-layout: fixed;
 }
 .scoretable th {
     text-align: left; font-weight: normal;
-    padding: 5px; font-size: 23px;
+    padding: 5px; font-size: 19px;
 }
-.scoretable th:first-child {width: 50px}
+.scoretable th:first-child {width: 44px}
 .scoretable th:last-child {
     text-align: right; width: 42%;
 }
@@ -175,13 +175,11 @@
     width: 28px; height: 28px;
     filter: drop-shadow(0 2px 1px #000);
 }
-@media (max-width: 560px) {
-    .scoreheading {font-size: 26px}
-    .scorebox {
-        font-size: 14px; min-height: 34px;
-        padding: 5px 9px 7px 6px;
-    }
-    .scoreboximage {
-        width: 23px; height: 23px;
-    }
+.scoreheading {font-size: 26px}
+.scorebox {
+    font-size: 14px; min-height: 34px;
+    padding: 5px 9px 7px 6px;
+}
+.scoreboximage {
+    width: 23px; height: 23px;
 }
