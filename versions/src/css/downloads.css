@@ -6,31 +6,33 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+.versionbuttons {--downloadsize: 24px}
+.versionbuttons .downloadbutton {--sourcesize: var(--downloadsize)}
+.versionbuttons .smallsource {--sourcesize: calc(var(--downloadsize) * 0.75)}
+
 .versionbuttons .downloadbutton {
     display: inline-flex; align-items: center;
-    justify-content: center; flex: 0 0 24px;
-    width: 24px; height: 24px;
+    justify-content: center; flex: 0 0 var(--sourcesize);
+    width: var(--sourcesize); height: var(--sourcesize);
     order: 0; touch-action: manipulation;
 }
 
 .versionbuttons .downloadbutton img {
-    display: block; width: 24px;
-    height: 24px;
+    display: block; width: 100%;
+    height: 100%;
 }
 
 .versionbuttons .smallsource {
     order: 1; align-self: center;
-    flex-basis: 12px; width: 12px;
-    height: 12px;
-}
-
-.versionbuttons .smallsource img {
-    width: 12px; height: 12px;
 }
 
 .versionbuttons::after {
     content: ""; flex-basis: 100%;
     height: 0; order: 0;
+}
+
+@media (max-width: 650px) {
+    .versionbuttons {--downloadsize: 32px}
 }
 
 /*//////////////////////////////////////////////////////////////////////*/

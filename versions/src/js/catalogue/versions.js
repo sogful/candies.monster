@@ -172,7 +172,7 @@ export function versionpanel(version, fallback, legacy, game, index) {
             <div class="versionbuttons">${renderdownloads(version.downloads, version.version, version.details)}</div>
         </div>
     `;
-    shareheading(panel.querySelector(".version"), game, index, version.version);
+    shareheading(panel.querySelector(".versionidentity"), game, index, version.version);
     const content = document.createElement("div");
     content.className = "versioncontent";
     content.dataset.routepackage = panel.dataset.routepackage;

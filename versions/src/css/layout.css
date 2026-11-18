@@ -215,6 +215,8 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+.versionpanel {padding-bottom: 0.45em}
+
 .versionidentity {
     position: relative; flex: 0 0 auto;
     margin-right: 5px;
@@ -224,7 +226,7 @@
 }
 .versionidentity .version {
     position: absolute; inset-inline: 2px;
-    bottom: 1px; cursor: text;
+    bottom: -4px; cursor: text;
     user-select: text; -webkit-user-select: text;
     font-size: clamp(0.5em,calc(6em / var(--versionlength,1)),0.84em); line-height: 1;
     color: #fff; margin: 0;
@@ -233,11 +235,29 @@
     text-shadow: 0 0.175em 0 #000;
     filter: drop-shadow(0 0 0.2em #000);
 }
-.versionidentity .version .sharelink {
-    position: absolute; right: 1px;
-    bottom: calc(100% + 2px); margin: 0;
+.versionidentity > .sharelink {
+    position: absolute; top: 0;
+    left: 0; z-index: 1;
+    width: 22px; height: 22px;
+    box-sizing: border-box; padding: 3px;
+    margin: 0; filter: drop-shadow(0 1px 2px #000);
 }
-.versionidentity:hover .version .sharelink,
-.versionidentity:focus-within .version .sharelink {
-    opacity: 0.5; pointer-events: auto;
+.versionidentity:hover > .sharelink,
+.versionidentity:focus-within > .sharelink {
+    opacity: 1; pointer-events: auto;
+}
+
+@media (max-width: 650px), (hover: none) {
+    .versionidentity > .sharelink {
+        width: 28px; height: 28px;
+        padding: 5px; opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+@media (max-width: 650px) {
+    .versionidentity {font-size: 1.125rem}
+    .versionidentity .versionicon {
+        width: 60px; height: 60px;
+    }
 }

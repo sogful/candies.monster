@@ -1,9 +1,14 @@
+.archivesearch, .versionhome, .searchresults, .archiveinfo {
+    --archivecontrol: 36px; --archiveinset: 8px;
+}
+
 .archivesearch {
-    position: fixed; top: 0.5em;
-    left: 3.8rem; z-index: 100000002;
+    position: fixed; top: var(--archiveinset);
+    left: calc(var(--archivecontrol) + 2 * var(--archiveinset)); z-index: 100000002;
     display: flex; align-items: center;
-    width: min(18rem, calc(100vw - 7rem)); box-sizing: border-box;
-    gap: 0.4em; padding: 0.35em 0.55em;
+    width: min(18rem, calc(50vw - var(--archivecontrol) - 3 * var(--archiveinset)));
+    height: var(--archivecontrol); box-sizing: border-box;
+    gap: 0.4em; padding: 0 0.55em;
     border-radius: 0.6em; background: rgba(0,0,0,0.5);
 }
 
@@ -17,14 +22,14 @@
     padding: 0; border: 0;
     font: inherit; color: #fff;
     background: transparent; outline: none;
-    -webkit-text-stroke: 0.08em #000; paint-order: stroke fill;
-    text-shadow: 0 0.08em 0 #000; cursor: text !important;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000; cursor: text !important;
 }
 
 .archivequery::placeholder {
     color: #fff; opacity: 1;
     font: inherit; -webkit-text-stroke: inherit;
-    paint-order: stroke fill; text-shadow: 0 0.08em 0 #000;
+    paint-order: stroke fill; text-shadow: inherit;
 }
 
 .archivequery::-webkit-search-cancel-button {display: none}
@@ -43,7 +48,11 @@
 }
 
 .gameopen .archivesearch {display: none}
-.versionhome {z-index: 100000003}
+.versionhome.pageback {
+    top: var(--archiveinset); left: var(--archiveinset);
+    width: var(--archivecontrol); height: var(--archivecontrol);
+    z-index: 100000003;
+}
 .gameopen .versionhome {display: none}
 
 .gameicon.searchdim {opacity: 0.25}
@@ -122,11 +131,30 @@
 .searchmore {height: 1px}
 
 @media (max-width: 650px) {
-    .searchresults {
-        width: 100vw; padding-top: 3.5em;
+    .archivesearch, .versionhome, .searchresults, .archiveinfo {--archivecontrol: 44px}
+
+    .archivesearch {
+        width: min(18rem, calc(100vw - 2 * var(--archivecontrol) - 4 * var(--archiveinset)));
+        font-size: 1.125rem;
     }
 
-    .searchempty {top: 3.5em}
+    .searchclear {
+        flex-basis: 28px; height: 32px;
+    }
+
+    .archiveinfo .infobutton {
+        width: var(--archivecontrol); height: var(--archivecontrol);
+    }
+
+    .archiveinfo .infobutton img {width: 36px}
+    .archiveinfo .infopopup {top: calc(var(--archivecontrol) + 4px)}
+    .searchplatform {min-height: 40px}
+
+    .searchresults {
+        width: 100vw; padding-top: calc(var(--archivecontrol) + 2 * var(--archiveinset));
+    }
+
+    .searchempty {top: calc(var(--archivecontrol) + 2 * var(--archiveinset))}
 
     .searchopen .gamepanels {visibility: hidden}
 
