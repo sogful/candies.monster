@@ -151,7 +151,7 @@ class musicplayer {
 
         return trackelement;
     }
-    initializepayer() {this.updatebackground("menu.webp")}
+    initializepayer() {this.updatebackground("original.avif")}
 
     rendersonglist() {
         const songlist = document.querySelector(".songlist");

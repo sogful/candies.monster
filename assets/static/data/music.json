@@ -30,7 +30,7 @@
           "mp3",
           "ogg"
         ],
-        "background": "menu.webp"
+        "background": "original.avif"
       }
     ]
   },
@@ -509,7 +509,7 @@
           "mp3",
           "ogg"
         ],
-        "background": "menu.webp"
+        "background": "original.avif"
       },
       {
         "path": "idlecandy/game_music_01.ogg",
@@ -757,7 +757,7 @@
           "mp3",
           "dspadpcm.bcstm"
         ],
-        "background": "menu.webp"
+        "background": "original.avif"
       }
     ],
     "subcategories": [
@@ -778,7 +778,7 @@
               "mp3",
               "dspadpcm.bcstm"
             ],
-            "background": "menu.webp"
+            "background": "original.avif"
           }
         ]
       },

@@ -9,7 +9,7 @@
     margin: 0; padding: 24px 52px;
     min-height: 100vh; box-sizing: border-box;
     color: #fff; background: #e9a856;
-    background-image: url("/assets/images/bgs/original.webp"); background-size: cover;
+    background-image: url("/assets/images/bgs/original.avif"); background-size: cover;
     background-position: center; background-attachment: fixed;
     font-family: var(--sitefont,"Good Dog"),"Playpen","Maiyuan","Dongdong",sans-serif; font-size: 24px;
     cursor: url("/assets/images/cursors/idle.cur"), default;

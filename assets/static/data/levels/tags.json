@@ -206,7 +206,7 @@
         ],
         "cut the rope": [
             "/assets/images/bgs/cardboard.webp",
-            "/assets/images/bgs/menu.webp"
+            "/assets/images/bgs/original.avif"
         ],
         "cut the rope 2": [
             "/assets/images/bgs/two1.webp",
@@ -226,7 +226,7 @@
             "/assets/images/bgs/holidaymenu.webp"
         ],
         "idle candy": [
-            "/assets/images/bgs/menu.webp",
+            "/assets/images/bgs/original.avif",
             "/assets/images/bgs/cardboard.webp"
         ],
         "magic": [
@@ -255,7 +255,7 @@
             "/assets/images/bgs/timetravelmenu.webp"
         ],
         "triple treat": [
-            "/assets/images/bgs/menu.webp"
+            "/assets/images/bgs/original.avif"
         ],
         "cut the rope 3": [
             "/assets/images/bgs/ctr3.webp"

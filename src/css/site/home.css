@@ -8,7 +8,7 @@
     margin: 0; padding: 0;
     height: 100vh; height: 100dvh;
     overflow: hidden; background-color: #e9a856;
-    background-image: url("/assets/images/bgs/original.webp"); background-size: cover;
+    background-image: url("/assets/images/bgs/original.avif"); background-size: cover;
     background-position: center; background-repeat: no-repeat;
     font-family: var(--sitefont,"Good Dog"); color: #fff;
     user-select: none; -webkit-user-drag: none;
