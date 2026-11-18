@@ -101,6 +101,7 @@
 .creditsview .documentcontributors {padding: 0}
 .creditsview .documententry {padding-left: 0}
 .creditsview .documententry::before {display: none}
+.creditsview .documentminor {font-size: 0.85em}
 
 .creditscolumns {
     display: grid; grid-template-columns: repeat(2,minmax(0,1fr));

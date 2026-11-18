@@ -1,6 +1,13 @@
 import {spinner} from "/assets/static/js/images/spinner.js";
 
 let loading;
+const names = new Intl.Collator("en", {sensitivity: "base", numeric: true});
+const sizes = {large: 0, small: 2};
+
+function sortentries(entries) {
+    const plain = text => String(text || "").replace(/\[([^\]\n]+)\]\([^\s)]+\)/g, "$1");
+    return [...entries].sort((first, second) => (sizes[first.size] ?? 1) - (sizes[second.size] ?? 1) || names.compare(plain(first.name), plain(second.name)));
+}
 
 function link(text, address) {
     let url;
@@ -44,7 +51,7 @@ export function rendercredits(data) {
         const list = document.createElement("ul");
         list.className = "documentcontributors";
         if (section.entries?.length > 8) list.classList.add("creditscolumns");
-        for (const entry of section.entries || []) {
+        for (const entry of sortentries(section.entries || [])) {
             const item = document.createElement("li");
             item.className = "documententry";
             const heading = entry.size === "large" ? "h2" : entry.size === "small" ? "h3" : "div";

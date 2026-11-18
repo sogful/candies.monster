@@ -1,29 +1,65 @@
 {
     "sections": [
         {
-            "title": "game version archiving/help",
-            "heading": "major",
+            "title": "CTR Home team",
+            "heading": "normal",
             "entries": [
+                {
+                    "name": "Bingies24",
+                    "subtitle": "game version archiving/help"
+                },
+                {
+                    "name": "Ansel Thanatos",
+                    "subtitle": "ctr debug symbol help"
+                },
+                {
+                    "name": "MlopsFunny",
+                    "size": "small"
+                },
+                {
+                    "name": "MrCatz",
+                    "subtitle": "toys&books findings, raw2png help",
+                    "size": "large"
+                },
                 {
                     "name": "saulfabreg",
                     "subtitle": "amazing patch/search work over the last year, rare internet archive uploads",
                     "size": "large"
                 },
                 {
-                    "name": "dragonland3030",
-                    "subtitle": "provided a gigantic amount of drives with apks and ipas",
-                    "size": "large"
-                },
-                                {
                     "name": "TheAwesomeBlue",
                     "subtitle": "android archives and reuploads for ctr home",
                     "size": "large"
                 },
                 {
-                    "name": "Bingies24"
+                    "name": "yell0wsuit",
+                    "subtitle": "cut the rope dx and most of the raw2png script work",
+                    "size": "large"
                 },
                 {
-                    "name": "SwordJhon"
+                    "name": "SwordJhon",
+                    "subtitle": "game version archiving/help"
+                },
+                {
+                    "name": "Laxii",
+                    "subtitle": "major book help (purchases/scanning)",
+                    "size": "large"
+                },
+                {
+                    "name": "aidrum",
+                    "subtitle": "he's lowkey just there but it's okay we all love and cherish him",
+                    "size": "small"
+                }
+            ]
+        },
+        {
+            "title": "game version archiving/help",
+            "heading": "major",
+            "entries": [
+                {
+                    "name": "dragonland3030",
+                    "subtitle": "provided a gigantic amount of drives with apks and ipas",
+                    "size": "large"
                 },
                 {
                     "name": "sami9999999999"
@@ -36,11 +72,10 @@
                 },
                 {
                     "name": "jul.mik",
-                    "size": "small"
+                    "size": "large"
                 },
                 {
-                    "name": "itsme_lis",
-                    "size": "small"
+                    "name": "itsme_lis"
                 },
                 {
                     "name": "PigDoggo",
@@ -49,8 +84,7 @@
                 {
                     "name": "stuffed18",
                     "subtitle": "ipa archive",
-                    "url": "https://stuffed18.github.io/ipa-archive-updated/",
-                    "size": "small"
+                    "url": "https://stuffed18.github.io/ipa-archive-updated/"
                 }
             ]
         },
@@ -87,7 +121,8 @@
                 {
                     "name": "Dan1el31",
                     "subtitle": "ios ipa collection",
-                    "url": "https://archive.org/details/@dan1el31"
+                    "url": "https://archive.org/details/@dan1el31",
+                    "size": "large"
                 },
                 {
                     "name": "NextLine",
@@ -102,7 +137,8 @@
                 {
                     "name": "th_i_nguy_n_v_n",
                     "subtitle": "android builds scattered across game collections",
-                    "url": "https://archive.org/details/@th_i_nguy_n_v_n"
+                    "url": "https://archive.org/details/@th_i_nguy_n_v_n",
+                    "size": "small"
                 },
                 {
                     "name": "iPhone OS/iOS App Store Archive USA",
@@ -117,12 +153,14 @@
                 {
                     "name": "llucarius",
                     "subtitle": "extra ios archive mirrors",
-                    "url": "https://archive.org/details/@llucarius"
+                    "url": "https://archive.org/details/@llucarius",
+                    "size": "small"
                 },
                 {
                     "name": "selfmader",
                     "subtitle": "ipa collection",
-                    "url": "https://archive.org/details/@selfmader"
+                    "url": "https://archive.org/details/@selfmader",
+                    "size": "small"
                 },
                 {
                     "name": "Yudra Cyivian",
@@ -151,24 +189,23 @@
                 },
                 {
                     "name": "mr.hi9051"
-                },
-                {
-                    "name": "MrCatz"
                 }
             ]
         },
         {
-            "title": "artwork/fonts/tools",
+            "title": "other",
             "heading": "normal",
             "entries": [
                 {
                     "name": "HeHe169",
                     "subtitle": "zeptolab protoplay asset archive",
-                    "url": "https://archive.org/details/ctr-protoplay-assets"
+                    "url": "https://archive.org/details/ctr-protoplay-assets",
+                    "size": "large"
                 },
                 {
                     "name": "Bingies24",
-                    "subtitle": "uhq vector of the candy"
+                    "subtitle": "uhq vector of the candy",
+                    "size": "large"
                 },
                 {
                     "name": "101arrowz",
@@ -188,74 +225,28 @@
                 {
                     "name": "debugging.games",
                     "subtitle": "debug symbols archive",
-                    "url": "https://debugging.games/"
-                }
-            ]
-        },
-        {
-            "title": "CTR Home team",
-            "heading": "normal",
-            "entries": [
-                {
-                    "name": "aidrum"
+                    "url": "https://debugging.games/",
+                    "size": "large"
                 },
-                {
-                    "name": "Bingies24",
-                    "subtitle": "game version archiving/help"
-                },
-                {
-                    "name": "Genji"
-                },
-                {
-                    "name": "MlopsFunny"
-                },
-                {
-                    "name": "MrCatz"
-                },
-                {
-                    "name": "saulfabreg"
-                },
-                {
-                    "name": "TheAwesomeBlue"
-                },
-                {
-                    "name": "yell0wsuit",
-                    "subtitle": "cut the rope dx and most of the raw2png script work"
-                }
-            ]
-        },
-        {
-            "title": "feedback and resource leads",
-            "heading": "normal",
-            "entries": [
                 {
                     "name": "Arthurbonitaomariokart",
-                    "subtitle": "om nom solitaire archive lead"
-                },
-                {
-                    "name": "Ansel Thanatos",
-                    "subtitle": "ctr1 debug-symbol build lead"
-                },
-                {
-                    "name": "Digolas8",
-                    "subtitle": "raw texture checks"
+                    "subtitle": "om nom solitaire help",
+                    "size": "small"
                 },
                 {
                     "name": "Yadifriend",
-                    "subtitle": "version list corrections"
+                    "subtitle": "version list corrections",
+                    "size": "small"
                 },
                 {
                     "name": "Карапет",
-                    "subtitle": "music player feedback"
-                },
-                {
-                    "name": "Laxii <33",
-                    "subtitle": "papercraft archive leads"
+                    "subtitle": "music player feedback",
+                    "size": "small"
                 }
             ]
         },
         {
-            "title": "Thank you for visiting!",
+            "title": "Thank you for visiting! ^^",
             "heading": "normal"
         }
     ]
