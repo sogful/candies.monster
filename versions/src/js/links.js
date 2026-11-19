@@ -11,7 +11,7 @@ function basekey(game) {
 export function preparekeys(games) {
     for (const game of games) {
         const key = basekey(game);
-        game.routekey = games.filter(other => basekey(other) === key).length > 1 ? `${key}~${values(game.name)[0]}` : key;
+        game.routekey ||= games.filter(other => basekey(other) === key).length > 1 ? `${key}~${values(game.name)[0]}` : key;
     }
 }
 

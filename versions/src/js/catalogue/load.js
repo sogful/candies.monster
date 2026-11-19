@@ -149,7 +149,9 @@ function parsegamescsv(text) {
             let verkey = pkg || `__empty_${r}`;
             if (bypackage.has(verkey)) verkey = `${verkey}#${r}`;
             const extras = parsepackageiconcolumns(line, pkg);
+            const route = line.find((value, index) => index >= 5 && value.startsWith("route="));
             const entry = {
+                routekey: route?.slice(6).trim() || "",
                 name: grouped ? c0.slice(2).trim() : c0,
                 package: pkg,
                 verkey: verkey,
