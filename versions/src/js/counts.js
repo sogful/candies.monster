@@ -21,13 +21,11 @@ export function updatecounts(layer, name, cache) {
     }
     const element = document.querySelector(`[data-counts="${layer}"] .${name}count`);
     if (element) element.textContent = cache ? available : "unavailable";
-    if (layer !== "omnom") return;
-
-    platforms.set(name, cache ? {missing, symbols} : null);
-    const ios = platforms.get("ios");
-    const android = platforms.get("android");
+    platforms.set(layer + "/" + name, cache ? {missing, symbols} : null);
+    const ios = platforms.get("omnom/ios");
+    const android = platforms.get("omnom/android");
     const symbolcount = document.querySelector(".symbolcount");
     const missingcount = document.querySelector(".missingcount");
-    if (symbolcount) symbolcount.textContent = ios && android ? new Set([...ios.symbols, ...android.symbols]).size : "...";
+    if (symbolcount) symbolcount.textContent = ios && android ? new Set([...platforms.values()].flatMap(item => item ? [...item.symbols] : [])).size : "...";
     if (missingcount) missingcount.textContent = ios && android ? ios.missing + android.missing : "...";
 }
