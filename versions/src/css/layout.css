@@ -231,6 +231,10 @@
     text-shadow: 0 0.175em 0 #000;
     filter: drop-shadow(0 0 0.2em #000);
 }
+.otherrelease .versionidentity .version {
+    font-size: 0.76em; overflow-wrap: normal;
+    line-height: 0.92;
+}
 .versionidentity > .sharelink {
     position: absolute; top: 0;
     left: 0; z-index: 1;

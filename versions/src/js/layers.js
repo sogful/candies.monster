@@ -4,6 +4,8 @@ export const layers = [
     {name: "fangames", label: "Fangames"}
 ];
 
+export const platformlabels = {other: "Other", android: "Android", ios: "iOS"};
+
 export function startlayers() {
     const viewport = document.querySelector(".archiveviewport");
     const template = document.querySelector(".layertemplate");
@@ -15,10 +17,10 @@ export function startlayers() {
         const element = template.content.firstElementChild.cloneNode(true);
         element.dataset.layer = layer.name;
         const container = element.querySelector(".container");
-        const platforms = [...container.querySelectorAll(".gamescreen")].map((screen, index) => {
-            const name = index === 0 ? "android" : "ios";
+        const platforms = [...container.querySelectorAll(".gamescreen")].map(screen => {
+            const name = screen.dataset.platform;
             const directory = layer.name === "omnom" ? "" : layer.name + "/";
-            return {name, layer: layer.name, label: index === 0 ? "Android" : "iOS", container, screen,
+            return {name, layer: layer.name, label: platformlabels[name], container, screen,
                 circle: screen.querySelector(".gamecircle"), url: `/assets/static/data/versions/${directory}${name}.csv`};
         });
         viewport.append(element);

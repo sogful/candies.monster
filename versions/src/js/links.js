@@ -1,4 +1,8 @@
-import {layers} from "./layers.js";
+import {layers, platformlabels} from "./layers.js";
+
+function platformname(name) {
+    return Object.prototype.hasOwnProperty.call(platformlabels, name) ? name : "android";
+}
 
 function values(value) {
     return Array.isArray(value) ? value : [value];
@@ -37,7 +41,7 @@ export function packagekey(game, index = 0) {
 
 export function gameroute(game, index = 0, version = "") {
     return {
-        platform: game.iosstuff ? "ios" : "android",
+        platform: game.platform,
         layer: game.layer,
         game: game.routekey || basekey(game),
         package: index ? packagekey(game, index) : "",
@@ -48,22 +52,25 @@ export function gameroute(game, index = 0, version = "") {
 
 export function routehash(route) {
     const query = new URLSearchParams();
-    if (route.layer && route.layer !== "omnom") query.set("layer", route.layer);
     if (route.package) query.set("package", route.package);
     if (route.version) query.set("version", route.version);
     if (route.info) query.set("info", "1");
     if (route.search) query.set("search", route.search);
-    const path = `#${route.platform === "ios" ? "ios" : "android"}${route.game ? `/${encodeURIComponent(route.game)}` : ""}`;
+    const layer = route.layer && route.layer !== "omnom" ? `${route.layer}/` : "";
+    const path = `#${layer}${platformname(route.platform)}${route.game ? `/${encodeURIComponent(route.game)}` : ""}`;
     return query.size ? `${path}?${query}` : path;
 }
 
 export function readhash(hash = location.hash) {
     try {
         const [path, query] = hash.slice(1).split("?");
-        const [platform, game = ""] = path.split("/");
+        const parts = path.split("/");
         const parameters = new URLSearchParams(query);
-        const layer = parameters.get("layer");
-        return {platform: platform === "ios" ? "ios" : "android", layer: layers.some(item => item.name === layer) ? layer : "omnom",
+        const layer = layers.find(item => item.name === parts[0])?.name;
+        if (layer) parts.shift();
+        const [platform, game = ""] = parts;
+        const legacy = layers.find(item => item.name === parameters.get("layer"))?.name;
+        return {platform: platformname(platform), layer: layer || legacy || "omnom",
             game: decodeURIComponent(game), package: parameters.get("package") || "", version: parameters.get("version") || "",
             info: parameters.get("info") === "1", search: parameters.get("search") || ""};
     } catch {
@@ -133,8 +140,10 @@ export function startlinks(openroute) {
     }
     async function restore(force = false) {
         if (!force && requested === location.hash) return;
-        requested = location.hash;
-        await openroute(readhash());
+        const route = readhash();
+        if (/[?&]layer=/.test(location.hash)) write(route, true);
+        else requested = location.hash;
+        await openroute(route);
     }
     window.addEventListener("hashchange", () => {void restore()});
     window.addEventListener("popstate", () => {void restore()});

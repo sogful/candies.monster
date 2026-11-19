@@ -162,6 +162,8 @@
             position: fixed; top: 50%; transform: translateY(-50%);
             display: flex; align-items: center; gap: 0.3em;
             z-index: 999; pointer-events: auto;
+            padding: 0; border: 0;
+            background: none; font: inherit;
         }
         .scrollnav img {
             height: 2.2em; display: block;
@@ -175,6 +177,8 @@
         }
         .scrollnav.right {right: 0.5em}
         .scrollnav.left {left: 0.5em}
+        .scrollnav.right img {transform: scaleX(-1)}
+        .scrollnav[hidden] {display: none}
         .gameopen .scrollnav {display: none !important}
 
         /*//////////////////////////////////////////////////////////////////////*/
@@ -497,6 +501,7 @@
     </form>
     <section class="searchresults" hidden>
         <div class="searchplatforms" role="group" aria-label="Search platform">
+            <button class="searchplatform buttonart clickable" type="button" data-platform="other" aria-pressed="false">Other</button>
             <button class="searchplatform buttonart clickable" type="button" data-platform="android" aria-pressed="false">Android</button>
             <button class="searchplatform buttonart clickable" type="button" data-platform="ios" aria-pressed="false">iOS</button>
         </div>
@@ -539,10 +544,13 @@
         <section class="archivelayer">
             <div class="container">
                 <div class="gamepanels">
-                    <div class="gamescreen">
+                    <div class="gamescreen" data-platform="other">
                         <div class="gamecircle"></div>
                     </div>
-                    <div class="gamescreen">
+                    <div class="gamescreen" data-platform="android">
+                        <div class="gamecircle"></div>
+                    </div>
+                    <div class="gamescreen" data-platform="ios">
                         <div class="gamecircle"></div>
                     </div>
                 </div>
@@ -573,9 +581,9 @@
                     <p class="archivedescription">download om nom/zeptolab/fangames</p>
                 </div>
             </header>
-            <span data-counts="omnom">there are currently <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios versions available for om nom games!</span>
-            <small class="layercounts" data-counts="zeptolab">also <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios zeptolab versions</small>
-            <small class="layercounts" data-counts="fangames">and <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios fangame versions</small>
+            <span data-counts="omnom">there are currently <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios / <i><span class="othercount">...</span></i> other versions available for om nom games!</span>
+            <small class="layercounts" data-counts="zeptolab">also <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios / <i><span class="othercount">...</span></i> other zeptolab versions</small>
+            <small class="layercounts" data-counts="fangames">and <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios / <i><span class="othercount">...</span></i> other fangame versions</small>
             this collection also contains <i><span class="symbolcount">...</span></i> debug symbol downloads, which could be helpful for reverse engineering.
             <br><br>
             please note that most apps are <i>not</i> checked for malware! though unlikely to be malicious, if you want to ensure your device is safe, use <img width="15" src="/assets/images/buttons/download/apkmirror.webp"> apkmirror, <img width="15" src="/assets/images/buttons/download/apkpure.webp"> apkpure or <img width="15" src="/assets/images/buttons/download/ctrhome.webp"><img width="15" src="/assets/images/buttons/download/cdn.webp"> our own reuploads! some apps might be slightly modified, if the modifications are known they'll be mentioned beside the download links.
@@ -598,14 +606,14 @@
         </section>
     </details>
 
-    <div class="scrollnav right" id="navios" style="cursor:pointer">
-        <span>IOS</span>
-        <img src="/assets/images/buttons/back.png" style="transform: scaleX(-1)" draggable="false">
-    </div>
-    <div class="scrollnav left" id="navandroid" style="display:none;cursor:pointer">
-        <img src="/assets/images/buttons/back.png" draggable="false">
-        <span>Android</span>
-    </div>
+    <button class="scrollnav left" type="button" hidden>
+        <img src="/assets/images/buttons/back.png" alt="" draggable="false">
+        <span></span>
+    </button>
+    <button class="scrollnav right" type="button" hidden>
+        <span></span>
+        <img src="/assets/images/buttons/back.png" alt="" draggable="false">
+    </button>
     <nav class="layernav" aria-label="Archive layers">
         <button class="layerarrow layerup clickable" type="button" hidden>
             <span></span>

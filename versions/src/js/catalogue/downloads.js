@@ -46,7 +46,7 @@ function renderdownloadbutton(download, version, description) {
     const information = {
         version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
         symbols: download.kind === "symbols" ? (download.label || "symbols").replace(/^\((.*)\)$/, "$1") : "",
-        warning: button === downloadbuttons.fallback ? "this version is from an unpopular source" : ""
+        warning: button === downloadbuttons.fallback && !["store", "play"].includes(download.kind) ? "this version is from an unpopular source" : ""
     };
     const metadata = Object.entries(information).filter(([, value]) => value).map(([key, value]) => `data-download${key}="${downloadattribute(value)}"`).join(" ");
     const compact = secondarydownload(download) ? " smallsource" : "";

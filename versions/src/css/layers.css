@@ -46,7 +46,7 @@
 .layerdown {bottom: 0.35em}
 .layerup {top: var(--layeruptop,8px)}
 .layerdown img {rotate: -90deg}
-.layerup img {rotate: 90deg}
+.layerup img {transform: scaleX(-1) rotate(90deg)}
 .layerarrow[hidden], .gameopen .layernav, .searchopen .layernav {display: none}
 .layerarrow:active img {scale: 0.94}
 

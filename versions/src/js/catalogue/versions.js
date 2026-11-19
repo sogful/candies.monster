@@ -154,6 +154,7 @@ export function packageheader(game, index, pkg) {
 export function versionpanel(version, fallback, legacy, game, index) {
     const panel = document.createElement("div");
     panel.className = "versionpanel";
+    panel.classList.toggle("otherrelease", game.platform === "other");
     panel.dataset.routepackage = packagekey(game, index);
     panel.dataset.version = version.version;
     panel.classList.toggle("unavailable", version.unavailable);
