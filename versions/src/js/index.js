@@ -227,7 +227,6 @@ function activateplatform(platform, scroll = true, write = true, animate = false
     if (currentgame) return;
     const changed = activeplatform.layer !== platform.layer;
     activeplatform = platform;
-    platform.container.parentElement.dataset.platform = platform.name;
     if (changed) layers.show(platform.layer, animate);
     if (write) {
         navigation++;

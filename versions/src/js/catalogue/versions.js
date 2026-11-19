@@ -1,6 +1,7 @@
 import {packagekey, shareheading} from "../links.js";
 import {downloadattribute, renderdownloads, secondarydownload} from "./downloads.js";
 import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel} from "./load.js";
+import {releaseplatform} from "./platforms.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -154,7 +155,8 @@ export function packageheader(game, index, pkg) {
 export function versionpanel(version, fallback, legacy, game, index) {
     const panel = document.createElement("div");
     panel.className = "versionpanel";
-    panel.classList.toggle("otherrelease", game.platform === "other");
+    const release = game.platform === "other" ? releaseplatform(version.version) : {label: version.version, icons: []};
+    panel.classList.toggle("otherrelease", release.icons.length > 0);
     panel.dataset.routepackage = packagekey(game, index);
     panel.dataset.version = version.version;
     panel.classList.toggle("unavailable", version.unavailable);
@@ -162,12 +164,16 @@ export function versionpanel(version, fallback, legacy, game, index) {
     const source = version.icon || (historical && legacyicons?.[version.version]) || fallback || "ctr/free";
     const icon = resolveiconpath(source, iconpixels(50));
     const srcset = resolveiconsrcset(source, iconpixels(50));
+    const badges = release.icons.map(name => `<svg class="platformbadge" width="16" height="16" aria-hidden="true"><use href="/assets/images/icons/platforms/releases.svg#${name}"></use></svg>`).join("");
+    const title = downloadattribute(version.version);
+    const label = downloadattribute(release.label);
     panel.innerHTML = `
-        <div class="versionidentity">
-        <a class="versionicon clickable" href="${downloadattribute(resolverawiconpath(source))}" target="_blank" rel="noopener" aria-label="open original icon for ${downloadattribute(version.version)}">
+        <div class="versionidentity" style="--platformbadges:${release.icons.length}">
+        <a class="versionicon clickable" href="${downloadattribute(resolverawiconpath(source))}" target="_blank" rel="noopener" title="${title}" aria-label="open original icon for ${title}">
             <img src="${icon}" srcset="${srcset}" alt="" draggable="false" loading="lazy" decoding="async" width="60" height="60"${historical ? ` data-legacyversion="${version.version}"` : ""}>
+            ${badges ? `<span class="platformbadges">${badges}</span>` : ""}
         </a>
-            <div class="version" style="--versionlength:${version.version.length}">${downloadattribute(version.version)}</div>
+            <div class="version" style="--versionlength:${release.label.length || 1}">${label}</div>
         </div>
         <div class="versioninfo">
             ${version.details && !version.downloads.length ? `<div class="details">${downloadattribute(version.details)}</div>` : ""}

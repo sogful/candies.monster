@@ -19,7 +19,8 @@ function downloadarch(value) {
 }
 
 function downloadbutton(download) {
-    const mirror = downloadbuttons.mirrors.find(item => download.url.startsWith(item.prefix) && download.url.includes(item.contains));
+    const url = download.url.toLowerCase();
+    const mirror = downloadbuttons.mirrors.find(item => url.startsWith(item.prefix) && url.includes(item.contains));
     if (download.kind !== "symbols" && mirror) return mirror.button;
     if (download.kind === "symbols") return downloadbuttons.symbols;
     if (download.button) return download.button;

@@ -17,7 +17,7 @@
     background-size: auto;
 }
 
-.archivelayer[data-platform="ios"]::before {
+.archivelayer[data-layer="zeptolab"]::before {
     content: ""; position: absolute;
     inset: 0; background: rgba(0,0,0,0.15);
     pointer-events: none;

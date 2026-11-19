@@ -86,7 +86,15 @@ export function startsearch(options) {
                 });
             }
             const title = panel.querySelector(".version");
-            title.firstChild.replaceWith(jump(version.version, gameroute(game, record.index, version.version)));
+            const route = gameroute(game, record.index, version.version);
+            if (title.textContent) title.replaceChildren(jump(title.textContent, route));
+            else {
+                const artwork = panel.querySelector(".versionicon");
+                artwork.href = routehash(route);
+                artwork.classList.add("searchjump");
+                artwork.removeAttribute("target");
+                artwork.setAttribute("aria-label", version.version);
+            }
             columns.get(record).appendChild(panel);
         }
         list.appendChild(fragment);

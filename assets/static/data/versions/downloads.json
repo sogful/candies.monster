@@ -22,9 +22,10 @@
         {"domain": "archive.org", "icon": "internetarchive"},
         {"domain": "cdn.candies.monster", "icon": "cdn"},
         
-        {"domain": "github.com", "icon": "ctrhome"},
-        {"domain": "githubusercontent.com", "icon": "ctrhome"},
-        {"domain": "github.io", "icon": "ctrhome"}
+        {"domain": "ctrhome.github.io", "icon": "ctrhome"},
+        {"domain": "github.com", "icon": "github"},
+        {"domain": "githubusercontent.com", "icon": "github"},
+        {"domain": "github.io", "icon": "github"}
     ],
     "architectures": {
         "armeabi": "arm",
@@ -50,10 +51,11 @@
     "symbols": "symbols.webp",
     "fallback": "other.webp",
     "mirrors": [
-        {
-            "prefix": "https://cdn.candies.monster/apks/",
-            "contains": "/4pda/",
-            "button": "4pda.webp"
-        }
+        {"prefix": "https://cdn.candies.monster/apks/", "contains": "/4pda/", "button": "4pda.webp"},
+        {"prefix": "https://github.com/ctrhome/", "contains": "", "button": "ctrhome.webp"},
+        {"prefix": "https://github.com/theawesomeblue/ctrfiles/", "contains": "", "button": "ctrhome.webp"},
+        {"prefix": "https://raw.githubusercontent.com/ctrhome/", "contains": "", "button": "ctrhome.webp"},
+        {"prefix": "https://raw.githubusercontent.com/theawesomeblue/ctrfiles/", "contains": "", "button": "ctrhome.webp"},
+        {"prefix": "https://theawesomeblue.github.io/ctrfiles/", "contains": "", "button": "ctrhome.webp"}
     ]
 }
