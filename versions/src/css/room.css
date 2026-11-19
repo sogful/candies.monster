@@ -1,0 +1,90 @@
+.roomentry {
+    position: fixed; right: 0.85rem;
+    bottom: 1.25rem; z-index: 1001;
+    display: flex; align-items: center;
+    gap: 0.16em; transform: rotate(45deg);
+    color: #fff; font-size: 0.85em;
+    -webkit-text-stroke: 0.18em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000; text-decoration: none;
+}
+.roomentry:visited, .roomentry:any-link {color: #fff}
+.roomentry img {
+    display: block; width: 1.75em;
+    transform: scaleX(-1);
+}
+.roomentry[hidden], .gameopen .roomentry, .searchopen .roomentry {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.secretroom {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    max-width: none; max-height: none;
+    margin: 0; padding: 0;
+    border: 0; overflow: hidden;
+    background: #fff;
+}
+.secretroom:not([open]) {display: none}
+.secretroom::backdrop {background: #fff}
+.roomscene {
+    position: absolute; inset: 0;
+    overflow: hidden; perspective: clamp(320px, 83vmin, 880px);
+    --roomdepth: clamp(150px, 37vmin, 420px);
+}
+.roomwalls {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+}
+.roomwall {
+    position: absolute; inset: 0;
+    background-color: #fff; background-image: url("/assets/images/wonderful.png");
+    background-size: clamp(74px, 13vmin, 144px); background-repeat: repeat;
+}
+.rearwall {transform: translateZ(calc(-1 * var(--roomdepth)))}
+.leftwall, .rightwall {
+    width: var(--roomdepth);
+    background-image: linear-gradient(90deg, #0002, #0000), url("/assets/images/wonderful.png");
+}
+.leftwall {
+    right: auto; transform-origin: left center;
+    transform: translateZ(calc(-1 * var(--roomdepth))) rotateY(-90deg);
+}
+.rightwall {
+    left: auto; transform-origin: right center;
+    transform: translateZ(calc(-1 * var(--roomdepth))) rotateY(90deg);
+}
+.ceiling, .floor {
+    height: var(--roomdepth);
+    background-image: linear-gradient(#0000, #0002), url("/assets/images/wonderful.png");
+}
+.ceiling {
+    bottom: auto; transform-origin: center top;
+    transform: translateZ(calc(-1 * var(--roomdepth))) rotateX(90deg);
+}
+.floor {
+    top: auto; transform-origin: center bottom;
+    transform: translateZ(calc(-1 * var(--roomdepth))) rotateX(-90deg);
+}
+.roomtreasure {
+    position: absolute; top: 50%;
+    left: 50%; transform: translate(-50%, -50%);
+    width: min(84vmin, 660px); height: min(84vmin, 660px);
+    object-fit: contain;
+    filter: drop-shadow(0 12px 22px #0003);
+}
+.roomfallback::after {
+    content: ""; position: absolute;
+    top: 50%; left: 50%;
+    width: 40vmin; height: 40vmin;
+    transform: translate(-50%, -50%);
+    background: center / contain no-repeat url("/assets/images/wonderful.png");
+    pointer-events: none;
+}
+.roomexit {
+    position: absolute; top: 0.75em;
+    left: 0.75em; z-index: 2;
+    display: block; transform: rotate(45deg);
+}
+.roomexit img {
+    display: block; width: 2.25em;
+}

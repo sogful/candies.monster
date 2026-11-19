@@ -56,6 +56,7 @@ export function routehash(route) {
     if (route.version) query.set("version", route.version);
     if (route.info) query.set("info", "1");
     if (route.search) query.set("search", route.search);
+    if (route.room) query.set("room", "1");
     const layer = route.layer && route.layer !== "omnom" ? `${route.layer}/` : "";
     const path = `#${layer}${platformname(route.platform)}${route.game ? `/${encodeURIComponent(route.game)}` : ""}`;
     return query.size ? `${path}?${query}` : path;
@@ -70,9 +71,11 @@ export function readhash(hash = location.hash) {
         if (layer) parts.shift();
         const [platform, game = ""] = parts;
         const legacy = layers.find(item => item.name === parameters.get("layer"))?.name;
-        return {platform: platformname(platform), layer: layer || legacy || "omnom",
+        const selected = layer || legacy || "omnom";
+        return {platform: platformname(platform), layer: selected,
             game: decodeURIComponent(game), package: parameters.get("package") || "", version: parameters.get("version") || "",
-            info: parameters.get("info") === "1", search: parameters.get("search") || ""};
+            info: parameters.get("info") === "1", search: parameters.get("search") || "",
+            room: selected === "fangames" && platform === "ios" && !game && parameters.get("room") === "1"};
     } catch {
         return {platform: "android", layer: "omnom", game: "", package: "", version: "", info: false};
     }

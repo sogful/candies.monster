@@ -7,12 +7,14 @@ import {updatecounts} from "./counts.js";
 import {startsearch} from "./search.js";
 import {preparekeys, packagekey, gameroute, readhash, revealroute, startlinks} from "./links.js";
 import {startlayers} from "./layers.js";
+import {startroom} from "./room.js";
 import "/assets/static/js/images/favicon.js";
 import "./quality.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 const layers = startlayers();
+const room = startroom();
 const platforms = layers.groups.flatMap(group => group.platforms);
 const elements = new WeakMap();
 const left = document.querySelector(".scrollnav.left");
@@ -244,6 +246,7 @@ function activateplatform(platform, scroll = true, write = true, animate = false
     if (currentgame) return;
     const changed = activeplatform.layer !== platform.layer;
     activeplatform = platform;
+    room.available(platform.layer === "fangames" && platform.name === "ios");
     if (changed) layers.show(platform.layer, animate);
     if (write) {
         navigation++;
@@ -350,6 +353,7 @@ platforms.forEach(platform => boundsobserver.observe(platform.circle));
 async function restoreview(route) {
     const request = ++navigation;
     search?.hide(false);
+    room.show(route.room === true);
     document.documentElement.classList.add("routepending");
     try {
         if (currentgame) goback(false);

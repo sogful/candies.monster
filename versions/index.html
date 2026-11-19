@@ -482,6 +482,7 @@
     <link rel="stylesheet" href="src/css/fonts.css">
     <link rel="stylesheet" href="src/css/search.css">
     <link rel="stylesheet" href="src/css/layers.css">
+    <link rel="stylesheet" href="src/css/room.css">
     <link rel="stylesheet" href="/assets/static/css/buttons.css">
     <script src="/assets/static/js/text/fonts.js"></script>
     <link rel="stylesheet" href="/assets/static/css/back.css">
@@ -625,6 +626,25 @@
         </button>
     </nav>
 
+    <a class="roomentry clickable" href="#fangames/ios?room=1" hidden>
+        <span>???</span>
+        <img src="/assets/images/buttons/back.png" alt="" draggable="false">
+    </a>
+    <dialog class="secretroom" aria-label="???">
+        <div class="roomscene" aria-hidden="true">
+            <div class="roomwalls">
+                <div class="roomwall rearwall"></div>
+                <div class="roomwall leftwall"></div>
+                <div class="roomwall rightwall"></div>
+                <div class="roomwall ceiling"></div>
+                <div class="roomwall floor"></div>
+            </div>
+        </div>
+        <canvas class="roomtreasure" aria-label="Om Nom" role="img"></canvas>
+        <a class="roomexit clickable" href="#fangames/ios" aria-label="Back">
+            <img src="/assets/images/buttons/back.png" alt="" draggable="false">
+        </a>
+    </dialog>
     <script type="module" src="src/js/index.js"></script>
     <script type="module" src="src/js/info.js"></script>
 
