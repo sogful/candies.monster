@@ -6,6 +6,7 @@ export function requiredgame(entry) {
     if ((entry.tags || []).some(tag => /^magic$/i.test(tag.name || ""))) return "Cut the Rope: Magic";
     const names = entry.requirements || [];
     if (names.some(name => ["shieldtrigger", "p_magnetswitcher"].includes(name))) return "a compatible mod";
+    if ((entry.tags || []).some(tag => /^modded$/i.test(tag.name || ""))) return "a compatible mod";
     if (names.some(name => ["clock", "fan", "laser", "discoball"].includes(name))) return "Cut the Rope: Time Travel";
     return "";
 }
