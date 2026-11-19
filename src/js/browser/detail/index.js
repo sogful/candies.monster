@@ -28,6 +28,7 @@ export function leveldetails() {
     panel.setAttribute("aria-label", "level details");
     document.querySelector(".levelcontent").append(panel);
     const game = player();
+    const favouriteobserver = typeof ResizeObserver === "function" ? new ResizeObserver(fitfavourite) : null;
     let entries = [];
     let ready = false;
     let current = "";
@@ -78,6 +79,12 @@ export function leveldetails() {
         icon.append(image(icons[label], "", ""));
         row.append(icon, create("strong", "levelvalue", String(value)), create("span", "levellabel", label));
         return row;
+    }
+
+    function fitfavourite() {
+        const label = panel.querySelector(".levelfavourites .levellabel");
+        const full = label?.querySelector(".favouriteslong");
+        if (full && !panel.hidden) label.classList.toggle("shortlabel", full.getBoundingClientRect().width > label.clientWidth + 0.5);
     }
 
     function positionhint() {
@@ -167,6 +174,9 @@ export function leveldetails() {
         const statistics = create("div", "levelstatistics");
         const favourites = stat("favourites", entry.rating ?? 0);
         favourites.classList.add("levelfavourites");
+        const favouritelabel = favourites.querySelector(".levellabel");
+        const full = create("span", "favouriteslong", "favourites");
+        favouritelabel.replaceChildren(full, create("span", "favouritesshort", "faves"));
         favourites.append(image("/assets/images/clicktofav.png", "favouritehint", "Click to favourite"));
         favourites.addEventListener("pointerenter", positionhint);
         favourites.addEventListener("focusin", positionhint);
@@ -253,6 +263,10 @@ export function leveldetails() {
 
         downloadlevel(download, entry, status);
         panel.append(control(), utilities, heading, hero, status, comments(entry), information);
+        favouriteobserver?.disconnect();
+        favouriteobserver?.observe(favouritelabel);
+        favouriteobserver?.observe(full);
+        fitfavourite();
         void refresh(entry).then(() => update(entry)).catch(() => {});
         void level(entry.file).then(map => {
             entry.objects = map.objects.length;
@@ -278,6 +292,7 @@ export function leveldetails() {
         const wasopen = !panel.hidden;
         panel.hidden = !open;
         if (!open) {
+            favouriteobserver?.disconnect();
             for (const frame of panel.querySelectorAll(".candyframe")) frame.remove();
             scene(null);
             if (current && !location.hash) document.title = "candies.monster";

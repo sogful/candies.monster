@@ -132,7 +132,7 @@ function createlevel(entry) {
     }
     footer.append(rating, plays, features);
     const labels = element("div", "cardtags");
-    tags(entry, labels);
+    tags(entry, labels, true);
     const loading = element("div", "cardloading");
     spinner(loading, "Loading level preview");
     card.append(thumbnail(entry), loading);

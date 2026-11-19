@@ -83,9 +83,10 @@ export function tagcontent(tag) {
     return content;
 }
 
-export function tags(entry, container) {
+export function tags(entry, container, listedonly = false) {
     container.replaceChildren();
-    for (const tag of sorttags(entry.tags || [])) {
+    const labels = entry.tags || [];
+    for (const tag of sorttags(listedonly ? labels.filter(filtertag) : labels)) {
         const item = document.createElement("button");
         item.className = "leveltag clickable";
         item.type = "button";

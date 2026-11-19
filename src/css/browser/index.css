@@ -63,7 +63,8 @@
     user-select: none; -webkit-user-select: none;
     position: relative; width: 100%;
     aspect-ratio: 16 / 9; box-sizing: border-box;
-    padding: 5px 6px; border: 3px solid #111;
+    --cardinset: 6px;
+    padding: 5px var(--cardinset); border: 3px solid #111;
     border-radius: 15px; background: #111;
     box-shadow: 0 2px 3px rgba(0,0,0,0.7);
     isolation: isolate; container-type: inline-size;
@@ -71,6 +72,7 @@
     grid-template-rows: auto auto 1fr auto; min-width: 0;
     column-gap: 4px;
     min-height: 0; align-self: start;
+    overflow: hidden; overflow: clip;
 }
 .level :is(p,a,span) {
     user-select: none; -webkit-user-select: none;
@@ -251,7 +253,9 @@
         width: calc(100% - 44px); gap: 8px;
         margin-left: auto; margin-right: auto;
     }
-    .level {padding: 3px 4px}
+    .level {
+        --cardinset: 4px; padding-block: 3px;
+    }
     .header {gap: 0}
     .title, .creator {padding: 0.1em 0.15em 0.14em}
     .footer {
@@ -265,10 +269,6 @@
     }
     .previous, .next {width: 30px}
     .arrow {width: 30px}
-}
-
-@media (max-width: 350px) {
-    .level {padding: 3px 4px}
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -308,10 +308,9 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 .cardtags {
-    margin-left: -6px; margin-right: -6px;
-    max-width: none; width: calc(100% + 12px);
-    padding: 3px 6px 5px; box-sizing: border-box;
-    border-radius: 0 0 11px 11px;
+    margin-inline: calc(-1 * var(--cardinset));
+    max-width: none; width: calc(100% + 2 * var(--cardinset));
+    padding: 3px var(--cardinset) 5px; box-sizing: border-box;
 }
 .levels {
     touch-action: pan-y pinch-zoom; contain: layout style;

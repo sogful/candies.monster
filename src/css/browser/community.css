@@ -8,6 +8,10 @@
     border: 0; border-radius: 6px;
     background: rgba(0,0,0,0.5); padding: 3px 7px;
 }
+.reactioncount {
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: -0.06em 0.12em #000,0.06em 0.12em #000,0 0.19em #000;
+}
 .communityreaction[aria-pressed="true"] {background: rgba(255,255,255,0.35)}
 .communityreaction:disabled {opacity: 0.5}
 .levelfavourites[aria-busy="true"] {opacity: 0.5}

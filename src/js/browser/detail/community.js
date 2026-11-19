@@ -105,8 +105,12 @@ export function communitycontrols(entry) {
                 image.className = "reactionemoji";
                 image.src = "https://cdn.discordapp.com/emojis/" + reaction.id + ".webp?size=32";
                 image.alt = ":" + reaction.name + ":";
-                item.append(image, document.createTextNode(" " + count));
-            } else item.textContent = emoji + " " + count;
+                item.append(image);
+            } else item.textContent = emoji;
+            const amount = document.createElement("span");
+            amount.className = "reactioncount";
+            amount.textContent = String(count);
+            item.append(" ", amount);
             item.title = ":" + reaction.name + ":\n" + (reaction.discord || 0) + " from discord\n" + (reaction.browser || 0) + " from level browser";
             item.querySelector("img")?.setAttribute("title", item.title);
             item.setAttribute("aria-label", emoji === "⭐" ? "Favourite" : "React " + reaction.name);

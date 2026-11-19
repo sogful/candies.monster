@@ -28,6 +28,7 @@
 .gameloading .levelprimary {position: relative}
 
 .playpending {position: relative}
+.playpending > img {opacity: 0.45}
 
 .playloading {
     position: absolute; inset: 0;
