@@ -79,7 +79,7 @@ export function filters(changed) {
         ["recent", "Newest", "icons/upload.svg"],
         ["rating", "Liked", "level/star.webp"],
         ["plays", "Popular", "buttons/playcount.svg"],
-        ["played", "Recents", "objects/timefreeze.webp"]
+        ["played", "Recents"]
     ]) {
         const button = document.createElement("button");
         button.type = "button";
@@ -89,10 +89,13 @@ export function filters(changed) {
         button.setAttribute("aria-label", button.title);
         const caption = document.createElement("span");
         caption.textContent = label;
-        const icon = document.createElement("img");
-        icon.src = "/assets/images/" + artwork;
-        icon.alt = "";
-        button.append(icon, caption);
+        if (artwork) {
+            const icon = document.createElement("img");
+            icon.src = "/assets/images/" + artwork;
+            icon.alt = "";
+            button.append(icon);
+        }
+        button.append(caption);
         button.setAttribute("aria-pressed", String(key === order));
         button.addEventListener("click", () => {
             order = key;
