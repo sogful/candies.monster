@@ -103,12 +103,14 @@ function appendtogroup(basegame, entry, line) {
         basegame.verkey = [basegame.verkey];
         basegame.icon = [basegame.icon];
         basegame.description = [basegame.description];
+        basegame.packageroutes = [""];
     }
     basegame.name.push(entry.name);
     basegame.package.push(entry.package);
     basegame.verkey.push(entry.verkey);
     basegame.icon.push(entry.icon);
     basegame.description.push(entry.description);
+    basegame.packageroutes.push(entry.routekey);
     const extras = parsepackageiconcolumns(line, entry.package);
     if (!basegame.pkgIconsList) basegame.pkgIconsList = [];
     basegame.pkgIconsList.push(extras);

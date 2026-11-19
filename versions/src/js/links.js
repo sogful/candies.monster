@@ -22,6 +22,8 @@ function packagevariant(description) {
 }
 
 export function packagekey(game, index = 0) {
+    const route = game.packageroutes?.[index];
+    if (route) return route;
     const packages = values(game.package);
     const names = values(game.name);
     const descriptions = values(game.description);
