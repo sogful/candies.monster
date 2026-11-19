@@ -1,5 +1,5 @@
 import {packagekey, shareheading} from "../links.js";
-import {downloadattribute, renderdownloads, secondarydownload} from "./downloads.js";
+import {downloadattribute, orbitdescription, renderdownloads, secondarydownload} from "./downloads.js";
 import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel} from "./load.js";
 import {releaseplatform} from "./platforms.js";
 
@@ -141,10 +141,11 @@ export function packageheader(game, index, pkg) {
         identifier.textContent = pkg;
         header.appendChild(identifier);
     }
-    if (value("description")) {
+    const summary = orbitdescription(value("description"), game.circle);
+    if (summary) {
         const description = document.createElement("div");
         description.className = "description";
-        description.textContent = value("description");
+        description.textContent = summary;
         header.appendChild(description);
     }
     const strip = packageiconhtml(game, index);
@@ -167,6 +168,7 @@ export function versionpanel(version, fallback, legacy, game, index) {
     const badges = release.icons.map(name => `<svg class="platformbadge" width="16" height="16" aria-hidden="true"><use href="/assets/images/icons/platforms/releases.svg#${name}"></use></svg>`).join("");
     const title = downloadattribute(version.version);
     const label = downloadattribute(release.label);
+    const details = orbitdescription(version.details, game.circle);
     panel.innerHTML = `
         <div class="versionidentity" style="--platformbadges:${release.icons.length}">
         <a class="versionicon clickable" href="${downloadattribute(resolverawiconpath(source))}" target="_blank" rel="noopener" title="${title}" aria-label="open original icon for ${title}">
@@ -176,8 +178,8 @@ export function versionpanel(version, fallback, legacy, game, index) {
             <div class="version" style="--versionlength:${release.label.length || 1}">${label}</div>
         </div>
         <div class="versioninfo">
-            ${version.details && !version.downloads.length ? `<div class="details">${downloadattribute(version.details)}</div>` : ""}
-            <div class="versionbuttons">${renderdownloads(version.downloads, version.version, version.details)}</div>
+            ${details && !version.downloads.length ? `<div class="details">${downloadattribute(details)}</div>` : ""}
+            <div class="versionbuttons">${renderdownloads(version.downloads, version.version, version.details, game)}</div>
         </div>
     `;
     shareheading(panel.querySelector(".versionidentity"), game, index, version.version);

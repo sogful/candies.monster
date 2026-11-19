@@ -36,18 +36,29 @@ export function secondarydownload(download) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function renderdownloadbutton(download, version, description) {
+export function orbitdescription(value, circle) {
+    if (!value) return "";
+    const label = circle === "zeptoapp" ? /\bzeptoapp\b/gi : circle === "teraleak" ? /\b(?:testflight|teraleak)\b/gi : null;
+    return label ? value.replace(label, "").replace(/[ \t]{2,}/g, " ").trim() : value;
+}
+
+function renderdownloadbutton(download, version, description, game) {
     const button = downloadbutton(download);
     let hostname = "";
     try {hostname = new URL(download.url).hostname} catch {}
     const source = hostname || "Download";
     const zeptoapp = download.flags?.split(/\s+/).includes("zeptoapp") ? "zeptoapp" : "";
-    const notes = [zeptoapp, description, download.kind === "symbols" ? "" : download.label, download.note];
+    const notes = [zeptoapp, description, download.kind === "symbols" ? "" : download.label, download.note]
+        .map(value => orbitdescription(value, game.circle));
     const note = [...new Set(notes.filter(Boolean))].join("\n");
+    const other = game.platform === "other";
+    const warning = button === downloadbuttons.fallback && (other || !["store", "play"].includes(download.kind))
+        ? `this ${other ? "game" : "version"} is from an unpopular source`
+        : "";
     const information = {
         version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
         symbols: download.kind === "symbols" ? (download.label || "symbols").replace(/^\((.*)\)$/, "$1") : "",
-        warning: button === downloadbuttons.fallback && !["store", "play"].includes(download.kind) ? "this version is from an unpopular source" : ""
+        warning
     };
     const metadata = Object.entries(information).filter(([, value]) => value).map(([key, value]) => `data-download${key}="${downloadattribute(value)}"`).join(" ");
     const compact = secondarydownload(download) ? " smallsource" : "";
@@ -56,6 +67,6 @@ function renderdownloadbutton(download, version, description) {
     </a>`;
 }
 
-export function renderdownloads(downloads, version, description = "") {
-    return downloads.map(download => renderdownloadbutton(download, version, description)).join("");
+export function renderdownloads(downloads, version, description, game) {
+    return downloads.map(download => renderdownloadbutton(download, version, description, game)).join("");
 }
