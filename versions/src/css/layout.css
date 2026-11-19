@@ -75,6 +75,7 @@
     height: var(--circleheight, 600px); min-height: 0;
     flex-shrink: 0; margin: auto 0;
 }
+.gamecircle.orbitcircle {width: min(100%, 1120px)}
 
 /*//////////////////////////////////////////////////////////////////////*/
 

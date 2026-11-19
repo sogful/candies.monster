@@ -1,7 +1,8 @@
 import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./catalogue/load.js";
 import {loadcataloguedata} from "./catalogue/data.js";
 import {loadversions} from "./catalogue/versions.js";
-import {packcircle} from "./packing.js";
+import {packorbits} from "./packing.js";
+import {downloadflags} from "./catalogue.js";
 import {updatecounts} from "./counts.js";
 import {startsearch} from "./search.js";
 import {preparekeys, packagekey, gameroute, readhash, revealroute, startlinks} from "./links.js";
@@ -79,10 +80,24 @@ function prepareplatform(platform) {
     platform.games.forEach(game => {
         const key = game.verkey ?? game.package;
         const keys = Array.isArray(key) ? key : [key];
-        game.available = keys.some(value => (platform.cache.get(value) || []).some(version => hasdownload(version.downloads)));
+        const downloads = keys.flatMap(value => (platform.cache.get(value) || []).flatMap(version => version.downloads));
+        game.available = hasdownload(downloads);
+        game.circle = gamecircle(downloads);
     });
     updatecounts(platform.layer, platform.name, platform.cache);
     platform.text = null;
+}
+
+function gamecircle(downloads) {
+    let circle = "primary";
+    for (const download of downloads) {
+        if (!hasdownload([download])) continue;
+        const flags = downloadflags(download);
+        if (flags.has("zeptoapp")) circle = "zeptoapp";
+        else if (!flags.has("teraleak")) return "primary";
+        else if (circle === "primary") circle = "teraleak";
+    }
+    return circle;
 }
 
 function mountplatform(platform) {
@@ -97,12 +112,14 @@ function mountplatform(platform) {
             return;
         }
         const fragment = document.createDocumentFragment();
+        platform.circle.classList.toggle("orbitcircle", platform.games.some(game => game.circle !== "primary"));
         platform.nodes = platform.games.map((game, index) => {
             const icon = document.createElement("div");
             icon.className = "gameicon clickable";
             const key = game.verkey ?? game.package;
             icon.classList.toggle("unavailable", !game.available);
             icon.dataset.gameid = Array.isArray(key) ? key[0] : key;
+            icon.dataset.circle = game.circle;
             const image = document.createElement("img");
             image.loading = "lazy";
             image.decoding = "async";
@@ -198,7 +215,7 @@ function layoutplatform(platform) {
         return;
     }
     */
-    const packed = packcircle(nodes.map(node => elements.get(node)), width, height);
+    const packed = packorbits(nodes.map(node => elements.get(node)), width, height);
     platform.circle.style.setProperty("--circleheight", `${packed.height}px`);
     nodes.forEach((node, index) => {
         const position = packed.positions[index];

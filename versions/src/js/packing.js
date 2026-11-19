@@ -53,12 +53,16 @@ function packicons(sizes, width, height, gap) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function packcircle(games, width, height = Infinity) {
+function iconsize(game) {
+    return Math.max(24, 50 + (game.importance - 3) * 5.7);
+}
+
+export function packcircle(games, width, height = Infinity, factor = 1) {
     if (!games.length) return {positions: [], height: 0};
     width = Math.max(1, width);
     height = Math.max(1, height);
-    const gap = Math.min(6, Math.sqrt(width * height / (games.length * 4)));
-    const sizes = games.map(game => Math.max(24, 50 + (game.importance - 3) * 5.7));
+    const gap = Math.min(6 * factor, Math.sqrt(width * height / (games.length * 4)));
+    const sizes = games.map(game => iconsize(game) * factor);
     const area = sizes.reduce((total, size) => total + (size + gap) ** 2, 0);
     const scale = Math.min(1, width / Math.max(...sizes), Math.sqrt(width * height * Math.PI * 0.85 / (4 * area)));
     const packed = packicons(sizes.map(size => size * scale), width, height, gap);
@@ -68,4 +72,45 @@ export function packcircle(games, width, height = Infinity) {
         positions: packed.positions.map(position => ({left: (position.left - width / 2) * fit + width / 2, top: position.top * fit, size: position.size * fit})),
         height
     };
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function packorbits(games, width, height) {
+    const groups = {primary: [], zeptoapp: [], teraleak: []};
+    games.forEach((game, index) => groups[game.circle || "primary"].push({game, index}));
+    const {primary, zeptoapp, teraleak} = groups;
+    if (!zeptoapp.length && !teraleak.length) return packcircle(games, width, height);
+    if (!primary.length && (!zeptoapp.length || !teraleak.length)) return packcircle(games, width, height, 0.72);
+
+    const horizontal = width >= height * 1.17;
+    const span = horizontal ? width : height;
+    const gap = Math.min(26, span * 0.045);
+    const weight = items => Math.hypot(...items.map(({game}) => iconsize(game)));
+    const main = weight(primary);
+    const largest = Math.max(weight(zeptoapp), weight(teraleak)) * 0.72;
+    const share = Math.max(0.28, Math.min(0.72, main / (main + 2 * largest)));
+    const middle = (span - 2 * gap) * share;
+    const side = (span - middle - 2 * gap) / 2;
+    const positions = new Array(games.length);
+
+    function place(items, start, extent, alignment, factor) {
+        if (!items.length) return;
+        const boxwidth = horizontal ? extent : width * (alignment ? 0.86 : 1);
+        const boxheight = horizontal ? height * (alignment ? 0.86 : 1) : extent;
+        const packed = packcircle(items.map(({game}) => game), boxwidth, boxheight, factor);
+        const left = horizontal ? start : (width - boxwidth) * (1 + alignment) / 2;
+        const top = horizontal
+            ? (height - packed.height) / 2 + alignment * (height - boxheight) / 2
+            : start + (boxheight - packed.height) / 2;
+        items.forEach(({index}, position) => {
+            const icon = packed.positions[position];
+            positions[index] = {left: icon.left + left, top: icon.top + top, size: icon.size};
+        });
+    }
+
+    place(primary, side + gap, middle, 0, 1);
+    place(zeptoapp, 0, side, -1, 0.72);
+    place(teraleak, span - side, side, 1, 0.72);
+    return {positions, height};
 }

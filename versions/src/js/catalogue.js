@@ -12,7 +12,7 @@ function text(values) {
     return values.filter(value => value != null).join(" ").normalize("NFKC").toLowerCase();
 }
 
-function downloadflags(download) {
+export function downloadflags(download) {
     const flags = new Set((download.flags || "").toLowerCase().split(/\s+/));
     if (/\bteraleak\b|\/leaks\/teraleak\//i.test(text([download.label, download.note, download.url]))) flags.add("teraleak");
     if (/\bzeptoapp\b|\/leaks\/zeptoapp\//i.test(text([download.label, download.note, download.url]))) flags.add("zeptoapp");
@@ -91,8 +91,9 @@ export function findresults(records, query) {
                 downloads: !all && downloads.size ? downloads : null
             };
         });
-        if (heading) games.add(record.game);
-        if (heading || versions.length) results.push({
+        if (!heading && !versions.length) continue;
+        games.add(record.game);
+        results.push({
             record, versions,
             description: detailmatches(record.description)
         });
