@@ -1,15 +1,14 @@
 import {dropdown} from "/assets/static/js/controls/dropdown.js";
 import {feather} from "/assets/static/js/controls/feather.js";
-import {levelroute} from "./route.js";
 import {unsupported, requiredgame, objectrequirements} from "../catalogue/unsupported.js";
 import {scene} from "../renderer/index.js";
 import {player} from "../play/index.js";
 import {level} from "../renderer/data.js";
+import {original} from "../catalogue/source.js";
 import {discordmd} from "./markdown.js";
 import {refresh} from "../catalogue/statistics.js";
 import {share} from "./share.js";
 import {tags} from "../catalogue/metadata.js";
-import {downloadlevel, filename} from "./download.js";
 import {inspection} from "./inspection.js";
 import {comments} from "./comments.js";
 import {discordbutton} from "./discord.js";
@@ -19,6 +18,61 @@ import {rankings, candyinfo} from "../candylist/view.js";
 import {communitycontrols, communitybase} from "./community.js";
 import {homeemojis} from "./emojis.js";
 import {filterscroll} from "../filters/controls.js";
+
+const routefilters = ["search", "sort", "tags", "creator", "features", "author", "candy", "candylist", "contests", "page"];
+let savedroute = null;
+
+function levelroute(open) {
+    const url = new URL(location.href);
+    if (open) {
+        if (savedroute === null) {
+            savedroute = history.state?.browserquery ?? location.search;
+            const query = new URLSearchParams(savedroute);
+            query.delete("revision");
+            savedroute = query.toString();
+        }
+        for (const key of routefilters) url.searchParams.delete(key);
+        history.replaceState({...history.state, browserquery: savedroute}, "", url);
+    } else if (savedroute !== null) {
+        const query = new URLSearchParams(savedroute);
+        if (!routefilters.some(key => url.searchParams.has(key))) {
+            for (const [key, value] of query) url.searchParams.set(key, value);
+        }
+        url.searchParams.delete("revision");
+        history.replaceState(null, "", url);
+        savedroute = null;
+        queueMicrotask(() => document.dispatchEvent(new Event("levelbrowserrestore")));
+    }
+}
+
+function filename(entry) {
+    const name = String(entry.title || "level") + " by " + String(entry.creator || "unknown");
+    return name.replace(/[<>:"/\\|?*\u0000-\u001f]/g, "_").slice(0, 180).replace(/[. ]+$/, "") + ".xml";
+}
+
+function downloadlevel(button, entry, status) {
+    button.href = entry.file;
+    if (!entry.file) button.setAttribute("aria-disabled", "true");
+    button.download = filename(entry);
+    button.addEventListener("click", async event => {
+        event.preventDefault();
+        if (!entry.file || button.getAttribute("aria-busy") === "true") return;
+        button.setAttribute("aria-busy", "true");
+        try {
+            const xml = await original(entry.file);
+            if (!button.isConnected) return;
+            const url = URL.createObjectURL(new Blob([xml], {type: "application/xml;charset=utf-8"}));
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = filename(entry);
+            document.body.append(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 30000);
+        } catch {status.textContent = "could not download level"}
+        finally {button.removeAttribute("aria-busy")}
+    });
+}
 
 export function leveldetails() {
     const root = document.documentElement;

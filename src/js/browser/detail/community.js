@@ -1,10 +1,35 @@
-import {sessiontoken} from "./session.js";
 import {configuration} from "../catalogue/service.js";
 import {commenteditor} from "./editor/index.js";
 import {emojipicker, homeemojis} from "./emojis.js";
 
 const settings = await configuration;
 export const communitybase = settings.community || "";
+let token = "";
+
+function sessiontoken(value) {
+    if (value !== undefined) {
+        token = value || "";
+        for (const name of ["localStorage", "sessionStorage"]) {
+            try {
+                if (token) window[name].setItem("communitysession", token);
+                else window[name].removeItem("communitysession");
+            } catch {}
+        }
+        return token;
+    }
+    for (const name of ["localStorage", "sessionStorage"]) {
+        try {
+            const saved = window[name].getItem("communitysession");
+            if (/^[\w-]{43}$/.test(saved || "")) {
+                token = saved;
+                if (name === "sessionStorage") sessiontoken(token);
+                return token;
+            }
+        } catch {}
+    }
+    return token;
+}
+
 const reactiondata = fetch("/assets/static/data/levels/reactions.json").then(response => {
     if (!response.ok) throw new Error("Reactions unavailable");
     return response.json();

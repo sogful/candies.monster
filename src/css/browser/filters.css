@@ -151,6 +151,9 @@
 .featureoptions::-webkit-scrollbar {display: none}
 .featureoptions .leveltag, .filterreset {flex-shrink: 0}
 .filterreset {margin-right: 6px}
+.hasreset > :is(.tagoptions,.featureoptions,.candyoptions,.contestoptions)::after {
+    content: ""; flex: 0 0 38px;
+}
 .creatorprofile {
     display: flex; align-items: center;
     padding: 4px 4px 12px 4px; gap: 12px;

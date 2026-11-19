@@ -191,6 +191,16 @@ export function filters(changed) {
     else window.addEventListener("resize", measure, {passive: true});
     measure();
 
+    function placeReset(row, control, content) {
+        const lastbounds = content?.lastElementChild?.getBoundingClientRect();
+        const contentbounds = content?.getBoundingClientRect();
+        const rowbounds = row.getBoundingClientRect();
+        const tail = window.innerWidth >= 901 && !control.hidden && lastbounds && contentbounds && lastbounds.left >= contentbounds.left && lastbounds.right + control.offsetWidth + 4 <= Math.min(contentbounds.right, rowbounds.right);
+        row.classList.toggle("resetattail", Boolean(tail));
+        if (tail) row.style.setProperty("--resetleft", Math.ceil(lastbounds.right - rowbounds.left + 4) + "px");
+        else row.style.removeProperty("--resetleft");
+    }
+
     function apply(write = true, restore = false, replace = false, preserve = false) {
         const beforepage = new URLSearchParams(location.search).get("page");
         if (write) {
@@ -229,11 +239,14 @@ export function filters(changed) {
             control.hidden = !active.includes(key) && !(key === "tags" && !active.length && !reset.hidden);
             row.classList.toggle("hasreset", !control.hidden);
             const content = row.querySelector(":scope > .tagoptions, :scope > .featureoptions, .candyoptions, .contestoptions");
-            const last = content?.lastElementChild;
-            const tail = window.innerWidth >= 901 && !control.hidden && last && content.scrollWidth <= content.clientWidth;
-            row.classList.toggle("resetattail", Boolean(tail));
-            if (tail) row.style.setProperty("--resetleft", Math.ceil(last.getBoundingClientRect().right - row.getBoundingClientRect().left + 4) + "px");
-            else row.style.removeProperty("--resetleft");
+            placeReset(row, control, content);
+            if (content && !content.dataset.resetwatch) {
+                content.dataset.resetwatch = "true";
+                content.addEventListener("scroll", () => {
+                    if (!row.classList.contains("hasreset")) return;
+                    placeReset(row, control, content);
+                }, {passive: true});
+            }
         }
         options.hidden = false;
         clear.hidden = !search.value;
@@ -296,6 +309,12 @@ export function filters(changed) {
     });
 
     search.addEventListener("input", () => apply(true, false, true));
+    window.addEventListener("resize", () => {
+        for (const row of bar.querySelectorAll(".tagbar,.featurebar,.candybar,.contestbar")) {
+            const control = row.querySelector(":scope > .filterreset");
+            if (control) placeReset(row, control, row.querySelector(":scope > .tagoptions, :scope > .featureoptions, .candyoptions, .contestoptions"));
+        }
+    }, {passive: true});
     document.addEventListener("levelpagechange", () => {routed = location.search});
     document.addEventListener("levelbrowserrestore", () => {readroute(); apply(false, true)});
     window.addEventListener("popstate", () => {

@@ -3,7 +3,7 @@ import {creatorlink} from "../catalogue/creator.js";
 import {spinner} from "/assets/static/js/images/spinner.js";
 import {imageviewer} from "./inspection.js";
 import {discordmd} from "./markdown.js";
-import {composer, communitybase} from "./community.js";
+import {composer} from "./community.js";
 
 function attachment(file) {
     let url;
@@ -136,16 +136,6 @@ export function comments(entry) {
                 item.className = "levelcomment";
                 function render() {
                     const author = creatorlink({creator: message.author, creatorid: message.authorid, detailurl: entry.detailurl}, "commentauthor", "");
-                    if (message.avatar && (/^https:\/\/cdn\.discordapp\.com\//.test(message.avatar) || communitybase && message.avatar.startsWith(communitybase + "/avatars/"))) {
-                        const avatar = document.createElement("img");
-                        avatar.className = "commentavatar";
-                        avatar.src = message.avatar;
-                        avatar.alt = "";
-                        avatar.loading = "lazy";
-                        avatar.width = 32;
-                        avatar.height = 32;
-                        author.prepend(avatar);
-                    }
                     const body = document.createElement("div");
                     body.className = "commentbody";
                     body.append(discordmd(message.content, 0, message.mentions));

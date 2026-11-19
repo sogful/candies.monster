@@ -55,7 +55,7 @@
 
 .levelhero {
     display: grid; grid-template-columns: 1fr 180px 1fr;
-    align-items: start; gap: 32px;
+    align-items: center; gap: 32px;
     width: 100%; max-width: 680px;
     margin: 8px auto 12px;
     min-height: 180px;
@@ -378,7 +378,7 @@
 }
 .levelfavourites .levelvalue {flex-shrink: 0}
 .levelfavourites .levellabel {
-    position: relative; flex: 1 1 0;
+    position: relative; flex: 0 1 auto;
     min-width: 0; white-space: nowrap;
 }
 .favouriteslong {display: inline-block}

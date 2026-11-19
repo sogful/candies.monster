@@ -6,9 +6,58 @@
     const excluded = "script,style,textarea,input,select,option,code,pre,svg,math,[contenteditable],.siteemoji,[data-noemoji]";
     const failed = new Set();
     const pending = new Set();
+    const spritecodes = new Set(["1f4a7", "1f389", "1f383", "26a0", "1fa77", "1f3ae", "1f9ea", "1f4e6", "2b06", "1f385-1f3fb", "1f384", "1f90e", "1f1e7-1f1f4"]);
     let scheduled = false;
     let parser;
     let names;
+    let sprite;
+
+    function spriteicons() {
+        sprite ||= fetch("/assets/images/twemoji.svg").then(async response => {
+            if (!response.ok) throw new Error("Emoji sprite unavailable");
+            const source = new DOMParser().parseFromString(await response.text(), "image/svg+xml");
+            if (source.querySelector("parsererror")) throw new Error("Emoji sprite invalid");
+            const symbols = [...source.querySelectorAll("symbol[id^='twemoji-']")];
+            const hidden = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            hidden.setAttribute("class", "twemojisprite");
+            hidden.setAttribute("aria-hidden", "true");
+            for (const symbol of symbols) hidden.append(document.importNode(symbol, true));
+            document.body.append(hidden);
+            return new Set(symbols.map(symbol => symbol.id.slice(8)));
+        }).catch(() => new Set());
+        return sprite;
+    }
+
+    function remoteimage(wrapper, code, emoji) {
+        if (failed.has(code)) return;
+        const image = document.createElement("img");
+        image.className = "siteemojiimage";
+        image.alt = emoji;
+        image.draggable = false;
+        image.decoding = "async";
+        image.onload = () => {image.title = wrapper.title; wrapper.replaceChildren(image)};
+        image.onerror = () => {failed.add(code)};
+        image.src = "https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.3/assets/svg/" + code + ".svg";
+        wrapper.append(image);
+    }
+
+    function spriteimage(wrapper, code, emoji) {
+        spriteicons().then(icons => {
+            if (!wrapper.isConnected) return;
+            if (!icons.has(code)) {remoteimage(wrapper, code, emoji); return}
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.classList.add("siteemojiimage");
+            svg.setAttribute("viewBox", "0 0 36 36");
+            svg.setAttribute("role", "img");
+            svg.setAttribute("aria-label", emoji);
+            svg.title = wrapper.title;
+            const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+            use.setAttribute("href", "#twemoji-" + code);
+            use.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#twemoji-" + code);
+            svg.append(use);
+            wrapper.replaceChildren(svg);
+        });
+    }
 
     function title(wrapper, emoji) {
         wrapper.title = emoji;
@@ -48,16 +97,8 @@
             wrapper.className = "siteemoji";
             wrapper.textContent = emoji;
             title(wrapper, emoji);
-            if (!failed.has(code)) {
-                const image = document.createElement("img");
-                image.className = "siteemojiimage";
-                image.alt = emoji;
-                image.draggable = false;
-                image.decoding = "async";
-                image.onload = () => {image.title = wrapper.title; wrapper.replaceChildren(image)};
-                image.onerror = () => {failed.add(code)};
-                image.src = "https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.3/assets/svg/" + code + ".svg";
-            }
+            if (spritecodes.has(code)) spriteimage(wrapper, code, emoji);
+            else remoteimage(wrapper, code, emoji);
             fragment.append(wrapper);
             cursor = offset + emoji.length;
             return emoji;
