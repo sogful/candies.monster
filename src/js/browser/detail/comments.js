@@ -93,6 +93,8 @@ export function comments(entry) {
     spinner(status, "Loading comments");
     const writing = composer(entry, async () => {
         before = null;
+        for (const item of list.children) visibility?.unobserve(item);
+        seen.clear();
         list.replaceChildren();
         await load();
     }, section);
@@ -119,19 +121,34 @@ export function comments(entry) {
     }, {root: thread, rootMargin: "400px"}) : null;
     let before = null;
     let loading = false;
+    let failed = false;
+    let position = 0;
+    const seen = new Set();
+    const lifetime = new AbortController();
+
+    function earlierbutton() {
+        if (loading || failed) return;
+        earlier.hidden = !before || thread.scrollHeight > thread.clientHeight + 1;
+        earlier.textContent = "Load earlier";
+    }
+
     async function load() {
-        if (loading) return;
+        if (loading || !section.isConnected || panel?.hidden || lifetime.signal.aborted) return;
         loading = true;
+        failed = false;
         earlier.disabled = true;
+        const cursor = before;
         try {
             const url = new URL(entry.detailurl.replace(/\/$/, "") + "/comments");
-            if (before) url.searchParams.set("before", before);
-            const response = await fetch(url);
+            if (cursor) url.searchParams.set("before", cursor);
+            const response = await fetch(url, {signal: lifetime.signal});
             if (!response.ok) throw new Error("Comments unavailable");
             const data = await response.json();
-            if (!section.isConnected) return;
+            if (!section.isConnected || panel?.hidden || lifetime.signal.aborted) return;
             const fragment = document.createDocumentFragment();
             for (const message of data.messages) {
+                if (seen.has(message.id)) continue;
+                seen.add(message.id);
                 const item = document.createElement("article");
                 item.className = "levelcomment";
                 function render() {
@@ -151,12 +168,12 @@ export function comments(entry) {
                 fragment.append(item);
             }
             const height = thread.scrollHeight;
-            const position = thread.scrollTop;
+            const anchor = thread.scrollTop;
             const initial = !list.children.length;
             list.prepend(fragment);
             section.classList.toggle("commentempty", !list.children.length);
-            before = data.before;
-            earlier.hidden = true;
+            const next = data.before;
+            before = typeof next === "string" && /^\d{17,22}$/.test(next) && (!cursor || BigInt(next) < BigInt(cursor)) ? next : null;
             status.replaceChildren();
             status.classList.toggle("commentsad", !list.children.length);
             if (!list.children.length) {
@@ -167,34 +184,40 @@ export function comments(entry) {
                 label.textContent = "No comments yet";
                 status.append(image, label);
             }
-            if (!initial) thread.scrollTop = position + thread.scrollHeight - height;
+            if (!initial) thread.scrollTop = anchor + thread.scrollHeight - height;
             else thread.scrollTop = thread.scrollHeight;
+            position = thread.scrollTop;
         } catch {
+            if (lifetime.signal.aborted || !section.isConnected) return;
+            failed = true;
             status.textContent = "Comments could not be loaded";
             earlier.textContent = "Retry";
             earlier.hidden = false;
         } finally {
             loading = false;
             earlier.disabled = false;
-            if (earlier.hidden) requestAnimationFrame(scroll);
+            if (section.isConnected) earlierbutton();
         }
     }
     function scroll() {
-        if (view.hidden) return;
-        if (before && thread.scrollTop < 140 && !loading && earlier.hidden) void load();
+        const current = thread.scrollTop;
+        const upward = current + 1 < position;
+        position = current;
+        if (section.isConnected && !panel?.hidden && !view.hidden && before && upward && current < 140 && !loading && !failed) void load();
     }
     thread.addEventListener("scroll", scroll, {passive: true});
-    const sizes = window.ResizeObserver ? new ResizeObserver(scroll) : null;
+    const sizes = window.ResizeObserver ? new ResizeObserver(earlierbutton) : null;
     sizes?.observe(thread);
     earlier.addEventListener("click", load);
     const removal = new MutationObserver(() => {
-        if (section.isConnected) return;
+        if (section.isConnected && !panel?.hidden) return;
+        lifetime.abort();
         visibility?.disconnect();
         sizes?.disconnect();
         removal.disconnect();
     });
     const panel = document.querySelector(".leveldetail");
-    if (panel) removal.observe(panel, {childList: true});
-    void load();
+    if (panel) removal.observe(panel, {childList: true, attributes: true, attributeFilter: ["hidden"]});
+    queueMicrotask(load);
     return section;
 }
