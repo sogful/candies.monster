@@ -128,7 +128,6 @@ export function filters(changed) {
         chosen.clear();
         candy.reset();
         contests.reset();
-        authorid = "";
         creator.setAttribute("aria-pressed", "false");
         apply();
     });
@@ -159,7 +158,7 @@ export function filters(changed) {
     const header = document.createElement("section");
     header.className = "creatorprofile";
     header.hidden = true;
-    bar.append(header, top, tagrow, lower, candy.element, contests.element);
+    bar.append(top, tagrow, lower, candy.element, contests.element, header);
     let routed = location.search;
 
     function readroute() {
@@ -226,7 +225,7 @@ export function filters(changed) {
         for (const button of featurerow.children) button.setAttribute("aria-pressed", String(chosen.has(button.dataset.feature)));
         candy.update();
         contests.update();
-        reset.hidden = !authorid && !chosen.size && order === "recent" && !selected.size && !candy.active && !contests.count && creator.getAttribute("aria-pressed") !== "true";
+        reset.hidden = !chosen.size && order === "recent" && !selected.size && !candy.active && !contests.count && creator.getAttribute("aria-pressed") !== "true";
         const rows = {tags: tagrow, features: lower, candy: candy.element, contests: contests.element};
         const active = [selected.size ? "tags" : "", chosen.size ? "features" : "", candy.active ? "candy" : "", contests.count ? "contests" : ""].filter(Boolean);
         for (const [key, row] of Object.entries(rows)) {
