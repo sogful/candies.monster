@@ -6,10 +6,10 @@ from quality import variants
 
 keepmenus = {
     "menu_buttons", "menu_level_ui", "menu_pause", "menu_results", "menu_options_packed",
-    "menu_result_screen_halloween",
+    "menu_result_screen_halloween", "menu_extra_buttons",
 }
 discard = {
-    "CutTheRopeDXLogo", "candy_selection_fx", "skin_selection", "skin_bg",
+    "CutTheRopeDXLogo",
     "xmas_hat_logo", "menu_main_bgr_horiz", "menu_bgr_default_horiz",
     "menu_campaign_bgr_horiz", "menu_loading_bgr_exp",
 }

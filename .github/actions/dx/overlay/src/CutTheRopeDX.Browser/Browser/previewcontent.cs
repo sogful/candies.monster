@@ -64,6 +64,33 @@ namespace CutTheRopeDX.Browser
             return name.StartsWith("zepto", StringComparison.Ordinal) || name.StartsWith("menu_", StringComparison.Ordinal) || name.StartsWith("font_", StringComparison.Ordinal) || name.StartsWith("hud_", StringComparison.Ordinal);
         }
 
+        public bool customizationimage(string path)
+        {
+            return optional.Contains(path)
+                || path.StartsWith("images/backgrounds/bgr_", StringComparison.Ordinal)
+                || path.StartsWith("images/char_", StringComparison.Ordinal)
+                || path is "images/skin_selection.webp" or "images/backgrounds/skin_bg.webp"
+                    or "images/fingertrace_skin.webp" or "images/candy_selection_fx.webp"
+                    or "images/fx_sleep.webp" or "images/fx_bubbles.webp";
+        }
+
+        public bool customizationsound(string path)
+        {
+            if (path.StartsWith("sounds/sfx/monster_", StringComparison.Ordinal)) return true;
+            foreach (OmNomSkinDefinition skin in OmNomSkinRegistry.XmlSkins)
+            {
+                foreach (string sound in new[] {Resources.Snd.MonsterChewing, Resources.Snd.MonsterClose,
+                    Resources.Snd.MonsterOpen, Resources.Snd.MonsterSad, Resources.Snd.MonsterExcited,
+                    Resources.Snd.MonsterGreeting, Resources.Snd.MonsterSleep1, Resources.Snd.MonsterSleep2,
+                    Resources.Snd.MonsterSleep3})
+                {
+                    string resolved = OmNomSoundResolver.ResolveSoundResource(skin, sound);
+                    if (resolved != null && path == ContentPaths.GetSoundEffectPath(resolved).Replace('\\', '/') + ".ogg") return true;
+                }
+            }
+            return false;
+        }
+
         private static void add(HashSet<string> paths, IEnumerable<string> resources)
         {
             foreach (string resource in resources)

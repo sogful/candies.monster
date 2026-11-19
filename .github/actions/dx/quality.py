@@ -17,7 +17,7 @@ def variants(site):
             output.parent.mkdir(parents=True, exist_ok=True)
             with Image.open(source) as image:
                 dimensions[relative] = list(image.size)
-                interface = source.stem.startswith(("cursor", "menu_", "font_", "big_font", "small_font", "hud_", "loader", "zepto"))
+                interface = source.stem.startswith(("cursor", "menu_", "font_", "big_font", "small_font", "hud_", "loader", "zepto", "skin_", "fingertrace_skin"))
                 if name == "low" and not interface:
                     image = image.resize((max(1, (image.width + 1) // 2), max(1, (image.height + 1) // 2)), Image.Resampling.LANCZOS)
                 image.save(output, "WEBP", quality=35 if interface else quality, method=5)

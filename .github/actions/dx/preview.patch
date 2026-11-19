@@ -36,13 +36,23 @@ index ec07b8b..85b6fca 100644
  
              byte[] pixels = region.Bytes;
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs b/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
-index 88e915a..8deb4b5 100644
+index 88e915a..097a3d3 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
-@@ -21,6 +21,12 @@ namespace CutTheRopeDX.Browser
+@@ -1,4 +1,5 @@
+ using System;
++using System.Collections.Concurrent;
+ using System.Linq;
+ using System.Text;
+ using System.Text.Json;
+@@ -21,6 +22,16 @@ namespace CutTheRopeDX.Browser
          private const int PreloadConcurrency = 8;
  
          private readonly ContentCache _cache = new();
++        private readonly ConcurrentDictionary<string, byte[]> customization = new(StringComparer.Ordinal);
++        private string[] customizationpaths = [];
++        private string[] customizationsounds = [];
++        private WebAudioBackend customizationaudio;
 +        private readonly System.Collections.Generic.Dictionary<string, (int w, int h)> sizes = [];
 +
 +        public (int w, int h)? dimensions(string path)
@@ -52,13 +62,26 @@ index 88e915a..8deb4b5 100644
  
          private static string Normalize(string relativePath)
          {
-@@ -67,11 +73,21 @@ namespace CutTheRopeDX.Browser
+@@ -33,7 +44,8 @@ namespace CutTheRopeDX.Browser
+         /// <inheritdoc />
+         public byte[] Read(string relativePath)
+         {
+-            return _cache.Read(Normalize(relativePath));
++            string path = Normalize(relativePath);
++            return customization.TryGetValue(path, out byte[] bytes) ? bytes : _cache.Read(path);
+         }
+ 
+         /// <summary>
+@@ -67,12 +79,24 @@ namespace CutTheRopeDX.Browser
                      + "Run scripts/build_web_content.py first.");
  
              using JsonDocument document = JsonDocument.Parse(json);
 +            previewcontent selection = new();
++            customizationaudio = audio;
              foreach (JsonProperty category in document.RootElement.EnumerateObject())
              {
+-                string[] paths = [.. category.Value
+-                    .EnumerateArray()
 +                if (category.Name == "dimensions")
 +                {
 +                    foreach (JsonProperty image in category.Value.EnumerateObject())
@@ -67,18 +90,51 @@ index 88e915a..8deb4b5 100644
 +                    }
 +                    continue;
 +                }
-                 string[] paths = [.. category.Value
-                     .EnumerateArray()
++                string[] entries = [.. category.Value.EnumerateArray()
                      .Select(element => Normalize(element.GetString()))
-+                    .Where(selection.includes)
                      .Distinct(StringComparer.Ordinal)];
++                if (category.Name == "images") customizationpaths = [.. entries.Where(selection.customizationimage)];
++                if (category.Name == "sounds") customizationsounds = [.. entries.Where(selection.customizationsound).Where(path => !selection.includes(path))];
++                string[] paths = [.. entries.Where(selection.includes)];
                  if (string.Equals(category.Name, "sounds", StringComparison.Ordinal))
                  {
+                     await PumpAsync(
+@@ -120,6 +144,23 @@ namespace CutTheRopeDX.Browser
+                     category, done + completed, total));
+         }
+ 
++        public async Task loadcustomization()
++        {
++            await ParallelPump.RunAsync(
++                [.. customizationpaths.Where(path => !_cache.ContainsKey(path) && !customization.ContainsKey(path))],
++                PreloadConcurrency, fetchcustomization, _ => {});
++            await ParallelPump.RunAsync(customizationsounds, PreloadConcurrency,
++                path => PreloadSoundAsync(customizationaudio, path), _ => {});
++            customizationsounds = [];
++        }
++
++        private async Task fetchcustomization(string path)
++        {
++            byte[] bytes = await FetchInterop.GetBytesAsync(contentBaseUrl + path);
++            if (bytes.Length == 0) throw new InvalidOperationException($"Could not load customization content {path}.");
++            customization.TryAdd(path, bytes);
++        }
++
+         private async Task FetchAssetAsync(string path)
+         {
+             byte[] bytes = await FetchInterop.GetBytesAsync(contentBaseUrl + path);
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
-index 5cd44d7..fc0b638 100644
+index 5cd44d7..e150bae 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
-@@ -65,7 +65,28 @@ namespace CutTheRopeDX.Browser
+@@ -1,5 +1,6 @@
+ using System.Collections.Generic;
+ using System.Runtime.InteropServices.JavaScript;
++using System.Threading.Tasks;
+ 
+ using CutTheRopeDX.Framework.Core;
+ using CutTheRopeDX.Framework.Platform;
+@@ -65,7 +66,32 @@ namespace CutTheRopeDX.Browser
          public string LevelEditorUrl => "https://yell0wsuit.github.io/ctrdx-editor/";
  
          /// <inheritdoc />
@@ -91,6 +147,10 @@ index 5cd44d7..fc0b638 100644
 +        }
 +
 +        public bool previeweditor => PlaytestInterop.editor();
++
++        public bool previewcustomization => true;
++
++        public Task loadcustomization() => ((BrowserContentStore)PlatformServices.Content).loadcustomization();
 +
 +        public string previewaspect => PlaytestInterop.aspect();
 +        public string previewquality => PlaytestInterop.quality();
@@ -133,7 +193,7 @@ index f646c3a..bfbde91 100644
                  _ => null,
              };
 diff --git a/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs b/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
-index d27ce9e..ace414e 100644
+index d27ce9e..2498a37 100644
 --- a/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
 @@ -3,6 +3,7 @@ using System.Threading.Tasks;
@@ -162,10 +222,10 @@ index d27ce9e..ace414e 100644
 +            {
 +                CandySkinHelper.setindexoverride(candy - 1);
 +            }
-+            if (int.TryParse(queryparam("background"), out int background) && background >= 1 && background <= PackConfig.Packs.Count)
-+            {
-+                PackConfig.setbackgroundpackoverride(background - 1);
-+            }
++            int.TryParse(queryparam("background"), out int background);
++            PackConfig.setbackgroundpackoverride(PackConfig.isbackgroundpack(background - 1)
++                ? background - 1
++                : PackConfig.savedbackground());
 +        }
 +
 +        [JSImport("queryparam", "launch-options")]
@@ -1229,16 +1289,26 @@ index 33ffd1c..00caeb0 100644
              {
                  return;
 diff --git a/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs b/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
-index 7f0fd69..1b806b3 100644
+index 7f0fd69..0bb5bfc 100644
 --- a/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
 +++ b/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
-@@ -26,6 +26,18 @@ namespace CutTheRopeDX.Framework.Platform
+@@ -1,3 +1,5 @@
++using System.Threading.Tasks;
++
+ using CutTheRopeDX.Framework.Core;
+ 
+ namespace CutTheRopeDX.Framework.Platform
+@@ -26,6 +28,22 @@ namespace CutTheRopeDX.Framework.Platform
  
          void Exit();
  
 +        void levelready() {}
 +
 +        bool previeweditor => false;
++
++        bool previewcustomization => false;
++
++        Task loadcustomization() => Task.CompletedTask;
 +
 +        void previewaction(string action) {}
 +
@@ -1331,6 +1401,156 @@ index 9dc4e7f..a609679 100644
  
          /// <summary>
          /// Number of lights determined on first draw (-1 = not yet determined).
+diff --git a/src/CutTheRopeDX.Core/GameMain/CandySelectionModeCache.cs b/src/CutTheRopeDX.Core/GameMain/CandySelectionModeCache.cs
+index db665e7..9d65b9f 100644
+--- a/src/CutTheRopeDX.Core/GameMain/CandySelectionModeCache.cs
++++ b/src/CutTheRopeDX.Core/GameMain/CandySelectionModeCache.cs
+@@ -21,7 +21,8 @@ namespace CutTheRopeDX.GameMain
+         OmNom,
+ 
+         /// <summary>Finger trace skin selection mode.</summary>
+-        Trace
++        Trace,
++        Background
+     }
+ 
+     /// <summary>
+@@ -64,7 +65,8 @@ namespace CutTheRopeDX.GameMain
+             [CandySelectionMode.Candy] = new(),
+             [CandySelectionMode.Rope] = new(),
+             [CandySelectionMode.OmNom] = new(),
+-            [CandySelectionMode.Trace] = new()
++            [CandySelectionMode.Trace] = new(),
++            [CandySelectionMode.Background] = new()
+         };
+ 
+         /// <summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs b/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
+index 02b24ef..d1b5ce2 100644
+--- a/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
++++ b/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
+@@ -17,7 +17,7 @@ namespace CutTheRopeDX.GameMain
+     /// <summary>
+     /// Builds and updates the candy, rope, Om Nom, and finger trace skin selection menu.
+     /// </summary>
+-    internal static class CandySelectionView
++    internal static partial class CandySelectionView
+     {
+         /// <summary>Skin ID used by the original Flash-backed Om Nom skin.</summary>
+         private const string OriginalFlashSkinName = "OM_NOM_ORIGINAL_FLASH";
+@@ -229,6 +229,7 @@ namespace CutTheRopeDX.GameMain
+             SetTabActive(ropeTabButton, currentMode == CandySelectionMode.Rope);
+             SetTabActive(omNomTabButton, currentMode == CandySelectionMode.OmNom);
+             SetTabActive(traceTabButton, currentMode == CandySelectionMode.Trace);
++            if (backgroundtab != null) SetTabActive(backgroundtab, currentMode == CandySelectionMode.Background);
+         }
+ 
+         /// <summary>
+@@ -275,7 +276,7 @@ namespace CutTheRopeDX.GameMain
+             Image slotBgDown = Image.FromResource(Resources.Img.SkinSelection, bgDownQuad);
+ 
+             // Add item image to both up and down states
+-            Image itemImage = Image.FromResource(itemResourceName, itemQuadIndex);
++            Image itemImage = itemQuadIndex < 0 ? Image.FromResource(itemResourceName) : Image.FromResource(itemResourceName, itemQuadIndex);
+             itemImage.anchor = itemImage.parentAnchor = 18;
+             itemImage.y = itemYOffset;
+             if (doRestoreTransparency)
+@@ -284,7 +285,7 @@ namespace CutTheRopeDX.GameMain
+             }
+             _ = slotBgUp.AddChild(itemImage);
+ 
+-            Image downItemImage = Image.FromResource(itemResourceName, itemQuadIndex);
++            Image downItemImage = itemQuadIndex < 0 ? Image.FromResource(itemResourceName) : Image.FromResource(itemResourceName, itemQuadIndex);
+             downItemImage.anchor = downItemImage.parentAnchor = 18;
+             downItemImage.y = itemYOffset;
+             if (doRestoreTransparency)
+@@ -420,7 +421,7 @@ namespace CutTheRopeDX.GameMain
+             slotButtons = [];
+             activePreviewBackend = null;
+             activePreviewObject = null;
+-            BaseElement grid = CreateGrid(mode);
++            BaseElement grid = mode == CandySelectionMode.Background ? createbackgroundgrid() : CreateGrid(mode);
+             modeCache.StoreState(mode, grid, slotButtons, activePreviewObject, activePreviewBackend);
+             AttachCachedGrid(modeCache.GetState(mode));
+         }
+@@ -547,19 +548,18 @@ namespace CutTheRopeDX.GameMain
+                 ContentFit.ScaleForAspect(snapshot.Aspect),
+                 tabWidth,
+                 tabHeight,
+-                TabCount,
++                Tabs().Length,
+                 room.Width,
+                 room.Height);
+         }
+ 
+-        /// <summary>How many tabs the screen has.</summary>
+-        private const int TabCount = 4;
+-
+         /// <summary>The screen's tab buttons, in the order they are shown.</summary>
+         /// <returns>The tabs.</returns>
+         private static Button[] Tabs()
+         {
+-            return [candyTabButton, ropeTabButton, omNomTabButton, traceTabButton];
++            return backgroundtab == null
++                ? [candyTabButton, ropeTabButton, omNomTabButton, traceTabButton]
++                : [candyTabButton, ropeTabButton, omNomTabButton, traceTabButton, backgroundtab];
+         }
+ 
+         /// <summary>
+@@ -1139,19 +1139,23 @@ namespace CutTheRopeDX.GameMain
+             string textKey,
+             MenuButtonId buttonId,
+             FontGeneric font,
+-            IButtonDelegation buttonDelegate)
++            IButtonDelegation buttonDelegate,
++            bool literal = false)
+         {
+             Image buttonUp = Image.FromResource(Resources.Img.SkinSelection, 4);
+             Image buttonDown = Image.FromResource(Resources.Img.SkinSelection, 5);
+ 
+             Text upText = new Text().InitWithFont(font);
+-            upText.SetString(Application.GetString(textKey));
++            string label = literal ? textKey : Application.GetString(textKey);
++            upText.SetString(label);
+             upText.anchor = upText.parentAnchor = 18;
++            if (literal) upText.scaleX = upText.scaleY = MathF.Min(1f, (buttonUp.width - 24f) / MathF.Max(1f, upText.width));
+             _ = buttonUp.AddChild(upText);
+ 
+             Text downText = new Text().InitWithFont(font);
+-            downText.SetString(Application.GetString(textKey));
++            downText.SetString(label);
+             downText.anchor = downText.parentAnchor = 18;
++            if (literal) downText.scaleX = downText.scaleY = upText.scaleX;
+             _ = buttonDown.AddChild(downText);
+ 
+             Button button = new Button().InitWithUpElementDownElementandID(buttonUp, buttonDown, buttonId);
+@@ -1303,7 +1307,8 @@ namespace CutTheRopeDX.GameMain
+         /// <returns>The configured candy selection menu view.</returns>
+         public static MenuView CreateCandySelection(
+             IButtonDelegation buttonDelegate,
+-            out ScrollableContainer candyContainer)
++            out ScrollableContainer candyContainer,
++            bool preview = false)
+         {
+             MenuView menuView = new();
+ 
+@@ -1340,6 +1345,8 @@ namespace CutTheRopeDX.GameMain
+             _ = background.AddChild(omNomTabButton);
+             traceTabButton = CreateTabButton("TRACES_BTN", MenuButtonId.TraceSelect, font, buttonDelegate);
+             _ = background.AddChild(traceTabButton);
++            backgroundtab = preview ? CreateTabButton("Background", backgroundtabid, font, buttonDelegate, literal: true) : null;
++            if (backgroundtab != null) _ = background.AddChild(backgroundtab);
+ 
+             SkinSelectionLayout layout = LayoutFor(ScreenPresentation.Instance.Snapshot);
+             PlaceTabs(layout);
+@@ -1371,6 +1378,7 @@ namespace CutTheRopeDX.GameMain
+             backButton = MenuController.CreateBackButtonWithDelegateID(buttonDelegate, MenuButtonId.BackFromCandySelect);
+             backButton.SetName("backb");
+             _ = menuView.AddChild(backButton);
++            if (preview) addrestartnotice(menuView);
+ 
+             return menuView;
+         }
 diff --git a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs b/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
 index 597afdd..68750f7 100644
 --- a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
@@ -1360,168 +1580,16 @@ index 597afdd..68750f7 100644
              {
                  0 => Resources.Img.ObjCandy01New,
                  1 => Resources.Img.ObjCandy02,
-diff --git a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
-index 23a8e97..5320dac 100644
---- a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
-@@ -73,6 +73,10 @@ namespace CutTheRopeDX.GameMain
-         /// </summary>
-         public static GameControllerButtonId ToggleVoice => new(12);
- 
-+        public static GameControllerButtonId changeversion => new(13);
-+
-+        public static GameControllerButtonId editlevel => new(14);
-+
-         /// <summary>
-         /// Converts a raw integer button value to a game-controller button identifier.
-         /// </summary>
-diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
-index 159dea1..d0858cd 100644
---- a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
-@@ -186,16 +186,18 @@ namespace CutTheRopeDX.GameMain
-                 || parkedGhostBubble?.Bubble == bubbleObj;
-         }
- 
--        /// <summary>
--        /// The point the camera follows: the primary candy's first active body, which is its left
--        /// half while it is split and its whole body otherwise. Falls back to the whole body's point
--        /// when the primary has no active body at all, so the camera never loses its target.
--        /// </summary>
--        /// <returns>The camera's focus point.</returns>
-         private ConstrainedPoint CameraFocusPoint()
-         {
--            IReadOnlyList<CandyBody> primaryBodies = candies[0].Lifecycle.ActiveBodies;
--            return primaryBodies.Count > 0 ? primaryBodies[0].Point : candies[0].WholeBody.Point;
-+            foreach (CandyContext candy in candies)
-+            {
-+                if (candy.Lifecycle.Presence == CandyPresence.Removed)
-+                {
-+                    continue;
-+                }
-+                IReadOnlyList<CandyBody> bodies = candy.Lifecycle.ActiveBodies;
-+                return bodies.Count > 0 ? bodies[0].Point : candy.WholeBody.Point;
-+            }
-+            return candies[0].WholeBody.Point;
-         }
- 
-         private bool IsSpiderGrabbableCandyPoint(ConstrainedPoint point)
-diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
-index 3f5f05f..de0bfa3 100644
---- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
-@@ -58,6 +58,7 @@ namespace CutTheRopeDX.GameMain
-         /// <returns>The candidate music resource names, empty when the pack names none.</returns>
-         public static string[] Game(int pack)
-         {
-+            if (CustomLevelSession.IsActive) return [Resources.Music.GameMusic];
-             MusicOverride active = ActiveOverride();
-             if (active?.Game != null)
-             {
-@@ -87,6 +88,7 @@ namespace CutTheRopeDX.GameMain
-         /// </summary>
-         public static void PlayMenuMusic()
-         {
-+            if (CustomLevelSession.IsActive) return;
-             SoundMgr.PlayMusic(Menu());
-         }
- 
-diff --git a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
-index 0fa574a..1335a82 100644
---- a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
-@@ -234,6 +234,13 @@ namespace CutTheRopeDX.GameMain
-             return pack >= 0 && pack < packs.Count ? packs[pack].SaveSlot : 0;
-         }
- 
-+        private static int? backgroundoverride;
-+
-+        public static void setbackgroundpackoverride(int? pack)
-+        {
-+            backgroundoverride = pack;
-+        }
-+
-         /// <summary>
-         /// Gets the background resource names for a pack.
-         /// </summary>
-@@ -241,7 +248,8 @@ namespace CutTheRopeDX.GameMain
-         /// <returns>The pack background resource names, or the empty resource sentinel when <paramref name="pack"/> is out of range.</returns>
-         public static string[] GetBoxBackgrounds(int pack)
-         {
--            return pack >= 0 && pack < packs.Count ? packs[pack].BoxBackgrounds : EmptyResourceNames;
-+            int effectivepack = backgroundoverride ?? pack;
-+            return effectivepack >= 0 && effectivepack < packs.Count ? packs[effectivepack].BoxBackgrounds : EmptyResourceNames;
-         }
- 
-         /// <summary>
-diff --git a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
-index b36d49e..99d8739 100644
---- a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
-+++ b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
-@@ -29,7 +29,14 @@ namespace CutTheRopeDX.GameMain
-         /// Gets a value indicating whether the Christmas event period is active.
-         /// Includes December and January.
-         /// </summary>
--        public static bool IsXmas => Today.Month is 12 or 1;
-+        private static bool? xmasoverride;
-+
-+        public static void setxmasoverride(bool? value)
-+        {
-+            xmasoverride = value;
-+        }
-+
-+        public static bool IsXmas => xmasoverride ?? (Today.Month is 12 or 1);
- 
-         #endregion
- 
-diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
-index 60322f2..17ef0aa 100644
---- a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
-+++ b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
-@@ -780,8 +780,8 @@ namespace CutTheRopeDX.Rendering.Skia
-             {
-                 FlushQuads();
-                 _batchTexture = _boundTexture;
--                _batchTextureWidth = _boundTexture?.Width ?? 1f;
--                _batchTextureHeight = _boundTexture?.Height ?? 1f;
-+                _batchTextureWidth = _boundTexture?.Image.Width ?? 1f;
-+                _batchTextureHeight = _boundTexture?.Image.Height ?? 1f;
-                 _batchBlendMode = EffectiveBlendMode;
-                 _batchWeightsSourceByAlpha = WeightsSourceByAlpha;
-             }
-diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
-index 8b4234d..dc104c1 100644
---- a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
-+++ b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
-@@ -10,7 +10,7 @@ namespace CutTheRopeDX.Rendering.Skia
-     /// The device generation that uploaded the image, from <see cref="SkiaResourceRegistry"/>.
-     /// Left device-independent when nothing is tracking losses.
-     /// </param>
--    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent) : ITextureHandle
-+    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent, int logicalwidth = 0, int logicalheight = 0) : ITextureHandle
-     {
-         /// <summary>
-         /// Rewrites a color to opaque grey carrying its own alpha, so multiplying a texture by it
-@@ -48,10 +48,10 @@ namespace CutTheRopeDX.Rendering.Skia
-         public int Generation { get; } = generation;
- 
-         /// <inheritdoc />
--        public int Width => Image.Width;
-+        public int Width => logicalwidth > 0 ? logicalwidth : Image.Width;
- 
-         /// <inheritdoc />
--        public int Height => Image.Height;
-+        public int Height => logicalheight > 0 ? logicalheight : Image.Height;
- 
-         /// <summary>
-         /// The shader a batch samples this texture through, optionally weighted by the texture's
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameController.cs b/src/CutTheRopeDX.Core/GameMain/GameController.cs
-index bc8a2d7..5f778e4 100644
+index bc8a2d7..f114702 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameController.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameController.cs
-@@ -18,6 +18,39 @@ namespace CutTheRopeDX.GameMain
+@@ -16,8 +16,41 @@ namespace CutTheRopeDX.GameMain
+     /// <summary>
+     /// Coordinates the active game scene, pause menu, level result flow, input routing, and game-view transitions.
      /// </summary>
-     internal sealed class GameController : ViewController, IButtonDelegation, IGameSceneDelegate
+-    internal sealed class GameController : ViewController, IButtonDelegation, IGameSceneDelegate
++    internal sealed partial class GameController : ViewController, IButtonDelegation, IGameSceneDelegate
      {
 +        private readonly List<(Button button, string ratio)> ratiobuttons = [];
 +        private int previewbest;
@@ -1559,7 +1627,7 @@ index bc8a2d7..5f778e4 100644
          /// <inheritdoc />
          public override void Update(float t)
          {
-@@ -26,6 +59,12 @@ namespace CutTheRopeDX.GameMain
+@@ -26,6 +59,13 @@ namespace CutTheRopeDX.GameMain
              {
                  OnButtonPressed(GameControllerButtonId.Restart);
              }
@@ -1569,10 +1637,11 @@ index bc8a2d7..5f778e4 100644
 +                setmusicenabled(!muteall);
 +                setsoundenabled(!muteall);
 +            }
++            updatecustomization(t);
              base.Update(t);
  
              GameScene gameScene = (GameScene)GetView(0)?.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
-@@ -33,6 +72,10 @@ namespace CutTheRopeDX.GameMain
+@@ -33,6 +73,10 @@ namespace CutTheRopeDX.GameMain
              {
                  gameScene.UpdatePointerGestureVisuals(t);
              }
@@ -1583,7 +1652,7 @@ index bc8a2d7..5f778e4 100644
  
              if (levelWatcher != null && levelWatcher.TryConsumeChange(DateTime.UtcNow))
              {
-@@ -102,6 +145,7 @@ namespace CutTheRopeDX.GameMain
+@@ -102,6 +146,7 @@ namespace CutTheRopeDX.GameMain
              MusicTracks.PlayGameMusic(Application.SharedRootController().Pack);
              LevelFirstStart();
              ShowView(0);
@@ -1591,7 +1660,7 @@ index bc8a2d7..5f778e4 100644
  
              if (CustomLevelSession.IsActive && levelWatcher == null)
              {
-@@ -180,6 +224,11 @@ namespace CutTheRopeDX.GameMain
+@@ -180,6 +225,11 @@ namespace CutTheRopeDX.GameMain
              pauseMenuPlate = image;
              Button continueButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("CONTINUE"), GameControllerButtonId.Continue, this);
              _ = vBox.AddChild(continueButton);
@@ -1603,7 +1672,7 @@ index bc8a2d7..5f778e4 100644
              if (!CustomLevelSession.IsActive)
              {
                  Button skipLevelButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("SKIP_LEVEL"), GameControllerButtonId.SkipLevel, this);
-@@ -187,17 +236,15 @@ namespace CutTheRopeDX.GameMain
+@@ -187,17 +237,20 @@ namespace CutTheRopeDX.GameMain
                  Button levelSelectButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString("LEVEL_SELECT"), GameControllerButtonId.LevelSelect, this);
                  _ = vBox.AddChild(levelSelectButton);
              }
@@ -1612,6 +1681,11 @@ index bc8a2d7..5f778e4 100644
 -                : "MAIN_MENU";
 -            Button exitButton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString(exitLabel), GameControllerButtonId.MainMenu, this);
 -            _ = vBox.AddChild(exitButton);
++            if (CustomLevelSession.IsActive && PlatformServices.Host?.previewcustomization == true)
++            {
++                customizebutton = MenuController.CreateButtonWithTextIDDelegate("Customize", GameControllerButtonId.customize, this);
++                _ = vBox.AddChild(customizebutton);
++            }
 +            string exitlabel = CustomLevelSession.IsActive ? "QUIT_BUTTON" : "MAIN_MENU";
 +            Button exitbutton = MenuController.CreateButtonWithTextIDDelegate(Application.GetString(exitlabel), GameControllerButtonId.MainMenu, this);
 +            _ = vBox.AddChild(exitbutton);
@@ -1629,7 +1703,7 @@ index bc8a2d7..5f778e4 100644
              if (MenuTheme.IsExperiments)
              {
                  ToggleButton voiceToggle = MenuController.CreateExperimentsVoiceToggle(this, GameControllerButtonId.ToggleVoice);
-@@ -208,16 +255,20 @@ namespace CutTheRopeDX.GameMain
+@@ -208,16 +261,20 @@ namespace CutTheRopeDX.GameMain
                  }
              }
              _ = vBox.AddChild(hBox);
@@ -1653,7 +1727,7 @@ index bc8a2d7..5f778e4 100644
              }
              _ = gameView.AddChildwithID(image, 3);
  
-@@ -363,24 +414,25 @@ namespace CutTheRopeDX.GameMain
+@@ -363,24 +420,25 @@ namespace CutTheRopeDX.GameMain
              //RootController.SetHacked();
              //}
              SoundMgr.PlaySound(Resources.Snd.Win);
@@ -1694,7 +1768,7 @@ index bc8a2d7..5f778e4 100644
              EnterOverlayMode(GameControllerOverlayMode.Results);
              int box = root.Box;
              int pack = root.Pack;
-@@ -404,7 +456,7 @@ namespace CutTheRopeDX.GameMain
+@@ -404,7 +462,7 @@ namespace CutTheRopeDX.GameMain
                      boxOpenClose.shouldShowImprovedResult = true;
                  }
              }
@@ -1703,10 +1777,13 @@ index bc8a2d7..5f778e4 100644
              boxOpenClose.delegateboxClosed = () =>
              {
                  // Freeze the game scene a bit after the door closing animation finishes
-@@ -524,6 +576,30 @@ namespace CutTheRopeDX.GameMain
+@@ -524,6 +582,33 @@ namespace CutTheRopeDX.GameMain
              View view = GetView(0);
              switch (n)
              {
++                case var id when id == GameControllerButtonId.customize:
++                    opencustomization();
++                    return;
 +                case var quality when quality >= 19 && quality <= 21:
 +                    if (CustomLevelSession.IsActive) PlatformServices.Host?.previewsetquality(new[] { "High", "Medium", "Low" }[quality - 19]);
 +                    return;
@@ -1734,7 +1811,7 @@ index bc8a2d7..5f778e4 100644
                  case var id when id == GameControllerButtonId.Restart:
                      GameScene restartScene = (GameScene)view.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
                      if (overlayMode != GameControllerOverlayMode.Gameplay
-@@ -596,33 +672,11 @@ namespace CutTheRopeDX.GameMain
+@@ -596,33 +681,11 @@ namespace CutTheRopeDX.GameMain
                      ExperimentsVoice.Toggle();
                      return;
                  case var id when id == GameControllerButtonId.ToggleMusic:
@@ -1772,7 +1849,7 @@ index bc8a2d7..5f778e4 100644
                  default:
                      return;
              }
-@@ -637,6 +691,50 @@ namespace CutTheRopeDX.GameMain
+@@ -637,6 +700,50 @@ namespace CutTheRopeDX.GameMain
              RootController.LogEvent(n != GameControllerButtonId.ExitFromLose ? "IG_REPLAY_PRESSED" : "LC_REPLAY_PRESSED");
          }
  
@@ -1823,7 +1900,7 @@ index bc8a2d7..5f778e4 100644
          /// <summary>Resolves an input source against the authoritative controller and level-flow state.</summary>
          /// <param name="input">Input source to resolve.</param>
          /// <returns>The semantic command allowed in the current state.</returns>
-@@ -784,7 +882,7 @@ namespace CutTheRopeDX.GameMain
+@@ -784,7 +891,7 @@ namespace CutTheRopeDX.GameMain
              }
              else if (CustomLevelSession.IsActive)
              {
@@ -1832,7 +1909,39 @@ index bc8a2d7..5f778e4 100644
              }
              else
              {
-@@ -1264,6 +1362,8 @@ namespace CutTheRopeDX.GameMain
+@@ -926,6 +1033,11 @@ namespace CutTheRopeDX.GameMain
+             {
+                 return true;
+             }
++            if (activeViewID == customizationview)
++            {
++                closecustomization();
++                return true;
++            }
+             ExecuteInputCommand(ResolveInput(GameControllerInputKind.Back));
+             return true;
+         }
+@@ -937,6 +1049,11 @@ namespace CutTheRopeDX.GameMain
+             {
+                 return true;
+             }
++            if (activeViewID == customizationview)
++            {
++                closecustomization();
++                return true;
++            }
+             ExecuteInputCommand(ResolveInput(GameControllerInputKind.Menu));
+             return true;
+         }
+@@ -1057,6 +1174,7 @@ namespace CutTheRopeDX.GameMain
+         protected override void Relayout(ViewportLayoutSnapshot snapshot)
+         {
+             base.Relayout(snapshot);
++            if (activeViewID == customizationview) CandySelectionView.Relayout(snapshot);
+ 
+             View view = GetView(0);
+             if (view == null)
+@@ -1264,6 +1382,8 @@ namespace CutTheRopeDX.GameMain
  
          /// <summary>Pause-menu label that displays the active map or best score.</summary>
          private Text mapNameLabel;
@@ -1841,6 +1950,119 @@ index bc8a2d7..5f778e4 100644
  
          /// <summary>The plate the pause menu is drawn on; the best-score label hangs off its edge.</summary>
          private Image pauseMenuPlate;
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
+index 23a8e97..0b01be9 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameControllerButtonId.cs
+@@ -73,6 +73,12 @@ namespace CutTheRopeDX.GameMain
+         /// </summary>
+         public static GameControllerButtonId ToggleVoice => new(12);
+ 
++        public static GameControllerButtonId changeversion => new(13);
++
++        public static GameControllerButtonId editlevel => new(14);
++
++        public static GameControllerButtonId customize => new(22);
++
+         /// <summary>
+         /// Converts a raw integer button value to a game-controller button identifier.
+         /// </summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
+index 159dea1..d0858cd 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.GameLogic.cs
+@@ -186,16 +186,18 @@ namespace CutTheRopeDX.GameMain
+                 || parkedGhostBubble?.Bubble == bubbleObj;
+         }
+ 
+-        /// <summary>
+-        /// The point the camera follows: the primary candy's first active body, which is its left
+-        /// half while it is split and its whole body otherwise. Falls back to the whole body's point
+-        /// when the primary has no active body at all, so the camera never loses its target.
+-        /// </summary>
+-        /// <returns>The camera's focus point.</returns>
+         private ConstrainedPoint CameraFocusPoint()
+         {
+-            IReadOnlyList<CandyBody> primaryBodies = candies[0].Lifecycle.ActiveBodies;
+-            return primaryBodies.Count > 0 ? primaryBodies[0].Point : candies[0].WholeBody.Point;
++            foreach (CandyContext candy in candies)
++            {
++                if (candy.Lifecycle.Presence == CandyPresence.Removed)
++                {
++                    continue;
++                }
++                IReadOnlyList<CandyBody> bodies = candy.Lifecycle.ActiveBodies;
++                return bodies.Count > 0 ? bodies[0].Point : candy.WholeBody.Point;
++            }
++            return candies[0].WholeBody.Point;
+         }
+ 
+         private bool IsSpiderGrabbableCandyPoint(ConstrainedPoint point)
+diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Init.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Init.cs
+index 5e8760b..ca56798 100644
+--- a/src/CutTheRopeDX.Core/GameMain/GameScene.Init.cs
++++ b/src/CutTheRopeDX.Core/GameMain/GameScene.Init.cs
+@@ -56,22 +56,7 @@ namespace CutTheRopeDX.GameMain
+             };
+             _ = AddChild(staticAniPool);
+             camera = new Camera2D().InitWithSpeedandType(14f, CAMERATYPE.CAMERASPEEDDELAY);
+-            string[] boxBackgrounds = PackConfig.GetBoxBackgrounds(root.Pack);
+-            string boxBackground = boxBackgrounds.FirstOrDefault(name => !string.IsNullOrWhiteSpace(name));
+-            if (string.IsNullOrWhiteSpace(boxBackground))
+-            {
+-                throw new InvalidDataException($"Pack config is missing boxBackground for pack {root.Pack}.");
+-            }
+-            back = new TileMap().InitWithRowsColumns(1, 1);
+-            // Wide levels can move the camera past one P1 width, so repeat it on both axes.
+-            back.SetRepeatHorizontally(TileMap.Repeat.ALL);
+-            back.SetRepeatVertically(TileMap.Repeat.ALL);
+-            // Cache the background texture so we can keep scaling tied to internal width.
+-            backTexture = Application.GetTexture(boxBackground);
+-            back.AddTileQuadwithID(backTexture, 0, 0);
+-            back.FillStartAtRowColumnRowsColumnswithTile(0, 0, 1, 1, 0);
+-            // Use internal-resolution scale rather than a fixed multiplier.
+-            UpdateBackgroundScale();
++            refreshbackground();
+             for (int i = 0; i < 3; i++)
+             {
+                 const int HudUiStarFirstQuad = 1;
+@@ -87,12 +72,35 @@ namespace CutTheRopeDX.GameMain
+                 hudStar[i].y = hudStarSlotHeight / 2;
+                 _ = AddChild(hudStar[i]);
+             }
++            refreshtrace();
++            clickToCut = Preferences.GetBooleanForKey("PREFS_CLICK_TO_CUT");
++        }
++
++        internal void refreshbackground()
++        {
++            RootController root = Application.SharedRootController();
++            string[] boxBackgrounds = PackConfig.GetBoxBackgrounds(root.Pack);
++            string boxBackground = boxBackgrounds.FirstOrDefault(name => !string.IsNullOrWhiteSpace(name));
++            if (string.IsNullOrWhiteSpace(boxBackground))
++            {
++                throw new InvalidDataException($"Pack config is missing boxBackground for pack {root.Pack}.");
++            }
++            back = new TileMap().InitWithRowsColumns(1, 1);
++            back.SetRepeatHorizontally(TileMap.Repeat.ALL);
++            back.SetRepeatVertically(TileMap.Repeat.ALL);
++            backTexture = Application.GetTexture(boxBackground);
++            back.AddTileQuadwithID(backTexture, 0, 0);
++            back.FillStartAtRowColumnRowsColumnswithTile(0, 0, 1, 1, 0);
++            UpdateBackgroundScale();
++        }
++
++        internal void refreshtrace()
++        {
+             int selectedTraceIndex = Preferences.GetIntForKey("PREFS_SELECTED_TRACE");
+             for (int j = 0; j < pointerGestures.Length; j++)
+             {
+                 pointerGestures[j] = new PointerGestureState(FingerTraceFactory.Create(selectedTraceIndex));
+             }
+-            clickToCut = Preferences.GetBooleanForKey("PREFS_CLICK_TO_CUT");
+         }
+ 
+         /// <summary>
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.Initialize.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.Initialize.cs
 index e1157ea..7895482 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.Initialize.cs
@@ -1973,7 +2195,7 @@ index 0961f52..211dc6a 100644
              float boundedCameraX = boundedCamera.X;
              float boundedCameraY = boundedCamera.Y;
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameScene.cs b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
-index 7c34873..80ce939 100644
+index 7c34873..b0f247b 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameScene.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameScene.cs
 @@ -290,15 +290,16 @@ namespace CutTheRopeDX.GameMain
@@ -2042,6 +2264,15 @@ index 7c34873..80ce939 100644
                  cameraWindow.w,
                  cameraWindow.h);
  
+@@ -968,7 +979,7 @@ namespace CutTheRopeDX.GameMain
+         /// <summary>
+         /// Primary background texture used for computing scale.
+         /// </summary>
+-        private readonly Texture2D backTexture;
++        private Texture2D backTexture;
+ 
+         /// <summary>
+         /// Cached background scale derived from internal screen width.
 @@ -1300,7 +1311,7 @@ namespace CutTheRopeDX.GameMain
          /// <summary>
          /// The HUD star animations that show collected stars.
@@ -2051,3 +2282,135 @@ index 7c34873..80ce939 100644
  
          /// <summary>
          /// Width of one slot in the HUD star row, taken from the empty star frame.
+diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
+index 3f5f05f..de0bfa3 100644
+--- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
++++ b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
+@@ -58,6 +58,7 @@ namespace CutTheRopeDX.GameMain
+         /// <returns>The candidate music resource names, empty when the pack names none.</returns>
+         public static string[] Game(int pack)
+         {
++            if (CustomLevelSession.IsActive) return [Resources.Music.GameMusic];
+             MusicOverride active = ActiveOverride();
+             if (active?.Game != null)
+             {
+@@ -87,6 +88,7 @@ namespace CutTheRopeDX.GameMain
+         /// </summary>
+         public static void PlayMenuMusic()
+         {
++            if (CustomLevelSession.IsActive) return;
+             SoundMgr.PlayMusic(Menu());
+         }
+ 
+diff --git a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
+index 0fa574a..b2cdb42 100644
+--- a/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
++++ b/src/CutTheRopeDX.Core/GameMain/PackConfig.cs
+@@ -234,6 +234,26 @@ namespace CutTheRopeDX.GameMain
+             return pack >= 0 && pack < packs.Count ? packs[pack].SaveSlot : 0;
+         }
+ 
++        private static int? backgroundoverride;
++
++        internal const string backgroundpreference = "PREFS_SELECTED_BACKGROUND";
++
++        internal static int? selectedbackground => backgroundoverride;
++
++        internal static bool isbackgroundpack(int pack) => pack >= 0 && pack < packs.Count
++            && Array.Exists(packs[pack].BoxBackgrounds, name => !string.IsNullOrWhiteSpace(name));
++
++        internal static int? savedbackground()
++        {
++            int pack = Preferences.GetIntForKey(backgroundpreference) - 1;
++            return isbackgroundpack(pack) ? pack : null;
++        }
++
++        public static void setbackgroundpackoverride(int? pack)
++        {
++            backgroundoverride = pack;
++        }
++
+         /// <summary>
+         /// Gets the background resource names for a pack.
+         /// </summary>
+@@ -241,7 +261,8 @@ namespace CutTheRopeDX.GameMain
+         /// <returns>The pack background resource names, or the empty resource sentinel when <paramref name="pack"/> is out of range.</returns>
+         public static string[] GetBoxBackgrounds(int pack)
+         {
+-            return pack >= 0 && pack < packs.Count ? packs[pack].BoxBackgrounds : EmptyResourceNames;
++            int effectivepack = backgroundoverride ?? pack;
++            return effectivepack >= 0 && effectivepack < packs.Count ? packs[effectivepack].BoxBackgrounds : EmptyResourceNames;
+         }
+ 
+         /// <summary>
+@@ -251,7 +272,8 @@ namespace CutTheRopeDX.GameMain
+         /// <returns>The secondary background Y position, or 0 when unused or when <paramref name="pack"/> is out of range.</returns>
+         public static int GetBoxBackgroundP2Y(int pack)
+         {
+-            return pack >= 0 && pack < packs.Count ? packs[pack].BoxBackgroundP2Y : 0;
++            int effectivepack = backgroundoverride ?? pack;
++            return effectivepack >= 0 && effectivepack < packs.Count ? packs[effectivepack].BoxBackgroundP2Y : 0;
+         }
+ 
+         /// <summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
+index b36d49e..99d8739 100644
+--- a/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
++++ b/src/CutTheRopeDX.Core/GameMain/SpecialEvents.cs
+@@ -29,7 +29,14 @@ namespace CutTheRopeDX.GameMain
+         /// Gets a value indicating whether the Christmas event period is active.
+         /// Includes December and January.
+         /// </summary>
+-        public static bool IsXmas => Today.Month is 12 or 1;
++        private static bool? xmasoverride;
++
++        public static void setxmasoverride(bool? value)
++        {
++            xmasoverride = value;
++        }
++
++        public static bool IsXmas => xmasoverride ?? (Today.Month is 12 or 1);
+ 
+         #endregion
+ 
+diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
+index 60322f2..17ef0aa 100644
+--- a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
++++ b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
+@@ -780,8 +780,8 @@ namespace CutTheRopeDX.Rendering.Skia
+             {
+                 FlushQuads();
+                 _batchTexture = _boundTexture;
+-                _batchTextureWidth = _boundTexture?.Width ?? 1f;
+-                _batchTextureHeight = _boundTexture?.Height ?? 1f;
++                _batchTextureWidth = _boundTexture?.Image.Width ?? 1f;
++                _batchTextureHeight = _boundTexture?.Image.Height ?? 1f;
+                 _batchBlendMode = EffectiveBlendMode;
+                 _batchWeightsSourceByAlpha = WeightsSourceByAlpha;
+             }
+diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
+index 8b4234d..dc104c1 100644
+--- a/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
++++ b/src/CutTheRopeDX.Rendering.Skia/SkiaTexture.cs
+@@ -10,7 +10,7 @@ namespace CutTheRopeDX.Rendering.Skia
+     /// The device generation that uploaded the image, from <see cref="SkiaResourceRegistry"/>.
+     /// Left device-independent when nothing is tracking losses.
+     /// </param>
+-    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent) : ITextureHandle
++    internal sealed class SkiaTexture(SKImage image, int generation = SkiaResourceRegistry.DeviceIndependent, int logicalwidth = 0, int logicalheight = 0) : ITextureHandle
+     {
+         /// <summary>
+         /// Rewrites a color to opaque grey carrying its own alpha, so multiplying a texture by it
+@@ -48,10 +48,10 @@ namespace CutTheRopeDX.Rendering.Skia
+         public int Generation { get; } = generation;
+ 
+         /// <inheritdoc />
+-        public int Width => Image.Width;
++        public int Width => logicalwidth > 0 ? logicalwidth : Image.Width;
+ 
+         /// <inheritdoc />
+-        public int Height => Image.Height;
++        public int Height => logicalheight > 0 ? logicalheight : Image.Height;
+ 
+         /// <summary>
+         /// The shader a batch samples this texture through, optionally weighted by the texture's
