@@ -216,7 +216,7 @@ export function filters(changed) {
         for (const button of featurerow.children) button.setAttribute("aria-pressed", String(chosen.has(button.dataset.feature)));
         candy.update();
         contests.update();
-        reset.hidden = !authorid && !chosen.size && !search.value && order === "recent" && !selected.size && !candy.active && !contests.count && creator.getAttribute("aria-pressed") !== "true";
+        reset.hidden = !authorid && !chosen.size && order === "recent" && !selected.size && !candy.active && !contests.count && creator.getAttribute("aria-pressed") !== "true";
         const rows = {tags: tagrow, features: lower, candy: candy.element, contests: contests.element};
         const active = [selected.size ? "tags" : "", chosen.size ? "features" : "", candy.active ? "candy" : "", contests.count ? "contests" : ""].filter(Boolean);
         for (const [key, row] of Object.entries(rows)) {
@@ -228,6 +228,12 @@ export function filters(changed) {
             }
             control.hidden = !active.includes(key) && !(key === "tags" && !active.length && !reset.hidden);
             row.classList.toggle("hasreset", !control.hidden);
+            const content = row.querySelector(":scope > .tagoptions, :scope > .featureoptions, .candyoptions, .contestoptions");
+            const last = content?.lastElementChild;
+            const tail = window.innerWidth >= 901 && !control.hidden && last && content.scrollWidth <= content.clientWidth;
+            row.classList.toggle("resetattail", Boolean(tail));
+            if (tail) row.style.setProperty("--resetleft", Math.ceil(last.getBoundingClientRect().right - row.getBoundingClientRect().left + 4) + "px");
+            else row.style.removeProperty("--resetleft");
         }
         options.hidden = false;
         clear.hidden = !search.value;

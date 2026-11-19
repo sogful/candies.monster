@@ -315,7 +315,11 @@ export function leveldetails() {
             content(shown);
         } else {
             panel.append(control());
-            if (ready) panel.append(create("p", "levelstatus", "level not found"));
+            if (ready) {
+                const missing = create("div", "levelnotfound");
+                missing.append(image("/assets/images/omnom/404/404.gif", "", ""), create("p", "levelstatus", "level not found"));
+                panel.append(missing);
+            }
             else {
                 const loading = create("div", "levelloading");
                 loading.setAttribute("role", "status");

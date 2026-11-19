@@ -183,6 +183,13 @@
     font-size: 24px; margin: 14px 0 0;
 }
 .levelstatus:empty {display: none}
+.levelnotfound {
+    flex: 1 0 auto; min-height: 55vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+}
+.levelnotfound img {width: 100px; height: 100px; object-fit: contain}
+.levelnotfound .levelstatus {margin: 8px 0 0}
 
 .levelloading {
     position: absolute; left: 50%;

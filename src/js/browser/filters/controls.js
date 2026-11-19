@@ -82,5 +82,5 @@ function near(first, second) {
 export function matches(query, value) {
     const words = normalized(query).match(/[\p{L}\p{N}]+/gu) || [];
     const targets = normalized(value).match(/[\p{L}\p{N}]+/gu) || [];
-    return !words.length || words.some(word => targets.some(target => target.includes(word) || near(word, target)));
+    return !words.length || words.every(word => targets.some(target => target.includes(word) || near(word, target)));
 }

@@ -219,6 +219,7 @@
     border: 0; background: none;
     margin: 0; line-height: 0;
 }
+.resetattail > .filterreset {right: auto; left: var(--resetleft)}
 .filterreset img {
     width: 100%; height: 100%;
     object-fit: contain;
