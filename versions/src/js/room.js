@@ -1,10 +1,14 @@
+import {startaudio} from "./roomaudio.js";
+
 export function startroom() {
     const entry = document.querySelector(".roomentry");
     const dialog = document.querySelector(".secretroom");
     const exit = dialog.querySelector(".roomexit");
+    const ambience = startaudio();
     let loading;
     let player;
 
+    entry.addEventListener("click", ambience.prepare);
     dialog.addEventListener("cancel", event => {
         event.preventDefault();
         exit.click();
@@ -12,6 +16,7 @@ export function startroom() {
 
     function show(open) {
         if (dialog.hasAttribute("open") === open) return;
+        ambience.show(open);
         if (!open) {
             player?.show(false);
             if (dialog.close) dialog.close();
