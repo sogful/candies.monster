@@ -12,6 +12,22 @@ namespace CutTheRopeDX.GameMain
         private static readonly MenuButtonId backgroundtabid = new(backgroundfirstid - 1);
         private static Button backgroundtab;
 
+        public static (string group, int index) previewresources(MenuButtonId selection)
+        {
+            if (selection == backgroundtabid) return ("backgrounds", -1);
+            MenuSkinSelectionAction action = MenuSkinSelectionActionResolver.Resolve(selection);
+            if (action.Kind == MenuSkinSelectionActionKind.SwitchMode)
+            {
+                if (action.Mode == SkinSelectionMode.OmNom) return ("omnom", -1);
+                if (action.Mode == SkinSelectionMode.Trace) return ("trace", -1);
+            }
+            if (action.Kind == MenuSkinSelectionActionKind.SelectSlot && action.Mode == SkinSelectionMode.Candy && action.SelectedIndex is int index)
+            {
+                return ("candy", index);
+            }
+            return (null, -1);
+        }
+
         public static void handlepreviewselection(MenuButtonId selection)
         {
             if (selection == backgroundtabid)
@@ -80,14 +96,5 @@ namespace CutTheRopeDX.GameMain
             _ = slot.AddChild(title);
         }
 
-        private static void addrestartnotice(MenuView menu)
-        {
-            Text notice = new Text().InitWithFont(Application.GetFont(Resources.Fnt.BigFont));
-            notice.SetString("Candy, rope and Om Nom apply on restart");
-            notice.anchor = notice.parentAnchor = 34;
-            notice.y = -24f;
-            notice.scaleX = notice.scaleY = 0.55f;
-            _ = menu.AddChild(notice);
-        }
     }
 }

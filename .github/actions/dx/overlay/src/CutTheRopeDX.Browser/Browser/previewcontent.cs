@@ -74,6 +74,19 @@ namespace CutTheRopeDX.Browser
                     or "images/fx_sleep.webp" or "images/fx_bubbles.webp";
         }
 
+        public static bool customizationgroup(string path, string group, int index)
+        {
+            return group switch
+            {
+                "menu" => path is "images/skin_selection.webp" or "images/backgrounds/skin_bg.webp",
+                "candy" => path == (index == 0 ? "images/candies/obj_candy_01_new.webp" : $"images/candies/obj_candy_{index + 1:D2}.webp"),
+                "trace" => path == "images/fingertrace_skin.webp",
+                "omnom" => path.StartsWith("images/char_", StringComparison.Ordinal) || path is "images/fx_sleep.webp" or "images/fx_bubbles.webp",
+                "backgrounds" => path.StartsWith("images/backgrounds/bgr_", StringComparison.Ordinal) || path.StartsWith("images/bgr_", StringComparison.Ordinal),
+                _ => false,
+            };
+        }
+
         public bool customizationsound(string path)
         {
             if (path.StartsWith("sounds/sfx/monster_", StringComparison.Ordinal)) return true;

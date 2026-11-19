@@ -36,7 +36,7 @@ index ec07b8b..85b6fca 100644
  
              byte[] pixels = region.Bytes;
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs b/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
-index 88e915a..097a3d3 100644
+index 88e915a..4b53d04 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
 @@ -1,4 +1,5 @@
@@ -99,17 +99,23 @@ index 88e915a..097a3d3 100644
                  if (string.Equals(category.Name, "sounds", StringComparison.Ordinal))
                  {
                      await PumpAsync(
-@@ -120,6 +144,23 @@ namespace CutTheRopeDX.Browser
+@@ -120,6 +144,29 @@ namespace CutTheRopeDX.Browser
                      category, done + completed, total));
          }
  
-+        public async Task loadcustomization()
++        public async Task loadcustomization(string group, int index)
 +        {
-+            await ParallelPump.RunAsync(
-+                [.. customizationpaths.Where(path => !_cache.ContainsKey(path) && !customization.ContainsKey(path))],
-+                PreloadConcurrency, fetchcustomization, _ => {});
-+            await ParallelPump.RunAsync(customizationsounds, PreloadConcurrency,
-+                path => PreloadSoundAsync(customizationaudio, path), _ => {});
++            string[] images = [.. customizationpaths.Where(path => previewcontent.customizationgroup(path, group, index)
++                && !_cache.ContainsKey(path) && !customization.ContainsKey(path))];
++            Task fetchimages = ParallelPump.RunAsync(images, PreloadConcurrency, fetchcustomization, _ => {});
++            if (group != "omnom" || customizationsounds.Length == 0)
++            {
++                await fetchimages;
++                return;
++            }
++
++            await Task.WhenAll(fetchimages, ParallelPump.RunAsync(customizationsounds, PreloadConcurrency,
++                path => PreloadSoundAsync(customizationaudio, path), _ => {}));
 +            customizationsounds = [];
 +        }
 +
@@ -124,7 +130,7 @@ index 88e915a..097a3d3 100644
          {
              byte[] bytes = await FetchInterop.GetBytesAsync(contentBaseUrl + path);
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
-index 5cd44d7..e150bae 100644
+index 5cd44d7..676d940 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
 @@ -1,5 +1,6 @@
@@ -150,7 +156,7 @@ index 5cd44d7..e150bae 100644
 +
 +        public bool previewcustomization => true;
 +
-+        public Task loadcustomization() => ((BrowserContentStore)PlatformServices.Content).loadcustomization();
++        public Task loadcustomization(string group, int index) => ((BrowserContentStore)PlatformServices.Content).loadcustomization(group, index);
 +
 +        public string previewaspect => PlaytestInterop.aspect();
 +        public string previewquality => PlaytestInterop.quality();
@@ -1289,7 +1295,7 @@ index 33ffd1c..00caeb0 100644
              {
                  return;
 diff --git a/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs b/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
-index 7f0fd69..0bb5bfc 100644
+index 7f0fd69..11a9c72 100644
 --- a/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
 +++ b/src/CutTheRopeDX.Core/Framework/Platform/IHostApp.cs
 @@ -1,3 +1,5 @@
@@ -1308,7 +1314,7 @@ index 7f0fd69..0bb5bfc 100644
 +
 +        bool previewcustomization => false;
 +
-+        Task loadcustomization() => Task.CompletedTask;
++        Task loadcustomization(string group, int index) => Task.CompletedTask;
 +
 +        void previewaction(string action) {}
 +
@@ -1426,7 +1432,7 @@ index db665e7..9d65b9f 100644
  
          /// <summary>
 diff --git a/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs b/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
-index 02b24ef..d1b5ce2 100644
+index 02b24ef..5071c91 100644
 --- a/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
 @@ -17,7 +17,7 @@ namespace CutTheRopeDX.GameMain
@@ -1543,14 +1549,15 @@ index 02b24ef..d1b5ce2 100644
  
              SkinSelectionLayout layout = LayoutFor(ScreenPresentation.Instance.Snapshot);
              PlaceTabs(layout);
-@@ -1371,6 +1378,7 @@ namespace CutTheRopeDX.GameMain
-             backButton = MenuController.CreateBackButtonWithDelegateID(buttonDelegate, MenuButtonId.BackFromCandySelect);
-             backButton.SetName("backb");
-             _ = menuView.AddChild(backButton);
-+            if (preview) addrestartnotice(menuView);
+@@ -1363,7 +1370,7 @@ namespace CutTheRopeDX.GameMain
+             PlaceWindow(layout);
+             UpdateTabButtonStates(); // Set initial tab button states (candy active)
+             AttachCurrentModeGrid();
+-            StartOmNomWarmup();
++            if (!preview) StartOmNomWarmup();
  
-             return menuView;
-         }
+             _ = menuView.AddChild(background);
+ 
 diff --git a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs b/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
 index 597afdd..68750f7 100644
 --- a/src/CutTheRopeDX.Core/GameMain/CandySkinHelper.cs
@@ -1581,7 +1588,7 @@ index 597afdd..68750f7 100644
                  0 => Resources.Img.ObjCandy01New,
                  1 => Resources.Img.ObjCandy02,
 diff --git a/src/CutTheRopeDX.Core/GameMain/GameController.cs b/src/CutTheRopeDX.Core/GameMain/GameController.cs
-index bc8a2d7..f114702 100644
+index bc8a2d7..47c25bb 100644
 --- a/src/CutTheRopeDX.Core/GameMain/GameController.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/GameController.cs
 @@ -16,8 +16,41 @@ namespace CutTheRopeDX.GameMain
@@ -1777,7 +1784,15 @@ index bc8a2d7..f114702 100644
              boxOpenClose.delegateboxClosed = () =>
              {
                  // Freeze the game scene a bit after the door closing animation finishes
-@@ -524,6 +582,33 @@ namespace CutTheRopeDX.GameMain
+@@ -496,6 +554,7 @@ namespace CutTheRopeDX.GameMain
+         /// <param name="n">Game controller button identifier.</param>
+         public void OnButtonPressed(GameControllerButtonId n)
+         {
++            if (customizationload != null) return;
+             // The HUD buttons sit under the easter egg, so while it holds the level a press on
+             // them is just a press anywhere: it sends the egg away and does nothing else.
+             if ((n == GameControllerButtonId.Pause || n == GameControllerButtonId.Restart)
+@@ -524,6 +583,33 @@ namespace CutTheRopeDX.GameMain
              View view = GetView(0);
              switch (n)
              {
@@ -1811,7 +1826,7 @@ index bc8a2d7..f114702 100644
                  case var id when id == GameControllerButtonId.Restart:
                      GameScene restartScene = (GameScene)view.GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
                      if (overlayMode != GameControllerOverlayMode.Gameplay
-@@ -596,33 +681,11 @@ namespace CutTheRopeDX.GameMain
+@@ -596,33 +682,11 @@ namespace CutTheRopeDX.GameMain
                      ExperimentsVoice.Toggle();
                      return;
                  case var id when id == GameControllerButtonId.ToggleMusic:
@@ -1849,7 +1864,7 @@ index bc8a2d7..f114702 100644
                  default:
                      return;
              }
-@@ -637,6 +700,50 @@ namespace CutTheRopeDX.GameMain
+@@ -637,6 +701,50 @@ namespace CutTheRopeDX.GameMain
              RootController.LogEvent(n != GameControllerButtonId.ExitFromLose ? "IG_REPLAY_PRESSED" : "LC_REPLAY_PRESSED");
          }
  
@@ -1900,7 +1915,7 @@ index bc8a2d7..f114702 100644
          /// <summary>Resolves an input source against the authoritative controller and level-flow state.</summary>
          /// <param name="input">Input source to resolve.</param>
          /// <returns>The semantic command allowed in the current state.</returns>
-@@ -784,7 +891,7 @@ namespace CutTheRopeDX.GameMain
+@@ -784,7 +892,7 @@ namespace CutTheRopeDX.GameMain
              }
              else if (CustomLevelSession.IsActive)
              {
@@ -1909,7 +1924,12 @@ index bc8a2d7..f114702 100644
              }
              else
              {
-@@ -926,6 +1033,11 @@ namespace CutTheRopeDX.GameMain
+@@ -922,10 +1030,16 @@ namespace CutTheRopeDX.GameMain
+         /// <inheritdoc />
+         public override bool BackButtonPressed()
+         {
++            if (customizationload != null) return true;
+             if (TryDismissEasterEgg())
              {
                  return true;
              }
@@ -1921,7 +1941,12 @@ index bc8a2d7..f114702 100644
              ExecuteInputCommand(ResolveInput(GameControllerInputKind.Back));
              return true;
          }
-@@ -937,6 +1049,11 @@ namespace CutTheRopeDX.GameMain
+@@ -933,10 +1047,16 @@ namespace CutTheRopeDX.GameMain
+         /// <inheritdoc />
+         public override bool MenuButtonPressed()
+         {
++            if (customizationload != null) return true;
+             if (TryDismissEasterEgg())
              {
                  return true;
              }
@@ -1933,7 +1958,7 @@ index bc8a2d7..f114702 100644
              ExecuteInputCommand(ResolveInput(GameControllerInputKind.Menu));
              return true;
          }
-@@ -1057,6 +1174,7 @@ namespace CutTheRopeDX.GameMain
+@@ -1057,6 +1177,7 @@ namespace CutTheRopeDX.GameMain
          protected override void Relayout(ViewportLayoutSnapshot snapshot)
          {
              base.Relayout(snapshot);
@@ -1941,7 +1966,7 @@ index bc8a2d7..f114702 100644
  
              View view = GetView(0);
              if (view == null)
-@@ -1264,6 +1382,8 @@ namespace CutTheRopeDX.GameMain
+@@ -1264,6 +1385,8 @@ namespace CutTheRopeDX.GameMain
  
          /// <summary>Pause-menu label that displays the active map or best score.</summary>
          private Text mapNameLabel;
@@ -2282,6 +2307,37 @@ index 7c34873..b0f247b 100644
  
          /// <summary>
          /// Width of one slot in the HUD star row, taken from the empty star frame.
+diff --git a/src/CutTheRopeDX.Core/GameMain/Lantern.cs b/src/CutTheRopeDX.Core/GameMain/Lantern.cs
+index 5f99461..ce78b69 100644
+--- a/src/CutTheRopeDX.Core/GameMain/Lantern.cs
++++ b/src/CutTheRopeDX.Core/GameMain/Lantern.cs
+@@ -351,6 +351,14 @@ namespace CutTheRopeDX.GameMain
+         private Image activeForm;
+ 
+         /// <summary>Candy visual shown inside an active lantern.</summary>
++        internal void refreshcandy(Texture2D replacement)
++        {
++            if (innerCandy == null) return;
++            int variant = Preferences.GetIntForKey("PREFS_SELECTED_CANDY");
++            if (variant < 3) GameScene.replaceskintexture(innerCandy, Application.GetTexture(Resources.Img.ObjLantern), InnerCandyStartQuad + variant);
++            else GameScene.replaceskintexture(innerCandy, replacement, LanternQuadInCandyTexture);
++        }
++
+         private Image innerCandy;
+ 
+         /// <summary>Fire visual shown while a lantern is active.</summary>
+diff --git a/src/CutTheRopeDX.Core/GameMain/LoadObjects/LoadTarget.cs b/src/CutTheRopeDX.Core/GameMain/LoadObjects/LoadTarget.cs
+index 8b66e8a..5eb689a 100644
+--- a/src/CutTheRopeDX.Core/GameMain/LoadObjects/LoadTarget.cs
++++ b/src/CutTheRopeDX.Core/GameMain/LoadObjects/LoadTarget.cs
+@@ -96,6 +96,7 @@ namespace CutTheRopeDX.GameMain
+             targets.Add(new TargetContext(BLINK_SKIP, RND_RANGE(5, 20))
+             {
+                 animation = animation,
++                previewtype = targetType,
+                 targetObject = targetObj,
+                 support = support,
+                 baseScaleX = targetBaseScaleX,
 diff --git a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs b/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
 index 3f5f05f..de0bfa3 100644
 --- a/src/CutTheRopeDX.Core/GameMain/MusicTracks.cs
@@ -2373,6 +2429,19 @@ index b36d49e..99d8739 100644
  
          #endregion
  
+diff --git a/src/CutTheRopeDX.Core/GameMain/TargetContext.cs b/src/CutTheRopeDX.Core/GameMain/TargetContext.cs
+index cea392d..a682503 100644
+--- a/src/CutTheRopeDX.Core/GameMain/TargetContext.cs
++++ b/src/CutTheRopeDX.Core/GameMain/TargetContext.cs
+@@ -10,6 +10,8 @@ namespace CutTheRopeDX.GameMain
+     {
+         public ITargetAnimationBackend animation;
+ 
++        public int previewtype;
++
+         public GameObject targetObject;
+ 
+         public Image support;
 diff --git a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs b/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs
 index 60322f2..17ef0aa 100644
 --- a/src/CutTheRopeDX.Rendering.Skia/SkiaRenderBackend.cs

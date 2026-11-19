@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using CutTheRopeDX.Framework;
 using CutTheRopeDX.Framework.Core;
 using CutTheRopeDX.Framework.Media;
 using CutTheRopeDX.Framework.Platform;
@@ -13,15 +15,63 @@ namespace CutTheRopeDX.GameMain
         private const int customizationview = 1;
         private Button customizebutton;
         private Task customizationload;
+        private Action customizationready;
+        private readonly List<(Button button, RGBAColor color, bool touchable)> dimmedbuttons = [];
         private ScrollableContainer customizationscroll;
         private int? previousbackground;
         private int previoustrace;
+        private string previouscandy;
+        private int previousomnom;
 
         private void opencustomization()
         {
             if (overlayMode != GameControllerOverlayMode.Paused || customizationload != null) return;
-            customizationload = PlatformServices.Host.loadcustomization();
             setcustomizelabel("Loading...");
+            loadcustomization("menu", showcustomization);
+        }
+
+        private void showcustomization()
+        {
+            setcustomizelabel("Customize");
+            if (overlayMode != GameControllerOverlayMode.Paused || navigationExitActive) return;
+            previousbackground = PackConfig.selectedbackground;
+            previoustrace = Preferences.GetIntForKey("PREFS_SELECTED_TRACE");
+            previouscandy = CandySkinHelper.GetCandyResource(Preferences.GetIntForKey("PREFS_SELECTED_CANDY"));
+            previousomnom = OmNomSkinRegistry.GetSelectedSkinIndex();
+            AddViewwithID(CandySelectionView.CreateCandySelection(new customizationbuttons(this), out customizationscroll, preview: true), customizationview);
+            ShowView(customizationview);
+        }
+
+        private void loadcustomization(string group, Action ready, int index = -1)
+        {
+            customizationready = ready;
+            dimbuttons(activeViewID == customizationview ? GetView(customizationview) : pauseButtonsGroup);
+            customizationload = PlatformServices.Host.loadcustomization(group, index);
+        }
+
+        private void dimbuttons(BaseElement root)
+        {
+            if (root is Button button)
+            {
+                dimmedbuttons.Add((button, button.color, button.touchable));
+                button.touchable = false;
+                button.color.AlphaChannel *= 0.5f;
+                return;
+            }
+            if (root?.GetChilds() is { } children)
+            {
+                foreach (BaseElement child in children.Values) dimbuttons(child);
+            }
+        }
+
+        private void restorebuttons()
+        {
+            foreach (var item in dimmedbuttons)
+            {
+                item.button.color = item.color;
+                item.button.touchable = item.touchable;
+            }
+            dimmedbuttons.Clear();
         }
 
         private void setcustomizelabel(string label)
@@ -36,30 +86,18 @@ namespace CutTheRopeDX.GameMain
             {
                 Task completed = customizationload;
                 customizationload = null;
-                if (completed.IsCompletedSuccessfully)
+                Action ready = customizationready;
+                customizationready = null;
+                restorebuttons();
+                try
                 {
-                    setcustomizelabel("Customize");
-                    if (overlayMode == GameControllerOverlayMode.Paused && !navigationExitActive)
-                    {
-                        try
-                        {
-                            previousbackground = PackConfig.selectedbackground;
-                            previoustrace = Preferences.GetIntForKey("PREFS_SELECTED_TRACE");
-                            AddViewwithID(CandySelectionView.CreateCandySelection(new customizationbuttons(this), out customizationscroll, preview: true), customizationview);
-                            ShowView(customizationview);
-                        }
-                        catch (InvalidOperationException error)
-                        {
-                            if (activeViewID == customizationview) ShowView(0);
-                            Console.Error.WriteLine(error);
-                            setcustomizelabel("Retry Customize");
-                        }
-                    }
+                    completed.GetAwaiter().GetResult();
+                    ready();
                 }
-                else
+                catch (Exception error)
                 {
-                    Console.Error.WriteLine(completed.Exception?.GetBaseException());
-                    setcustomizelabel("Retry Customize");
+                    Console.Error.WriteLine(error);
+                    if (activeViewID != customizationview) setcustomizelabel("Retry Customize");
                 }
             }
 
@@ -72,6 +110,9 @@ namespace CutTheRopeDX.GameMain
             GameScene scene = (GameScene)GetView(0).GetChild(GameView.VIEW_ELEMENT_GAME_SCENE);
             if (previousbackground != PackConfig.selectedbackground) scene.refreshbackground();
             if (previoustrace != Preferences.GetIntForKey("PREFS_SELECTED_TRACE")) scene.refreshtrace();
+            string candy = CandySkinHelper.GetCandyResource(Preferences.GetIntForKey("PREFS_SELECTED_CANDY"));
+            if (previouscandy != candy) scene.refreshcandy(previouscandy, candy);
+            if (previousomnom != OmNomSkinRegistry.GetSelectedSkinIndex()) scene.refreshomnom();
             ShowView(0);
             DeleteView(customizationview);
             customizationscroll = null;
@@ -79,6 +120,7 @@ namespace CutTheRopeDX.GameMain
 
         public override bool HandleMouseWheel(int delta)
         {
+            if (customizationload != null) return true;
             if (activeViewID != customizationview || customizationscroll == null) return base.HandleMouseWheel(delta);
             customizationscroll.HandleMouseWheel(delta);
             return true;
@@ -88,7 +130,7 @@ namespace CutTheRopeDX.GameMain
         {
             public void OnButtonPressed(ButtonId buttonId)
             {
-                if (owner.activeViewID != customizationview) return;
+                if (owner.activeViewID != customizationview || owner.customizationload != null) return;
                 MenuButtonId selection = MenuButtonId.FromButtonId(buttonId);
                 if (selection == MenuButtonId.BackFromCandySelect)
                 {
@@ -97,7 +139,9 @@ namespace CutTheRopeDX.GameMain
                 }
 
                 SoundMgr.PlaySound(Resources.Snd.Tap);
-                CandySelectionView.handlepreviewselection(selection);
+                (string group, int index) = CandySelectionView.previewresources(selection);
+                if (group == null) CandySelectionView.handlepreviewselection(selection);
+                else owner.loadcustomization(group, () => CandySelectionView.handlepreviewselection(selection), index);
             }
         }
     }
