@@ -139,6 +139,16 @@ function mountplatform(platform) {
             fragment.appendChild(icon);
             return icon;
         });
+        platform.orbitlabels = new Map();
+        for (const [key, text] of [["zeptoapp", "zeptoapp"], ["teraleak", "testflight"]]) {
+            if (!platform.games.some(game => game.circle === key)) continue;
+            const label = document.createElement("span");
+            label.className = "orbitlabel";
+            label.dataset.circle = key;
+            label.textContent = text;
+            platform.orbitlabels.set(key, label);
+            fragment.appendChild(label);
+        }
         platform.circle.replaceChildren(fragment);
         platform.circle.classList.remove("rendering");
     }
@@ -219,6 +229,13 @@ function layoutplatform(platform) {
     */
     const packed = packorbits(nodes.map(node => elements.get(node)), width, height);
     platform.circle.style.setProperty("--circleheight", `${packed.height}px`);
+    for (const position of packed.labels || []) {
+        const label = platform.orbitlabels.get(position.key);
+        label.style.left = `${position.left}px`;
+        label.style.top = `${position.top}px`;
+        label.style.width = `${position.width}px`;
+        label.style.fontSize = `${16 * position.scale}px`;
+    }
     nodes.forEach((node, index) => {
         const position = packed.positions[index];
         node.style.width = `${position.size}px`;

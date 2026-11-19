@@ -81,36 +81,72 @@ export function packorbits(games, width, height) {
     games.forEach((game, index) => groups[game.circle || "primary"].push({game, index}));
     const {primary, zeptoapp, teraleak} = groups;
     if (!zeptoapp.length && !teraleak.length) return packcircle(games, width, height);
-    if (!primary.length && (!zeptoapp.length || !teraleak.length)) return packcircle(games, width, height, 0.72);
 
     const horizontal = width >= height * 1.17;
     const span = horizontal ? width : height;
     const gap = Math.min(26, span * 0.045);
-    const weight = items => Math.hypot(...items.map(({game}) => iconsize(game)));
-    const main = weight(primary);
-    const largest = Math.max(weight(zeptoapp), weight(teraleak)) * 0.72;
-    const share = Math.max(0.28, Math.min(0.72, main / (main + 2 * largest)));
-    const middle = (span - 2 * gap) * share;
-    const side = (span - middle - 2 * gap) / 2;
+    const labelheight = 24;
+    const labelwidth = 80;
+    const slope = horizontal ? 0.6 : 0.37;
+    const clusters = [
+        {key: "zeptoapp", items: zeptoapp, factor: 0.72},
+        {key: "primary", items: primary, factor: 1},
+        {key: "teraleak", items: teraleak, factor: 0.72}
+    ].filter(cluster => cluster.items.length);
+    const weight = cluster => Math.hypot(...cluster.items.map(({game}) => iconsize(game) * cluster.factor));
+    const total = clusters.reduce((sum, cluster) => sum + weight(cluster), 0);
+    const reserved = horizontal ? 0 : labelheight * (clusters.length - Number(primary.length > 0));
+    const available = Math.max(1, span - (clusters.length - 1) * gap - reserved);
     const positions = new Array(games.length);
+    const labels = [];
+    let start = 0;
 
-    function place(items, start, extent, alignment, factor) {
-        if (!items.length) return;
-        const boxwidth = horizontal ? extent : width * (alignment ? 0.86 : 1);
-        const boxheight = horizontal ? height * (alignment ? 0.86 : 1) : extent;
+    for (const cluster of clusters) {
+        const {key, items, factor} = cluster;
+        const satellite = key !== "primary";
+        const labelspace = satellite ? labelheight : 0;
+        const extent = available * weight(cluster) / total;
+        const boxwidth = horizontal ? extent : width * (satellite ? 0.76 : 1);
+        const boxheight = horizontal ? height * (satellite ? 0.64 : 1) - labelspace : extent;
         const packed = packcircle(items.map(({game}) => game), boxwidth, boxheight, factor);
-        const left = horizontal ? start : (width - boxwidth) * (1 + alignment) / 2;
-        const top = horizontal
-            ? (height - packed.height) / 2 + alignment * (height - boxheight) / 2
-            : start + (boxheight - packed.height) / 2;
+        const bounds = orbitbounds(packed.positions);
+        const iconwidth = bounds.right - bounds.left;
+        const clusterwidth = Math.max(iconwidth, satellite ? labelwidth : 0);
+        const clusterheight = bounds.bottom - bounds.top + labelspace;
+        const center = (start + (horizontal ? clusterwidth : clusterheight + labelspace) / 2) * slope;
+        const left = horizontal ? start : center - clusterwidth / 2;
+        const top = horizontal ? center - (clusterheight + labelspace) / 2 : start;
+        const shiftleft = left + (clusterwidth - iconwidth) / 2 - bounds.left;
+        const shifttop = top + labelspace - bounds.top;
         items.forEach(({index}, position) => {
             const icon = packed.positions[position];
-            positions[index] = {left: icon.left + left, top: icon.top + top, size: icon.size};
+            positions[index] = {left: icon.left + shiftleft, top: icon.top + shifttop, size: icon.size};
         });
+        if (satellite) labels.push({key, left: left + (clusterwidth - labelwidth) / 2, top, width: labelwidth, height: labelheight});
+        start += (horizontal ? clusterwidth : clusterheight) + gap;
     }
 
-    place(primary, side + gap, middle, 0, 1);
-    place(zeptoapp, 0, side, -1, 0.72);
-    place(teraleak, span - side, side, 1, 0.72);
-    return {positions, height};
+    const icons = orbitbounds(positions);
+    const layout = orbitbounds([...positions, ...labels]);
+    const centerx = (icons.left + icons.right) / 2;
+    const centery = (icons.top + icons.bottom) / 2;
+    const halfwidth = Math.max(centerx - layout.left, layout.right - centerx);
+    const halfheight = Math.max(centery - layout.top, layout.bottom - centery);
+    const scale = Math.min(1, width / (2 * halfwidth), height / (2 * halfheight));
+    const left = width / 2 - centerx * scale;
+    const top = height / 2 - centery * scale;
+    return {
+        positions: positions.map(icon => ({left: icon.left * scale + left, top: icon.top * scale + top, size: icon.size * scale})),
+        labels: labels.map(label => ({key: label.key, left: label.left * scale + left, top: label.top * scale + top, width: label.width * scale, scale})),
+        height
+    };
+}
+
+function orbitbounds(items) {
+    return {
+        left: Math.min(...items.map(item => item.left)),
+        top: Math.min(...items.map(item => item.top)),
+        right: Math.max(...items.map(item => item.left + (item.width ?? item.size))),
+        bottom: Math.max(...items.map(item => item.top + (item.height ?? item.size)))
+    };
 }

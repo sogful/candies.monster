@@ -77,6 +77,14 @@
 }
 .gamecircle.orbitcircle {width: min(100%, 1120px)}
 
+.orbitlabel {
+    position: absolute; display: block;
+    color: #fff; text-align: center;
+    line-height: 1.25; white-space: nowrap;
+    -webkit-text-stroke: 0.12em #000; paint-order: stroke fill;
+    text-shadow: 0 2px #000; pointer-events: none;
+}
+
 /*//////////////////////////////////////////////////////////////////////*/
 
 @media (max-width: 650px) {
@@ -108,6 +116,7 @@
 
 .gamecircle .gameicon, .gamecircle .gameicon *,
 .scrollnav:hover, .scrollnav:hover *,
+.layerarrow:hover, .layerarrow:hover *,
 .backbutton:hover, .backbutton:hover * {
     cursor: url("/assets/images/cursors/link.cur"), pointer !important;
 }
