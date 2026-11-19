@@ -240,7 +240,7 @@ function roomscene(gl, poster, glow) {
 export async function roommodel(canvas) {
     const gl = canvas.getContext("webgl", {alpha: false, antialias: false});
     if (!gl) throw new Error("WebGL unavailable");
-    const path = "/assets/images/room/";
+    const path = "/assets/images/omnom/";
     const [data, image, poster, glow] = await Promise.all([
         fetch(path + "omnom.glb").then(response => {
             if (!response.ok) throw new Error("Model unavailable");
