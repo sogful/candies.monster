@@ -115,14 +115,20 @@
                     <div class="fun"></div>
                 </div>
                 <div class="buttons bignav">
-                    <a aria-label="decompress pesky .raw files" class="navlink" href="/raw2png/">
-                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/convert.webp" title="decompress pesky .raw files">
-                        <span class="buttonlabel">raw2png</span>
-                    </a>
                     <a aria-label="download versions of various om nom games" class="navlink" href="/versions">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/versions.webp" title="download versions of various om nom games">
                         <span class="buttonlabel">game versions</span>
                     </a>
+                    <a aria-label="preview custom levels online" class="navlink" href="#preview">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/preview.webp" title="preview custom levels online">
+                        <span class="buttonlabel">preview</span>
+                    </a>
+                    <a aria-label="decompress pesky .raw files" class="navlink" href="/raw2png/">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/convert.webp" title="decompress pesky .raw files">
+                        <span class="buttonlabel">raw2png</span>
+                    </a>
+                </div>
+                <div class="buttons small smallnav">
                     <a aria-label="split spritesheets with xml" class="navlink" href="/split/index.html">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/split.webp" title="split spritesheets with xml">
                         <span class="buttonlabel">splitter</span>
@@ -135,8 +141,6 @@
                         <img width="220" height="220" class="button clickable" draggable="false" loading="lazy" src="/assets/images/buttons/pages/public.webp" title=".">
                         <span class="buttonlabel">???|+???????!@???????-????????????????#@=???????????</span>
                     </a>
-                </div>
-                <div class="buttons small smallnav">
                     <a class="navlink" aria-label="view all-time google play leaderboards for cut the rope" href="/leaderboards/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/leaderboard.webp" title="view all-time google play leaderboards for cut the rope">
                         <span class="buttonlabel">scores</span>
@@ -144,10 +148,6 @@
                     <a aria-label="music player" class="navlink" href="/music/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/music.webp" title="music player">
                         <span class="buttonlabel">music</span>
-                    </a>
-                    <a aria-label="preview custom levels online" class="navlink" href="#preview">
-                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/preview.webp" title="preview custom levels online">
-                        <span class="buttonlabel">preview</span>
                     </a>
                     <a aria-label="winnable cards in newer cut the rope versions" class="navlink" href="/cards.html">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/cards.webp" title="winnable cards in newer cut the rope versions">
@@ -284,19 +284,19 @@
                             <ul class="documentlist">
                                 <li class="documententry"><span class="documentlink">https://candies.monster/preview?data=<span class="documentnote"> (xml / plain / base64 / url-safe base64) </span>&noui&embed</span></li>
 
-                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">version</code> (<code class="documentcode">ver</code> / <code class="documentcode">v</code>) - skip the version picker and load straight into a specific game</li>
+                                <li class="documententry">(optional) <code class="documentcode">version</code> (<code class="documentcode">ver</code> / <code class="documentcode">v</code>) - skip the version picker and load straight into a specific game</li>
 
-                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">noui</code> (<code class="documentcode">nu</code> / <code class="documentcode">u</code>) - hide everything besides the game and background</li>
+                                <li class="documententry">(optional) <code class="documentcode">noui</code> (<code class="documentcode">nu</code> / <code class="documentcode">u</code>) - hide everything besides the game and background</li>
 
-                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">embed</code> (<code class="documentcode">shareonly</code> / <code class="documentcode">so</code> / <code class="documentcode">s</code>) - hide the edit button, show a back button that sends a signal outside of an iframe instead of changing versions (for the ctr level editor)</li>
+                                <li class="documententry">(optional) <code class="documentcode">embed</code> (<code class="documentcode">shareonly</code> / <code class="documentcode">so</code> / <code class="documentcode">s</code>) - hide the edit button, show a back button that sends a signal outside of an iframe instead of changing versions (for the ctr level editor)</li>
 
-                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">nomusic</code> (<code class="documentcode">nm</code> / <code class="documentcode">m</code>) - force mute in-game music for this session, making the music toggle nonfunctional and level restart not restart it</li>
+                                <li class="documententry">(optional) <code class="documentcode">nomusic</code> (<code class="documentcode">nm</code> / <code class="documentcode">m</code>) - force mute in-game music for this session, making the music toggle nonfunctional and level restart not restart it</li>
 
-                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">jolly</code> (<code class="documentcode">jl</code> / <code class="documentcode">j</code>) - enable christmas mode for this session</li>
+                                <li class="documententry">(optional) <code class="documentcode">jolly</code> (<code class="documentcode">jl</code> / <code class="documentcode">j</code>) - enable christmas mode for this session</li>
 
-                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">candy</code> (<code class="documentcode">ca</code> / <code class="documentcode">c</code>) - choose between candies, so 1-52. <br> if nothing is provided or is invalid then uses 1. 52 is the easter special from cut the rope 1.3 (ios)</li>
+                                <li class="documententry">(optional) <code class="documentcode">candy</code> (<code class="documentcode">ca</code> / <code class="documentcode">c</code>) - choose between candies, so 1-52. <br> if nothing is provided or is invalid then uses 1. 52 is the easter special from cut the rope 1.3 (ios)</li>
 
-                                <li class="documententry documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">background</code> (<code class="documentcode">bg</code> / <code class="documentcode">b</code>) - choose between backgrounds, so 1&ndash;11 & 16, 16 is the xmas background</li>
+                                <li class="documententry">(optional) <code class="documentcode">background</code> (<code class="documentcode">bg</code> / <code class="documentcode">b</code>) - choose a box background from 1 to 17 in DX. H5DX supports 1 to 11 and 16 (Christmas)</li>
                             </ul>
 
                             </article>

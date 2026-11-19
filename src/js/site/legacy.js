@@ -41,10 +41,7 @@ if (old) {
     label.textContent = "levels";
     levels.append(image, label);
     const buttons = document.querySelector(".bignav");
-    buttons.append(levels);
-    const music = document.querySelector('.smallnav a[href="/music/"]');
-    const smallbuttons = document.querySelector(".smallnav");
-    const musicnext = music?.nextSibling;
+    buttons.prepend(levels);
     const back = document.createElement("a");
     back.className = "legacyback clickable";
     back.href = "#";
@@ -62,10 +59,6 @@ if (old) {
     function render() {
         const home = !location.hash || location.hash === "#";
         document.documentElement.classList.toggle("oldhome", home);
-        if (music) {
-            if (home) buttons.querySelector("a[href^='/versions']")?.after(music);
-            else smallbuttons.insertBefore(music, musicnext);
-        }
         back.hidden = !location.hash.startsWith("#levels");
         document.querySelector(".buttondrawer").hidden = !home;
         logo.src = "/assets/images/branding/logo.svg";

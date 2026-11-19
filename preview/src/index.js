@@ -87,9 +87,7 @@ import {createsharing} from "./sharing.js";
     const levelcandy = getstringparam("candy");
     const leveljolly = getflagparam("jolly");
     const levelbackgroundraw = getintegerparam("background");
-    const levelbackground = levelbackgroundraw != null && (
-        (levelbackgroundraw >= 1 && levelbackgroundraw <= 11) || levelbackgroundraw === 16
-    ) ? levelbackgroundraw : null;
+    const levelbackground = levelbackgroundraw >= 1 && levelbackgroundraw <= 17 ? levelbackgroundraw : null;
 
     const levelversionraw = getstringparam("version");
     const levelversion = ["dx", "h5dx", "famobi"].includes(levelversionraw) ? levelversionraw : null;
@@ -391,7 +389,7 @@ import {createsharing} from "./sharing.js";
             if (data) {
                 const trimmed = data.trim();
                 if (trimmed.startsWith("<") || trimmed.startsWith("{") || trimmed.startsWith("[")) {
-                    setlevelfromxml(trimmed, !nopicker);
+                    await setlevelfromxml(trimmed, !nopicker);
                 } else {
                     setleveldata(trimmed, !nopicker);
                 }
@@ -414,7 +412,7 @@ import {createsharing} from "./sharing.js";
             }
             
             if (trimmed.startsWith("<") || trimmed.startsWith("{") || trimmed.startsWith("[")) {
-                setlevelfromxml(trimmed, !nopicker);
+                await setlevelfromxml(trimmed, !nopicker);
             } else {
                 try {
                     const decoded = decodebase64utf8(trimmed);
@@ -437,7 +435,7 @@ import {createsharing} from "./sharing.js";
                                 throw parseerror;
                             }
                         }
-                        setlevelfromxml(trimmeddecoded, !nopicker);
+                        await setlevelfromxml(trimmeddecoded, !nopicker);
                     } else {
                         setleveldata(trimmed, !nopicker);
                     }
