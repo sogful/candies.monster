@@ -5,8 +5,11 @@ export function candyfilters(changed) {
     options.className = "filteroptions candyoptions";
     const label = document.createElement("button");
     label.type = "button";
-    label.className = "candylabel leveltag clickable";
-    label.textContent = "Candylist only";
+    label.className = "candyonly leveltag clickable";
+    const brand = document.createElement("span");
+    brand.className = "candyword";
+    brand.textContent = "Candylist";
+    label.append(brand, " only");
     label.setAttribute("aria-label", "Show Candylist levels");
     const selected = new Set();
     let active = false;

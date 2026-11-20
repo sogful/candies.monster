@@ -20,7 +20,7 @@ export function popup(button, label = "", name = label) {
     }
     const dismiss = document.createElement("button");
     dismiss.type = "button";
-    dismiss.className = "membershipclose clickable";
+    dismiss.className = "membershipclose popupclose clickable";
     dismiss.setAttribute("aria-label", "Close");
     const cross = document.createElement("img");
     cross.src = "/assets/images/icons/x.svg";
@@ -35,7 +35,7 @@ export function popup(button, label = "", name = label) {
     dialog.addEventListener("click", event => {
         if (event.target !== dialog) return;
         const box = dialog.getBoundingClientRect();
-        if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) close();
+        if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dismiss.click();
     });
     document.body.append(dialog);
     return {dialog, actions, open, close};

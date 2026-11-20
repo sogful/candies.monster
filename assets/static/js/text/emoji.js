@@ -43,8 +43,10 @@
 
     function spriteimage(wrapper, code, emoji) {
         spriteicons().then(icons => {
-            if (!wrapper.isConnected) return;
-            if (!icons.has(code)) {remoteimage(wrapper, code, emoji); return}
+            if (!icons.has(code)) {
+                if (wrapper.isConnected) remoteimage(wrapper, code, emoji);
+                return;
+            }
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svg.classList.add("siteemojiimage");
             svg.setAttribute("viewBox", "0 0 36 36");

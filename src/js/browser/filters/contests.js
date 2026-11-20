@@ -22,7 +22,6 @@ export function contestfilters(changed) {
             });
             options.append(button);
         }
-        window.siteemoji?.(options);
         update();
     }).catch(() => {});
     function update() {

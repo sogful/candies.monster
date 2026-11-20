@@ -28,13 +28,25 @@ function iconbutton(classname, icon, label) {
     return button;
 }
 
-function filtersection(title, options) {
+function filtersection(title, options, reset) {
     const section = document.createElement("section");
     section.className = "filtersection";
+    const header = document.createElement("div");
+    header.className = "filtersectiontitle";
     const heading = document.createElement("h2");
     heading.textContent = title;
-    section.append(heading, options);
-    return section;
+    heading.tabIndex = -1;
+    if (title === "Candylist") heading.classList.add("candyword");
+    const clear = iconbutton("sectionclear", "x", `Clear ${title.toLowerCase()} filters`);
+    clear.title = clear.getAttribute("aria-label");
+    clear.hidden = true;
+    clear.addEventListener("click", () => {
+        reset();
+        heading.focus({preventScroll: true});
+    });
+    header.append(heading, clear);
+    section.append(header, options);
+    return {section, clear};
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -93,13 +105,13 @@ export function filters(changed) {
         ["recent", "Newest", "icons/upload.svg"],
         ["rating", "Liked", "level/star.webp"],
         ["plays", "Popular", "buttons/playcount.svg"],
-        ["played", "Recents"]
+        ["played", "Your Recents"]
     ]) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "levelsort clickable";
         button.dataset.order = key;
-        button.title = key === "played" ? "Recently played" : label;
+        button.title = label;
         button.setAttribute("aria-label", button.title);
         const caption = document.createElement("span");
         caption.textContent = label;
@@ -128,20 +140,6 @@ export function filters(changed) {
     top.append(field, tags, sorts);
     const options = document.createElement("div");
     options.className = "filteroptions tagoptions";
-    const reset = iconbutton("filterreset", "x", "Reset filters");
-    reset.title = "Reset filters";
-    reset.hidden = true;
-    reset.addEventListener("click", () => {
-        search.value = "";
-        order = "recent";
-        selected.clear();
-        chosen.clear();
-        candy.reset();
-        contests.reset();
-        creator.setAttribute("aria-pressed", "false");
-        apply();
-        reset.closest("dialog")?.querySelector(".membershipclose").focus({preventScroll: true});
-    });
     const featurerow = document.createElement("div");
     featurerow.className = "filteroptions featureoptions";
     for (const [key, label] of Object.entries(featuretypes)) {
@@ -160,16 +158,20 @@ export function filters(changed) {
     }
     const list = document.createElement("div");
     list.className = "filterlist";
-    list.append(
-        filtersection("Tags", options),
-        filtersection("Features", featurerow),
-        filtersection("Candylist", candy.element),
-        filtersection("Contests", contests.element)
-    );
+    const groups = [
+        ["Tags", options, () => selected.size, () => selected.clear()],
+        ["Features", featurerow, () => chosen.size, () => chosen.clear()],
+        ["Candylist", candy.element, () => candy.count, candy.reset],
+        ["Contests", contests.element, () => contests.count, contests.reset]
+    ].map(([label, controls, count, reset]) => {
+        const group = filtersection(label, controls, () => {reset(); apply()});
+        list.append(group.section);
+        return {clear: group.clear, count};
+    });
     tags.addEventListener("click", () => {
-        const {dialog, actions, open} = popup(tags, "Filters");
+        const {dialog, actions, open} = popup(tags, "", "Filters");
         dialog.classList.add("filterdialog");
-        actions.append(reset, list);
+        actions.append(list);
         open();
     });
     const header = document.createElement("section");
@@ -230,8 +232,12 @@ export function filters(changed) {
         for (const button of featurerow.children) button.setAttribute("aria-pressed", String(chosen.has(button.dataset.feature)));
         candy.update();
         contests.update();
-        const count = selected.size + chosen.size + contests.count + candy.count;
-        reset.hidden = !count && order === "recent" && creator.getAttribute("aria-pressed") !== "true";
+        let count = 0;
+        for (const group of groups) {
+            const active = group.count();
+            group.clear.hidden = !active;
+            count += active;
+        }
         tags.classList.toggle("filteractive", count > 0);
         tags.setAttribute("aria-label", count ? `Tags and filters (${count} selected)` : "Tags and filters");
         clear.hidden = !search.value;

@@ -33,10 +33,13 @@
     white-space: nowrap;
 }
 .discordmembership .membershipbutton, .discordmembership .membershipbutton:visited {color: #fff}
+.popupclose {
+    border: 0; padding: 7px;
+    aspect-ratio: 1; line-height: 0;
+    background: url("/assets/images/buttons/emptybutton.png") center / contain no-repeat;
+}
+.popupclose img {width: 100%}
 .membershipclose {
     position: absolute; top: -10px;
     right: -10px; width: 34px;
-    background: none; border: 0;
-    padding: 0; line-height: 0;
 }
-.membershipclose img {width: 100%}

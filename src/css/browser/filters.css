@@ -64,7 +64,7 @@
     margin-top: 12px;
 }
 .leveltags[hidden] {display: none}
-.filterreset[hidden] {display: none}
+.sectionclear[hidden] {display: none}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -132,13 +132,7 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 .filterdialog.discordmembership {width: 680px}
-.filterdialog .membershipquestion {margin: 0 54px 10px}
 .filterdialog .membershipactions {display: block}
-.filterdialog .filterreset {
-    position: absolute; top: 15px;
-    right: 36px; width: 32px;
-    height: 32px; padding: 7px;
-}
 .filterlist {
     max-height: min(620px, calc(100vh - 146px));
     max-height: min(620px, calc(100dvh - 146px));
@@ -146,9 +140,17 @@
     padding: 3px 6px 8px; text-align: left;
 }
 .filtersection + .filtersection {margin-top: 14px}
+.filtersectiontitle {
+    display: flex; align-items: center;
+    gap: 5px; margin-bottom: 6px;
+}
 .filtersection h2 {
-    margin: 0 0 6px; font-size: 22px;
+    margin: 0; font-size: 22px;
     font-weight: normal; line-height: 1.2;
+}
+.filtersectiontitle .sectionclear {
+    width: 24px; height: 24px;
+    padding: 4px; background: none;
 }
 .filteroptions {
     display: flex; flex-wrap: wrap;
@@ -167,11 +169,9 @@
 .filteroptions .tagemoji > .siteemoji {
     width: 100%; height: 100%;
 }
+.contestoptions .tagemoji {font-size: 0}
 @media (max-width: 700px) {
     .filterdialog.discordmembership {padding: 18px}
-    .filterdialog .filterreset {
-        top: 10px; right: 32px;
-    }
     .filteroptions .leveltag {font-size: 16px}
 }
 
@@ -301,4 +301,8 @@
     .filtertop {gap: 3px; padding-right: 36px}
     .levelsearchfield {gap: 2px; padding-inline: 3px}
     .levelsort {padding-inline: 3px}
+    .levelsort[data-order="played"] {
+        max-width: 39px; font-size: 11px;
+        white-space: normal; line-height: 1;
+    }
 }

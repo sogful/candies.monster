@@ -42,10 +42,7 @@
 .inspectionclose {
     position: absolute; right: 12px;
     top: 12px; width: 32px;
-    padding: 0; border: 0;
-    background: none; line-height: 0;
 }
-.inspectionclose img {width: 100%}
 
 @media (max-width: 700px) {
     .levelinspect {width: 32px}

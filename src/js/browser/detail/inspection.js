@@ -34,7 +34,7 @@ export function imageviewer(url, label, trigger, entry = null, type = "image") {
     status.setAttribute("role", "status");
     const closebutton = document.createElement("button");
     closebutton.type = "button";
-    closebutton.className = "inspectionclose clickable";
+    closebutton.className = "inspectionclose popupclose clickable";
     closebutton.setAttribute("aria-label", "close preview");
     const closeicon = document.createElement("img");
     closeicon.src = "/assets/images/icons/x.svg";
@@ -129,7 +129,7 @@ export function imageviewer(url, label, trigger, entry = null, type = "image") {
         zoom(scale * Math.exp(-event.deltaY * 0.002), event.clientX, event.clientY);
     }, {...options, passive: false});
     viewport.addEventListener("dblclick", fit, options);
-    viewport.addEventListener("click", event => {if (event.target === viewport && !dragged && empty) close()}, options);
+    viewport.addEventListener("click", event => {if (event.target === viewport && !dragged && empty) closebutton.click()}, options);
     viewport.addEventListener("pointerdown", event => {
         if (event.button !== 0) return;
         if (video && event.target === image && event.offsetY >= image.clientHeight - 48) return;

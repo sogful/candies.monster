@@ -11,6 +11,10 @@
     paint-order: stroke fill; text-shadow: inherit;
 }
 .candytags > .candylabel {font-size: 18px}
+.candyword {
+    font-family: "Lexend Deca",sans-serif;
+    font-weight: 500;
+}
 .candyrankings {
     display: flex; flex-direction: column;
     align-items: flex-end; gap: 6px;
