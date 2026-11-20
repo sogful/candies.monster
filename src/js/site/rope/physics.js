@@ -52,6 +52,12 @@ export function paint(context, points) {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.lineCap = "round";
     context.lineJoin = "round";
+    context.beginPath();
+    context.moveTo(points[0].x, points[0].y);
+    for (let index = 1; index < points.length; index++) context.lineTo(points[index].x, points[index].y);
+    context.strokeStyle = "#302015";
+    context.lineWidth = 5;
+    context.stroke();
     context.lineWidth = 3.4;
     for (let index = 1; index < points.length; index++) {
         const start = points[index - 1];
