@@ -10,21 +10,7 @@
     color: #fff; -webkit-text-stroke: 0.175em #000;
     paint-order: stroke fill; text-shadow: inherit;
 }
-.candyoptions > .candylabel {font-size: 1em}
 .candytags > .candylabel {font-size: 18px}
-.candybar {
-    position: relative; margin-left: var(--filterinset);
-    width: calc(100% - var(--filterinset));
-}
-.candyoptions {
-    display: flex; align-items: center;
-    gap: 3px; overflow: auto hidden;
-    scrollbar-width: none; min-width: 0;
-    padding: 2px 0 3px; touch-action: pan-x pinch-zoom;
-}
-.candyoptions::-webkit-scrollbar {display: none}
-.candyoptions > * {flex-shrink: 0}
-.candyoptions [aria-pressed="true"] {background: rgba(70,70,70,0.5)}
 .candyrankings {
     display: flex; flex-direction: column;
     align-items: flex-end; gap: 6px;
@@ -83,7 +69,6 @@
 }
 .candyinformation > .levelinfotags {grid-row: 2}
 .candyrankings > .candylabel {font-size: 20px}
-.homepage .candyoptions > .candylabel {font-family: "Lexend Deca",sans-serif}
 @media (max-width: 700px) {
     .candyrankings > .candylabel {font-size: 17px}
 }

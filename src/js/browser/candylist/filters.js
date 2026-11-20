@@ -1,21 +1,16 @@
 import {candycontent, tagdata} from "../catalogue/metadata.js";
-import {filterscroll} from "../filters/controls.js";
 
 export function candyfilters(changed) {
-    const element = document.createElement("div");
-    element.className = "candybar";
     const options = document.createElement("div");
-    options.className = "candyoptions";
+    options.className = "filteroptions candyoptions";
     const label = document.createElement("button");
     label.type = "button";
     label.className = "candylabel leveltag clickable";
-    label.textContent = "Candylist";
+    label.textContent = "Candylist only";
     label.setAttribute("aria-label", "Show Candylist levels");
     const selected = new Set();
     let active = false;
     options.append(label);
-    element.append(options);
-    filterscroll(options);
     function update() {
         label.setAttribute("aria-pressed", String(active || selected.size > 0));
         for (const button of options.querySelectorAll("[data-candy]")) button.setAttribute("aria-pressed", String(selected.has(button.dataset.candy)));
@@ -28,7 +23,6 @@ export function candyfilters(changed) {
         changed();
     });
     function rendertags(names) {
-        const offset = options.scrollLeft;
         options.replaceChildren(label);
         const tags = new Set(names);
         for (const tag of [...tags].sort()) {
@@ -44,15 +38,13 @@ export function candyfilters(changed) {
             });
             options.append(button);
         }
-        options.scrollLeft = offset;
         update();
     }
     let loaded = false;
     tagdata.then(data => {if (!loaded) rendertags(data.candylist || [])});
     return {
-        element,
+        element: options,
         get count() {return selected.size + (active && !selected.size ? 1 : 0)},
-        get active() {return active || selected.size > 0},
         update,
         reset() {active = false; selected.clear()},
         read(query) {

@@ -1,11 +1,10 @@
 import {contestfilters} from "./contests.js";
-import {filterscroll} from "./controls.js";
-import {tagcontent, featurecontent, tagdata, tagid, filtertag, sorttags} from "../catalogue/metadata.js";
+import {tagcontent, featurecontent, tagdata, tagid, filtertag, sorttags, featuretypes} from "../catalogue/metadata.js";
 import {matches} from "./controls.js";
-import {featuretypes} from "../catalogue/metadata.js";
 import {profile} from "../catalogue/creator.js";
 import {recentplays} from "../catalogue/storage.js";
 import {candyfilters} from "../candylist/filters.js";
+import {popup} from "../popup.js";
 
 function recent(first, second) {
     const difference = Date.parse(second.created || "") - Date.parse(first.created || "");
@@ -13,6 +12,29 @@ function recent(first, second) {
     const left = String(first.id || "");
     const right = String(second.id || "");
     return right.length - left.length || right.localeCompare(left);
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+function iconbutton(classname, icon, label) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `filtericon ${classname} clickable`;
+    button.setAttribute("aria-label", label);
+    const image = document.createElement("img");
+    image.src = `/assets/images/icons/${icon}.svg`;
+    image.alt = "";
+    button.append(image);
+    return button;
+}
+
+function filtersection(title, options) {
+    const section = document.createElement("section");
+    section.className = "filtersection";
+    const heading = document.createElement("h2");
+    heading.textContent = title;
+    section.append(heading, options);
+    return section;
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -40,15 +62,8 @@ export function filters(changed) {
     cross.alt = "";
     clear.append(cross);
     field.append(icon, search, clear);
-    const creator = document.createElement("button");
-    creator.type = "button";
-    creator.className = "creatorsearch clickable";
-    creator.setAttribute("aria-label", "Search creators only");
+    const creator = iconbutton("creatorsearch", "user", "Search creators only");
     creator.setAttribute("aria-pressed", "false");
-    const account = document.createElement("img");
-    account.src = "/assets/images/icons/user.svg";
-    account.alt = "";
-    creator.append(account);
     creator.addEventListener("click", () => {
         const active = creator.getAttribute("aria-pressed") !== "true";
         creator.setAttribute("aria-pressed", String(active));
@@ -70,10 +85,9 @@ export function filters(changed) {
     const chosen = new Set();
     let authorid = "";
     let profilereturn = "";
-    let lastrow = "tags";
     let signature;
-    const candy = candyfilters(() => {lastrow = "candy"; apply()});
-    const contests = contestfilters(() => {lastrow = "contests"; apply()});
+    const candy = candyfilters(apply);
+    const contests = contestfilters(apply);
     const unavailable = new Set();
     for (const [key, label, artwork] of [
         ["recent", "Newest", "icons/upload.svg"],
@@ -106,20 +120,16 @@ export function filters(changed) {
     }
     const top = document.createElement("div");
     top.className = "filtertop";
+    const tags = iconbutton("tagsbutton", "tags", "Tags and filters");
+    tags.title = "Tags";
+    tags.setAttribute("aria-haspopup", "dialog");
+    tags.setAttribute("aria-expanded", "false");
     field.append(creator);
-    top.append(field, sorts);
+    top.append(field, tags, sorts);
     const options = document.createElement("div");
-    options.className = "tagoptions";
-    options.setAttribute("aria-label", "Filter by tags");
-    const reset = document.createElement("button");
-    reset.type = "button";
-    reset.className = "leveltag filterreset clickable";
-    reset.setAttribute("aria-label", "Reset filters");
+    options.className = "filteroptions tagoptions";
+    const reset = iconbutton("filterreset", "x", "Reset filters");
     reset.title = "Reset filters";
-    const reseticon = document.createElement("img");
-    reseticon.src = "/assets/images/buttons/xbutton.png";
-    reseticon.alt = "";
-    reset.append(reseticon);
     reset.hidden = true;
     reset.addEventListener("click", () => {
         search.value = "";
@@ -130,10 +140,10 @@ export function filters(changed) {
         contests.reset();
         creator.setAttribute("aria-pressed", "false");
         apply();
+        reset.closest("dialog")?.querySelector(".membershipclose").focus({preventScroll: true});
     });
     const featurerow = document.createElement("div");
-    featurerow.className = "featureoptions";
-    featurerow.setAttribute("aria-label", "Filter by features");
+    featurerow.className = "filteroptions featureoptions";
     for (const [key, label] of Object.entries(featuretypes)) {
         const button = document.createElement("button");
         button.type = "button";
@@ -144,21 +154,28 @@ export function filters(changed) {
         button.addEventListener("click", () => {
             if (chosen.has(key)) chosen.delete(key);
             else chosen.add(key);
-            lastrow = "features";
             apply();
         });
         featurerow.append(button);
     }
-    const lower = document.createElement("div");
-    lower.className = "featurebar";
-    lower.append(featurerow);
-    const tagrow = document.createElement("div");
-    tagrow.className = "tagbar";
-    tagrow.append(options, reset);
+    const list = document.createElement("div");
+    list.className = "filterlist";
+    list.append(
+        filtersection("Tags", options),
+        filtersection("Features", featurerow),
+        filtersection("Candylist", candy.element),
+        filtersection("Contests", contests.element)
+    );
+    tags.addEventListener("click", () => {
+        const {dialog, actions, open} = popup(tags, "Filters");
+        dialog.classList.add("filterdialog");
+        actions.append(reset, list);
+        open();
+    });
     const header = document.createElement("section");
     header.className = "creatorprofile";
     header.hidden = true;
-    bar.append(top, tagrow, lower, candy.element, contests.element, header);
+    bar.append(top, header);
     let routed = location.search;
 
     function readroute() {
@@ -176,8 +193,6 @@ export function filters(changed) {
         routed = location.search;
     }
     readroute();
-    filterscroll(options);
-    filterscroll(featurerow);
     const main = document.querySelector(".levelcontent > .main");
     main.prepend(bar);
     function measure() {
@@ -189,16 +204,6 @@ export function filters(changed) {
     }
     else window.addEventListener("resize", measure, {passive: true});
     measure();
-
-    function placeReset(row, control, content) {
-        const lastbounds = content?.lastElementChild?.getBoundingClientRect();
-        const contentbounds = content?.getBoundingClientRect();
-        const rowbounds = row.getBoundingClientRect();
-        const tail = window.innerWidth >= 901 && !control.hidden && lastbounds && contentbounds && lastbounds.left >= contentbounds.left && lastbounds.right + control.offsetWidth + 4 <= Math.min(contentbounds.right, rowbounds.right);
-        row.classList.toggle("resetattail", Boolean(tail));
-        if (tail) row.style.setProperty("--resetleft", Math.ceil(lastbounds.right - rowbounds.left + 4) + "px");
-        else row.style.removeProperty("--resetleft");
-    }
 
     function apply(write = true, restore = false, replace = false, preserve = false) {
         const beforepage = new URLSearchParams(location.search).get("page");
@@ -225,29 +230,10 @@ export function filters(changed) {
         for (const button of featurerow.children) button.setAttribute("aria-pressed", String(chosen.has(button.dataset.feature)));
         candy.update();
         contests.update();
-        reset.hidden = !chosen.size && order === "recent" && !selected.size && !candy.active && !contests.count && creator.getAttribute("aria-pressed") !== "true";
-        const rows = {tags: tagrow, features: lower, candy: candy.element, contests: contests.element};
-        const active = [selected.size ? "tags" : "", chosen.size ? "features" : "", candy.active ? "candy" : "", contests.count ? "contests" : ""].filter(Boolean);
-        for (const [key, row] of Object.entries(rows)) {
-            let control = row.querySelector(":scope > .filterreset");
-            if (!control) {
-                control = reset.cloneNode(true);
-                control.addEventListener("click", () => reset.click());
-                row.append(control);
-            }
-            control.hidden = !active.includes(key) && !(key === "tags" && !active.length && !reset.hidden);
-            row.classList.toggle("hasreset", !control.hidden);
-            const content = row.querySelector(":scope > .tagoptions, :scope > .featureoptions, .candyoptions, .contestoptions");
-            placeReset(row, control, content);
-            if (content && !content.dataset.resetwatch) {
-                content.dataset.resetwatch = "true";
-                content.addEventListener("scroll", () => {
-                    if (!row.classList.contains("hasreset")) return;
-                    placeReset(row, control, content);
-                }, {passive: true});
-            }
-        }
-        options.hidden = false;
+        const count = selected.size + chosen.size + contests.count + candy.count;
+        reset.hidden = !count && order === "recent" && creator.getAttribute("aria-pressed") !== "true";
+        tags.classList.toggle("filteractive", count > 0);
+        tags.setAttribute("aria-label", count ? `Tags and filters (${count} selected)` : "Tags and filters");
         clear.hidden = !search.value;
         const played = recentplays();
         const result = entries.filter(entry => {
@@ -260,7 +246,6 @@ export function filters(changed) {
             return matches(search.value, text) && [...selected].every(id => (entry.tags || []).some(tag => tag.id === id));
         });
         result.sort((first, second) => (order === "played" ? played[second.id] - played[first.id] : order === "recent" ? 0 : (Number(second[order]) || 0) - (Number(first[order]) || 0)) || recent(first, second));
-        const count = selected.size + chosen.size + contests.count + candy.count;
         document.dispatchEvent(new CustomEvent("levelfiltercount", {detail: count}));
         const next = result.map(entry => entry.id).join(",");
         if (signature !== next || restore || beforepage !== new URLSearchParams(location.search).get("page")) {
@@ -274,9 +259,7 @@ export function filters(changed) {
         const button = [...options.children].find(control => control.dataset.tag === id);
         if (!button) return;
         selected.add(tagid(id));
-        lastrow = "tags";
         button.setAttribute("aria-pressed", "true");
-        button.scrollIntoView({block: "nearest", inline: "nearest"});
         apply();
     });
 
@@ -308,12 +291,6 @@ export function filters(changed) {
     });
 
     search.addEventListener("input", () => apply(true, false, true));
-    window.addEventListener("resize", () => {
-        for (const row of bar.querySelectorAll(".tagbar,.featurebar,.candybar,.contestbar")) {
-            const control = row.querySelector(":scope > .filterreset");
-            if (control) placeReset(row, control, row.querySelector(":scope > .tagoptions, :scope > .featureoptions, .candyoptions, .contestoptions"));
-        }
-    }, {passive: true});
     document.addEventListener("levelpagechange", () => {routed = location.search});
     document.addEventListener("levelbrowserrestore", () => {readroute(); apply(false, true)});
     window.addEventListener("popstate", () => {
@@ -326,6 +303,7 @@ export function filters(changed) {
     document.addEventListener("keydown", event => {
         if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey || event.target?.isContentEditable || event.target?.closest?.("input,textarea,select")) return;
         if (document.documentElement.matches(".gameopen,.gameloading,.previewopen,.documentopen")) return;
+        if (document.querySelector(".filterdialog[open]")) return;
         event.preventDefault();
         if (location.hash) {
             history.pushState(null, "", location.pathname + location.search);
@@ -340,10 +318,8 @@ export function filters(changed) {
         apply();
     });
     function rendertags(data) {
-        const offset = options.scrollLeft;
         const all = new Map(data.filter(tag => tag.id && tag.name && filtertag(tag)).map(tag => [tag.id, tag]));
         options.replaceChildren();
-        options.hidden = false;
         for (const tag of sorttags([...all.values()]).sort((first, second) => Number(unavailable.has(first.id)) - Number(unavailable.has(second.id)))) {
             const button = document.createElement("button");
             button.type = "button";
@@ -355,13 +331,11 @@ export function filters(changed) {
             button.addEventListener("click", () => {
                 if (selected.has(tag.id)) selected.delete(tag.id);
                 else selected.add(tag.id);
-                lastrow = "tags";
                 button.setAttribute("aria-pressed", String(selected.has(tag.id)));
                 apply();
             });
             options.append(button);
         }
-        options.scrollLeft = offset;
     }
     tagdata.then(data => {
         if (!entries.length) rendertags(data.tags || []);

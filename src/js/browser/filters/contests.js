@@ -1,14 +1,8 @@
-import {filterscroll} from "./controls.js";
-
 export function contestfilters(changed) {
-    const element = document.createElement("div");
-    element.className = "contestbar";
     const options = document.createElement("div");
-    options.className = "contestoptions";
+    options.className = "filteroptions contestoptions";
     options.setAttribute("aria-label", "Level contests");
     const selected = new Set();
-    element.append(options);
-    filterscroll(options);
     fetch("/assets/static/data/levels/contests.json").then(response => response.json()).then(entries => {
         for (const entry of entries) {
             const button = document.createElement("button");
@@ -35,7 +29,7 @@ export function contestfilters(changed) {
         for (const button of options.children) button.setAttribute("aria-pressed", String(selected.has(button.dataset.contest)));
     }
     return {
-        element, update,
+        element: options, update,
         get count() {return selected.size},
         reset() {selected.clear()},
         read(query) {

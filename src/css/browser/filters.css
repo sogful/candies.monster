@@ -37,16 +37,6 @@
     -webkit-text-stroke: inherit; paint-order: inherit;
     text-shadow: inherit;
 }
-.tagoptions {
-    width: 100%; box-sizing: border-box;
-    overflow-x: auto; overflow-y: hidden;
-    display: flex; align-items: center;
-    flex-wrap: nowrap; gap: 3px;
-    padding: 2px 0 3px; scrollbar-width: none;
-    touch-action: pan-x pinch-zoom; overscroll-behavior-x: contain;
-}
-.tagoptions::-webkit-scrollbar {display: none}
-.tagoptions .leveltag {flex-shrink: 0}
 .tagdragging, .tagdragging .leveltag {
     cursor: url("/assets/images/cursors/active.cur"), grabbing;
 }
@@ -60,7 +50,7 @@
     -webkit-text-stroke: inherit; paint-order: inherit;
     text-shadow: inherit;
 }
-.levelsort[aria-pressed="true"], .tagoptions .leveltag[aria-pressed="true"], .featureoptions .leveltag[aria-pressed="true"] {
+.levelsort[aria-pressed="true"], .filteroptions .leveltag[aria-pressed="true"] {
     color: #fff; background: rgba(70,70,70,0.5);
 }
 .tagemoji {
@@ -73,7 +63,7 @@
     gap: 6px; justify-content: center;
     margin-top: 12px;
 }
-.leveltags[hidden], .tagoptions[hidden] {display: none}
+.leveltags[hidden] {display: none}
 .filterreset[hidden] {display: none}
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -87,7 +77,6 @@
     }
     .levelsorts {gap: 3px}
     .levelsort {padding: 3px 5px}
-    .tagoptions .leveltag {font-size: 16px}
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -114,22 +103,26 @@
     flex: 0 0 16px; line-height: 0;
 }
 .levelclear img {width: 100%}
-.creatorsearch {
-    border: 0; padding: 6px;
-    width: 32px; height: 32px;
-    flex: 0 0 32px; background: url("/assets/images/buttons/emptybutton.png") center / contain no-repeat;
+.filtericon {
+    width: 24px; height: 24px;
+    flex: 0 0 24px; padding: 4px;
+    border: 0; box-sizing: border-box;
+    background: url("/assets/images/buttons/emptybutton.png") center / contain no-repeat;
 }
-.creatorsearch img {
+.filtericon img {
+    display: block;
     width: 100%; height: 100%;
     object-fit: contain;
 }
-.creatorsearch[aria-pressed="true"] {filter: brightness(1.3) sepia(0.7)}
+.creatorsearch[aria-pressed="true"], .tagsbutton.filteractive {
+    filter: brightness(1.3) sepia(0.7);
+}
 @media (max-width: 700px) {
     .levelsearchfield {flex: 1 1 0}
     .levelfilters {--filterinset: 6px}
-    .creatorsearch {
-        width: 26px; height: 26px;
-        flex-basis: 26px; padding: 5px;
+    .filtericon {
+        width: 22px; height: 22px;
+        flex-basis: 22px;
     }
     .levelsearchfield > img {
         width: 14px; height: 14px;
@@ -138,22 +131,52 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.featurebar {
-    display: flex; gap: 3px;
-    min-width: 0; align-items: center;
+.filterdialog.discordmembership {width: 680px}
+.filterdialog .membershipquestion {margin: 0 54px 10px}
+.filterdialog .membershipactions {display: block}
+.filterdialog .filterreset {
+    position: absolute; top: 15px;
+    right: 36px; width: 32px;
+    height: 32px; padding: 7px;
 }
-.featureoptions {
-    display: flex; gap: 3px;
-    overflow: auto hidden; scrollbar-width: none;
-    min-width: 0;
-    touch-action: pan-x pinch-zoom; overscroll-behavior-x: contain;
+.filterlist {
+    max-height: min(620px, calc(100vh - 146px));
+    max-height: min(620px, calc(100dvh - 146px));
+    overflow: hidden auto; overscroll-behavior: contain;
+    padding: 3px 6px 8px; text-align: left;
 }
-.featureoptions::-webkit-scrollbar {display: none}
-.featureoptions .leveltag, .filterreset {flex-shrink: 0}
-.filterreset {margin-right: 6px}
-.hasreset > :is(.tagoptions,.featureoptions,.candyoptions,.contestoptions)::after {
-    content: ""; flex: 0 0 38px;
+.filtersection + .filtersection {margin-top: 14px}
+.filtersection h2 {
+    margin: 0 0 6px; font-size: 22px;
+    font-weight: normal; line-height: 1.2;
 }
+.filteroptions {
+    display: flex; flex-wrap: wrap;
+    gap: 5px; padding-bottom: 4px;
+}
+.filteroptions .leveltag {
+    min-height: 27px; max-width: 100%;
+    font-size: 18px; line-height: 1.15;
+    white-space: normal; text-align: left;
+    overflow-wrap: anywhere; background: rgba(0,0,0,0.5);
+}
+.filteroptions .tagemoji {
+    width: 18px; height: 18px;
+    flex: 0 0 18px;
+}
+.filteroptions .tagemoji > .siteemoji {
+    width: 100%; height: 100%;
+}
+@media (max-width: 700px) {
+    .filterdialog.discordmembership {padding: 18px}
+    .filterdialog .filterreset {
+        top: 10px; right: 32px;
+    }
+    .filteroptions .leveltag {font-size: 16px}
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 .creatorprofile {
     display: flex; align-items: center;
     padding: 4px 4px 12px 4px; gap: 12px;
@@ -170,9 +193,6 @@
     font-size: 16px; opacity: 0.5;
 }
 .creatorlink {color: var(--linkcolor,#70dcff)}
-@media (max-width: 700px) {
-    .featureoptions .leveltag, .filterreset {font-size: 16px}
-}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -204,39 +224,6 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.tagbar, .featurebar {position: relative}
-.tagbar, .featurebar {
-    margin-left: var(--filterinset); 
-    width: calc(100% - var(--filterinset));
-}
-.tagbar .tagoptions {
-    width: 100%;
-}
-.featureoptions {
-    flex: 1 1 auto;
-}
-.filterreset {
-    position: absolute; right: 6px;
-    top: 0; width: 32px;
-    height: 28px; padding: 5px 7px;
-    border: 0; background: none;
-    margin: 0; line-height: 0;
-}
-.resetattail > .filterreset {right: auto; left: var(--resetleft)}
-.filterreset img {
-    width: 100%; height: 100%;
-    object-fit: contain;
-}
-
-.hasreset > .filterreset {
-    z-index: 2; border-radius: 7px;
-    background: none;
-}
-.levelfilters :is(.tagoptions,.featureoptions,.candyoptions) .leveltag {
-    padding: 1px 6px; line-height: 1.1;
-    height: 24px; box-sizing: border-box;
-    font-size: 17px;
-}
 .levelsort, .levelsearchfield {
     height: 30px; box-sizing: border-box;
 }
@@ -247,75 +234,15 @@
 .levelsearchfield .levelsearch {
     padding: 0 2px; height: 100%;
 }
-.creatorsearch {
-    width: 24px; height: 24px;
-    flex-basis: 24px; padding: 4px;
-}
 @media (max-width: 700px) {
     .levelsort, .levelsearchfield {height: 26px}
     .levelsort {padding: 2px 5px}
-    .creatorsearch {
-        width: 22px; height: 22px;
-        flex-basis: 22px;
-    }
-    .levelfilters :is(.tagoptions,.featureoptions,.candyoptions) .leveltag {
-        font-size: 15px; height: 23px;
-    }
 }
 
-.levelfilters :is(.tagoptions,.featureoptions,.candyoptions,.contestoptions) {
-    box-sizing: border-box; padding: 1px 4px 2px;
-    scroll-padding-inline: 4px;
-}
-.levelfilters .tagoptions .leveltag {
-    height: 22px; font-size: 15px;
-    gap: 3px; padding: 1px 5px;
-}
-.levelfilters :is(.featureoptions,.candyoptions,.contestoptions) .leveltag {
-    height: 16px; font-size: 11px;
-    gap: 3px; padding: 1px 5px;
-}
-.levelfilters .tagoptions .tagemoji {
-    width: 17px; height: 17px;
-}
-.levelfilters :is(.featureoptions,.candyoptions,.contestoptions) .tagemoji {
-    width: 12px; height: 12px;
-}
-.levelfilters .candyoptions > .candylabel {font-family: "Lexend Deca",sans-serif}
 .unsupportedtag {opacity: 0.5}
-.contestbar {
-    position: relative; margin-left: var(--filterinset);
-    width: calc(100% - var(--filterinset));
-}
-.contestoptions {
-    display: flex; gap: 3px;
-    overflow: auto hidden; scrollbar-width: none;
-    min-width: 0; touch-action: pan-x pinch-zoom;
-}
-.contestoptions > * {flex-shrink: 0}
-.contestoptions::-webkit-scrollbar {display: none}
-.contestoptions [aria-pressed="true"] {background: rgba(70,70,70,0.5)}
-
-.levelfilters .leveltag {background: rgba(0,0,0,0.5)}
-.levelfilters .leveltag[aria-pressed="true"] {background: rgba(70,70,70,0.5)}
-.tagbar, .featurebar, .candybar, .contestbar {
-    margin-left: calc(var(--filterinset) - 4px);
-    width: calc(100% - var(--filterinset) + 4px);
-}
-
-.contestoptions .tagemoji > .siteemoji {
-    width: 100%; height: 100%;
-}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.tagbar, .featurebar, .candybar, .contestbar {
-    margin-left: 0; width: 100%;
-}
-.levelfilters :is(.tagoptions,.featureoptions,.candyoptions,.contestoptions) {
-    padding-left: var(--filterinset); padding-right: var(--filterinset);
-    scroll-padding-inline: var(--filterinset);
-}
 .leveltags, .levelfeatures {
     flex-wrap: nowrap; overflow: auto hidden;
     min-width: 0; max-width: 100%;
@@ -341,12 +268,6 @@
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-.levelfilters .filterreset, .levelfilters .filterreset[aria-pressed] {
-    background: none; box-shadow: none;
-}
-
-/*//////////////////////////////////////////////////////////////////////*/
-
 .levelsort img {
     width: 1em; height: 1em;
     vertical-align: -0.14em; margin-right: 0.22em;
@@ -357,15 +278,9 @@
     html:not(.oldmode) .levelfilters {font-size: 24px}
     html:not(.oldmode) :is(.levelsort,.levelsearchfield) {height: 42px}
     html:not(.oldmode) .levelsort {padding-inline: 12px}
-    html:not(.oldmode) .creatorsearch {
+    html:not(.oldmode) .filtertop .filtericon {
         width: 32px; height: 32px;
         flex-basis: 32px;
-    }
-    html:not(.oldmode) .levelfilters .tagoptions .leveltag {
-        height: 32px; font-size: 20px;
-    }
-    html:not(.oldmode) .levelfilters :is(.featureoptions,.candyoptions,.contestoptions) .leveltag {
-        height: 25px; font-size: 16px;
     }
     html:not(.oldmode) :is(.previous,.next) {
         width: 48px; height: 48px;
@@ -381,4 +296,9 @@
         display: inline-block; margin: 0;
         width: 18px; height: 18px;
     }
+}
+@media (max-width: 340px) {
+    .filtertop {gap: 3px; padding-right: 36px}
+    .levelsearchfield {gap: 2px; padding-inline: 3px}
+    .levelsort {padding-inline: 3px}
 }
