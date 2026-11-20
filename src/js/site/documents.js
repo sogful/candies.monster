@@ -12,6 +12,7 @@ export function credits(scroll, article) {
     let generation = 0;
 
     function measure() {
+        if (!ready) return;
         const offset = period ? position % period : 0;
         period = sequence.offsetHeight;
         if (active && period) {
@@ -85,6 +86,7 @@ export function credits(scroll, article) {
             const request = ++generation;
             if (!ready) {
                 try {await loadcredits(sequence.querySelector(".creditscontent"))} catch {return}
+                await document.fonts?.ready;
                 if (!active || request !== generation) return;
                 for (let count = 0; count < 2; count++) {
                     const clone = sequence.cloneNode(true);
@@ -98,6 +100,7 @@ export function credits(scroll, article) {
             active = true;
             position = 0;
             measure();
+            article.classList.add("creditsready");
             resume();
         },
         close() {

@@ -2,11 +2,11 @@ import {spinner} from "/assets/static/js/images/spinner.js";
 
 let loading;
 const names = new Intl.Collator("en", {sensitivity: "base", numeric: true});
-const sizes = {large: 0, small: 2};
+const sizes = {largest: 0, large: 1, small: 3};
 
 function sortentries(entries) {
     const plain = text => String(text || "").replace(/\[([^\]\n]+)\]\([^\s)]+\)/g, "$1");
-    return [...entries].sort((first, second) => (sizes[first.size] ?? 1) - (sizes[second.size] ?? 1) || names.compare(plain(first.name), plain(second.name)));
+    return [...entries].sort((first, second) => (sizes[first.size] ?? 2) - (sizes[second.size] ?? 2) || names.compare(plain(first.name), plain(second.name)));
 }
 
 function link(text, address) {
@@ -54,17 +54,20 @@ export function rendercredits(data) {
         for (const entry of sortentries(section.entries || [])) {
             const item = document.createElement("li");
             item.className = "documententry";
-            const heading = entry.size === "large" ? "h2" : entry.size === "small" ? "h3" : "div";
+            const heading = ["largest", "large"].includes(entry.size) ? "h2" : entry.size === "small" ? "h3" : "div";
             const name = document.createElement(heading);
-            if (heading !== "div") name.className = "documentheading" + (heading === "h3" ? " documentminor" : "");
+            name.className = "creditname";
+            if (heading !== "div") name.classList.add("documentheading");
+            if (heading === "h3") name.classList.add("documentminor");
+            if (entry.size === "largest") name.classList.add("creditlargest");
             name.append(entry.url ? link(entry.name, entry.url) : richtext(entry.name));
+            item.append(name);
             if (entry.subtitle) {
                 const subtitle = document.createElement("i");
-                subtitle.className = "documenttiny";
-                subtitle.append("(", richtext(entry.subtitle), ")");
-                name.append(document.createElement("br"), subtitle);
+                subtitle.className = "documenttiny creditsubtitle";
+                subtitle.append(richtext(entry.subtitle));
+                item.append(subtitle);
             }
-            item.append(name);
             list.append(item);
         }
         content.append(list);

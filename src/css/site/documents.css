@@ -75,7 +75,7 @@
 .creditsview {
     width: min(96%,1000px); padding: 0;
     font-size: clamp(18px,2.2vw,26px); text-align: center;
-    user-select: none; --creditgutter: clamp(48px,12vw,148px);
+    user-select: none; --creditgutter: clamp(50px,15vw,148px);
 }
 
 .creditssequence {
@@ -102,6 +102,9 @@
 .creditsview .documententry {padding-left: 0}
 .creditsview .documententry::before {display: none}
 .creditsview .documentminor {font-size: 0.85em}
+.creditsview .creditlargest {font-size: 1.55em}
+.creditsview .creditname, .creditsview .creditsubtitle {line-height: 1}
+.creditsubtitle {display: block}
 
 .creditscolumns {
     display: grid; grid-template-columns: repeat(2,minmax(0,1fr));
@@ -113,25 +116,25 @@
     inset: 0; pointer-events: none;
 }
 
-.documentcredits .creditsart {display: block}
+.creditsready .creditsart {display: block}
 
 .creditnom {
-    position: absolute; width: calc(var(--creditgutter) * 0.65);
+    position: absolute; width: calc(var(--creditgutter) - 12px);
     height: auto;
 }
 
 .nomone {
-    left: 6px; top: 32%;
+    left: 4px; top: 32%;
     transform: rotate(-22deg);
 }
 
 .nomtwo {
-    right: 6px; top: 55%;
+    right: 4px; top: 55%;
     transform: rotate(18deg);
 }
 
 .nomthree {
-    left: 6px; top: 78%;
+    left: 4px; top: 78%;
     transform: rotate(12deg);
 }
 
