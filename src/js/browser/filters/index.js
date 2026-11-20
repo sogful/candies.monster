@@ -136,8 +136,8 @@ export function filters(changed) {
     tags.title = "Tags";
     tags.setAttribute("aria-haspopup", "dialog");
     tags.setAttribute("aria-expanded", "false");
-    field.append(creator);
-    top.append(field, tags, sorts);
+    field.append(creator, tags);
+    top.append(field, sorts);
     const options = document.createElement("div");
     options.className = "filteroptions tagoptions";
     const featurerow = document.createElement("div");
