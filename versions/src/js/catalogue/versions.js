@@ -1,5 +1,5 @@
 import {packagekey, shareheading} from "../links.js";
-import {downloadattribute, orbitdescription, renderdownloads, secondarydownload} from "./downloads.js";
+import {downloadattribute, downloadidentity, orbitdescription, renderdownloads, secondarydownload} from "./downloads.js";
 import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel} from "./load.js";
 import {releaseplatform} from "./platforms.js";
 
@@ -35,12 +35,14 @@ function uniquedownloads(downloads) {
     const seen = new Map();
     for (const download of downloads || []) {
         if (!download?.url) continue;
-        const iscdn = (download.arch && download.size) || download.url.includes("cdn.candies.monster");
-        const sourcekey = iscdn ? `${download.url}|${download.arch || ""}|${download.size || ""}` : download.url;
-        const key = `${download.kind || "app"}|${sourcekey}`;
-        if (!seen.has(key)) seen.set(key, {...download});
+        const key = downloadidentity(download);
+        const urls = download.urls || [download.url];
+        if (!seen.has(key)) seen.set(key, {...download, urls: [...urls]});
         else {
             const existing = seen.get(key);
+            existing.urls = [...new Set([...existing.urls, ...urls])];
+            existing.arch ||= download.arch;
+            existing.size ||= download.size;
             for (const field of ["note", "label", "flags"]) {
                 const separator = field === "flags" ? " " : "; ";
                 existing[field] = Array.from(new Set([existing[field], download[field]].filter(Boolean))).join(separator);

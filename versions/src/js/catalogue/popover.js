@@ -110,11 +110,12 @@ function showpopup(button) {
     popup.replaceChildren(textnode("div", "downloadheading", data.downloadversion));
     const details = document.createElement("dl");
     details.className = "downloaddata";
-    for (const [label, value] of [["Size", data.downloadsize], ["Architecture", data.downloadarch], ["Symbols", data.downloadsymbols]]) {
+    for (const [label, value] of [["Size", data.downloadsize], ["Architecture", data.downloadarch]]) {
         if (!value) continue;
         details.append(textnode("dt", "downloadlabel", label), textnode("dd", "downloadvalue", value));
     }
     if (details.childElementCount) popup.appendChild(details);
+    if (data.downloadsymbols) popup.appendChild(textnode("div", "downloadnotes", data.downloadsymbols));
     if (data.downloadnote) popup.appendChild(textnode("div", "downloadnotes", data.downloadnote));
     if (data.downloadwarning) {
         const warning = document.createElement("div");
@@ -128,16 +129,28 @@ function showpopup(button) {
         warning.append(icon, textnode("span", "downloadwarningtext", data.downloadwarning));
         popup.appendChild(warning);
     }
-    const url = textnode("a", "downloadurl clickable", button.href);
-    url.href = button.href;
-    url.target = "_blank";
-    url.rel = "noopener";
-    popup.appendChild(url);
+    for (const address of downloadurls(button)) {
+        const url = textnode("a", "downloadurl clickable", address);
+        url.href = address;
+        url.target = "_blank";
+        url.rel = "noopener";
+        popup.appendChild(url);
+    }
     popup.hidden = false;
     positionpopup();
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
+
+function downloadurls(button) {
+    return button.dataset.downloadurls ? JSON.parse(button.dataset.downloadurls) : [button.href];
+}
+
+function choosemirror(button) {
+    if (!button.dataset.downloadurls) return;
+    const urls = downloadurls(button);
+    button.href = urls[Math.floor(Math.random() * urls.length)];
+}
 
 document.addEventListener("pointerover", event => {
     if (touchinput(event)) return;
@@ -178,18 +191,25 @@ document.addEventListener("click", event => {
         return;
     }
     if (!touchinput(event) || event.detail === 0 || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+        choosemirror(button);
         closepopup();
         return;
     }
     const now = event.timeStamp;
     if (lasttap?.button === button && (event.detail > 1 || now - lasttap.time < 450)) {
         lasttap = null;
+        choosemirror(button);
         closepopup();
         return;
     }
     event.preventDefault();
     lasttap = {button, time: now};
     showpopup(button);
+});
+
+document.addEventListener("auxclick", event => {
+    const button = downloadbutton(event.target);
+    if (button && event.button === 1) choosemirror(button);
 });
 
 document.addEventListener("keydown", event => {

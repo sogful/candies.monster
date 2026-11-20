@@ -34,12 +34,28 @@ export function secondarydownload(download) {
     return downloadbuttons.secondary.includes(downloadbutton(download));
 }
 
+export function downloadidentity(download) {
+    let url = download.url;
+    try {url = new URL(url).href} catch {}
+    const file = downloadbuttons.files?.[download.url];
+    const type = ["symbols", "evidence"].includes(download.kind) ? download.kind : "file";
+    return file ? `${type}|${downloadbutton(download)}|${file}` : `${type}|${url}`;
+}
+
 /*//////////////////////////////////////////////////////////////////////*/
 
 export function orbitdescription(value, circle) {
     if (!value) return "";
+    if (/^play$/i.test(value.trim())) return "";
     const label = circle === "zeptoapp" ? /\bzeptoapp\b/gi : circle === "teraleak" ? /\b(?:testflight|teraleak)\b/gi : null;
     return label ? value.replace(label, "").replace(/[ \t]{2,}/g, " ").trim() : value;
+}
+
+function downloadnote(value, game, symbols) {
+    return orbitdescription(value, game.circle).split(/\s*[,;\n]\s*/)
+        .filter(part => part && !/^play$/i.test(part) &&
+            (symbols || !/^(?:(?:debug|native)\s+)?symbols?(?:\s+(?:in|included|reported|present|available|found)\b[^\n]*|\s*\([^)]*\))?$/i.test(part)))
+        .join(", ");
 }
 
 function renderdownloadbutton(download, version, description, game) {
@@ -48,8 +64,9 @@ function renderdownloadbutton(download, version, description, game) {
     try {hostname = new URL(download.url).hostname} catch {}
     const source = hostname || "Download";
     const zeptoapp = download.flags?.split(/\s+/).includes("zeptoapp") ? "zeptoapp" : "";
-    const notes = [zeptoapp, description, download.kind === "symbols" ? "" : download.label, download.note]
-        .map(value => orbitdescription(value, game.circle));
+    const symbols = download.kind === "symbols";
+    const notes = [zeptoapp, description, symbols ? "" : download.label, download.note]
+        .map(value => downloadnote(value, game, symbols));
     const note = [...new Set(notes.filter(Boolean))].join("\n");
     const other = game.platform === "other";
     const warning = button === downloadbuttons.fallback && (other || !["store", "play"].includes(download.kind))
@@ -57,7 +74,8 @@ function renderdownloadbutton(download, version, description, game) {
         : "";
     const information = {
         version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
-        symbols: download.kind === "symbols" ? (download.label || "symbols").replace(/^\((.*)\)$/, "$1") : "",
+        symbols: symbols ? (download.label || "symbols").replace(/^\((.*)\)$/, "$1") : "",
+        urls: download.urls?.length > 1 ? JSON.stringify(download.urls) : "",
         warning
     };
     const metadata = Object.entries(information).filter(([, value]) => value).map(([key, value]) => `data-download${key}="${downloadattribute(value)}"`).join(" ");
