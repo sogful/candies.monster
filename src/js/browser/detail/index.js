@@ -299,7 +299,6 @@ export function leveldetails() {
             primary.append(label);
         }
         information.append(body, tagrows);
-        candyinfo(entry, information);
         const actions = create("div", "levelactions");
         const download = create("a", "leveldownload clickable");
         download.setAttribute("aria-label", "download level");
@@ -317,6 +316,7 @@ export function leveldetails() {
 
         downloadlevel(download, entry, status);
         panel.append(control(), utilities, heading, hero, status, comments(entry), information);
+        candyinfo(entry, information);
         favouriteobserver?.disconnect();
         favouriteobserver?.observe(favouritelabel);
         favouriteobserver?.observe(full);

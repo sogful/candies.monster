@@ -79,9 +79,11 @@
 .levelprimary {
     display: flex; flex-direction: column;
     align-items: center; gap: 8px;
+    min-width: 0;
 }
 
 .levelstatistics {
+    --stat-icon-size: 24px; --stat-label-size: 19px;
     display: flex; flex-direction: column;
     align-items: flex-start; gap: 1px;
     min-width: 0;
@@ -97,22 +99,22 @@
 }
 
 .levellabel {
-    font-size: 19px; color: #fff;
+    font-size: var(--stat-label-size); color: #fff;
 }
 
 .levelreactions {
     display: flex; flex-wrap: wrap;
-    gap: 4px; max-width: 200px;
+    gap: 0.2em; max-width: min(100%,200px);
+    font-size: var(--stat-label-size);
 }
 .levelreaction {
     display: inline-flex; align-items: center;
-    gap: 4px; padding: 3px 6px;
+    gap: 0.2em; padding: 0.15em 0.35em;
     border-radius: 6px; background: rgba(0,0,0,0.4);
-    font-size: 17px;
 }
 .reactionemoji {
-    width: 20px; height: 20px;
-    object-fit: contain; line-height: 20px;
+    width: calc(var(--stat-icon-size) * 0.833); height: calc(var(--stat-icon-size) * 0.833);
+    object-fit: contain;
     -webkit-text-stroke: 0; text-shadow: none;
     font-family: "Segoe UI Emoji",sans-serif;
 }
@@ -218,7 +220,10 @@
     .levelhero {
         grid-template-columns: minmax(0,1fr) clamp(84px,26.7vw,104px) minmax(0,1fr); gap: 8px;
         margin: 8px auto 10px; min-height: 104px;
-        padding-right: 32px; box-sizing: border-box;
+    }
+    .levelstatistics {
+        --stat-icon-size: 18px; --stat-label-size: 15px;
+        padding-right: 24px;
     }
     .levelplay {width: clamp(84px,26.7vw,104px)}
     .levelstat {
@@ -226,13 +231,8 @@
         align-items: baseline; flex-wrap: wrap;
     }
     .levelvalue {font-size: 24px}
-    .levellabel {font-size: 15px}
     .levelinformation {--descriptioninset: 12px}
     .leveldescription {font-size: 23px}
-    .levelreactions {gap: 3px}
-    .levelreaction {
-        padding: 2px 4px; font-size: 15px;
-    }
 }
 
 @media (max-height: 700px) and (min-width: 701px) {
@@ -249,7 +249,7 @@
     .levelname {font-size: 24px}
     .levelauthor {font-size: 17px}
     .levelhero {
-        grid-template-columns: 1fr 94px 1fr; gap: 8px;
+        grid-template-columns: minmax(0,1fr) 94px minmax(0,1fr); gap: 8px;
         margin: 8px auto; min-height: 94px;
     }
     .levelplay {width: 94px}
@@ -258,7 +258,7 @@
         gap: 3px;
     }
     .levelvalue {font-size: 20px}
-    .levellabel {font-size: 13px}
+    .levelstatistics {--stat-label-size: 13px}
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -364,8 +364,8 @@
 .leveldescription {font-size: 21px}
 .levelstaticon {
     display: inline-flex; align-self: center;
-    position: relative; width: 24px;
-    height: 24px; flex-shrink: 0;
+    position: relative; width: var(--stat-icon-size);
+    height: var(--stat-icon-size); flex-shrink: 0;
     isolation: isolate;
 }
 .levelstaticon > img {
@@ -421,9 +421,6 @@
     .leveldescription {font-size: 16px}
     .levelinfotags .leveltag, .levelinfotags .candylabel {font-size: 14px}
     .levelfavourites .levellabel {font-size: 13px}
-    .levelstaticon {
-        width: 18px; height: 18px;
-    }
     .favouritehint {
         width: 74px; left: -12px;
         transform: translateX(var(--hintshift,0px));
@@ -439,11 +436,9 @@
 }
 
 @media (max-width: 380px) {
+    .levelstatistics {--stat-icon-size: 16px; --stat-label-size: 11px}
     .levelstat {gap: 3px}
     .levelvalue {font-size: 20px}
     .levelobjects .levelvalue {font-size: 16px}
     .levellabel, .levelobjects .levellabel, .levelfavourites .levellabel {font-size: 11px}
-    .levelstaticon {
-        width: 16px; height: 16px;
-    }
 }

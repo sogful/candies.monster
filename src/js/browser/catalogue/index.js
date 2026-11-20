@@ -22,7 +22,7 @@ export async function catalogue() {
         return [{
             id: level.id, title: level.title, creator: names.get(level.author?.id) || "Deleted User",
             creatorid: level.author?.id || "", duplicateof: level.duplicateof || null,
-            forum: level.forum || forum,
+            forum: level.forum || forum, locked: level.locked === true,
             contests: Array.isArray(level.contests) ? level.contests : [],
             notable: Array.isArray(level.features) ? level.features : [], levelerror: level.levelerror || null,
             description: level.description || "", file: file ? new URL(`/levels/${level.id}/files/${file.id}`, base).href : "",

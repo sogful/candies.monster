@@ -81,19 +81,23 @@
     padding: 0.1em 0.1em 0.15em 0.25em;
 }
 .candyviewport {
+    --playerwidth: 800px;
     position: relative; width: 100%;
     aspect-ratio: 16 / 9; overflow: hidden;
     border-radius: 7px; min-height: 0;
 }
 .candyviewport .candyframe {
     position: absolute;
-    left: 0; top: 0;
-    width: 640px; height: 360px;
+    left: 50%; top: 50%;
+    width: var(--playerwidth); height: calc(var(--playerwidth) * 0.5625);
     max-width: none; min-height: 0;
-    transform-origin: top left; border-radius: 0;
-    transform: scale(var(--videoscale,1));
+    border-radius: 0;
+    transform: translate(-50%,-50%) scale(var(--videoscale,1));
+}
+@media (max-width: 700px) {
+    .candyviewport {--playerwidth: 640px}
 }
 .candyframe:fullscreen {
     width: 100vw; height: 100vh;
-    transform: none;
+    inset: 0; transform: none;
 }

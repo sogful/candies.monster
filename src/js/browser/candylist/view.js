@@ -89,7 +89,13 @@ export function candyinfo(entry, information) {
     viewport.append(frame);
     video.append(viewport);
     information.append(video);
-    function fit() {viewport.style.setProperty("--videoscale", viewport.clientWidth / 640)}
+    function fit() {
+        const width = parseFloat(getComputedStyle(viewport).getPropertyValue("--playerwidth"));
+        if (!width || !viewport.clientWidth || !viewport.clientHeight) return;
+        const scale = Math.min(viewport.clientWidth / width, viewport.clientHeight / (width * 9 / 16));
+        viewport.style.setProperty("--videoscale", scale);
+    }
+    fit();
     if (window.ResizeObserver) {
         const observer = new ResizeObserver(() => {
             if (!viewport.isConnected) {observer.disconnect(); return}
