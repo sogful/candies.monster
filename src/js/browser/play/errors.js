@@ -1,3 +1,5 @@
+import {reportcrash} from "./diagnostics.js";
+
 let panel;
 let details;
 let copied;
@@ -24,6 +26,7 @@ function create(tag, classname, text) {
 }
 
 export function crash(message, level) {
+    reportcrash(message);
     if (!panel) {
         panel = create("section", "gamefailure");
         panel.setAttribute("role", "alertdialog");
