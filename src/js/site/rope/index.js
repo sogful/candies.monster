@@ -10,6 +10,7 @@ export function morestuff() {
     canvas.setAttribute("aria-hidden", "true");
     root.prepend(canvas);
     const context = canvas.getContext("2d");
+    if (!context) return;
     const rope = strand();
     const hang = 10;
     const lift = {value: 0, velocity: 0};
@@ -33,20 +34,23 @@ export function morestuff() {
     let suppress = false;
 
     function measure() {
-        width = Math.min(400, root.clientWidth - 12);
+        const availablewidth = root.clientWidth;
+        const availableheight = root.parentElement.clientHeight;
+        if (availablewidth <= 12 || !availableheight) return;
+        width = Math.min(400, availablewidth - 12);
         height = width * 940 / 1700;
-        origin = root.clientWidth - width * (1 - 1486 / 1700);
+        origin = availablewidth - width * (1 - 1486 / 1700);
         maximum = height;
         root.style.setProperty("--panelheight", height + "px");
         const scale = Math.min(1.5, devicePixelRatio || 1);
-        canvas.width = Math.round(root.clientWidth * scale);
-        const available = root.parentElement.clientHeight;
-        canvas.height = Math.round(available * scale);
-        canvas.style.height = available + "px";
+        canvas.width = Math.round(availablewidth * scale);
+        canvas.height = Math.round(availableheight * scale);
+        canvas.style.height = availableheight + "px";
         context.setTransform(scale, 0, 0, scale, 0, 0);
         const mount = buckle();
         rope.reset(origin + sway.value, lift.value + hanging(), mount.x, mount.y);
         position();
+        handle.hidden = false;
         wake();
     }
 

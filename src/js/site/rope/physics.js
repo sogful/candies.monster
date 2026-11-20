@@ -52,19 +52,13 @@ export function paint(context, points) {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.lineCap = "round";
     context.lineJoin = "round";
-    context.beginPath();
-    context.moveTo(points[0].x, points[0].y);
-    for (let index = 1; index < points.length; index++) context.lineTo(points[index].x, points[index].y);
-    context.strokeStyle = "#302015";
-    context.lineWidth = 5;
-    context.stroke();
+    context.lineWidth = 3.4;
     for (let index = 1; index < points.length; index++) {
         const start = points[index - 1];
         const end = points[index];
         const brightness = 0.45 + 0.55 * index / (points.length - 1);
         const colors = index % 2 ? [121, 78, 47] : [172, 112, 70];
         context.strokeStyle = "#" + colors.map(value => Math.round(value * brightness).toString(16).padStart(2, "0")).join("");
-        context.lineWidth = 3.4;
         context.beginPath();
         context.moveTo(start.x, start.y);
         context.lineTo(end.x, end.y);

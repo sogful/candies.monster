@@ -28,6 +28,8 @@
     transform: translateY(12px);
 }
 
+.ropehandle[hidden] {display: none}
+
 .ropehandle::before {
     content: ""; display: block;
     width: 32px; height: 28px;
@@ -67,12 +69,13 @@
 
 .linkclose {
     position: absolute; top: 1.2%;
-    right: 4.2%; width: 6%;
+    right: 5%; width: 6%;
     aspect-ratio: 1; z-index: 3;
+    display: grid; place-items: center;
 }
 
 .linkclose img {
-    width: 100%; height: auto;
+    width: 87%; height: auto;
 }
 
 .carousel {
