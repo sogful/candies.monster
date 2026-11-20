@@ -2,6 +2,26 @@ import {createsession} from "./playtest.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+function withspikeassets(xml) {
+    if (!/<(?:[\w.-]+:)?(?:electro|spike[1-4])\b/.test(xml)) return xml;
+    const parsed = new DOMParser().parseFromString(xml, "application/xml");
+    const map = parsed.documentElement;
+    if (map.localName !== "map") return xml;
+    const hazards = Array.from(map.children).flatMap(layer => Array.from(layer.children));
+    const spikes = hazards.filter(node => /^spike[1-4]$/.test(node.localName));
+    const electro = hazards.some(node => node.localName === "electro");
+    const missing = electro ? !spikes.length && "spike1"
+        : spikes.some(node => /^\+?0*5$/.test(node.getAttribute("size")?.trim())) && "electro";
+    if (!missing) return xml;
+    // The resource scanner walks nested XML. Gameplay only loads direct layer children.
+    const layer = map.appendChild(parsed.createElement("previewassets"));
+    const assets = layer.appendChild(parsed.createElement("images"));
+    assets.appendChild(parsed.createElement(missing));
+    return new XMLSerializer().serializeToString(parsed);
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
 export function createcontroller({frame, onerror, onclose, ontoolong, onprogress = () => {}, onready = () => {}, onaction = () => {}, onreload = () => {}}) {
     const session = createsession({onerror, onclose: leave});
     let sequence = 0;
@@ -63,7 +83,7 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
         if (!sources[game]) throw new Error("Unknown preview version.");
         const url = new URL(sources[game], location.origin);
         if (game === "dx") {
-            nonce = session.start(xml);
+            nonce = session.start(withspikeassets(xml));
             url.searchParams.set("playtest", nonce);
         } else {
             url.searchParams.set("data", base64);

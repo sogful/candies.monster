@@ -2483,3 +2483,34 @@ index 8b4234d..dc104c1 100644
  
          /// <summary>
          /// The shader a batch samples this texture through, optionally weighted by the texture's
+diff --git a/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs b/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs
+--- a/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs
++++ b/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs
+@@ -93,10 +93,15 @@
+                     case "spike3":
+                     case "spike4":
+                         _ = resources.Add(Resources.Img.ObjSpikes);
++                        if (ParseIntOrZero(node.Attribute("size")?.Value) == Spikes.ElectrodesWidthIndex)
++                        {
++                            _ = resources.Add(Resources.Img.ObjElectrodes);
++                        }
+                         AddSpikeRotationSounds(resources);
+                         break;
+                     case "electro":
+                         _ = resources.Add(Resources.Img.ObjElectrodes);
++                        _ = resources.Add(Resources.Img.ObjSpikes);
+                         _ = resources.Add(Resources.Snd.Electric);
+                         AddSpikeRotationSounds(resources);
+                         break;
+diff --git a/src/CutTheRopeDX.Core/GameMain/Spikes.cs b/src/CutTheRopeDX.Core/GameMain/Spikes.cs
+--- a/src/CutTheRopeDX.Core/GameMain/Spikes.cs
++++ b/src/CutTheRopeDX.Core/GameMain/Spikes.cs
+@@ -304,7 +304,7 @@
+         private const int StaticSpikeFirstQuad = 8;
+
+         /// <summary>Width/type index used by the electrified spike variant.</summary>
+-        private const int ElectrodesWidthIndex = 5;
++        internal const int ElectrodesWidthIndex = 5;
+
+         /// <summary>Number of button frames per toggle group.</summary>
+         private const int ButtonFramesPerToggle = 2;
