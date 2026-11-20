@@ -265,10 +265,12 @@
     .middleclick {display: none}
     .sidebar {
         --topbar-height: 96px;
+        --navunit: clamp(18px,calc((100vw - 194px) / 6),42px);
+        --navlarge: calc(var(--navunit) * 2 + 2px);
         flex-direction: row; align-items: center;
         width: 100%; height: var(--topbar-height);
         flex: 0 0 var(--topbar-height); padding: 4px 0;
-        gap: 8px; overflow-x: hidden;
+        gap: 3px; overflow-x: hidden;
         overflow-y: hidden; white-space: nowrap;
         pointer-events: none;
         transition: margin-top 260ms ease;
@@ -280,7 +282,7 @@
     .sidebartoggle {
         top: 50%; bottom: auto;
         left: 0; right: auto;
-        width: 24px; height: 18px;
+        width: 19px; height: 18px;
         padding: 0; border-radius: 8px 0 0;
         transform: translateY(-50%);
         transition: top 260ms ease;
@@ -294,15 +296,15 @@
     .navigationhidden .sidebartoggle img {transform: rotate(-90deg)}
     .sitenavigation {
         flex-direction: row; align-items: center;
-        gap: 2px; height: 100%;
+        gap: 0; height: 100%;
         min-width: 0; overflow: auto;
     }
     .sidebarlogo {
-        width: 64px; align-self: center;
+        width: clamp(49px,17.5vw,98px); align-self: center;
     }
     .bignav {
         display: grid; gap: 2px;
-        grid-template-rows: repeat(2,31px); grid-auto-columns: 31px;
+        grid-template-rows: repeat(2,var(--navunit)); grid-auto-columns: var(--navunit);
         grid-auto-flow: column dense;
         order: 1;
     }
@@ -311,47 +313,46 @@
     }
     .bignav .navcompact {
         grid-row: auto; grid-column: auto;
-        width: 31px; height: 31px;
+        width: var(--navunit); height: var(--navunit);
     }
-    .navminimal .sidebarlogo {width: 48px}
     .navlink {
-        width: 64px; height: 64px;
+        width: var(--navlarge); height: var(--navlarge);
         flex-shrink: 0;
     }
     .smallnav {
-        grid-template-columns: repeat(3,31px); grid-template-rows: repeat(2,31px);
+        grid-template-columns: repeat(3,var(--navunit)); grid-template-rows: repeat(2,var(--navunit));
         grid-auto-flow: column; gap: 2px;
         order: 2;
     }
     .smallnav .navlink {
-        width: 31px; height: 31px;
+        width: var(--navunit); height: var(--navunit);
     }
     :not(.oldmode) .sitenavigation.navminimal {
         display: grid; grid-auto-flow: column;
-        grid-template-rows: repeat(2,31px); grid-auto-columns: 31px;
+        grid-template-rows: repeat(2,var(--navunit)); grid-auto-columns: minmax(0,var(--navunit));
         grid-template-columns: max-content;
         align-content: center; justify-content: start;
     }
     :not(.oldmode) .navminimal .sidebarlogo {grid-row: span 2}
+    :not(.oldmode) .navminimal .navlink {
+        width: 100%; height: auto;
+        aspect-ratio: 1;
+    }
     :not(.oldmode) .navminimal .bignav,
     :not(.oldmode) .navminimal .smallnav {display: contents}
-    :not(.oldmode) .navminimal .resourceblurb {
-        grid-row: span 2; grid-column: span 3;
-    }
     .buttonlabel {display: none}
-    .resourceblurb {
-        width: 88px; flex: 0 0 88px;
-        white-space: normal; order: 3;
-    }
-    .sidelinks {
+    html:not(.oldmode) .resourceblurb {display: none}
+    html:not(.oldmode) .sidelinks {
         order: 4; margin-left: auto;
-        align-items: flex-end; position: relative;
-        font-size: 12.5px; padding: 0 5px 0 24px;
-        line-height: 1; box-sizing: border-box;
-        width: auto;
+        position: relative; display: grid;
+        grid-template-rows: repeat(4,auto); grid-auto-flow: column;
+        gap: 2px 5px; align-items: center;
+        font-size: 13.5px; line-height: 1;
+        padding: 0 4px 0 19px; width: auto;
+        box-sizing: border-box;
     }
-    html:not(.oldhome) .sidelinks > :is(a,.buttonstoggle) {
-        align-self: stretch; text-align: right;
+    html:not(.oldmode) .sidelinks > :is(a,.buttonstoggle) {
+        text-align: right;
     }
     .buttondrawer {
         border-radius: 8px;

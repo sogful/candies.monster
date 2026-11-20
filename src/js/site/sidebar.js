@@ -96,15 +96,16 @@ function fitnavigation() {
     const footer = document.querySelector(".ctrhomefooter");
     for (const item of items) item.classList.remove("navcompact");
     scroller.classList.remove("navminimal");
-    blurb.hidden = false;
-    footer.hidden = true;
+    const topbar = compact.matches && !document.documentElement.classList.contains("oldmode");
+    blurb.hidden = topbar;
+    footer.hidden = !topbar;
     const exceeds = () => compact.matches ? scroller.scrollWidth > scroller.clientWidth + 1 : scroller.scrollHeight > scroller.clientHeight + 1;
     for (let index = items.length - 1; index >= 0 && exceeds(); index -= 2) {
         items[index].classList.add("navcompact");
         items[index - 1]?.classList.add("navcompact");
     }
     if (items.every(item => item.classList.contains("navcompact"))) scroller.classList.add("navminimal");
-    if (exceeds()) {blurb.hidden = true; footer.hidden = false}
+    if (!topbar && exceeds()) {blurb.hidden = true; footer.hidden = false}
 }
 
 window.addEventListener("resize", fitnavigation, {passive: true});
