@@ -6,7 +6,10 @@
     const excluded = "script,style,textarea,input,select,option,code,pre,svg,math,[contenteditable],.siteemoji,[data-noemoji]";
     const failed = new Set();
     const pending = new Set();
-    const spritecodes = new Set(["1f4a7", "1f389", "1f383", "26a0", "1fa77", "1f3ae", "1f9ea", "1f4e6", "2b06", "1f385-1f3fb", "1f384", "1f90e", "1f1e7-1f1f4"]);
+    const imagebases = [
+        "https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.3/assets/svg/",
+        "https://raw.githubusercontent.com/jdecked/twemoji/v17.0.3/assets/svg/"
+    ];
     let scheduled = false;
     let parser;
     let names;
@@ -36,9 +39,13 @@
         image.draggable = false;
         image.decoding = "async";
         image.onload = () => {image.title = wrapper.title; wrapper.replaceChildren(image)};
-        image.onerror = () => {failed.add(code)};
-        image.src = "https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.3/assets/svg/" + code + ".svg";
-        wrapper.append(image);
+        let base = 0;
+        image.onerror = () => {
+            base++;
+            if (base < imagebases.length && wrapper.isConnected) image.src = imagebases[base] + code + ".svg";
+            else if (base === imagebases.length) failed.add(code);
+        };
+        image.src = imagebases[base] + code + ".svg";
     }
 
     function spriteimage(wrapper, code, emoji) {
@@ -99,8 +106,7 @@
             wrapper.className = "siteemoji";
             wrapper.textContent = emoji;
             title(wrapper, emoji);
-            if (spritecodes.has(code)) spriteimage(wrapper, code, emoji);
-            else remoteimage(wrapper, code, emoji);
+            spriteimage(wrapper, code, emoji);
             fragment.append(wrapper);
             cursor = offset + emoji.length;
             return emoji;
