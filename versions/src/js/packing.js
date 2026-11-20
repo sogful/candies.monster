@@ -76,11 +76,16 @@ export function packcircle(games, width, height = Infinity, factor = 1) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+export const orbits = [
+    ["zeptoapp", "zeptoapp"], ["androidtv", "android tv"], ["primary", ""],
+    ["amazon", "amazon"], ["tiertwo", "tiertwo"], ["teraleak", "testflight"]
+];
+
 export function packorbits(games, width, height) {
-    const groups = {primary: [], zeptoapp: [], teraleak: []};
-    games.forEach((game, index) => groups[game.circle || "primary"].push({game, index}));
-    const {primary, zeptoapp, teraleak} = groups;
-    if (!zeptoapp.length && !teraleak.length) return packcircle(games, width, height);
+    const groups = new Map(orbits.map(([key]) => [key, []]));
+    games.forEach((game, index) => (groups.get(game.circle) || groups.get("primary")).push({game, index}));
+    const primary = groups.get("primary");
+    if (primary.length === games.length) return packcircle(games, width, height);
 
     const horizontal = width >= height * 1.17;
     const span = horizontal ? width : height;
@@ -88,11 +93,8 @@ export function packorbits(games, width, height) {
     const labelheight = 24;
     const labelwidth = 80;
     const slope = horizontal ? 0.6 : 0.37;
-    const clusters = [
-        {key: "zeptoapp", items: zeptoapp, factor: 0.72},
-        {key: "primary", items: primary, factor: 1},
-        {key: "teraleak", items: teraleak, factor: 0.72}
-    ].filter(cluster => cluster.items.length);
+    const clusters = orbits.map(([key, label]) => ({key, items: groups.get(key), factor: label ? 0.72 : 1}))
+        .filter(cluster => cluster.items.length);
     const weight = cluster => Math.hypot(...cluster.items.map(({game}) => iconsize(game) * cluster.factor));
     const total = clusters.reduce((sum, cluster) => sum + weight(cluster), 0);
     const reserved = horizontal ? 0 : labelheight * (clusters.length - Number(primary.length > 0));

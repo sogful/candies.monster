@@ -1,7 +1,7 @@
 import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./catalogue/load.js";
 import {loadcataloguedata} from "./catalogue/data.js";
 import {loadversions} from "./catalogue/versions.js";
-import {packorbits} from "./packing.js";
+import {orbits, packorbits} from "./packing.js";
 import {downloadflags} from "./catalogue.js";
 import {updatecounts} from "./counts.js";
 import {startsearch} from "./search.js";
@@ -67,7 +67,7 @@ function platformfailure(platform, error) {
 
 function prepareplatform(platform) {
     if (platform.games || platform.text == null) return;
-    const parsed = parsegamescsv(platform.text);
+    const parsed = parsegamescsv(platform.text, platform.name === "android" && platform.layer !== "fangames");
     if (!parsed.games.length && platform.layer === "omnom") throw new Error(`No games in ${platform.url}`);
     platform.games = parsed.games.map(game => ({...game, layer: platform.layer, platform: platform.name}));
     platform.games.sort((first, second) => {
@@ -84,7 +84,7 @@ function prepareplatform(platform) {
         const keys = Array.isArray(key) ? key : [key];
         const downloads = keys.flatMap(value => (platform.cache.get(value) || []).flatMap(version => version.downloads));
         game.available = hasdownload(downloads);
-        game.circle = gamecircle(downloads);
+        game.circle = game.channel || gamecircle(downloads);
     });
     updatecounts(platform.layer, platform.name, platform.cache);
     platform.text = null;
@@ -140,8 +140,8 @@ function mountplatform(platform) {
             return icon;
         });
         platform.orbitlabels = new Map();
-        for (const [key, text] of [["zeptoapp", "zeptoapp"], ["teraleak", "testflight"]]) {
-            if (!platform.games.some(game => game.circle === key)) continue;
+        for (const [key, text] of orbits) {
+            if (!text || !platform.games.some(game => game.circle === key)) continue;
             const label = document.createElement("span");
             label.className = "orbitlabel";
             label.dataset.circle = key;
@@ -277,8 +277,9 @@ function activateplatform(platform, scroll = true, write = true, animate = false
     platformarrow(right, group.platforms[index + 1]);
     void fetchplatform(platform);
     const offset = platform.screen.offsetLeft;
-    scrolltarget = scroll && Math.abs(platform.container.scrollLeft - offset) > 1 ? platform : null;
-    if (changed || scroll) platform.container.scrollTo({left: offset, behavior: changed ? "instant" : "smooth"});
+    const animated = scroll && !changed && !matchMedia("(max-width: 650px), (pointer: coarse), (prefers-reduced-motion: reduce)").matches;
+    scrolltarget = animated && Math.abs(platform.container.scrollLeft - offset) > 1 ? platform : null;
+    if (changed || scroll) platform.container.scrollTo({left: offset, behavior: animated ? "smooth" : "instant"});
 }
 
 async function selectgame(game, write = true) {
@@ -386,6 +387,10 @@ async function restoreview(route) {
             return;
         }
         let game = platform.games?.find(item => item.routekey === route.game);
+        if (route.package && ![game?.package].flat().includes(route.package)) {
+            const satellite = platform.games?.find(item => item.channel && [item.package].flat().some((_, index) => packagekey(item, index) === route.package));
+            if (satellite) game = satellite;
+        }
         if (!game && route.game) {
             game = platform.games?.find(item => (Array.isArray(item.package) ? item.package : [item.package]).includes(route.game));
             if (game) {

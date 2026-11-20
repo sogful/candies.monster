@@ -339,7 +339,7 @@ export async function roommodel(canvas) {
     });
     canvas.addEventListener("pointermove", event => {
         if (event.pointerId !== pointer) return;
-        turnx += (event.clientX - lastx) * 0.014;
+        turnx -= (event.clientX - lastx) * 0.014;
         turny += (event.clientY - lasty) * 0.014;
         lastx = event.clientX;
         lasty = event.clientY;

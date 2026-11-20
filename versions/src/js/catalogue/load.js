@@ -40,7 +40,7 @@ function cleanvalue(v) {
 }
 
 function hasdownload(downloads) {
-    return (downloads || []).some(download => cleanvalue(download?.url) && download.kind !== "symbols");
+    return (downloads || []).some(download => cleanvalue(download?.url) && !["symbols", "evidence"].includes(download.kind));
 }
 
 function resolveiconpath(p, size = 64) {
@@ -116,7 +116,14 @@ function appendtogroup(basegame, entry, line) {
     basegame.pkgIconsList.push(extras);
 }
 
-function parsegamescsv(text) {
+function releasechannel(pkg, description) {
+    if (/\b(?:android|fire) tv\b/i.test(description)) return "androidtv";
+    if (/(?:^|\.)tiertwo(?:\.|$)/i.test(pkg) || /^tiertwo\b/i.test(description)) return "tiertwo";
+    if (/(?:^|\.)amazon(?:\.|$)/i.test(pkg) || /^amazon\b/i.test(description)) return "amazon";
+    return "";
+}
+
+function parsegamescsv(text, separateandroid = false) {
     const rows = parsecsv(text);
     if (rows.length === 0) return {games: [], versionscache: new Map()};
 
@@ -124,6 +131,8 @@ function parsegamescsv(text) {
     const bypackage = new Map();
     let currentgame = null;
     let currentversion = null;
+    let currentgroup = null;
+    const family = new Map();
 
     for (let r = 0; r < rows.length; r++) {
         const line = rows[r];
@@ -148,6 +157,9 @@ function parsegamescsv(text) {
             const grouped = c0.startsWith("+ ");
             const gameimp = parseInt(c4, 10);
             const pkg = c1;
+            const channel = separateandroid ? releasechannel(pkg, c3) : "";
+            if (!grouped) family.clear();
+            const base = family.get(channel);
             let verkey = pkg || `__empty_${r}`;
             if (bypackage.has(verkey)) verkey = `${verkey}#${r}`;
             const extras = parsepackageiconcolumns(line, pkg);
@@ -160,17 +172,17 @@ function parsegamescsv(text) {
                 icon: resolvegameicon(pkg, c2),
                 importance: Number.isNaN(gameimp) ? 0 : gameimp,
                 description: c3,
-                pkgIconsList: grouped ? null : [extras]
+                channel, pkgIconsList: base ? null : [extras]
             };
-            if (grouped && parsedgames.length > 0) {
-                const base = parsedgames[parsedgames.length - 1];
+            if (base) {
                 appendtogroup(base, entry, line);
                 base.importance = Math.max(base.importance || 0, entry.importance);
-                currentgame = entry;
             } else {
                 parsedgames.push(entry);
-                currentgame = entry;
+                family.set(channel, entry);
             }
+            currentgroup = base || entry;
+            currentgame = entry;
             bypackage.set(verkey, []);
             currentversion = null;
             continue;
@@ -193,10 +205,7 @@ function parsegamescsv(text) {
 
             const rowimportance = parseInt(c4, 10);
             if (!Number.isNaN(rowimportance)) {
-                const lastgroup = parsedgames[parsedgames.length - 1];
-                if (lastgroup && typeof lastgroup.importance === "number") {
-                    lastgroup.importance = Math.max(lastgroup.importance, rowimportance);
-                }
+                currentgroup.importance = Math.max(currentgroup.importance, rowimportance);
             }
             if (c3) {
                 currentversion.downloads.push({url: c3, arch: c5, size: c6, kind, label, note, flags});

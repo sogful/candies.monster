@@ -59,7 +59,8 @@ export function startlayers() {
         arrow(above, groups[index - 1]);
         arrow(below, groups[index + 1]);
         positionabove();
-        viewport.scrollTo({top: group.element.offsetTop, behavior: animate && !reduced.matches ? "smooth" : "instant"});
+        const mobile = matchMedia("(max-width: 650px), (pointer: coarse)").matches;
+        viewport.scrollTo({top: group.element.offsetTop, behavior: animate && !mobile && !reduced.matches ? "smooth" : "instant"});
     }
 
     return {groups, show};
