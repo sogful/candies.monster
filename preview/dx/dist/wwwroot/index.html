@@ -543,7 +543,10 @@
                 reported = true;
 
                 if (globalThis.parent !== globalThis) {
-                    globalThis.ctrdxpreviewerror(`${id}: ${typeof detail === "string" ? detail : detail?.message || "Game could not load."}`);
+                    const message = typeof detail === "string" ? detail : detail?.message || "Game could not load.";
+                    const name = typeof detail?.name === "string" ? detail.name + ": " : "";
+                    const stack = typeof detail?.stack === "string" ? "\n" + detail.stack : "";
+                    globalThis.ctrdxpreviewerror(`${id}: ${name}${message}${stack}`);
                 }
 
                 console.error(`ctrdx-boot-failure: ${id}`, detail ?? "");

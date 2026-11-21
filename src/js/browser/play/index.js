@@ -23,6 +23,7 @@ export function player() {
     let status = null;
     let timeout;
     let selected = null;
+    let stage = "";
 
     function stop(focus = false) {
         sequence++;
@@ -33,6 +34,7 @@ export function player() {
         frame.inert = true;
         frame.setAttribute("aria-hidden", "true");
         progress.stop();
+        stage = "";
         if (focus && control?.isConnected) control.focus({preventScroll: true});
         control = status = selected = null;
     }
@@ -40,9 +42,13 @@ export function player() {
     function fail(error) {
         const message = status;
         const title = selected ? selected.title + " by " + selected.creator : "";
+        const context = {phase: root.classList.contains("gameopen") ? "gameplay" : "loading", stage};
+        if (typeof error === "string" && error) {
+            try {context.quality = frame.contentWindow?.ctrdxquality?.get()} catch {}
+        }
         stop();
         if (message?.isConnected) message.textContent = "game could not load. try again.";
-        if (typeof error === "string" && error) crash(error, title);
+        if (typeof error === "string" && error) crash(error, title, context);
     }
 
     function watch() {
@@ -55,13 +61,15 @@ export function player() {
         onclose: () => stop(true),
         onprogress(value) {
             if (!root.classList.contains("gameloading")) return;
-            const stage = {runtime: "game", metadata: "level", images: "images", sounds: "audio"}[value.stage] || "preparing game";
+            stage = value.stage;
+            const label = {runtime: "game", metadata: "level", images: "images", sounds: "audio"}[stage] || "preparing game";
             const counts = Number.isFinite(value.loaded) && value.total > 0 ? ` ${value.loaded}/${value.total}` : "";
-            progress.update(value.percent, stage + counts);
+            progress.update(value.percent, label + counts);
             watch();
         },
         onreload() {
             if (!selected || !control) return;
+            stage = "";
             root.classList.remove("gameopen");
             root.classList.add("gameloading");
             frame.inert = true;
@@ -72,6 +80,7 @@ export function player() {
         },
         onready() {
             if (!root.classList.contains("gameloading")) return;
+            stage = "";
             clearTimeout(timeout);
             const entry = selected;
             if (entry) rememberlevel(entry);

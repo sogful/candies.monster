@@ -632,12 +632,15 @@ index 6facf5d..d7c63ee 100644
              };
              // The failure seam lives here, not in main.js, because main.js reaches its own
              // first statement only after its static imports have been fetched and evaluated.
-@@ -531,6 +542,10 @@
+@@ -531,6 +542,13 @@
                  }
                  reported = true;
  
 +                if (globalThis.parent !== globalThis) {
-+                    globalThis.ctrdxpreviewerror(`${id}: ${typeof detail === "string" ? detail : detail?.message || "Game could not load."}`);
++                    const message = typeof detail === "string" ? detail : detail?.message || "Game could not load.";
++                    const name = typeof detail?.name === "string" ? detail.name + ": " : "";
++                    const stack = typeof detail?.stack === "string" ? "\n" + detail.stack : "";
++                    globalThis.ctrdxpreviewerror(`${id}: ${name}${message}${stack}`);
 +                }
 +
                  console.error(`ctrdx-boot-failure: ${id}`, detail ?? "");

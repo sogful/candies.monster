@@ -25,8 +25,8 @@ function create(tag, classname, text) {
     return element;
 }
 
-export function crash(message, level) {
-    reportcrash(message);
+export function crash(message, level, context) {
+    reportcrash(message, context);
     if (!panel) {
         panel = create("section", "gamefailure");
         panel.setAttribute("role", "alertdialog");
