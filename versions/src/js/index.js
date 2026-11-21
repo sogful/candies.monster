@@ -1,6 +1,7 @@
 import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./catalogue/load.js";
 import {loadcataloguedata} from "./catalogue/data.js";
-import {loadversions} from "./catalogue/versions.js";
+import {loadversions, versionsfor} from "./catalogue/versions.js";
+import {platformbadges, releaseplatform} from "./catalogue/platforms.js";
 import {orbits, packorbits} from "./packing.js";
 import {downloadflags} from "./catalogue.js";
 import {updatecounts} from "./counts.js";
@@ -135,6 +136,7 @@ function mountplatform(platform) {
             const source = (Array.isArray(game.icon) ? game.icon[0] : game.icon) || "unknown/default";
             image.dataset.source = source;
             icon.appendChild(image);
+            if (game.system) icon.insertAdjacentHTML("beforeend", platformbadges(releaseplatform(game.system).icons));
             elements.set(icon, game);
             fragment.appendChild(icon);
             return icon;
@@ -387,6 +389,14 @@ async function restoreview(route) {
             return;
         }
         let game = platform.games?.find(item => item.routekey === route.game);
+        if (route.version && !route.package) {
+            const migrated = platform.games?.find(item => item.legacyroute && item.legacyroute === route.game &&
+                versionsfor(platform.cache, item.verkey).some(version => version.version === route.version));
+            if (migrated) {
+                game = migrated;
+                route = {...route, game: game.routekey};
+            }
+        }
         if (route.package && ![game?.package].flat().includes(route.package)) {
             const satellite = platform.games?.find(item => item.channel && [item.package].flat().some((_, index) => packagekey(item, index) === route.package));
             if (satellite) game = satellite;

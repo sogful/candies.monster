@@ -1,7 +1,7 @@
 import {packagekey, shareheading} from "../links.js";
 import {downloadattribute, downloadidentity, orbitdescription, renderdownloads, secondarydownload} from "./downloads.js";
 import {hasdownload, resolveiconpath, resolveiconsrcset, resolverawiconpath, resolveversionlabel} from "./load.js";
-import {releaseplatform} from "./platforms.js";
+import {platformbadges, releaseplatform} from "./platforms.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -167,7 +167,7 @@ export function versionpanel(version, fallback, legacy, game, index) {
     const source = version.icon || (historical && legacyicons?.[version.version]) || fallback || "ctr/free";
     const icon = resolveiconpath(source, iconpixels(50));
     const srcset = resolveiconsrcset(source, iconpixels(50));
-    const badges = release.icons.map(name => `<svg class="platformbadge" width="16" height="16" aria-hidden="true"><use href="/assets/images/icons/platforms/releases.svg#${name}"></use></svg>`).join("");
+    const badges = platformbadges(release.icons);
     const title = downloadattribute(version.version);
     const label = downloadattribute(release.label);
     const details = orbitdescription(version.details, game.circle);
@@ -175,7 +175,7 @@ export function versionpanel(version, fallback, legacy, game, index) {
         <div class="versionidentity" style="--platformbadges:${release.icons.length}">
         <a class="versionicon clickable" href="${downloadattribute(resolverawiconpath(source))}" target="_blank" rel="noopener" title="${title}" aria-label="open original icon for ${title}">
             <img src="${icon}" srcset="${srcset}" alt="" draggable="false" loading="lazy" decoding="async" width="60" height="60"${historical ? ` data-legacyversion="${version.version}"` : ""}>
-            ${badges ? `<span class="platformbadges">${badges}</span>` : ""}
+            ${badges}
         </a>
             <div class="version" style="--versionlength:${release.label.length || 1}">${label}</div>
         </div>

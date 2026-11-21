@@ -39,3 +39,8 @@ export function releaseplatform(version) {
     const [name, icons] = platform;
     return {label: resolveversionlabel(version.slice(name.length)), icons};
 }
+
+export function platformbadges(icons) {
+    if (!icons.length) return "";
+    return `<span class="platformbadges">${icons.map(name => `<svg class="platformbadge" width="16" height="16" aria-hidden="true"><use href="/assets/images/icons/platforms/releases.svg#${name}"></use></svg>`).join("")}</span>`;
+}
