@@ -340,6 +340,58 @@ document.addEventListener("click", event => {
     }
 });
 
+const viewport = document.querySelector(".archiveviewport");
+const info = document.querySelector(".archiveinfo");
+const layerup = document.querySelector(".layerup");
+const layerdown = document.querySelector(".layerdown");
+let swipe = null;
+
+viewport.addEventListener("touchstart", event => {
+    swipe = null;
+    const screen = activeplatform.screen;
+    if (event.touches.length !== 1 || currentgame || search?.shown || info.open || !screen.contains(event.target)) return;
+    const touch = event.touches[0];
+    swipe = {
+        screen, x: touch.clientX, y: touch.clientY, id: touch.identifier,
+        top: screen.scrollTop <= 1,
+        bottom: screen.scrollTop + screen.clientHeight >= screen.scrollHeight - 1
+    };
+}, {passive: true});
+
+viewport.addEventListener("touchmove", event => {
+    if (!swipe || event.touches.length !== 1) return;
+    if (!swipe.arrow) {
+        const touch = event.touches[0];
+        const dx = touch.clientX - swipe.x;
+        const dy = touch.clientY - swipe.y;
+        if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
+        if (Math.abs(dx) > Math.abs(dy) * 1.25) {
+            swipe.axis = "x";
+            swipe.arrow = dx < 0 ? right : left;
+        } else if (Math.abs(dy) > Math.abs(dx) * 1.25) {
+            swipe.axis = "y";
+            swipe.arrow = dy < 0 ? (swipe.bottom && layerdown) : (swipe.top && layerup);
+        } else return;
+        if (!swipe.arrow || swipe.arrow.hidden) {swipe = null; return}
+        swipe.direction = Math.sign(swipe.axis === "x" ? dx : dy);
+    }
+    if (event.cancelable) event.preventDefault();
+});
+
+viewport.addEventListener("touchend", event => {
+    const gesture = swipe;
+    swipe = null;
+    if (!gesture?.arrow || gesture.arrow.hidden || gesture.screen !== activeplatform.screen
+        || currentgame || search?.shown || info.open) return;
+    const touch = Array.from(event.changedTouches).find(item => item.identifier === gesture.id);
+    if (!touch) return;
+    const distance = gesture.axis === "x" ? touch.clientX - gesture.x : touch.clientY - gesture.y;
+    if (distance * gesture.direction < 56) return;
+    if (event.cancelable) event.preventDefault();
+    gesture.arrow.click();
+});
+viewport.addEventListener("touchcancel", () => {swipe = null}, {passive: true});
+
 for (const group of layers.groups) {
     const container = group.container;
     function scrollplatform(event) {

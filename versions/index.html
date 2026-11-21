@@ -224,11 +224,11 @@
             position: relative;
             width: 100vw; height: 100vh; min-height: 100vh;
             overflow-x: auto; overflow-y: hidden;
-            scroll-behavior: smooth;
+            scroll-behavior: smooth; touch-action: pan-y pinch-zoom;
             -webkit-overflow-scrolling: touch;
         }
         @media (max-width: 650px) {
-            .container {overflow-x: hidden; touch-action: pan-y pinch-zoom}
+            .container {overflow-x: hidden}
         }
 
         .gamepanels {
