@@ -10,6 +10,13 @@
         {"domain": "4pda.ru", "icon": "4pda"},
         {"domain": "apkbe.com", "icon": "apkbe"},
         {"domain": "downzen.com", "icon": "downzen"},
+        {"domain": "rutracker.org", "icon": "rutracker"},
+
+        {"domain": "nintendo.com", "icon": "eshop"},
+        {"domain": "appgallery.huawei.com", "icon": "appgallery"},
+        {"domain": "appgallery.cloud.huawei.com", "icon": "appgallery"},
+        {"domain": "apps.apple.com", "icon": "appstore"},
+        {"domain": "itunes.apple.com", "icon": "appstore"},
 
         {"domain": "drive.google.com", "icon": "googledrive"},
         {"domain": "drive.usercontent.google.com", "icon": "googledrive"},
@@ -49,6 +56,7 @@
         "symbols.webp"
     ],
     "symbols": "symbols.webp",
+    "torrent": "rutracker.webp",
     "fallback": "other.webp",
     "mirrors": [
         {"prefix": "https://cdn.candies.monster/apks/", "contains": "/4pda/", "button": "4pda.webp"},

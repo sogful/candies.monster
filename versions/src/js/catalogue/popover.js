@@ -129,10 +129,15 @@ function showpopup(button) {
         warning.append(icon, textnode("span", "downloadwarningtext", data.downloadwarning));
         popup.appendChild(warning);
     }
-    for (const address of downloadurls(button)) {
-        const url = textnode("a", "downloadurl clickable", address);
+    const links = downloadurls(button).map(address => [address, address]);
+    if (data.downloadtopic) {
+        links[0][1] = button.href.startsWith("magnet:") ? "Magnet link" : "Torrent file";
+        links.push([data.downloadtopic, "Torrent topic"]);
+    }
+    for (const [address, label] of links) {
+        const url = textnode("a", "downloadurl clickable", label);
         url.href = address;
-        url.target = "_blank";
+        if (!address.startsWith("magnet:")) url.target = "_blank";
         url.rel = "noopener";
         popup.appendChild(url);
     }

@@ -23,6 +23,7 @@ function downloadbutton(download) {
     const mirror = downloadbuttons.mirrors.find(item => url.startsWith(item.prefix) && url.includes(item.contains));
     if (download.kind !== "symbols" && mirror) return mirror.button;
     if (download.kind === "symbols") return downloadbuttons.symbols;
+    if (download.kind === "torrent") return downloadbuttons.torrent;
     if (download.button) return download.button;
     let hostname = "";
     try {hostname = new URL(download.url).hostname.toLowerCase()} catch {}
@@ -60,9 +61,10 @@ function downloadnote(value, game, symbols) {
 
 function renderdownloadbutton(download, version, description, game) {
     const button = downloadbutton(download);
+    const magnet = download.url.startsWith("magnet:");
     let hostname = "";
     try {hostname = new URL(download.url).hostname} catch {}
-    const source = hostname || "Download";
+    const source = magnet ? "Magnet link" : hostname || "Download";
     const zeptoapp = download.flags?.split(/\s+/).includes("zeptoapp") ? "zeptoapp" : "";
     const symbols = download.kind === "symbols";
     const notes = [zeptoapp, description, symbols ? "" : download.label, download.note]
@@ -76,11 +78,12 @@ function renderdownloadbutton(download, version, description, game) {
         version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
         symbols: symbols ? (download.label || "symbols").replace(/^\((.*)\)$/, "$1") : "",
         urls: download.urls?.length > 1 ? JSON.stringify(download.urls) : "",
+        topic: download.topic || "",
         warning
     };
     const metadata = Object.entries(information).filter(([, value]) => value).map(([key, value]) => `data-download${key}="${downloadattribute(value)}"`).join(" ");
     const compact = secondarydownload(download) ? " smallsource" : "";
-    return `<a class="downloadbutton clickable${compact}" href="${downloadattribute(download.url)}" target="_blank" rel="noopener" aria-label="${downloadattribute(`${source} ${version}`)}" aria-haspopup="dialog" ${metadata}>
+    return `<a class="downloadbutton clickable${compact}" href="${downloadattribute(download.url)}"${magnet ? "" : ' target="_blank"'} rel="noopener" aria-label="${downloadattribute(`${source} ${version}`)}" aria-haspopup="dialog" ${metadata}>
         <img src="/assets/images/buttons/download/${downloadattribute(button)}" alt="" draggable="false" loading="lazy" decoding="async" width="24" height="24">
     </a>`;
 }

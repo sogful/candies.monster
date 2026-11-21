@@ -151,6 +151,7 @@ function parsegamescsv(text, separateandroid = false) {
         const label = cleanvalue(line[8]);
         const note = cleanvalue(line[9]);
         const flags = cleanvalue(line[10]);
+        const topic = kind === "torrent" && /^https:\/\/rutracker\.org\/forum\/viewtopic\.php\?t=\d+$/.test(line[11]) ? line[11] : "";
 
         if (!c0 && !c1 && !c2 && !c3 && !c4 && !c5 && !c6) continue;
         if (c0) {
@@ -164,8 +165,12 @@ function parsegamescsv(text, separateandroid = false) {
             if (bypackage.has(verkey)) verkey = `${verkey}#${r}`;
             const extras = parsepackageiconcolumns(line, pkg);
             const route = line.find((value, index) => index >= 5 && value.startsWith("route="));
+            const legacy = line.find((value, index) => index >= 5 && value.startsWith("legacyroute="));
+            const system = line.find((value, index) => index >= 5 && value.startsWith("system="));
             const entry = {
                 routekey: route?.slice(6).trim() || "",
+                legacyroute: legacy?.slice(12).trim() || "",
+                system: system?.slice(7).trim() || "",
                 name: grouped ? c0.slice(2).trim() : c0,
                 package: pkg,
                 verkey: verkey,
@@ -208,12 +213,12 @@ function parsegamescsv(text, separateandroid = false) {
                 currentgroup.importance = Math.max(currentgroup.importance, rowimportance);
             }
             if (c3) {
-                currentversion.downloads.push({url: c3, arch: c5, size: c6, kind, label, note, flags});
+                currentversion.downloads.push({url: c3, arch: c5, size: c6, kind, label, note, flags, topic});
             }
             continue;
         }
         if (currentversion && c3) {
-            currentversion.downloads.push({url: c3, arch: c5, size: c6, kind, label, note, flags});
+            currentversion.downloads.push({url: c3, arch: c5, size: c6, kind, label, note, flags, topic});
         }
     }
     return {games: parsedgames, versionscache: bypackage};
