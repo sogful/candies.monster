@@ -2484,9 +2484,10 @@ index 8b4234d..dc104c1 100644
          /// <summary>
          /// The shader a batch samples this texture through, optionally weighted by the texture's
 diff --git a/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs b/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs
+index e308e0b..84fbf40 100644
 --- a/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs
-@@ -93,10 +93,15 @@
+@@ -93,10 +93,15 @@ namespace CutTheRopeDX.GameMain
                      case "spike3":
                      case "spike4":
                          _ = resources.Add(Resources.Img.ObjSpikes);
@@ -2502,11 +2503,7 @@ diff --git a/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs b/src/CutThe
                          _ = resources.Add(Resources.Snd.Electric);
                          AddSpikeRotationSounds(resources);
                          break;
-@@ -113,9 +118,21 @@
-                         break;
-                     case "sock":
-                         AddSockResources(resources, node);
-                         break;
+@@ -118,6 +123,18 @@ namespace CutTheRopeDX.GameMain
                      case "ghost":
                          _ = resources.Add(Resources.Img.ObjGhost);
                          _ = resources.Add(Resources.Snd.GhostPuff);
@@ -2524,6 +2521,20 @@ diff --git a/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs b/src/CutThe
 +
                          break;
                      case "rocket":
+                         _ = resources.Add(Resources.Img.ObjRocket);
+@@ -465,7 +482,9 @@ namespace CutTheRopeDX.GameMain
+             else
+             {
+                 skin = OmNomSkinRegistry.GetXmlSkinDefinition(skinIndex);
+-                _ = string.Equals(skin.Id, "OM_NOM_PREHISTORIC", StringComparison.Ordinal)
+-                    ? resources.Add(Resources.Img.CharAnimationsPrehistoric)
+-                    : resources.Add(Resources.Img.CharAnimationsSmooth);
++                _ = resources.Add(Resources.Img.CharAnimationsSmooth);
++                if (string.Equals(skin.Id, "OM_NOM_PREHISTORIC", StringComparison.Ordinal))
++                {
++                    _ = resources.Add(Resources.Img.CharAnimationsPrehistoric);
++                }
+             }
 diff --git a/src/CutTheRopeDX.Core/GameMain/Spikes.cs b/src/CutTheRopeDX.Core/GameMain/Spikes.cs
 --- a/src/CutTheRopeDX.Core/GameMain/Spikes.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/Spikes.cs
