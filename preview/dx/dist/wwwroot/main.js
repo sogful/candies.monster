@@ -1,6 +1,7 @@
 import * as hostEvents from "./host-events.js";
 import * as audio from "./audio.js";
 import { setLoadingProgress } from "./loading-progress.js";
+import {assetloadfailure} from "./fetch.js";
 import {
     parseModeQuery,
     probeEnvironment,
@@ -74,7 +75,7 @@ try {
     // Content preload failures land here too, not just runtime ones: a phone that loses its
     // connection partway through the asset catalog throws from managed code, and without
     // this the player watches the spinner for as long as they are willing to.
-    fail("boot-error", error);
+    fail("boot-error", assetloadfailure ?? error);
     throw error;
 }
 

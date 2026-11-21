@@ -76,3 +76,50 @@ test("reports retain the stage, known reason and shipped code location", () => {
     assert.equal(diagnostic("boot-error: Error: System.InvalidOperationException: Could not preload content 'images/obj_bouncer.webp'."),
         "boot-error: System.InvalidOperationException asset: images/obj_bouncer.webp\nreason: asset preload failed");
 });
+
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+test("image preload retries a failed response body and falls back when a preset image is missing", async () => {
+    const root = "../../../../preview/dx/dist/wwwroot/";
+    const fetchsource = readFileSync(new URL(root + "fetch.js", import.meta.url), "utf8");
+    const bytes = readFileSync(new URL(root + "content/medium/images/hud_ui.webp", import.meta.url));
+    const file = "./content/images/hud_ui.webp";
+    const preset = "./content/medium/images/hud_ui.webp";
+    const responses = [
+        {ok: true, arrayBuffer: async () => {throw new TypeError("interrupted body")}},
+        new Response(bytes),
+        new Response(null, {status: 404}),
+        new Response(bytes),
+        new Response("<html>unexpected success page</html>"),
+        new Response("<html>unexpected success page</html>"),
+        new Response(null, {status: 503})
+    ];
+    const calls = [];
+    const context = {
+        ctrdxquality: {url: () => preset},
+        fetch: async (url, options) => {
+            calls.push([url, options?.cache]);
+            return responses.shift();
+        }
+    };
+    vm.runInNewContext(fetchsource.replace(/^import.*\n/m, "").replace(/^export /gm, "")
+        + "\nObject.assign(globalThis, {fetchBytes, takeStashed, failure: () => assetloadfailure});", context);
+    assert.equal(await context.fetchBytes(file), bytes.length);
+    const output = new Uint8Array(bytes.length);
+    assert.equal(context.takeStashed(file, output), bytes.length);
+    assert.deepEqual(Buffer.from(output), bytes);
+    assert.equal(await context.fetchBytes(file), bytes.length);
+    assert.equal(context.failure(), null);
+    assert.equal(await context.fetchBytes(file), -1);
+    assert.equal(responses.length, 0);
+    assert.deepEqual(calls, [
+        [preset, undefined], [preset, "reload"],
+        [preset, undefined], [file, undefined],
+        [preset, undefined], [preset, "reload"], [file, undefined]
+    ]);
+    assert.equal(diagnostic("boot-error: Error: " + context.failure().message),
+        "boot-error: Error asset: images/hud_ui.webp\nreason: asset request failed\nstatus: 503");
+    assert.equal(diagnostic("boot-error: Error: Could not preload content 'images/hud_ui.webp'.\nreason: asset request failed\nstatus: 503 private"),
+        "boot-error: Error asset: images/hud_ui.webp\nreason: asset request failed");
+});

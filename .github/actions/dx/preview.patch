@@ -489,19 +489,65 @@ index 176f532..26f941f 100644
 +    surface.addEventListener("contextmenu", (event) => event.preventDefault());
 +}
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/fetch.js b/src/CutTheRopeDX.Browser/wwwroot/fetch.js
-index 88fce30..1186138 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/fetch.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/fetch.js
-@@ -7,7 +7,7 @@ import { setLoadingProgress } from "./loading-progress.js";
+@@ -6,14 +6,50 @@
+
  const stash = new Map();
  
++export let assetloadfailure = null;
++
++function webpheader(bytes) {
++    return bytes.length >= 20
++        && bytes[0] === 82 && bytes[1] === 73 && bytes[2] === 70 && bytes[3] === 70
++        && bytes[8] === 87 && bytes[9] === 69 && bytes[10] === 66 && bytes[11] === 80
++        && new DataView(bytes.buffer).getUint32(4, true) + 8 === bytes.length;
++}
++
++async function requestasset(url, webp, cache) {
++    try {
++        const response = await fetch(url, cache ? {cache} : undefined);
++        if (!response.ok) {
++            return {reason: "asset request failed", status: response.status};
++        }
++        const bytes = new Uint8Array(await response.arrayBuffer());
++        if (bytes.length && (!webp || webpheader(bytes))) return {bytes};
++        return {reason: "asset response invalid"};
++    } catch {
++        return {reason: "network fetch failed"};
++    }
++}
++
  export async function fetchBytes(url) {
 -    const response = await fetch(url);
-+    const response = await fetch(globalThis.ctrdxquality?.url(url) ?? url);
-     if (!response.ok) {
+-    if (!response.ok) {
++    const asset = url.match(/^\.\/content\/((?:images|fonts)\/[\w/-]+\.(?:webp|png|ttf|otf))$/i)?.[1];
++    const webp = asset?.endsWith(".webp");
++    const selected = globalThis.ctrdxquality?.url(url) ?? url;
++    let result = await requestasset(selected, webp);
++    if (!result.bytes && (!result.status || result.status === 408 || result.status >= 500)) {
++        result = await requestasset(selected, webp, "reload");
++    }
++    if (webp && selected !== url && (result.status === 404 || result.status === 410 || result.reason === "asset response invalid")) {
++        result = await requestasset(url, webp);
++    }
++    if (!result.bytes) {
++        if (asset && !assetloadfailure) {
++            const status = result.status ? "\nstatus: " + result.status : "";
++            assetloadfailure = new Error(`Could not preload content '${asset}'.\nreason: ${result.reason}${status}`);
++        }
          return -1;
      }
-@@ -27,7 +27,7 @@ export function takeStashed(url, destination) {
+-    const bytes = new Uint8Array(await response.arrayBuffer());
+-    stash.set(url, bytes);
+-    return bytes.length;
++
++    stash.set(url, result.bytes);
++    return result.bytes.length;
+ }
+
+ export function takeStashed(url, destination) {
+@@ -27,7 +63,7 @@
  }
  
  export async function fetchText(url) {
@@ -661,16 +707,17 @@ index 6e4c7e8..481bad3 100644
 +    return new URLSearchParams(globalThis.location.search).get(name);
 +}
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/main.js b/src/CutTheRopeDX.Browser/wwwroot/main.js
-index a05c64d..3de9809 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/main.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/main.js
-@@ -1,4 +1,5 @@
+@@ -1,5 +1,7 @@
  import * as hostEvents from "./host-events.js";
 +import * as audio from "./audio.js";
  import { setLoadingProgress } from "./loading-progress.js";
++import {assetloadfailure} from "./fetch.js";
  import {
      parseModeQuery,
-@@ -23,7 +24,7 @@ if (requested.raw !== null && requested.mode === null) {
+     probeEnvironment,
+@@ -23,7 +25,7 @@
          `ctrdx: ignoring ?mode=${requested.raw}; expected single or multi`,
      );
  }
@@ -679,7 +726,16 @@ index a05c64d..3de9809 100644
  if (requested.mode !== null && requested.mode !== choice.mode) {
      console.warn(
          `ctrdx: ?mode=${requested.raw} cannot run here; using ${choice.mode}`,
-@@ -107,9 +108,12 @@ const sendPointer = (event, phase) => {
+@@ -73,7 +75,7 @@
+     // Content preload failures land here too, not just runtime ones: a phone that loses its
+     // connection partway through the asset catalog throws from managed code, and without
+     // this the player watches the spinner for as long as they are willing to.
+-    fail("boot-error", error);
++    fail("boot-error", assetloadfailure ?? error);
+     throw error;
+ }
+
+@@ -107,9 +109,12 @@
  };
  
  canvas.addEventListener("pointerdown", (event) => {
@@ -692,7 +748,7 @@ index a05c64d..3de9809 100644
  canvas.addEventListener("pointermove", (event) => sendPointer(event, 1));
  canvas.addEventListener("pointerup", (event) => sendPointer(event, 2));
  canvas.addEventListener("pointercancel", (event) => sendPointer(event, 2));
-@@ -146,10 +150,11 @@ canvas.addEventListener(
+@@ -146,10 +151,11 @@
  );
  
  const sendKey = (event, down) => {
@@ -705,7 +761,7 @@ index a05c64d..3de9809 100644
  };
  globalThis.addEventListener("keydown", (event) => sendKey(event, true));
  globalThis.addEventListener("keyup", (event) => sendKey(event, false));
-@@ -159,7 +164,7 @@ globalThis.addEventListener("keyup", (event) => sendKey(event, false));
+@@ -159,7 +165,7 @@
  // behind another stays visible and keeps ticking at full speed.
  const syncActive = () => {
      const visible = document.visibilityState === "visible";
@@ -714,7 +770,7 @@ index a05c64d..3de9809 100644
  };
  globalThis.addEventListener("focus", syncActive);
  globalThis.addEventListener("blur", syncActive);
-@@ -179,8 +184,23 @@ syncActive();
+@@ -179,8 +185,23 @@
  // player presses Play the loop runs but the game does not, so nothing simulates and no sound
  // plays behind the splash.
  globalThis.ctrdxStart = () => hostEvents.start();

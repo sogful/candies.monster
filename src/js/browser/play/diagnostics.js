@@ -15,7 +15,7 @@ const reasons = [
     ["value is not callable", /\bis not a function\b/i],
     ["operation aborted", /^(?:the operation was aborted|the user aborted a request)\b/i]
 ];
-const knownreasons = new Set([...reasons.map(([label]) => label), "webgl unavailable", "webgl context lost"]);
+const knownreasons = new Set([...reasons.map(([label]) => label), "webgl unavailable", "webgl context lost", "asset request failed", "asset response invalid"]);
 const fields = {
     phase: ["loading", "gameplay"],
     stage: ["runtime", "metadata", "images", "sounds"],
@@ -35,10 +35,14 @@ export function diagnostic(message, context = {}) {
     const asset = detail.match(/(?:\basset: |\b(?:audio )?content '|\bload customization content )((?:images|fonts|audio|sounds)\/[\w/-]{1,100}\.(?:webp|png|json|ttf|otf|mp3|opus|ogg|wav))(?=['\s]|\.$|$)/i)?.[1];
     const carried = lines.find(line => line.startsWith("reason: "))?.slice(8);
     const reason = event === "ctrdx-context-lost:" ? "webgl context lost" : event === "unsupported-error:" ? "webgl unavailable"
-        : reasons.find(([, pattern]) => pattern.test(explanation))?.[0] || (knownreasons.has(carried) ? carried : "");
+        : knownreasons.has(carried) ? carried : reasons.find(([, pattern]) => pattern.test(explanation))?.[0];
     const summary = [event, type, asset ? "asset: " + asset : ""].filter(Boolean).join(" ") || "Cut the Rope DX runtime failure";
     const output = [summary];
     if (reason) output.push("reason: " + reason);
+    if (asset && reason === "asset request failed") {
+        const status = lines.find(line => /^status: [45][0-9]{2}$/.test(line));
+        if (status) output.push(status);
+    }
     for (const [name, allowed] of Object.entries(fields)) {
         const prefix = name + ": ";
         const value = context[name] || lines.find(line => line.startsWith(prefix))?.slice(prefix.length);
