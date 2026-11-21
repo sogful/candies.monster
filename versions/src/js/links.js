@@ -72,8 +72,10 @@ export function readhash(hash = location.hash) {
         const [platform, game = ""] = parts;
         const legacy = layers.find(item => item.name === parameters.get("layer"))?.name;
         const selected = layer || legacy || "omnom";
-        return {platform: platformname(platform), layer: selected,
-            game: decodeURIComponent(game), package: parameters.get("package") || "", version: parameters.get("version") || "",
+        const key = decodeURIComponent(game);
+        const moved = selected === "zeptolab" && platform === "android" && key === "com.zeptolab.sweetharvest";
+        return {platform: platformname(platform), layer: moved ? "omnom" : selected, moved,
+            game: key, package: parameters.get("package") || "", version: parameters.get("version") || "",
             info: parameters.get("info") === "1", search: parameters.get("search") || "",
             room: selected === "fangames" && platform === "ios" && !game && parameters.get("room") === "1"};
     } catch {
@@ -144,7 +146,7 @@ export function startlinks(openroute) {
     async function restore(force = false) {
         if (!force && requested === location.hash) return;
         const route = readhash();
-        if (/[?&]layer=/.test(location.hash)) write(route, true);
+        if (route.moved || /[?&]layer=/.test(location.hash)) write(route, true);
         else requested = location.hash;
         await openroute(route);
     }
