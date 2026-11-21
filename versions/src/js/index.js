@@ -1,7 +1,7 @@
 import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./catalogue/load.js";
 import {loadcataloguedata} from "./catalogue/data.js";
 import {loadversions, versionsfor} from "./catalogue/versions.js";
-import {platformbadges, releaseplatform} from "./catalogue/platforms.js";
+import {gameplatformicons, platformbadges} from "./catalogue/platforms.js";
 import {orbits, packorbits} from "./packing.js";
 import {downloadflags} from "./catalogue.js";
 import {updatecounts} from "./counts.js";
@@ -83,7 +83,9 @@ function prepareplatform(platform) {
     platform.games.forEach(game => {
         const key = game.verkey ?? game.package;
         const keys = Array.isArray(key) ? key : [key];
-        const downloads = keys.flatMap(value => (platform.cache.get(value) || []).flatMap(version => version.downloads));
+        const versions = keys.flatMap(value => platform.cache.get(value) || []);
+        const downloads = versions.flatMap(version => version.downloads);
+        if (platform.name === "other") game.platformicons = gameplatformicons(versions, game.system);
         game.available = hasdownload(downloads);
         game.circle = game.channel || gamecircle(downloads);
     });
@@ -136,7 +138,7 @@ function mountplatform(platform) {
             const source = (Array.isArray(game.icon) ? game.icon[0] : game.icon) || "unknown/default";
             image.dataset.source = source;
             icon.appendChild(image);
-            if (game.system) icon.insertAdjacentHTML("beforeend", platformbadges(releaseplatform(game.system).icons));
+            if (game.platformicons?.length) icon.insertAdjacentHTML("beforeend", platformbadges(game.platformicons));
             elements.set(icon, game);
             fragment.appendChild(icon);
             return icon;

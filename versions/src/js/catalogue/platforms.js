@@ -2,19 +2,19 @@ import {resolveversionlabel} from "./load.js";
 
 const platforms = [
     ["Windows / PS3", ["windows", "playstation"]],
-    ["Windows Phone", ["windows"]],
+    ["Windows Phone", ["windowsphone"]],
     ["Windows Store", ["windows"]],
-    ["Windows Steam", ["steam"]],
+    ["Windows Steam", ["windows"]],
     ["Windows 8.1", ["windows"]],
     ["Windows 8", ["windows"]],
     ["Windows", ["windows"]],
-    ["macOS / Apple TV", ["apple", "tv"]],
+    ["macOS / Apple TV", ["apple", "appletv"]],
     ["macOS", ["apple"]],
-    ["Apple Vision", ["apple"]],
-    ["Apple TV", ["tv"]],
+    ["Apple Vision", ["vision"]],
+    ["Apple TV", ["appletv"]],
     ["LG NetCast", ["tv"]],
     ["Linux", ["linux"]],
-    ["Nintendo 3DS", ["ds"]],
+    ["Nintendo 3DS", ["3ds"]],
     ["Nintendo DSi", ["ds"]],
     ["Nintendo DS", ["ds"]],
     ["Nintendo Switch", ["switch"]],
@@ -38,6 +38,12 @@ export function releaseplatform(version) {
     if (!platform) return {label: version, icons: []};
     const [name, icons] = platform;
     return {label: resolveversionlabel(version.slice(name.length)), icons};
+}
+
+export function gameplatformicons(versions, system) {
+    if (system) return releaseplatform(system).icons;
+    const icons = [...new Set(versions.flatMap(({version}) => releaseplatform(version).icons))];
+    return icons.length > 1 ? icons.filter(icon => icon !== "source") : icons;
 }
 
 export function platformbadges(icons) {

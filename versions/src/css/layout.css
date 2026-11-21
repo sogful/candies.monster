@@ -255,6 +255,10 @@
     right: -1px; display: flex;
     gap: 1px; pointer-events: none;
 }
+.gameicon > .platformbadges {
+    max-width: 100%; flex-wrap: wrap;
+    justify-content: flex-end;
+}
 .platformbadge {
     width: 16px; height: 16px;
     display: block; flex: none;
