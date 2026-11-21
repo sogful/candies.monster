@@ -2502,6 +2502,28 @@ diff --git a/src/CutTheRopeDX.Core/GameMain/LevelResourceScanner.cs b/src/CutThe
                          _ = resources.Add(Resources.Snd.Electric);
                          AddSpikeRotationSounds(resources);
                          break;
+@@ -113,9 +118,21 @@
+                         break;
+                     case "sock":
+                         AddSockResources(resources, node);
+                         break;
+                     case "ghost":
+                         _ = resources.Add(Resources.Img.ObjGhost);
+                         _ = resources.Add(Resources.Snd.GhostPuff);
++                        if (ParseBool(node.Attribute("bouncer")?.Value))
++                        {
++                            _ = resources.Add(Resources.Img.ObjBouncer);
++                            _ = resources.Add(Resources.Snd.Bouncer);
++                        }
++
++                        if (ParseBool(node.Attribute("bubble")?.Value))
++                        {
++                            _ = resources.Add(Resources.Snd.Bubble);
++                            _ = resources.Add(Resources.Snd.BubbleBreak);
++                        }
++
+                         break;
+                     case "rocket":
 diff --git a/src/CutTheRopeDX.Core/GameMain/Spikes.cs b/src/CutTheRopeDX.Core/GameMain/Spikes.cs
 --- a/src/CutTheRopeDX.Core/GameMain/Spikes.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/Spikes.cs
