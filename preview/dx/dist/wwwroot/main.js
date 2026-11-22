@@ -71,6 +71,7 @@ try {
     const config = runtime.getConfig();
     globalThis.ctrdxWasmModule = runtime.Module;
     await runtime.runMain(config.mainAssemblyName, []);
+    audio.finishpreload();
 } catch (error) {
     // Content preload failures land here too, not just runtime ones: a phone that loses its
     // connection partway through the asset catalog throws from managed code, and without

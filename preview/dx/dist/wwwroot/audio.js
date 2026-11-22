@@ -5,9 +5,13 @@ let context = null;
 let mastergain = null;
 const buffers = new Map();
 const decodes = new Map();
+const deferred = new Map();
 const unavailable = new Set();
 const voices = new Map();
 let nextVoice = 1;
+let initialized = false;
+
+const skinvoice = /^sounds\/sfx\/(?:monster_[\w]+|[A-Z][a-z]+_(?:chewing|excited|greeting|mouthClose|mouthOpen|sad|sleep_?0[1-3]))$/;
 
 function ensureContext() {
     if (context === null) {
@@ -70,8 +74,16 @@ async function loadBuffer(key, url) {
 }
 
 export async function decode(key, url) {
+    if (initialized && skinvoice.test(key) && !buffers.has(key) && !decodes.has(key)) {
+        if (!unavailable.has(key)) deferred.set(key, url);
+        return 1;
+    }
     const buffer = await loadBuffer(key, url);
     return buffer !== null || unavailable.has(key) ? 1 : 0;
+}
+
+export function finishpreload() {
+    initialized = true;
 }
 
 function startVoice(handle, buffer) {
@@ -105,7 +117,15 @@ function startVoice(handle, buffer) {
 
 export function play(key, loop, volume) {
     const buffer = buffers.get(key);
-    const pending = buffer === undefined ? decodes.get(key) : undefined;
+    let pending = buffer === undefined ? decodes.get(key) : undefined;
+    const url = buffer === undefined && deferred.get(key);
+    if (!pending && url) {
+        pending = loadBuffer(key, url).then(result => {
+            deferred.delete(key);
+            if (!result) unavailable.add(key);
+            return result;
+        });
+    }
     if (buffer === undefined && pending === undefined) {
         return 0;
     }
@@ -137,7 +157,7 @@ export function play(key, loop, volume) {
             return;
         }
         startVoice(handle, decoded);
-    });
+    }).catch(() => voices.delete(handle));
     return handle;
 }
 
