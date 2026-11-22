@@ -50,8 +50,7 @@
 .layerarrow[hidden], .gameopen .layernav, .searchopen .layernav {display: none}
 .layerarrow:active img {scale: 0.94}
 
-.archivelayer .gamescreen {padding-block: 56px}
-.archivelayer:not([data-layer="omnom"]) .gamescreen {padding-block: var(--layerpadding,56px)}
+.archivelayer .gamescreen {padding-block: var(--layerpadding,56px)}
 
 .gameicon > .imageloadingspinner, .versionicon > .imageloadingspinner,
 .packageicons .imageloadingspinner {width: 75%}

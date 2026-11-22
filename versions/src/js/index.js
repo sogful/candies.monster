@@ -87,13 +87,17 @@ function prepareplatform(platform) {
         const downloads = versions.flatMap(version => version.downloads);
         if (platform.name === "other") game.platformicons = gameplatformicons(versions, game.system);
         game.available = hasdownload(downloads);
-        game.circle = game.channel || gamecircle(downloads);
+        game.circle = game.channel || gamecircle(game, downloads);
     });
-    updatecounts(platform.layer, platform.name, platform.cache);
+    updatecounts(platform.layer, platform.name, platform.cache, platform.games);
     platform.text = null;
 }
 
-function gamecircle(downloads) {
+function gamecircle(game, downloads) {
+    if (game.layer === "omnom" && game.platform === "other") {
+        const name = [game.name].flat()[0];
+        return /^Cut the Rope(?: \([^)]+\))?$/i.test(name) ? "primary" : "other";
+    }
     let circle = "primary";
     for (const download of downloads) {
         if (!hasdownload([download])) continue;

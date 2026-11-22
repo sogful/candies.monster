@@ -1,6 +1,6 @@
 export const layers = [
-    {name: "omnom", label: "Om Nom"},
     {name: "zeptolab", label: "Zeptolab"},
+    {name: "omnom", label: "Om Nom"},
     {name: "fangames", label: "Fangames"}
 ];
 
@@ -34,7 +34,10 @@ export function startlayers() {
     }
 
     function positionabove() {
-        if (above.hidden) return;
+        if (above.hidden) {
+            viewport.style.removeProperty("--layerpadding");
+            return;
+        }
         const button = above.getBoundingClientRect();
         if (!button.width) return;
         const bar = search.getBoundingClientRect();
@@ -52,7 +55,7 @@ export function startlayers() {
     }
 
     function show(name, animate = false) {
-        const index = Math.max(0, groups.findIndex(group => group.name === name));
+        const index = groups.findIndex(group => group.name === (layers.some(layer => layer.name === name) ? name : "omnom"));
         const group = groups[index];
         for (const layer of groups) layer.element.inert = layer !== group;
         group.element.classList.add("visited");

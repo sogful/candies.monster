@@ -78,7 +78,7 @@ export function packcircle(games, width, height = Infinity, factor = 1) {
 
 export const orbits = [
     ["zeptoapp", "zeptoapp"], ["androidtv", "android tv"], ["primary", ""],
-    ["amazon", "amazon"], ["tiertwo", "tiertwo"], ["teraleak", "testflight"]
+    ["other", "other"], ["amazon", "amazon"], ["tiertwo", "tiertwo"], ["teraleak", "testflight"]
 ];
 
 export function packorbits(games, width, height) {
@@ -128,7 +128,7 @@ export function packorbits(games, width, height) {
         start += (horizontal ? clusterwidth : clusterheight) + gap;
     }
 
-    const icons = orbitbounds(positions);
+    const icons = orbitbounds(primary.length ? primary.map(({index}) => positions[index]) : positions);
     const layout = orbitbounds([...positions, ...labels]);
     const centerx = (icons.left + icons.right) / 2;
     const centery = (icons.top + icons.bottom) / 2;

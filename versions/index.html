@@ -60,6 +60,13 @@
         *::-webkit-scrollbar {width: 0px}
 
         p {margin: 0; z-index: 99; overflow: hidden; max-height: 5em}
+        h1, h2, h3, h4, h5, h6 {
+            padding: 0; margin: 0; 
+            line-height: 1; font-weight: 300;
+            -webkit-text-stroke: 0.125em black;
+            text-shadow: 0 0.125em 0 black;
+            paint-order: stroke fill;
+        }
 
         .verytiny {
             color: rgb(223, 223, 223); font-size: 0.5em;
@@ -582,16 +589,18 @@
                     <p class="archivedescription">download om nom/zeptolab/fangames</p>
                 </div>
             </header>
-            <span data-counts="omnom">there are currently <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios / <i><span class="othercount">...</span></i> other versions available for om nom games!</span>
-            <small class="layercounts" data-counts="zeptolab">also <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios / <i><span class="othercount">...</span></i> other zeptolab versions</small>
-            <small class="layercounts" data-counts="fangames">and <i><span class="androidcount">...</span></i> android / <i><span class="ioscount">...</span></i> ios / <i><span class="othercount">...</span></i> other fangame versions</small>
+            <h3>here are some stats:</h3>
+            <span data-counts="omnom">there are currently <i><span class="androidcount">...</span></i> android/<i><span class="ioscount">...</span></i> ios/<i><span class="othercount">...</span></i> other versions available for <i><span class="gamecount">...</span></i> om nom games!</span>
+            <small class="layercounts" data-counts="zeptolab">also <i><span class="androidcount">...</span></i> android/<i><span class="ioscount">...</span></i> ios/<i><span class="othercount">...</span></i> other versions for <i><span class="gamecount">...</span></i> zeptolab games</small>
+            <small class="layercounts" data-counts="fangames">and <i><span class="androidcount">...</span></i> android/<i><span class="ioscount">...</span></i> ios/<i><span class="othercount">...</span></i> other versions for <i><span class="gamecount">...</span></i> fangames</small>
+            <span>which are a total of <i><span class="downloadcount">...</span></i> download links.</span>
             this collection also contains <i><span class="symbolcount">...</span></i> debug symbol downloads, which could be helpful for reverse engineering.
             <br><br>
             please note that most apps are <i>not</i> checked for malware! though unlikely to be malicious, if you want to ensure your device is safe, use <img width="15" src="/assets/images/buttons/download/apkmirror.webp"> apkmirror, <img width="15" src="/assets/images/buttons/download/apkpure.webp"> apkpure or <img width="15" src="/assets/images/buttons/download/ctrhome.webp"><img width="15" src="/assets/images/buttons/download/cdn.webp"> our own reuploads! some apps might be slightly modified, if the modifications are known they'll be mentioned beside the download links.
             <br>
             whether the smaller developers shown actually have rights to om nom or not is purely speculative.
             <br><br>
-            about <span class="missingcount">...</span> om nom versions are <span style="color:#ffa5a5">missing</span>, and more are yet to be found, so if you have something to add you can:
+            about <span class="missingcount">...</span> versions are <span style="color:#ffa5a5">missing</span>, and more are yet to be found, so if you have something to add you can:
             <br>
             <a class="descbutton clickable" href="https://discord.gg/CUXK9aUTdz" target="_blank" rel="noopener">
                 <span><img class="joinicon" src="https://cdn.discordapp.com/icons/1112531659078762617/a_76dd36a5ef79da45a0663306c812d61b.webp?animated=true&size=32" draggable="false">Join Cut the Rope Home on Discord!</span>
@@ -599,7 +608,7 @@
             <br>
             and send in your findings to <a href="https://discord.com/channels/1112531659078762617/1439356053719351376">#<img width="15" src="/assets/images/icons/search.svg">version-search</a>! mention <a href="https://discord.com/users/763502120333869116">@cvgd</a> if you want to make sure it gets added specifically to this site.
             <br><br>
-            on the note of ctr home, to view additional platforms and a compilation of the very best gameloft and unpatched versions, without the boring modern/softlaunch goop, see:<br>
+            on the note of ctr home, if you only need the best game versions, without ads or boring modern/softlaunch goop, see:<br>
             <a class="descbutton clickable" href="https://ctrhome.github.io/games/" target="_blank" rel="noopener">
                 <span><img class="joinicon" src="https://ctrhome.github.io/img/favicon/candy.ico" draggable="false">Games - Cut the Rope Home</span>
             </a>
