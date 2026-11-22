@@ -1,6 +1,7 @@
 import {dropdown} from "/assets/static/js/controls/dropdown.js";
 import {filterscroll} from "../filters/controls.js";
 import {candycontent} from "../catalogue/metadata.js";
+import {offline} from "../catalogue/offline.js";
 
 export function rankings(entry) {
     const container = document.createElement("div");
@@ -12,11 +13,15 @@ export function rankings(entry) {
         container.append(label);
     }
     for (const row of entry.candylist || []) {
-        const link = document.createElement("a");
-        link.className = "candyrank clickable";
-        link.href = "https://candylist.vercel.app/#/" + encodeURIComponent(row.slug);
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
+        const link = document.createElement(offline() ? "span" : "a");
+        link.className = "candyrank";
+        if (link.tagName === "A") {
+            link.classList.add("clickable");
+            link.href = "https://candylist.vercel.app/#/" + encodeURIComponent(row.slug);
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.addEventListener("click", event => {if (offline()) event.preventDefault()});
+        }
         link.title = row.title;
         const rank = document.createElement("span");
         rank.textContent = "#" + row.rank;
@@ -53,7 +58,7 @@ export function candyinfo(entry, information) {
     information.querySelector(".levelinfotags").append(tags);
     filterscroll(tags);
     const videos = rows.filter(row => /^[\w-]{11}$/.test(row.video || ""));
-    if (!videos.length) return;
+    if (!videos.length || offline()) return;
     information.classList.add("candyinformation");
     const video = document.createElement("div");
     video.className = "candyvideo";

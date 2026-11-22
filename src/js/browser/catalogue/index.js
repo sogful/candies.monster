@@ -3,15 +3,16 @@ import {attach, candydata} from "../candylist/data.js";
 import {tagdata, canonicaltags} from "./metadata.js";
 import {communitybase} from "../detail/community.js";
 import {configuration} from "./service.js";
+import {synclibrary} from "./library.js";
+import {offline} from "./offline.js";
 
 export async function catalogue() {
     const {endpoint, forum} = await configuration;
     if (!endpoint) return [];
     const base = new URL(communitybase || endpoint);
+    const library = await synclibrary(base).catch(() => null);
+    const data = library || await live(base);
     const additional = candydata(base);
-    const response = await fetch(new URL("/levels", base));
-    if (!response.ok) throw new Error("Levels unavailable");
-    const data = await response.json();
     await tagdata;
     if (!Array.isArray(data.levels)) throw new Error("Invalid catalogue");
     const names = new Map(data.levels.filter(level => level.author?.name && !/^\d{17,22}$/.test(level.author.name)).map(level => [level.author.id, level.author.name]));
@@ -41,4 +42,11 @@ export async function catalogue() {
         }];
     });
     return attach(entries, await additional);
+}
+
+async function live(base) {
+    if (offline()) throw new Error("Levels have not been downloaded on this device");
+    const response = await fetch(new URL("/levels", base));
+    if (!response.ok) throw new Error("Levels unavailable");
+    return response.json();
 }

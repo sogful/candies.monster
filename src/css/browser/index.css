@@ -5,6 +5,7 @@
 @import url("./filters.css");
 @import url("./community.css");
 @import url("./editor.css");
+@import url("./offline.css");
 
 .levelbrowser {
     position: relative; flex: 1 1 auto;

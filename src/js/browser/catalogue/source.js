@@ -1,5 +1,6 @@
 import {repairxml} from "/assets/static/js/levels/repair.js";
-import {bundled} from "./bundle.js";
+import {storedlevel} from "./library.js";
+import {offline} from "./offline.js";
 const sources = new Map();
 const originals = new Map();
 
@@ -33,9 +34,9 @@ async function download(file) {
 }
 
 async function read(file, local) {
-    let text = await bundled(file);
+    let text = await storedlevel(file).catch(() => null);
     if (text === null) {
-        if (local) throw new Error("Preview not available yet");
+        if (local || offline()) throw new Error("Level is not downloaded");
         text = await download(file);
     }
     text = text.trim();

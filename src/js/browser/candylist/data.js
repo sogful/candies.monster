@@ -1,3 +1,5 @@
+import {offline} from "../catalogue/offline.js";
+
 export function titlekey(value) {
     return String(value || "").normalize("NFKC").toLocaleLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
 }
@@ -42,6 +44,7 @@ export function attach(entries, data) {
 /*//////////////////////////////////////////////////////////////////////*/
 
 export async function candydata(endpoint) {
+    if (offline()) return fallbackdata();
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
     try {
@@ -51,7 +54,14 @@ export async function candydata(endpoint) {
         if (!Array.isArray(data.levels)) throw new Error("Invalid Candylist data");
         return data;
     } catch {
-        const response = await fetch(new URL("../../../../assets/static/data/candylist.json", import.meta.url));
-        return response.ok ? response.json() : {levels: []};
+        return fallbackdata();
     } finally {clearTimeout(timer)}
+}
+
+async function fallbackdata() {
+    try {
+        const response = await fetch(new URL("../../../../assets/static/data/candylist.json", import.meta.url));
+        if (response.ok) return await response.json();
+    } catch {}
+    return {levels: []};
 }

@@ -1,7 +1,8 @@
 import {requiredgame} from "./unsupported.js";
+import {offline} from "./offline.js";
 
 export async function refresh(entry) {
-    if (!entry.detailurl) return entry;
+    if (!entry.detailurl || offline()) return entry;
     const response = await fetch(entry.detailurl, {credentials: "omit"});
     if (!response.ok) throw new Error("Level information unavailable");
     const data = await response.json();
@@ -32,7 +33,7 @@ export async function refresh(entry) {
 /*//////////////////////////////////////////////////////////////////////*/
 
 export async function played(entry) {
-    if (!entry.playurl) return entry;
+    if (!entry.playurl || offline()) return entry;
     const response = await fetch(entry.playurl, {method: "POST", credentials: "omit", keepalive: true});
     if (!response.ok) throw new Error("Play count unavailable");
     const data = await response.json();

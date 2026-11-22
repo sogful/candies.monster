@@ -6,6 +6,7 @@ import {crash} from "./errors.js";
 import {rememberlevel} from "../catalogue/storage.js";
 import {parse} from "../renderer/data.js";
 import {requiredgame, objectrequirements} from "../catalogue/unsupported.js";
+import {offline} from "../catalogue/offline.js";
 
 export function player() {
     const root = document.documentElement;
@@ -98,6 +99,10 @@ export function player() {
 
     async function open(entry, button, message) {
         if (root.classList.contains("gameloading")) {progress.press(); return}
+        if (offline() && !root.dataset.offlinedx) {
+            message.textContent = "connect to download the game";
+            return;
+        }
         stop();
         const current = sequence;
         selected = entry;

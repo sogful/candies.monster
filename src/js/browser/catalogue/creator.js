@@ -1,4 +1,5 @@
 import {spinner} from "/assets/static/js/images/spinner.js";
+import {offline} from "./offline.js";
 const requests = new Map();
 const known = new Map();
 
@@ -40,7 +41,7 @@ export function profile(container, id, entries) {
     back.addEventListener("click", () => document.dispatchEvent(new Event("levelprofileback")));
     const avatar = document.createElement("div");
     avatar.className = "creatoravatar";
-    spinner(avatar, "Loading profile");
+    if (!offline()) spinner(avatar, "Loading profile");
     const image = document.createElement("img");
     image.className = "creatorpicture";
     image.addEventListener("load", () => {image.hidden = false; avatar.querySelector(".candyloading")?.remove()}, {once: true});
@@ -54,7 +55,7 @@ export function profile(container, id, entries) {
     name.textContent = entry?.creator || "Deleted User";
     const username = document.createElement("p");
     username.className = "creatorusername";
-    username.textContent = "@...";
+    username.textContent = offline() ? "" : "@...";
     const identifier = document.createElement("span");
     identifier.className = "creatorid";
     identifier.textContent = "(" + id + ")";
@@ -63,7 +64,7 @@ export function profile(container, id, entries) {
     line.append(username, identifier);
     text.append(name, line);
     container.append(back, avatar, text);
-    if (!entry?.detailurl) return;
+    if (!entry?.detailurl || offline()) return;
     if (!requests.has(id)) {
         const url = new URL("/creators/" + id, entry.detailurl);
         const request = fetch(url).then(response => {

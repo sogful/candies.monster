@@ -9,6 +9,7 @@ import {filters} from "./filters/index.js";
 import {prefetch} from "./renderer/cache.js";
 import {tags} from "./catalogue/metadata.js";
 import {readposition, storeposition} from "./catalogue/storage.js";
+import {offline} from "./catalogue/offline.js";
 
 morestuff();
 
@@ -354,16 +355,28 @@ for (const [control, offset, sprite] of [[previous, -1, "up"], [next, 1, "down"]
     control.addEventListener("lostpointercapture", release);
 }
 
-catalogue().then(data => {
-    if (!Array.isArray(data)) throw new Error("Invalid level data");
-    entries = data.filter(entry => !(entry.tags || []).some(tag =>
-        tag.id === "1515043686046498997" || /pudding\s*monsters/i.test(tag.name || "")
-    ));
-    detail.setentries(entries);
-    search.setentries(entries);
-}).catch(() => {
-    list.replaceChildren(element("p", "levelnotice", "levels could not be loaded"));
-}).finally(() => list.setAttribute("aria-busy", "false"));
+let syncing = false;
+async function loadcatalogue() {
+    if (syncing) return;
+    syncing = true;
+    try {
+        const data = await catalogue();
+        if (!Array.isArray(data)) throw new Error("Invalid level data");
+        entries = data.filter(entry => !(entry.tags || []).some(tag =>
+            tag.id === "1515043686046498997" || /pudding\s*monsters/i.test(tag.name || "")
+        ));
+        detail.setentries(entries);
+        search.setentries(entries);
+    } catch {
+        if (!entries.length) list.replaceChildren(element("p", "levelnotice", offline() ? "connect to download levels" : "levels could not be loaded"));
+    } finally {
+        syncing = false;
+        list.setAttribute("aria-busy", "false");
+    }
+}
+
+void loadcatalogue();
+window.addEventListener("online", () => {void loadcatalogue()});
 
 /*//////////////////////////////////////////////////////////////////////*/
 

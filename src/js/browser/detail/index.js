@@ -18,6 +18,7 @@ import {rankings, candyinfo} from "../candylist/view.js";
 import {communitycontrols, communitybase} from "./community.js";
 import {homeemojis} from "./emojis.js";
 import {filterscroll} from "../filters/controls.js";
+import {offline} from "../catalogue/offline.js";
 
 const routefilters = ["search", "sort", "tags", "creator", "features", "author", "candy", "candylist", "contests", "page"];
 let savedroute = null;
@@ -234,7 +235,7 @@ export function leveldetails() {
         favourites.append(image("/assets/images/clicktofav.png", "favouritehint", "Click to favourite"));
         favourites.addEventListener("pointerenter", positionhint);
         favourites.addEventListener("focusin", positionhint);
-        if (communitybase) {
+        if (communitybase && !offline()) {
             favourites.classList.add("clickable");
             favourites.setAttribute("role", "button");
             favourites.setAttribute("aria-label", "Favourite level");
@@ -252,7 +253,7 @@ export function leveldetails() {
         reactionrow.hidden = Boolean(communitybase);
         reactions(entry, reactionrow);
         statistics.append(favourites, plays, objects, reactionrow);
-        statistics.append(communitycontrols(entry));
+        if (!offline()) statistics.append(communitycontrols(entry));
         hero.append(rankings(entry), primary, statistics);
         const information = create("div", "levelinformation");
         const body = create("div", "levelbody");
@@ -310,12 +311,15 @@ export function leveldetails() {
         sharing.append(image("/assets/images/preview/share.png", "", ""));
         actions.append(download, sharing, share(entry, sharing));
         const utilities = create("div", "levelutilities");
-        utilities.append(inspection(entry), actions, discordbutton(entry));
+        utilities.append(inspection(entry), actions);
+        if (!offline()) utilities.append(discordbutton(entry));
         const status = create("p", "levelstatus");
         status.setAttribute("role", "status");
 
         downloadlevel(download, entry, status);
-        panel.append(control(), utilities, heading, hero, status, comments(entry), information);
+        panel.append(control(), utilities, heading, hero, status);
+        if (!offline()) panel.append(comments(entry));
+        panel.append(information);
         candyinfo(entry, information);
         favouriteobserver?.disconnect();
         favouriteobserver?.observe(favouritelabel);
@@ -358,6 +362,7 @@ export function leveldetails() {
         current = id;
         panel.dataset.revision = revision;
         panel.dataset.ready = String(ready);
+        panel.dataset.offline = String(offline());
         panel.replaceChildren();
         panel.scrollTop = 0;
         const entry = entries.find((item, index) => String(item.id ?? index + 1) === id);
@@ -389,6 +394,15 @@ export function leveldetails() {
     /*//////////////////////////////////////////////////////////////////////*/
 
     document.addEventListener("levelstatistics", event => update(event.detail));
+    function connectionchanged() {
+        if (panel.hidden || !ready || root.matches(".gameopen,.gameloading")) return;
+        if (panel.dataset.offline === String(offline())) return;
+        panel.dataset.offline = String(offline());
+        delete panel.dataset.ready;
+        render();
+    }
+    document.addEventListener("libraryconnection", connectionchanged);
+    document.addEventListener("gameviewchange", connectionchanged);
     window.addEventListener("resize", positionhint, {passive: true});
     window.addEventListener("hashchange", render);
     window.addEventListener("popstate", render);

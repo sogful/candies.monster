@@ -1,0 +1,9 @@
+html.offline .homepage {--navigationwidth: 0px}
+.offline :is(.sidebar,.sidebartoggle,.buttondrawer,.legacyback,.levelcomments,.leveldiscord,.communityreactions,.candyvideo,.favouritehint) {display: none}
+.offline .levelinformation.candyinformation {display: flex}
+.offline a.candyrank {
+    color: inherit; pointer-events: none;
+}
+
+.offline.oldhome .site {height: 100dvh}
+.offline.oldhome :is(.levelcontent,.levelfilters) {display: flex}

@@ -39,7 +39,7 @@ async function render() {
                 record.canvas.dataset.ready = "true";
                 continue;
             }
-            const [map, art, backdrop] = await record.resources;
+            const [map, art, backdrop] = await resources(record);
             if (version !== record.version || !record.canvas.isConnected || !record.visible || paused()) continue;
             const pack = Number(record.entry.background?.match(/\/box(\d+)\.webp$/)?.[1]) || 1;
             draw(record.canvas, {...map, box: pack}, art, backdrop, box.width, box.height, record.detail ? 0.6 : density(), record.detail);
@@ -58,7 +58,8 @@ const observer = "IntersectionObserver" in window ? new IntersectionObserver(ent
     for (const entry of entries) {
         const record = records.get(entry.target);
         if (!record) continue;
-        record.visible = entry.isIntersecting || record.preload;
+        record.intersecting = entry.isIntersecting;
+        record.visible = record.intersecting || record.preload;
         if (record.visible && !record.canvas.dataset.ready) queue(record);
     }
 }, {rootMargin: "100px"}) : null;
@@ -75,7 +76,7 @@ function create(entry, expanded) {
     canvas.width = canvas.height = 1;
     canvas.className = expanded ? "levelscene" : "levelbg levelcanvas";
     canvas.setAttribute("aria-hidden", "true");
-    const record = {canvas, entry, detail: expanded, visible: expanded || !observer, version: 0};
+    const record = {canvas, entry, detail: expanded, visible: expanded || !observer, intersecting: !observer, version: 0};
     if (entry.engine) {
         record.static = true;
         records.set(canvas, record);
@@ -88,12 +89,6 @@ function create(entry, expanded) {
         }
         return record;
     }
-    const map = entry.file ? level(entry.file, !expanded) : Promise.reject(new Error("Level file unavailable"));
-    record.resources = Promise.all([
-        map, artwork("low"),
-        map.then(data => entry.background ? background(entry.background, data).catch(() => null) : null)
-    ]);
-    record.resources.catch(() => {});
     records.set(canvas, record);
     if (expanded) {
         const background = /^\/assets\/images\/level\/box\d+\.webp$/.test(entry.background || "") ? entry.background : "/assets/images/level/box1.webp";
@@ -106,6 +101,12 @@ function create(entry, expanded) {
     if (record.visible) queue(record);
     if (!observer && !expanded) requestAnimationFrame(() => queue(record));
     return record;
+}
+
+function resources(record) {
+    const {entry} = record;
+    const map = entry.file ? level(entry.file, !record.detail && record.preload && !record.intersecting) : Promise.reject(new Error("Level file unavailable"));
+    return Promise.all([map, artwork("low"), map.then(data => entry.background ? background(entry.background, data).catch(() => null) : null)]);
 }
 
 function remove(record) {

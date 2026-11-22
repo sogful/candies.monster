@@ -85,6 +85,8 @@ export function createcontroller({frame, onerror, onclose, ontoolong, onprogress
         if (game === "dx") {
             nonce = session.start(withspikeassets(xml));
             url.searchParams.set("playtest", nonce);
+            const quality = document.documentElement.dataset.offlinedx;
+            if (document.documentElement.classList.contains("offline") && quality) url.searchParams.set("offlinequality", quality);
         } else {
             url.searchParams.set("data", base64);
         }

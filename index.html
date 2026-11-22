@@ -4,6 +4,7 @@
     
     <script>
         (() => {
+            if (navigator.onLine === false) document.documentElement.classList.add("offline");
             if (Math.random() < 1 / 1000) document.documentElement.classList.add("chuzz");
             const view = location.hash.slice(1).toLowerCase();
             let old = false;
@@ -329,6 +330,7 @@
         <script src="/src/js/site/sidebar.js" type="module"></script>
         <script src="/src/js/site/legacy.js" type="module"></script>
         <script src="/src/js/browser/index.js" type="module"></script>
+        <script src="/src/js/site/offlineworker.js" type="module"></script>
         <script src="/src/js/site/editor.js" type="module"></script>
 
     </body>
