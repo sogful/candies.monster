@@ -74,8 +74,10 @@ export function readhash(hash = location.hash) {
         const selected = layer || legacy || "omnom";
         const key = decodeURIComponent(game);
         const moved = selected === "zeptolab" && platform === "android" && key === "com.zeptolab.sweetharvest";
-        return {platform: platformname(platform), layer: moved ? "omnom" : selected, moved,
-            game: key, package: parameters.get("package") || "", version: parameters.get("version") || "",
+        const version = parameters.get("version") || "";
+        const gamehouse = platform === "other" && key === "cut-the-rope" && version === "Windows (2012)";
+        return {platform: platformname(platform), layer: moved ? "omnom" : selected, moved: moved || gamehouse,
+            game: key, package: parameters.get("package") || "", version: gamehouse ? "Windows GameHouse 1.0.0.24" : version,
             info: parameters.get("info") === "1", search: parameters.get("search") || "",
             room: selected === "fangames" && platform === "ios" && !game && parameters.get("room") === "1"};
     } catch {
