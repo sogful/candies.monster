@@ -6,9 +6,15 @@ const idpattern = /^\d{17,22}$/;
 const maxfile = 2 * 1024 * 1024;
 let opening;
 
+async function libraryname() {
+    const legacy = "candies-level-library";
+    const databases = await indexedDB.databases?.().catch(() => null);
+    return !databases || databases.some(database => database.name === legacy) ? legacy : "cdm-level-library";
+}
+
 function database() {
-    if (!opening) opening = new Promise((resolve, reject) => {
-        const request = indexedDB.open("candies-level-library", 1);
+    if (!opening) opening = libraryname().then(name => new Promise((resolve, reject) => {
+        const request = indexedDB.open(name, 1);
         request.onupgradeneeded = () => {
             request.result.createObjectStore("catalogues");
             request.result.createObjectStore("files");
@@ -19,7 +25,7 @@ function database() {
             resolve(connection);
         };
         request.onerror = () => reject(request.error);
-    }).catch(error => {opening = null; throw error});
+    })).catch(error => {opening = null; throw error});
     return opening;
 }
 

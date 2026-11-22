@@ -1,13 +1,15 @@
-const shellprefix = "candies-shell-1-";
-const statename = "candies-offline-state-1";
-const dxprefix = "candies-dx-1-";
+const shellprefix = "cdm-shell-1-";
+const statename = "cdm-offline-state-1";
+const dxprefix = "cdm-dx-1-";
+const legacyname = name => name.replace(/^cdm-/, "candies-");
 const dxroot = "/preview/dx/dist/wwwroot/";
 const dxindex = dxroot + "index.html";
 const shellmanifest = "/assets/static/data/offline-shell.json";
 const dxmanifest = dxroot + "offline.json";
 const dxstate = "/offline/dx";
-const dxoptional = "candies-dx-extras-1";
-const storageencoding = "X-Candies-Storage-Encoding";
+const dxoptional = "cdm-dx-extras-1";
+const storageencoding = "X-CDM-Storage-Encoding";
+const legacyencoding = "X-Candies-Storage-Encoding";
 const qualities = ["high", "medium", "low"];
 const offlinenavigation = new Set();
 const games = new Map();
@@ -25,7 +27,7 @@ function json(data) {
 }
 
 async function stored(path) {
-    return (await caches.open(statename)).match(path);
+    return await caches.match(path, {cacheName: statename}) || caches.match(path, {cacheName: legacyname(statename)});
 }
 
 async function save(path, data) {
@@ -47,14 +49,19 @@ function packresponse(response, method) {
     headers.delete("Content-Encoding");
     headers.delete("Content-Length");
     const compress = method === "gzip";
+    headers.delete(legacyencoding);
     if (compress) headers.set(storageencoding, "gzip");
     else headers.delete(storageencoding);
     const stream = compress ? new CompressionStream("gzip") : new DecompressionStream("gzip");
     return new Response(response.body.pipeThrough(stream), {status: response.status, statusText: response.statusText, headers});
 }
 
+function packed(response) {
+    return (response?.headers.get(storageencoding) || response?.headers.get(legacyencoding)) === "gzip";
+}
+
 function unpack(response) {
-    return response?.headers.get(storageencoding) === "gzip" ? packresponse(response, "identity") : response;
+    return packed(response) ? packresponse(response, "identity") : response;
 }
 
 async function fill(cache, entries, reuse, reload = false, compress) {
@@ -73,7 +80,7 @@ async function fill(cache, entries, reuse, reload = false, compress) {
                 });
                 if (!response.ok || response.status !== 200 || response.redirected) throw new Error("Could not cache " + path);
                 const encode = compress?.has(path) && typeof CompressionStream === "function" && typeof DecompressionStream === "function";
-                await cache.put(path, encode && response.body && !response.headers.has(storageencoding) ? packresponse(response, "gzip") : response);
+                await cache.put(path, encode && response.body && !packed(response) ? packresponse(response, "gzip") : response);
             }
         } catch (error) {
             controller.abort();
@@ -103,7 +110,8 @@ async function prepareshell() {
     const ready = {...data, name};
     await save(shellmanifest, ready);
     currentshell = Promise.resolve(ready);
-    const obsolete = (await caches.keys()).filter(key => key.startsWith(shellprefix) && key !== name && key !== previous?.name);
+    const obsolete = (await caches.keys()).filter(key => (key.startsWith(shellprefix) || key.startsWith(legacyname(shellprefix)))
+        && key !== name && key !== previous?.name);
     await Promise.all(obsolete.map(key => caches.delete(key)));
 }
 
@@ -151,9 +159,14 @@ async function preparegame(quality) {
     const compress = new Set(paths(data.compress || [], dxroot));
     const compression = compress.size && typeof CompressionStream === "function" && typeof DecompressionStream === "function";
     const commoncache = dxprefix + (compression ? "common-gzip-" : "common-") + data.versions.common;
-    const ready = {common: commoncache, pack: dxprefix + quality + "-" + data.versions[quality], quality, optional, format: 2, version: data.version};
+    const packcache = dxprefix + quality + "-" + data.versions[quality];
     const previous = await readygame();
-    if (previous?.version === ready.version && previous.quality === quality && previous.common === commoncache && previous.format === ready.format) {
+    const ready = {
+        common: previous?.common === legacyname(commoncache) ? previous.common : commoncache,
+        pack: previous?.pack === legacyname(packcache) ? previous.pack : packcache,
+        quality, optional, format: 2, version: data.version
+    };
+    if (previous?.version === ready.version && previous.quality === quality && previous.common === ready.common && previous.format === ready.format) {
         await sweepgames(ready);
         return;
     }
@@ -177,12 +190,16 @@ async function sweepgames(ready) {
     const active = new Set(clients.filter(client => new URL(client.url).pathname.startsWith(dxroot)).map(client => client.id));
     for (const id of games.keys()) if (!active.has(id)) games.delete(id);
     if (!active.size) {
-        const obsolete = (await caches.keys()).filter(key => key.startsWith(dxprefix) && key !== ready.common && key !== ready.pack);
+        const names = await caches.keys();
+        const obsolete = names.filter(key => (key.startsWith(dxprefix) || key.startsWith(legacyname(dxprefix)))
+            && key !== ready.common && key !== ready.pack);
         await Promise.all(obsolete.map(key => caches.delete(key)));
-        const extras = await caches.open(dxoptional);
-        for (const request of await extras.keys()) {
-            const url = new URL(request.url);
-            if (ready.optional[url.pathname] !== url.searchParams.get("asset")) await extras.delete(request);
+        for (const name of [dxoptional, legacyname(dxoptional)].filter(name => names.includes(name))) {
+            const extras = await caches.open(name);
+            for (const request of await extras.keys()) {
+                const url = new URL(request.url);
+                if (ready.optional[url.pathname] !== url.searchParams.get("asset")) await extras.delete(request);
+            }
         }
     }
 }
@@ -243,7 +260,8 @@ async function gameroute(event, path, navigate) {
 async function extraasset(request, path, hash) {
     const cache = await caches.open(dxoptional).catch(() => null);
     const key = extrakey(path, hash);
-    const saved = await cache?.match(key).catch(() => null);
+    const saved = await cache?.match(key).catch(() => null)
+        || await caches.match(key, {cacheName: legacyname(dxoptional)}).catch(() => null);
     if (saved) return saved;
     const response = await fetch(request);
     if (cache && response.status === 200 && !response.redirected && response.body) {
@@ -258,16 +276,18 @@ async function gameassets(event) {
     if (!client || !new URL(client.url).pathname.startsWith(dxroot) || !ready) {
         return json({offline: self.navigator.onLine === false, quality: "", files: []});
     }
-    const cache = await caches.open(dxoptional).catch(() => null);
-    const assets = await cache?.keys().catch(() => []) || [];
+    const assets = await Promise.all([dxoptional, legacyname(dxoptional)].map(async name => {
+        const cache = await caches.has(name) && await caches.open(name);
+        return cache ? cache.keys() : [];
+    })).catch(() => []);
     const base = dxroot + "content/" + (ready.quality === "high" ? "" : ready.quality + "/");
-    const files = [];
-    for (const request of assets) {
+    const files = new Set();
+    for (const request of assets.flat()) {
         const url = new URL(request.url);
         const relative = url.pathname.slice(base.length);
-        if (url.pathname.startsWith(base) && /^(images|sounds)\//.test(relative) && ready.optional?.[url.pathname] === url.searchParams.get("asset")) files.push(relative);
+        if (url.pathname.startsWith(base) && /^(images|sounds)\//.test(relative) && ready.optional?.[url.pathname] === url.searchParams.get("asset")) files.add(relative);
     }
-    return json({offline: ready.offline === true || self.navigator.onLine === false, quality: ready.quality, files});
+    return json({offline: ready.offline === true || self.navigator.onLine === false, quality: ready.quality, files: [...files]});
 }
 
 async function shellasset(event, url) {
@@ -334,5 +354,6 @@ self.addEventListener("message", event => {
     if (data?.type !== "cache-offline") return;
     wantedquality = qualities.includes(data.quality) ? data.quality : "medium";
     warming ||= prepare().finally(() => {warming = null});
-    event.waitUntil(warming.then(() => source.postMessage({type: "candies-offline"})));
+    const type = data.reply === "cdm-offline" ? "cdm-offline" : legacyname("cdm-offline");
+    event.waitUntil(warming.then(() => source.postMessage({type})));
 });

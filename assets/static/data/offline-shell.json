@@ -1,5 +1,5 @@
 {
-  "version": "11eecbeb41668b4b",
+  "version": "b22e66b48aefc311",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -321,7 +321,7 @@
     "/src/js/browser/candylist/view.js": "084d6bc11b67db35",
     "/src/js/browser/catalogue/creator.js": "6abf6679883b7b3f",
     "/src/js/browser/catalogue/index.js": "665f2220dd28806e",
-    "/src/js/browser/catalogue/library.js": "3328f7afcc6b7df9",
+    "/src/js/browser/catalogue/library.js": "66ecf7161e398768",
     "/src/js/browser/catalogue/metadata.js": "75163960cd2b7323",
     "/src/js/browser/catalogue/offline.js": "d1dfa603ee00260f",
     "/src/js/browser/catalogue/service.js": "c575c508ade3849d",
@@ -372,11 +372,11 @@
     "/src/js/site/editor.js": "4bbe48e68148b94e",
     "/src/js/site/effects.js": "d09f716d11927415",
     "/src/js/site/legacy.js": "abf47200dd7ab2c6",
-    "/src/js/site/offlineworker.js": "c00d786f29924107",
+    "/src/js/site/offlineworker.js": "5475a4d68b0d2457",
     "/src/js/site/rope/index.js": "eb46d0403c0c5a5b",
     "/src/js/site/rope/motion.js": "ea0e66ae25cfc960",
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
     "/src/js/site/sidebar.js": "163b0b70cbb11f09"
   },
-  "bytes": 10245095
+  "bytes": 10245408
 }

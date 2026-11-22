@@ -22,7 +22,7 @@ function prepare(force = false) {
     checked = Date.now();
     let quality = "medium";
     try {quality = localStorage.getItem("ctrdxquality")?.toLowerCase() || quality} catch {}
-    registration.active.postMessage({type: "cache-offline", quality});
+    registration.active.postMessage({type: "cache-offline", quality, reply: "cdm-offline"});
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -36,7 +36,7 @@ function legacy(registration) {
 
 if (workers) {
     workers.addEventListener("message", event => {
-        if (event.data?.type === "candies-offline") void status();
+        if (["cdm-offline", "candies-offline"].includes(event.data?.type)) void status();
     });
     workers.addEventListener("controllerchange", () => {
         void status();

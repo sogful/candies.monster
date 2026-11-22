@@ -12,7 +12,7 @@ existing = json.loads(gzip.decompress(archive.read_bytes()))["files"] if archive
 
 
 def fetch(url):
-    request = Request(url, headers={"User-Agent": "candies-bundle/1.0"})
+    request = Request(url, headers={"User-Agent": "cdm-bundle/1.0"})
     with urlopen(request, timeout=40) as response:
         data = response.read(2 * 1024 * 1024 + 1)
     if len(data) > 2 * 1024 * 1024:
