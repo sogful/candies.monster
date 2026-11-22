@@ -29,6 +29,9 @@
         {"domain": "archive.org", "icon": "internetarchive"},
         {"domain": "cdn.candies.monster", "icon": "cdn"},
         
+        {"domain": "famobi.com", "icon": "famobi"},
+        {"domain": "gamesnacks.com", "icon": "gamesnacks"},
+
         {"domain": "ctrhome.github.io", "icon": "ctrhome"},
         {"domain": "github.com", "icon": "github"},
         {"domain": "githubusercontent.com", "icon": "github"},

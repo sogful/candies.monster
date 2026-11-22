@@ -125,8 +125,15 @@ export async function revealroute(game, route, iscurrent) {
     if (!iscurrent()) return;
     const key = route.package || packagekey(game);
     const screen = document.querySelector(".versionscreen");
-    const candidates = screen.querySelectorAll(route.version ? ".versionpanel" : ".gameinfo");
-    const target = Array.from(candidates).find(node => node.getClientRects().length && node.dataset.routepackage === key && (!route.version || node.dataset.version === route.version));
+    const candidates = [...screen.querySelectorAll(route.version ? ".versionpanel" : ".gameinfo")]
+        .filter(node => node.getClientRects().length && node.dataset.routepackage === key);
+    let target = candidates.find(node => !route.version || node.dataset.version === route.version);
+    if (!target && route.platform === "other" && route.version) {
+        let version = route.version;
+        if (version === "Web (WebAssembly)" || (version === "Web" && route.game === "pudding-monsters")) version = "Web (WASM)";
+        else if (version === "Web" && route.game === "cut-the-rope-time-travel") version = "Web (Famobi)";
+        target = candidates.find(node => node.dataset.version === version || node.dataset.version.startsWith(version + " "));
+    }
     if (!target) return;
     const flash = (route.version && target.querySelector(".versioncontent")) || target;
     screen.scrollTop += flash.getBoundingClientRect().top - screen.getBoundingClientRect().top - 16;
