@@ -186,10 +186,12 @@ function roomscene(gl, poster, glow) {
     const shine = texture(gl, glow);
     let walls = 0;
     let posters = 0;
+    let roomhorizontal = 0;
+    let roomvertical = 0;
 
-    function upload(buffer, data) {
+    function upload(buffer, data, usage = gl.STATIC_DRAW) {
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, data, usage);
         return data.length / 6;
     }
 
@@ -197,10 +199,12 @@ function roomscene(gl, poster, glow) {
 
     function resize(horizontal, vertical) {
         gl.useProgram(pipeline);
+        roomhorizontal = horizontal;
+        roomvertical = vertical;
         gl.uniform2f(projection, horizontal, vertical);
         const shapes = roomgeometry(horizontal, vertical, poster.width / poster.height, seed);
         walls = upload(wall, shapes.walls);
-        posters = upload(paper, shapes.posters);
+        posters = shapes.posters.length / 6;
     }
 
     function paint(buffer, art, count) {
@@ -220,6 +224,8 @@ function roomscene(gl, poster, glow) {
         gl.uniform4f(spin, 0, 0, 0, 0);
         gl.uniform4f(tint, 1, 1, 1, 1);
         paint(wall, white, walls);
+        const shapes = roomgeometry(roomhorizontal, roomvertical, poster.width / poster.height, seed, time);
+        upload(paper, shapes.posters, gl.DYNAMIC_DRAW);
         gl.enable(gl.BLEND);
         paint(paper, picture, posters);
         gl.depthMask(false);

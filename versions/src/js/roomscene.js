@@ -19,7 +19,7 @@ function surface(origin, across, up, inward, shade, count) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function roomgeometry(horizontal, vertical, ratio, seed) {
+export function roomgeometry(horizontal, vertical, ratio, seed, time = 0) {
     const rear = -4.7;
     const front = -1.45;
     const depth = 2.7 - rear;
@@ -57,6 +57,12 @@ export function roomgeometry(horizontal, vertical, ratio, seed) {
                 if (placed.every(([px, py]) => Math.hypot(x - px, y - py) > 0.16)) break;
             }
             placed.push([x, y]);
+            const phase = roll() * Math.PI * 2;
+            const speed = 0.12 + roll() * 0.18;
+            const driftx = 0.12 + roll() * 0.12;
+            const drifty = 0.1 + roll() * 0.1;
+            x = Math.max(marginx, Math.min(1 - marginx, x + Math.sin(time * speed + phase) * driftx));
+            y = Math.max(marginy, Math.min(1 - marginy, y + Math.sin(time * speed * 0.73 + phase + 1.7) * drifty));
             const corners = [[-1,-1],[1,-1],[1,1],[-1,1]].map(([u, v]) => {
                 const right = (u * breadth * cosine - v * tall * sine) / (2 * width);
                 const top = (u * breadth * sine + v * tall * cosine) / (2 * height);

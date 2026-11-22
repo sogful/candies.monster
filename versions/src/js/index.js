@@ -392,6 +392,63 @@ viewport.addEventListener("touchend", event => {
 });
 viewport.addEventListener("touchcancel", () => {swipe = null}, {passive: true});
 
+let swipeclicktimer = 0;
+
+document.addEventListener("click", event => {
+    if (!swipeclicktimer || !event.isTrusted) return;
+    clearTimeout(swipeclicktimer);
+    swipeclicktimer = 0;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+}, true);
+
+viewport.addEventListener("pointerdown", event => {
+    swipe = null;
+    const screen = activeplatform.screen;
+    if (event.pointerType === "touch" || event.button !== 0 || currentgame || search?.shown || info.open
+        || !screen.contains(event.target)) return;
+    swipe = {
+        pointer: true, screen, x: event.clientX, y: event.clientY, id: event.pointerId,
+        top: screen.scrollTop <= 1,
+        bottom: screen.scrollTop + screen.clientHeight >= screen.scrollHeight - 1
+    };
+});
+
+viewport.addEventListener("pointermove", event => {
+    if (!swipe?.pointer || event.pointerId !== swipe.id) return;
+    if (!swipe.arrow) {
+        const dx = event.clientX - swipe.x;
+        const dy = event.clientY - swipe.y;
+        if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
+        if (Math.abs(dx) > Math.abs(dy) * 1.25) {
+            swipe.axis = "x";
+            swipe.arrow = dx < 0 ? right : left;
+        } else if (Math.abs(dy) > Math.abs(dx) * 1.25) {
+            swipe.axis = "y";
+            swipe.arrow = dy < 0 ? (swipe.bottom && layerdown) : (swipe.top && layerup);
+        } else return;
+        if (!swipe.arrow || swipe.arrow.hidden) {swipe = null; return}
+        swipe.direction = Math.sign(swipe.axis === "x" ? dx : dy);
+        try {viewport.setPointerCapture(event.pointerId)} catch {}
+    }
+    if (event.cancelable) event.preventDefault();
+});
+
+viewport.addEventListener("pointerup", event => {
+    const gesture = swipe;
+    if (!gesture?.pointer || event.pointerId !== gesture.id) return;
+    swipe = null;
+    if (!gesture.arrow || gesture.arrow.hidden || gesture.screen !== activeplatform.screen
+        || currentgame || search?.shown || info.open) return;
+    const distance = gesture.axis === "x" ? event.clientX - gesture.x : event.clientY - gesture.y;
+    if (distance * gesture.direction < 56) return;
+    event.preventDefault();
+    swipeclicktimer = setTimeout(() => {swipeclicktimer = 0}, 500);
+    gesture.arrow.click();
+});
+
+viewport.addEventListener("pointercancel", () => {if (swipe?.pointer) swipe = null});
+
 for (const group of layers.groups) {
     const container = group.container;
     function scrollplatform(event) {
