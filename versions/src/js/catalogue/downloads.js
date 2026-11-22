@@ -45,30 +45,65 @@ export function downloadidentity(download) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+const orbitlabels = {
+    zeptoapp: /\bzeptoapp\b/gi,
+    teraleak: /\b(?:testflight|teraleak)\b/gi,
+    androidtv: /^android\s+tv\b/i,
+    tiertwo: /^tiertwo\b/i,
+    amazon: /^amazon(?:\s+app\s?store)?\b/i
+};
+
 export function orbitdescription(value, circle) {
-    if (!value) return "";
-    if (/^play$/i.test(value.trim())) return "";
-    const label = circle === "zeptoapp" ? /\bzeptoapp\b/gi : circle === "teraleak" ? /\b(?:testflight|teraleak)\b/gi : null;
-    return label ? value.replace(label, "").replace(/[ \t]{2,}/g, " ").trim() : value;
+    const text = String(value || "").trim();
+    if (/^play$/i.test(text)) return "";
+    const label = orbitlabels[circle];
+    if (!label) return text;
+    const summary = text.replace(label, "");
+    if (summary === text) return text;
+    return summary
+        .replace(/\(\s*\)/g, "")
+        .replace(/^[\s,:-]+|[\s,:-]+$/g, "")
+        .replace(/(?:^|\s+)edition$/i, "")
+        .replace(/^\(([^()]*)\)$/, "$1")
+        .replace(/[ \t]{2,}/g, " ");
 }
 
-function downloadnote(value, game, symbols) {
+function labelkey(value) {
+    return value.toLowerCase().replace(/[.\s_-]+/g, "");
+}
+
+function implicitdownloadlabels(download, button, url) {
+    const host = url?.hostname || "";
+    const site = button === downloadbuttons.fallback ? "" : button.replace(/\.webp$/, "");
+    const path = url?.pathname.replace(/\/(?:file|download)\/?$/i, "") || "";
+    const extension = path.match(/\.((?:tar\.)?[a-z\d]+)$/i)?.[1];
+    const torrentformat = url?.searchParams.get("dn")?.match(/\[(ns[pz]|xc[iz])\]/i)?.[1];
+    const labels = [host, host.replace(/^www\./i, ""), host.split(".").at(-2), site, extension, torrentformat, "play"];
+    if (download.kind === "torrent") labels.push("torrent");
+    return new Set(labels.filter(Boolean).map(labelkey));
+}
+
+function downloadnote(value, game, symbols, implicit) {
     return orbitdescription(value, game.circle).split(/\s*[,;\n]\s*/)
-        .filter(part => part && !/^play$/i.test(part) &&
-            (symbols || !/^(?:(?:debug|native)\s+)?symbols?(?:\s+(?:in|included|reported|present|available|found)\b[^\n]*|\s*\([^)]*\))?$/i.test(part)))
+        .filter(part => {
+            const label = part.replace(/^(?:archived |archive mirror of the )/i, "");
+            if (!part || implicit.has(labelkey(label))) return false;
+            return symbols || !/^(?:(?:debug|native)\s+)?symbols?(?:\s+(?:in|included|reported|present|available|found)\b[^\n]*|\s*\([^)]*\))?$/i.test(part);
+        })
         .join(", ");
 }
 
 function renderdownloadbutton(download, version, description, game) {
     const button = downloadbutton(download);
     const magnet = download.url.startsWith("magnet:");
-    let hostname = "";
-    try {hostname = new URL(download.url).hostname} catch {}
-    const source = magnet ? "Magnet link" : hostname || "Download";
+    let url;
+    try {url = new URL(download.url)} catch {}
+    const source = magnet ? "Magnet link" : url?.hostname || "Download";
     const zeptoapp = download.flags?.split(/\s+/).includes("zeptoapp") ? "zeptoapp" : "";
     const symbols = download.kind === "symbols";
+    const implicit = implicitdownloadlabels(download, button, url);
     const notes = [zeptoapp, description, symbols ? "" : download.label, download.note]
-        .map(value => downloadnote(value, game, symbols));
+        .map(value => downloadnote(value, game, symbols, implicit));
     const note = [...new Set(notes.filter(Boolean))].join("\n");
     const other = game.platform === "other";
     const warning = button === downloadbuttons.fallback && (other || !["store", "play"].includes(download.kind))
