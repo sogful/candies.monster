@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 from content import slim
+from offline import manifest as offlinemanifest
 
 bundle = Path(__file__).resolve().parent
 repository = bundle.parents[2]
@@ -148,6 +149,7 @@ def build(stage):
     (site / ".nojekyll").touch()
     writejson(site / "upstream.json", record)
     validate(site)
+    offlinemanifest(site)
     writejson(stage / "validated.json", {"revision": record["revision"], "checks": "patch, source syntax, AOT publish, asset references"})
     print(f"Built {record['revision']}: {site}", flush=True)
 

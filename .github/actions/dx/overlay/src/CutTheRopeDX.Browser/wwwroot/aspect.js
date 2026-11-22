@@ -25,15 +25,18 @@
 
 (() => {
     const options = ["High", "Medium", "Low"];
+    const forced = new URLSearchParams(location.search).get("offlinequality")?.toLowerCase();
+    const offline = options.find(value => value.toLowerCase() === forced);
     let current = "Medium";
     try {
         const saved = localStorage.getItem("ctrdxquality");
         if (options.includes(saved)) current = saved;
     } catch {}
+    if (offline) current = offline;
     globalThis.ctrdxquality = Object.freeze({
         get: () => current,
         set(value) {
-            if (!options.includes(value) || value === current) return false;
+            if (offline || !options.includes(value) || value === current) return false;
             current = value;
             try {localStorage.setItem("ctrdxquality", value)} catch {}
             return true;

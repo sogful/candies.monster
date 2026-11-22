@@ -54,4 +54,4 @@ def slim(site, excluded, source):
         subprocess.run(["ffmpeg", "-v", "error", "-threads", "1", "-i", str(original), "-c:a", "libvorbis", "-q:a", quality, str(path)], check=True, timeout=60)
     print(f"Preview content: {len(catalog['images'])} images, {len(catalog['sounds'])} sounds, {len(metadata)} metadata entries; removed {len(removed)} assets.", flush=True)
 
-    variants(site)
+    variants(site, source)
