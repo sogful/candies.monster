@@ -107,7 +107,7 @@ function renderdownloadbutton(download, version, description, game) {
     const note = [...new Set(notes.filter(Boolean))].join("\n");
     const other = game.platform === "other";
     const warning = button === downloadbuttons.fallback && (other || !["store", "play"].includes(download.kind))
-        ? `this ${other ? "game" : "version"} is from an unpopular source`
+        ? `this ${other ? "game" : "version"} is from a non-trusted source`
         : "";
     const information = {
         version, size: downloadsize(download.size), arch: downloadarch(download.arch), note,
