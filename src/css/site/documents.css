@@ -8,7 +8,7 @@
 .homepage::before {
     content: ""; position: fixed;
     inset: 0; pointer-events: none;
-    background: #55aabb url("/assets/images/bgs/exp.webp") center / cover no-repeat;
+    background: linear-gradient(#0005,#0005), #55aabb url("/assets/images/bgs/exp.webp") center repeat;
     opacity: 0; transition: opacity 300ms ease;
 }
 
