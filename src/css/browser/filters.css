@@ -235,7 +235,8 @@
     padding: 0 2px; height: 100%;
 }
 @media (max-width: 700px) {
-    .levelsort, .levelsearchfield {height: 26px}
+    .levelsort, .levelsearchfield {height: 34px}
+    .levelsearchfield {font-size: clamp(15px,4.5vw,18px)}
     .levelsort {padding: 2px 5px}
 }
 

@@ -264,8 +264,8 @@
     .site {flex-direction: column}
     .middleclick {display: none}
     .sidebar {
-        --topbar-height: 96px;
-        --navunit: clamp(18px,calc((100vw - 194px) / 6),42px);
+        --topbar-height: 76px;
+        --navunit: clamp(18px,calc((100vw - 194px) / 6),33px);
         --navlarge: calc(var(--navunit) * 2 + 2px);
         flex-direction: row; align-items: center;
         width: 100%; height: var(--topbar-height);
