@@ -6,11 +6,15 @@ const dxindex = dxroot + "index.html";
 const shellmanifest = "/assets/static/data/offline-shell.json";
 const dxmanifest = dxroot + "offline.json";
 const dxstate = "/offline/dx";
+const dxoptional = "candies-dx-extras-1";
+const storageencoding = "X-Candies-Storage-Encoding";
 const qualities = ["high", "medium", "low"];
 const offlinenavigation = new Set();
 const games = new Map();
 let currentshell;
 let currentdx;
+let stagingdx;
+let manifestloading;
 let warming;
 let wantedquality;
 
@@ -38,7 +42,22 @@ function paths(entries, root = "/") {
     }))];
 }
 
-async function fill(cache, entries, reuse, reload = false) {
+function packresponse(response, method) {
+    const headers = new Headers(response.headers);
+    headers.delete("Content-Encoding");
+    headers.delete("Content-Length");
+    const compress = method === "gzip";
+    if (compress) headers.set(storageencoding, "gzip");
+    else headers.delete(storageencoding);
+    const stream = compress ? new CompressionStream("gzip") : new DecompressionStream("gzip");
+    return new Response(response.body.pipeThrough(stream), {status: response.status, statusText: response.statusText, headers});
+}
+
+function unpack(response) {
+    return response?.headers.get(storageencoding) === "gzip" ? packresponse(response, "identity") : response;
+}
+
+async function fill(cache, entries, reuse, reload = false, compress) {
     const waiting = entries.values();
     const controller = new AbortController();
     const job = async () => {
@@ -53,7 +72,8 @@ async function fill(cache, entries, reuse, reload = false) {
                     priority: "low"
                 });
                 if (!response.ok || response.status !== 200 || response.redirected) throw new Error("Could not cache " + path);
-                await cache.put(path, response);
+                const encode = compress?.has(path) && typeof CompressionStream === "function" && typeof DecompressionStream === "function";
+                await cache.put(path, encode && response.body && !response.headers.has(storageencoding) ? packresponse(response, "gzip") : response);
             }
         } catch (error) {
             controller.abort();
@@ -97,29 +117,73 @@ function readygame() {
     return currentdx;
 }
 
+function verifiedextras(entries) {
+    if (!entries || typeof entries !== "object" || Array.isArray(entries)) return {};
+    const result = {};
+    for (const path of paths(Object.keys(entries), dxroot)) {
+        const hash = entries[path.slice(dxroot.length)];
+        if (/^[\da-f]{8,64}$/i.test(hash || "")) result[path] = hash;
+    }
+    return result;
+}
+
+function extrakey(path, hash) {
+    return `${path}?asset=${hash}`;
+}
+
+function gamemanifest() {
+    manifestloading ||= fetch(dxmanifest, {cache: "no-cache"}).then(response => {
+        if (!response.ok) throw new Error("Offline game files unavailable");
+        return response.json();
+    }).finally(() => {manifestloading = null});
+    return manifestloading;
+}
+
 async function preparegame(quality) {
-    const response = await fetch(dxmanifest, {cache: "no-cache"});
-    if (!response.ok) throw new Error("Offline game files unavailable");
-    const data = await response.json();
-    if (![data.versions?.common, data.versions?.[quality]].every(version => /^[\da-f]{8,64}$/i.test(version))) {
+    const data = await gamemanifest();
+    if (![data.version, data.versions?.common, data.versions?.[quality]].every(version => /^[\da-f]{8,64}$/i.test(version))) {
         throw new Error("Invalid offline game version");
     }
     const common = paths(data.common, dxroot);
     const pack = paths(data[quality], dxroot);
     if (!common.includes(dxindex)) throw new Error("Offline game index missing");
-    const ready = {common: dxprefix + "common-" + data.versions.common, pack: dxprefix + quality + "-" + data.versions[quality], quality};
+    const optional = verifiedextras(data.optional);
+    const compress = new Set(paths(data.compress || [], dxroot));
+    const compression = compress.size && typeof CompressionStream === "function" && typeof DecompressionStream === "function";
+    const commoncache = dxprefix + (compression ? "common-gzip-" : "common-") + data.versions.common;
+    const ready = {common: commoncache, pack: dxprefix + quality + "-" + data.versions[quality], quality, optional, format: 2, version: data.version};
     const previous = await readygame();
-    if (previous?.common === ready.common && previous.pack === ready.pack) return;
-    if (previous?.common !== ready.common) await fill(await caches.open(ready.common), common, null, Boolean(previous));
-    if (previous?.pack !== ready.pack) await fill(await caches.open(ready.pack), pack, null, Boolean(previous));
-    await save(dxstate, ready);
-    currentdx = Promise.resolve(ready);
+    if (previous?.version === ready.version && previous.quality === quality && previous.common === commoncache && previous.format === ready.format) {
+        await sweepgames(ready);
+        return;
+    }
+    const staged = {quality, optional};
+    stagingdx = staged;
+    try {
+        if (previous?.common !== ready.common) {
+            const old = previous && await caches.open(previous.common);
+            const reuse = path => /\/_framework\/[^/]+\.[a-z\d]{10}\.[a-z\d]+$/.test(path) ? old?.match(path) : null;
+            await fill(await caches.open(ready.common), common, reuse, Boolean(previous), compress);
+        }
+        if (previous?.pack !== ready.pack) await fill(await caches.open(ready.pack), pack, null, Boolean(previous));
+        await save(dxstate, ready);
+        currentdx = Promise.resolve(ready);
+    } finally {if (stagingdx === staged) stagingdx = null}
+    await sweepgames(ready);
+}
+
+async function sweepgames(ready) {
     const clients = await self.clients.matchAll({type: "window", includeUncontrolled: true});
     const active = new Set(clients.filter(client => new URL(client.url).pathname.startsWith(dxroot)).map(client => client.id));
     for (const id of games.keys()) if (!active.has(id)) games.delete(id);
     if (!active.size) {
         const obsolete = (await caches.keys()).filter(key => key.startsWith(dxprefix) && key !== ready.common && key !== ready.pack);
         await Promise.all(obsolete.map(key => caches.delete(key)));
+        const extras = await caches.open(dxoptional);
+        for (const request of await extras.keys()) {
+            const url = new URL(request.url);
+            if (ready.optional[url.pathname] !== url.searchParams.get("asset")) await extras.delete(request);
+        }
     }
 }
 
@@ -156,14 +220,54 @@ async function homeroute(event) {
 
 async function gameroute(event, path, navigate) {
     const id = navigate ? event.resultingClientId || event.clientId : event.clientId;
-    const ready = games.get(id) || await readygame();
+    let ready = games.get(id) || await readygame() || stagingdx;
+    if (!ready && navigate && self.navigator.onLine !== false && !offlinenavigation.has(event.clientId)) {
+        const data = await gamemanifest().catch(() => null);
+        if (data) ready = {quality: wantedquality || "medium", optional: verifiedextras(data.optional)};
+    }
     if (ready) {
-        if (navigate && id) games.set(id, ready);
+        if (navigate && id) {
+            const url = new URL(event.request.url);
+            const offline = url.searchParams.has("offlinequality") || offlinenavigation.has(event.clientId) || self.navigator.onLine === false;
+            games.set(id, {...ready, offline});
+        }
         const content = /^content\/(?:(?:low|medium)\/)?(?:images|sounds)\//.test(path.slice(dxroot.length));
-        const response = await caches.match(path, {cacheName: content ? ready.pack : ready.common}).catch(() => null);
-        if (response) return response;
+        const name = content ? ready.pack : ready.common;
+        const response = name && await caches.match(path, {cacheName: name}).catch(() => null);
+        if (response) return unpack(response);
+        if (ready.optional?.[path]) return extraasset(event.request, path, ready.optional[path]);
     }
     return fetch(event.request);
+}
+
+async function extraasset(request, path, hash) {
+    const cache = await caches.open(dxoptional).catch(() => null);
+    const key = extrakey(path, hash);
+    const saved = await cache?.match(key).catch(() => null);
+    if (saved) return saved;
+    const response = await fetch(request);
+    if (cache && response.status === 200 && !response.redirected && response.body) {
+        await cache.put(key, response.clone()).catch(() => {});
+    }
+    return response;
+}
+
+async function gameassets(event) {
+    const client = await self.clients.get(event.clientId);
+    const ready = games.get(event.clientId) || await readygame() || stagingdx;
+    if (!client || !new URL(client.url).pathname.startsWith(dxroot) || !ready) {
+        return json({offline: self.navigator.onLine === false, quality: "", files: []});
+    }
+    const cache = await caches.open(dxoptional).catch(() => null);
+    const assets = await cache?.keys().catch(() => []) || [];
+    const base = dxroot + "content/" + (ready.quality === "high" ? "" : ready.quality + "/");
+    const files = [];
+    for (const request of assets) {
+        const url = new URL(request.url);
+        const relative = url.pathname.slice(base.length);
+        if (url.pathname.startsWith(base) && /^(images|sounds)\//.test(relative) && ready.optional?.[url.pathname] === url.searchParams.get("asset")) files.push(relative);
+    }
+    return json({offline: ready.offline === true || self.navigator.onLine === false, quality: ready.quality, files});
 }
 
 async function shellasset(event, url) {
@@ -202,7 +306,9 @@ self.addEventListener("fetch", event => {
     const {request} = event;
     const url = new URL(request.url);
     if (request.method !== "GET" || url.origin !== self.location.origin || request.headers.has("Authorization")) return;
-    if (url.pathname === "/offline/status") {
+    if (url.pathname === "/offline/dx-assets") {
+        event.respondWith(gameassets(event));
+    } else if (url.pathname === "/offline/status") {
         event.respondWith(readygame().then(ready => json({
             offline: offlinenavigation.has(event.clientId),
             dx: ready?.quality || ""

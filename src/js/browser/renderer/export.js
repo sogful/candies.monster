@@ -1,5 +1,6 @@
 import {level, artwork, background, picture} from "./data.js";
 import {draw, framing} from "./draw.js";
+import {offline} from "../catalogue/offline.js";
 
 let extras;
 let fullart;
@@ -14,6 +15,11 @@ function highart() {
 }
 
 async function resources(entry) {
+    if (offline()) {
+        const [map, art] = await Promise.all([level(entry.file), artwork("low")]);
+        const backdrop = await background(entry.background || "/assets/images/level/box1.webp", map);
+        return {map, art, backdrop};
+    }
     extras ||= fetch("/assets/images/level/high/assets.json").then(response => response.ok ? response.json() : {}).catch(() => ({}));
     const [map, art, high] = await Promise.all([level(entry.file), highart(), extras]);
     const key = entry.background?.match(/\/(box\d+)\.webp$/)?.[1] || "box1";

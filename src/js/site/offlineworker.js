@@ -68,12 +68,15 @@ if (workers) {
                 if (legacy(old)) await old.unregister();
             }
             await status();
-            if ("requestIdleCallback" in window) requestIdleCallback(() => prepare(), {timeout: 2000});
-            else setTimeout(() => prepare(), 250);
+            function warm() {
+                if ("requestIdleCallback" in window) requestIdleCallback(() => prepare(), {timeout: 2000});
+                else setTimeout(() => prepare(), 250);
+            }
+            if (document.readyState === "complete") warm();
+            else window.addEventListener("load", warm, {once: true});
         } catch {}
     };
-    if (document.readyState === "complete") void start();
-    else window.addEventListener("load", start, {once: true});
+    void start();
 }
 
 if (navigator.storage?.persist) {

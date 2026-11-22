@@ -36,16 +36,24 @@ index ec07b8b..85b6fca 100644
  
              byte[] pixels = region.Bytes;
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs b/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
-index 88e915a..4b53d04 100644
+index 88e915a..d72f209 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserContentStore.cs
-@@ -1,4 +1,5 @@
+@@ -1,10 +1,13 @@
  using System;
 +using System.Collections.Concurrent;
++using System.Collections.Generic;
  using System.Linq;
  using System.Text;
  using System.Text.Json;
-@@ -21,6 +22,16 @@ namespace CutTheRopeDX.Browser
+ using System.Threading.Tasks;
+ 
+ using CutTheRopeDX.Framework.Platform;
++using CutTheRopeDX.GameMain;
+ 
+ namespace CutTheRopeDX.Browser
+ {
+@@ -21,6 +24,64 @@ namespace CutTheRopeDX.Browser
          private const int PreloadConcurrency = 8;
  
          private readonly ContentCache _cache = new();
@@ -53,6 +61,54 @@ index 88e915a..4b53d04 100644
 +        private string[] customizationpaths = [];
 +        private string[] customizationsounds = [];
 +        private WebAudioBackend customizationaudio;
++        private bool offline;
++        private readonly HashSet<string> saved = new(StringComparer.Ordinal);
++
++        public async Task loadoffline()
++        {
++            if (!CustomLevelSession.IsActive) return;
++            using JsonDocument document = JsonDocument.Parse(await FetchInterop.offlinedata());
++            JsonElement status = document.RootElement;
++            offline = status.TryGetProperty("offline", out var flag) && flag.ValueKind == JsonValueKind.True;
++            if (status.TryGetProperty("files", out var list) && list.ValueKind == JsonValueKind.Array)
++            {
++                foreach (JsonElement item in list.EnumerateArray())
++                {
++                    if (item.ValueKind == JsonValueKind.String) saved.Add(item.GetString());
++                }
++            }
++            previewavailability.available = customizationavailable;
++        }
++
++        public bool customizationavailable(string group, int index)
++        {
++            if (!offline) return true;
++            return group switch
++            {
++                "menu" => saved.Contains("images/skin_selection.webp") && saved.Contains("images/backgrounds/skin_bg.webp"),
++                "candy" when index < 0 => Enumerable.Range(1, 51).Any(slot => customizationavailable(group, slot)),
++                "candy" => index == 0 || saved.Contains($"images/candies/obj_candy_{index + 1:D2}.webp"),
++                "trace" => saved.Contains("images/fingertrace_skin.webp"),
++                "background" when index == -1 => Enumerable.Range(1, PackConfig.Packs.Count - 1).Any(pack => customizationavailable(group, pack)),
++                "background" => index == 0 || (PackConfig.isbackgroundpack(index)
++                    && previewcontent.backgroundpaths(index, false).All(saved.Contains)
++                    && previewcontent.backgroundpaths(index, true).All(saved.Contains)),
++                _ => true,
++            };
++        }
++
++        private IEnumerable<string> customizationassets(string group, int index)
++        {
++            if (group == "backgrounds")
++            {
++                return Enumerable.Range(0, PackConfig.Packs.Count)
++                    .Where(pack => customizationavailable("background", pack))
++                    .SelectMany(pack => previewcontent.backgroundpaths(pack, true))
++                    .Where(customizationpaths.Contains);
++            }
++            if (group == "background") return previewcontent.backgroundpaths(index, false);
++            return customizationpaths.Where(path => previewcontent.customizationgroup(path, group, index));
++        }
 +        private readonly System.Collections.Generic.Dictionary<string, (int w, int h)> sizes = [];
 +
 +        public (int w, int h)? dimensions(string path)
@@ -62,7 +118,7 @@ index 88e915a..4b53d04 100644
  
          private static string Normalize(string relativePath)
          {
-@@ -33,7 +44,8 @@ namespace CutTheRopeDX.Browser
+@@ -33,7 +94,8 @@ namespace CutTheRopeDX.Browser
          /// <inheritdoc />
          public byte[] Read(string relativePath)
          {
@@ -72,7 +128,7 @@ index 88e915a..4b53d04 100644
          }
  
          /// <summary>
-@@ -67,12 +79,24 @@ namespace CutTheRopeDX.Browser
+@@ -67,12 +129,24 @@ namespace CutTheRopeDX.Browser
                      + "Run scripts/build_web_content.py first.");
  
              using JsonDocument document = JsonDocument.Parse(json);
@@ -99,14 +155,14 @@ index 88e915a..4b53d04 100644
                  if (string.Equals(category.Name, "sounds", StringComparison.Ordinal))
                  {
                      await PumpAsync(
-@@ -120,6 +144,29 @@ namespace CutTheRopeDX.Browser
+@@ -120,6 +194,29 @@ namespace CutTheRopeDX.Browser
                      category, done + completed, total));
          }
  
 +        public async Task loadcustomization(string group, int index)
 +        {
-+            string[] images = [.. customizationpaths.Where(path => previewcontent.customizationgroup(path, group, index)
-+                && !_cache.ContainsKey(path) && !customization.ContainsKey(path))];
++            string[] images = [.. customizationassets(group, index).Distinct(StringComparer.Ordinal)
++                .Where(path => !_cache.ContainsKey(path) && !customization.ContainsKey(path))];
 +            Task fetchimages = ParallelPump.RunAsync(images, PreloadConcurrency, fetchcustomization, _ => {});
 +            if (group != "omnom" || customizationsounds.Length == 0)
 +            {
@@ -130,7 +186,7 @@ index 88e915a..4b53d04 100644
          {
              byte[] bytes = await FetchInterop.GetBytesAsync(contentBaseUrl + path);
 diff --git a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
-index 5cd44d7..676d940 100644
+index 5cd44d7..2829b4d 100644
 --- a/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/BrowserHostApp.cs
 @@ -1,5 +1,6 @@
@@ -154,7 +210,7 @@ index 5cd44d7..676d940 100644
 +
 +        public bool previeweditor => PlaytestInterop.editor();
 +
-+        public bool previewcustomization => true;
++        public bool previewcustomization => ((BrowserContentStore)PlatformServices.Content).customizationavailable("menu", -1);
 +
 +        public Task loadcustomization(string group, int index) => ((BrowserContentStore)PlatformServices.Content).loadcustomization(group, index);
 +
@@ -199,7 +255,7 @@ index f646c3a..bfbde91 100644
                  _ => null,
              };
 diff --git a/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs b/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
-index d27ce9e..2498a37 100644
+index d27ce9e..a9db056 100644
 --- a/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
 +++ b/src/CutTheRopeDX.Browser/Browser/LaunchOptions.cs
 @@ -3,6 +3,7 @@ using System.Threading.Tasks;
@@ -210,7 +266,7 @@ index d27ce9e..2498a37 100644
  
  using Microsoft.Extensions.Logging;
  
-@@ -36,6 +37,29 @@ namespace CutTheRopeDX.Browser
+@@ -36,6 +37,30 @@ namespace CutTheRopeDX.Browser
              MenuTheme.Current = style;
          }
  
@@ -224,12 +280,13 @@ index d27ce9e..2498a37 100644
 +            {
 +                SpecialEvents.setxmasoverride(true);
 +            }
-+            if (int.TryParse(queryparam("candy"), out int candy) && candy is >= 1 and <= 52)
++            if (int.TryParse(queryparam("candy"), out int candy) && candy is >= 1 and <= 52
++                && previewavailability.allows("candy", candy - 1))
 +            {
 +                CandySkinHelper.setindexoverride(candy - 1);
 +            }
 +            int.TryParse(queryparam("background"), out int background);
-+            PackConfig.setbackgroundpackoverride(PackConfig.isbackgroundpack(background - 1)
++            PackConfig.setbackgroundpackoverride(PackConfig.isbackgroundpack(background - 1) && previewavailability.allows("background", background - 1)
 +                ? background - 1
 +                : PackConfig.savedbackground());
 +        }
@@ -271,7 +328,7 @@ index c41e3f1..38a27dc 100644
      }
  }
 diff --git a/src/CutTheRopeDX.Browser/Program.cs b/src/CutTheRopeDX.Browser/Program.cs
-index 2e5cd1e..6c0f4b1 100644
+index 2e5cd1e..da4c6fc 100644
 --- a/src/CutTheRopeDX.Browser/Program.cs
 +++ b/src/CutTheRopeDX.Browser/Program.cs
 @@ -4,6 +4,7 @@ using System.Threading.Tasks;
@@ -282,12 +339,13 @@ index 2e5cd1e..6c0f4b1 100644
  using CutTheRopeDX.Framework.Diagnostics;
  using CutTheRopeDX.Framework.Platform;
  using CutTheRopeDX.Rendering.Skia;
-@@ -87,13 +88,15 @@ SkiaSurface surface = new(0, size[0], size[1]);
+@@ -87,13 +88,16 @@ SkiaSurface surface = new(0, size[0], size[1]);
  BrowserContentStore content = new("./content/");
  WebAudioBackend audio = new("./content/");
  await content.LoadTier0Async("./content/tier0.json");
 -await content.LoadAllAssetsAsync("./content/assets.json", audio);
  PlatformServices.Content = content;
++await content.loadoffline();
 +PlatformServices.Preferences = new LocalStoragePreferenceStore();
 +Preferences.LoadPreferences();
 +LaunchOptions.applypreview();
@@ -300,7 +358,7 @@ index 2e5cd1e..6c0f4b1 100644
  PlatformServices.Cursor = new BrowserCursorService();
  PlatformServices.VideoPlayerFactory = () => new BrowserVideoPlayer();
  
-@@ -109,6 +112,8 @@ CutTheRopeDX.GameBootstrap.Initialize(
+@@ -109,6 +113,8 @@ CutTheRopeDX.GameBootstrap.Initialize(
      LanguageHelper.Current,
      devicePixelRatio);
  
@@ -528,10 +586,11 @@ index 176f532..26f941f 100644
 +    surface.addEventListener("contextmenu", (event) => event.preventDefault());
 +}
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/fetch.js b/src/CutTheRopeDX.Browser/wwwroot/fetch.js
+index 88fce30..c6a8cd1 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/fetch.js
 +++ b/src/CutTheRopeDX.Browser/wwwroot/fetch.js
-@@ -6,14 +6,50 @@
-
+@@ -6,14 +6,50 @@ import { setLoadingProgress } from "./loading-progress.js";
+ 
  const stash = new Map();
  
 +export let assetloadfailure = null;
@@ -584,9 +643,9 @@ diff --git a/src/CutTheRopeDX.Browser/wwwroot/fetch.js b/src/CutTheRopeDX.Browse
 +    stash.set(url, result.bytes);
 +    return result.bytes.length;
  }
-
+ 
  export function takeStashed(url, destination) {
-@@ -27,7 +63,7 @@
+@@ -27,10 +63,28 @@ export function takeStashed(url, destination) {
  }
  
  export async function fetchText(url) {
@@ -595,6 +654,27 @@ diff --git a/src/CutTheRopeDX.Browser/wwwroot/fetch.js b/src/CutTheRopeDX.Browse
      return response.ok ? await response.text() : null;
  }
  
++export async function offlinedata() {
++    const params = new URLSearchParams(location.search);
++    const offline = params.has("offlinequality") || navigator.onLine === false;
++    if (navigator.serviceWorker?.controller) {
++        const controller = new AbortController();
++        const deadline = setTimeout(() => controller.abort(), 1200);
++        try {
++            const response = await fetch("/offline/dx-assets", {cache: "no-store", signal: controller.signal});
++            if (response.ok) {
++                const status = await response.json();
++                return JSON.stringify({...status, offline: offline || status.offline === true});
++            }
++        } catch {}
++        finally {clearTimeout(deadline)}
++    }
++    return JSON.stringify({offline, files: []});
++}
++
+ export function reportContentProgress(type, loaded, total) {
+     setLoadingProgress(type, loaded, total);
+ }
 diff --git a/src/CutTheRopeDX.Browser/wwwroot/glcontext.js b/src/CutTheRopeDX.Browser/wwwroot/glcontext.js
 index 5644755..096158e 100644
 --- a/src/CutTheRopeDX.Browser/wwwroot/glcontext.js
@@ -1536,10 +1616,17 @@ index db665e7..9d65b9f 100644
  
          /// <summary>
 diff --git a/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs b/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
-index 02b24ef..5071c91 100644
+index 02b24ef..f52a574 100644
 --- a/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
 +++ b/src/CutTheRopeDX.Core/GameMain/CandySelectionView.cs
-@@ -17,7 +17,7 @@ namespace CutTheRopeDX.GameMain
+@@ -1,5 +1,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
+ using System.Threading.Tasks;
+ 
+ using CutTheRopeDX.Framework;
+@@ -17,7 +18,7 @@ namespace CutTheRopeDX.GameMain
      /// <summary>
      /// Builds and updates the candy, rope, Om Nom, and finger trace skin selection menu.
      /// </summary>
@@ -1548,15 +1635,28 @@ index 02b24ef..5071c91 100644
      {
          /// <summary>Skin ID used by the original Flash-backed Om Nom skin.</summary>
          private const string OriginalFlashSkinName = "OM_NOM_ORIGINAL_FLASH";
-@@ -229,6 +229,7 @@ namespace CutTheRopeDX.GameMain
-             SetTabActive(ropeTabButton, currentMode == CandySelectionMode.Rope);
-             SetTabActive(omNomTabButton, currentMode == CandySelectionMode.OmNom);
-             SetTabActive(traceTabButton, currentMode == CandySelectionMode.Trace);
+@@ -220,15 +221,11 @@ namespace CutTheRopeDX.GameMain
+         /// </summary>
+         private static void UpdateTabButtonStates()
+         {
+-            if (candyTabButton == null || ropeTabButton == null || omNomTabButton == null || traceTabButton == null)
+-            {
+-                return;
+-            }
+-
+-            SetTabActive(candyTabButton, currentMode == CandySelectionMode.Candy);
+-            SetTabActive(ropeTabButton, currentMode == CandySelectionMode.Rope);
+-            SetTabActive(omNomTabButton, currentMode == CandySelectionMode.OmNom);
+-            SetTabActive(traceTabButton, currentMode == CandySelectionMode.Trace);
++            if (candyTabButton != null) SetTabActive(candyTabButton, currentMode == CandySelectionMode.Candy);
++            if (ropeTabButton != null) SetTabActive(ropeTabButton, currentMode == CandySelectionMode.Rope);
++            if (omNomTabButton != null) SetTabActive(omNomTabButton, currentMode == CandySelectionMode.OmNom);
++            if (traceTabButton != null) SetTabActive(traceTabButton, currentMode == CandySelectionMode.Trace);
 +            if (backgroundtab != null) SetTabActive(backgroundtab, currentMode == CandySelectionMode.Background);
          }
  
          /// <summary>
-@@ -275,7 +276,7 @@ namespace CutTheRopeDX.GameMain
+@@ -275,7 +272,7 @@ namespace CutTheRopeDX.GameMain
              Image slotBgDown = Image.FromResource(Resources.Img.SkinSelection, bgDownQuad);
  
              // Add item image to both up and down states
@@ -1565,7 +1665,7 @@ index 02b24ef..5071c91 100644
              itemImage.anchor = itemImage.parentAnchor = 18;
              itemImage.y = itemYOffset;
              if (doRestoreTransparency)
-@@ -284,7 +285,7 @@ namespace CutTheRopeDX.GameMain
+@@ -284,7 +281,7 @@ namespace CutTheRopeDX.GameMain
              }
              _ = slotBgUp.AddChild(itemImage);
  
@@ -1574,7 +1674,7 @@ index 02b24ef..5071c91 100644
              downItemImage.anchor = downItemImage.parentAnchor = 18;
              downItemImage.y = itemYOffset;
              if (doRestoreTransparency)
-@@ -420,7 +421,7 @@ namespace CutTheRopeDX.GameMain
+@@ -420,7 +417,7 @@ namespace CutTheRopeDX.GameMain
              slotButtons = [];
              activePreviewBackend = null;
              activePreviewObject = null;
@@ -1583,7 +1683,34 @@ index 02b24ef..5071c91 100644
              modeCache.StoreState(mode, grid, slotButtons, activePreviewObject, activePreviewBackend);
              AttachCachedGrid(modeCache.GetState(mode));
          }
-@@ -547,19 +548,18 @@ namespace CutTheRopeDX.GameMain
+@@ -473,19 +470,23 @@ namespace CutTheRopeDX.GameMain
+                     break;
+             }
+ 
++            int[] options = [.. Enumerable.Range(0, totalItems)
++                .Where(index => mode != CandySelectionMode.Candy || previewavailability.allows("candy", index))];
++
+             // Build grid rows
+-            for (int row = 0; row < ((totalItems + layout.Columns - 1) / layout.Columns); row++)
++            for (int row = 0; row < ((options.Length + layout.Columns - 1) / layout.Columns); row++)
+             {
+                 HBox rowBox = NewRow(layout);
+ 
+                 for (int col = 0; col < layout.Columns; col++)
+                 {
+-                    int itemIndex = (row * layout.Columns) + col;
+-                    if (itemIndex >= totalItems)
++                    int position = (row * layout.Columns) + col;
++                    if (position >= options.Length)
+                     {
+                         break;
+                     }
+ 
++                    int itemIndex = options[position];
+                     int itemQuadIndex = baseQuadIndex + itemIndex;
+                     Button slotButton = CreateSlotButton(
+                         itemIndex,
+@@ -547,19 +548,17 @@ namespace CutTheRopeDX.GameMain
                  ContentFit.ScaleForAspect(snapshot.Aspect),
                  tabWidth,
                  tabHeight,
@@ -1601,13 +1728,12 @@ index 02b24ef..5071c91 100644
          private static Button[] Tabs()
          {
 -            return [candyTabButton, ropeTabButton, omNomTabButton, traceTabButton];
-+            return backgroundtab == null
-+                ? [candyTabButton, ropeTabButton, omNomTabButton, traceTabButton]
-+                : [candyTabButton, ropeTabButton, omNomTabButton, traceTabButton, backgroundtab];
++            Button[] tabs = [candyTabButton, ropeTabButton, omNomTabButton, traceTabButton, backgroundtab];
++            return [.. tabs.Where(button => button != null)];
          }
  
          /// <summary>
-@@ -1139,19 +1139,23 @@ namespace CutTheRopeDX.GameMain
+@@ -1139,19 +1138,23 @@ namespace CutTheRopeDX.GameMain
              string textKey,
              MenuButtonId buttonId,
              FontGeneric font,
@@ -1634,7 +1760,7 @@ index 02b24ef..5071c91 100644
              _ = buttonDown.AddChild(downText);
  
              Button button = new Button().InitWithUpElementDownElementandID(buttonUp, buttonDown, buttonId);
-@@ -1303,7 +1307,8 @@ namespace CutTheRopeDX.GameMain
+@@ -1303,7 +1306,8 @@ namespace CutTheRopeDX.GameMain
          /// <returns>The configured candy selection menu view.</returns>
          public static MenuView CreateCandySelection(
              IButtonDelegation buttonDelegate,
@@ -1644,16 +1770,32 @@ index 02b24ef..5071c91 100644
          {
              MenuView menuView = new();
  
-@@ -1340,6 +1345,8 @@ namespace CutTheRopeDX.GameMain
+@@ -1332,14 +1336,20 @@ namespace CutTheRopeDX.GameMain
+             CoverBackground(visibleBounds);
+ 
+             FontGeneric font = Application.GetFont(Resources.Fnt.BigFont);
+-            candyTabButton = CreateTabButton("CANDIES_BTN", MenuButtonId.CandySelect, font, buttonDelegate);
+-            _ = background.AddChild(candyTabButton);
++            candyTabButton = !preview || previewavailability.allows("candy", -1)
++                ? CreateTabButton("CANDIES_BTN", MenuButtonId.CandySelect, font, buttonDelegate) : null;
++            if (candyTabButton != null) _ = background.AddChild(candyTabButton);
++            else currentMode = CandySelectionMode.Rope;
+             ropeTabButton = CreateTabButton("ROPE_SKINS_BTN", MenuButtonId.RopeSelect, font, buttonDelegate);
+             _ = background.AddChild(ropeTabButton);
+             omNomTabButton = CreateTabButton("OM_NOM_BTN", MenuButtonId.OmNomSelect, font, buttonDelegate);
              _ = background.AddChild(omNomTabButton);
-             traceTabButton = CreateTabButton("TRACES_BTN", MenuButtonId.TraceSelect, font, buttonDelegate);
-             _ = background.AddChild(traceTabButton);
-+            backgroundtab = preview ? CreateTabButton("Background", backgroundtabid, font, buttonDelegate, literal: true) : null;
+-            traceTabButton = CreateTabButton("TRACES_BTN", MenuButtonId.TraceSelect, font, buttonDelegate);
+-            _ = background.AddChild(traceTabButton);
++            traceTabButton = !preview || previewavailability.allows("trace", -1)
++                ? CreateTabButton("TRACES_BTN", MenuButtonId.TraceSelect, font, buttonDelegate) : null;
++            if (traceTabButton != null) _ = background.AddChild(traceTabButton);
++            backgroundtab = preview && previewavailability.allows("background", -1)
++                ? CreateTabButton("Background", backgroundtabid, font, buttonDelegate, literal: true) : null;
 +            if (backgroundtab != null) _ = background.AddChild(backgroundtab);
  
              SkinSelectionLayout layout = LayoutFor(ScreenPresentation.Instance.Snapshot);
              PlaceTabs(layout);
-@@ -1363,7 +1370,7 @@ namespace CutTheRopeDX.GameMain
+@@ -1363,7 +1373,7 @@ namespace CutTheRopeDX.GameMain
              PlaceWindow(layout);
              UpdateTabButtonStates(); // Set initial tab button states (candy active)
              AttachCurrentModeGrid();
@@ -2651,3 +2793,38 @@ diff --git a/src/CutTheRopeDX.Core/GameMain/Spikes.cs b/src/CutTheRopeDX.Core/Ga
 
          /// <summary>Number of button frames per toggle group.</summary>
          private const int ButtonFramesPerToggle = 2;
+diff --git a/src/CutTheRopeDX.Browser/Browser/FetchInterop.cs b/src/CutTheRopeDX.Browser/Browser/FetchInterop.cs
+index a0f33c3..0feb4af 100644
+--- a/src/CutTheRopeDX.Browser/Browser/FetchInterop.cs
++++ b/src/CutTheRopeDX.Browser/Browser/FetchInterop.cs
+@@ -33,6 +33,9 @@ namespace CutTheRopeDX.Browser
+         [JSImport("reportContentProgress", "fetch")]
+         public static partial void ReportContentProgress(string type, int loaded, int total);
+ 
++        [JSImport("offlinedata", "fetch")]
++        public static partial Task<string> offlinedata();
++
+         /// <summary>Fetches a URL as bytes, returning an empty array on failure.</summary>
+         /// <param name="url">Absolute or root-relative URL.</param>
+         public static async Task<byte[]> GetBytesAsync(string url)
+diff --git a/src/CutTheRopeDX.Core/Framework/Core/Preferences.cs b/src/CutTheRopeDX.Core/Framework/Core/Preferences.cs
+index 59bdaa1..c7abaa2 100644
+--- a/src/CutTheRopeDX.Core/Framework/Core/Preferences.cs
++++ b/src/CutTheRopeDX.Core/Framework/Core/Preferences.cs
+@@ -438,7 +438,7 @@ namespace CutTheRopeDX.Framework.Core
+         /// <returns>Stored integer value, or <c>0</c> if missing or not numeric.</returns>
+         public static int GetIntForKey(string key)
+         {
+-            return GlobalData.TryGetValue(key, out object value)
++            int index = GlobalData.TryGetValue(key, out object value)
+                 ? value switch
+                 {
+                     int intVal => intVal,
+@@ -446,6 +446,7 @@ namespace CutTheRopeDX.Framework.Core
+                     _ => 0
+                 }
+                 : 0;
++            return CutTheRopeDX.GameMain.previewavailability.preference(key, index);
+         }
+ 
+         /// <summary>

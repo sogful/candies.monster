@@ -1,5 +1,5 @@
 {
-  "version": "21d8b5adbf678fc6",
+  "version": "1f44f5216c6d2e48",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -199,7 +199,6 @@
     "/assets/images/level/box9seam.webp": "1ec8209622d71148",
     "/assets/images/level/frame.svg": "8f3436f58dbede67",
     "/assets/images/level/objects.json": "064da3874f80ca59",
-    "/assets/images/level/objects.webp": "3a0f32cee68e8da8",
     "/assets/images/level/objectslow.webp": "c579d5822064a70b",
     "/assets/images/level/objectsultra.webp": "cc6f940b3ff488a4",
     "/assets/images/level/star.webp": "59d482dd468a2f3e",
@@ -361,7 +360,7 @@
     "/src/js/browser/renderer/data.js": "f58a841b0d4b9b9f",
     "/src/js/browser/renderer/disc.js": "27301af54f23a828",
     "/src/js/browser/renderer/draw.js": "a505682c28a436d4",
-    "/src/js/browser/renderer/export.js": "fd3a796803430c47",
+    "/src/js/browser/renderer/export.js": "af5e9cb5a4043ac1",
     "/src/js/browser/renderer/grab.js": "b06e6beb437f72c0",
     "/src/js/browser/renderer/index.js": "2c2d22eb7917aa35",
     "/src/js/browser/renderer/lighting.js": "00f936f05c629d8d",
@@ -373,11 +372,11 @@
     "/src/js/site/editor.js": "4bbe48e68148b94e",
     "/src/js/site/effects.js": "d09f716d11927415",
     "/src/js/site/legacy.js": "abf47200dd7ab2c6",
-    "/src/js/site/offlineworker.js": "1535551ef5d9131a",
+    "/src/js/site/offlineworker.js": "c00d786f29924107",
     "/src/js/site/rope/index.js": "eb46d0403c0c5a5b",
     "/src/js/site/rope/motion.js": "ea0e66ae25cfc960",
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
     "/src/js/site/sidebar.js": "163b0b70cbb11f09"
   },
-  "bytes": 13250925
+  "bytes": 10245076
 }

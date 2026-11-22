@@ -67,6 +67,24 @@ export async function fetchText(url) {
     return response.ok ? await response.text() : null;
 }
 
+export async function offlinedata() {
+    const params = new URLSearchParams(location.search);
+    const offline = params.has("offlinequality") || navigator.onLine === false;
+    if (navigator.serviceWorker?.controller) {
+        const controller = new AbortController();
+        const deadline = setTimeout(() => controller.abort(), 1200);
+        try {
+            const response = await fetch("/offline/dx-assets", {cache: "no-store", signal: controller.signal});
+            if (response.ok) {
+                const status = await response.json();
+                return JSON.stringify({...status, offline: offline || status.offline === true});
+            }
+        } catch {}
+        finally {clearTimeout(deadline)}
+    }
+    return JSON.stringify({offline, files: []});
+}
+
 export function reportContentProgress(type, loaded, total) {
     setLoadingProgress(type, loaded, total);
 }

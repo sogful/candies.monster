@@ -42,6 +42,7 @@ namespace CutTheRopeDX.Browser
                 add(optional, pack.BoxBackgrounds);
                 add(optional, pack.BoxCovers);
             }
+            if (PackConfig.Packs.Count > 0) add(selected, PackConfig.Packs[0].BoxBackgrounds);
             add(selected, PackConfig.GetBoxBackgrounds(0));
             add(selected, PackConfig.GetBoxCovers(0));
 
@@ -102,6 +103,16 @@ namespace CutTheRopeDX.Browser
                 }
             }
             return false;
+        }
+
+        public static string[] backgroundpaths(int pack, bool covers)
+        {
+            HashSet<string> paths = [];
+            if (PackConfig.isbackgroundpack(pack))
+            {
+                add(paths, covers ? PackConfig.Packs[pack].BoxCovers : PackConfig.Packs[pack].BoxBackgrounds);
+            }
+            return [.. paths];
         }
 
         private static void add(HashSet<string> paths, IEnumerable<string> resources)

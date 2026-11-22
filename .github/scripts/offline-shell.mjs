@@ -15,7 +15,7 @@ const groups = [
     ["assets/images/icons", /\.(?:png|svg|webp)$/],
     ["assets/images/objects", /\.(?:png|svg|webp)$/],
     ["assets/images/stars", /\.(?:png|svg|webp)$/],
-    ["assets/images/level", /^(?!sources\.json$).*\.(?:webp|json|svg)$/],
+    ["assets/images/level", /^(?!(?:objects\.webp|sources\.json)$).*\.(?:webp|json|svg)$/],
     ["assets/images/cursors", /\.cur$/]
 ];
 

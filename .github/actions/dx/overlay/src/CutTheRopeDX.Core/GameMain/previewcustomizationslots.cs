@@ -15,6 +15,8 @@ namespace CutTheRopeDX.GameMain
         public static (string group, int index) previewresources(MenuButtonId selection)
         {
             if (selection == backgroundtabid) return ("backgrounds", -1);
+            int background = selection.Value - backgroundfirstid;
+            if (background > 0 && PackConfig.isbackgroundpack(background - 1)) return ("background", background - 1);
             MenuSkinSelectionAction action = MenuSkinSelectionActionResolver.Resolve(selection);
             if (action.Kind == MenuSkinSelectionActionKind.SwitchMode)
             {
@@ -72,9 +74,9 @@ namespace CutTheRopeDX.GameMain
             int selected = (PackConfig.selectedbackground ?? -1) + 1;
             for (int pack = -1; pack < PackConfig.Packs.Count; pack++)
             {
-                if (pack >= 0 && !PackConfig.isbackgroundpack(pack)) continue;
+                if (pack >= 0 && (!PackConfig.isbackgroundpack(pack) || !previewavailability.allows("background", pack))) continue;
                 int imagepack = pack < 0 ? Application.SharedRootController().Pack : pack;
-                string resource = PackConfig.Packs[imagepack].BoxBackgrounds.First(name => !string.IsNullOrWhiteSpace(name));
+                string resource = PackConfig.GetBoxCoverOrDefault(imagepack);
                 int option = pack + 1;
                 Button slot = CreateSlotButton(option, selected, resource, -1, layout, new MenuButtonId(backgroundfirstid + option), -32f);
                 string label = pack < 0 ? "Default" : PackConfig.GetPackTitle(pack, withNumber: false);
