@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     
     <script>
         (() => {
@@ -48,9 +49,9 @@
     <title>candies.monster</title>
     <meta name="title" content="candies.monster" />
     <meta name="description" content="cut the rope levels, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
+    <link rel="canonical" href="https://candies.monster/">
     <link rel="icon" type="image/png" href="/assets/images/candies/favicon.png">
 
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script async src="/assets/static/js/global.js"></script>
     <script type="module" src="/src/effects.js"></script>
@@ -59,17 +60,22 @@
     <meta property="twitter:description" content="cut the rope levels, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://candies.monster/assets/images/branding/embeds/index.png">
-    <meta property="twitter:url" content="https://candies.monster/" />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://candies.monster/" />
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://candies.monster/">
+    <meta property="og:site_name" content="candies.monster">
     <meta property="og:title" content="candies.monster" />
     <meta property="og:description" content="cut the rope levels, downloads and other tools! find links for nearly any om nom game, preview custom levels online etc.." />
     <meta property="og:image" content="https://candies.monster/assets/images/branding/embeds/index.png">
-    <meta name="robots" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
-    <meta name="googlebot" content="index, follow, max-snippet:120, max-image-preview:large, max-video-preview:5">
-    <meta name="bingbot" content="index, follow">
-    <meta name="keywords" content="cut the rope, cut the rope modding, cut the rope home, level browser, game, walkthrough, tips, ios, android game">
+    <meta name="robots" content="max-image-preview:large">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "candies.monster",
+            "url": "https://candies.monster/"
+        }
+    </script>
 
     <link rel="preload" href="/assets/static/data/levels/tags.json" as="fetch" crossorigin="anonymous">
     <link rel="stylesheet" href="/src/css/site/home.css">
@@ -116,7 +122,7 @@
                     <div class="fun"></div>
                 </div>
                 <div class="buttons bignav">
-                    <a aria-label="download versions of various om nom games" class="navlink" href="/versions">
+                    <a class="navlink" href="/versions/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/versions.webp" title="download versions of various om nom games">
                         <span class="buttonlabel">game versions</span>
                     </a>
@@ -130,7 +136,7 @@
                     </a>
                 </div>
                 <div class="buttons small smallnav">
-                    <a aria-label="split spritesheets with xml" class="navlink" href="/split/index.html">
+                    <a class="navlink" href="/split/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/split.webp" title="split spritesheets with xml">
                         <span class="buttonlabel">splitter</span>
                     </a>
@@ -171,10 +177,10 @@
                         <span class="buttonlabel">xml2json</span>
                     </a>
                 </div>
-                <p class="resourceblurb">..also check out <a href="//ctrhome.github.io/">CTR Home</a> for more resources!</p>
+                <p class="resourceblurb">More games and resources at <a href="https://ctrhome.github.io/">Cut the Rope Home</a>.</p>
                 </div>
                 <nav class="sidelinks" aria-label="site information">
-                    <a class="ctrhomefooter" href="https://ctrhome.github.io/" hidden>ctr home</a>
+                    <a class="ctrhomefooter" href="https://ctrhome.github.io/" hidden>Cut the Rope Home</a>
                     <a href="#documentation">docs</a>
                     <a href="#credits">credits</a>
                     <a href="https://github.com/sogful/candies.monster">github</a>

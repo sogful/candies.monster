@@ -1,5 +1,5 @@
 {
-  "version": "91b011557125f02e",
+  "version": "595b0e40af059e07",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -285,7 +285,7 @@
     "/assets/static/js/levels/repair.js": "b1f064e024c204f9",
     "/assets/static/js/text/emoji.js": "2fee7dc8794ab6c4",
     "/assets/static/js/text/fonts.js": "3262f487c6bfc9ee",
-    "/index.html": "dc13fe9b16addf1e",
+    "/index.html": "63a14880f408214c",
     "/preview/editor.html": "2857f40eab2cb951",
     "/preview/favicon.png": "270170a338f60474",
     "/preview/index.css": "f36bfb1c800f1456",
@@ -378,5 +378,5 @@
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
     "/src/js/site/sidebar.js": "163b0b70cbb11f09"
   },
-  "bytes": 10245880
+  "bytes": 10245711
 }
