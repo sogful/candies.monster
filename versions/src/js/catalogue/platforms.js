@@ -23,6 +23,7 @@ const platforms = [
     ["PSP", ["playstation"]],
     ["BlackBerry", ["blackberry"]],
     ["Symbian", ["phone"]],
+    ["Java ME", ["phone"]],
     ["Firefox OS", ["firefox"]],
     ["Chrome", ["chrome"]],
     ["Minecraft Bedrock", ["minecraft"]],
