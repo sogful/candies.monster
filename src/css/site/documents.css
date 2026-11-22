@@ -165,10 +165,12 @@
 
 .documententry::before {
     content: ""; position: absolute;
-    left: 0; top: 50%;
+    left: 0; top: calc((1lh - 1em) / 2);
     width: 1em; height: 1em;
-    transform: translateY(-50%); background: url("/assets/images/icons/bullet.png") center / contain no-repeat;
+    background: url("/assets/images/icons/bullet.png") center / contain no-repeat;
 }
+
+.documentparameter::before {display: none}
 
 .documenttiny {
     color: #dfdfdf; font-size: 0.75em;

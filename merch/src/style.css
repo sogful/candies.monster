@@ -108,7 +108,7 @@ li {
 li::before {
     content: "";
     display: inline-block; position: absolute;
-    left: 0; top: 50%; transform: translateY(-50%);
+    left: 0; top: calc((1lh - 1em) / 2);
     width: 1em; height: 1em;
     background-image: url('/assets/images/icons/bullet.png');
     background-size: contain; background-repeat: no-repeat;

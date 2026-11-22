@@ -1,5 +1,5 @@
 {
-  "version": "b22e66b48aefc311",
+  "version": "c5397a1221a5f9d1",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -285,7 +285,7 @@
     "/assets/static/js/levels/repair.js": "b1f064e024c204f9",
     "/assets/static/js/text/emoji.js": "2fee7dc8794ab6c4",
     "/assets/static/js/text/fonts.js": "3262f487c6bfc9ee",
-    "/index.html": "984684e9e725cca8",
+    "/index.html": "e9d093753119b679",
     "/preview/editor.html": "2857f40eab2cb951",
     "/preview/favicon.png": "270170a338f60474",
     "/preview/index.css": "f36bfb1c800f1456",
@@ -309,7 +309,7 @@
     "/src/css/browser/play.css": "821bd60358322661",
     "/src/css/browser/playerrors.css": "8d26d3fdbe48fc8f",
     "/src/css/browser/renderer.css": "51c8aad0223ef5db",
-    "/src/css/site/documents.css": "a61e4a2581344a29",
+    "/src/css/site/documents.css": "68f08a10982a9e7d",
     "/src/css/site/editor.css": "9e72ecefca5d7a61",
     "/src/css/site/effects.css": "6974865ff2b4beca",
     "/src/css/site/home.css": "c97eb4b6c6f3133e",
@@ -378,5 +378,5 @@
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
     "/src/js/site/sidebar.js": "163b0b70cbb11f09"
   },
-  "bytes": 10245408
+  "bytes": 10245772
 }
