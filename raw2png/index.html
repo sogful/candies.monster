@@ -189,17 +189,21 @@
             color: #fff;
         }
         .errortitle {
-            font-size: 0.9em;
+            display: block; font-size: 0.9em;
             margin-bottom: 0.25em;
-            user-select: text; cursor: text;
         }
         .errors {
             background: rgba(0,0,0,0.25); color: #fff;
-            font-size: 0.8em;
+            font: 0.8em monospace; box-sizing: border-box;
+            width: 100%; resize: vertical;
             text-shadow: none; padding: 0.5em;
             min-height: 10vh; max-height: 30vh;
             overflow: auto; white-space: pre-wrap; border-radius: 1em;
             user-select: text; cursor: text;
+        }
+        .copyerrors {
+            margin-top: 0.25em; padding: 0.2em 0.55em;
+            cursor: pointer;
         }
         .drag {
             position: fixed; display: none;
@@ -290,9 +294,11 @@
         </div>
 
         <div class="errorconsole">
-
-            <div class="errortitle" hidden>Errors</div>
-            <div class="errors" hidden></div>
+            <label class="errorlog" hidden>
+                <span class="errortitle">Errors</span>
+                <textarea class="errors" rows="5" readonly></textarea>
+            </label>
+            <button class="copyerrors" type="button" hidden>Copy errors</button>
         </div>
     </div>
     <script type="module" src="src/index.js"></script>

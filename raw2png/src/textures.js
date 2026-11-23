@@ -1,5 +1,6 @@
 import {concatenate, dimensions} from "./pixels.js";
 import {ispng, encode as png} from "./png.js";
+import {decompress, iszstd} from "./zstandard.js";
 
 export function join(parts) {
     if (!parts.length) throw new Error("No texture files selected.");
@@ -7,16 +8,21 @@ export function join(parts) {
 }
 
 export async function decode(bytes) {
+    if (iszstd(bytes)) bytes = await decompress(bytes, 134217728 + 15);
     if (ispng(bytes)) {
         const ios = await import("./iosimages.js");
         return ios.optimized(bytes) ? png(await ios.decode(bytes)) : bytes;
     }
     if (bytes.length < 7) throw new Error("Incomplete texture header.");
     const magic = bytes[0] | bytes[1] << 8;
+    if (magic === 0 && iszstd(bytes.subarray(6))) {
+        const {decodecompact} = await import("./moderngames.js");
+        return png(await decodecompact(bytes));
+    }
     let decoder;
     if (magic === 0x07bc || magic === 0x07bd) decoder = await import("./oldgames.js");
     else if (magic === 0x08bd) decoder = await import("./moderngames.js");
-    else throw new Error("Unrecognized texture format.");
+    else throw new Error(`Unrecognized texture format: header 0x${magic.toString(16).padStart(4, "0")}. Expected a ZeptoLab RAW texture or PNG.`);
     return png(await decoder.decode(bytes));
 }
 
