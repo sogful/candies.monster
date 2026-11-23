@@ -68,3 +68,30 @@ export async function decompress(bytes, limit) {
     }
     return concatenate(parts);
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export async function compress(bytes) {
+    let stream;
+    try {stream = new CompressionStream("zstd")}
+    catch {
+        const blocksize = 131072;
+        const count = Math.max(1, Math.ceil(bytes.length / blocksize));
+        const output = new Uint8Array(9 + count * 3 + bytes.length);
+        const view = new DataView(output.buffer);
+        view.setUint32(0, 0xfd2fb528, true);
+        output[4] = 0xa0;
+        view.setUint32(5, bytes.length, true);
+        let offset = 9;
+        for (let block = 0; block < count; block++) {
+            const data = bytes.subarray(block * blocksize, (block + 1) * blocksize);
+            const header = data.length * 8 + Number(block === count - 1);
+            view.setUint16(offset, header & 0xffff, true);
+            output[offset + 2] = header >>> 16;
+            output.set(data, offset + 3);
+            offset += 3 + data.length;
+        }
+        return output;
+    }
+    return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+}
