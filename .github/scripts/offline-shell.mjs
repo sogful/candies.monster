@@ -3,7 +3,7 @@ import {readdir, readFile, stat, writeFile} from "node:fs/promises";
 import {fileURLToPath} from "node:url";
 
 const root = new URL("../../", import.meta.url);
-const files = new Set(["index.html", "preview/editor.html", "preview/index.css", "preview/favicon.png"]);
+const files = new Set(["index.html", "preview/index.html", "preview/editor.html", "preview/index.css", "preview/favicon.png"]);
 const groups = [
     ["src", /\.(?:js|css)$/],
     ["preview/src", /\.js$/],

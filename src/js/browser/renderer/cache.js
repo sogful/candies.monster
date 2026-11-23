@@ -34,7 +34,7 @@ export function prefetch(entries, width, height) {
     const idle = callback => window.requestIdleCallback ? requestIdleCallback(callback) : setTimeout(callback, 200);
     const queue = entries.slice();
     async function next() {
-        if (current !== generation || document.hidden || document.documentElement.matches(".levelopen,.gameopen,.gameloading,.previewopen")) return;
+        if (current !== generation || document.hidden || document.documentElement.matches(".levelopen,.gameopen,.gameloading")) return;
         const entry = queue.shift();
         if (!entry) return;
         if (entry.engine) {idle(next); return}

@@ -207,14 +207,6 @@ document.addEventListener("auxclick", (e) => {
         });
         document.documentElement.style.filter = "invert(1)";
         document.documentElement.style.animation = "shake 2s ease-in-out infinite";
-        const funtitle = "??!?!?!?!?!?!?!?!?!?!?!?!?!?!";
-        let titleidx = 0;
-        if (window.titleinterval) clearInterval(window.titleinterval);
-        window.titleinterval = setInterval(() => {
-            titleidx = (titleidx + 1) % (funtitle.length + 1);
-            document.title = funtitle.slice(0, titleidx);
-            if (titleidx === funtitle.length) titleidx = 0;
-        }, 10);
         if (window.sheetimg) window.sheetimg.src = "/assets/images/wonderful.png";
 
         document.querySelector(".sbuttons").remove();

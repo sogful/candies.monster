@@ -104,7 +104,7 @@ function tick(now) {
 
 function resume() {
     stop();
-    const covered = document.documentElement.matches(".documentopen.documentdocumentation, .gameloading, .gameopen, .previewopen, .levelopen");
+    const covered = document.documentElement.matches(".documentopen.documentdocumentation, .gameloading, .gameopen, .levelopen");
     shadow?.classList.toggle("paused", document.hidden || suspended || covered);
     if (document.hidden || suspended || covered || !canvas?.isConnected) return;
     loadrain();
@@ -149,7 +149,6 @@ if (context) {
     document.addEventListener("visibilitychange", resume);
     document.addEventListener("homeviewchange", resume);
     document.addEventListener("levelviewchange", resume);
-    document.addEventListener("previewviewchange", resume);
     document.addEventListener("gameviewchange", resume);
     window.addEventListener("resize", resize, {passive: true});
     window.addEventListener("hashchange", resume);

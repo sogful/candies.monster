@@ -215,7 +215,7 @@ async function prepare() {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-async function homeroute(event) {
+async function siteroute(event, path) {
     const id = event.resultingClientId || event.clientId;
     try {
         if (self.navigator.onLine === false) throw new Error("Offline");
@@ -225,7 +225,7 @@ async function homeroute(event) {
         return response;
     } catch {
         const shell = await readyshell();
-        const cached = shell && await caches.match("/index.html", {cacheName: shell.name});
+        const cached = shell && await caches.match(path, {cacheName: shell.name});
         if (cached) {
             if (offlinenavigation.size >= 64) offlinenavigation.delete(offlinenavigation.values().next().value);
             offlinenavigation.add(id);
@@ -334,7 +334,9 @@ self.addEventListener("fetch", event => {
             dx: ready?.quality || ""
         })));
     } else if (request.mode === "navigate" && ["/", "/index.html"].includes(url.pathname)) {
-        event.respondWith(homeroute(event));
+        event.respondWith(siteroute(event, "/index.html"));
+    } else if (request.mode === "navigate" && ["/preview", "/preview/", "/preview/index.html"].includes(url.pathname)) {
+        event.respondWith(siteroute(event, "/preview/index.html"));
     } else if (url.pathname.startsWith(dxroot)) {
         const navigation = request.mode === "navigate";
         const path = navigation && url.pathname === dxroot ? dxindex : url.pathname;

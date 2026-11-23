@@ -152,7 +152,7 @@ function render() {
     if (view === "credits") panel.setAttribute("aria-modal", "true");
     else panel.removeAttribute("aria-modal");
     document.querySelector(".levelbrowser").setAttribute("aria-label", view || "custom levels");
-    document.querySelector(".levelcontent > .main").inert = Boolean(view) || root.classList.contains("previewopen") || root.classList.contains("levelopen");
+    document.querySelector(".levelcontent > .main").inert = Boolean(view) || root.classList.contains("levelopen");
     document.querySelector(".morestuff").inert = Boolean(view);
     for (const link of links) {
         if (link.hash === "#" + view) link.setAttribute("aria-current", "page");
@@ -167,7 +167,6 @@ function render() {
         if (view) scroll.scrollTop = 0;
     }
     if (previous && view && !motion.matches) panel.animate([{opacity: 0}, {opacity: 1}], {duration: 300, easing: "ease"});
-    document.title = view ? view[0].toUpperCase() + view.slice(1) + " - candies.monster" : "candies.monster";
     document.dispatchEvent(new CustomEvent("homeviewchange", {detail: view}));
 }
 

@@ -22,8 +22,6 @@ body {
     cursor: url("/assets/images/cursors/idle.cur"), default !important;
 }
 body.playing {overflow: hidden}
-.hosted .previewpage {background-color: transparent}
-.hosted .bg {display: none}
 .previewpage.nativeplaying .changever, .previewpage.nativeplaying .resetdata {display: none}
 .previewroot:has(.playing) {overflow: clip}
 .previewpage.playing {
@@ -246,7 +244,6 @@ body.shareonly .back {display: inline}
     z-index: 9999999999; width: min(340px,calc(100vw - 16px));
 }
 .linkpopup.active {display: block}
-.hosted .previewpage.shareonly .back {display: none}
 .linkcharcount {
     color: rgba(255,255,255,0.6);
     font-size: 0.5em;

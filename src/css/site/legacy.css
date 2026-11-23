@@ -113,7 +113,6 @@
     line-height: 0; pointer-events: auto;
 }
 .legacyexit img {width: 100%}
-.oldmode.previewopen .legacyexit {display: block}
 @media (max-width: 400px) {
     .oldhome .buttonlabel {display: none}
 }

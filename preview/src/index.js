@@ -571,7 +571,7 @@ import {createsharing} from "./sharing.js";
     changeverbtn.addEventListener("click", () => {closegame()});
 
     backbtn?.addEventListener("click", () => {
-        if (document.body.classList.contains("shareonly")) {
+        if (document.body.classList.contains("shareonly") && window.parent !== window) {
             window.parent.postMessage("exitpreview", "*");
         } else {closegame()}
     });

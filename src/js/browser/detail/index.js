@@ -185,7 +185,6 @@ export function leveldetails() {
         panel.querySelector(".levelauthor").replaceWith(creatorlink(entry, "levelauthor"));
         panel.querySelector(".levelname").textContent = entry.title;
         panel.querySelector(".leveldownload").download = filename(entry);
-        document.title = entry.title + " by " + entry.creator;
         panel.querySelector(".leveldescription").replaceChildren(discordmd(entry.description || entry.title));
         tags(entry, panel.querySelector(".levelinfotags > .leveltags"));
         reactions(entry, panel.querySelector(".levelreactions"));
@@ -346,14 +345,13 @@ export function leveldetails() {
         levelroute(open);
         root.classList.toggle("levelopen", open);
         document.dispatchEvent(new Event("levelviewchange"));
-        main.inert = open || root.classList.contains("documentopen") || root.classList.contains("previewopen");
+        main.inert = open || root.classList.contains("documentopen");
         const wasopen = !panel.hidden;
         panel.hidden = !open;
         if (!open) {
             favouriteobserver?.disconnect();
             for (const frame of panel.querySelectorAll(".candyframe")) frame.remove();
             scene(null);
-            if (current && !location.hash) document.title = "candies.monster";
             return;
         }
         const id = match[1];
@@ -370,7 +368,6 @@ export function leveldetails() {
             const selected = entry.revisions?.find(file => file.id === revision);
             const shown = selected ? {...entry, revision, requirements: [], filename: selected.name, objects: null, file: new URL("/levels/" + (selected.thread || id) + "/files/" + selected.id, entry.detailurl).href} : entry;
             scene(shown);
-            document.title = entry.title + " by " + entry.creator;
             content(shown);
         } else {
             panel.append(control());

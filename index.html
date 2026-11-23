@@ -7,6 +7,13 @@
         (() => {
             if (navigator.onLine === false) document.documentElement.classList.add("offline");
             if (Math.random() < 1 / 1000) document.documentElement.classList.add("chuzz");
+            const redirectpreview = () => {
+                if (location.hash.toLowerCase() !== "#preview") return false;
+                location.replace("/preview/" + location.search);
+                return true;
+            };
+            if (redirectpreview()) return;
+            window.addEventListener("hashchange", redirectpreview);
             const view = location.hash.slice(1).toLowerCase();
             let old = false;
             try {old = localStorage.getItem("homeversion") === "old"} catch {}
@@ -21,16 +28,10 @@
                 background.href = "/assets/images/level/box1.webp";
                 document.head.append(background);
             }
-            if (view === "preview") {
-                document.documentElement.classList.add("previewopen");
-                const parameters = new URLSearchParams(location.search);
-                const minimal = ["noui", "nu", "u"].find(name => parameters.has(name));
-                if (minimal !== undefined && ["", "true", "1"].includes(parameters.get(minimal).trim().toLowerCase())) document.documentElement.classList.add("previewminimal");
-            }
             if (["credits", "documentation"].includes(view)) {
                 document.documentElement.classList.add("documentopen", "document" + view);
             }
-            if (!/^\d+$/.test(view) && !/^level\/\d+$/.test(view) && view !== "preview") {
+            if (!/^\d+$/.test(view) && !/^level\/\d+$/.test(view)) {
                 const background = document.createElement("link");
                 background.rel = "preload";
                 background.as = "image";
@@ -81,7 +82,6 @@
     <link rel="stylesheet" href="/src/css/site/home.css">
     <link rel="stylesheet" href="/src/css/site/legacy.css">
     <link rel="stylesheet" href="/src/css/browser/index.css">
-    <link rel="stylesheet" href="/src/css/site/editor.css">
     <link rel="stylesheet" href="/src/css/site/documents.css">
     <link rel="stylesheet" href="/src/css/site/effects.css">
     <link rel="stylesheet" href="/assets/static/css/text.css">
@@ -126,7 +126,7 @@
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/versions.webp" title="download versions of various om nom games">
                         <span class="buttonlabel">game versions</span>
                     </a>
-                    <a aria-label="preview custom levels online" class="navlink" href="#preview">
+                    <a aria-label="preview custom levels online" class="navlink" href="/preview/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/preview.webp" title="preview custom levels online">
                         <span class="buttonlabel">preview</span>
                     </a>
@@ -136,6 +136,10 @@
                     </a>
                 </div>
                 <div class="buttons small smallnav">
+                    <a class="navlink" href="/edit/">
+                        <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/icons/edit.svg" alt="">
+                        <span class="buttonlabel">Package Editor</span>
+                    </a>
                     <a class="navlink" href="/split/">
                         <img width="220" height="220" class="button clickable" draggable="false" src="/assets/images/buttons/pages/split.webp" title="split spritesheets with xml">
                         <span class="buttonlabel">splitter</span>
@@ -177,10 +181,10 @@
                         <span class="buttonlabel">xml2json</span>
                     </a>
                 </div>
-                <p class="resourceblurb">More games and resources at <a href="https://ctrhome.github.io/">Cut the Rope Home</a>.</p>
+                <p class="resourceblurb">..also check out <a href="https://ctrhome.github.io/">CTR Home</a> for more resources!</p>
                 </div>
                 <nav class="sidelinks" aria-label="site information">
-                    <a class="ctrhomefooter" href="https://ctrhome.github.io/" hidden>Cut the Rope Home</a>
+                    <a class="ctrhomefooter" href="https://ctrhome.github.io/" hidden>ctr home</a>
                     <a href="#documentation">docs</a>
                     <a href="#credits">credits</a>
                     <a href="https://github.com/sogful/candies.monster">github</a>
@@ -288,7 +292,7 @@
 
                             <h2 class="documentheading">preview</h2>
                             <ul class="documentlist">
-                                <li class="documententry"><span class="documentlink">https://candies.monster/preview?data=<span class="documentnote"> (xml / plain / base64 / url-safe base64) </span>&noui&embed</span></li>
+                                <li class="documententry"><span class="documentlink">https://candies.monster/preview/?data=<span class="documentnote"> (xml / plain / base64 / url-safe base64) </span>&noui&embed</span></li>
 
                                 <li class="documententry documentparameter"><span class="documentnote"><span class="documentoptional">(optional)</span> <code class="documentcode">version</code> (<code class="documentcode">ver</code> / <code class="documentcode">v</code>) - skip the version picker and load straight into a specific game</span></li>
 
@@ -336,7 +340,6 @@
         <script src="/src/js/site/legacy.js" type="module"></script>
         <script src="/src/js/browser/index.js" type="module"></script>
         <script src="/src/js/site/offlineworker.js" type="module"></script>
-        <script src="/src/js/site/editor.js" type="module"></script>
 
     </body>
 </html>

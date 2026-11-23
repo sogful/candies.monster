@@ -2,7 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url><loc>https://candies.monster/</loc></url>
     <url><loc>https://candies.monster/versions/</loc></url>
+    <url><loc>https://candies.monster/preview/</loc></url>
     <url><loc>https://candies.monster/raw2png/</loc></url>
+    <url><loc>https://candies.monster/edit/</loc></url>
     <url><loc>https://candies.monster/xml2json/</loc></url>
     <url><loc>https://candies.monster/split/</loc></url>
     <url><loc>https://candies.monster/fonts/</loc></url>

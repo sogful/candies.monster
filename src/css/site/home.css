@@ -15,7 +15,7 @@
     cursor: url("/assets/images/cursors/idle.cur"), default;
 }
 
-.chuzz:not(.levelopen,.previewopen) .homepage {
+.chuzz:not(.levelopen) .homepage {
     --coverheight: max(56.25vw,100vh);
     background-image: url("/assets/images/bgs/chuzz.avif"), url("/assets/images/bgs/original.avif");
     background-size: calc(var(--coverheight) * 84 / 1080) auto, cover;

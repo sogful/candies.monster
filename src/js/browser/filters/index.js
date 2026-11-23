@@ -308,7 +308,7 @@ export function filters(changed) {
     document.addEventListener("levelplayed", () => {if (order === "played") apply(false, true)});
     document.addEventListener("keydown", event => {
         if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey || event.target?.isContentEditable || event.target?.closest?.("input,textarea,select")) return;
-        if (document.documentElement.matches(".gameopen,.gameloading,.previewopen,.documentopen")) return;
+        if (document.documentElement.matches(".gameopen,.gameloading,.documentopen")) return;
         if (document.querySelector(".filterdialog[open]")) return;
         event.preventDefault();
         if (location.hash) {
