@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="View symbols and edit game data in APK and IPA packages.">
+    <title>Package Editor – candies.monster</title>
+    <link rel="canonical" href="https://candies.monster/edit/">
+    <link rel="icon" href="/assets/images/candies/favicon.png">
+    <meta property="og:image" content="https://candies.monster/assets/images/branding/embeds/edit.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://candies.monster/assets/images/branding/embeds/edit.png">
+    <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/static/css/back.css">
+    <link rel="stylesheet" href="/assets/static/css/buttons.css">
+    <link rel="stylesheet" href="/assets/static/css/dropdown.css">
+    <link rel="stylesheet" href="/src/css/browser/discord.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="levelview.css">
+    <script src="/assets/static/js/text/fonts.js"></script>
+    <script defer src="/assets/static/js/back.js"></script>
+    <script defer src="/assets/static/dependencies/jszip.min.js"></script>
+    <script type="module" src="src/index.js"></script>
+</head>
+<body class="editorpage">
+    <a class="pageback" href="/"><img src="/assets/images/buttons/back.png" alt="Back" width="42" height="42" draggable="false"></a>
+    <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
+    <main class="page">
+        <section class="workspace">
+            <div class="intake">
+                <input class="packageinput" type="file" accept=".apk,.ipa,.xapk,.apks" multiple hidden>
+                <button class="input uploadinput pick" type="button">
+                    <span class="pickprompt">Click to open file explorer<br>or drag the file here...</span>
+                    <span class="pickprogress" role="status" hidden></span>
+                </button>
+            </div>
+
+            <div class="editor" hidden>
+                <header class="editorheader"></header>
+                <button class="packageswitch packageprevious" type="button" hidden>
+                    <img src="/assets/images/buttons/back.png" alt="Previous package" width="34" height="34" draggable="false">
+                </button>
+                <button class="packageswitch packagenext" type="button" hidden>
+                    <img src="/assets/images/buttons/back.png" alt="Next package" width="34" height="34" draggable="false">
+                </button>
+                <p class="unitymessage" hidden>This is a Unity game, use <a href="https://github.com/assetripper/assetripper" target="_blank" rel="noopener">AssetRipper</a> to edit its contents!</p>
+
+                <div class="editorbody">
+                    <nav class="editorsidebar">
+                        <button class="tool" type="button" data-tool="levels" aria-pressed="false">
+                            <img src="/assets/images/buttons/pages/levels.webp" alt="" draggable="false"><span>Levels</span>
+                        </button>
+                        <button class="tool" type="button" data-tool="stringsgame" aria-pressed="false">
+                            <img src="/assets/images/buttons/pages/convertlevels.webp" alt="" draggable="false"><span>Strings</span>
+                        </button>
+                        <button class="tool" type="button" data-tool="sprites" aria-pressed="false">
+                            <img src="/assets/images/buttons/pages/sprites.webp" alt="" draggable="false"><span>Sprites</span>
+                        </button>
+                        <button class="tool" type="button" data-tool="symbols" aria-pressed="false">
+                            <img src="/assets/images/buttons/pages/convert.webp" alt="" draggable="false"><span>Symbols</span>
+                        </button>
+                    </nav>
+                    <button class="sidebartoggle" type="button" aria-expanded="true">
+                        <img src="/assets/images/buttons/back.png" alt="Hide sidebar" width="15" height="15" draggable="false">
+                    </button>
+                    <div class="editorcontent">
+                        <section class="analysis" hidden>
+                            <div class="resulttools">
+                                <label class="controldropdown"><select class="filelist" title="Symbol source"></select></label>
+                                <label class="controldropdown formatslabel" hidden><select class="reportformat" title="Symbol format"></select></label>
+                                <input class="filterresults" type="search" placeholder="Filter symbols" hidden>
+                                <button class="buttonart importreport" type="button">Import</button>
+                                <input class="reportinput" type="file" accept=".json,.tsv" hidden>
+                                <button class="buttonart downloadresults" type="button" disabled>Export</button>
+                            </div>
+                            <p class="resultstatus"></p>
+                            <div class="tablewrap" hidden>
+                                <table class="resulttable">
+                                    <thead><tr><th>Address</th><th>Type</th><th>Symbol</th></tr></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section class="levelpanel" hidden>
+                            <div class="resulttools">
+                                <label class="controldropdown"><select class="boxselect" title="Box"></select></label>
+                                <label class="controldropdown"><select class="levelselect" title="Level"></select></label>
+                                <button class="buttonart importlevel" type="button">Import</button>
+                                <input class="levelinput" type="file" accept=".xml" hidden>
+                                <button class="buttonart exportlevel" type="button">Export</button>
+                                <a class="buttonart leveleditor" href="https://yell0wsuit.github.io/ctrdx-editor/" target="_blank" rel="noopener">DX Editor</a>
+                            </div>
+                            <div class="levelview"></div>
+                        </section>
+                        <section class="stringspanel" hidden>
+                            <div class="resulttools">
+                                <label class="controldropdown translationsource"><select class="stringselect" title="Translation group"></select></label>
+                                <label class="controldropdown translationlanguage" hidden><select class="localeselect" title="Language"></select></label>
+                                <input class="filterstrings" type="search" placeholder="Find a string">
+                            </div>
+                            <div class="tablewrap">
+                                <table class="stringtable">
+                                    <thead><tr><th>Key</th><th>Text</th></tr></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section class="spritepanel" hidden>
+                            <div class="resulttools">
+                                <input class="filtersprites" type="search" placeholder="Find a texture">
+                                <label class="controldropdown"><select class="spriteselect" title="Texture"></select></label>
+                                <button class="buttonart importsprite" type="button">Replace</button>
+                                <input class="spriteinput" type="file" accept="image/*" hidden>
+                                <button class="buttonart exportsprite" type="button">Export</button>
+                                <button class="buttonart resetsprite" type="button" hidden>Reset</button>
+                            </div>
+                            <div class="spriteview"><img class="spriteimage" alt="" hidden></div>
+                        </section>
+                        <div class="pages" hidden>
+                            <button class="buttonart previous" type="button">Previous</button>
+                            <span class="pagetext"></span>
+                            <button class="buttonart next" type="button">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="status" role="status"></p>
+            <p class="error" role="alert" hidden></p>
+        </section>
+    </main>
+</body>
+</html>

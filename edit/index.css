@@ -1,0 +1,242 @@
+@font-face {
+    font-family: "Good Dog"; font-display: swap;
+    src: url("/assets/fonts/gooddog.woff2") format("woff2");
+}
+@font-face {
+    font-family: "JetBrains Mono"; font-display: swap;
+    src: url("/assets/fonts/jetbrainsmono.woff2") format("woff2");
+}
+
+*, *::before, *::after {
+    box-sizing: border-box; scrollbar-width: none;
+}
+*::-webkit-scrollbar {display: none}
+[hidden] {display: none !important}
+
+.editorpage {
+    --datafont: "JetBrains Mono", monospace;
+    --panel: rgba(0,0,0,0.55);
+    color-scheme: dark; overflow: hidden;
+    margin: 0; min-height: 100dvh;
+    background: #e9a856 url("/assets/images/bgs/original.avif") center/cover fixed;
+    color: #fff; font: 1.25rem/1.2 var(--sitefont, "Good Dog");
+    -webkit-text-stroke: 0.175em #000; text-shadow: 0 0.15em 0 #000;
+    paint-order: stroke fill; cursor: url("/assets/images/cursors/idle.cur"), default;
+}
+.page, .workspace, .editor {
+    display: flex; flex-direction: column;
+    min-height: 0; flex: 1;
+}
+.page {
+    width: 100%; height: 100dvh;
+    margin: 0 auto; padding: 5px;
+}
+.page:has(.packageswitch:not([hidden])) {padding-inline: 36px}
+.page:has(.intake:not([hidden])) {
+    justify-content: center; align-items: center;
+}
+.workspace:has(.intake:not([hidden])) {
+    width: min(90vw, 540px); flex: none;
+}
+.intake .input {
+    background: rgba(0,0,0,0.75); color: #fff;
+    font: 1.25em var(--sitefont, "Good Dog"); text-align: center;
+    border: 0; border-radius: 1em;
+    width: 100%; min-height: min(200px, 40dvh);
+    display: flex; align-items: center;
+    justify-content: center; padding: 1em;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+.intake .input span {
+    -webkit-text-stroke: 0.175em #000; text-shadow: 0 0.15em 0 #000;
+    paint-order: stroke fill;
+}
+.intake .input:disabled {opacity: 1}
+.workspace.dragging .pick, .pick:hover:not(:disabled) {background: rgba(0,0,0,0.88)}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+button, select, input, textarea {font: inherit}
+.buttonart {
+    --buttonvertical: 13px;
+    --buttonhorizontal: 24px;
+    display: inline-grid; place-items: center;
+    min-width: 58px; min-height: 32px;
+    padding: 3px 10px 5px; border-width: 0;
+    background: none; color: #fff;
+    -webkit-text-stroke: 0.175em #000; text-shadow: 0 0.15em 0 #000;
+    paint-order: stroke fill; text-decoration: none;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+.buttonart:hover:not(:disabled), .buttonart:focus-visible {filter: brightness(1.18)}
+.buttonart:active:not(:disabled) {scale: 0.96}
+button:disabled {opacity: 0.55; cursor: default}
+.editorpage :focus {outline: none}
+.editorpage :is(.tool,.packageswitch,.pageback,.membershipbutton,.membershipclose):focus-visible {filter: brightness(1.35)}
+.editorpage :is(input,textarea,select):focus-visible, .dropdown .dropdownbutton:focus-visible {background-color: #242424}
+
+input:not([type="checkbox"]), textarea {
+    width: 100%; min-width: 0;
+    background: rgba(0,0,0,0.65); color: #fff;
+    padding: 5px 8px; border: 0;
+    border-radius: 0.45em;
+}
+input::placeholder {color: rgba(255,255,255,0.75)}
+label {min-width: 0}
+.dropdown {display: block}
+.dropdown .dropdownbutton {cursor: url("/assets/images/cursors/link.cur"), pointer}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.editor {gap: 5px}
+.editorheader, .editorsidebar, .editorcontent, .unitymessage {
+    min-width: 0; min-height: 0;
+    background: var(--panel); border-radius: 0.7em;
+}
+.page .editorheader {
+    padding-inline-start: 52px; flex: none;
+}
+.editorpage:has(.editor:not([hidden])) .pageback {
+    top: 9px; left: 9px;
+    width: 33px; height: 33px;
+}
+.editorpage:has(.packageswitch:not([hidden])) .pageback {left: 42px}
+.packageswitch {
+    position: fixed; top: 50%;
+    transform: translateY(-50%); z-index: 2;
+    padding: 0; border: 0;
+    background: none; line-height: 0;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+.packageprevious {left: 2px}
+.packagenext {right: 2px}
+.packagenext img {transform: scaleX(-1)}
+.unitymessage {
+    margin: 0; padding: 0.75em;
+    text-align: center;
+}
+.unitymessage a {color: #8feeff}
+.editorbody {
+    flex: 1; display: flex;
+    gap: 5px; min-height: 0;
+}
+.editorsidebar {
+    width: 88px; flex: 0 0 88px;
+    display: flex; flex-direction: column;
+    gap: 5px; height: 100%;
+    padding: 6px 0; overflow: auto;
+}
+.sidebartoggle {
+    align-self: center; flex: 0 0 15px;
+    display: grid; place-items: center;
+    width: 15px; height: 26px;
+    padding: 0; border: 0;
+    border-radius: 6px; background: var(--panel);
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+.sidebartoggle[aria-expanded="false"] img {transform: scaleX(-1)}
+.editorpage .sidebartoggle:focus-visible {filter: brightness(1.35)}
+.tool {
+    position: relative; align-self: center;
+    display: grid; place-items: center;
+    width: 72px; height: 64px; flex: none;
+    border: 0; padding: 0;
+    font-size: 0.85em; color: #fff;
+    background: none; cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+.tool img {
+    width: 58px; height: 58px;
+    grid-area: 1 / 1; object-fit: contain;
+}
+.tool span {
+    grid-area: 1 / 1; align-self: end;
+    -webkit-text-stroke: 0.175em #000; text-shadow: 0 0.15em #000;
+    paint-order: stroke fill;
+}
+.tool[aria-pressed="true"] {color: #8feeff}
+.tool[aria-pressed="true"] img, .tool:hover:not(:disabled) img {filter: brightness(1.17)}
+
+.editorcontent {
+    flex: 1; display: flex;
+    flex-direction: column; gap: 4px;
+    padding: 6px; overflow: auto;
+}
+.analysis, .levelpanel, .stringspanel, .spritepanel {
+    display: flex; flex-direction: column;
+    flex: 1; min-height: 0;
+    gap: 4px;
+}
+.resulttools, .pages {
+    display: flex; gap: 5px;
+    flex-wrap: wrap; align-items: center;
+}
+.controldropdown {flex: 0 1 180px}
+.controldropdown .dropdownbutton {
+    min-height: 31px; max-height: 48px;
+    overflow: hidden;
+}
+.filterresults, .filterstrings, .filtersprites {flex: 1 1 110px}
+.resultstatus, .status {margin: 2px 0; overflow-wrap: anywhere}
+.status:empty, .resultstatus:empty {display: none}
+.error {
+    margin: 4px 0 0; color: #ffbdab;
+    white-space: pre-wrap; overflow-wrap: anywhere;
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.tablewrap {
+    min-height: 0; overflow: auto;
+}
+.resulttable, .stringtable {
+    width: 100%; border-collapse: collapse;
+    text-align: left;
+}
+.resulttable th, .stringtable th {
+    padding: 4px 6px; font-weight: normal;
+}
+.resulttable td, .stringtable textarea {
+    font: 0.7em/1.45 var(--datafont);
+    -webkit-text-stroke: 0; text-shadow: none;
+}
+.resulttable td, .stringtable td {
+    padding: 2px 6px; vertical-align: top;
+    overflow-wrap: anywhere;
+}
+.resulttable td:first-child, .resulttable td:nth-child(2) {white-space: nowrap}
+.stringtable td:first-child {width: 36%}
+.stringtable textarea {
+    display: block; min-height: 2.2em;
+    field-sizing: content; resize: vertical;
+}
+.pages {
+    justify-content: center; flex: none;
+    margin-block: 2px;
+}
+.spriteview {
+    display: grid; place-items: center;
+    flex: 1; min-height: 0;
+    overflow: auto; border-radius: 0.55em;
+    background: rgba(0,0,0,0.35);
+}
+.spriteimage {
+    max-width: 100%; max-height: 100%;
+    min-height: 0; object-fit: contain;
+}
+
+@media (max-width: 700px) {
+    .editorbody {flex-direction: column}
+    .editorsidebar {
+        width: 100%; height: 76px; flex: 0 0 76px;
+        flex-direction: row; align-items: center; justify-content: center;
+        gap: 1px; padding: 2px 0;
+    }
+    .tool {width: min(70px,25%); height: 60px}
+    .sidebartoggle {width: 26px; height: 15px}
+    .sidebartoggle img {transform: rotate(90deg)}
+    .sidebartoggle[aria-expanded="false"] img {transform: rotate(-90deg)}
+    .page:has(.packageswitch:not([hidden])) {padding-inline: 25px}
+    .editorpage:has(.packageswitch:not([hidden])) .pageback {left: 30px}
+    .packageswitch img {width: 24px; height: 24px}
+    .controldropdown {flex: 1 1 120px}
+}
