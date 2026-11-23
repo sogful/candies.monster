@@ -1,0 +1,72 @@
+.levelview {
+    display: flex; flex: 1;
+    min-height: 0;
+}
+.pkglevelview {
+    display: flex; flex: 1;
+    flex-direction: column; min-height: 0;
+    gap: 4px;
+}
+.pkglevelholder {
+    flex: 1; min-height: min(180px, 34dvh);
+    display: grid; place-items: center;
+    container-type: size;
+}
+.pkglevelstage {
+    position: relative; overflow: hidden;
+    width: min(100cqw, calc(100cqh * var(--levelratio)));
+    aspect-ratio: var(--levelratio);
+    border-radius: 0.55em;
+}
+.pkglevelcanvas {
+    display: block; width: 100%;
+    height: 100%;
+}
+.hinttoggle {align-self: start}
+.hintcontrols {
+    display: flex; flex-wrap: wrap;
+    align-items: end; gap: 5px;
+}
+.hintcontrols label {
+    display: flex; gap: 3px;
+    align-items: center;
+}
+.hintcontrols .hintvalue, .hintcontrols .hintselect {
+    width: 4em; min-width: 0;
+    padding: 2px 4px;
+}
+.hintstatus {margin: 0}
+.hintstatus:empty {display: none}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.hintoverlay {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    touch-action: none;
+}
+.hintoverlay:not([data-editing]) {display: none}
+.hintoverlay[data-adding] {cursor: crosshair}
+.hintpaths {pointer-events: none}
+.hintshadow, .hintline, .hintend, .hintpoint {
+    stroke-linecap: round; stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+.hintshadow, .hintline {fill: none}
+.hintshadow {stroke: #322004; stroke-width: 5px}
+.hintline {
+    stroke: #ffe477; stroke-width: 3px;
+    stroke-dasharray: 5px 5px;
+}
+.hintend {fill: #ffc943; stroke: #714407}
+.hintpoint {
+    fill: #fff8b1; stroke: #704607; stroke-width: 1px;
+    cursor: grab;
+}
+.hintpoint:active {cursor: grabbing}
+.hintselected {fill: #8feeff; stroke: #173d49}
+
+@media (max-width: 760px) {
+    .hintcontrols {font-size: 0.9em}
+    .hintcontrols .hintvalue, .hintcontrols .hintselect {width: 3.4em}
+}
