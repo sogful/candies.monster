@@ -281,3 +281,5 @@ export function openplist(bytes) {
     if (bytes.length > 8 * 1024 * 1024) throw new Error("The plist is larger than 8 MB.");
     return header.every((byte, i) => bytes[i] === byte) ? binaryplist(bytes) : xmlplist(bytes);
 }
+
+export {loadobjects, writetable, recordtext, storestring, getint, intwidth, putint};
