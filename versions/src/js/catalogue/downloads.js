@@ -18,6 +18,13 @@ function downloadarch(value) {
     return [...new Set([...architectures].filter(Boolean).map(arch => downloadbuttons.architectures[arch] || arch))].join(",");
 }
 
+function downloaddomain(url) {
+    let hostname;
+    try {hostname = new URL(url).hostname.toLowerCase()}
+    catch {return}
+    return downloadbuttons.domains.find(item => hostname === item.domain || hostname.endsWith(`.${item.domain}`));
+}
+
 function downloadbutton(download) {
     const url = download.url.toLowerCase();
     const mirror = downloadbuttons.mirrors.find(item => url.startsWith(item.prefix) && url.includes(item.contains));
@@ -25,14 +32,12 @@ function downloadbutton(download) {
     if (download.kind === "symbols") return downloadbuttons.symbols;
     if (download.kind === "torrent") return downloadbuttons.torrent;
     if (download.button) return download.button;
-    let hostname = "";
-    try {hostname = new URL(download.url).hostname.toLowerCase()} catch {}
-    const match = downloadbuttons.domains.find(item => hostname === item.domain || hostname.endsWith(`.${item.domain}`));
+    const match = downloaddomain(download.url);
     return match ? `${match.icon}.webp` : downloadbuttons.fallback;
 }
 
-export function secondarydownload(download) {
-    return downloadbuttons.secondary.includes(downloadbutton(download));
+export function secondarydownload(download, button = downloadbutton(download)) {
+    return downloadbuttons.secondary.includes(button) || Boolean(downloaddomain(download.url)?.compact);
 }
 
 export function downloadidentity(download) {
@@ -117,7 +122,7 @@ function renderdownloadbutton(download, version, description, game) {
         warning
     };
     const metadata = Object.entries(information).filter(([, value]) => value).map(([key, value]) => `data-download${key}="${downloadattribute(value)}"`).join(" ");
-    const compact = secondarydownload(download) ? " smallsource" : "";
+    const compact = secondarydownload(download, button) ? " smallsource" : "";
     return `<a class="downloadbutton clickable${compact}" href="${downloadattribute(download.url)}"${magnet ? "" : ' target="_blank"'} rel="noopener" aria-label="${downloadattribute(`${source} ${version}`)}" aria-haspopup="dialog" ${metadata}>
         <img src="/assets/images/buttons/download/${downloadattribute(button)}" alt="" draggable="false" loading="lazy" decoding="async" width="24" height="24">
     </a>`;

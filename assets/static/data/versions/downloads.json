@@ -28,7 +28,7 @@
         {"domain": "mediafire.com", "icon": "mediafire"},
 
         {"domain": "archive.org", "icon": "internetarchive"},
-        {"domain": "cdn.candies.monster", "icon": "cdn"},
+        {"domain": "cdn.candies.monster", "icon": "cdn", "compact": true},
         
         {"domain": "famobi.com", "icon": "famobi"},
         {"domain": "gamesnacks.com", "icon": "gamesnacks"},
