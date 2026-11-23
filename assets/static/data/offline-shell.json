@@ -1,5 +1,5 @@
 {
-  "version": "6cb423e407556175",
+  "version": "32b8cef561c81b92",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -76,6 +76,7 @@
     "/assets/images/buttons/pages/comics.webp": "4ff14939437eb4f7",
     "/assets/images/buttons/pages/convert.webp": "59198014c512337b",
     "/assets/images/buttons/pages/convertlevels.webp": "954c0e6109dd156e",
+    "/assets/images/buttons/pages/edit.webp": "2f483cca2761cf5f",
     "/assets/images/buttons/pages/font.webp": "8919660724fbc455",
     "/assets/images/buttons/pages/leaderboard.webp": "078724af32faae1d",
     "/assets/images/buttons/pages/levels.webp": "a78aa27deb208129",
@@ -285,7 +286,7 @@
     "/assets/static/js/levels/repair.js": "b1f064e024c204f9",
     "/assets/static/js/text/emoji.js": "2fee7dc8794ab6c4",
     "/assets/static/js/text/fonts.js": "3262f487c6bfc9ee",
-    "/index.html": "ec7d47addf084a5c",
+    "/index.html": "82d3f902136ccecc",
     "/preview/editor.html": "33aeb574b277fc85",
     "/preview/favicon.png": "270170a338f60474",
     "/preview/index.css": "1c553b0eaca8ca6e",
@@ -377,5 +378,5 @@
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
     "/src/js/site/sidebar.js": "ecd1d165a61dfec2"
   },
-  "bytes": 10241300
+  "bytes": 10266167
 }
