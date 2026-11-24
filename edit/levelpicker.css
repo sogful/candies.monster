@@ -67,6 +67,8 @@
 .levelpack:hover, .levelpicktile:hover, .levelpack:focus-visible, .levelpicktile:focus-visible,
 .levelpickarrow:focus-visible {filter: brightness(1.18)}
 .levelpack:active, .levelpicktile:active {filter: brightness(0.85)}
+.editorpage .levelpack.modifiedentry {border-color: #e1b45c}
+.editorpage .levelpicktile.modifiedentry {color: #ffe0a0}
 
 /*//////////////////////////////////////////////////////////////////////*/
 

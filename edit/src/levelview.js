@@ -346,14 +346,14 @@ async function packagedbackground(blob, map) {
 
 async function levelbackground(map, box, packageid, boxart) {
     const game = levelgame(packageid);
-    if (game === "original") {
-        return background(`/assets/images/level/box${box}.webp`, map)
-            .catch(() => background("/assets/images/level/box1.webp", map).catch(() => null));
-    }
     try {
         const blob = await boxart?.(box);
         if (blob) return await packagedbackground(blob, map);
     } catch {}
+    if (game === "original") {
+        return background(`/assets/images/level/box${box}.webp`, map)
+            .catch(() => background("/assets/images/level/box1.webp", map).catch(() => null));
+    }
     const fallback = staticboxcover(packageid, box);
     return fallback ? background(fallback, map).catch(() => null) : null;
 }

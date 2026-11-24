@@ -48,19 +48,18 @@ export function levelart(packageid, sprites, replacements) {
     const game = levelgame(packageid);
     const cache = new Map();
     return async (box, cover = false) => {
-        if (game === "original" && !cover) return null;
         const prefix = boxstem(game, box);
         if (!prefix) return null;
         const candidates = sprites.map(item => ({item, stem: spritebase(item.path)}))
             .filter(({stem}) => stem === prefix || stem.startsWith(prefix + "_"))
-            .filter(({stem}) => game !== "original" || stem.startsWith(prefix + "_cover"))
             .filter(({stem}) => stem.slice(prefix.length).split("_").every(part =>
                 !part || /^(?:\d+(?:x\d+)?|cover|p1|hd|pad|ipad|iphone5|retina)$/.test(part)));
         candidates.sort((a, b) => {
             const difference = cover
                 ? Number(b.stem.includes("_cover")) - Number(a.stem.includes("_cover"))
                 : Number(a.stem.includes("_cover")) - Number(b.stem.includes("_cover"));
-            return difference || b.item.size - a.item.size;
+            const size = item => item.parts.reduce((total, part) => total + part.size, 0);
+            return difference || size(b.item) - size(a.item);
         });
         for (const {item} of candidates) {
             const changed = replacements();
@@ -119,6 +118,8 @@ export function levelpicker(root, change) {
     let active = null;
     let packageid = "";
     let readart;
+    let modified;
+    const marks = new Map();
     let generation = 0;
     const urls = new Set();
 
@@ -126,8 +127,13 @@ export function levelpicker(root, change) {
         generation++;
         for (const url of urls) URL.revokeObjectURL(url);
         urls.clear();
+        marks.clear();
         root.dataset.view = view;
         root.replaceChildren();
+    }
+
+    function refresh() {
+        for (const [node, levels] of marks) node.classList.toggle("modifiedentry", !!modified && levels.some(modified));
     }
 
     function decorate(box, image) {
@@ -188,12 +194,14 @@ export function levelpicker(root, change) {
                 boxindex += offset;
                 showlevels(true);
             });
+            marks.set(card, entry.levels);
             row.append(card);
             if (!offset) center = card;
         }
         const frame = element("div", "levelpickframes");
         frame.append(previous, row, next);
         root.append(frame);
+        refresh();
         if (focus) center?.focus({preventScroll: true});
         let start;
         let lastswipe = -Infinity;
@@ -243,10 +251,12 @@ export function levelpicker(root, change) {
             tile.title = "Level " + level.level;
             tile.addEventListener("click", () => showlevel(level, true));
             if (level === previous) activebutton = tile;
+            marks.set(tile, [level]);
             grid.append(tile);
         }
         panel.append(grid);
         root.append(panel);
+        refresh();
         if (previous) change(null);
         if (focus) (activebutton ?? back).focus({preventScroll: true});
     }
@@ -255,7 +265,7 @@ export function levelpicker(root, change) {
         active = level;
         begin("selected");
         const pack = title(levelgame(packageid), level.box);
-        const back = header(level.box === null ? "Level " + level.level : pack + " · Level " + level.level, "Back to levels", () => showlevels(true));
+        const back = header(level.box === null ? "Level " + level.level : pack + " (Level " + level.level + ")", "Back to levels", () => showlevels(true));
         if (focus) {
             back.focus({preventScroll: true});
             change(level);
@@ -263,9 +273,10 @@ export function levelpicker(root, change) {
     }
 
     return {
-        load(levels, id, selectedIndex, art) {
+        load(levels, id, selectedIndex, art, ismodified) {
             packageid = id;
             readart = art;
+            modified = ismodified;
             packages = [...Map.groupBy(levels, level => level.box)].map(([box, levels]) => ({box, levels}));
             const selected = levels.find(level => String(level.index) === String(selectedIndex));
             boxindex = selected ? packages.findIndex(entry => entry.box === selected.box) : 0;
@@ -274,10 +285,12 @@ export function levelpicker(root, change) {
             return active;
         },
         selection: () => active,
+        refresh,
         clear() {
             packages = [];
             active = null;
             readart = undefined;
+            modified = undefined;
             begin("");
         }
     };

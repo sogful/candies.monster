@@ -10,29 +10,52 @@ function strip(languages, x, y, width, height, dx, dy, rotated = false) {
     return languages.map((language, index) => [language, [x + dx * index, y + dy * index, width, height, rotated]]);
 }
 
+const timetravellow = [
+    ...strip(["ru","en"], 1, 97, 76, 53, 0, 55),
+    ...strip(["ja","ko","de"], 87, 39, 76, 53, 0, 55),
+    ...strip(["zh","it","fr"], 165, 39, 76, 53, 0, 55),
+    ...strip(["nl","es","br"], 243, 39, 76, 53, 0, 55)
+];
+
+function timetravelrow(width, height) {
+    return [
+        ...strip(["ru","en","ja"], 176, 62, width, height, 172, 0),
+        ...strip(["ko","zh","fr","es"], 749, 1, width, height, 172, 0),
+        ...strip(["de","it","nl","br"], 749, 124, width, height, 172, 0)
+    ];
+}
+
 const layouts = {
+    "663x1760": [
+        ...strip(["ru","de","fr","en"], 604, 582, 56, 79, 0, 81, true),
+        ...strip(["ja"], 603, 906, 56, 79, 0, 0, true),
+        ...strip(["nl","it","es"], 596, 1426, 56, 79, 0, 81, true),
+        ["ko", [312, 1324, 54, 78, true]],
+        ["br", [380, 1402, 79, 55, false]],
+        ["zh", [380, 1460, 79, 56, false]]
+    ],
     "1638x150": strip(common, 5, 1, 98, 140, 104, 0, true),
     "952x248": [...strip(upper, 1, 1, 97, 139, 102, 0, true), ...strip(lower, 1, 146, 139, 97, 145, 0)],
     "248x944": [...strip(upper, 1, 1, 139, 97, 0, 102), ...strip(lower, 146, 1, 97, 139, 0, 145, true)],
     "288x3128": strip(common, 1, 1, 277, 193, 0, 199),
-    "378x206": [
-        ...strip(["ru","en"], 1, 97, 76, 53, 0, 55),
-        ...strip(["ja","ko","de"], 87, 39, 76, 53, 0, 55),
-        ...strip(["zh","it","fr"], 165, 39, 76, 53, 0, 55),
-        ...strip(["nl","es","pt"], 243, 39, 76, 53, 0, 55)
-    ],
-    "1430x246": [
-        ...strip(["ru","en","ja"], 176, 62, 151, 108, 172, 0),
-        ...strip(["ko","zh","fr","es"], 749, 1, 151, 108, 172, 0),
-        ...strip(["de","it","nl","pt"], 749, 124, 151, 108, 172, 0)
+    "378x206": timetravellow,
+    "512x222": timetravellow,
+    "1430x246": timetravelrow(151, 108),
+    "2048x252": timetravelrow(154, 112),
+    "604x668": [
+        ...strip(["ru","en"], 176, 10, 154, 113, 172, 0),
+        ...strip(["ja","zh","it"], 7, 265, 154, 113, 172, 0),
+        ...strip(["ko","fr","es"], 7, 397, 154, 113, 172, 0),
+        ...strip(["de","nl","br"], 7, 529, 154, 113, 172, 0)
     ]
 };
 
 function languagecode(locale) {
     const tag = String(locale ?? "").toLowerCase().replaceAll("_", "-");
     if (/^zh-(?:hant|tw|hk|mo)\b/.test(tag)) return "zh-hant";
+    if (tag === "pt-br") return "br";
     const base = tag.split("-")[0];
-    return {br: "pt", jp: "ja", kr: "ko", cn: "zh", tw: "zh-hant", iw: "he"}[base] ?? base;
+    return {jp: "ja", kr: "ko", cn: "zh", tw: "zh-hant", iw: "he"}[base] ?? base;
 }
 
 function basename(item) {
@@ -81,10 +104,11 @@ export async function languageflag(locale, sprites, replacements) {
         const blob = await previewtexture(direct, replacements).catch(() => null);
         if (blob) return blob;
     }
-    const atlases = sprites.filter(item => /^(?:language|menu_settings)(?:[_-]\d+)*$/.test(basename(item)))
+    const atlases = sprites.filter(item => /^(?:language|menu_settings|menu_extra_buttons)(?:[_-]\d+)*$/.test(basename(item)))
         .sort((a, b) => a.size - b.size);
     for (const atlas of atlases) {
-        const flag = (await atlasflags(atlas, replacements)).get(code);
+        const flags = await atlasflags(atlas, replacements);
+        const flag = flags.get(code) || (code === "br" ? flags.get("pt") : null);
         if (flag) return flag;
     }
     return null;
