@@ -77,9 +77,19 @@
     cursor: url("/assets/images/cursors/link.cur"),pointer;
 }
 .textureframes.nooutlines .spriteframe {background: none; box-shadow: none}
-.textureframes .spriteframe:is(:hover,:focus-visible) {
+.textureframes .spriteframe:is(:hover,:focus-visible,[aria-pressed="true"]) {
     background: rgba(255,212,0,0.16);
     box-shadow: inset 0 0 0 calc(2px / var(--media-scale,1)) #fff000;
+}
+.spriteframeactions {
+    position: absolute; z-index: 1;
+    display: flex; gap: 2px;
+    cursor: default;
+}
+.spriteframeactions .buttonart {
+    min-width: 0; min-height: 0;
+    padding: 3px 6px 4px;
+    font-size: 0.63em; line-height: 1;
 }
 .textureoutlines {
     position: absolute; z-index: 2;

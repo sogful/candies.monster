@@ -1,4 +1,4 @@
-export function mediaview(container) {
+export function mediaview(container, changed = () => {}) {
     const media = [...container.querySelectorAll(".texturestage, .spritevideo")];
     const pointers = new Map();
     let x = 0;
@@ -16,6 +16,7 @@ export function mediaview(container) {
         container.style.setProperty("--media-scale", String(scale));
         container.style.setProperty("--media-angle", angle + "deg");
         container.parentElement.classList.toggle("turnedvideo", angle % 180 !== 0);
+        changed();
     }
 
     function reset() {
@@ -61,7 +62,7 @@ export function mediaview(container) {
 
     container.addEventListener("pointerdown", event => {
         const element = active();
-        if (!element || event.button !== 0 || pointers.size >= 2) return;
+        if (!element || event.button !== 0 || pointers.size >= 2 || event.target.closest(".spriteframeactions")) return;
         const frame = event.target.closest(".spriteframe");
         const pointer = {x: event.clientX, y: event.clientY, pending: !!frame};
         pointers.set(event.pointerId, pointer);
@@ -112,7 +113,7 @@ export function mediaview(container) {
     });
     container.addEventListener("dblclick", event => {
         const element = active();
-        if (element && !event.target.closest(".spriteframe")) reset();
+        if (element && !event.target.closest(".spriteframe,.spriteframeactions")) reset();
     });
 
     return {
