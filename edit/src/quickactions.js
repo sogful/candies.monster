@@ -141,6 +141,7 @@ export function quickactions(header, {sessions, run, message, download, save, le
             const item = shown.buttons.get(mode);
             item.textContent = label + " (" + count.toLocaleString() + ")";
             item.title = count.toLocaleString() + (count === 1 ? " matching file" : " matching files");
+            item.disabled = count === 0;
         }
     }
 

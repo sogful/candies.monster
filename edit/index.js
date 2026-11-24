@@ -413,11 +413,6 @@ function stringmodified(group) {
     return group.items.some(item => state.session.stringchanges.get(replacementkey(item))?.size);
 }
 
-function clearflags() {
-    find(".stringflag").replaceChildren();
-    find(".stringflag").hidden = true;
-}
-
 async function loadstrings(preferred) {
     const group = stringgroup();
     const choices = group?.languages;
@@ -444,26 +439,10 @@ async function loadstrings(preferred) {
     stringchanges.set(key, stringmodel.changes);
     const locales = choices ? [...choices.keys()].sort((a, b) => languagename(a).localeCompare(languagename(b))) : stringmodel.model.locales;
     options(localeselect, locales.map(language => [languagename(language), language]), locale ?? preferred);
-    const marker = find(".stringflag");
-    marker.replaceChildren();
-    const filelocale = /(?:^|\/)([\w-]+)\.lproj\//i.exec(item.path)?.[1] ?? "";
-    marker.hidden = locales.length !== 1 || !(localeselect.value || filelocale);
     find(".translationlanguage").hidden = locales.length < 2;
     for (const option of localeselect.options) {
-        const locale = option.value || filelocale;
-        const url = languageflag(locale);
+        const url = languageflag(option.value);
         if (url) option.dataset.flag = url;
-    }
-    if (!marker.hidden) {
-        const option = localeselect.options[0];
-        marker.title = languagename(option.value || filelocale);
-        if (option.dataset.flag) {
-            const image = document.createElement("img");
-            image.className = "flagart";
-            image.alt = marker.title;
-            image.src = option.dataset.flag;
-            marker.append(image);
-        } else marker.textContent = "(" + marker.title + ")";
     }
     resultpage = 0;
     renderstrings();
@@ -601,7 +580,6 @@ async function loadpackage(index, opened) {
     }
     savepreferences();
     opened?.(index);
-    clearflags();
     const files = packageentries(pkg);
     const unity = unitypackage(files);
     const assets = unity ? [] : packageassets(pkg, files);
@@ -721,7 +699,6 @@ async function switchpackage(direction) {
 }
 
 function closepackage() {
-    clearflags();
     sessions = [];
     current = -1;
     state = undefined;
