@@ -518,7 +518,9 @@ async function loadstrings(preferred) {
     marker.replaceChildren();
     marker.hidden = locales.length !== 1;
     find(".translationlanguage").hidden = locales.length < 2;
-    const filelocale = /(?:^|\/)([\w-]+)\.lproj\//i.exec(item.path)?.[1] ?? "";
+    const filelocale = /(?:^|\/)([\w-]+)\.lproj\//i.exec(item.path)?.[1]
+        ?? /gl_wp_string_([a-z]+(?:_[a-z]+)?)\.xml$/i.exec(item.path)?.[1].toLowerCase().replace("_latam", "-419").replace("_", "-")
+        ?? "";
     for (const option of localeselect.options) {
         const locale = option.value || filelocale;
         const url = await flagurl(locale);
