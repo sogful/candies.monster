@@ -4,9 +4,13 @@ import {findsplits, rendersplit} from "./spritesplits.js";
 
 const experiments = ["Getting Started", "Shooting the Candy", "Sticky Steps", "Rocket Science",
     "Bath Time", "Handy Candy", "Ant Hill", "Bamboo Chutes"];
+const holiday = ["Holiday Gift"];
 const original = ["Cardboard Box", "Fabric Box", "Foil Box", "Magic Box", "Valentine Box", "Toy Box",
     "Gift Box", "Cosmic Box", "Toolbox", "Buzz Box", "DJ Box", "Spooky Box", "Steam Box", "Lantern Box",
     "Cheese Box", "Pillow Box", "Mechanical Box"];
+const holecolors = ["#462500", "#273400", "#2c2d36", "#1f2a54", "#451f32", "#4b2100", "#541600",
+    "#00334e", "#620000", "#422800", "#002f5a", "#003a00", "#3f2a00", "#590c00", "#382d00",
+    "#252068", "#37263e"];
 const timetravel = [
     ["The Middle Ages", "medieval"], ["The Renaissance", "renaissance"], ["Pirate Ship", "pirate"],
     ["Ancient Egypt", "egypt"], ["Ancient Greece", "greece"], ["The Stone Age", "dinosaurs"],
@@ -29,10 +33,9 @@ export function levelgame(packageid) {
 
 function title(game, box) {
     if (box === null) return "Levels";
-    const name = game === "timetravel" ? timetravel[box - 1]?.[0]
-        : game === "experiments" ? experiments[box - 1]
-            : game === "holiday" ? "Holiday Gift" : original[box - 1];
-    return name ?? "Box " + box;
+    const names = game === "experiments" ? experiments : game === "holiday" ? holiday : original;
+    const name = game === "timetravel" ? timetravel[box - 1]?.[0] : names[box - 1];
+    return name ?? "???";
 }
 
 function boxstem(game, box) {
@@ -63,7 +66,8 @@ export function levelart(packageid, sprites, replacements, files) {
             const difference = cover
                 ? Number(b.stem.includes("_cover")) - Number(a.stem.includes("_cover"))
                 : Number(a.stem.includes("_cover")) - Number(b.stem.includes("_cover"));
-            return difference || b.size - a.size;
+            const variant = !cover ? Number(/ipad|retina/.test(a.stem)) - Number(/ipad|retina/.test(b.stem)) : 0;
+            return difference || variant || b.size - a.size;
         });
         for (const {item} of candidates) {
             const changed = replacements();
@@ -77,8 +81,9 @@ export function levelart(packageid, sprites, replacements, files) {
             }
             const image = (async () => {
                 const blob = await previewtexture(item, changed);
-                if (!cover) return blob;
-                const frames = await findsplits(item, files, changed);
+                const frames = await findsplits(item, files, changed, blob).catch(() => []);
+                if (!cover) return !item.path.toLowerCase().includes("_cover")
+                    ? {blob, frames, path: item.path} : null;
                 if (frames[0]) return rendersplit(blob, frames[0], changed);
                 if (game === "original" || game === "holiday") return null;
                 return blob;
@@ -132,7 +137,7 @@ function backbutton(label, action) {
 }
 
 function packart(game, box) {
-    const index = game === "holiday" ? 0 : box - 1;
+    const index = box - 1;
     const count = game === "holiday" ? 1 : game === "timetravel" ? timetravel.length
         : game === "experiments" ? experiments.length : original.length;
     if (box === null || index < 0 || index >= count) return null;
@@ -222,10 +227,24 @@ export function levelpicker(root, change) {
         const cards = packages.map((entry, index) => {
             const name = title(game, entry.box);
             const card = button("levelpack");
-            const label = entry.box === null ? name : entry.box + ". " + name;
+            const label = entry.box === null || name === "???" ? name : entry.box + ". " + name;
             const art = packart(game, entry.box);
+            const color = game === "original" && holecolors[entry.box - 1];
+            if (color) {
+                const peek = element("span", "levelpackpeek");
+                peek.style.backgroundColor = color;
+                peek.style.setProperty("--peek-index", index);
+                const monster = element("img", "levelpackmonster");
+                monster.src = "/edit/art/levels/omnom.webp";
+                monster.alt = "";
+                monster.draggable = false;
+                peek.append(monster);
+                card.append(peek);
+            }
             if (art) card.append(art);
-            card.append(element("span", "levelpacklabel", label));
+            const caption = element("span", "levelpacklabel");
+            caption.append(element("span", "levelpacktext", label));
+            card.append(caption);
             card.addEventListener("click", () => {
                 boxindex = index;
                 showlevels(true);
@@ -243,6 +262,7 @@ export function levelpicker(root, change) {
         const update = () => {
             const step = position(Math.min(1, cards.length - 1));
             boxindex = step ? Math.max(0, Math.min(cards.length - 1, Math.round(row.scrollLeft / step))) : 0;
+            row.style.setProperty("--peek-scroll", row.scrollLeft + "px");
             previous.disabled = boxindex === 0;
             next.disabled = boxindex === cards.length - 1;
         };
@@ -279,12 +299,6 @@ export function levelpicker(root, change) {
         const panel = element("div", "levelpickpanel");
         const back = backbutton("Back to boxes", () => showboxes(true));
         panel.append(backdrop(entry.box, game), back);
-        const count = element("span", "levelpickstarcount", "0/" + entry.levels.length * 3);
-        const star = element("img", "levelpickstar");
-        star.src = "/assets/images/level/star.webp";
-        star.alt = "";
-        count.append(star);
-        panel.append(count);
         const scroll = element("div", "levelpickscroll");
         const grid = element("div", "levelpickgrid");
         grid.dataset.columns = entry.levels.length <= 9 ? "3" : entry.levels.length <= 12 ? "4" : "5";
@@ -309,8 +323,8 @@ export function levelpicker(root, change) {
     function showlevel(level, focus = false) {
         active = level;
         begin("selected");
-        const pack = title(levelgame(packageid), level.box);
-        const back = header(level.box === null ? "Level " + level.level : pack + " (Level " + level.level + ")", "Back to levels", () => showlevels(true));
+        const label = level.box === null ? String(level.level) : level.box + "-" + level.level;
+        const back = header(label, "Back to levels", () => showlevels(true));
         if (focus) {
             back.focus({preventScroll: true});
             change(level);

@@ -64,7 +64,8 @@ export function draw(canvas, map, art, background, width, height, density, detai
     context.save();
     context.scale(view.scale, view.scale);
     context.translate(-view.x, -view.y);
-    backdrop(context, map, background, view, full);
+    if (typeof background === "function") background(context, view);
+    else backdrop(context, map, background, view, full);
     const sprite = painter(context, art);
     water(context, sprite, map, view);
     const objects = [...map.objects].sort((first, second) => (order[first.type] ?? 16) - (order[second.type] ?? 16));

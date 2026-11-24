@@ -15,15 +15,6 @@
 .levelpicker[data-view="boxes"][data-game="timetravel"] {
     background: #513d64 url("/assets/images/bgs/timetravelmenu.webp") center/cover;
 }
-.levelpicker[data-view="selected"] {flex: none}
-.levelpickheader {
-    display: flex; align-items: center;
-    gap: 6px; min-height: 34px;
-}
-.levelpicktitle {
-    min-width: 0; overflow: hidden;
-    white-space: nowrap; text-overflow: ellipsis;
-}
 .levelpickframes {
     --packsize: clamp(148px,min(37cqw,45.833cqh),450px);
     --strip: min(calc(100% - clamp(60px,12cqw,170px)),calc(3 * var(--packsize)));
@@ -56,22 +47,37 @@
     border: 0; padding: 0;
     color: #fff; background: transparent;
     font: inherit; text-align: center;
-    -webkit-text-stroke: 0.14em #000; text-shadow: 0 0.1em #000;
-    paint-order: stroke fill; container-type: inline-size;
+    container-type: inline-size;
     cursor: url("/assets/images/cursors/link.cur"),pointer;
 }
 .levelpackart {
     position: absolute; inset: 0;
     background-repeat: no-repeat;
 }
+.levelpackpeek {
+    position: absolute; overflow: hidden;
+    left: 32.424%; top: 50.606%;
+    width: 35%; height: 28.03%;
+}
+.levelpackmonster {
+    position: absolute; width: 72.727%;
+    left: 15.152%; top: 9.73%;
+    max-width: none; pointer-events: none;
+    translate: calc(var(--peek-scroll,0px) - 392.857% * var(--peek-index)) 0;
+}
 .levelpacklabel {
     position: absolute; inset: 21% 11% auto;
     font-size: 11.36cqw; line-height: 0.9;
     transform: scaleX(0.93); overflow-wrap: anywhere;
 }
-.levelpack:not(:has(.levelpackart)) .levelpacklabel {top: 40%}
+.levelpacktext {
+    display: inline-block; text-shadow: none;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    filter: drop-shadow(0 0.13em 0 #000);
+}
 .levelpicker[data-game="experiments"] .levelpacklabel, .levelpicker[data-game="timetravel"] .levelpacklabel,
 .levelpicker[data-game="holiday"] .levelpacklabel {inset: auto 8% 1%}
+.levelpack:not(:has(.levelpackart)) .levelpacklabel {inset: 40% 11% auto}
 .levelpickarrow, .levelpickback {
     display: inline-grid; place-items: center;
     border: 0; padding: 0;
@@ -133,31 +139,21 @@
     left: 6px; z-index: 1;
     width: clamp(28px,9cqh,70px);
 }
-.levelpickstarcount {
-    position: absolute; top: 0.25em;
-    right: 0.4em; z-index: 1;
-    display: flex; align-items: center;
-    gap: 0.15em; font-size: clamp(18px,6cqh,40px);
-}
-.levelpickstar {
-    width: 0.9em; height: 0.9em;
-    object-fit: contain;
-}
 .levelpickscroll {
     position: absolute; inset: clamp(36px,11cqh,88px) 9px 6px;
     display: flex; overflow-y: auto;
 }
 .levelpickgrid {
     --columns: 5;
-    --tilegap: clamp(3px,0.75cqh,8px);
+    --tilegap: clamp(3px,1.4vw,12px);
     display: flex; flex-wrap: wrap;
     justify-content: center; align-content: start;
-    gap: calc(var(--tilegap) * 2.5) var(--tilegap);
-    width: min(100%,78cqh,660px); margin: auto;
+    gap: var(--tilegap);
+    width: min(100%,75dvh,calc(var(--columns) * 74.4px + (var(--columns) - 1) * var(--tilegap)));
+    margin: auto;
 }
-.levelpickgrid[data-columns="3"] {--columns: 3; --tilegap: clamp(6px,4cqh,30px)}
-.levelpickgrid[data-columns="4"] {--columns: 4; --tilegap: clamp(5px,2cqh,22px)}
-.levelpickgrid:is([data-columns="3"],[data-columns="4"]) {row-gap: clamp(6px,3cqh,25px)}
+.levelpickgrid[data-columns="3"] {--columns: 3}
+.levelpickgrid[data-columns="4"] {--columns: 4}
 .levelpicktile {
     position: relative; container-type: inline-size;
     flex: 0 0 calc((100% - (var(--columns) - 1) * var(--tilegap)) / var(--columns));

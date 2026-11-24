@@ -1,5 +1,5 @@
 {
-  "version": "b8d365ed2455d763",
+  "version": "e423e58f60d5e8d8",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -360,7 +360,7 @@
     "/src/js/browser/renderer/conveyor.js": "9bf5b7cccf4271b6",
     "/src/js/browser/renderer/data.js": "f58a841b0d4b9b9f",
     "/src/js/browser/renderer/disc.js": "27301af54f23a828",
-    "/src/js/browser/renderer/draw.js": "a505682c28a436d4",
+    "/src/js/browser/renderer/draw.js": "7896c984a6c80609",
     "/src/js/browser/renderer/export.js": "af5e9cb5a4043ac1",
     "/src/js/browser/renderer/grab.js": "b06e6beb437f72c0",
     "/src/js/browser/renderer/index.js": "4b1fae65266f28d3",
@@ -378,5 +378,5 @@
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
     "/src/js/site/sidebar.js": "ecd1d165a61dfec2"
   },
-  "bytes": 10227530
+  "bytes": 10227604
 }

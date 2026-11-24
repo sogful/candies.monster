@@ -1,31 +1,56 @@
+.levelpanel {container-type: size}
+.levelpicker[data-view="selected"] {
+    position: absolute; inset: 0;
+    overflow: visible; z-index: 2;
+    pointer-events: none;
+}
+.levelpickheader {
+    position: absolute; inset: 6px auto auto 6px;
+    display: flex; align-items: center;
+    gap: 6px;
+}
+.levelpickheader .levelpickback {
+    width: clamp(28px,9cqh,70px); pointer-events: auto;
+}
 .levelview {
     display: flex; flex: 1;
     min-height: 0;
 }
 .pkglevelview {
-    display: flex; flex: 1;
-    flex-direction: column; min-height: 0;
-    gap: 4px;
+    position: relative; display: flex;
+    flex: 1; min-height: 0;
+    min-width: 0;
 }
 .pkglevelholder {
-    flex: 1; min-height: min(180px, 34dvh);
+    flex: 1; min-width: 0;
     display: grid; place-items: center;
-    container-type: size;
+    overflow: hidden; container-type: size;
+    touch-action: none; cursor: grab;
 }
+.pkglevelholder.levelpanning {cursor: grabbing}
 .pkglevelstage {
     position: relative; overflow: hidden;
     width: min(100cqw, calc(100cqh * var(--levelratio)));
     aspect-ratio: var(--levelratio);
-    border-radius: 0.55em;
+    border-radius: 0.55em; user-select: none;
 }
 .pkglevelcanvas {
     display: block; width: 100%;
     height: 100%;
 }
-.hinttoggle {align-self: start}
+.pkglevelhints {
+    position: absolute; inset: auto auto 0 0;
+    display: flex; flex-direction: column-reverse;
+    align-items: start; gap: 3px;
+    max-width: 100%; z-index: 4;
+    pointer-events: none;
+}
+.pkglevelhints > * {pointer-events: auto}
 .hintcontrols {
     display: flex; flex-wrap: wrap;
     align-items: end; gap: 5px;
+    padding: 5px; border-radius: 0.5em;
+    background: rgba(0,0,0,0.5);
 }
 .hintcontrols label {
     display: flex; gap: 3px;
@@ -69,4 +94,8 @@
 @media (max-width: 760px) {
     .hintcontrols {font-size: 0.9em}
     .hintcontrols .hintvalue, .hintcontrols .hintselect {width: 3.4em}
+}
+
+@media (max-width: 420px) {
+    .pkglevelhints {bottom: calc(var(--overlayheight,0px) + 2px)}
 }

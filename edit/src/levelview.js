@@ -1,7 +1,7 @@
-import {artwork, background, parse} from "/src/js/browser/renderer/data.js";
+import {artwork, parse} from "/src/js/browser/renderer/data.js";
 import {draw, framing} from "/src/js/browser/renderer/draw.js";
 import {decode} from "/raw2png/src/textures.js";
-import {levelgame, staticboxcover} from "./levelpicker.js";
+import {levelbackground} from "./levelbackground.js";
 
 const pending = new WeakMap();
 const svgspace = "http://www.w3.org/2000/svg";
@@ -61,6 +61,72 @@ function scene(map, art, image) {
     canvas.getContext("2d").drawImage(backing, -bounds.x * projection, -bounds.y * projection,
         map.width * projection, map.height * projection, 0, 0, canvas.width, canvas.height);
     return canvas;
+}
+
+function levelcamera(viewport, stage) {
+    const pointers = new Map();
+    let x = 0;
+    let y = 0;
+    let scale = 1;
+
+    function render() {
+        stage.style.transform = `translate(${x}px,${y}px) scale(${scale})`;
+    }
+
+    function zoom(factor, clientx, clienty) {
+        const bounds = viewport.getBoundingClientRect();
+        const anchorx = clientx - bounds.left - bounds.width / 2;
+        const anchory = clienty - bounds.top - bounds.height / 2;
+        const next = limit(scale * factor, 0.25, 8);
+        x = anchorx - (anchorx - x) * next / scale;
+        y = anchory - (anchory - y) * next / scale;
+        scale = next;
+    }
+
+    viewport.addEventListener("wheel", event => {
+        event.preventDefault();
+        const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? viewport.clientHeight : 1;
+        zoom(Math.exp(-limit(event.deltaY * unit, -300, 300) / 450), event.clientX, event.clientY);
+        render();
+    }, {passive: false});
+
+    viewport.addEventListener("pointerdown", event => {
+        if (event.defaultPrevented || event.button || pointers.size >= 2) return;
+        pointers.set(event.pointerId, {x: event.clientX, y: event.clientY});
+        viewport.setPointerCapture(event.pointerId);
+        viewport.classList.add("levelpanning");
+    });
+
+    viewport.addEventListener("pointermove", event => {
+        const previous = pointers.get(event.pointerId);
+        if (!previous) return;
+        const point = {x: event.clientX, y: event.clientY};
+        const other = [...pointers.entries()].find(([id]) => id !== event.pointerId)?.[1];
+        if (other) {
+            const before = Math.hypot(previous.x - other.x, previous.y - other.y);
+            const after = Math.hypot(point.x - other.x, point.y - other.y);
+            if (before > 1 && after > 1) zoom(after / before, (previous.x + other.x) / 2, (previous.y + other.y) / 2);
+        }
+        const count = other ? 2 : 1;
+        x += (point.x - previous.x) / count;
+        y += (point.y - previous.y) / count;
+        pointers.set(event.pointerId, point);
+        render();
+    });
+
+    for (const name of ["pointerup", "pointercancel", "lostpointercapture"]) {
+        viewport.addEventListener(name, event => {
+            pointers.delete(event.pointerId);
+            if (!pointers.size) viewport.classList.remove("levelpanning");
+        });
+    }
+
+    viewport.addEventListener("dblclick", event => {
+        if (event.target.closest(".hintpoint,[data-adding]")) return;
+        x = y = 0;
+        scale = 1;
+        render();
+    });
 }
 
 async function firefly(bytes) {
@@ -134,6 +200,7 @@ function hintsview(root, stage, map, hint, fairy, onchange) {
     const replays = structuredClone(hint?.replays ?? []);
     const toggle = button("Edit hints", "hinttoggle");
     const tools = element("div", "hintcontrols");
+    const corner = element("div", "pkglevelhints");
     const replayselect = selectinput("Replay");
     const pointselect = selectinput("Point");
     const xpos = stepinput("X", "0.1");
@@ -148,8 +215,8 @@ function hintsview(root, stage, map, hint, fairy, onchange) {
     overlay.append(paths, handles);
     stage.append(overlay);
     tools.append(replayselect.label, pointselect.label, xpos.label, ypos.label, time.label, add);
-    root.prepend(toggle, tools);
-    root.append(status);
+    corner.append(toggle, tools, status);
+    root.append(corner);
 
     let editing = false;
     let adding = false;
@@ -297,7 +364,11 @@ function hintsview(root, stage, map, hint, fairy, onchange) {
     });
     overlay.addEventListener("pointerdown", event => {
         if (event.button || !editing || drag) return;
-        if (adding) return insert(eventposition(event));
+        if (adding) {
+            event.preventDefault();
+            insert(eventposition(event));
+            return;
+        }
         const index = event.target.dataset.point;
         if (index === undefined) return;
         event.preventDefault();
@@ -328,36 +399,6 @@ function hintsview(root, stage, map, hint, fairy, onchange) {
     refresh();
 }
 
-async function packagedbackground(blob, map) {
-    const image = await createImageBitmap(blob);
-    try {
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.ceil(Math.max(2560 / 3, map.width));
-        canvas.height = 480;
-        const context = canvas.getContext("2d");
-        const scale = Math.max(map.width / image.width, canvas.height / image.height);
-        context.drawImage(image, (canvas.width - image.width * scale) / 2,
-            (canvas.height - image.height * scale) / 2, image.width * scale, image.height * scale);
-        return canvas;
-    } finally {
-        image.close();
-    }
-}
-
-async function levelbackground(map, box, packageid, boxart) {
-    const game = levelgame(packageid);
-    try {
-        const blob = await boxart?.(box);
-        if (blob) return await packagedbackground(blob, map);
-    } catch {}
-    if (game === "original") {
-        return background(`/assets/images/level/box${box}.webp`, map)
-            .catch(() => background("/assets/images/level/box1.webp", map).catch(() => null));
-    }
-    const fallback = staticboxcover(packageid, box);
-    return fallback ? background(fallback, map).catch(() => null) : null;
-}
-
 export function clearlevel(container) {
     pending.delete(container);
     container.replaceChildren();
@@ -368,19 +409,21 @@ export async function renderlevel(container, {xml, box = 1, packageid, boxart, h
     const current = {};
     pending.set(container, current);
     const map = {...parse(xml), box};
-    const [art, backdrop, sprite] = await Promise.all([
-        artwork("normal"),
-        levelbackground(map, box, packageid, boxart),
-        onhintchange ? firefly(fairy).catch(() => "") : ""
-    ]);
-    if (pending.get(container) !== current) return;
-    const root = element("div", "pkglevelview");
-    const holder = element("div", "pkglevelholder");
-    const stage = element("div", "pkglevelstage");
-    stage.style.setProperty("--levelratio", map.width / map.height);
-    stage.append(scene(map, art, backdrop));
-    holder.append(stage);
-    root.append(holder);
-    if (onhintchange) hintsview(root, stage, map, hint, sprite, onhintchange);
-    container.replaceChildren(root);
+    const backdrop = await levelbackground(map, box, packageid, boxart);
+    try {
+        const [art, sprite] = await Promise.all([artwork("normal"), onhintchange ? firefly(fairy).catch(() => "") : ""]);
+        if (pending.get(container) !== current) return;
+        const root = element("div", "pkglevelview");
+        const holder = element("div", "pkglevelholder");
+        const stage = element("div", "pkglevelstage");
+        stage.style.setProperty("--levelratio", map.width / map.height);
+        stage.append(scene(map, art, backdrop?.paint ?? backdrop));
+        holder.append(stage);
+        root.append(holder);
+        if (onhintchange) hintsview(root, stage, map, hint, sprite, onhintchange);
+        levelcamera(holder, stage);
+        container.replaceChildren(root);
+    } finally {
+        backdrop?.close?.();
+    }
 }
