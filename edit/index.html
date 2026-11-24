@@ -138,16 +138,16 @@
                                     <button class="searchclear" type="button" hidden><img src="/assets/images/icons/x.svg" alt="Clear search" draggable="false"></button>
                                 </div>
                             </div>
-                            <div class="resulttools mediaoptions">
-                                <label class="controldropdown splitpicker" hidden><select class="splitselect" title="Sprite frame"></select></label>
-                            </div>
                             <div class="spritedata">
                                 <div class="spritebrowser">
                                     <div class="spritefiles"></div>
                                 </div>
                                 <div class="mediapreview">
                                     <div class="spriteview">
-                                        <img class="spriteimage" alt="" hidden>
+                                        <div class="texturestage" hidden>
+                                            <img class="spriteimage" alt="" draggable="false">
+                                            <div class="textureframes"></div>
+                                        </div>
                                         <audio class="spriteaudio" preload="metadata" hidden></audio>
                                         <video class="spritevideo" preload="metadata" playsinline hidden></video>
                                     </div>
@@ -162,6 +162,7 @@
                                         <button class="rotatevideo clickable" type="button" hidden><img src="/assets/images/icons/loop.png" alt="Rotate video" draggable="false"></button>
                                         <button class="mediafullscreen clickable" type="button"><img src="/assets/images/icons/fullscreen.png" alt="Fullscreen" draggable="false"></button>
                                     </div>
+                                    <button class="buttonart textureoutlines" type="button" aria-pressed="true" hidden>Toggle outlines</button>
                                     <p class="mediaplayerror" role="status" hidden></p>
                                 </div>
                             </div>

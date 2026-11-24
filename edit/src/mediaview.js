@@ -1,5 +1,5 @@
 export function mediaview(container) {
-    const media = [...container.querySelectorAll(".spriteimage, .spritevideo")];
+    const media = [...container.querySelectorAll(".texturestage, .spritevideo")];
     const pointers = new Map();
     let x = 0;
     let y = 0;
@@ -62,15 +62,30 @@ export function mediaview(container) {
     container.addEventListener("pointerdown", event => {
         const element = active();
         if (!element || event.button !== 0 || pointers.size >= 2) return;
-        pointers.set(event.pointerId, {x: event.clientX, y: event.clientY});
-        container.setPointerCapture(event.pointerId);
-        container.classList.add("mediagrabbing");
+        const frame = event.target.closest(".spriteframe");
+        const pointer = {x: event.clientX, y: event.clientY, pending: !!frame};
+        pointers.set(event.pointerId, pointer);
+        if (pointers.size > 1) {
+            for (const [id, point] of pointers) {
+                point.pending = false;
+                container.setPointerCapture(id);
+            }
+            container.classList.add("mediagrabbing");
+        } else if (!pointer.pending) {
+            container.setPointerCapture(event.pointerId);
+            container.classList.add("mediagrabbing");
+        }
     });
 
     container.addEventListener("pointermove", event => {
         const previous = pointers.get(event.pointerId);
         if (!previous) return;
         const next = {x: event.clientX, y: event.clientY};
+        if (previous.pending) {
+            if (Math.hypot(next.x - previous.x, next.y - previous.y) < 4) return;
+            container.setPointerCapture(event.pointerId);
+            container.classList.add("mediagrabbing");
+        }
         const other = [...pointers.entries()].find(([id]) => id !== event.pointerId)?.[1];
         const dx = next.x - previous.x;
         const dy = next.y - previous.y;
@@ -88,10 +103,16 @@ export function mediaview(container) {
         render();
     });
 
-    for (const event of ["pointerup", "pointercancel", "lostpointercapture"]) container.addEventListener(event, release);
+    for (const event of ["pointerup", "pointercancel"]) container.addEventListener(event, release);
+    container.addEventListener("lostpointercapture", event => {
+        if (event.target === container) release(event);
+    });
+    container.addEventListener("pointerleave", event => {
+        if (pointers.get(event.pointerId)?.pending) release(event);
+    });
     container.addEventListener("dblclick", event => {
         const element = active();
-        if (element) reset();
+        if (element && !event.target.closest(".spriteframe")) reset();
     });
 
     return {

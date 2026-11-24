@@ -38,6 +38,7 @@
     width: 0.9em; height: 0.9em;
     margin-inline-end: 0.28em; vertical-align: -0.05em;
     background: url("/edit/art/folder.svg") center/contain no-repeat;
+    filter: drop-shadow(0 1px 0 #000);
 }
 .mediatree .spritefile {
     --fileink: 0,0,0;
@@ -47,14 +48,45 @@
 }
 .mediatree .spritefile:is(:hover,:focus-visible,[aria-pressed="true"]) {background: rgba(var(--fileink),0.5)}
 .mediatree .spritefile.mediamodified {--fileink: 34,24,14}
-.spriteview:has(.spriteimage:not([hidden]),.spritevideo:not([hidden])) {
+.spriteview:has(.texturestage:not([hidden]),.spritevideo:not([hidden])) {
     position: relative; overflow: hidden;
     cursor: grab; touch-action: none;
 }
-.spriteview.mediagrabbing, .spriteview.mediagrabbing :is(.spriteimage,.spritevideo) {cursor: grabbing}
-.spriteview :is(.spriteimage,.spritevideo) {
+.spriteview.mediagrabbing, .spriteview.mediagrabbing :is(.texturestage,.spriteframe,.spritevideo) {cursor: grabbing}
+.spriteview :is(.texturestage,.spritevideo) {
     transform: translate(var(--media-x,0px),var(--media-y,0px)) rotate(var(--media-angle,0deg)) scale(var(--media-scale,1));
     cursor: inherit; user-select: none;
+}
+.texturestage {
+    position: relative; min-width: 0;
+    width: min(var(--texture-width),100cqw,100cqh * var(--texture-ratio));
+}
+.texturestage .spriteimage {
+    display: block; width: 100%;
+    max-height: none;
+}
+.textureframes {
+    position: absolute; inset: 0;
+    pointer-events: none;
+}
+.spriteframe {
+    position: absolute; pointer-events: auto;
+    padding: 0; border: 0;
+    background: rgba(255,212,0,0.08);
+    box-shadow: inset 0 0 0 calc(1px / var(--media-scale,1)) #ffff0080;
+    cursor: url("/assets/images/cursors/link.cur"),pointer;
+}
+.textureframes.nooutlines .spriteframe {background: none; box-shadow: none}
+.textureframes .spriteframe:is(:hover,:focus-visible) {
+    background: rgba(255,212,0,0.16);
+    box-shadow: inset 0 0 0 calc(2px / var(--media-scale,1)) #fff000;
+}
+.textureoutlines {
+    position: absolute; z-index: 2;
+    inset: auto auto 3px 3px;
+}
+@media (max-width: 700px) {
+    .textureoutlines {bottom: calc(var(--overlayheight,0px) + 3px)}
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
