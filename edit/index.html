@@ -146,7 +146,25 @@
                                 <div class="spritebrowser">
                                     <div class="spritefiles"></div>
                                 </div>
-                                <div class="spriteview"><img class="spriteimage" alt="" hidden><audio class="spriteaudio" controls hidden></audio><video class="spritevideo" controls playsinline hidden></video></div>
+                                <div class="mediapreview">
+                                    <div class="spriteview">
+                                        <img class="spriteimage" alt="" hidden>
+                                        <audio class="spriteaudio" preload="metadata" hidden></audio>
+                                        <video class="spritevideo" preload="metadata" playsinline hidden></video>
+                                    </div>
+                                    <div class="mediacontrols" hidden>
+                                        <button class="mediaplay clickable" type="button"><img src="/assets/images/icons/play.svg" alt="Play" draggable="false"></button>
+                                        <span class="mediatime">0:00 / 0:00</span>
+                                        <label class="mediaprogress">
+                                            <span class="mediaprogressbody"></span>
+                                            <span class="mediaprogressfill"></span>
+                                            <input class="mediaseek" type="range" min="0" max="1000" value="0" title="Playback position">
+                                        </label>
+                                        <button class="medialoop clickable" type="button" aria-pressed="false"><img src="/assets/images/icons/loop.png" alt="Loop" draggable="false"></button>
+                                        <button class="mediafullscreen clickable" type="button"><img src="/assets/images/icons/fullscreen.png" alt="Fullscreen" draggable="false"></button>
+                                    </div>
+                                    <p class="mediaplayerror" role="status" hidden></p>
+                                </div>
                             </div>
                             <footer class="panelfooter">
                                 <div class="panelactions">

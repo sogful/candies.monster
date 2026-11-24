@@ -70,3 +70,64 @@
     transform: translate(var(--media-x,0px),var(--media-y,0px)) rotate(var(--media-angle,0deg)) scale(var(--media-scale,1));
     cursor: inherit; user-select: none;
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.mediapreview {
+    position: relative; display: grid;
+    min-width: 0; min-height: 0;
+}
+.mediapreview:fullscreen {background: #000}
+.mediacontrols {
+    position: absolute; z-index: 2;
+    inset: auto 5px calc(var(--overlayheight,0px) + 6px);
+    display: flex; align-items: center;
+    gap: 4px; padding: 3px 5px;
+    background: rgba(0,0,0,0.5); border-radius: 0.65em;
+    font-family: var(--sitefont,"Good Dog"),sans-serif;
+}
+.mediapreview:fullscreen .mediacontrols {bottom: 6px}
+.mediacontrols button {
+    display: grid; place-items: center;
+    width: 27px; height: 27px;
+    flex: none; border: 0;
+    padding: 3px; border-radius: 50%;
+    background: transparent; cursor: url("/assets/images/cursors/link.cur"),pointer;
+}
+.mediacontrols button:hover, .mediacontrols button:focus-visible {background: rgba(255,255,255,0.16)}
+.mediacontrols button[aria-pressed="true"] {background: rgba(143,238,255,0.2)}
+.mediacontrols button img {width: 19px; height: 19px; object-fit: contain}
+.mediatime {
+    font-size: clamp(0.7rem,2.8vw,1.15rem); white-space: nowrap;
+    -webkit-text-stroke: 0.13em #000; text-shadow: 0 0.13em #000;
+    paint-order: stroke fill;
+}
+.mediaprogress {
+    position: relative; display: block;
+    height: 16px; flex: 1;
+    min-width: 24px;
+}
+.mediaprogressbody {
+    display: block; height: 100%;
+    background: url("/assets/images/progress/leftbody.png") left center / 16px 16px no-repeat,
+        url("/assets/images/progress/rightbody.png") right center / 16px 16px no-repeat,
+        url("/assets/images/progress/body.png") center / 100% 16px no-repeat;
+}
+.mediaprogressfill {
+    position: absolute; inset: 2px auto 2px 2px;
+    width: max(0px,calc(var(--mediaprogress,0%) - 4px));
+    border-radius: 0.5em;
+    background: url("/assets/images/progress/fill.png") repeat-x center / auto 100%;
+}
+.editorpage .mediaseek {
+    position: absolute; inset: 0;
+    height: 100%; margin: 0;
+    opacity: 0; cursor: pointer;
+}
+.mediaprogress:focus-within {filter: brightness(1.25)}
+.mediaplayerror {
+    position: absolute; inset: 4px 5px auto;
+    margin: 0; padding: 4px;
+    background: rgba(0,0,0,0.5); border-radius: 5px;
+    text-align: center; pointer-events: none;
+}

@@ -1,13 +1,16 @@
 import {dropdown} from "/assets/static/js/controls/dropdown.js";
 import {replacementkey} from "./package.js";
+import {mediaplayer} from "./mediaplayer.js";
 import {mediaview} from "./mediaview.js";
 import {decodecaf, replacecaf} from "./caf.js";
+import {replacemp4} from "./video.js";
 import {previewmedia, readmedia, replacetexture, texturename} from "./sprites.js";
 
 export function mediapanel(root, {current, run, download, refresh}) {
     const find = selector => root.querySelector(selector);
     const elements = {image: find(".spriteimage"), audio: find(".spriteaudio"), video: find(".spritevideo")};
     const camera = mediaview(find(".spriteview"));
+    const player = mediaplayer(find(".mediapreview"));
     const framepicker = find(".splitpicker");
     const frameselect = find(".splitselect");
     const rotate = find(".rotatevideo");
@@ -25,13 +28,17 @@ export function mediapanel(root, {current, run, download, refresh}) {
     let url = "";
 
     function clearpreview() {
+        player.clear();
         camera.reset();
         if (url) URL.revokeObjectURL(url);
         url = "";
         for (const element of Object.values(elements)) {
             if (element instanceof HTMLMediaElement) element.pause();
             element.hidden = true;
-            element.removeAttribute("src");
+            if (element.hasAttribute("src")) {
+                element.removeAttribute("src");
+                if (element instanceof HTMLMediaElement) element.load();
+            }
         }
     }
 
@@ -61,15 +68,19 @@ export function mediapanel(root, {current, run, download, refresh}) {
         return item?.kind === "audio" && /\.caf$/i.test(item.path);
     }
 
+    function ismp4() {
+        return item?.kind === "video" && /\.mp4$/i.test(item.path);
+    }
+
     function sync(working) {
-        const editable = item?.kind === "image" || iscaf();
+        const editable = item?.kind === "image" || iscaf() || ismp4();
         replace.hidden = !editable;
         replace.disabled = working || !editable || !url;
         save.disabled = working || !url;
         reset.disabled = working;
         rotate.disabled = atlasbutton.disabled = working;
         frameselect.disabled = working;
-        fileinput.accept = iscaf() ? "audio/*,.caf" : "image/*";
+        fileinput.accept = iscaf() ? "audio/*,.caf" : ismp4() ? "video/mp4,.mp4" : "image/*";
     }
 
     async function blob() {
@@ -90,6 +101,7 @@ export function mediapanel(root, {current, run, download, refresh}) {
         url = URL.createObjectURL(image);
         element.src = url;
         element.hidden = false;
+        if (element instanceof HTMLMediaElement) player.show(element);
         const {replacements} = current();
         reset.hidden = !item.parts.some(part => replacements.has(replacementkey(part)));
         rotate.hidden = item.kind !== "video";
@@ -134,6 +146,7 @@ export function mediapanel(root, {current, run, download, refresh}) {
             const {replacements} = current();
             const frame = selectedframe();
             if (iscaf()) replacements.set(replacementkey(item), await replacecaf(file, await readmedia(item)));
+            else if (ismp4()) replacements.set(replacementkey(item), await replacemp4(file, await readmedia(item)));
             else {
                 const changes = frame ? await splittools.replacesplit(item, replacements, frame, file) : await replacetexture(item, file);
                 for (const [key, bytes] of changes) replacements.set(key, bytes);

@@ -42,18 +42,6 @@ export function mediaview(container) {
         scale = next;
     }
 
-    function oncontrols(event, element) {
-        if (event.altKey || element.tagName !== "VIDEO" || !element.controls || event.target !== element) return false;
-        const bounds = element.getBoundingClientRect();
-        const dx = (event.clientX - bounds.left - bounds.width / 2) / scale;
-        const dy = (event.clientY - bounds.top - bounds.height / 2) / scale;
-        const radians = angle * Math.PI / 180;
-        const localx = dx * Math.cos(radians) + dy * Math.sin(radians);
-        const localy = dy * Math.cos(radians) - dx * Math.sin(radians);
-        return Math.abs(localx) <= element.clientWidth / 2
-            && localy >= element.clientHeight / 2 - 48 && localy <= element.clientHeight / 2;
-    }
-
     function release(event) {
         pointers.delete(event.pointerId);
         if (!pointers.size) container.classList.remove("mediagrabbing");
@@ -72,7 +60,7 @@ export function mediaview(container) {
 
     container.addEventListener("pointerdown", event => {
         const element = active();
-        if (!element || event.button !== 0 || pointers.size >= 2 || oncontrols(event, element)) return;
+        if (!element || event.button !== 0 || pointers.size >= 2) return;
         pointers.set(event.pointerId, {x: event.clientX, y: event.clientY});
         container.setPointerCapture(event.pointerId);
         container.classList.add("mediagrabbing");
@@ -102,7 +90,7 @@ export function mediaview(container) {
     for (const event of ["pointerup", "pointercancel", "lostpointercapture"]) container.addEventListener(event, release);
     container.addEventListener("dblclick", event => {
         const element = active();
-        if (element && !oncontrols(event, element)) reset();
+        if (element) reset();
     });
 
     return {
