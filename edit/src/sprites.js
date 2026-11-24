@@ -7,6 +7,40 @@ const imagepattern = /\.(png|jpe?g|webp)$/i;
 const limit = 128 * 1024 * 1024;
 const mimetypes = {png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp"};
 
+const sounds = {
+    ogg: "audio/ogg", oga: "audio/ogg", opus: "audio/ogg", mp3: "audio/mpeg", wav: "audio/wav",
+    aac: "audio/aac", m4a: "audio/mp4", caf: "audio/x-caf", aif: "audio/aiff", aiff: "audio/aiff",
+    flac: "audio/flac", amr: "audio/amr", mid: "audio/midi", midi: "audio/midi", mka: "audio/x-matroska",
+    wma: "audio/x-ms-wma", ac3: "audio/ac3", adts: "audio/aac"
+};
+const videos = {
+    mp4: "video/mp4", m4v: "video/mp4", mov: "video/quicktime", webm: "video/webm",
+    ogv: "video/ogg", "3gp": "video/3gpp", mkv: "video/x-matroska", avi: "video/x-msvideo",
+    mpg: "video/mpeg", mpeg: "video/mpeg", wmv: "video/x-ms-wmv", flv: "video/x-flv",
+    bik: "video/vnd.radgamettools.bink", bk2: "video/vnd.radgamettools.bink"
+};
+
+function avformat(entry) {
+    const extension = /\.([a-z\d]+)$/i.exec(entry.path)?.[1].toLowerCase();
+    const mimetype = Object.hasOwn(sounds, extension) ? sounds[extension]
+        : Object.hasOwn(videos, extension) ? videos[extension] : "";
+    return mimetype ? {kind: mimetype.split("/")[0], mimetype} : null;
+}
+
+export function mediaentries(entries, pkg, images = textures(entries, pkg)) {
+    const result = images.map(item => ({...item, kind: "image"}));
+    for (const entry of entries) {
+        const format = avformat(entry);
+        if (format) result.push({...entry, ...format, parts: [entry]});
+    }
+    return result;
+}
+
+export async function previewmedia(item, replacements) {
+    if (item.kind === "image" || !item.kind) return previewtexture(item, replacements);
+    return new Blob([await encoded(item, replacements)], {type: item.mimetype});
+}
+
 export function textures(entries, pkg) {
     const result = [];
     const groups = new Map();

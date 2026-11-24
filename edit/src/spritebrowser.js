@@ -1,74 +1,89 @@
 export function spritebrowser(root, choose, clearsearch) {
-    const pathbar = root.querySelector(".spritepath");
     const list = root.querySelector(".spritefiles");
+    const oldpath = root.querySelector(".spritepath");
+    if (oldpath) oldpath.hidden = true;
     let items = [];
-    let directory = "";
     let selected = -1;
     let query = "";
 
-    function action(label, classname, activate) {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = classname;
-        button.textContent = label;
-        button.title = label;
-        button.addEventListener("click", activate);
-        return button;
-    }
-
-    function open(path) {
-        directory = path;
-        query = "";
-        clearsearch();
-        render();
+    function folder() {
+        return {folders: new Map(), files: []};
     }
 
     function render() {
-        const trail = directory.split("/").filter(Boolean);
-        pathbar.replaceChildren(action("Textures", "spritecrumb", () => open("")));
-        for (const [index, part] of trail.entries()) {
-            const button = action(part, "spritecrumb", () => open(trail.slice(0, index + 1).join("/") + "/"));
-            pathbar.append(button);
-        }
-        const files = [];
-        const folders = new Set();
+        const tree = folder();
         for (const [index, item] of items.entries()) {
             const path = item.label.replace(" / ", "/");
-            if (query) {
-                if (path.toLowerCase().includes(query)) files.push({label: path, index});
-                continue;
+            if (query && !path.toLowerCase().includes(query)) continue;
+            const segments = path.split("/");
+            const filename = segments.pop();
+            let directory = tree;
+            for (const name of segments) {
+                if (!directory.folders.has(name)) directory.folders.set(name, folder());
+                directory = directory.folders.get(name);
             }
-            if (!path.startsWith(directory)) continue;
-            const relative = path.slice(directory.length);
-            if (relative.includes("/")) folders.add(relative.split("/")[0]);
-            else files.push({label: relative, index});
+            directory.files.push({item, filename, index, path});
         }
-        const controls = [...folders].sort().map(folder =>
-            action(folder + "/", "spritefolder", () => open(directory + folder + "/")));
-        for (const {label, index} of files.sort((a, b) => a.label.localeCompare(b.label))) {
-            const button = action(label, "spritefile", () => {
-                selected = index;
-                list.querySelector('[aria-pressed="true"]')?.setAttribute("aria-pressed", "false");
-                button.setAttribute("aria-pressed", "true");
-                choose(index);
-            });
-            button.setAttribute("aria-pressed", String(index === selected));
-            controls.push(button);
+
+        const nodes = [{directory: tree, parent: list}];
+        list.replaceChildren();
+        list.scrollTop = 0;
+        if (!tree.files.length && !tree.folders.size) {
+            list.textContent = "No media found.";
+            return;
         }
-        list.replaceChildren(...controls);
-        if (!controls.length) list.textContent = "No textures found.";
+
+        for (const {directory, parent} of nodes) {
+            const branch = document.createElement("ul");
+            branch.className = "mediatree";
+            for (const [name, child] of [...directory.folders].sort(([a], [b]) => a.localeCompare(b))) {
+                const entry = document.createElement("li");
+                const label = document.createElement("span");
+                label.className = "spritefolder";
+                label.textContent = name + "/";
+                entry.append(label);
+                branch.append(entry);
+                nodes.push({directory: child, parent: entry});
+            }
+            for (const {item, filename, index, path} of directory.files.sort((a,b) => a.filename.localeCompare(b.filename))) {
+                const entry = document.createElement("li");
+                entry.className = "mediaentry";
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "spritefile";
+                button.textContent = filename;
+                button.title = path;
+                button.dataset.kind = item.kind;
+                button.setAttribute("aria-pressed", String(index === selected));
+                button.addEventListener("click", () => {
+                    selected = index;
+                    list.querySelector('[aria-pressed="true"]')?.setAttribute("aria-pressed", "false");
+                    button.setAttribute("aria-pressed", "true");
+                    choose(index);
+                });
+                entry.append(button);
+                branch.append(entry);
+            }
+            parent.append(branch);
+        }
     }
 
     return {
         load(files, index) {
             items = files;
             selected = files[index] ? Number(index) : -1;
-            const path = selected >= 0 ? files[selected].label.replace(" / ", "/") : "";
-            open(path ? path.slice(0, path.lastIndexOf("/") + 1) : "");
+            query = "";
+            clearsearch();
+            render();
         },
         search(value) {query = value.trim().toLowerCase(); render()},
-        view(mode) {list.classList.toggle("spritegridview", mode === "grid")},
+        view(mode) {list.classList.toggle("mediawide", mode === "grid")},
         selection() {return selected},
-        clear() {items = []; selected = -1; open("")}
+        clear() {
+            items = [];
+            selected = -1;
+            query = "";
+            render();
+        }
     };
 }

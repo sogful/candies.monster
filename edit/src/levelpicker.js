@@ -48,18 +48,19 @@ export function levelart(packageid, sprites, replacements) {
     const game = levelgame(packageid);
     const cache = new Map();
     return async (box, cover = false) => {
-        if (game === "original") return null;
+        if (game === "original" && !cover) return null;
         const prefix = boxstem(game, box);
         if (!prefix) return null;
         const candidates = sprites.map(item => ({item, stem: spritebase(item.path)}))
             .filter(({stem}) => stem === prefix || stem.startsWith(prefix + "_"))
+            .filter(({stem}) => game !== "original" || stem.startsWith(prefix + "_cover"))
             .filter(({stem}) => stem.slice(prefix.length).split("_").every(part =>
-                !part || /^(?:\d+|cover|p1|hd|pad|ipad|iphone5|retina)$/.test(part)));
+                !part || /^(?:\d+(?:x\d+)?|cover|p1|hd|pad|ipad|iphone5|retina)$/.test(part)));
         candidates.sort((a, b) => {
             const difference = cover
                 ? Number(b.stem.includes("_cover")) - Number(a.stem.includes("_cover"))
                 : Number(a.stem.includes("_cover")) - Number(b.stem.includes("_cover"));
-            return difference || (cover ? a.item.size - b.item.size : b.item.size - a.item.size);
+            return difference || b.item.size - a.item.size;
         });
         for (const {item} of candidates) {
             const changed = replacements();
