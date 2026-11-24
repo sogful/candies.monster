@@ -32,6 +32,50 @@ const actions = [
     ["symbols", "Extract all symbols", "No symbols were found."]
 ];
 
+async function sources(session) {
+    const pkg = await openpackage(session.file);
+    const entries = packageentries(pkg);
+    return {
+        pkg,
+        strings: packageassets(pkg, entries).filter(file => file.category === "stringsgame"),
+        symbols: symbolfiles(entries, pkg.metadata.executable)
+    };
+}
+
+async function matchingreports(file) {
+    return (await readsymbols(file)).filter(report => report.entries.length);
+}
+
+async function matchcounts(sessions, menu, buttons, cached) {
+    const totals = Object.fromEntries(actions.map(([mode]) => [mode, 0]));
+    for (const session of sessions) {
+        if (!menu.open) return;
+        let counts = cached.get(session);
+        if (!counts) {
+            counts = {strings: 0, "debug-symbols": 0, symbols: 0};
+            const files = await sources(session).catch(() => null);
+            if (files) {
+                counts.strings = files.strings.length;
+                for (const file of files.symbols) {
+                    if (!menu.open) return;
+                    const reports = await matchingreports(file).catch(() => []);
+                    if (reports.length) counts.symbols++;
+                    if (reports.some(debugsymbols)) counts["debug-symbols"]++;
+                }
+            }
+            cached.set(session, counts);
+        }
+        for (const [mode] of actions) totals[mode] += counts[mode];
+    }
+    if (!menu.open) return;
+    for (const [mode, label] of actions) {
+        const number = totals[mode];
+        const button = buttons.get(mode);
+        button.textContent = label + " (" + number.toLocaleString() + ")";
+        button.title = number.toLocaleString() + (number === 1 ? " matching file" : " matching files");
+    }
+}
+
 async function extract(mode, sessions, message, download) {
     const zip = new globalThis.JSZip();
     const folders = new Set();
@@ -42,17 +86,15 @@ async function extract(mode, sessions, message, download) {
         message("Extracting " + name + " (" + (index + 1) + " of " + sessions.length + ")");
         const folder = uniquesegment(name, folders);
         try {
-            const pkg = await openpackage(session.file);
-            const entries = packageentries(pkg);
-            const files = mode === "strings" ? packageassets(pkg, entries).filter(file => file.category === "stringsgame")
-                : symbolfiles(entries, pkg.metadata.executable);
+            const {pkg, strings, symbols} = await sources(session);
+            const files = mode === "strings" ? strings : symbols;
             for (const file of files) {
                 try {
                     const path = folder + "/" + entrypath(pkg, file);
                     if (mode === "strings") zip.file(path, await stringbytes(file, session));
                     else {
-                        const reports = (await readsymbols(file)).filter(report =>
-                            report.entries.length && (mode !== "debug-symbols" || debugsymbols(report)));
+                        const all = await matchingreports(file);
+                        const reports = mode === "debug-symbols" ? all.filter(debugsymbols) : all;
                         if (!reports.length) continue;
                         zip.file(path + ".symbols.json", JSON.stringify({kind: "symbols", version: 1, reports}, null, 2));
                     }
@@ -104,11 +146,12 @@ async function explode(save, leave, sound) {
 export function quickactions(header, {sessions, run, message, download, save, leave}) {
     const sound = new Audio(explosionsound);
     sound.preload = "auto";
+    const cached = new WeakMap();
     const slot = document.createElement("div");
     slot.className = "headerquickslot";
     const next = header.querySelector(".headernext");
     const button = document.createElement("button");
-    button.className = "headerquick buttonart gold clickable";
+    button.className = "headerquick buttonart green clickable";
     button.type = "button";
     button.textContent = "Quick actions";
     button.setAttribute("aria-expanded", "false");
@@ -118,21 +161,25 @@ export function quickactions(header, {sessions, run, message, download, save, le
     button.addEventListener("click", () => {
         const menu = popup(button, "What would you like to do for all imported games?");
         menu.dialog.classList.add("quickactionmenu");
-        for (const [label, action] of [
-            ...actions.map(([mode, label]) => [label, () => extract(mode, sessions(), message, download)]),
-            ["Destroy everything!!!", () => explode(save, leave, sound)]
+        const batch = [...sessions()];
+        const buttons = new Map();
+        for (const [mode, label, action] of [
+            ...actions.map(([mode, label]) => [mode, label, () => extract(mode, batch, message, download)]),
+            ["", "Destroy everything!!!", () => explode(save, leave, sound)]
         ]) {
             const item = document.createElement("button");
             item.className = "membershipbutton descbutton clickable";
             item.type = "button";
-            item.textContent = label;
+            item.textContent = mode ? label + " (...)" : label;
             item.addEventListener("click", () => {
                 menu.close();
                 void run(action);
             });
+            if (mode) buttons.set(mode, item);
             menu.actions.append(item);
         }
         menu.open();
+        void matchcounts(batch, menu.dialog, buttons, cached);
     });
     return working => {button.disabled = working};
 }
