@@ -34,7 +34,7 @@
 .headerdownloadicon {left: -3px; bottom: -3px}
 .headerdownloadicon img {
     display: block; width: 19px;
-    height: 19px; filter: invert(1) drop-shadow(0 1px 1px #000);
+    height: 19px; filter: brightness(0) invert(1) drop-shadow(0 1px 1px #000);
 }
 .headerreseticon img {
     width: 16px; height: 16px;

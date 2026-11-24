@@ -20,7 +20,7 @@ const iosversions = [
 ];
 const fieldnames = {
     title: "Display name", package: "Package identifier", version: "Version", build: "Build number",
-    minimum: "Min version", minsdk: "Min version", targetsdk: "Target version"
+    minimum: "Min iOS version", minsdk: "Min Android version", targetsdk: "Target Android version"
 };
 
 function textfield(name, value, placeholder = "") {
@@ -217,7 +217,7 @@ export function packageheader(root, {change, icon, reset, export: save, previous
     });
     reseticon.addEventListener("click", reset);
     exportbutton.addEventListener("click", save);
-    closebutton.addEventListener("click", close);
+    closebutton.addEventListener("click", () => close(closebutton));
     previousbutton.addEventListener("click", previous);
     nextbutton.addEventListener("click", next);
     geticons.addEventListener("click", downloadicons);
