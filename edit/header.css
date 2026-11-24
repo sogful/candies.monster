@@ -18,21 +18,22 @@
     cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
 .headerpickicon {
-    inset: 0; display: flex;
+    inset: 0 -4px -4px 0; display: flex;
     align-items: end; justify-content: end;
 }
 .headerpickicon img, .headerreseticon img {
-    width: 19px; height: 19px;
-    padding: 3px; border-radius: 5px;
-    background: #fff; display: block;
+    width: 24px; height: 24px;
+    display: block;
 }
 .headerart:has(.headerappicon[hidden]) .headerpickicon {
-    align-items: center; justify-content: center;
+    inset: 0; align-items: center;
+    justify-content: center;
 }
 .headerreseticon {left: -2px; top: -2px}
 .headerreseticon img {
     width: 16px; height: 16px;
-    background: #b02b28; filter: none;
+    padding: 3px; border-radius: 5px;
+    background: #b02b28;
 }
 .headerpickicon:hover img, .headerreseticon:hover img {filter: brightness(1.2)}
 
@@ -48,7 +49,8 @@
 }
 .headerversiongroup {
     display: flex; align-items: center;
-    min-width: 0; gap: 1px;
+    min-width: 0; margin-inline-start: auto;
+    gap: 1px;
 }
 .headeridentifier {grid-area: identifier; min-width: 0}
 .headerplatform {
@@ -68,7 +70,7 @@
     padding: 0; overflow: hidden;
 }
 .editorheader .headerfield input {
-    background: transparent; padding: 0 3px;
+    background: rgba(0,0,0,0.5); padding: 0 3px;
     color: #fff; text-overflow: ellipsis;
     -webkit-text-stroke: inherit; text-shadow: inherit;
     paint-order: inherit; border-radius: 4px;
@@ -78,23 +80,18 @@
 }
 .headertitle input {font-size: 1.12em}
 .headerpackage input {font-size: 0.85em}
-.headerversion input, .headerbuild input {
-    width: 5ch; min-width: 3ch;
-    max-width: clamp(6ch,10vw,16ch); field-sizing: content;
+.editorheader .headerversion input, .editorheader .headerbuild input {
+    width: auto; min-width: 0;
+    max-width: 100%; field-sizing: content;
+    text-align: right;
 }
-.headerbuild input {width: 8ch}
-.headerminimum input {
-    width: 7ch; min-width: 3ch;
-    max-width: 16ch; field-sizing: content;
-}
-.headersdk, .headerminimum {font-size: 0.85em}
-.headerminimum .headercaption {
-    position: static; clip-path: none;
-    width: auto; height: auto;
-    overflow: visible; white-space: nowrap;
+.headersdk {
+    font-size: 0.85em; white-space: nowrap;
+    max-width: 100%;
 }
 .headersdk .dropdown .dropdownbutton {
     padding: 1px 5px; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
 }
 
 @media (max-width: 560px) {

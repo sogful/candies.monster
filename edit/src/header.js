@@ -6,9 +6,21 @@ const androidversions = [
     "5.0", "5.1", "6.0", "7.0", "7.1", "8.0", "8.1", "9", "10", "11", "12",
     "12L", "13", "14", "15", "16", "17"
 ];
+const iosversions = [
+    "1.0", "1.1", "2.0", "2.1", "2.2", "3.0", "3.1", "3.2", "4.0", "4.1", "4.2", "4.3",
+    "5.0", "5.1", "6.0", "6.1", "7.0", "7.1", "8.0", "8.1", "8.2", "8.3", "8.4",
+    "9.0", "9.1", "9.2", "9.3", "10.0", "10.1", "10.2", "10.3", "11.0", "11.1", "11.2", "11.3", "11.4",
+    "12.0", "12.1", "12.2", "12.3", "12.4", "12.5", "13.0", "13.1", "13.2", "13.3", "13.4", "13.5", "13.6", "13.7",
+    "14.0", "14.1", "14.2", "14.3", "14.4", "14.5", "14.6", "14.7", "14.8",
+    "15.0", "15.1", "15.2", "15.3", "15.4", "15.5", "15.6", "15.7", "15.8",
+    "16.0", "16.1", "16.2", "16.3", "16.4", "16.5", "16.6", "16.7",
+    "17.0", "17.1", "17.2", "17.3", "17.4", "17.5", "17.6", "17.7",
+    "18.0", "18.1", "18.2", "18.3", "18.4", "18.5", "18.6", "18.7",
+    "26.0", "26.1", "26.2", "26.3", "26.4", "26.5", "26.6"
+];
 const fieldnames = {
     title: "Display name", package: "Package identifier", version: "Version", build: "Build number",
-    minimum: "Minimum iOS version", minsdk: "Minimum Android version", targetsdk: "Target Android version"
+    minimum: "Min version", minsdk: "Min version", targetsdk: "Target version"
 };
 
 function textfield(name, value, placeholder = "") {
@@ -28,17 +40,21 @@ function textfield(name, value, placeholder = "") {
     return {label, input};
 }
 
-function sdkfield(name, value) {
+function sdkfield(name, original, value) {
+    const ios = name === "minimum";
     const label = document.createElement("div");
     label.className = "headerfield headersdk";
     const caption = document.createElement("span");
-    caption.textContent = name === "minsdk" ? "Min:" : "Target:";
+    caption.textContent = fieldnames[name];
     const input = document.createElement("select");
     input.name = name;
     input.title = fieldnames[name];
-    input.append(...androidversions.map((version, index) => new Option("Android " + version + "+", String(index + 1))));
-    if (![...input.options].some(option => option.value === value)) {
-        input.add(new Option(value ? "API " + value : "Not set", value), 0);
+    const versions = ios ? iosversions : androidversions;
+    input.append(...versions.map((version, index) => new Option(version, ios ? version : String(index + 1))));
+    for (const extra of new Set([original, value])) {
+        if (![...input.options].some(option => option.value === extra)) {
+            input.add(new Option(extra ? ios ? extra : "API " + extra : "Not set", extra), 0);
+        }
     }
     input.value = value;
     label.append(caption, input);
@@ -117,8 +133,8 @@ export function packageheader(root, {change, icon, reset, export: save}) {
             const original = String(metadata[name] ?? "");
             const value = String(values[name] ?? original);
             const editable = !apks && Boolean(metadata.fields?.[name]);
-            const {label, input} = name === "minsdk" || name === "targetsdk"
-                ? sdkfield(name, original) : textfield(name, value, placeholder);
+            const {label, input} = name === "minimum" || name === "minsdk" || name === "targetsdk"
+                ? sdkfield(name, original, value) : textfield(name, value, placeholder);
             input.value = value;
             input.disabled = !editable;
             container.append(label);
@@ -142,9 +158,9 @@ export function packageheader(root, {change, icon, reset, export: save}) {
         add(identifier, "package", "Package identifier");
         add(platform, "minsdk");
         add(platform, "targetsdk");
-        add(platform, "minimum", "Minimum iOS version");
+        add(platform, "minimum");
         platform.hidden = !platform.childElementCount;
-        sync({working: false, canexport: false});
+        sync({working: false, canexport: true});
     }
 
     function sync({working, canexport}) {
