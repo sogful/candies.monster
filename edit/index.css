@@ -52,14 +52,16 @@
     paint-order: stroke fill;
 }
 .intake .input:disabled {opacity: 1}
-.workspace.dragging .pick, .pick:hover:not(:disabled) {background: rgba(0,0,0,0.88)}
+.intaketitle {
+    margin: 0 0 0.35em; text-align: center;
+    font-size: clamp(2.4rem,6vw,4.5rem); font-weight: normal;
+}
+.editorpage:has(.editor:not([hidden])) .intakegithub {display: none}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 button, select, input, textarea {font: inherit}
 .buttonart {
-    --buttonvertical: 13px;
-    --buttonhorizontal: 24px;
     display: inline-grid; place-items: center;
     min-width: 58px; min-height: 32px;
     padding: 3px 10px 5px; border-width: 0;
@@ -72,7 +74,7 @@ button, select, input, textarea {font: inherit}
 .buttonart:active:not(:disabled) {scale: 0.96}
 button:disabled {opacity: 0.55; cursor: default}
 .editorpage :focus {outline: none}
-.editorpage :is(.tool,.packageswitch,.pageback,.membershipbutton,.membershipclose):focus-visible {filter: brightness(1.35)}
+.editorpage :is(.tool,.packageswitch,.pageback,.membershipbutton,.membershipclose,.columnhandle):focus-visible {filter: brightness(1.35)}
 .editorpage :is(input,textarea,select):focus-visible, .dropdown .dropdownbutton:focus-visible {background-color: #242424}
 
 input:not([type="checkbox"]), textarea {
@@ -83,13 +85,24 @@ input:not([type="checkbox"]), textarea {
 }
 input::placeholder {color: rgba(255,255,255,0.75)}
 label {min-width: 0}
-.dropdown {display: block}
-.dropdown .dropdownbutton {cursor: url("/assets/images/cursors/link.cur"), pointer}
+.editorpage .dropdown .dropdownbutton, .editorpage .dropdownmenu .dropdownoption {
+    white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis;
+}
+.editorpage .dropdown .dropdownbutton {
+    position: relative; padding-right: 24px;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+.editorpage .dropdownbutton::after {
+    position: absolute; right: 9px;
+    top: calc(50% - 2px); margin-left: 0;
+}
+.editorpage .dropdownmenu .dropdownsecondary {font-size: 0.84em; opacity: 0.66}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
 .editor {gap: 5px}
-.editorheader, .editorsidebar, .editorcontent, .unitymessage {
+.editorheader, .editorcontent, .unitymessage {
     min-width: 0; min-height: 0;
     background: var(--panel); border-radius: 0.7em;
 }
@@ -120,62 +133,42 @@ label {min-width: 0}
     flex: 1; display: flex;
     gap: 5px; min-height: 0;
 }
-.editorsidebar {
-    width: 88px; flex: 0 0 88px;
-    display: flex; flex-direction: column;
-    gap: 5px; height: 100%;
-    padding: 6px 0; overflow: auto;
+.editortabs {
+    display: flex; flex: none;
+    gap: 5px; width: 100%;
 }
-.sidebartoggle {
-    align-self: center; flex: 0 0 15px;
-    display: grid; place-items: center;
-    width: 15px; height: 26px;
-    padding: 0; border: 0;
-    border-radius: 6px; background: var(--panel);
-    cursor: url("/assets/images/cursors/link.cur"), pointer;
+.editortabs .tool {
+    flex: 1 1 0; min-width: 0;
+    padding-inline: 3px;
 }
-.sidebartoggle[aria-expanded="false"] img {transform: scaleX(-1)}
-.editorpage .sidebartoggle:focus-visible {filter: brightness(1.35)}
-.tool {
-    position: relative; align-self: center;
-    display: grid; place-items: center;
-    width: 72px; height: 64px; flex: none;
-    border: 0; padding: 0;
-    font-size: 0.85em; color: #fff;
-    background: none; cursor: url("/assets/images/cursors/link.cur"), pointer;
-}
-.tool img {
-    width: 58px; height: 58px;
-    grid-area: 1 / 1; object-fit: contain;
-}
-.tool span {
-    grid-area: 1 / 1; align-self: end;
-    -webkit-text-stroke: 0.175em #000; text-shadow: 0 0.15em #000;
-    paint-order: stroke fill;
-}
-.tool[aria-pressed="true"] {color: #8feeff}
-.tool[aria-pressed="true"] img, .tool:hover:not(:disabled) img {filter: brightness(1.17)}
 
 .editorcontent {
     flex: 1; display: flex;
     flex-direction: column; gap: 4px;
-    padding: 6px; overflow: auto;
+    padding: 6px; overflow: hidden;
 }
 .analysis, .levelpanel, .stringspanel, .spritepanel {
     display: flex; flex-direction: column;
     flex: 1; min-height: 0;
     gap: 4px;
 }
-.resulttools, .pages {
+.resulttools, .pages, .panelactions {
     display: flex; gap: 5px;
     flex-wrap: wrap; align-items: center;
 }
+.resulttools, .resultstatus {flex: none}
 .controldropdown {flex: 0 1 180px}
-.controldropdown .dropdownbutton {
-    min-height: 31px; max-height: 48px;
-    overflow: hidden;
+.controldropdown .dropdown {width: 100%}
+.controldropdown .dropdownbutton {min-height: 31px}
+.editorpage .editorsearch {
+    position: static; z-index: auto;
+    width: auto; flex: 1 1 138px;
+    height: 34px;
 }
-.filterresults, .filterstrings, .filtersprites {flex: 1 1 110px}
+.editorpage .editorsearch .archivequery {
+    background: transparent; padding: 0;
+}
+.editorpage .editorsearch:focus-within {background: rgba(0,0,0,0.7)}
 .resultstatus, .status {margin: 2px 0; overflow-wrap: anywhere}
 .status:empty, .resultstatus:empty {display: none}
 .error {
@@ -186,15 +179,28 @@ label {min-width: 0}
 /*//////////////////////////////////////////////////////////////////////*/
 
 .tablewrap {
-    min-height: 0; overflow: auto;
+    flex: 1 1 0; min-height: 0;
+    overflow: auto; border-radius: 0.5em;
+    background: rgba(0,0,0,0.35);
 }
 .resulttable, .stringtable {
     width: 100%; border-collapse: collapse;
-    text-align: left;
+    table-layout: fixed; text-align: left;
 }
 .resulttable th, .stringtable th {
-    padding: 4px 6px; font-weight: normal;
+    position: sticky; top: 0;
+    padding: 4px 12px 4px 6px; font-weight: normal;
+    background: #292522; z-index: 1;
+    overflow: hidden; text-overflow: ellipsis;
 }
+.columnhandle {
+    position: absolute; inset: 0 0 0 auto;
+    width: 10px; padding: 0;
+    border: 0; border-right: 1px solid rgba(255,255,255,0.45);
+    background: transparent; cursor: col-resize;
+    touch-action: none;
+}
+.columnhandle:focus-visible {background: rgba(255,255,255,0.25)}
 .resulttable td, .stringtable textarea {
     font: 0.7em/1.45 var(--datafont);
     -webkit-text-stroke: 0; text-shadow: none;
@@ -203,21 +209,62 @@ label {min-width: 0}
     padding: 2px 6px; vertical-align: top;
     overflow-wrap: anywhere;
 }
-.resulttable td:first-child, .resulttable td:nth-child(2) {white-space: nowrap}
-.stringtable td:first-child {width: 36%}
 .stringtable textarea {
     display: block; min-height: 2.2em;
     field-sizing: content; resize: vertical;
 }
-.pages {
-    justify-content: center; flex: none;
-    margin-block: 2px;
+
+.panelfooter {
+    display: grid; flex: none;
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+    gap: 4px; margin-top: auto;
+}
+.pages {grid-column: 2; justify-content: center}
+.panelactions {grid-column: 3; justify-content: end}
+.panelfooter:not(:has(.pages:not([hidden]))) .panelactions {grid-column: 1 / -1}
+.levelpicker, .levelview {overflow: auto}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.spritedata {
+    display: grid; flex: 1;
+    grid-template-columns: minmax(140px,1fr) minmax(0,2fr);
+    min-height: 0; gap: 5px;
+}
+.spritebrowser, .spriteview {
+    min-height: 0; border-radius: 0.55em;
+    background: rgba(0,0,0,0.35);
+}
+.spritebrowser {
+    display: flex; flex-direction: column;
+    gap: 4px; padding: 4px;
+}
+.spritepath {
+    display: flex; flex-wrap: wrap;
+    gap: 3px;
+}
+.spritefiles {
+    display: grid; align-content: start;
+    gap: 3px; overflow: auto;
+}
+.spritegridview {grid-template-columns: repeat(auto-fit,minmax(min(108px,100%),1fr))}
+.spritecrumb, .spritefolder, .spritefile {
+    min-width: 0; overflow: hidden;
+    text-overflow: ellipsis; text-align: left;
+    border: 0; border-radius: 4px;
+    background: rgba(0,0,0,0.35); color: inherit;
+    padding: 3px 5px; cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+.spritecrumb {max-width: 100%}
+.spritecrumb:hover, .spritefolder:hover, .spritefile:hover, .spritefile[aria-pressed="true"] {background: rgba(0,0,0,0.75)}
+.spritefolder {color: #8feeff}
+.spritegridview :is(.spritefolder,.spritefile) {
+    text-align: center; overflow-wrap: anywhere;
+    min-height: 45px;
 }
 .spriteview {
     display: grid; place-items: center;
-    flex: 1; min-height: 0;
-    overflow: auto; border-radius: 0.55em;
-    background: rgba(0,0,0,0.35);
+    overflow: auto;
 }
 .spriteimage {
     max-width: 100%; max-height: 100%;
@@ -225,18 +272,14 @@ label {min-width: 0}
 }
 
 @media (max-width: 700px) {
-    .editorbody {flex-direction: column}
-    .editorsidebar {
-        width: 100%; height: 76px; flex: 0 0 76px;
-        flex-direction: row; align-items: center; justify-content: center;
-        gap: 1px; padding: 2px 0;
-    }
-    .tool {width: min(70px,25%); height: 60px}
-    .sidebartoggle {width: 26px; height: 15px}
-    .sidebartoggle img {transform: rotate(90deg)}
-    .sidebartoggle[aria-expanded="false"] img {transform: rotate(-90deg)}
     .page:has(.packageswitch:not([hidden])) {padding-inline: 25px}
     .editorpage:has(.packageswitch:not([hidden])) .pageback {left: 30px}
     .packageswitch img {width: 24px; height: 24px}
     .controldropdown {flex: 1 1 120px}
+    .panelfooter {grid-template-columns: minmax(0,1fr)}
+    .panelfooter .pages, .panelfooter .panelactions {grid-column: 1}
+    .spritedata {
+        grid-template-columns: minmax(0,1fr);
+        grid-template-rows: minmax(65px,1fr) minmax(65px,1fr);
+    }
 }

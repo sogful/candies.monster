@@ -22,6 +22,7 @@ export function dropdown(select) {
     function sync() {
         button.textContent = select.selectedOptions[0]?.textContent || "Choose an option";
         button.disabled = select.disabled || !select.options.length;
+        button.title = select.selectedOptions[0]?.textContent || select.title;
     }
 
     function close(focus = false) {
@@ -63,6 +64,8 @@ export function dropdown(select) {
             const item = document.createElement("button");
             item.type = "button";
             item.className = "dropdownoption clickable";
+            item.classList.toggle("dropdownsecondary", option.hasAttribute("data-secondary"));
+            item.title = option.textContent;
             item.textContent = option.textContent;
             item.disabled = option.disabled;
             item.setAttribute("role", "option");

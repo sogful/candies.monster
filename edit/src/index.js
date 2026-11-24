@@ -1,3 +1,4 @@
+import "/assets/static/js/buttons/index.js";
 import {dropdown} from "/assets/static/js/controls/dropdown.js";
 import {popup} from "/src/js/browser/popup.js";
 import {exportpackage, openpackage, packageentries, packageicon, readentry, replacementkey, resizeicon} from "./package.js";
@@ -5,15 +6,17 @@ import {assetoutput, assettext, editasset, importasset, levelcatalog, packageass
 import {readreport, reportblob} from "./reports.js";
 import {packageheader} from "./header.js";
 import {clearlevel, renderlevel} from "./levelview.js";
+import {levelart, levelpicker} from "./levelpicker.js";
+import {spritebrowser} from "./spritebrowser.js";
+import {resizablecolumns} from "./columns.js";
 import {encodehintlevels} from "./hints.js";
 import {decodelegacyhint, encodelegacyhint, legacyhintname} from "./legacyhints.js";
 import {translation} from "./gamestrings.js";
 import {previewtexture, replacetexture, texturename, textures} from "./sprites.js";
 
 const find = selector => document.querySelector(selector);
-const workspace = find(".workspace");
+const dropoverlay = find(".drag");
 const editor = find(".editor");
-const sidebartoggle = find(".sidebartoggle");
 const back = find(".pageback");
 const picker = find(".pick");
 const packageinput = find(".packageinput");
@@ -22,11 +25,8 @@ const nextpackage = find(".packagenext");
 const toolbuttons = [...document.querySelectorAll(".tool")];
 const filelist = find(".filelist");
 const formats = find(".reportformat");
-const boxselect = find(".boxselect");
-const levelselect = find(".levelselect");
 const stringselect = find(".stringselect");
 const localeselect = find(".localeselect");
-const spriteselect = find(".spriteselect");
 const levelview = find(".levelview");
 const spriteimage = find(".spriteimage");
 const pagecount = 100;
@@ -42,10 +42,23 @@ let reportname = "";
 let resultpage = 0;
 let stringmodel;
 let spriteurl = "";
-let spritetimer;
+const pendingfiles = [];
 let shownlevel;
 
-for (const select of [filelist, formats, boxselect, levelselect, stringselect, localeselect, spriteselect]) dropdown(select);
+for (const select of [filelist, formats, stringselect, localeselect]) dropdown(select);
+const levelnav = levelpicker(find(".levelpicker"), level => {
+    if (!level) {
+        clearlevel(levelview);
+        levelview.hidden = true;
+        find(".levelfooter").hidden = true;
+        shownlevel = undefined;
+        synccontrols();
+    } else void run(() => drawlevel(level));
+});
+const spritefiles = spritebrowser(find(".spritebrowser"), () => void run(drawsprite), () => clearsearch(".filtersprites"));
+spritefiles.view("grid");
+resizablecolumns(find(".resulttable"), [16, 20, 64]);
+resizablecolumns(find(".stringtable"), [34, 66]);
 
 const header = packageheader(find(".editorheader"), {
     change() {
@@ -94,6 +107,7 @@ async function run(task) {
         working = false;
         message();
         synccontrols();
+        if (pendingfiles.length) startopening(pendingfiles.splice(0));
     }
 }
 
@@ -107,7 +121,11 @@ function download(blob, name) {
 }
 
 function options(select, rows, preferred = select.value) {
-    select.replaceChildren(...rows.map(([label, value]) => new Option(label, value)));
+    select.replaceChildren(...rows.map(([label, value, secondary]) => {
+        const option = new Option(label, value);
+        if (secondary) option.dataset.secondary = "";
+        return option;
+    }));
     select.value = rows.some(row => row[1] === preferred) ? preferred : rows[0]?.[1] ?? "";
 }
 
@@ -129,7 +147,7 @@ function synccontrols() {
     picker.disabled = working;
     find(".editorbody").inert = working;
     for (const button of toolbuttons) button.disabled = working;
-    for (const control of [filelist, boxselect, levelselect, stringselect, localeselect, spriteselect]) control.disabled = working;
+    for (const control of [filelist, stringselect, localeselect]) control.disabled = working;
     for (const control of document.querySelectorAll(".importreport, .importlevel, .importsprite, .exportsprite, .resetsprite, .filterstrings, .filtersprites")) control.disabled = working;
     find(".downloadresults").disabled = working || !report.length;
     find(".importlevel").disabled = working || !shownlevel;
@@ -141,8 +159,7 @@ function synccontrols() {
     previouspackage.hidden = nextpackage.hidden = !showarrows;
     previouspackage.disabled = working || availability(-1) < 0;
     nextpackage.disabled = working || availability(1) < 0;
-    const canexport = !!state && unsaved(state.session);
-    header.sync({working, canexport});
+    header.sync({working, canexport: !!state});
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -162,12 +179,25 @@ function distinctlabels(items, label) {
     });
 }
 
+function sourcepriority(file, executable) {
+    if (/\.(?:debug|sym|dwarf)(?:\.zst)?$/i.test(file.path) || /\/(?:DWARF|Symbols)\//i.test(file.path)) return 0;
+    if (file.path === executable || /(?:^|\/)libctr[^/]*\.so$/i.test(file.path)) return 1;
+    if (/\.(?:so|dylib|macho)$/i.test(file.path)) return 2;
+    return 3;
+}
+
 function symbolfiles(files, executable) {
     return files.filter(file => file.path === executable || /\.(?:so(?:\.\d+)?|dylib|macho|dex|debug|sym|map)$/i.test(file.path)
-        || /(?:^|\/)(?:SymbolMap(?:-32|-64)?|DWARF\/[^/]+|[^/]+\.framework\/[^/.]+)$/i.test(file.path)).sort((a, b) => {
-        const priority = file => Number(file.path === executable || /(?:^|\/)libctr[^/]*\.so$/i.test(file.path));
-        return priority(b) - priority(a);
-    });
+        || /(?:^|\/)(?:SymbolMap(?:-32|-64)?|DWARF\/[^/]+|[^/]+\.framework\/[^/.]+)$/i.test(file.path))
+        .sort((a, b) => sourcepriority(a, executable) - sourcepriority(b, executable));
+}
+
+function reportpriority(item) {
+    if (!item.entries.length) return 4;
+    if (/DWARF|STABS|Breakpad|debug/i.test(item.format)) return 0;
+    if (/\.symtab|nlist/i.test(item.format)) return 1;
+    if (/\.dynsym|export/i.test(item.format)) return 2;
+    return 3;
 }
 
 function symbollabel(file) {
@@ -187,28 +217,36 @@ async function showtool(name, preferences = {}) {
     tool = name;
     state.session.preferences.tool = tool;
     clearlevel(levelview);
+    levelview.hidden = true;
+    find(".levelfooter").hidden = true;
     shownlevel = undefined;
     clearsprite();
     stringmodel = undefined;
-    for (const button of toolbuttons) button.setAttribute("aria-pressed", String(button.dataset.tool === tool));
+    for (const button of toolbuttons) {
+        const active = button.dataset.tool === tool;
+        button.setAttribute("aria-pressed", String(active));
+        button.classList.toggle("gold", active);
+    }
     for (const [entry, selector] of Object.entries(toolpanels)) find(selector).hidden = entry !== tool;
-    find(".pages").hidden = true;
+    const pages = find(toolpanels[tool] + " .pages");
+    if (pages) pages.hidden = true;
     resultpage = 0;
     if (tool === "levels") {
-        const boxes = [...new Set(state.levels.map(level => level.box))];
-        options(boxselect, boxes.map(box => [box === null ? boxes.length === 1 ? "Levels" : "Other levels" : "Box " + box, String(box)]), preferences.box);
-        listlevels(preferences.level);
-        await drawlevel();
+        const choice = levelnav.load(state.levels, state.pkg.metadata.package, preferences.level, state.boxart);
+        if (choice) await drawlevel(choice);
     } else if (tool === "stringsgame") {
         options(stringselect, distinctlabels(state.strings, stringlabel), preferences.strings);
-        find(".filterstrings").value = "";
+        clearsearch(".filterstrings");
         await loadstrings(preferences.locale);
     } else if (tool === "sprites") {
-        find(".filtersprites").value = "";
-        listsprites(preferences.sprite);
-        await drawsprite();
+        clearsearch(".filtersprites");
+        spritefiles.load(state.sprites, preferences.sprite);
+        if (selectedsprite()) await drawsprite();
     } else {
-        options(filelist, distinctlabels(state.symbols, symbollabel), preferences.symbols);
+        const labels = distinctlabels(state.symbols, symbollabel);
+        options(filelist, labels.map(([label, index]) => [
+            label, index, sourcepriority(state.symbols[Number(index)], state.pkg.metadata.executable) >= 2
+        ]), preferences.symbols);
         resetresults();
         if (filelist.value) await extracts();
     }
@@ -217,10 +255,11 @@ async function showtool(name, preferences = {}) {
 function pageitems(rows) {
     const last = Math.max(0, Math.ceil(rows.length / pagecount) - 1);
     resultpage = Math.min(last, Math.max(0, resultpage));
-    find(".pages").hidden = !last;
-    find(".previous").disabled = resultpage === 0;
-    find(".next").disabled = resultpage === last;
-    find(".pagetext").textContent = (resultpage + 1) + " / " + (last + 1);
+    const pager = find(toolpanels[tool] + " .pages");
+    pager.hidden = !last;
+    pager.querySelector(".previous").disabled = resultpage === 0;
+    pager.querySelector(".next").disabled = resultpage === last;
+    pager.querySelector(".pagetext").textContent = (resultpage + 1) + " / " + (last + 1);
     find(toolpanels[tool] + " .tablewrap")?.scrollTo(0, 0);
     return rows.slice(resultpage * pagecount, (resultpage + 1) * pagecount);
 }
@@ -231,11 +270,11 @@ function resetresults(value = "") {
     report = [];
     reportname = "";
     resultpage = 0;
-    find(".filterresults").value = "";
-    find(".filterresults").hidden = true;
+    clearsearch(".filterresults");
+    find(".filterresults").closest(".editorsearch").hidden = true;
     find(".formatslabel").hidden = true;
     find(".analysis .tablewrap").hidden = true;
-    find(".pages").hidden = true;
+    find(".analysis .pages").hidden = true;
     find(".resultstatus").textContent = value;
     find(".resulttable tbody").replaceChildren();
 }
@@ -265,13 +304,16 @@ async function extracts() {
 }
 
 function showreport(reports, name) {
-    report = reports;
+    report = [...reports].sort((a, b) => reportpriority(a) - reportpriority(b));
     reportname = name;
     if (!report.length) return resetresults("No supported symbol tables were found.");
-    options(formats, report.map((item, index) => [[item.format, item.architecture].filter(Boolean).join(" · "), String(index)]), "0");
+    options(formats, report.map((item, index) => [
+        [item.format, item.architecture].filter(Boolean).join(" · "), String(index),
+        reportpriority(item) > reportpriority(report[0]) || reportpriority(item) >= 2
+    ]), "0");
     formats.value = String(Math.max(0, report.findIndex(item => item.entries.length)));
     find(".formatslabel").hidden = report.length < 2;
-    find(".filterresults").hidden = false;
+    find(".filterresults").closest(".editorsearch").hidden = false;
     renderresults();
 }
 
@@ -297,11 +339,6 @@ function renderresults() {
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
-
-function listlevels(preferred) {
-    const group = state.levels.filter(level => String(level.box) === boxselect.value);
-    options(levelselect, group.map(level => ["Level " + level.level, String(level.index)]), preferred);
-}
 
 async function hintdata(level) {
     if (!level.numbered) return null;
@@ -343,13 +380,14 @@ async function legacyreplays(level) {
     return {entries, replays};
 }
 
-async function drawlevel() {
+async function drawlevel(level = levelnav.selection()) {
     clearlevel(levelview);
     shownlevel = undefined;
-    const level = state.levels.find(level => String(level.index) === levelselect.value);
+    levelview.hidden = !level;
+    find(".levelfooter").hidden = !level;
     if (!level) return;
     const xml = await assettext(level.item, state.session.replacements);
-    const options = {xml, box: level.box ?? 1};
+    const options = {xml, box: level.box ?? 1, packageid: state.pkg.metadata.package, boxart: state.boxart};
     try {
         const data = await hintdata(level);
         const matching = data?.records.find(record => record.box === level.box && record.level === level.level);
@@ -404,7 +442,7 @@ async function loadstrings(preferred) {
     stringmodel = undefined;
     const body = find(".stringtable tbody");
     body.replaceChildren();
-    find(".pages").hidden = true;
+    find(".stringspanel .pages").hidden = true;
     if (!item) return;
     const key = replacementkey(item);
     const draft = state.session.strings.get(key);
@@ -450,21 +488,14 @@ function renderstrings() {
 /*//////////////////////////////////////////////////////////////////////*/
 
 function clearsprite() {
-    clearTimeout(spritetimer);
     if (spriteurl) URL.revokeObjectURL(spriteurl);
     spriteurl = "";
     spriteimage.hidden = true;
     spriteimage.removeAttribute("src");
 }
 
-function listsprites(preferred) {
-    const query = find(".filtersprites").value.trim().toLowerCase();
-    const rows = distinctlabels(state.sprites, item => readable(texturename(item).replace(/\.[^.]+$/, "")));
-    options(spriteselect, rows.filter(([label]) => label.toLowerCase().includes(query)), preferred);
-}
-
 function selectedsprite() {
-    return spriteselect.value === "" ? undefined : state.sprites[Number(spriteselect.value)];
+    return state.sprites[spritefiles.selection()];
 }
 
 async function drawsprite() {
@@ -474,7 +505,7 @@ async function drawsprite() {
     if (!sprite) return;
     const {replacements} = state.session;
     const blob = await previewtexture(sprite, replacements);
-    spriteimage.alt = spriteselect.selectedOptions[0].textContent;
+    spriteimage.alt = sprite.label;
     spriteurl = URL.createObjectURL(blob);
     spriteimage.src = spriteurl;
     spriteimage.hidden = false;
@@ -495,9 +526,10 @@ async function exportchanges() {
         }
         if (hints.has(key)) changes.set(key, encodehintlevels(hints.get(key)));
     }
-    message("Preparing export");
-    const blob = await exportpackage(pkg.file, metadata, icon, changes, message);
-    download(blob, pkg.file.name.replace(/\.[^.]+$/, "") + "-edited." + pkg.extension);
+    const edited = changes.size || icon || Object.keys(metadata).length;
+    if (edited) message("Preparing export");
+    const blob = edited ? await exportpackage(pkg.file, metadata, icon, changes, message) : pkg.file;
+    download(blob, edited ? pkg.file.name.replace(/\.[^.]+$/, "") + "-edited." + pkg.extension : pkg.file.name);
     session.saved = {metadata: JSON.stringify(metadata), icon, replacements: new Map(changes)};
     session.replacements = changes;
     strings.clear();
@@ -507,8 +539,8 @@ async function exportchanges() {
 function savepreferences() {
     if (!state) return;
     state.session.preferences = {
-        tool, box: boxselect.value, level: levelselect.value,
-        strings: stringselect.value, locale: localeselect.value, sprite: spriteselect.value, symbols: filelist.value
+        tool, level: levelnav.selection()?.index,
+        strings: stringselect.value, locale: localeselect.value, sprite: spritefiles.selection(), symbols: filelist.value
     };
 }
 
@@ -527,10 +559,12 @@ async function loadpackage(index) {
     const files = packageentries(pkg);
     const unity = unitypackage(files);
     const assets = unity ? [] : packageassets(pkg, files);
+    const hidelevels = /(?:^|\.)(?:ctr2|ctrm|ctrmagic|cuttherope2|cuttheropemagic)(?:\.|$)/i.test(pkg.metadata.package)
+        || /^cut the rope(?:\s*:\s*|\s+)(?:2|magic)(?:\b|$)/i.test(pkg.metadata.title || "");
     const originalicon = await packageicon(pkg).catch(() => null);
     state = {
         pkg, session, assets, originalicon, hintcache: new Map(),
-        levels: await levelcatalog(assets), sprites: unity ? [] : textures(files, pkg),
+        levels: hidelevels ? [] : await levelcatalog(assets), sprites: unity ? [] : textures(files, pkg),
         strings: assets.filter(item => item.category === "stringsgame").sort((a, b) => stringlabel(a).localeCompare(stringlabel(b))),
         symbols: unity ? [] : symbolfiles(files, pkg.metadata.executable),
         legacy: unity ? [] : files.flatMap(file => {
@@ -538,6 +572,7 @@ async function loadpackage(index) {
             return name ? [{...file, ...name}] : [];
         })
     };
+    state.boxart = levelart(pkg.metadata.package, state.sprites, () => session.replacements);
     current = index;
     editor.hidden = false;
     find(".intake").hidden = true;
@@ -546,7 +581,9 @@ async function loadpackage(index) {
     find(".editorbody").hidden = unity;
     find(".unitymessage").hidden = !unity;
     if (unity) {
+        levelnav.clear();
         clearlevel(levelview);
+        spritefiles.clear();
         clearsprite();
         shownlevel = undefined;
         stringmodel = undefined;
@@ -560,21 +597,26 @@ async function loadpackage(index) {
 }
 
 function startopening(files) {
-    if (state || working || !files.length) return;
-    sessions = files.map(file => ({
+    if (!files.length) return;
+    if (working) {
+        pendingfiles.push(...files);
+        return;
+    }
+    const start = sessions.length;
+    sessions.push(...files.map(file => ({
         file, metadata: {}, icon: null, preview: null, preferences: {}, replacements: new Map(),
         strings: new Map(), hints: new Map(), saved: {metadata: "{}", icon: null, replacements: new Map()}
-    }));
+    })));
     void run(async () => {
         let failure;
-        for (let index = 0; index < sessions.length; index++) {
+        for (let index = start; index < sessions.length; index++) {
             try {await loadpackage(index); return}
             catch (error) {
                 if (!sessions[index].unreadable) throw error;
                 failure = error;
             }
         }
-        sessions = [];
+        if (!state) sessions = [];
         throw failure;
     });
 }
@@ -601,6 +643,8 @@ function closepackage() {
     state = undefined;
     tool = undefined;
     header.clear();
+    levelnav.clear();
+    spritefiles.clear();
     clearlevel(levelview);
     clearsprite();
     shownlevel = undefined;
@@ -656,12 +700,6 @@ window.addEventListener("beforeunload", event => {
     event.returnValue = true;
 });
 
-sidebartoggle.addEventListener("click", () => {
-    const hidden = sidebartoggle.getAttribute("aria-expanded") === "true";
-    find(".editorsidebar").hidden = hidden;
-    sidebartoggle.setAttribute("aria-expanded", String(!hidden));
-    sidebartoggle.querySelector("img").alt = hidden ? "Show sidebar" : "Hide sidebar";
-});
 picker.addEventListener("click", () => packageinput.click());
 packageinput.addEventListener("change", () => {
     const files = [...packageinput.files];
@@ -672,7 +710,9 @@ previouspackage.addEventListener("click", () => void run(() => switchpackage(-1)
 nextpackage.addEventListener("click", () => void run(() => switchpackage(1)));
 for (const button of toolbuttons) {
     button.addEventListener("click", () => {
-        if (tool !== button.dataset.tool) void run(() => showtool(button.dataset.tool));
+        if (tool === button.dataset.tool) return;
+        savepreferences();
+        void run(() => showtool(button.dataset.tool, state.session.preferences));
     });
 }
 
@@ -698,19 +738,14 @@ function filterresults() {
 }
 formats.addEventListener("change", filterresults);
 find(".filterresults").addEventListener("input", filterresults);
-for (const [selector, direction] of [[".previous", -1], [".next", 1]]) {
-    find(selector).addEventListener("click", () => {
-        resultpage += direction;
+for (const button of document.querySelectorAll(".pages button")) {
+    button.addEventListener("click", () => {
+        resultpage += button.classList.contains("previous") ? -1 : 1;
         if (tool === "symbols") renderresults();
         else if (tool === "stringsgame") renderstrings();
     });
 }
 
-boxselect.addEventListener("change", () => void run(async () => {
-    listlevels();
-    await drawlevel();
-}));
-levelselect.addEventListener("change", () => void run(drawlevel));
 find(".importlevel").addEventListener("click", () => find(".levelinput").click());
 find(".levelinput").addEventListener("change", event => {
     const file = event.target.files[0];
@@ -736,15 +771,19 @@ for (const [control, event] of [[localeselect, "change"], [find(".filterstrings"
     control.addEventListener(event, () => {resultpage = 0; renderstrings()});
 }
 
-spriteselect.addEventListener("change", () => void run(drawsprite));
-find(".filtersprites").addEventListener("input", () => {
-    const previous = spriteselect.value;
-    listsprites();
-    if (previous === spriteselect.value) return;
-    clearsprite();
-    synccontrols();
-    spritetimer = setTimeout(() => {if (tool === "sprites") void run(drawsprite)}, 160);
-});
+for (const mode of ["grid", "list"]) {
+    const button = find(".sprite" + mode);
+    button.addEventListener("click", () => {
+        spritefiles.view(mode);
+        for (const name of ["grid", "list"]) {
+            const control = find(".sprite" + name);
+            control.classList.toggle("gold", mode === name);
+            control.setAttribute("aria-pressed", String(mode === name));
+        }
+    });
+}
+find(".spritegrid").classList.add("gold");
+find(".filtersprites").addEventListener("input", event => spritefiles.search(event.target.value));
 find(".importsprite").addEventListener("click", () => find(".spriteinput").click());
 find(".spriteinput").addEventListener("change", event => {
     const file = event.target.files[0];
@@ -764,17 +803,40 @@ find(".resetsprite").addEventListener("click", () => void run(async () => {
     await drawsprite();
 }));
 
-document.addEventListener("dragover", event => {
+function clearsearch(selector) {
+    const input = find(selector);
+    input.value = "";
+    input.closest(".editorsearch").querySelector(".searchclear").hidden = true;
+}
+
+for (const search of document.querySelectorAll(".editorsearch")) {
+    const input = search.querySelector(".archivequery");
+    const clear = search.querySelector(".searchclear");
+    input.addEventListener("input", () => {clear.hidden = !input.value});
+    clear.addEventListener("click", () => {
+        input.value = "";
+        input.dispatchEvent(new Event("input", {bubbles: true}));
+        input.focus();
+    });
+}
+
+function showdrag(event) {
     if (!event.dataTransfer.types.includes("Files")) return;
     event.preventDefault();
-    if (!working && !state) workspace.classList.add("dragging");
-});
+    dropoverlay.classList.add("visible");
+}
+
+document.addEventListener("dragenter", showdrag);
+document.addEventListener("dragover", showdrag);
 document.addEventListener("dragleave", event => {
-    if (!event.relatedTarget) workspace.classList.remove("dragging");
+    if (!event.relatedTarget && (event.target === document || event.target === document.documentElement
+        || event.clientX <= 0 || event.clientY <= 0 || event.clientX >= innerWidth || event.clientY >= innerHeight)) {
+        dropoverlay.classList.remove("visible");
+    }
 });
 document.addEventListener("drop", event => {
     if (!event.dataTransfer.types.includes("Files")) return;
     event.preventDefault();
-    workspace.classList.remove("dragging");
+    dropoverlay.classList.remove("visible");
     startopening([...event.dataTransfer.files]);
 });

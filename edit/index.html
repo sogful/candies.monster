@@ -1,34 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="View symbols and edit game data in APK and IPA packages.">
+
     <title>Package Editor – candies.monster</title>
     <link rel="canonical" href="https://candies.monster/edit/">
     <link rel="icon" href="/assets/images/candies/favicon.png">
     <meta property="og:image" content="https://candies.monster/assets/images/branding/embeds/edit.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://candies.monster/assets/images/branding/embeds/edit.png">
+
     <link rel="preload" href="/assets/fonts/gooddog.woff2" as="font" type="font/woff2" crossorigin>
+
     <link rel="stylesheet" href="/assets/static/css/back.css">
-    <link rel="stylesheet" href="/assets/static/css/buttons.css">
+    <link rel="stylesheet" href="/assets/static/css/github.css">
+    <link rel="stylesheet" href="/assets/static/css/drag.css">
+    <link rel="stylesheet" href="/versions/src/css/search.css">
     <link rel="stylesheet" href="/assets/static/css/dropdown.css">
     <link rel="stylesheet" href="/src/css/browser/discord.css">
+
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="levelview.css">
+    <link rel="stylesheet" href="levelpicker.css">
+
     <script src="/assets/static/js/text/fonts.js"></script>
     <script defer src="/assets/static/js/back.js"></script>
     <script defer src="/assets/static/dependencies/jszip.min.js"></script>
+
     <script type="module" src="src/index.js"></script>
+
 </head>
 <body class="editorpage">
     <a class="pageback" href="/"><img src="/assets/images/buttons/back.png" alt="Back" width="42" height="42" draggable="false"></a>
+    <a class="github intakegithub" href="https://github.com/sogful/candies.monster"><img src="/assets/images/github.png" alt="GitHub repository" draggable="false"></a>
+    <div class="drag" aria-hidden="true">Drop here!</div>
     <audio class="click" src="/assets/audio/tap.mp3" preload="auto"></audio>
     <main class="page">
         <section class="workspace">
             <div class="intake">
+                <h1 class="intaketitle">Package Editor</h1>
                 <input class="packageinput" type="file" accept=".apk,.ipa,.xapk,.apks" multiple hidden>
                 <button class="input uploadinput pick" type="button">
                     <span class="pickprompt">Click to open file explorer<br>or drag the file here...</span>
@@ -47,32 +60,22 @@
                 <p class="unitymessage" hidden>This is a Unity game, use <a href="https://github.com/assetripper/assetripper" target="_blank" rel="noopener">AssetRipper</a> to edit its contents!</p>
 
                 <div class="editorbody">
-                    <nav class="editorsidebar">
-                        <button class="tool" type="button" data-tool="levels" aria-pressed="false">
-                            <img src="/assets/images/buttons/pages/levels.webp" alt="" draggable="false"><span>Levels</span>
-                        </button>
-                        <button class="tool" type="button" data-tool="stringsgame" aria-pressed="false">
-                            <img src="/assets/images/buttons/pages/convertlevels.webp" alt="" draggable="false"><span>Strings</span>
-                        </button>
-                        <button class="tool" type="button" data-tool="sprites" aria-pressed="false">
-                            <img src="/assets/images/buttons/pages/sprites.webp" alt="" draggable="false"><span>Sprites</span>
-                        </button>
-                        <button class="tool" type="button" data-tool="symbols" aria-pressed="false">
-                            <img src="/assets/images/buttons/pages/convert.webp" alt="" draggable="false"><span>Symbols</span>
-                        </button>
-                    </nav>
-                    <button class="sidebartoggle" type="button" aria-expanded="true">
-                        <img src="/assets/images/buttons/back.png" alt="Hide sidebar" width="15" height="15" draggable="false">
-                    </button>
                     <div class="editorcontent">
+                        <nav class="editortabs">
+                            <button class="buttonart tool" type="button" data-tool="levels" aria-pressed="false">Levels</button>
+                            <button class="buttonart tool" type="button" data-tool="stringsgame" aria-pressed="false">Strings</button>
+                            <button class="buttonart tool" type="button" data-tool="sprites" aria-pressed="false">Sprites</button>
+                            <button class="buttonart tool" type="button" data-tool="symbols" aria-pressed="false">Symbols</button>
+                        </nav>
                         <section class="analysis" hidden>
                             <div class="resulttools">
                                 <label class="controldropdown"><select class="filelist" title="Symbol source"></select></label>
                                 <label class="controldropdown formatslabel" hidden><select class="reportformat" title="Symbol format"></select></label>
-                                <input class="filterresults" type="search" placeholder="Filter symbols" hidden>
-                                <button class="buttonart importreport" type="button">Import</button>
-                                <input class="reportinput" type="file" accept=".json,.tsv" hidden>
-                                <button class="buttonart downloadresults" type="button" disabled>Export</button>
+                                <div class="archivesearch editorsearch" role="search" hidden>
+                                    <img src="/assets/images/icons/search.svg" alt="" width="20" height="20" draggable="false">
+                                    <input class="archivequery filterresults" type="search" placeholder="Filter symbols" autocomplete="off" spellcheck="false">
+                                    <button class="searchclear" type="button" hidden><img src="/assets/images/icons/x.svg" alt="Clear search" draggable="false"></button>
+                                </div>
                             </div>
                             <p class="resultstatus"></p>
                             <div class="tablewrap" hidden>
@@ -81,23 +84,40 @@
                                     <tbody></tbody>
                                 </table>
                             </div>
+                            <footer class="panelfooter">
+                                <div class="pages" hidden>
+                                    <button class="buttonart previous" type="button">Previous</button>
+                                    <span class="pagetext"></span>
+                                    <button class="buttonart next" type="button">Next</button>
+                                </div>
+                                <div class="panelactions">
+                                    <button class="buttonart importreport" type="button">Import</button>
+                                    <input class="reportinput" type="file" accept=".json,.tsv" hidden>
+                                    <button class="buttonart downloadresults" type="button" disabled>Export</button>
+                                </div>
+                            </footer>
                         </section>
                         <section class="levelpanel" hidden>
-                            <div class="resulttools">
-                                <label class="controldropdown"><select class="boxselect" title="Box"></select></label>
-                                <label class="controldropdown"><select class="levelselect" title="Level"></select></label>
-                                <button class="buttonart importlevel" type="button">Import</button>
-                                <input class="levelinput" type="file" accept=".xml" hidden>
-                                <button class="buttonart exportlevel" type="button">Export</button>
-                                <a class="buttonart leveleditor" href="https://yell0wsuit.github.io/ctrdx-editor/" target="_blank" rel="noopener">DX Editor</a>
-                            </div>
-                            <div class="levelview"></div>
+                            <div class="levelpicker"></div>
+                            <div class="levelview" hidden></div>
+                            <footer class="panelfooter levelfooter" hidden>
+                                <div class="panelactions">
+                                    <a class="buttonart leveleditor" href="https://yell0wsuit.github.io/ctrdx-editor/" target="_blank" rel="noopener">DX Editor</a>
+                                    <button class="buttonart importlevel" type="button">Import</button>
+                                    <input class="levelinput" type="file" accept=".xml" hidden>
+                                    <button class="buttonart exportlevel" type="button">Export</button>
+                                </div>
+                            </footer>
                         </section>
                         <section class="stringspanel" hidden>
                             <div class="resulttools">
                                 <label class="controldropdown translationsource"><select class="stringselect" title="Translation group"></select></label>
                                 <label class="controldropdown translationlanguage" hidden><select class="localeselect" title="Language"></select></label>
-                                <input class="filterstrings" type="search" placeholder="Find a string">
+                                <div class="archivesearch editorsearch" role="search">
+                                    <img src="/assets/images/icons/search.svg" alt="" width="20" height="20" draggable="false">
+                                    <input class="archivequery filterstrings" type="search" placeholder="Find a string" autocomplete="off" spellcheck="false">
+                                    <button class="searchclear" type="button" hidden><img src="/assets/images/icons/x.svg" alt="Clear search" draggable="false"></button>
+                                </div>
                             </div>
                             <div class="tablewrap">
                                 <table class="stringtable">
@@ -105,23 +125,40 @@
                                     <tbody></tbody>
                                 </table>
                             </div>
+                            <footer class="panelfooter">
+                                <div class="pages" hidden>
+                                    <button class="buttonart previous" type="button">Previous</button>
+                                    <span class="pagetext"></span>
+                                    <button class="buttonart next" type="button">Next</button>
+                                </div>
+                            </footer>
                         </section>
                         <section class="spritepanel" hidden>
                             <div class="resulttools">
-                                <input class="filtersprites" type="search" placeholder="Find a texture">
-                                <label class="controldropdown"><select class="spriteselect" title="Texture"></select></label>
-                                <button class="buttonart importsprite" type="button">Replace</button>
-                                <input class="spriteinput" type="file" accept="image/*" hidden>
-                                <button class="buttonart exportsprite" type="button">Export</button>
-                                <button class="buttonart resetsprite" type="button" hidden>Reset</button>
+                                <div class="archivesearch editorsearch" role="search">
+                                    <img src="/assets/images/icons/search.svg" alt="" width="20" height="20" draggable="false">
+                                    <input class="archivequery filtersprites" type="search" placeholder="Find a texture" autocomplete="off" spellcheck="false">
+                                    <button class="searchclear" type="button" hidden><img src="/assets/images/icons/x.svg" alt="Clear search" draggable="false"></button>
+                                </div>
+                                <button class="buttonart spritegrid" type="button" aria-pressed="true">Grid</button>
+                                <button class="buttonart spritelist" type="button" aria-pressed="false">List</button>
                             </div>
-                            <div class="spriteview"><img class="spriteimage" alt="" hidden></div>
+                            <div class="spritedata">
+                                <div class="spritebrowser">
+                                    <nav class="spritepath"></nav>
+                                    <div class="spritefiles"></div>
+                                </div>
+                                <div class="spriteview"><img class="spriteimage" alt="" hidden></div>
+                            </div>
+                            <footer class="panelfooter">
+                                <div class="panelactions">
+                                    <button class="buttonart resetsprite" type="button" hidden>Reset</button>
+                                    <button class="buttonart importsprite" type="button">Replace</button>
+                                    <input class="spriteinput" type="file" accept="image/*" hidden>
+                                    <button class="buttonart exportsprite" type="button">Export</button>
+                                </div>
+                            </footer>
                         </section>
-                        <div class="pages" hidden>
-                            <button class="buttonart previous" type="button">Previous</button>
-                            <span class="pagetext"></span>
-                            <button class="buttonart next" type="button">Next</button>
-                        </div>
                     </div>
                 </div>
             </div>
