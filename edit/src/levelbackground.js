@@ -11,7 +11,7 @@ function basename(path) {
 function firstframe(image, path, game) {
     const {width, height} = image;
     const resolution = /_(\d+)_(\d+)\.(?:jpe?g|raw)(?:\.zst)?$/.exec(basename(path));
-    if (game !== "timetravel" && resolution) {
+    if (resolution && (game !== "timetravel" || resolution[1] === "320")) {
         const [w, h] = resolution.slice(1).map(Number);
         if (w <= width && h <= height) return {x: 0, y: 0, w, h};
     }
@@ -60,7 +60,7 @@ function tiles(image, base, frames, map) {
 export async function levelbackground(map, box, packageid, boxart) {
     const game = levelgame(packageid);
     try {
-        const media = await boxart?.(box);
+        const media = await boxart?.(box, false, map.settings?.background);
         if (media) {
             const {blob, frames, path} = media;
             const image = await createImageBitmap(blob);

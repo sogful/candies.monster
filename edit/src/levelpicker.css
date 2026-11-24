@@ -148,6 +148,14 @@
 }
 .levelpickbackdrop.levelpicksingle, .levelpicksingle .levelpickhalf {width: 100%}
 .levelpicksingle .levelpickart {object-fit: cover}
+.levelpickportrait::before {
+    content: ""; position: absolute;
+    inset: -12px; background: var(--levelpickimage,none) center/cover;
+    filter: blur(12px);
+}
+.levelpickportrait .levelpickart {
+    position: relative; object-fit: contain;
+}
 .levelpickpanel .levelpickback {
     position: absolute; top: 6px;
     left: 6px; z-index: 1;

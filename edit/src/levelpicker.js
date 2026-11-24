@@ -38,9 +38,12 @@ function title(game, box) {
     return name ?? "???";
 }
 
-function boxstem(game, box) {
+function boxstem(game, box, cover, background) {
+    if (game === "experiments" && cover) return "menu_bgr";
     if (game === "timetravel") {
-        const name = timetravel[box - 1]?.[1];
+        const era = String(background ?? "").toLowerCase();
+        const renamed = {pirates: "pirate", prehistoric: "dinosaurs", parallel: "paradox"}[era] ?? era;
+        const name = timetravel.some(([, key]) => key === renamed) ? renamed : timetravel[box - 1]?.[1];
         return name && "bgr_" + name;
     }
     const number = game === "holiday" ? 1 : box;
@@ -51,11 +54,39 @@ function spritebase(path) {
     return path.toLowerCase().split("/").at(-1).replace(/\.(?:raw(?:\.zst)?|png|jpe?g|webp)$/i, "");
 }
 
+async function experimentsframe(blob, path, cover) {
+    const layout = /\/(320x480|480x800)\/(game|menu)\/(?:bgr_(\d+)|menu_bgr)\.raw(?:\.zst)?$/i.exec(path);
+    if (!layout) return null;
+    const small = layout[1] === "320x480";
+    const box = Number(layout[3]);
+    const rotated = small ? cover || ![1, 4, 6].includes(box) : !cover && box !== 1;
+    const w = small ? 320 : 480;
+    const h = small ? 480 : 800;
+    const x = 1;
+    const y = small && !cover ? ({1: 323, 6: 483}[box] ?? 1) : 1;
+    const sw = rotated ? h : w;
+    const sh = rotated ? w : h;
+    const image = await createImageBitmap(blob);
+    try {
+        if (x + sw > image.width || y + sh > image.height) return null;
+        const canvas = new OffscreenCanvas(w, h);
+        const context = canvas.getContext("2d");
+        if (rotated) {
+            context.translate(0, h);
+            context.rotate(-Math.PI / 2);
+        }
+        context.drawImage(image, x, y, sw, sh, 0, 0, sw, sh);
+        return {blob: await canvas.convertToBlob({type: "image/png"}), frames: [{x: 0, y: 0, w, h}], path};
+    } finally {
+        image.close();
+    }
+}
+
 export function levelart(packageid, sprites, replacements, files) {
     const game = levelgame(packageid);
     const cache = new Map();
-    return async (box, cover = false) => {
-        const prefix = boxstem(game, box);
+    return async function readart(box, cover = false, background) {
+        const prefix = boxstem(game, box, cover, background);
         if (!prefix) return null;
         const candidates = sprites.map(item => ({item, stem: spritebase(item.path), size: item.parts.reduce((total, part) => total + part.size, 0)}))
             .filter(({stem}) => stem === prefix || stem.startsWith(prefix + "_"))
@@ -66,10 +97,11 @@ export function levelart(packageid, sprites, replacements, files) {
             const difference = cover
                 ? Number(b.stem.includes("_cover")) - Number(a.stem.includes("_cover"))
                 : Number(a.stem.includes("_cover")) - Number(b.stem.includes("_cover"));
+            const travel = game === "timetravel" ? Number(b.stem.endsWith("_320_480")) - Number(a.stem.endsWith("_320_480")) : 0;
             const variant = !cover ? Number(/ipad|retina/.test(a.stem)) - Number(/ipad|retina/.test(b.stem)) : 0;
-            return difference || variant || b.size - a.size;
+            return difference || travel || variant || b.size - a.size;
         });
-        for (const {item} of candidates) {
+        for (const {item, stem} of candidates) {
             const changed = replacements();
             const current = item.parts.map(part => changed.get(replacementkey(part)));
             const key = (cover ? "cover:" : "game:") + replacementkey(item);
@@ -82,10 +114,17 @@ export function levelart(packageid, sprites, replacements, files) {
             const image = (async () => {
                 const blob = await previewtexture(item, changed);
                 const frames = await findsplits(item, files, changed, blob).catch(() => []);
+                if (game === "experiments" && !frames.length) {
+                    const frame = await experimentsframe(blob, item.path, cover);
+                    if (frame) return cover ? frame.blob : frame;
+                }
                 if (!cover) return !item.path.toLowerCase().includes("_cover")
                     ? {blob, frames, path: item.path} : null;
                 if (frames[0]) return rendersplit(blob, frames[0], changed);
                 if (game === "original" || game === "holiday") return null;
+                if (game === "timetravel" && stem.endsWith("_320_480")) {
+                    return rendersplit(blob, {x: 0, y: 0, w: 320, h: 480}, changed);
+                }
                 return blob;
             })().catch(() => null);
             if (cache.size >= 10) cache.delete(cache.keys().next().value);
@@ -93,7 +132,7 @@ export function levelart(packageid, sprites, replacements, files) {
             const blob = await image;
             if (blob) return blob;
         }
-        return null;
+        return background && prefix !== boxstem(game, box, cover) ? readart(box, cover) : null;
     };
 }
 
@@ -226,30 +265,49 @@ export function levelpicker(root, change) {
         const twin = game === "original" || game === "holiday";
         const backdrop = element("div", "levelpickbackdrop" + (twin ? "" : " levelpicksingle"));
         const fallback = staticboxcover(packageid, box);
+        backdrop.classList.toggle("levelpickportrait", game === "timetravel");
         const images = Array.from({length: twin ? 2 : 1}, () => {
             const half = element("span", "levelpickhalf");
             const image = element("img", "levelpickart");
             image.alt = "";
             image.draggable = false;
-            image.hidden = !fallback;
-            if (fallback) image.src = fallback;
+            image.hidden = true;
             half.append(image);
             backdrop.append(half);
             return image;
         });
-        if (game === "original" && coverwidths[box - 1]) backdrop.style.setProperty("--coverwidth", coverwidths[box - 1]);
-        if (!readart || box === null) return backdrop;
-        const revision = generation;
-        void readart(box, true).then(blob => {
-            if (!blob || generation !== revision) return;
-            const url = URL.createObjectURL(blob);
-            urls.add(url);
-            backdrop.style.removeProperty("--coverwidth");
+        function show(url, native = false) {
+            if (!url) return;
+            const width = !native && game === "original" ? coverwidths[box - 1] : undefined;
+            if (width) backdrop.style.setProperty("--coverwidth", width);
+            else backdrop.style.removeProperty("--coverwidth");
+            if (game === "timetravel") backdrop.style.setProperty("--levelpickimage", `url("${url}")`);
             for (const image of images) {
                 image.src = url;
                 image.hidden = false;
             }
-        }).catch(() => {});
+        }
+        if (game === "original" || !readart || box === null) show(fallback);
+        if (!readart || box === null) return backdrop;
+        const revision = generation;
+        void (async () => {
+            const blob = await readart(box, true).catch(() => null);
+            if (generation !== revision) return;
+            if (!blob) {
+                show(fallback);
+                return;
+            }
+            const url = URL.createObjectURL(blob);
+            urls.add(url);
+            const preload = new Image();
+            preload.src = url;
+            try {
+                await preload.decode();
+                if (generation === revision) show(url, true);
+            } catch {
+                if (generation === revision) show(fallback);
+            }
+        })();
         return backdrop;
     }
 
