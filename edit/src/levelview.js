@@ -1,6 +1,7 @@
 import {artwork, background, parse} from "/src/js/browser/renderer/data.js";
 import {draw, framing} from "/src/js/browser/renderer/draw.js";
 import {decode} from "/raw2png/src/textures.js";
+import {levelgame, staticboxcover} from "./levelpicker.js";
 
 const pending = new WeakMap();
 const svgspace = "http://www.w3.org/2000/svg";
@@ -327,20 +328,49 @@ function hintsview(root, stage, map, hint, fairy, onchange) {
     refresh();
 }
 
+async function packagedbackground(blob, map) {
+    const image = await createImageBitmap(blob);
+    try {
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.ceil(Math.max(2560 / 3, map.width));
+        canvas.height = 480;
+        const context = canvas.getContext("2d");
+        const scale = Math.max(map.width / image.width, canvas.height / image.height);
+        context.drawImage(image, (canvas.width - image.width * scale) / 2,
+            (canvas.height - image.height * scale) / 2, image.width * scale, image.height * scale);
+        return canvas;
+    } finally {
+        image.close();
+    }
+}
+
+async function levelbackground(map, box, packageid, boxart) {
+    const game = levelgame(packageid);
+    if (game === "original") {
+        return background(`/assets/images/level/box${box}.webp`, map)
+            .catch(() => background("/assets/images/level/box1.webp", map).catch(() => null));
+    }
+    try {
+        const blob = await boxart?.(box);
+        if (blob) return await packagedbackground(blob, map);
+    } catch {}
+    const fallback = staticboxcover(packageid, box);
+    return fallback ? background(fallback, map).catch(() => null) : null;
+}
+
 export function clearlevel(container) {
     pending.delete(container);
     container.replaceChildren();
 }
 
-export async function renderlevel(container, {xml, box = 1, hint = null, fairy, onhintchange}) {
+export async function renderlevel(container, {xml, box = 1, packageid, boxart, hint = null, fairy, onhintchange}) {
     clearlevel(container);
     const current = {};
     pending.set(container, current);
     const map = {...parse(xml), box};
     const [art, backdrop, sprite] = await Promise.all([
         artwork("normal"),
-        background(`/assets/images/level/box${box}.webp`, map)
-            .catch(() => background("/assets/images/level/box1.webp", map).catch(() => null)),
+        levelbackground(map, box, packageid, boxart),
         onhintchange ? firefly(fairy).catch(() => "") : ""
     ]);
     if (pending.get(container) !== current) return;

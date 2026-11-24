@@ -1,0 +1,107 @@
+.levelpicker[data-view="boxes"], .levelpicker[data-view="levels"] {
+    display: flex; flex: 1;
+    min-height: 0; flex-direction: column;
+    gap: 6px; overflow: auto;
+}
+.levelpicker[data-view="selected"] {flex: none}
+.levelpickheader {
+    display: flex; align-items: center;
+    gap: 6px; min-height: 29px;
+}
+.levelpicktitle {
+    min-width: 0; overflow: hidden;
+    white-space: nowrap; text-overflow: ellipsis;
+}
+.levelpickframes {
+    display: grid; grid-template-columns: 30px minmax(0,1fr) 30px;
+    align-items: center; align-content: center;
+    gap: 5px; min-height: max-content; flex: 1;
+}
+.levelpickstrip {
+    display: grid; grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 5px; align-items: center;
+    width: min(100%,760px); margin: auto;
+    touch-action: pan-y;
+}
+.levelpickarrow {
+    display: inline-grid; align-items: center;
+    place-items: center; min-width: 30px;
+    color: #fff; background: none;
+    border: 0; padding: 0;
+    cursor: url("/assets/images/cursors/link.cur"),pointer;
+}
+.levelpickarrow img {
+    width: 26px; height: 26px;
+    object-fit: contain;
+}
+.levelpicknext img {transform: scaleX(-1)}
+.levelpickarrow:disabled {opacity: 0.35}
+.levelpack {
+    position: relative; display: grid;
+    align-items: center; min-width: 0;
+    min-height: 165px; max-height: min(350px,59dvh);
+    aspect-ratio: 3 / 4; isolation: isolate;
+    overflow: hidden; border: 2px solid #784018;
+    border-radius: 8%; padding: 0 4px;
+    color: #fff; background: #bf7b41;
+    font: inherit; text-align: center;
+    -webkit-text-stroke: 0.175em #000; text-shadow: 0 0.15em #000;
+    paint-order: stroke fill;
+    cursor: url("/assets/images/cursors/link.cur"),pointer;
+    transition: filter 120ms,transform 120ms;
+}
+.levelpack:not([data-position="0"]) {transform: scale(0.87)}
+.levelpack img, .levelpickpanel > img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; z-index: -1;
+    pointer-events: none;
+}
+.levelpacklabel {
+    align-self: end; margin: 4px 2px 8px;
+    padding: 4px 3px; border-radius: 4px;
+    background: rgba(0,0,0,0.38);
+    font-size: clamp(15px,2.75vw,30px); line-height: 1;
+    overflow-wrap: anywhere;
+}
+.levelpack:hover, .levelpicktile:hover, .levelpack:focus-visible, .levelpicktile:focus-visible,
+.levelpickarrow:focus-visible {filter: brightness(1.18)}
+.levelpack:active, .levelpicktile:active {filter: brightness(0.85)}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+.levelpickpanel {
+    position: relative; flex: 1;
+    display: flex; place-content: center;
+    border-radius: 10px; isolation: isolate;
+    min-height: 0; overflow: auto;
+    padding: min(16px,3vw); background: #b47a47;
+}
+.levelpickpanel > img {object-position: center; opacity: 0.74}
+.levelpickgrid {
+    display: grid; grid-template-columns: repeat(5,minmax(0,1fr));
+    align-content: start; gap: clamp(3px,1.4vw,12px);
+    width: min(100%,420px,75dvh);
+    margin: auto; position: relative;
+}
+.levelpicktile {
+    display: grid; place-items: center;
+    aspect-ratio: 192 / 198; min-width: 0;
+    padding: 0 0 0.05em; border: 0;
+    background: url("/preview/dx/dist/wwwroot/content/images/menu_level_ui.webp") no-repeat 71.21% 97.385% / 505.208% 660.101%;
+    color: #fff; font: inherit;
+    font-size: clamp(16px,3.2vw,34px);
+    -webkit-text-stroke: 0.175em #000; text-shadow: 0 0.15em #000;
+    paint-order: stroke fill;
+    cursor: url("/assets/images/cursors/link.cur"),pointer;
+}
+
+@media (max-width: 585px) {
+    .levelpickstrip {grid-template-columns: minmax(0,1fr)}
+    .levelpackspace, .levelpack:not([data-position="0"]) {display: none}
+    .levelpack {width: min(100%,230px); justify-self: center}
+    .levelpacklabel {font-size: 23px}
+}
+@media (prefers-reduced-motion: reduce) {
+    .levelpack {transition: none}
+}
