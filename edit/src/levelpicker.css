@@ -59,11 +59,32 @@
     position: absolute; inset: 0;
     background-repeat: no-repeat;
 }
-.levelpicker[data-game="holiday"] .levelpackart:not(.levelpackcomingsoon)::after {
+.levelpackholidayart {
+    --opening-x: 48.67%; --opening-y: 73.16%;
+    inset: 10.87% 17.45% 11.85% 17.12%;
+}
+.levelpackholidayart::after {
     content: ""; position: absolute;
-    inset: 0; background: inherit;
-    transform-origin: 49.2% 67.3%; scale: 1.23;
-    mask-image: radial-gradient(ellipse 13% 11% at 49.2% 67.3%,#000 86%,transparent);
+    inset: 0; background: url("../art/levels/holiday.webp") center/100% 100% no-repeat;
+    mask-image: radial-gradient(ellipse 19.13% 13.32% at var(--opening-x) var(--opening-y),transparent 98%,#000 100%);
+}
+.levelpackholidayopening {
+    position: absolute; left: var(--opening-x);
+    top: var(--opening-y); translate: -50% -50%;
+    width: 39%; height: 27.2%;
+    overflow: hidden; border-radius: 50%;
+    background: linear-gradient(125deg,#412617,#62401f);
+}
+.levelpackholidayopening::after {
+    content: ""; position: absolute;
+    inset: 0; border-radius: inherit;
+    box-shadow: inset 0 0 0 max(1px,0.65cqw) #492c1c; pointer-events: none;
+}
+.levelpackholidaymonster {
+    position: absolute; left: 50%;
+    top: -17%; translate: -50% 0;
+    width: 110%; max-width: none;
+    pointer-events: none;
 }
 .levelpackcomingsoon {background: url("../art/levels/comingsoon.webp") center/contain no-repeat}
 .levelpackpeek {

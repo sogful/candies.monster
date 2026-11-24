@@ -21,7 +21,7 @@ const tileatlas = "/preview/dx/dist/wwwroot/content/images";
 const backgroundroot = tileatlas + "/backgrounds";
 const coverwidths = [0.947253, 0.953506, 0.948718, 0.958457, 0.949413, 0.953229, 0.949265,
     0.949413, 0.953229, 0.953368, 0.953506, 0.953506, 0.953506, 0.953506, 0.953506, 0.953506, 0.953506];
-const artrows = {original: 5, experiments: 2, timetravel: 3, holiday: 1};
+const artrows = {original: 5, experiments: 2, timetravel: 3};
 
 export function levelgame(packageid) {
     const id = String(packageid).toLowerCase();
@@ -228,6 +228,17 @@ function packart(game, box) {
         : game === "experiments" ? experiments.length : original.length;
     if (box === null || index < 0 || index >= count) return null;
     const art = element("span", "levelpackart");
+    if (game === "holiday") {
+        art.classList.add("levelpackholidayart");
+        const opening = element("span", "levelpackholidayopening");
+        const omnom = element("img", "levelpackholidaymonster");
+        omnom.src = "/edit/art/levels/holiday-omnom.webp";
+        omnom.alt = "";
+        omnom.draggable = false;
+        opening.append(omnom);
+        art.append(opening);
+        return art;
+    }
     const rows = artrows[game];
     const x = index % 4 * 100 / 3;
     const y = rows < 2 ? 0 : Math.floor(index / 4) * 100 / (rows - 1);
