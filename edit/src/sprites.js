@@ -38,7 +38,7 @@ export function mediaentries(entries, pkg, images = textures(entries, pkg)) {
 
 export async function previewmedia(item, replacements) {
     if (item.kind === "image" || !item.kind) return previewtexture(item, replacements);
-    return new Blob([await encoded(item, replacements)], {type: item.mimetype});
+    return new Blob([await readmedia(item, replacements)], {type: item.mimetype});
 }
 
 export function textures(entries, pkg) {
@@ -67,7 +67,7 @@ export function textures(entries, pkg) {
     return result.filter(item => item.parts.reduce((size, entry) => size + entry.size, 0) <= limit);
 }
 
-async function encoded(item, replacements) {
+export async function readmedia(item, replacements) {
     const parts = [];
     for (const part of item.parts) {
         parts.push(replacements?.get(replacementkey(part)) ?? await readentry(part.entry, "uint8array", limit));
@@ -76,7 +76,7 @@ async function encoded(item, replacements) {
 }
 
 export async function previewtexture(item, replacements) {
-    const bytes = await encoded(item, replacements);
+    const bytes = await readmedia(item, replacements);
     if (item.raw || /\.png$/i.test(item.path)) return new Blob([await decode(bytes)], {type: "image/png"});
     return new Blob([bytes], {type: mimetypes[imagepattern.exec(item.path)[1].toLowerCase()]});
 }
@@ -104,7 +104,7 @@ export async function replacetexture(item, file) {
     } finally {
         image.close();
     }
-    if (item.raw) pixels = await encodelike(pixels, await encoded(item));
+    if (item.raw) pixels = await encodelike(pixels, await readmedia(item));
     if (pixels.length > limit || pixels.length < item.parts.length) throw new Error("The replacement texture size is invalid.");
     const replacements = new Map();
     let start = 0;

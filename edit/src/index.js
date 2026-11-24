@@ -10,12 +10,12 @@ import {packageheader} from "./header.js";
 import {clearlevel, renderlevel} from "./levelview.js";
 import {levelart, levelpicker} from "./levelpicker.js";
 import {spritebrowser} from "./spritebrowser.js";
-import {mediaview} from "./mediaview.js";
+import {mediapanel} from "./mediapanel.js";
 import {overlayreserve, resizablecolumns} from "./columns.js";
 import {encodehintlevels} from "./hints.js";
 import {decodelegacyhint, encodelegacyhint, legacyhintname} from "./legacyhints.js";
 import {translation} from "./gamestrings.js";
-import {mediaentries, previewmedia, previewtexture, replacetexture, texturename, textures} from "./sprites.js";
+import {mediaentries, previewtexture, textures} from "./sprites.js";
 
 const find = selector => document.querySelector(selector);
 const dropoverlay = find(".drag");
@@ -30,10 +30,8 @@ const formats = find(".reportformat");
 const stringselect = find(".stringselect");
 const localeselect = find(".localeselect");
 const levelview = find(".levelview");
-const spriteimage = find(".spriteimage");
-const mediaelements = {image: spriteimage, audio: find(".spriteaudio"), video: find(".spritevideo")};
 const pagecount = 100;
-const toolpanels = {symbols: ".analysis", levels: ".levelpanel", stringsgame: ".stringspanel", sprites: ".spritepanel"};
+const toolpanels = {symbols: ".analysis", levels: ".levelpanel", strings: ".stringspanel", sprites: ".spritepanel"};
 
 let sessions = [];
 let current = -1;
@@ -44,7 +42,6 @@ let report = [];
 let reportname = "";
 let resultpage = 0;
 let stringmodel;
-let spriteurl = "";
 const pendingfiles = [];
 let shownlevel;
 
@@ -58,9 +55,12 @@ const levelnav = levelpicker(find(".levelpicker"), level => {
         synccontrols();
     } else void run(() => drawlevel(level));
 });
-const camera = mediaview(find(".spriteview"));
-const spritefiles = spritebrowser(find(".spritebrowser"), () => void run(drawsprite), () => clearsearch(".filtersprites"),
+const spritefiles = spritebrowser(find(".spritebrowser"), () => void run(media.draw), () => clearsearch(".filtersprites"),
     item => item.parts?.some(part => state?.session.replacements.has(replacementkey(part))));
+const media = mediapanel(find(".spritepanel"), {
+    current: () => ({selected: selectedsprite(), entries: state.files, replacements: state.session.replacements}),
+    run, download, refresh: () => spritefiles.refresh()
+});
 const refreshfooters = overlayreserve(find(".editorcontent"));
 resizablecolumns(find(".resulttable"), [16, 20, 64]);
 resizablecolumns(find(".stringtable"), [34, 66]);
@@ -169,10 +169,7 @@ function synccontrols() {
     find(".downloadresults").disabled = working || !report.length;
     find(".importlevel").disabled = working || !shownlevel;
     find(".exportlevel").disabled = working || !shownlevel;
-    const media = state?.media[spritefiles.selection()];
-    find(".exportsprite").disabled = working || !media || mediaelements[media.kind].hidden;
-    find(".importsprite").disabled = working || media?.kind !== "image" || spriteimage.hidden;
-    find(".importsprite").hidden = media?.kind !== "image";
+    media.sync(working);
     for (const control of document.querySelectorAll(".stringtable textarea")) control.readOnly = working;
     header.sync({
         working, canexport: !!state, multiple: current >= 0 && sessions.filter(session => !session.unreadable).length > 1,
@@ -228,7 +225,7 @@ function symbollabel(file) {
 function toolavailable(name) {
     if (!Object.hasOwn(toolpanels, name)) return false;
     return name === "levels" ? state.levels.length
-        : name === "stringsgame" ? state.strings.length
+        : name === "strings" ? state.strings.length
         : name === "sprites" ? state.media.length : true;
 }
 
@@ -239,7 +236,7 @@ async function showtool(name, preferences = {}) {
     levelview.hidden = true;
     find(".levelfooter").hidden = true;
     shownlevel = undefined;
-    clearsprite();
+    media.clear();
     stringmodel = undefined;
     for (const button of toolbuttons) {
         const active = button.dataset.tool === tool;
@@ -253,7 +250,7 @@ async function showtool(name, preferences = {}) {
     if (tool === "levels") {
         const choice = levelnav.load(state.levels, state.pkg.metadata.package, preferences.level, state.boxart, level => state.session.hintlevels.has(level.index) || state.session.replacements.has(replacementkey(level.item)));
         if (choice) await drawlevel(choice);
-    } else if (tool === "stringsgame") {
+    } else if (tool === "strings") {
         options(stringselect, distinctlabels(state.strings, stringlabel), preferences.strings);
         for (const option of stringselect.options) {
             const key = replacementkey(state.strings[Number(option.value)]);
@@ -264,7 +261,7 @@ async function showtool(name, preferences = {}) {
     } else if (tool === "sprites") {
         clearsearch(".filtersprites");
         spritefiles.load(state.media, preferences.sprite, preferences.media);
-        if (selectedsprite()) await drawsprite();
+        if (selectedsprite()) await media.draw();
     } else {
         const labels = distinctlabels(state.symbols, symbollabel);
         options(filelist, labels.map(([label, index]) => [
@@ -281,7 +278,7 @@ async function showtool(name, preferences = {}) {
         }
         resultpage = Number(preferences.page) || 0;
         if (tool === "symbols") renderresults();
-        if (tool === "stringsgame") renderstrings();
+        if (tool === "strings") renderstrings();
     }
 }
 
@@ -576,35 +573,8 @@ function renderstrings() {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function clearsprite() {
-    camera.reset();
-    if (spriteurl) URL.revokeObjectURL(spriteurl);
-    spriteurl = "";
-    for (const element of Object.values(mediaelements)) {
-        if (element instanceof HTMLMediaElement) element.pause();
-        element.hidden = true;
-        element.removeAttribute("src");
-    }
-}
-
 function selectedsprite() {
-    return state.media[spritefiles.selection()];
-}
-
-async function drawsprite() {
-    clearsprite();
-    find(".resetsprite").hidden = true;
-    const item = selectedsprite();
-    if (!item) return;
-    const {replacements} = state.session;
-    const blob = await previewmedia(item, replacements);
-    const element = mediaelements[item.kind];
-    element.title = item.label;
-    if (item.kind === "image") element.alt = item.label;
-    spriteurl = URL.createObjectURL(blob);
-    element.src = spriteurl;
-    element.hidden = false;
-    find(".resetsprite").hidden = item.kind !== "image" || !item.parts.some(part => replacements.has(replacementkey(part)));
+    return state?.media[spritefiles.selection()];
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -633,9 +603,14 @@ async function exportchanges() {
 
 const viewkeys = ["tool", "level", "strings", "locale", "sprite", "symbols", "format", "media", "page", "search"];
 
+const itemkeys = {levels: "level", strings: "strings", sprites: "sprite", symbols: "symbols"};
+
 function urlpreferences() {
     const params = new URLSearchParams(location.search);
-    return Object.fromEntries(viewkeys.filter(key => params.has(key)).map(key => [key, params.get(key)]));
+    const view = Object.fromEntries(viewkeys.filter(key => params.has(key)).map(key => [key, params.get(key)]));
+    if (view.tool === "stringsgame") view.tool = "strings";
+    if (params.has("item") && Object.hasOwn(itemkeys, view.tool)) view[itemkeys[view.tool]] = params.get("item");
+    return view;
 }
 
 function savepreferences() {
@@ -652,13 +627,20 @@ function updateurl() {
     const url = new URL(location.href);
     savepreferences();
     const view = state && !find(".editorbody").hidden ? state.session.preferences : {};
-    for (const key of viewkeys) {
-        const value = view[key];
-        if (value === undefined || value === "" || value === -1) url.searchParams.delete(key);
-        else url.searchParams.set(key, value);
+    for (const key of [...viewkeys, "item", "app"]) url.searchParams.delete(key);
+    if (state && current > 0) url.searchParams.set("app", String(current + 1));
+    if (view.tool) {
+        url.searchParams.set("tool", view.tool);
+        const key = itemkeys[view.tool];
+        const item = view[key];
+        if (item !== undefined && item !== "" && item !== -1) url.searchParams.set("item", item);
+        const extras = view.tool === "strings" ? ["locale"] : view.tool === "sprites" ? ["media"] : view.tool === "symbols" ? ["format"] : [];
+        for (const name of [...extras, "search", "page"]) {
+            const value = view[name];
+            if (!value || name === "format" && value === "0" || name === "media" && value === "image") continue;
+            url.searchParams.set(name, value);
+        }
     }
-    if (state) url.searchParams.set("app", String(current + 1));
-    else url.searchParams.delete("app");
     if (url.href !== location.href) history.replaceState(history.state, "", url);
 }
 
@@ -687,7 +669,7 @@ async function loadpackage(index) {
         || /^cut the rope(?:\s*:\s*|\s+)(?:2|magic)(?:\b|$)/i.test(pkg.metadata.title || "");
     const originalicon = await packageicon(pkg).catch(() => null);
     state = {
-        pkg, session, assets, originalicon, hintcache: new Map(), flags: new Map(),
+        pkg, session, assets, files, originalicon, hintcache: new Map(), flags: new Map(),
         levels: hidelevels ? [] : await levelcatalog(assets), sprites: unity ? [] : textures(files, pkg),
         strings: assets.filter(item => item.category === "stringsgame").sort((a, b) => stringlabel(a).localeCompare(stringlabel(b))),
         symbols: unity ? [] : symbolfiles(files, pkg.metadata.executable),
@@ -709,7 +691,7 @@ async function loadpackage(index) {
         levelnav.clear();
         clearlevel(levelview);
         spritefiles.clear();
-        clearsprite();
+        media.clear();
         shownlevel = undefined;
         stringmodel = undefined;
         resetresults();
@@ -805,7 +787,7 @@ function closepackage() {
     levelnav.clear();
     spritefiles.clear();
     clearlevel(levelview);
-    clearsprite();
+    media.clear();
     shownlevel = undefined;
     stringmodel = undefined;
     find(".stringtable tbody").replaceChildren();
@@ -901,7 +883,7 @@ for (const button of document.querySelectorAll(".pages button")) {
     button.addEventListener("click", () => {
         resultpage += button.classList.contains("previous") ? -1 : 1;
         if (tool === "symbols") renderresults();
-        else if (tool === "stringsgame") renderstrings();
+        else if (tool === "strings") renderstrings();
     });
 }
 
@@ -932,27 +914,6 @@ for (const [control, event] of [[localeselect, "change"], [find(".filterstrings"
 }
 
 find(".filtersprites").addEventListener("input", event => spritefiles.search(event.target.value));
-find(".importsprite").addEventListener("click", () => find(".spriteinput").click());
-find(".spriteinput").addEventListener("change", event => {
-    const file = event.target.files[0];
-    event.target.value = "";
-    if (!file || selectedsprite()?.kind !== "image") return;
-    void run(async () => {
-        for (const [key, bytes] of await replacetexture(selectedsprite(), file)) state.session.replacements.set(key, bytes);
-        spritefiles.refresh();
-        await drawsprite();
-    });
-});
-find(".exportsprite").addEventListener("click", () => void run(async () => {
-    const item = selectedsprite();
-    if (item) download(await previewmedia(item, state.session.replacements), texturename(item));
-}));
-find(".resetsprite").addEventListener("click", () => void run(async () => {
-    for (const part of selectedsprite().parts) state.session.replacements.delete(replacementkey(part));
-    spritefiles.refresh();
-    await drawsprite();
-}));
-
 function clearsearch(selector) {
     const input = find(selector);
     input.value = "";

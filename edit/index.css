@@ -216,10 +216,9 @@ label {min-width: 0}
     content: ""; display: block;
     height: calc(var(--overlayheight,0px) + 2px);
 }
-.editorpage .modifiedentry, .editorpage .dropdownmodified {
-    box-shadow: inset 2px 0 rgba(244,190,75,0.75);
-    background-color: rgba(244,190,75,0.14);
-}
+.stringtable tbody tr {background: rgba(0,0,0,0.2)}
+.stringtable tbody .modifiedentry {background: rgba(34,24,14,0.2)}
+.editorpage .dropdownmodified {background-color: rgba(34,24,14,0.35)}
 .pages {grid-column: 2; justify-content: center}
 .panelactions {grid-column: 3; justify-content: end}
 .panelfooter:not(:has(.pages:not([hidden]))) .panelactions {grid-column: 1 / -1}

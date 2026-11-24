@@ -4,6 +4,7 @@ export function mediaview(container) {
     let x = 0;
     let y = 0;
     let scale = 1;
+    let angle = 0;
 
     function active() {
         return media.find(element => !element.hidden);
@@ -13,11 +14,13 @@ export function mediaview(container) {
         container.style.setProperty("--media-x", x + "px");
         container.style.setProperty("--media-y", y + "px");
         container.style.setProperty("--media-scale", String(scale));
+        container.style.setProperty("--media-angle", angle + "deg");
     }
 
     function reset() {
         x = y = 0;
         scale = 1;
+        angle = 0;
         for (const pointer of pointers.keys()) {
             if (container.hasPointerCapture(pointer)) container.releasePointerCapture(pointer);
         }
@@ -42,8 +45,13 @@ export function mediaview(container) {
     function oncontrols(event, element) {
         if (event.altKey || element.tagName !== "VIDEO" || !element.controls || event.target !== element) return false;
         const bounds = element.getBoundingClientRect();
-        return event.clientX >= bounds.left && event.clientX <= bounds.right
-            && event.clientY >= bounds.bottom - 48 * scale && event.clientY <= bounds.bottom;
+        const dx = (event.clientX - bounds.left - bounds.width / 2) / scale;
+        const dy = (event.clientY - bounds.top - bounds.height / 2) / scale;
+        const radians = angle * Math.PI / 180;
+        const localx = dx * Math.cos(radians) + dy * Math.sin(radians);
+        const localy = dy * Math.cos(radians) - dx * Math.sin(radians);
+        return Math.abs(localx) <= element.clientWidth / 2
+            && localy >= element.clientHeight / 2 - 48 && localy <= element.clientHeight / 2;
     }
 
     function release(event) {
@@ -97,5 +105,12 @@ export function mediaview(container) {
         if (element && !oncontrols(event, element)) reset();
     });
 
-    return {reset};
+    return {
+        reset,
+        rotate() {
+            if (active()?.tagName !== "VIDEO") return;
+            angle = (angle + 90) % 360;
+            render();
+        }
+    };
 }

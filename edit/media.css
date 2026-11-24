@@ -48,12 +48,13 @@
     background: transparent; cursor: inherit;
 }
 .mediatree .spritefile {
+    --fileink: 0,0,0;
     border: 0; border-radius: 4px;
-    background: rgba(0,0,0,0.24); text-align: left;
+    background: rgba(var(--fileink),0.24); text-align: left;
     cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
-.mediatree .spritefile:is(:hover,:focus-visible,[aria-pressed="true"]) {background: rgba(0,0,0,0.5)}
-.mediatree .spritefile.mediamodified {box-shadow: inset 2px 0 #e8ca78}
+.mediatree .spritefile:is(:hover,:focus-visible,[aria-pressed="true"]) {background: rgba(var(--fileink),0.5)}
+.mediatree .spritefile.mediamodified {--fileink: 34,24,14}
 .spriteaudio, .spritevideo {
     width: 100%; max-width: 100%;
 }
@@ -66,6 +67,6 @@
 }
 .spriteview.mediagrabbing, .spriteview.mediagrabbing :is(.spriteimage,.spritevideo) {cursor: grabbing}
 .spriteview :is(.spriteimage,.spritevideo) {
-    transform: translate(var(--media-x,0px),var(--media-y,0px)) scale(var(--media-scale,1));
+    transform: translate(var(--media-x,0px),var(--media-y,0px)) rotate(var(--media-angle,0deg)) scale(var(--media-scale,1));
     cursor: inherit; user-select: none;
 }
