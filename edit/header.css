@@ -1,7 +1,8 @@
 .editorheader {
     display: grid; align-items: center;
-    grid-template-columns: auto minmax(0,1fr) auto;
-    grid-template-areas: "icon app export" "icon identifier identifier" "platform platform platform";
+    grid-template-columns: minmax(18px,max-content) minmax(0,1fr) auto auto;
+    grid-template-rows: auto auto minmax(22px,auto);
+    grid-template-areas: "icon app export close" "icon identifier identifier identifier" "previous platform platform next";
     gap: 2px 8px; padding: 5px 8px;
 }
 .headerart {
@@ -12,7 +13,7 @@
     width: 100%; height: 100%;
     object-fit: contain; border-radius: 9px;
 }
-.headerpickicon, .headerreseticon {
+.headerpickicon, .headerreseticon, .headerdownloadicon {
     position: absolute; padding: 0;
     border: 0; background: none;
     cursor: url("/assets/images/cursors/link.cur"), pointer;
@@ -21,8 +22,8 @@
     inset: 0 -4px -4px 0; display: flex;
     align-items: end; justify-content: end;
 }
-.headerpickicon img, .headerreseticon img {
-    width: 24px; height: 24px;
+.headerpickicon img {
+    width: 20px; height: 20px;
     display: block;
 }
 .headerart:has(.headerappicon[hidden]) .headerpickicon {
@@ -30,12 +31,17 @@
     justify-content: center;
 }
 .headerreseticon {left: -2px; top: -2px}
+.headerdownloadicon {left: -3px; bottom: -3px}
+.headerdownloadicon img {
+    display: block; width: 19px;
+    height: 19px; filter: invert(1) drop-shadow(0 1px 1px #000);
+}
 .headerreseticon img {
     width: 16px; height: 16px;
     padding: 3px; border-radius: 5px;
     background: #b02b28;
 }
-.headerpickicon:hover img, .headerreseticon:hover img {filter: brightness(1.2)}
+.headerpickicon:hover, .headerreseticon:hover, .headerdownloadicon:hover {filter: brightness(1.2)}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -47,6 +53,19 @@
 .headerexport {
     grid-area: export; justify-self: end;
 }
+.editorheader .headerclose {
+    grid-area: close; justify-self: end;
+    width: 33px; min-width: 0;
+    padding-inline: 4px;
+}
+.headerarrow {
+    border: 0; padding: 0;
+    background: transparent; cursor: url("/assets/images/cursors/link.cur"), pointer;
+}
+.headerarrow img {display: block}
+.headerprevious {grid-area: previous; justify-self: start}
+.headernext {grid-area: next; justify-self: end}
+.headernext img {transform: scaleX(-1)}
 .headerversiongroup {
     display: flex; align-items: center;
     min-width: 0; margin-inline-start: auto;
@@ -76,7 +95,7 @@
     paint-order: inherit; border-radius: 4px;
 }
 .editorheader .headerfield input:not(:disabled):is(:hover,:focus) {
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.5);
 }
 .headertitle input {font-size: 1.12em}
 .headerpackage input {font-size: 0.85em}
@@ -89,9 +108,13 @@
     font-size: 0.85em; white-space: nowrap;
     max-width: 100%;
 }
-.headersdk .dropdown .dropdownbutton {
-    padding: 1px 5px; white-space: nowrap;
+.editorpage .editorheader .headersdk .dropdownbutton {
+    padding: 1px 19px 1px 5px; white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis;
+}
+.editorpage .editorheader .headersdk .dropdownbutton::after {right: 6px}
+.editorpage:has(.headersdk .dropdownbutton[aria-expanded="true"]) .dropdownmenu .dropdownoption {
+    padding: 2px 5px;
 }
 
 @media (max-width: 560px) {

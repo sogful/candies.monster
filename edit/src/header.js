@@ -66,12 +66,15 @@ function sdkfield(name, original, value) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export function packageheader(root, {change, icon, reset, export: save}) {
+export function packageheader(root, {change, icon, reset, export: save, previous, next, close, downloadicons}) {
     root.innerHTML = `
         <div class="headerart">
             <img class="headerappicon" alt="" hidden>
             <button class="headerpickicon clickable" type="button" title="Change icon">
                 <img src="/assets/images/icons/edit.svg" alt="Change icon" draggable="false">
+            </button>
+            <button class="headerdownloadicon clickable" type="button" title="Download app icons" hidden>
+                <img src="/assets/images/icons/download.svg" alt="Download app icons" draggable="false">
             </button>
             <button class="headerreseticon clickable" type="button" title="Reset icon" hidden>
                 <img src="/assets/images/icons/x.svg" alt="Reset icon" draggable="false">
@@ -81,17 +84,30 @@ export function packageheader(root, {change, icon, reset, export: save}) {
         <div class="headerapp"></div>
         <div class="headeridentifier"></div>
         <div class="headerplatform"></div>
-        <button class="buttonart green headerexport clickable" type="button" disabled>Export</button>
+        <button class="buttonart headerexport clickable" type="button" disabled>Export</button>
+        <button class="buttonart headerclose clickable" type="button" title="Close package editor">
+            <img src="/assets/images/icons/x.svg" alt="Close package editor" width="16" height="16" draggable="false">
+        </button>
+        <button class="headerarrow headerprevious clickable" type="button" hidden>
+            <img src="/assets/images/buttons/back.png" alt="Previous package" width="18" height="18" draggable="false">
+        </button>
+        <button class="headerarrow headernext clickable" type="button" hidden>
+            <img src="/assets/images/buttons/back.png" alt="Next package" width="18" height="18" draggable="false">
+        </button>
     `;
     const art = root.querySelector(".headerart");
     const image = root.querySelector(".headerappicon");
     const pickicon = root.querySelector(".headerpickicon");
+    const geticons = root.querySelector(".headerdownloadicon");
     const reseticon = root.querySelector(".headerreseticon");
     const iconinput = root.querySelector(".headericoninput");
     const app = root.querySelector(".headerapp");
     const identifier = root.querySelector(".headeridentifier");
     const platform = root.querySelector(".headerplatform");
     const exportbutton = root.querySelector(".headerexport");
+    const closebutton = root.querySelector(".headerclose");
+    const previousbutton = root.querySelector(".headerprevious");
+    const nextbutton = root.querySelector(".headernext");
     const fields = new Map();
     let pkg;
     let iconurl = "";
@@ -104,6 +120,7 @@ export function packageheader(root, {change, icon, reset, export: save}) {
         else image.removeAttribute("src");
         art.hidden = !canchangeicon && !iconurl;
         image.hidden = !iconurl;
+        geticons.hidden = !canchangeicon && !iconurl;
         reseticon.hidden = !modified || !canchangeicon;
     }
 
@@ -163,11 +180,16 @@ export function packageheader(root, {change, icon, reset, export: save}) {
         sync({working: false, canexport: true});
     }
 
-    function sync({working, canexport}) {
+    function sync({working, canexport, previous: hasprevious, next: hasnext, multiple}) {
         for (const {input, editable} of fields.values()) input.disabled = working || !editable;
         pickicon.disabled = working || !canchangeicon;
+        geticons.disabled = working || geticons.hidden;
         reseticon.disabled = working || !canchangeicon;
         exportbutton.disabled = working || !canexport;
+        closebutton.disabled = working || !pkg;
+        previousbutton.hidden = nextbutton.hidden = !multiple;
+        previousbutton.disabled = working || !hasprevious;
+        nextbutton.disabled = working || !hasnext;
     }
 
     function edits() {
@@ -195,6 +217,10 @@ export function packageheader(root, {change, icon, reset, export: save}) {
     });
     reseticon.addEventListener("click", reset);
     exportbutton.addEventListener("click", save);
+    closebutton.addEventListener("click", close);
+    previousbutton.addEventListener("click", previous);
+    nextbutton.addEventListener("click", next);
+    geticons.addEventListener("click", downloadicons);
 
     return {load, showicon, edits, sync, clear};
 }

@@ -104,6 +104,30 @@ export async function packageicon(pkg) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+export async function packageicons(source, icon) {
+    const pkg = icon ? await openpackage(source.file) : source;
+    const output = new globalThis.JSZip();
+    for (const part of pkg.parts) {
+        let metadata = part.metadata;
+        if (icon && metadata.iconpaths?.length) {
+            if (pkg.extension === "ipa") {
+                await writeios(part.zip, metadata, {}, icon, resizeicon);
+                metadata = await readios(part.zip);
+            } else {
+                await writeandroid(part.zip, metadata, {}, icon, resizeicon);
+                metadata = await readandroid(part.zip, pkg.metadata.iconids);
+            }
+        }
+        const paths = new Set([...(metadata.iconpaths || []), metadata.iconpath].filter(Boolean));
+        for (const path of paths) {
+            const entry = part.zip.file(path);
+            if (entry) output.file(part.name ? part.name + "/" + path : path, await readentry(entry));
+        }
+    }
+    if (!Object.values(output.files).some(entry => !entry.dir)) throw new Error("No app icons were found.");
+    return output.generateAsync({type: "blob"});
+}
+
 export async function resizeicon(blob, width, height, mime = "image/png") {
     if (blob.size > 20 * mb) throw new Error("Choose an icon image smaller than 20 MB.");
     const image = await createImageBitmap(blob);
