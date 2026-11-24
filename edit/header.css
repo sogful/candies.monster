@@ -56,7 +56,7 @@
 .editorheader .headerclose {
     grid-area: close; justify-self: end;
     width: 33px; min-width: 0;
-    padding-inline: 4px;
+    cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
 .headerarrow {
     border: 0; padding: 0;

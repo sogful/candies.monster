@@ -85,7 +85,7 @@ export function packageheader(root, {change, icon, reset, export: save, previous
         <div class="headeridentifier"></div>
         <div class="headerplatform"></div>
         <button class="buttonart headerexport clickable" type="button" disabled>Export</button>
-        <button class="buttonart headerclose clickable" type="button" title="Close package editor">
+        <button class="popupclose headerclose clickable" type="button" title="Close package editor">
             <img src="/assets/images/icons/x.svg" alt="Close package editor" width="16" height="16" draggable="false">
         </button>
         <button class="headerarrow headerprevious clickable" type="button" hidden>
