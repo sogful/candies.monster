@@ -11,6 +11,9 @@ export function mediapanel(root, {current, run, download, refresh}) {
     const framepicker = find(".splitpicker");
     const frameselect = find(".splitselect");
     const rotate = find(".rotatevideo");
+    const atlasbutton = find(".splitxml");
+    const atlasinput = find(".splitxmlinput");
+    const manual = new WeakMap();
     const fileinput = find(".spriteinput");
     const replace = find(".importsprite");
     const reset = find(".resetsprite");
@@ -36,8 +39,18 @@ export function mediapanel(root, {current, run, download, refresh}) {
         clearpreview();
         item = undefined;
         frames = [];
-        framepicker.hidden = rotate.hidden = reset.hidden = true;
+        framepicker.hidden = rotate.hidden = reset.hidden = atlasbutton.hidden = true;
         frameselect.replaceChildren();
+    }
+
+    function setframes(found) {
+        frames = found;
+        framepicker.hidden = !frames.length;
+        atlasbutton.hidden = !!frames.length || !splittools || item?.kind !== "image";
+        if (!frames.length) return;
+        frameselect.replaceChildren(new Option("Entire texture", ""), ...frames.map((frame, index) =>
+            new Option(frame.name || "Frame " + (index + 1), String(index))));
+        frameselect.value = "";
     }
 
     function selectedframe() {
@@ -54,7 +67,7 @@ export function mediapanel(root, {current, run, download, refresh}) {
         replace.disabled = working || !editable || !url;
         save.disabled = working || !url;
         reset.disabled = working;
-        rotate.disabled = working;
+        rotate.disabled = atlasbutton.disabled = working;
         frameselect.disabled = working;
         fileinput.accept = iscaf() ? "audio/*,.caf" : "image/*";
     }
@@ -89,17 +102,26 @@ export function mediapanel(root, {current, run, download, refresh}) {
             item = selected;
             if (item?.kind === "image") {
                 splittools ??= await import("./spritesplits.js").catch(() => null);
-                if (splittools) frames = await splittools.findsplits(item, entries, replacements).catch(() => []);
-            }
-            framepicker.hidden = !frames.length;
-            if (frames.length) {
-                frameselect.replaceChildren(new Option("Entire texture", ""), ...frames.map((frame, index) =>
-                    new Option(frame.name || "Frame " + (index + 1), String(index))));
-                frameselect.value = "";
+                if (splittools) setframes(manual.get(item) ?? await splittools.findsplits(item, entries, replacements).catch(() => []));
             }
         }
         await preview();
     }
+
+    atlasbutton.addEventListener("click", () => atlasinput.click());
+    atlasinput.addEventListener("change", () => {
+        const file = atlasinput.files[0];
+        atlasinput.value = "";
+        if (!file || !item || !splittools) return;
+        void run(async () => {
+            if (file.size > 1024 * 1024) throw new Error("Choose an atlas XML file smaller than 1 MB.");
+            const {entries, replacements} = current();
+            const found = await splittools.findsplits(item, entries, replacements, await file.text());
+            if (!found.length) throw new Error("The atlas XML has no matching frames for this texture.");
+            manual.set(item, found);
+            setframes(found);
+        });
+    });
 
     frameselect.addEventListener("change", () => void run(preview));
     rotate.addEventListener("click", () => camera.rotate());

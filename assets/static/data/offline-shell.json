@@ -1,5 +1,5 @@
 {
-  "version": "90c7e4e49cf0905a",
+  "version": "d6e23060b4e144f1",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -278,6 +278,7 @@
     "/assets/static/js/controls/feather.js": "2d5b32346e40a651",
     "/assets/static/js/github.js": "c17055f4187fee31",
     "/assets/static/js/global.js": "7f8ba7c8dfec1023",
+    "/assets/static/js/images/atlas.js": "3bb855f6e0de5f82",
     "/assets/static/js/images/favicon.js": "efb372b0be84e0e5",
     "/assets/static/js/images/loading.js": "4e5645993b203255",
     "/assets/static/js/images/spinner.js": "1575e4597b76a781",
@@ -377,5 +378,5 @@
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
     "/src/js/site/sidebar.js": "ecd1d165a61dfec2"
   },
-  "bytes": 10226259
+  "bytes": 10227001
 }

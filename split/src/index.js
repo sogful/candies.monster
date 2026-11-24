@@ -1,3 +1,5 @@
+import {drawframe, quadparse} from "/assets/static/js/images/atlas.js";
+
 // click sfx
 document.querySelectorAll(".clickable").forEach(function(element) {
     element.addEventListener("click", function() {
@@ -186,18 +188,6 @@ function showassigned() {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function quadparse(xmltext) {
-    try {
-        const match = xmltext.match(/<\s*quads\s*>\s*([^<]+?)\s*<\/\s*quads\s*>/i);
-        if (!match) return [];
-        const nums = match[1].split(/[^0-9.-]+/).filter(Boolean).map(Number).filter(n => Number.isFinite(n));
-        const rects = [];
-        for (let i = 0; i + 3 < nums.length; i += 4) {
-            rects.push({x: nums[i], y: nums[i+1], w: nums[i+2], h: nums[i+3], idx: rects.length})
-        }; return rects;
-    } catch (e) { return [] }
-}
-
 function getscale(img) {
     if (!img || !img.naturalWidth) return {sx:1, sy:1};
     return {sx: img.clientWidth / img.naturalWidth, sy: img.clientHeight / img.naturalHeight}
@@ -252,7 +242,7 @@ function clearfocus() {
     const canvas = document.createElement("canvas");
     canvas.width = Math.max(1, rect.w); canvas.height = Math.max(1, rect.h);
     const ctx = canvas.getContext("2d"); ctx.imageSmoothingEnabled = false;
-    try {ctx.drawImage(img, rect.x, rect.y, rect.w, rect.h, 0, 0, rect.w, rect.h)}
+    try {drawframe(ctx, img, rect)}
     catch (e) {return}
     canvas.toBlob(blob => {
         if (!blob) return; const a = document.createElement("a"); 
@@ -318,7 +308,7 @@ async function exportall() {
         ctx.imageSmoothingEnabled = false;
 
         try {
-            ctx.drawImage(img, rect.x, rect.y, rect.w, rect.h, 0, 0, rect.w, rect.h);
+            drawframe(ctx, img, rect);
             const blob = await new Promise((resolve, reject) => {
                 canvas.toBlob((blob) => {
                     if (blob) resolve(blob);
