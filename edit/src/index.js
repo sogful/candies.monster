@@ -1,7 +1,9 @@
+import {languageflag} from "./flags.js";
+import {distinctfiles, loadbatch, storebatch} from "./batch.js";
 import "/assets/static/js/buttons/index.js";
 import {dropdown} from "/assets/static/js/controls/dropdown.js";
 import {popup} from "/src/js/browser/popup.js";
-import {exportpackage, openpackage, packageentries, packageicon, readentry, replacementkey, resizeicon} from "./package.js";
+import {exportpackage, openpackage, packageentries, packageicon, packageicons, readentry, replacementkey, resizeicon} from "./package.js";
 import {assetoutput, assettext, editasset, importasset, levelcatalog, packageassets, unitypackage} from "./cuttherope.js";
 import {readreport, reportblob} from "./reports.js";
 import {packageheader} from "./header.js";
@@ -12,7 +14,7 @@ import {resizablecolumns} from "./columns.js";
 import {encodehintlevels} from "./hints.js";
 import {decodelegacyhint, encodelegacyhint, legacyhintname} from "./legacyhints.js";
 import {translation} from "./gamestrings.js";
-import {previewtexture, replacetexture, texturename, textures} from "./sprites.js";
+import {mediaentries, previewmedia, previewtexture, replacetexture, texturename, textures} from "./sprites.js";
 
 const find = selector => document.querySelector(selector);
 const dropoverlay = find(".drag");
@@ -20,8 +22,7 @@ const editor = find(".editor");
 const back = find(".pageback");
 const picker = find(".pick");
 const packageinput = find(".packageinput");
-const previouspackage = find(".packageprevious");
-const nextpackage = find(".packagenext");
+
 const toolbuttons = [...document.querySelectorAll(".tool")];
 const filelist = find(".filelist");
 const formats = find(".reportformat");
@@ -29,6 +30,7 @@ const stringselect = find(".stringselect");
 const localeselect = find(".localeselect");
 const levelview = find(".levelview");
 const spriteimage = find(".spriteimage");
+const mediaelements = {image: spriteimage, audio: find(".spriteaudio"), video: find(".spritevideo")};
 const pagecount = 100;
 const toolpanels = {symbols: ".analysis", levels: ".levelpanel", stringsgame: ".stringspanel", sprites: ".spritepanel"};
 
@@ -40,6 +42,7 @@ let working = false;
 let report = [];
 let reportname = "";
 let resultpage = 0;
+let mediaview = "list";
 let stringmodel;
 let spriteurl = "";
 const pendingfiles = [];
@@ -56,7 +59,7 @@ const levelnav = levelpicker(find(".levelpicker"), level => {
     } else void run(() => drawlevel(level));
 });
 const spritefiles = spritebrowser(find(".spritebrowser"), () => void run(drawsprite), () => clearsearch(".filtersprites"));
-spritefiles.view("grid");
+spritefiles.view(mediaview);
 resizablecolumns(find(".resulttable"), [16, 20, 64]);
 resizablecolumns(find(".stringtable"), [34, 66]);
 
@@ -75,6 +78,16 @@ const header = packageheader(find(".editorheader"), {
         header.showicon(state.originalicon, false);
         synccontrols();
     },
+    previous: () => void run(() => switchpackage(-1)),
+    next: () => void run(() => switchpackage(1)),
+    close: button => {
+        if (sessions.some(unsaved)) backdialog(button ?? find(".headerclose"));
+        else closepackage();
+    },
+    downloadicons: () => void run(async () => {
+        const {pkg, session} = state;
+        download(await packageicons(pkg, session.icon), pkg.file.name.replace(/\.[^.]+$/, "") + "-icons.zip");
+    }),
     export: () => void run(exportchanges)
 });
 
@@ -107,6 +120,7 @@ async function run(task) {
         working = false;
         message();
         synccontrols();
+        updateurl();
         if (pendingfiles.length) startopening(pendingfiles.splice(0));
     }
 }
@@ -152,14 +166,15 @@ function synccontrols() {
     find(".downloadresults").disabled = working || !report.length;
     find(".importlevel").disabled = working || !shownlevel;
     find(".exportlevel").disabled = working || !shownlevel;
-    find(".exportsprite").disabled = working || spriteimage.hidden;
-    find(".importsprite").disabled = working || spriteimage.hidden;
+    const media = state?.media[spritefiles.selection()];
+    find(".exportsprite").disabled = working || !media || mediaelements[media.kind].hidden;
+    find(".importsprite").disabled = working || media?.kind !== "image" || spriteimage.hidden;
+    find(".importsprite").hidden = media?.kind !== "image";
     for (const control of document.querySelectorAll(".stringtable textarea")) control.readOnly = working;
-    const showarrows = current >= 0 && sessions.filter(session => !session.unreadable).length > 1;
-    previouspackage.hidden = nextpackage.hidden = !showarrows;
-    previouspackage.disabled = working || availability(-1) < 0;
-    nextpackage.disabled = working || availability(1) < 0;
-    header.sync({working, canexport: !!state});
+    header.sync({
+        working, canexport: !!state, multiple: current >= 0 && sessions.filter(session => !session.unreadable).length > 1,
+        previous: availability(-1) >= 0, next: availability(1) >= 0
+    });
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -204,18 +219,19 @@ function symbollabel(file) {
     if (file.path === state.pkg.metadata.executable) return "App executable";
     const arch = /\/(arm64-v8a|armeabi-v7a|armeabi|x86_64|x86)\//.exec(file.path)?.[1];
     const name = file.path.split("/").at(-1);
-    return name.replace(/(?:^lib|\.(?:so|dylib)$)/g, "") + (arch ? " · " + arch : "");
+    return name.replace(/(?:^lib|\.(?:so|dylib)$)/g, "") + (arch ? " (" + arch + ")" : "");
 }
 
 function toolavailable(name) {
+    if (!Object.hasOwn(toolpanels, name)) return false;
     return name === "levels" ? state.levels.length
         : name === "stringsgame" ? state.strings.length
-        : name === "sprites" ? state.sprites.length : true;
+        : name === "sprites" ? state.media.length : true;
 }
 
 async function showtool(name, preferences = {}) {
     tool = name;
-    state.session.preferences.tool = tool;
+    const restore = preferences.tool === tool;
     clearlevel(levelview);
     levelview.hidden = true;
     find(".levelfooter").hidden = true;
@@ -240,7 +256,8 @@ async function showtool(name, preferences = {}) {
         await loadstrings(preferences.locale);
     } else if (tool === "sprites") {
         clearsearch(".filtersprites");
-        spritefiles.load(state.sprites, preferences.sprite);
+        spritefiles.load(state.media, preferences.sprite);
+        setmediaview(preferences.view === "grid" ? "grid" : "list");
         if (selectedsprite()) await drawsprite();
     } else {
         const labels = distinctlabels(state.symbols, symbollabel);
@@ -248,7 +265,17 @@ async function showtool(name, preferences = {}) {
             label, index, sourcepriority(state.symbols[Number(index)], state.pkg.metadata.executable) >= 2
         ]), preferences.symbols);
         resetresults();
-        if (filelist.value) await extracts();
+        if (filelist.value) await extracts(preferences.format);
+    }
+    if (restore) {
+        const search = find(toolpanels[tool] + " .editorsearch input");
+        if (search && preferences.search) {
+            search.value = preferences.search;
+            search.dispatchEvent(new Event("input"));
+        }
+        resultpage = Number(preferences.page) || 0;
+        if (tool === "symbols") renderresults();
+        if (tool === "stringsgame") renderstrings();
     }
 }
 
@@ -279,7 +306,7 @@ function resetresults(value = "") {
     find(".resulttable tbody").replaceChildren();
 }
 
-async function extracts() {
+async function extracts(preferred) {
     resetresults();
     const file = state.symbols[Number(filelist.value)];
     if (!file) return;
@@ -297,21 +324,21 @@ async function extracts() {
             worker.onerror = event => {clearTimeout(timer); reject(new Error(event.message || "Could not read symbols."))};
             worker.postMessage({kind: "symbols", bytes, filename: file.path}, [bytes.buffer]);
         });
-        showreport(result, file.path.split("/").at(-1));
+        showreport(result, file.path.split("/").at(-1), preferred);
     } finally {
         worker.terminate();
     }
 }
 
-function showreport(reports, name) {
+function showreport(reports, name, preferred) {
     report = [...reports].sort((a, b) => reportpriority(a) - reportpriority(b));
     reportname = name;
     if (!report.length) return resetresults("No supported symbol tables were found.");
     options(formats, report.map((item, index) => [
-        [item.format, item.architecture].filter(Boolean).join(" · "), String(index),
+        item.format + (item.architecture ? " (" + item.architecture + ")" : ""), String(index),
         reportpriority(item) > reportpriority(report[0]) || reportpriority(item) >= 2
     ]), "0");
-    formats.value = String(Math.max(0, report.findIndex(item => item.entries.length)));
+    formats.value = preferred && report[Number(preferred)]?.entries.length ? preferred : String(Math.max(0, report.findIndex(item => item.entries.length)));
     find(".formatslabel").hidden = report.length < 2;
     find(".filterresults").closest(".editorsearch").hidden = false;
     renderresults();
@@ -335,7 +362,7 @@ function renderresults() {
     find(".resulttable tbody").replaceChildren(fragment);
     find(".analysis .tablewrap").hidden = !rows.length;
     const count = query ? rows.length.toLocaleString() + " of " + active.entries.length.toLocaleString() : active.entries.length.toLocaleString();
-    find(".resultstatus").textContent = [active.format, active.architecture, count + " symbols", ...active.notes].filter(Boolean).join(" · ");
+    find(".resultstatus").textContent = active.format + " (" + [active.architecture, count + " symbols"].filter(Boolean).join(", ") + ")" + (active.notes.length ? " " + active.notes.join(" ") : "");
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -424,10 +451,9 @@ async function drawlevel(level = levelnav.selection()) {
 
 function stringlabel(item) {
     const name = item.path.split("/").at(-1).replace(/\.[^.]+$/, "");
-    const locale = /(?:^|\/)([\w-]+)\.lproj\//i.exec(item.path)?.[1];
     const group = /SLAwards\.bundle/i.test(item.path) ? "Awards"
         : /^menu[_-]?strings$/i.test(name) ? "Menu" : readable(name);
-    return group + (locale ? " · " + languagename(locale) : "");
+    return group;
 }
 
 function languagename(code) {
@@ -435,6 +461,29 @@ function languagename(code) {
     try {
         return new Intl.DisplayNames(["en"], {type: "language"}).of(code === "br" ? "pt-BR" : code) || code;
     } catch {return code}
+}
+
+function clearflags() {
+    for (const url of state?.flags.values() || []) if (url) URL.revokeObjectURL(url);
+    find(".stringflag").replaceChildren();
+    find(".stringflag").hidden = true;
+}
+
+async function flagurl(locale) {
+    if (!locale) return "";
+    if (!state.flags.has(locale)) {
+        const blob = await languageflag(locale, state.sprites, state.session.replacements).catch(() => null);
+        state.flags.set(locale, blob ? URL.createObjectURL(blob) : "");
+    }
+    return state.flags.get(locale);
+}
+
+function flagtext(code) {
+    const regions = {en: "GB", es: "ES", ja: "JP", ko: "KR", zh: "CN", pt: "PT", br: "BR", cs: "CZ", uk: "UA", sv: "SE"};
+    if (!code) return "🌐";
+    const region = code.split(/[-_]/).at(-1);
+    const letters = (region === code ? regions[code] || code : region).toUpperCase();
+    return /^[A-Z]{2}$/.test(letters) ? String.fromCodePoint(...[...letters].map(char => 127397 + char.charCodeAt(0))) : code;
 }
 
 async function loadstrings(preferred) {
@@ -452,8 +501,30 @@ async function loadstrings(preferred) {
         const text = await assettext(item, state.session.replacements);
         stringmodel = {key, model: translation(text, item.path), textformat: item.textformat};
     }
-    options(localeselect, stringmodel.model.locales.map(locale => [languagename(locale), locale]), preferred);
-    find(".translationlanguage").hidden = stringmodel.model.locales.length < 2;
+    const locales = stringmodel.model.locales;
+    options(localeselect, locales.map(locale => [languagename(locale), locale]), preferred);
+    const marker = find(".stringflag");
+    marker.replaceChildren();
+    marker.hidden = locales.length !== 1;
+    find(".translationlanguage").hidden = locales.length < 2;
+    const filelocale = /(?:^|\/)([\w-]+)\.lproj\//i.exec(item.path)?.[1] ?? "";
+    for (const option of localeselect.options) {
+        const locale = option.value || filelocale;
+        option.dataset.short = flagtext(locale);
+        const url = await flagurl(locale);
+        if (url) option.dataset.flag = url;
+    }
+    if (!marker.hidden) {
+        const option = localeselect.options[0];
+        marker.title = languagename(option.value || filelocale);
+        if (option.dataset.flag) {
+            const image = document.createElement("img");
+            image.className = "flagart";
+            image.alt = marker.title;
+            image.src = option.dataset.flag;
+            marker.append(image);
+        } else marker.textContent = option.dataset.short;
+    }
     resultpage = 0;
     renderstrings();
 }
@@ -490,26 +561,31 @@ function renderstrings() {
 function clearsprite() {
     if (spriteurl) URL.revokeObjectURL(spriteurl);
     spriteurl = "";
-    spriteimage.hidden = true;
-    spriteimage.removeAttribute("src");
+    for (const element of Object.values(mediaelements)) {
+        if (element instanceof HTMLMediaElement) element.pause();
+        element.hidden = true;
+        element.removeAttribute("src");
+    }
 }
 
 function selectedsprite() {
-    return state.sprites[spritefiles.selection()];
+    return state.media[spritefiles.selection()];
 }
 
 async function drawsprite() {
     clearsprite();
     find(".resetsprite").hidden = true;
-    const sprite = selectedsprite();
-    if (!sprite) return;
+    const item = selectedsprite();
+    if (!item) return;
     const {replacements} = state.session;
-    const blob = await previewtexture(sprite, replacements);
-    spriteimage.alt = sprite.label;
+    const blob = await previewmedia(item, replacements);
+    const element = mediaelements[item.kind];
+    element.title = item.label;
+    if (item.kind === "image") element.alt = item.label;
     spriteurl = URL.createObjectURL(blob);
-    spriteimage.src = spriteurl;
-    spriteimage.hidden = false;
-    find(".resetsprite").hidden = !sprite.parts.some(part => replacements.has(replacementkey(part)));
+    element.src = spriteurl;
+    element.hidden = false;
+    find(".resetsprite").hidden = item.kind !== "image" || !item.parts.some(part => replacements.has(replacementkey(part)));
 }
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -536,18 +612,46 @@ async function exportchanges() {
     hints.clear();
 }
 
+const viewkeys = ["tool", "level", "strings", "locale", "sprite", "symbols", "format", "view", "page", "search"];
+
+function urlpreferences() {
+    const params = new URLSearchParams(location.search);
+    return Object.fromEntries(viewkeys.filter(key => params.has(key)).map(key => [key, params.get(key)]));
+}
+
 function savepreferences() {
-    if (!state) return;
+    if (!state || !tool || find(".editorbody").hidden) return;
+    const search = find(toolpanels[tool] + " .editorsearch input");
     state.session.preferences = {
-        tool, level: levelnav.selection()?.index,
-        strings: stringselect.value, locale: localeselect.value, sprite: spritefiles.selection(), symbols: filelist.value
+        tool, level: levelnav.selection()?.index, strings: stringselect.value, locale: localeselect.value,
+        sprite: spritefiles.selection(), symbols: filelist.value, format: formats.value, view: mediaview,
+        page: resultpage || undefined, search: search?.value
     };
+}
+
+function updateurl() {
+    const url = new URL(location.href);
+    savepreferences();
+    const view = state && !find(".editorbody").hidden ? state.session.preferences : {};
+    for (const key of viewkeys) {
+        const value = view[key];
+        if (value === undefined || value === "" || value === -1) url.searchParams.delete(key);
+        else url.searchParams.set(key, value);
+    }
+    if (state) url.searchParams.set("app", String(current + 1));
+    else url.searchParams.delete("app");
+    if (url.href !== location.href) history.replaceState(history.state, "", url);
+}
+
+function rememberbatch() {
+    return storebatch(sessions.map(session => session.file))
+        .catch(() => displayerror("The browser could not save this batch for reload."));
 }
 
 async function loadpackage(index) {
     const session = sessions[index];
     const suffix = sessions.length > 1 ? " " + (index + 1) + " of " + sessions.length : "";
-    const progress = status => message(/^\d/.test(status) ? "Loading package" + suffix + " · " + status : status);
+    const progress = status => message(/^\d/.test(status) ? "Loading package" + suffix + " (" + status + ")" : status);
     message("Loading package" + suffix);
     let pkg;
     try {pkg = await openpackage(session.file, progress)}
@@ -556,6 +660,7 @@ async function loadpackage(index) {
         throw new Error(session.file.name + ": " + error.message);
     }
     savepreferences();
+    clearflags();
     const files = packageentries(pkg);
     const unity = unitypackage(files);
     const assets = unity ? [] : packageassets(pkg, files);
@@ -563,7 +668,7 @@ async function loadpackage(index) {
         || /^cut the rope(?:\s*:\s*|\s+)(?:2|magic)(?:\b|$)/i.test(pkg.metadata.title || "");
     const originalicon = await packageicon(pkg).catch(() => null);
     state = {
-        pkg, session, assets, originalicon, hintcache: new Map(),
+        pkg, session, assets, originalicon, hintcache: new Map(), flags: new Map(),
         levels: hidelevels ? [] : await levelcatalog(assets), sprites: unity ? [] : textures(files, pkg),
         strings: assets.filter(item => item.category === "stringsgame").sort((a, b) => stringlabel(a).localeCompare(stringlabel(b))),
         symbols: unity ? [] : symbolfiles(files, pkg.metadata.executable),
@@ -572,6 +677,7 @@ async function loadpackage(index) {
             return name ? [{...file, ...name}] : [];
         })
     };
+    state.media = unity ? [] : mediaentries(files, pkg, state.sprites);
     state.boxart = levelart(pkg.metadata.package, state.sprites, () => session.replacements);
     current = index;
     editor.hidden = false;
@@ -596,28 +702,61 @@ async function loadpackage(index) {
     await showtool(preferred, preferences);
 }
 
+function createfiles(files) {
+    return files.map(file => ({
+        file, metadata: {}, icon: null, preview: null, preferences: {}, replacements: new Map(),
+        strings: new Map(), hints: new Map(), saved: {metadata: "{}", icon: null, replacements: new Map()}
+    }));
+}
+
 function startopening(files) {
     if (!files.length) return;
     if (working) {
         pendingfiles.push(...files);
         return;
     }
-    const start = sessions.length;
-    sessions.push(...files.map(file => ({
-        file, metadata: {}, icon: null, preview: null, preferences: {}, replacements: new Map(),
-        strings: new Map(), hints: new Map(), saved: {metadata: "{}", icon: null, replacements: new Map()}
-    })));
     void run(async () => {
+        const incoming = await distinctfiles(files, sessions.filter(session => !session.unreadable).map(session => session.file));
+        const start = sessions.length;
+        sessions.push(...createfiles(incoming));
+        if (start === 0 && sessions.length) sessions[0].preferences = urlpreferences();
         let failure;
         for (let index = start; index < sessions.length; index++) {
-            try {await loadpackage(index); return}
-            catch (error) {
-                if (!sessions[index].unreadable) throw error;
+            try {
+                await loadpackage(index);
+                await rememberbatch();
+                return;
+            } catch (error) {
+                if (!sessions[index].unreadable) {
+                    await rememberbatch();
+                    throw error;
+                }
                 failure = error;
             }
         }
-        if (!state) sessions = [];
-        throw failure;
+        sessions.length = start;
+        if (failure) throw failure;
+    });
+}
+
+async function resumebatch() {
+    const view = urlpreferences();
+    const app = Number(new URLSearchParams(location.search).get("app"));
+    let files;
+    try {files = await loadbatch()}
+    catch {return}
+    if (!Array.isArray(files) || !files.length || working || state) return;
+    const index = Number.isInteger(app) && app > 0 && app <= files.length ? app - 1 : 0;
+    sessions = createfiles(files);
+    sessions[index].preferences = view;
+    await run(async () => {
+        try {await loadpackage(index)}
+        catch (failure) {
+            if (!sessions[index].unreadable) throw failure;
+            const fallback = sessions.findIndex(session => !session.unreadable);
+            if (fallback < 0) throw failure;
+            await loadpackage(fallback);
+        }
     });
 }
 
@@ -638,6 +777,7 @@ async function switchpackage(direction) {
 }
 
 function closepackage() {
+    clearflags();
     sessions = [];
     current = -1;
     state = undefined;
@@ -657,10 +797,12 @@ function closepackage() {
     find(".intake").hidden = false;
     synccontrols();
     picker.focus();
+    updateurl();
+    void rememberbatch();
 }
 
-function backdialog() {
-    const {actions, open, close} = popup(back, "Discard unsaved changes?");
+function backdialog(trigger) {
+    const {actions, open, close} = popup(trigger, "Discard unsaved changes?");
     for (const [label, action] of [["Keep editing", close], ["Discard changes", () => {close(); closepackage()}]]) {
         const button = document.createElement("button");
         button.type = "button";
@@ -686,7 +828,7 @@ back.addEventListener("click", event => {
     event.stopImmediatePropagation();
     if (working) return;
     press();
-    if (sessions.some(unsaved)) backdialog();
+    if (sessions.some(unsaved)) backdialog(back);
     else closepackage();
 }, {capture: true});
 
@@ -706,8 +848,6 @@ packageinput.addEventListener("change", () => {
     packageinput.value = "";
     startopening(files);
 });
-previouspackage.addEventListener("click", () => void run(() => switchpackage(-1)));
-nextpackage.addEventListener("click", () => void run(() => switchpackage(1)));
 for (const button of toolbuttons) {
     button.addEventListener("click", () => {
         if (tool === button.dataset.tool) return;
@@ -771,24 +911,25 @@ for (const [control, event] of [[localeselect, "change"], [find(".filterstrings"
     control.addEventListener(event, () => {resultpage = 0; renderstrings()});
 }
 
-for (const mode of ["grid", "list"]) {
-    const button = find(".sprite" + mode);
-    button.addEventListener("click", () => {
-        spritefiles.view(mode);
-        for (const name of ["grid", "list"]) {
-            const control = find(".sprite" + name);
-            control.classList.toggle("gold", mode === name);
-            control.setAttribute("aria-pressed", String(mode === name));
-        }
-    });
+function setmediaview(mode) {
+    mediaview = mode;
+    spritefiles.view(mode);
+    for (const name of ["grid", "list"]) {
+        const control = find(".sprite" + name);
+        control.classList.toggle("gold", mode === name);
+        control.setAttribute("aria-pressed", String(mode === name));
+    }
 }
-find(".spritegrid").classList.add("gold");
+for (const mode of ["grid", "list"]) {
+    find(".sprite" + mode).addEventListener("click", () => setmediaview(mode));
+}
+setmediaview(mediaview);
 find(".filtersprites").addEventListener("input", event => spritefiles.search(event.target.value));
 find(".importsprite").addEventListener("click", () => find(".spriteinput").click());
 find(".spriteinput").addEventListener("change", event => {
     const file = event.target.files[0];
     event.target.value = "";
-    if (!file || !selectedsprite()) return;
+    if (!file || selectedsprite()?.kind !== "image") return;
     void run(async () => {
         for (const [key, bytes] of await replacetexture(selectedsprite(), file)) state.session.replacements.set(key, bytes);
         await drawsprite();
@@ -796,7 +937,7 @@ find(".spriteinput").addEventListener("change", event => {
 });
 find(".exportsprite").addEventListener("click", () => void run(async () => {
     const item = selectedsprite();
-    if (item) download(await previewtexture(item, state.session.replacements), texturename(item));
+    if (item) download(await previewmedia(item, state.session.replacements), texturename(item));
 }));
 find(".resetsprite").addEventListener("click", () => void run(async () => {
     for (const part of selectedsprite().parts) state.session.replacements.delete(replacementkey(part));
@@ -840,3 +981,10 @@ document.addEventListener("drop", event => {
     dropoverlay.classList.remove("visible");
     startopening([...event.dataTransfer.files]);
 });
+
+for (const event of ["input", "change", "click"]) {
+    find(".editorbody").addEventListener(event, () => {
+        if (!working) updateurl();
+    });
+}
+void resumebatch();

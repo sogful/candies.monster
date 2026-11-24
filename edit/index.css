@@ -15,7 +15,7 @@
 
 .editorpage {
     --datafont: "JetBrains Mono", monospace;
-    --panel: rgba(0,0,0,0.55);
+    --panel: rgba(0,0,0,0.5);
     color-scheme: dark; overflow: hidden;
     margin: 0; min-height: 100dvh;
     background: #e9a856 url("/assets/images/bgs/original.avif") center/cover fixed;
@@ -31,7 +31,6 @@
     width: 100%; height: 100dvh;
     margin: 0 auto; padding: 5px;
 }
-.page:has(.packageswitch:not([hidden])) {padding-inline: 36px}
 .page:has(.intake:not([hidden])) {
     justify-content: center; align-items: center;
 }
@@ -39,7 +38,7 @@
     width: min(90vw, 540px); flex: none;
 }
 .intake .input {
-    background: rgba(0,0,0,0.75); color: #fff;
+    background: rgba(0,0,0,0.5); color: #fff;
     font: 1.25em var(--sitefont, "Good Dog"); text-align: center;
     border: 0; border-radius: 1em;
     width: 100%; min-height: min(200px, 40dvh);
@@ -55,6 +54,8 @@
 .intaketitle {
     margin: 0 0 0.35em; text-align: center;
     font-size: clamp(2.4rem,6vw,4.5rem); font-weight: normal;
+    -webkit-text-stroke: 0.125em #000; text-shadow: 0 0.1em #000;
+    paint-order: stroke fill;
 }
 .editorpage:has(.editor:not([hidden])) .intakegithub {display: none}
 
@@ -75,11 +76,11 @@ button, select, input, textarea {font: inherit}
 button:disabled {opacity: 0.55; cursor: default}
 .editorpage :focus {outline: none}
 .editorpage :is(.tool,.packageswitch,.pageback,.membershipbutton,.membershipclose,.columnhandle):focus-visible {filter: brightness(1.35)}
-.editorpage :is(input,textarea,select):focus-visible, .dropdown .dropdownbutton:focus-visible {background-color: #242424}
+.editorpage :is(input,textarea,select):focus-visible, .dropdown .dropdownbutton:focus-visible {background-color: rgba(0,0,0,0.5)}
 
 input:not([type="checkbox"]), textarea {
     width: 100%; min-width: 0;
-    background: rgba(0,0,0,0.65); color: #fff;
+    background: rgba(0,0,0,0.5); color: #fff;
     padding: 5px 8px; border: 0;
     border-radius: 0.45em;
 }
@@ -106,24 +107,8 @@ label {min-width: 0}
     min-width: 0; min-height: 0;
     background: var(--panel); border-radius: 0.7em;
 }
-.page .editorheader {
-    padding-inline-start: 52px; flex: none;
-}
-.editorpage:has(.editor:not([hidden])) .pageback {
-    top: 9px; left: 9px;
-    width: 33px; height: 33px;
-}
-.editorpage:has(.packageswitch:not([hidden])) .pageback {left: 42px}
-.packageswitch {
-    position: fixed; top: 50%;
-    transform: translateY(-50%); z-index: 2;
-    padding: 0; border: 0;
-    background: none; line-height: 0;
-    cursor: url("/assets/images/cursors/link.cur"), pointer;
-}
-.packageprevious {left: 2px}
-.packagenext {right: 2px}
-.packagenext img {transform: scaleX(-1)}
+.editorheader {flex: none}
+.editorpage:has(.editor:not([hidden])) .pageback {display: none}
 .unitymessage {
     margin: 0; padding: 0.75em;
     text-align: center;
@@ -168,7 +153,7 @@ label {min-width: 0}
 .editorpage .editorsearch .archivequery {
     background: transparent; padding: 0;
 }
-.editorpage .editorsearch:focus-within {background: rgba(0,0,0,0.7)}
+.editorpage .editorsearch:focus-within {background: rgba(0,0,0,0.5)}
 .resultstatus, .status {margin: 2px 0; overflow-wrap: anywhere}
 .status:empty, .resultstatus:empty {display: none}
 .error {
@@ -190,7 +175,7 @@ label {min-width: 0}
 .resulttable th, .stringtable th {
     position: sticky; top: 0;
     padding: 4px 12px 4px 6px; font-weight: normal;
-    background: #292522; z-index: 1;
+    background: rgba(0,0,0,0.5); z-index: 1;
     overflow: hidden; text-overflow: ellipsis;
 }
 .columnhandle {
@@ -256,7 +241,7 @@ label {min-width: 0}
     padding: 3px 5px; cursor: url("/assets/images/cursors/link.cur"), pointer;
 }
 .spritecrumb {max-width: 100%}
-.spritecrumb:hover, .spritefolder:hover, .spritefile:hover, .spritefile[aria-pressed="true"] {background: rgba(0,0,0,0.75)}
+.spritecrumb:hover, .spritefolder:hover, .spritefile:hover, .spritefile[aria-pressed="true"] {background: rgba(0,0,0,0.5)}
 .spritefolder {color: #8feeff}
 .spritegridview :is(.spritefolder,.spritefile) {
     text-align: center; overflow-wrap: anywhere;
@@ -272,9 +257,6 @@ label {min-width: 0}
 }
 
 @media (max-width: 700px) {
-    .page:has(.packageswitch:not([hidden])) {padding-inline: 25px}
-    .editorpage:has(.packageswitch:not([hidden])) .pageback {left: 30px}
-    .packageswitch img {width: 24px; height: 24px}
     .controldropdown {flex: 1 1 120px}
     .panelfooter {grid-template-columns: minmax(0,1fr)}
     .panelfooter .pages, .panelfooter .panelactions {grid-column: 1}
@@ -283,3 +265,10 @@ label {min-width: 0}
         grid-template-rows: minmax(65px,1fr) minmax(65px,1fr);
     }
 }
+
+.flagart {
+    width: 1.35em; height: 0.95em;
+    vertical-align: middle; object-fit: contain;
+}
+.editorpage .translationlanguage {flex: 0 0 66px}
+.editorpage .translationlanguage .dropdownbutton {text-overflow: clip}

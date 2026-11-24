@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="levelview.css">
     <link rel="stylesheet" href="levelpicker.css">
+    <link rel="stylesheet" href="media.css">
 
     <script src="/assets/static/js/text/fonts.js"></script>
     <script defer src="/assets/static/js/back.js"></script>
@@ -51,20 +52,14 @@
 
             <div class="editor" hidden>
                 <header class="editorheader"></header>
-                <button class="packageswitch packageprevious" type="button" hidden>
-                    <img src="/assets/images/buttons/back.png" alt="Previous package" width="34" height="34" draggable="false">
-                </button>
-                <button class="packageswitch packagenext" type="button" hidden>
-                    <img src="/assets/images/buttons/back.png" alt="Next package" width="34" height="34" draggable="false">
-                </button>
                 <p class="unitymessage" hidden>This is a Unity game, use <a href="https://github.com/assetripper/assetripper" target="_blank" rel="noopener">AssetRipper</a> to edit its contents!</p>
 
                 <div class="editorbody">
                     <div class="editorcontent">
                         <nav class="editortabs">
                             <button class="buttonart tool" type="button" data-tool="levels" aria-pressed="false">Levels</button>
-                            <button class="buttonart tool" type="button" data-tool="stringsgame" aria-pressed="false">Strings</button>
-                            <button class="buttonart tool" type="button" data-tool="sprites" aria-pressed="false">Sprites</button>
+                            <button class="buttonart tool" type="button" data-tool="sprites" aria-pressed="false">Media</button>
+                            <button class="buttonart tool" type="button" data-tool="stringsgame" aria-pressed="false">Strings <span class="stringflag" hidden></span></button>
                             <button class="buttonart tool" type="button" data-tool="symbols" aria-pressed="false">Symbols</button>
                         </nav>
                         <section class="analysis" hidden>
@@ -148,7 +143,7 @@
                                     <nav class="spritepath"></nav>
                                     <div class="spritefiles"></div>
                                 </div>
-                                <div class="spriteview"><img class="spriteimage" alt="" hidden></div>
+                                <div class="spriteview"><img class="spriteimage" alt="" hidden><audio class="spriteaudio" controls hidden></audio><video class="spritevideo" controls playsinline hidden></video></div>
                             </div>
                             <footer class="panelfooter">
                                 <div class="panelactions">

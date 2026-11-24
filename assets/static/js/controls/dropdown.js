@@ -19,8 +19,20 @@ export function dropdown(select) {
     const property = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value");
     Object.defineProperty(select, "value", {get() {return property.get.call(this)}, set(value) {property.set.call(this, value); sync()}});
 
+    function content(control, option) {
+        if (!option?.dataset.flag) {
+            control.textContent = option?.dataset.short || option?.textContent || "Choose an option";
+            return;
+        }
+        const image = document.createElement("img");
+        image.className = "flagart";
+        image.alt = option.textContent;
+        image.src = option.dataset.flag;
+        control.replaceChildren(image);
+    }
+
     function sync() {
-        button.textContent = select.selectedOptions[0]?.textContent || "Choose an option";
+        content(button, select.selectedOptions[0]);
         button.disabled = select.disabled || !select.options.length;
         button.title = select.selectedOptions[0]?.textContent || select.title;
     }
@@ -66,7 +78,7 @@ export function dropdown(select) {
             item.className = "dropdownoption clickable";
             item.classList.toggle("dropdownsecondary", option.hasAttribute("data-secondary"));
             item.title = option.textContent;
-            item.textContent = option.textContent;
+            content(item, option);
             item.disabled = option.disabled;
             item.setAttribute("role", "option");
             item.setAttribute("aria-selected", String(option.selected));
