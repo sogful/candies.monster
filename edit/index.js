@@ -15,9 +15,9 @@ import {spritebrowser} from "./src/spritebrowser.js";
 import {mediapanel} from "./src/mediapanel.js";
 import {overlayreserve, resizablecolumns} from "./src/columns.js";
 import {encodehintlevels} from "./src/hints.js";
-import {decodelegacyhint, encodelegacyhint, legacyhintname} from "./src/legacyhints.js";
+import {decodelegacyhint, legacyhintname} from "./src/legacyhints.js";
 import {translation} from "./src/gamestrings.js";
-import {mediaentries, previewtexture, textures} from "./src/sprites.js";
+import {mediaentries, textures} from "./src/sprites.js";
 
 const find = selector => document.querySelector(selector);
 const dropoverlay = find(".drag");
@@ -365,30 +365,11 @@ async function hintdata(level) {
     if (!first) return null;
     const key = replacementkey(first);
     const {hints, replacements} = state.session;
-    if (hints.has(key)) return {key, records: hints.get(key)};
+    if (hints.has(key)) return hints.get(key);
     if (!state.hintcache.has(key)) {
         state.hintcache.set(key, JSON.parse(await assettext(first, replacements)));
     }
-    return {key, records: state.hintcache.get(key)};
-}
-
-function changehints(data, level, replays) {
-    const {box, level: number} = level;
-    let record = data.records.find(record => record.box === box && record.level === number);
-    if (!record) {
-        record = {box, level: number, replays};
-        const last = data.records.at(-1);
-        const incomplete = last?.replays.some(replay => replay.expected > replay.events.length);
-        data.records.splice(data.records.length - Number(!!incomplete), 0, record);
-    } else record.replays = replays;
-    state.session.hints.set(data.key, data.records);
-    markhint(level);
-    synccontrols();
-}
-
-function markhint(level) {
-    state.session.hintlevels.add(level.index);
-    levelnav.refresh?.();
+    return state.hintcache.get(key);
 }
 
 async function legacyreplays(level) {
@@ -401,7 +382,7 @@ async function legacyreplays(level) {
         const bytes = replacements.get(key) ?? await readentry(item.entry);
         replays.push({...decodelegacyhint(bytes), label: item.scale + "×"});
     }
-    return {entries, replays};
+    return replays;
 }
 
 async function drawlevel(level = levelnav.selection()) {
@@ -413,33 +394,11 @@ async function drawlevel(level = levelnav.selection()) {
     const xml = await assettext(level.item, state.session.replacements);
     const options = {xml, box: level.box ?? 1, packageid: state.pkg.metadata.package, boxart: state.boxart};
     try {
-        const data = await hintdata(level);
-        const matching = data?.records.find(record => record.box === level.box && record.level === level.level);
-        const legacy = matching ? null : await legacyreplays(level);
-        if (legacy?.replays.length) {
-            options.hint = {replays: legacy.replays};
-            options.onhintchange = (replays, index) => {
-                const source = legacy.entries[index];
-                if (!source) return;
-                state.session.replacements.set(replacementkey(source), encodelegacyhint(replays[index]));
-                markhint(level);
-                synccontrols();
-            };
-        } else if (data) {
-            options.hint = matching;
-            options.onhintchange = replays => changehints(data, level, replays);
-        }
+        const records = await hintdata(level);
+        const matching = records?.find(record => record.box === level.box && record.level === level.level);
+        options.replays = matching?.replays.some(replay => replay.events.length) ? matching.replays : await legacyreplays(level);
     } catch (error) {
         displayerror(error.message);
-    }
-    if (options.onhintchange) {
-        const fairy = state.sprites.find(item => /(?:^|\/)hint_firefly_480_800\./i.test(item.path))
-            || state.sprites.find(item => /(?:^|\/)hint_firefly_hd\.png$/i.test(item.path))
-            || state.sprites.find(item => /(?:^|\/)hint_firefly[^/]*\.(?:png|raw)(?:\.zst)?$/i.test(item.path));
-        if (fairy) {
-            state.fairy ??= previewtexture(fairy).then(value => value.arrayBuffer()).then(bytes => new Uint8Array(bytes)).catch(() => null);
-            options.fairy = await state.fairy;
-        }
     }
     await renderlevel(levelview, options);
     shownlevel = {level, xml};
