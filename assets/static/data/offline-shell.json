@@ -1,5 +1,5 @@
 {
-  "version": "32b8cef561c81b92",
+  "version": "8a77a028e2683ad4",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -63,7 +63,6 @@
     "/assets/images/buttons/down.png": "6119a179985e4cc7",
     "/assets/images/buttons/downactive.png": "7d6c3a67c9f804cc",
     "/assets/images/buttons/download.png": "4cf4b6525c6b6fa7",
-    "/assets/images/buttons/downloadnew.png": "97047a0873f91937",
     "/assets/images/buttons/emptybutton.png": "d8925c68dd27f74a",
     "/assets/images/buttons/emptybuttongold.webp": "0fa02eb245321b4b",
     "/assets/images/buttons/gold.webp": "3e9c8c4759b9b957",
@@ -92,7 +91,6 @@
     "/assets/images/buttons/red.webp": "bf123d738ffb4763",
     "/assets/images/buttons/sfxoff.png": "3e81d4e5b49e8b01",
     "/assets/images/buttons/sfxon.png": "962098b91a6ee0f5",
-    "/assets/images/buttons/tinybutton.png": "06df99cb4ef7e0dd",
     "/assets/images/buttons/tinybutton.webp": "9d2c0b5967be395b",
     "/assets/images/buttons/unchecked.png": "d8925c68dd27f74a",
     "/assets/images/buttons/up.png": "7a36daa97b3246eb",
@@ -248,6 +246,7 @@
     "/assets/images/wonderful.png": "31d65f15aaaefa58",
     "/assets/static/css/back.css": "3e3e9b225033061a",
     "/assets/static/css/buttons.css": "3ee60a8d56f5acdd",
+    "/assets/static/css/drag.css": "42bccf65c1a074e0",
     "/assets/static/css/dropdown.css": "eb55db8caa9be814",
     "/assets/static/css/emoji.css": "c309e5a5b4a5a578",
     "/assets/static/css/feather.css": "036a49bd77bf296c",
@@ -275,7 +274,7 @@
     "/assets/static/js/back.js": "974a358eb17432e2",
     "/assets/static/js/buttons/index.js": "ffe74eb958f65457",
     "/assets/static/js/buttons/render.js": "aaf3bfee27ab0081",
-    "/assets/static/js/controls/dropdown.js": "420d8d3f6accffbd",
+    "/assets/static/js/controls/dropdown.js": "6108053516d04759",
     "/assets/static/js/controls/feather.js": "2d5b32346e40a651",
     "/assets/static/js/github.js": "c17055f4187fee31",
     "/assets/static/js/global.js": "7f8ba7c8dfec1023",
@@ -289,12 +288,12 @@
     "/index.html": "82d3f902136ccecc",
     "/preview/editor.html": "33aeb574b277fc85",
     "/preview/favicon.png": "270170a338f60474",
-    "/preview/index.css": "1c553b0eaca8ca6e",
-    "/preview/index.html": "5797e40caf7b8305",
+    "/preview/index.css": "69c5ab3ec8e9274c",
+    "/preview/index.html": "e34002e8f20afa27",
     "/preview/src/data.js": "738f52aa368c6735",
     "/preview/src/errors.js": "c6c550a5a3bd3ea8",
     "/preview/src/game.js": "4eb89458d31101a6",
-    "/preview/src/index.js": "80b64c1522489973",
+    "/preview/src/index.js": "a2a61799015041f2",
     "/preview/src/playtest.js": "7960576d935d6891",
     "/preview/src/sharing.js": "78c1cfd14d42d398",
     "/src/css/browser/candylist.css": "56258a0f0ecb931b",
@@ -378,5 +377,5 @@
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
     "/src/js/site/sidebar.js": "ecd1d165a61dfec2"
   },
-  "bytes": 10266167
+  "bytes": 10225664
 }
