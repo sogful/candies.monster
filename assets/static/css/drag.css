@@ -1,0 +1,17 @@
+.drag {
+    position: fixed; inset: 0;
+    display: flex; justify-content: center;
+    align-items: center; text-align: center;
+    z-index: 65535; pointer-events: none;
+    background: rgba(0,0,0,0.5); color: #fff;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.33));
+    font-family: var(--sitefont, "Good Dog"); font-size: 4rem;
+    -webkit-text-stroke: 0.175em #000; text-shadow: 0 0.15em 0 #000;
+    paint-order: stroke fill;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+.drag.visible {
+    opacity: 1; visibility: visible;
+    transition-delay: 0s;
+}

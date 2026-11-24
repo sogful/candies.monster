@@ -125,7 +125,6 @@ import {createsharing} from "./sharing.js";
     const frame = document.querySelector(".gameframe");
     const oopsaudio = document.querySelector(".oopsaudio");
     const clickaudio = document.querySelector(".click");
-    const loading = document.querySelector(".loading");
 
     const nopicker = false;
     
@@ -141,19 +140,6 @@ import {createsharing} from "./sharing.js";
         onerror: (message) => showerror(message),
     });
     let lateststats = null;
-    let keeploadingbuddy = false;
-    
-    function hideloading() {
-        if (loading && !keeploadingbuddy) {
-            loading.style.opacity = "0";
-            setTimeout(() => {
-                loading.remove();
-            }, 500);
-        }
-    }
-    window.addEventListener("load", () => {
-        hideloading();
-    });
 
     const pointercapable = matchMedia("(hover: hover) and (pointer: fine)");
     const uiedgethreshold = 140;
@@ -383,9 +369,7 @@ import {createsharing} from "./sharing.js";
     async function restorestoredlevel() {
         const urlcode = new URLSearchParams(window.location.search).get("code");
         if (urlcode) {
-            keeploadingbuddy = true;
             const data = await fetchlevelbycode(urlcode);
-            keeploadingbuddy = false;
             if (data) {
                 const trimmed = data.trim();
                 if (trimmed.startsWith("<") || trimmed.startsWith("{") || trimmed.startsWith("[")) {
@@ -395,10 +379,8 @@ import {createsharing} from "./sharing.js";
                 }
                 cleanurl();
                 if (!nopicker) {autoopenversion()}
-                hideloading();
                 return;
             }
-            hideloading();
         }
         const urldata = new URLSearchParams(window.location.search).get("data");
         if (urldata) {
@@ -446,7 +428,6 @@ import {createsharing} from "./sharing.js";
             }
             cleanurl();
             if (!nopicker) {autoopenversion()}
-            hideloading();
             return;
         }
         const stored = localStorage.getItem(storagekey);
@@ -458,7 +439,6 @@ import {createsharing} from "./sharing.js";
             toggleeditor(false);
             showdatapanel();
         }
-        hideloading();
     }
     /*//////////////////////////////////////////////////////////////////////*/
 
@@ -491,7 +471,7 @@ import {createsharing} from "./sharing.js";
         dragoverlay.classList.add("visible");
     });
     document.addEventListener("dragleave", (event) => {
-        if (event.target === document || event.target === document.body) {
+        if (!event.relatedTarget || event.target === document || event.target === document.body) {
             dragoverlay.classList.remove("visible");
         }
     });
