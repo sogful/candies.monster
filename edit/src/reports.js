@@ -1,3 +1,5 @@
+export const debugsymbols = report => /DWARF|STABS|Breakpad|debug/i.test(report.format);
+
 export function reportblob(kind, reports) {
     return new Blob([JSON.stringify({kind, version: 1, reports}, null, 2)], {type: "application/json"});
 }

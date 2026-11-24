@@ -1,6 +1,6 @@
 import {readentry} from "./package.js";
 
-export const debugsymbols = report => /DWARF|STABS|Breakpad|debug/i.test(report.format);
+export {debugsymbols} from "./reports.js";
 
 export function sourcepriority(file, executable) {
     if (/\.(?:debug|sym|dwarf)(?:\.zst)?$/i.test(file.path) || /\/(?:DWARF|Symbols)\//i.test(file.path)) return 0;
@@ -15,7 +15,7 @@ export function symbolfiles(files, executable) {
         .sort((a, b) => sourcepriority(a, executable) - sourcepriority(b, executable));
 }
 
-export async function readsymbols(file) {
+export async function readsymbols(file, kind = "symbols") {
     const bytes = await readentry(file.entry);
     const worker = new Worker(new URL("./analysis.js", import.meta.url), {type: "module"});
     let timer;
@@ -27,7 +27,7 @@ export async function readsymbols(file) {
                 else resolve(data.result);
             };
             worker.onerror = event => reject(new Error(event.message || "Could not read symbols."));
-            worker.postMessage({kind: "symbols", bytes, filename: file.path}, [bytes.buffer]);
+            worker.postMessage({kind, bytes, filename: file.path}, [bytes.buffer]);
         });
     } finally {
         clearTimeout(timer);

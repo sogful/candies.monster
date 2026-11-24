@@ -15,26 +15,70 @@ async function batchrequest(mode, operation) {
     const db = await openstorage();
     return new Promise((resolve, reject) => {
         const transaction = db.transaction("sessions", mode);
-        const request = operation(transaction.objectStore("sessions"));
-        transaction.oncomplete = () => resolve(request.result);
+        const result = operation(transaction.objectStore("sessions"));
+        transaction.oncomplete = () => resolve(result());
         transaction.onabort = () => reject(transaction.error);
         transaction.onerror = () => reject(transaction.error);
     });
 }
 
 export function loadbatch() {
-    return batchrequest("readonly", store => store.get("last"));
+    return batchrequest("readonly", store => {
+        const last = store.get("last");
+        const edits = store.get("edits");
+        const batchid = store.get("batchid");
+        return () => {
+            const batch = last.result;
+            const saved = edits.result;
+            const id = batchid.result;
+            if (!batch?.sessions || !id) return batch;
+            if (saved?.id !== id || saved.sessions.length !== batch.sessions.length) return {...batch, id};
+            return {
+                id, active: saved.active,
+                sessions: batch.sessions.map(({file}, index) => ({...saved.sessions[index], file}))
+            };
+        };
+    });
 }
 
-export function storebatch(sessions, active) {
-    const snapshots = sessions.map(({strings, restoredstrings, ...session}) => {
+function snapshots(sessions) {
+    return sessions.map(({strings, restoredstrings, ...session}) => {
         const drafts = new Map(restoredstrings);
         for (const [key, draft] of strings) {
             drafts.set(key, {text: draft.model.serialize(), textformat: draft.textformat});
         }
         return {...session, restoredstrings: drafts};
     });
-    return batchrequest("readwrite", store => snapshots.length ? store.put({sessions: snapshots, active}, "last") : store.delete("last"));
+}
+
+export function storebatch(sessions, active) {
+    const data = snapshots(sessions);
+    const id = data.length ? crypto.randomUUID() : "";
+    return batchrequest("readwrite", store => {
+        if (id) {
+            store.put({sessions: data, active}, "last");
+            store.put(id, "batchid");
+        } else {
+            store.delete("last");
+            store.delete("batchid");
+        }
+        store.delete("edits");
+        return () => id;
+    });
+}
+
+export function storebatchedits(sessions, active, id) {
+    const data = snapshots(sessions).map(({file, ...session}) => session);
+    return batchrequest("readwrite", store => {
+        const request = store.get("batchid");
+        let stored = false;
+        request.onsuccess = () => {
+            if (request.result !== id) return;
+            store.put({id, sessions: data, active}, "edits");
+            stored = true;
+        };
+        return () => stored;
+    });
 }
 
 export async function distinctfiles(files, existing) {

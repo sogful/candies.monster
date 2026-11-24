@@ -1,5 +1,5 @@
 import {languageflag, languagename} from "./src/flags.js";
-import {distinctfiles, loadbatch, storebatch} from "./src/batch.js";
+import {distinctfiles, loadbatch, storebatch, storebatchedits} from "./src/batch.js";
 import "/assets/static/js/buttons/index.js";
 import {dropdown} from "/assets/static/js/controls/dropdown.js";
 import {popup} from "/src/js/browser/popup.js";
@@ -41,6 +41,7 @@ let state;
 let tool;
 let working = false;
 let departing = false;
+let batchwrite = Promise.resolve("");
 let report = [];
 let reportname = "";
 let resultpage = 0;
@@ -97,9 +98,13 @@ const header = packageheader(find(".editorheader"), {
 });
 const syncquickactions = quickactions(find(".editorheader"), {
     sessions: () => sessions, run, message, download,
+    packageinfo: session => state?.session === session ? {pkg: state.pkg, entries: state.files} : undefined,
     save: async () => {
         savepreferences();
-        try {await storebatch(sessions, current)}
+        try {
+            const id = await batchwrite;
+            if (!id || !await storebatchedits(sessions, current, id)) await storebatch(sessions, current);
+        }
         catch {throw new Error("The browser could not save this batch for reload.")}
     },
     leave() {
@@ -579,12 +584,14 @@ function updateurl() {
     if (url.href !== location.href) history.replaceState(history.state, "", url);
 }
 
-function rememberbatch() {
-    return storebatch(sessions, current)
-        .catch(() => displayerror("The browser could not save this batch for reload."));
+function rememberbatch(active = current) {
+    batchwrite = storebatch(sessions, active).catch(() => {
+        displayerror("The browser could not save this batch for reload.");
+        return "";
+    });
 }
 
-async function loadpackage(index) {
+async function loadpackage(index, opened) {
     const session = sessions[index];
     const suffix = sessions.length > 1 ? " " + (index + 1) + " of " + sessions.length : "";
     const progress = status => message(/^\d/.test(status) ? "Loading package" + suffix + " (" + status + ")" : status);
@@ -596,6 +603,7 @@ async function loadpackage(index) {
         throw new Error(session.file.name + ": " + error.message);
     }
     savepreferences();
+    opened?.(index);
     clearflags();
     const files = packageentries(pkg);
     const unity = unitypackage(files);
@@ -662,14 +670,10 @@ function startopening(files) {
         let failure;
         for (let index = start; index < sessions.length; index++) {
             try {
-                await loadpackage(index);
-                await rememberbatch();
+                await loadpackage(index, rememberbatch);
                 return;
             } catch (error) {
-                if (!sessions[index].unreadable) {
-                    await rememberbatch();
-                    throw error;
-                }
+                if (!sessions[index].unreadable) throw error;
                 failure = error;
             }
         }
@@ -689,14 +693,16 @@ async function resumebatch() {
     const index = Number.isInteger(app) && app > 0 && app <= stored.length ? app - 1
         : !Object.keys(view).length && stored[batch?.active] ? batch.active : 0;
     sessions = stored;
+    if (batch?.id) batchwrite = Promise.resolve(batch.id);
     if (Object.keys(view).length) sessions[index].preferences = view;
     await run(async () => {
-        try {await loadpackage(index)}
+        const migrate = batch?.id ? undefined : rememberbatch;
+        try {await loadpackage(index, migrate)}
         catch (failure) {
             if (!sessions[index].unreadable) throw failure;
             const fallback = sessions.findIndex(session => !session.unreadable);
             if (fallback < 0) throw failure;
-            await loadpackage(fallback);
+            await loadpackage(fallback, migrate);
         }
     });
 }

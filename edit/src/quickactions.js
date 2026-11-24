@@ -31,10 +31,11 @@ const actions = [
     ["debug-symbols", "Extract debug symbols", "No debug symbols were found."],
     ["symbols", "Extract all symbols", "No symbols were found."]
 ];
+const concurrentlimit = 160 * 1024 * 1024;
 
-async function sources(session) {
-    const pkg = await openpackage(session.file);
-    const entries = packageentries(pkg);
+async function sources(session, prepared) {
+    const pkg = prepared?.pkg ?? await openpackage(session.file);
+    const entries = prepared?.entries ?? packageentries(pkg);
     return {
         pkg,
         strings: packageassets(pkg, entries).filter(file => file.category === "stringsgame"),
@@ -46,37 +47,7 @@ async function matchingreports(file) {
     return (await readsymbols(file)).filter(report => report.entries.length);
 }
 
-async function matchcounts(sessions, menu, buttons, cached) {
-    const totals = Object.fromEntries(actions.map(([mode]) => [mode, 0]));
-    for (const session of sessions) {
-        if (!menu.open) return;
-        let counts = cached.get(session);
-        if (!counts) {
-            counts = {strings: 0, "debug-symbols": 0, symbols: 0};
-            const files = await sources(session).catch(() => null);
-            if (files) {
-                counts.strings = files.strings.length;
-                for (const file of files.symbols) {
-                    if (!menu.open) return;
-                    const reports = await matchingreports(file).catch(() => []);
-                    if (reports.length) counts.symbols++;
-                    if (reports.some(debugsymbols)) counts["debug-symbols"]++;
-                }
-            }
-            cached.set(session, counts);
-        }
-        for (const [mode] of actions) totals[mode] += counts[mode];
-    }
-    if (!menu.open) return;
-    for (const [mode, label] of actions) {
-        const number = totals[mode];
-        const button = buttons.get(mode);
-        button.textContent = label + " (" + number.toLocaleString() + ")";
-        button.title = number.toLocaleString() + (number === 1 ? " matching file" : " matching files");
-    }
-}
-
-async function extract(mode, sessions, message, download) {
+async function extract(mode, sessions, message, download, packageinfo) {
     const zip = new globalThis.JSZip();
     const folders = new Set();
     const failures = [];
@@ -86,7 +57,7 @@ async function extract(mode, sessions, message, download) {
         message("Extracting " + name + " (" + (index + 1) + " of " + sessions.length + ")");
         const folder = uniquesegment(name, folders);
         try {
-            const {pkg, strings, symbols} = await sources(session);
+            const {pkg, strings, symbols} = await sources(session, packageinfo(session));
             const files = mode === "strings" ? strings : symbols;
             for (const file of files) {
                 try {
@@ -143,10 +114,13 @@ async function explode(save, leave, sound) {
     leave();
 }
 
-export function quickactions(header, {sessions, run, message, download, save, leave}) {
+export function quickactions(header, {sessions, run, message, download, save, leave, packageinfo}) {
     const sound = new Audio(explosionsound);
     sound.preload = "auto";
     const cached = new WeakMap();
+    let scanning = false;
+    let scheduled = false;
+    let shown;
     const slot = document.createElement("div");
     slot.className = "headerquickslot";
     const next = header.querySelector(".headernext");
@@ -158,13 +132,55 @@ export function quickactions(header, {sessions, run, message, download, save, le
     next.before(slot);
     slot.append(button, next);
 
+    function showcounts() {
+        if (!shown?.dialog.open) return;
+        for (const [mode, label] of actions) {
+            const values = shown.batch.map(session => cached.get(session)?.[mode]);
+            if (values.some(value => value === undefined)) continue;
+            const count = values.reduce((sum, value) => sum + value, 0);
+            const item = shown.buttons.get(mode);
+            item.textContent = label + " (" + count.toLocaleString() + ")";
+            item.title = count.toLocaleString() + (count === 1 ? " matching file" : " matching files");
+        }
+    }
+
+    async function countpackage(session) {
+        const files = await sources(session, packageinfo(session)).catch(() => null);
+        const counts = {strings: files?.strings.length ?? 0, symbols: 0, "debug-symbols": 0};
+        cached.set(session, {strings: counts.strings});
+        showcounts();
+        for (const file of files?.symbols ?? []) {
+            if (!sessions().includes(session)) break;
+            const result = await readsymbols(file, "symbolmatches").catch(() => null);
+            if (result?.symbols) counts.symbols++;
+            if (result?.debug) counts["debug-symbols"]++;
+        }
+        cached.set(session, counts);
+        showcounts();
+    }
+
+    async function preload() {
+        if (scanning || button.disabled) return;
+        scanning = true;
+        try {
+            while (!button.disabled) {
+                const [first, second] = sessions().filter(session => !cached.has(session));
+                if (!first) break;
+                const parallel = second && first.file.size + second.file.size <= concurrentlimit;
+                await Promise.all((parallel ? [first, second] : [first]).map(countpackage));
+            }
+        } finally {
+            scanning = false;
+        }
+    }
+
     button.addEventListener("click", () => {
         const menu = popup(button, "What would you like to do for all imported games?");
         menu.dialog.classList.add("quickactionmenu");
         const batch = [...sessions()];
         const buttons = new Map();
         for (const [mode, label, action] of [
-            ...actions.map(([mode, label]) => [mode, label, () => extract(mode, batch, message, download)]),
+            ...actions.map(([mode, label]) => [mode, label, () => extract(mode, batch, message, download, packageinfo)]),
             ["", "Destroy everything!!!", () => explode(save, leave, sound)]
         ]) {
             const item = document.createElement("button");
@@ -178,8 +194,23 @@ export function quickactions(header, {sessions, run, message, download, save, le
             if (mode) buttons.set(mode, item);
             menu.actions.append(item);
         }
+        shown = {dialog: menu.dialog, batch, buttons};
+        menu.dialog.addEventListener("close", () => {
+            if (shown?.dialog === menu.dialog) shown = undefined;
+        }, {once: true});
         menu.open();
-        void matchcounts(batch, menu.dialog, buttons, cached);
+        showcounts();
+        void preload();
     });
-    return working => {button.disabled = working};
+    return working => {
+        button.disabled = working;
+        if (working || scanning || scheduled || sessions().every(session => cached.has(session))) return;
+        scheduled = true;
+        const prepare = () => {
+            scheduled = false;
+            void preload();
+        };
+        if (window.requestIdleCallback) window.requestIdleCallback(prepare, {timeout: 250});
+        else setTimeout(prepare, 0);
+    };
 }
