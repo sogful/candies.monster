@@ -136,6 +136,53 @@ function backbutton(label, action) {
     return back;
 }
 
+function dragscroll(scroller, horizontal, settle) {
+    const offset = horizontal ? "scrollLeft" : "scrollTop";
+    let drag;
+    let suppressclick = false;
+
+    scroller.addEventListener("pointerdown", event => {
+        if (!event.isPrimary || event.button !== 0) return;
+        suppressclick = false;
+        drag = {id: event.pointerId, x: event.clientX, y: event.clientY, start: scroller[offset], active: false};
+    });
+    scroller.addEventListener("pointermove", event => {
+        if (drag?.id !== event.pointerId) return;
+        const x = event.clientX - drag.x;
+        const y = event.clientY - drag.y;
+        if (!drag.active) {
+            if (Math.max(Math.abs(x), Math.abs(y)) < 6) return;
+            drag.active = suppressclick = true;
+            scroller.setPointerCapture(event.pointerId);
+            scroller.classList.add("levelpickdragging");
+        }
+        event.preventDefault();
+        scroller[offset] = drag.start - (horizontal ? x : y);
+    });
+    function finish(event) {
+        if (drag?.id !== event.pointerId) return;
+        const {active} = drag;
+        drag = undefined;
+        if (!active) return;
+        settle?.();
+        scroller.classList.remove("levelpickdragging");
+    }
+    scroller.addEventListener("pointerup", finish);
+    scroller.addEventListener("pointercancel", finish);
+    scroller.addEventListener("pointerleave", event => {
+        if (!drag?.active) finish(event);
+    });
+    scroller.addEventListener("lostpointercapture", event => {
+        if (event.target === scroller) finish(event);
+    });
+    scroller.addEventListener("click", event => {
+        if (!suppressclick || !event.detail) return;
+        suppressclick = false;
+        event.preventDefault();
+        event.stopPropagation();
+    }, true);
+}
+
 function packart(game, box) {
     const index = box - 1;
     const count = game === "holiday" ? 1 : game === "timetravel" ? timetravel.length
@@ -274,6 +321,10 @@ export function levelpicker(root, change) {
         };
         scroll(boxindex);
         update();
+        dragscroll(row, true, () => {
+            update();
+            scroll(boxindex, behavior);
+        });
         row.addEventListener("scroll", update, {passive:true});
         row.addEventListener("wheel", event => {
             if (Math.abs(event.deltaX) >= Math.abs(event.deltaY) || cards.length < 2) return;
@@ -313,6 +364,7 @@ export function levelpicker(root, change) {
             grid.append(tile);
         }
         scroll.append(grid);
+        dragscroll(scroll, false);
         panel.append(scroll);
         root.append(panel);
         refresh();

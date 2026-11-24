@@ -84,6 +84,7 @@
 .spriteframeactions {
     position: absolute; z-index: 1;
     display: flex; gap: 2px;
+    transform: scale(var(--frame-action-scale,1)); transform-origin: top left;
     cursor: default;
 }
 .spriteframeactions .buttonart {

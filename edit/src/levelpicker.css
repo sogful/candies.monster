@@ -28,8 +28,13 @@
     display: flex; align-items: center;
     width: var(--strip); padding-inline: max(0px,calc((var(--strip) - var(--packsize)) / 2));
     overflow: auto hidden; scroll-snap-type: x mandatory;
-    overscroll-behavior-inline: contain;
+    overscroll-behavior-inline: contain; touch-action: pan-y;
 }
+.levelpickstrip.levelpickdragging {scroll-snap-type: none}
+.levelpickdragging, .levelpickdragging :is(.levelpack,.levelpicktile) {
+    cursor: grabbing; user-select: none;
+}
+.levelpickdragging :is(.levelpack,.levelpicktile):active {scale: 1}
 .levelpickframes::before, .levelpickframes::after {
     content: ""; position: absolute;
     inset: 50% auto auto calc((100% - var(--strip)) / 2);
@@ -53,6 +58,12 @@
 .levelpackart {
     position: absolute; inset: 0;
     background-repeat: no-repeat;
+}
+.levelpicker[data-game="holiday"] .levelpackart:not(.levelpackcomingsoon)::after {
+    content: ""; position: absolute;
+    inset: 0; background: inherit;
+    transform-origin: 49.2% 67.3%; scale: 1.23;
+    mask-image: radial-gradient(ellipse 13% 11% at 49.2% 67.3%,#000 86%,transparent);
 }
 .levelpackcomingsoon {background: url("../art/levels/comingsoon.webp") center/contain no-repeat}
 .levelpackpeek {
@@ -145,6 +156,7 @@
 .levelpickscroll {
     position: absolute; inset: 6px 9px;
     display: flex; overflow-y: auto;
+    overscroll-behavior-block: contain; touch-action: pan-x;
 }
 .levelpickgrid {
     --columns: 5;

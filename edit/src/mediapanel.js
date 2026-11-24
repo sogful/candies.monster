@@ -35,14 +35,21 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
         if (actions.hidden) return;
         const frame = overlay.children[selected].getBoundingClientRect();
         const bounds = view.getBoundingClientRect();
-        const bottom = Math.min(bounds.bottom, footer.getBoundingClientRect().top);
+        const footerbox = footer.getBoundingClientRect();
+        const bottom = footerbox.height ? Math.min(bounds.bottom, footerbox.top) : bounds.bottom;
+        const width = actions.offsetWidth;
+        const height = actions.offsetHeight;
+        if (!width || !height) return;
+        const scale = Math.min(Number(view.style.getPropertyValue("--media-scale")) || 1,
+            Math.max(0, bounds.width - 6) / width, Math.max(0, bottom - bounds.top - 6) / height);
+        actions.style.setProperty("--frame-action-scale", String(scale));
         actions.style.visibility = frame.right <= bounds.left || frame.left >= bounds.right ||
             frame.bottom <= bounds.top || frame.top >= bounds.bottom ? "hidden" : "";
-        const left = (frame.left + frame.right - actions.offsetWidth) / 2;
-        const maxy = Math.max(3, bottom - bounds.top - actions.offsetHeight - 3);
+        const left = (frame.left + frame.right - width * scale) / 2;
+        const maxy = Math.max(3, bottom - bounds.top - height * scale - 3);
         const top = frame.bottom + 3;
-        const y = top + actions.offsetHeight <= bottom ? top : frame.top - actions.offsetHeight - 3;
-        actions.style.left = Math.max(3, Math.min(bounds.width - actions.offsetWidth - 3, left - bounds.left)) + "px";
+        const y = top + height * scale <= bottom ? top : frame.top - height * scale - 3;
+        actions.style.left = Math.max(3, Math.min(bounds.width - width * scale - 3, left - bounds.left)) + "px";
         actions.style.top = Math.max(3, Math.min(maxy, y - bounds.top)) + "px";
     }
 
