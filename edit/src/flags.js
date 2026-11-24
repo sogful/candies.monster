@@ -1,6 +1,6 @@
-const flags = new Set("ar br de en es fr he it ja ko nl pt ru tr zh zh-hant".split(" "));
+const flags = new Set("ar br de en es fr he id it ja ko nl pt ru th tr zh zh-hant".split(" "));
 const names = new Intl.DisplayNames(["en"], {type: "language"});
-const aliases = {br: "pt-BR", cn: "zh", iw: "he", jp: "ja", kr: "ko", tw: "zh-Hant"};
+const aliases = {br: "pt-BR", cn: "zh", in: "id", iw: "he", jp: "ja", kr: "ko", tw: "zh-Hant"};
 
 function languagetag(locale) {
     const tag = String(locale ?? "").toLowerCase().replaceAll("_", "-");

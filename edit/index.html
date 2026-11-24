@@ -50,6 +50,7 @@
                     <span class="pickprompt">Click to open file explorer<br>or drag the file here...</span>
                     <span class="pickprogress" role="status" hidden></span>
                 </button>
+                <p class="intakenote">(This tool is a work in progress, sorry if things break!)</p>
             </div>
 
             <div class="editor" hidden>
@@ -61,7 +62,7 @@
                         <nav class="editortabs">
                             <button class="buttonart tool" type="button" data-tool="levels" aria-pressed="false">Levels</button>
                             <button class="buttonart tool" type="button" data-tool="sprites" aria-pressed="false">Media</button>
-                            <button class="buttonart tool" type="button" data-tool="strings" aria-pressed="false">Strings <span class="stringflag" hidden></span></button>
+                            <button class="buttonart tool" type="button" data-tool="strings" aria-pressed="false">Strings</button>
                             <button class="buttonart tool" type="button" data-tool="symbols" aria-pressed="false">Symbols</button>
                         </nav>
                         <section class="analysis" hidden>
@@ -109,6 +110,7 @@
                         <section class="stringspanel" hidden>
                             <div class="resulttools">
                                 <label class="controldropdown translationsource"><select class="stringselect" title="Translation group"></select></label>
+                                <span class="stringflag" hidden></span>
                                 <label class="controldropdown translationlanguage" hidden><select class="localeselect" title="Language"></select></label>
                                 <div class="archivesearch editorsearch" role="search">
                                     <img src="/assets/images/icons/search.svg" alt="" width="20" height="20" draggable="false">

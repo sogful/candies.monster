@@ -16,7 +16,7 @@ import {mediapanel} from "./src/mediapanel.js";
 import {overlayreserve, resizablecolumns} from "./src/columns.js";
 import {encodehintlevels} from "./src/hints.js";
 import {decodelegacyhint, legacyhintname} from "./src/legacyhints.js";
-import {translation} from "./src/gamestrings.js";
+import {stringgroups, translation} from "./src/gamestrings.js";
 import {mediaentries, textures} from "./src/sprites.js";
 
 const find = selector => document.querySelector(selector);
@@ -200,11 +200,6 @@ function synccontrols() {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function readable(value) {
-    return value.replace(/(\d+)_(\d+)$/g, "$1 × $2").replace(/[_-]+/g, " ")
-        .replace(/\b[a-z]/g, letter => letter.toUpperCase()).trim();
-}
-
 function distinctlabels(items, label) {
     const counts = new Map();
     return items.map((item, index) => {
@@ -259,10 +254,9 @@ async function showtool(name, preferences = {}) {
         const choice = levelnav.load(state.levels, state.pkg.metadata.package, preferences.level, state.boxart, level => state.session.hintlevels.has(level.index) || state.session.replacements.has(replacementkey(level.item)));
         if (choice) await drawlevel(choice);
     } else if (tool === "strings") {
-        options(stringselect, distinctlabels(state.strings, stringlabel), preferences.strings);
+        options(stringselect, distinctlabels(state.strings, group => group.label), preferences.strings);
         for (const option of stringselect.options) {
-            const key = replacementkey(state.strings[Number(option.value)]);
-            option.toggleAttribute("data-modified", !!state.session.stringchanges.get(key)?.size);
+            option.toggleAttribute("data-modified", stringmodified(state.strings[Number(option.value)]));
         }
         clearsearch(".filterstrings");
         await loadstrings(preferences.locale);
@@ -411,11 +405,12 @@ async function drawlevel(level = levelnav.selection()) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-function stringlabel(item) {
-    const name = item.path.split("/").at(-1).replace(/\.[^.]+$/, "");
-    const group = /SLAwards\.bundle/i.test(item.path) ? "Awards"
-        : /^menu[_-]?strings$/i.test(name) ? "Menu" : readable(name);
-    return group;
+function stringgroup() {
+    return state.strings[Number(stringselect.value)];
+}
+
+function stringmodified(group) {
+    return group.items.some(item => state.session.stringchanges.get(replacementkey(item))?.size);
 }
 
 function clearflags() {
@@ -424,7 +419,10 @@ function clearflags() {
 }
 
 async function loadstrings(preferred) {
-    const item = state.strings[Number(stringselect.value)];
+    const group = stringgroup();
+    const choices = group?.languages;
+    const locale = choices?.has(preferred) ? preferred : choices?.has("en") ? "en" : choices?.keys().next().value;
+    const item = choices?.get(locale) ?? group?.items[0];
     stringmodel = undefined;
     const body = find(".stringtable tbody");
     body.replaceChildren();
@@ -444,15 +442,13 @@ async function loadstrings(preferred) {
     stringmodel.originals = stringoriginals.get(key);
     stringmodel.changes = stringchanges.get(key) ?? new Set();
     stringchanges.set(key, stringmodel.changes);
-    const locales = stringmodel.model.locales;
-    options(localeselect, locales.map(locale => [languagename(locale), locale]), preferred);
+    const locales = choices ? [...choices.keys()].sort((a, b) => languagename(a).localeCompare(languagename(b))) : stringmodel.model.locales;
+    options(localeselect, locales.map(language => [languagename(language), language]), locale ?? preferred);
     const marker = find(".stringflag");
     marker.replaceChildren();
-    marker.hidden = locales.length !== 1;
+    const filelocale = /(?:^|\/)([\w-]+)\.lproj\//i.exec(item.path)?.[1] ?? "";
+    marker.hidden = locales.length !== 1 || !(localeselect.value || filelocale);
     find(".translationlanguage").hidden = locales.length < 2;
-    const filelocale = /(?:^|\/)([\w-]+)\.lproj\//i.exec(item.path)?.[1]
-        ?? /gl_wp_string_([a-z]+(?:_[a-z]+)?)\.xml$/i.exec(item.path)?.[1].toLowerCase().replace("_latam", "-419").replace("_", "-")
-        ?? "";
     for (const option of localeselect.options) {
         const locale = option.value || filelocale;
         const url = languageflag(locale);
@@ -476,8 +472,9 @@ async function loadstrings(preferred) {
 function renderstrings() {
     if (!stringmodel) return;
     const query = find(".filterstrings").value.trim().toLowerCase();
+    const locale = stringgroup()?.languages ? "" : localeselect.value;
     const rows = stringmodel.model.rows.map((entry, index) => ({entry, index})).filter(({entry}) =>
-        entry.locale === localeselect.value && (!query || entry.key.toLowerCase().includes(query) || entry.read().toLowerCase().includes(query)));
+        entry.locale === locale && (!query || entry.key.toLowerCase().includes(query) || entry.read().toLowerCase().includes(query)));
     const fragment = document.createDocumentFragment();
     for (const {entry, index} of pageitems(rows)) {
         const row = document.createElement("tr");
@@ -495,7 +492,7 @@ function renderstrings() {
             if (changed) stringmodel.changes.add(index);
             else stringmodel.changes.delete(index);
             row.classList.toggle("modifiedentry", changed);
-            stringselect.selectedOptions[0]?.toggleAttribute("data-modified", !!stringmodel.changes.size);
+            stringselect.selectedOptions[0]?.toggleAttribute("data-modified", stringmodified(stringgroup()));
             state.session.strings.set(stringmodel.key, stringmodel);
             state.session.restoredstrings.delete(stringmodel.key);
             synccontrols();
@@ -614,7 +611,7 @@ async function loadpackage(index, opened) {
     state = {
         pkg, session, assets, files, originalicon, hintcache: new Map(),
         levels: hidelevels ? [] : await levelcatalog(assets), sprites: unity ? [] : textures(files, pkg),
-        strings: assets.filter(item => item.category === "stringsgame").sort((a, b) => stringlabel(a).localeCompare(stringlabel(b))),
+        strings: stringgroups(assets),
         symbols: unity ? [] : symbolfiles(files, pkg.metadata.executable),
         legacy: unity ? [] : files.flatMap(file => {
             const name = legacyhintname(file.path);
@@ -856,9 +853,11 @@ find(".exportlevel").addEventListener("click", () => void run(() => {
 }));
 
 stringselect.addEventListener("change", () => void run(() => loadstrings()));
-for (const [control, event] of [[localeselect, "change"], [find(".filterstrings"), "input"]]) {
-    control.addEventListener(event, () => {resultpage = 0; renderstrings()});
-}
+localeselect.addEventListener("change", () => {
+    if (stringgroup()?.languages) void run(() => loadstrings(localeselect.value));
+    else {resultpage = 0; renderstrings()}
+});
+find(".filterstrings").addEventListener("input", () => {resultpage = 0; renderstrings()});
 
 find(".filtersprites").addEventListener("input", event => spritefiles.search(event.target.value));
 function clearsearch(selector) {

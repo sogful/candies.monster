@@ -91,3 +91,39 @@ export function translation(text, path) {
     const locales = [...new Set(model.rows.map(row => row.locale))];
     return {...model, locales};
 }
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+function wrapperlocale(path) {
+    return /(?:^|\/)gl_wp_strings\/gl_wp_string_([a-z]+(?:_[a-z]+)?)\.xml$/i.exec(path)?.[1]
+        .toLowerCase().replace("_latam", "-419").replace("_", "-");
+}
+
+export function stringgroups(assets) {
+    const groups = [];
+    const wrappers = new Map();
+    for (const item of assets) {
+        if (item.category !== "stringsgame") continue;
+        const locale = wrapperlocale(item.path);
+        if (locale) {
+            let group = wrappers.get(item.scope);
+            if (!group) {
+                group = {label: "Gameloft", priority: 2, languages: new Map(), items: []};
+                wrappers.set(item.scope, group);
+                groups.push(group);
+            }
+            group.languages.set(locale === "in" ? "id" : locale, item);
+            group.items.push(item);
+            continue;
+        }
+        const name = item.path.split("/").at(-1).replace(/\.[^.]+$/, "");
+        const awards = /SLAwards\.bundle/i.test(item.path);
+        const main = !awards && /^(?:strings|game[_-]?strings|localizable)$/i.test(name);
+        const label = awards ? "Awards"
+            : /^menu[_-]?strings$/i.test(name) ? "Menu"
+                : name.replace(/(\d+)_(\d+)$/g, "$1 × $2").replace(/[_-]+/g, " ")
+                    .replace(/\b[a-z]/g, letter => letter.toUpperCase()).trim();
+        groups.push({label, priority: main ? 0 : 1, items: [item]});
+    }
+    return groups.sort((a, b) => a.priority - b.priority || a.label.localeCompare(b.label));
+}
