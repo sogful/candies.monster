@@ -227,8 +227,8 @@ export function levelpicker(root, change) {
         const cards = packages.map((entry, index) => {
             const name = title(game, entry.box);
             const card = button("levelpack");
-            const label = entry.box === null || name === "???" ? name : entry.box + ". " + name;
-            const art = packart(game, entry.box);
+            const label = entry.box === null ? name : entry.box + ". " + name;
+            const art = name === "???" ? element("span", "levelpackart levelpackcomingsoon") : packart(game, entry.box);
             const color = game === "original" && holecolors[entry.box - 1];
             if (color) {
                 const peek = element("span", "levelpackpeek");
@@ -305,7 +305,7 @@ export function levelpicker(root, change) {
         let activebutton;
         for (const level of entry.levels) {
             const tile = button("levelpicktile");
-            tile.append(element("span", "levelpicknumber", String(level.level)), element("span", "levelpickstars"));
+            tile.append(element("span", "levelpicknumber", String(level.level)));
             tile.title = "Level " + level.level;
             tile.addEventListener("click", () => showlevel(level, true));
             if (level === previous) activebutton = tile;

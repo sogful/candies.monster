@@ -54,6 +54,7 @@
     position: absolute; inset: 0;
     background-repeat: no-repeat;
 }
+.levelpackcomingsoon {background: url("../art/levels/comingsoon.webp") center/contain no-repeat}
 .levelpackpeek {
     position: absolute; overflow: hidden;
     left: 32.424%; top: 50.606%;
@@ -72,12 +73,14 @@
 }
 .levelpacktext {
     display: inline-block; text-shadow: none;
-    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
-    filter: drop-shadow(0 0.13em 0 #000);
+    -webkit-text-stroke: 0.15em #000; paint-order: stroke fill;
+    filter: drop-shadow(0 0.1em 0 #000);
 }
 .levelpicker[data-game="experiments"] .levelpacklabel, .levelpicker[data-game="timetravel"] .levelpacklabel,
 .levelpicker[data-game="holiday"] .levelpacklabel {inset: auto 8% 1%}
-.levelpack:not(:has(.levelpackart)) .levelpacklabel {inset: 40% 11% auto}
+.levelpack:is(:has(.levelpackcomingsoon),:not(:has(.levelpackart))) .levelpacklabel {
+    inset: 50% 11% auto; transform: translateY(-50%) scaleX(0.93);
+}
 .levelpickarrow, .levelpickback {
     display: inline-grid; place-items: center;
     border: 0; padding: 0;
@@ -140,7 +143,7 @@
     width: clamp(28px,9cqh,70px);
 }
 .levelpickscroll {
-    position: absolute; inset: clamp(36px,11cqh,88px) 9px 6px;
+    position: absolute; inset: 6px 9px;
     display: flex; overflow-y: auto;
 }
 .levelpickgrid {
@@ -162,25 +165,19 @@
     background: transparent; color: #fff;
     font: inherit; cursor: url("/assets/images/cursors/link.cur"),pointer;
 }
-.levelpicktile::before, .levelpickstars {
-    position: absolute;
-    background: url("/preview/dx/dist/wwwroot/content/images/menu_level_ui.webp") no-repeat;
-}
 .levelpicktile::before {
     content: ""; inset: 4.128% 7.799% 4.128% 4.128%;
+    position: absolute;
+    background: url("/preview/dx/dist/wwwroot/content/images/menu_level_ui.webp") no-repeat;
     background-position: 71.21% 97.385%; background-size: 505.208% 660.101%;
 }
 .levelpicknumber {
-    position: absolute; inset: 16% 8% auto 4%;
+    position: absolute; inset: 4.128% 7.799% 4.128% 4.128%;
+    display: grid; place-items: center;
     font-size: 46cqw; line-height: 1;
     -webkit-text-stroke: 0.12em #000; text-shadow: 0 0.1em #000;
     paint-order: stroke fill;
 }
-.levelpickstars {
-    inset: 63.303% 8.716% 3.67% 27.523%;
-    background-position: 15.884% 97.409%; background-size: 697.842% 1815.278%;
-}
-
 @media (max-width: 600px) {
     .levelpickframes {--packsize: clamp(148px,min(74cqw,62cqh),310px); --arrow: clamp(22px,7cqw,38px)}
 }
