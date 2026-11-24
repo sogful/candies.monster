@@ -1,5 +1,6 @@
 import {replacementkey} from "./package.js";
 import {previewtexture} from "./sprites.js";
+import {findsplits, rendersplit} from "./spritesplits.js";
 
 const experiments = ["Getting Started", "Shooting the Candy", "Sticky Steps", "Rocket Science",
     "Bath Time", "Handy Candy", "Ant Hill", "Bamboo Chutes"];
@@ -14,6 +15,9 @@ const timetravel = [
 ];
 const tileatlas = "/preview/dx/dist/wwwroot/content/images";
 const backgroundroot = tileatlas + "/backgrounds";
+const coverwidths = [0.947253, 0.953506, 0.948718, 0.958457, 0.949413, 0.953229, 0.949265,
+    0.949413, 0.953229, 0.953368, 0.953506, 0.953506, 0.953506, 0.953506, 0.953506, 0.953506, 0.953506];
+const artrows = {original: 5, experiments: 2, timetravel: 3, holiday: 1};
 
 export function levelgame(packageid) {
     const id = String(packageid).toLowerCase();
@@ -44,35 +48,43 @@ function spritebase(path) {
     return path.toLowerCase().split("/").at(-1).replace(/\.(?:raw(?:\.zst)?|png|jpe?g|webp)$/i, "");
 }
 
-export function levelart(packageid, sprites, replacements) {
+export function levelart(packageid, sprites, replacements, files) {
     const game = levelgame(packageid);
     const cache = new Map();
     return async (box, cover = false) => {
         const prefix = boxstem(game, box);
         if (!prefix) return null;
-        const candidates = sprites.map(item => ({item, stem: spritebase(item.path)}))
+        const candidates = sprites.map(item => ({item, stem: spritebase(item.path), size: item.parts.reduce((total, part) => total + part.size, 0)}))
             .filter(({stem}) => stem === prefix || stem.startsWith(prefix + "_"))
             .filter(({stem}) => stem.slice(prefix.length).split("_").every(part =>
-                !part || /^(?:\d+(?:x\d+)?|cover|p1|hd|pad|ipad|iphone5|retina)$/.test(part)));
+                !part || /^(?:\d+(?:x\d+)?|cover|p1|hd|ipad|iphone5|retina)$/.test(part)))
+            .filter(({stem}) => !cover || game !== "original" && game !== "holiday" || stem.includes("_cover"));
         candidates.sort((a, b) => {
             const difference = cover
                 ? Number(b.stem.includes("_cover")) - Number(a.stem.includes("_cover"))
                 : Number(a.stem.includes("_cover")) - Number(b.stem.includes("_cover"));
-            const size = item => item.parts.reduce((total, part) => total + part.size, 0);
-            return difference || size(b.item) - size(a.item);
+            return difference || b.size - a.size;
         });
         for (const {item} of candidates) {
             const changed = replacements();
             const current = item.parts.map(part => changed.get(replacementkey(part)));
-            const saved = cache.get(item);
+            const key = (cover ? "cover:" : "game:") + replacementkey(item);
+            const saved = cache.get(key);
             if (saved && current.every((part, index) => part === saved.parts[index])) {
                 const blob = await saved.image;
                 if (blob) return blob;
                 continue;
             }
-            const image = previewtexture(item, changed).catch(() => null);
+            const image = (async () => {
+                const blob = await previewtexture(item, changed);
+                if (!cover) return blob;
+                const frames = await findsplits(item, files, changed);
+                if (frames[0]) return rendersplit(blob, frames[0], changed);
+                if (game === "original" || game === "holiday") return null;
+                return blob;
+            })().catch(() => null);
             if (cache.size >= 10) cache.delete(cache.keys().next().value);
-            cache.set(item, {parts: current, image});
+            cache.set(key, {parts: current, image});
             const blob = await image;
             if (blob) return blob;
         }
@@ -97,19 +109,41 @@ function element(tag, classname, label = "") {
 }
 
 function button(classname, label = "") {
-    const node = element("button", classname, label);
+    const node = element("button", classname + " clickable", label);
     node.type = "button";
     return node;
 }
 
 function arrow(label, next = false) {
-    const node = button("levelpickarrow" + (next ? " levelpicknext" : ""));
+    const node = button("levelpickarrow " + (next ? "levelpicknext" : "levelpickprevious"));
     const icon = element("img", "levelpickarrowicon");
     icon.alt = label;
-    icon.src = "/assets/images/buttons/back.png";
+    icon.src = "art/levels/arrow.webp";
     icon.draggable = false;
     node.append(icon);
     return node;
+}
+
+function backbutton(label, action) {
+    const back = button("levelpickback");
+    back.title = label;
+    back.addEventListener("click", action);
+    return back;
+}
+
+function packart(game, box) {
+    const index = game === "holiday" ? 0 : box - 1;
+    const count = game === "holiday" ? 1 : game === "timetravel" ? timetravel.length
+        : game === "experiments" ? experiments.length : original.length;
+    if (box === null || index < 0 || index >= count) return null;
+    const art = element("span", "levelpackart");
+    const rows = artrows[game];
+    const x = index % 4 * 100 / 3;
+    const y = rows < 2 ? 0 : Math.floor(index / 4) * 100 / (rows - 1);
+    art.style.backgroundImage = `url("art/levels/${game}.webp")`;
+    art.style.backgroundSize = "400% " + rows * 100 + "%";
+    art.style.backgroundPosition = x + "% " + y + "%";
+    return art;
 }
 
 export function levelpicker(root, change) {
@@ -136,33 +170,40 @@ export function levelpicker(root, change) {
         for (const [node, levels] of marks) node.classList.toggle("modifiedentry", !!modified && levels.some(modified));
     }
 
-    function decorate(box, image) {
-        if (!readart) return;
+    function backdrop(box, game) {
+        const twin = game === "original" || game === "holiday";
+        const backdrop = element("div", "levelpickbackdrop" + (twin ? "" : " levelpicksingle"));
+        const fallback = staticboxcover(packageid, box);
+        const images = Array.from({length: twin ? 2 : 1}, () => {
+            const half = element("span", "levelpickhalf");
+            const image = element("img", "levelpickart");
+            image.alt = "";
+            image.draggable = false;
+            image.hidden = !fallback;
+            if (fallback) image.src = fallback;
+            half.append(image);
+            backdrop.append(half);
+            return image;
+        });
+        if (game === "original" && coverwidths[box - 1]) backdrop.style.setProperty("--coverwidth", coverwidths[box - 1]);
+        if (!readart || box === null) return backdrop;
         const revision = generation;
         void readart(box, true).then(blob => {
             if (!blob || generation !== revision) return;
             const url = URL.createObjectURL(blob);
             urls.add(url);
-            image.src = url;
-            image.hidden = false;
+            backdrop.style.removeProperty("--coverwidth");
+            for (const image of images) {
+                image.src = url;
+                image.hidden = false;
+            }
         }).catch(() => {});
-    }
-
-    function imagefor(box) {
-        const image = element("img", "levelpickart");
-        image.alt = "";
-        image.draggable = false;
-        const fallback = staticboxcover(packageid, box);
-        if (fallback) image.src = fallback;
-        else image.hidden = true;
-        decorate(box, image);
-        return image;
+        return backdrop;
     }
 
     function header(label, backlabel, action) {
         const bar = element("header", "levelpickheader");
-        const back = arrow(backlabel);
-        back.addEventListener("click", action);
+        const back = backbutton(backlabel, action);
         bar.append(back, element("span", "levelpicktitle", label));
         root.append(bar);
         return back;
@@ -172,68 +213,61 @@ export function levelpicker(root, change) {
         active = null;
         begin("boxes");
         if (!packages.length) return;
+        const game = levelgame(packageid);
+        root.dataset.game = game;
         const previous = arrow("Previous box");
         const next = arrow("Next box", true);
-        previous.disabled = boxindex === 0;
-        next.disabled = boxindex === packages.length - 1;
         previous.hidden = next.hidden = packages.length < 2;
         const row = element("div", "levelpickstrip");
-        let center;
-        for (const offset of [-1, 0, 1]) {
-            const entry = packages[boxindex + offset];
-            if (!entry) {
-                row.append(element("span", "levelpackspace"));
-                continue;
-            }
-            const name = title(levelgame(packageid), entry.box);
+        const cards = packages.map((entry, index) => {
+            const name = title(game, entry.box);
             const card = button("levelpack");
-            card.dataset.position = String(offset);
             const label = entry.box === null ? name : entry.box + ". " + name;
-            card.append(imagefor(entry.box), element("span", "levelpacklabel", label));
+            const art = packart(game, entry.box);
+            if (art) card.append(art);
+            card.append(element("span", "levelpacklabel", label));
             card.addEventListener("click", () => {
-                boxindex += offset;
+                boxindex = index;
                 showlevels(true);
             });
             marks.set(card, entry.levels);
-            row.append(card);
-            if (!offset) center = card;
-        }
+            return card;
+        });
+        row.append(...cards);
         const frame = element("div", "levelpickframes");
         frame.append(previous, row, next);
         root.append(frame);
         refresh();
-        if (focus) center?.focus({preventScroll: true});
-        let start;
-        let lastswipe = -Infinity;
-        row.addEventListener("pointerdown", event => {
-            if (event.pointerType === "touch") start = event.clientX;
-        });
-        row.addEventListener("pointerup", event => {
-            const origin = start;
-            start = undefined;
-            if (origin === undefined || Math.abs(event.clientX - origin) < 42) return;
-            lastswipe = performance.now();
-            move(event.clientX < origin ? 1 : -1, false);
-        });
-        row.addEventListener("pointercancel", () => {start = undefined});
-        row.addEventListener("click", event => {
-            if (performance.now() - lastswipe > 350) return;
-            event.stopPropagation();
-            event.preventDefault();
-        }, true);
-        const move = (step, focus = true) => {
-            const nextindex = boxindex + step;
-            if (!packages[nextindex]) return;
-            boxindex = nextindex;
-            showboxes(focus);
+        const position = index => cards[index].offsetLeft - cards[0].offsetLeft;
+        const scroll = (index, behavior = "instant") => row.scrollTo({left: position(index), behavior});
+        const update = () => {
+            const step = position(Math.min(1, cards.length - 1));
+            boxindex = step ? Math.max(0, Math.min(cards.length - 1, Math.round(row.scrollLeft / step))) : 0;
+            previous.disabled = boxindex === 0;
+            next.disabled = boxindex === cards.length - 1;
         };
+        const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
+        const move = (step, withfocus = false) => {
+            const index = Math.min(cards.length - 1, Math.max(0, boxindex + step));
+            scroll(index, behavior);
+            if (withfocus) cards[index].focus({preventScroll: true});
+        };
+        scroll(boxindex);
+        update();
+        row.addEventListener("scroll", update, {passive:true});
+        row.addEventListener("wheel", event => {
+            if (Math.abs(event.deltaX) >= Math.abs(event.deltaY) || cards.length < 2) return;
+            event.preventDefault();
+            move(Math.sign(event.deltaY));
+        }, {passive:false});
         previous.addEventListener("click", () => move(-1));
         next.addEventListener("click", () => move(1));
         frame.addEventListener("keydown", event => {
             if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
             event.preventDefault();
-            move(event.key === "ArrowRight" ? 1 : -1);
+            move(event.key === "ArrowRight" ? 1 : -1, true);
         });
+        if (focus) cards[boxindex]?.focus({preventScroll: true});
     }
 
     function showlevels(focus = false) {
@@ -241,20 +275,31 @@ export function levelpicker(root, change) {
         const entry = packages[boxindex];
         active = null;
         begin("levels");
-        const back = header(title(levelgame(packageid), entry.box), "Back to boxes", () => showboxes(true));
+        const game = levelgame(packageid);
         const panel = element("div", "levelpickpanel");
-        if (entry.box !== null) panel.append(imagefor(entry.box));
+        const back = backbutton("Back to boxes", () => showboxes(true));
+        panel.append(backdrop(entry.box, game), back);
+        const count = element("span", "levelpickstarcount", "0/" + entry.levels.length * 3);
+        const star = element("img", "levelpickstar");
+        star.src = "/assets/images/level/star.webp";
+        star.alt = "";
+        count.append(star);
+        panel.append(count);
+        const scroll = element("div", "levelpickscroll");
         const grid = element("div", "levelpickgrid");
+        grid.dataset.columns = entry.levels.length <= 9 ? "3" : entry.levels.length <= 12 ? "4" : "5";
         let activebutton;
         for (const level of entry.levels) {
-            const tile = button("levelpicktile", String(level.level));
+            const tile = button("levelpicktile");
+            tile.append(element("span", "levelpicknumber", String(level.level)), element("span", "levelpickstars"));
             tile.title = "Level " + level.level;
             tile.addEventListener("click", () => showlevel(level, true));
             if (level === previous) activebutton = tile;
             marks.set(tile, [level]);
             grid.append(tile);
         }
-        panel.append(grid);
+        scroll.append(grid);
+        panel.append(scroll);
         root.append(panel);
         refresh();
         if (previous) change(null);
