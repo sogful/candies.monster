@@ -137,6 +137,12 @@ label {min-width: 0}
     flex: 1; min-height: 0;
     gap: 4px;
 }
+.editorcontent > section {position: relative}
+.columnname {
+    position: absolute; overflow: hidden;
+    width: 1px; height: 1px;
+    clip-path: inset(50%);
+}
 .resulttools, .pages, .panelactions {
     display: flex; gap: 5px;
     flex-wrap: wrap; align-items: center;
@@ -200,9 +206,19 @@ label {min-width: 0}
 }
 
 .panelfooter {
-    display: grid; flex: none;
+    position: absolute; inset: auto 0 0;
+    display: grid; z-index: 3;
     grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
-    gap: 4px; margin-top: auto;
+    gap: 4px; pointer-events: none;
+}
+.panelfooter :is(button,a) {pointer-events: auto}
+.tablewrap::after {
+    content: ""; display: block;
+    height: calc(var(--overlayheight,0px) + 2px);
+}
+.editorpage .modifiedentry, .editorpage .dropdownmodified {
+    box-shadow: inset 2px 0 rgba(244,190,75,0.75);
+    background-color: rgba(244,190,75,0.14);
 }
 .pages {grid-column: 2; justify-content: center}
 .panelactions {grid-column: 3; justify-content: end}
@@ -223,29 +239,6 @@ label {min-width: 0}
 .spritebrowser {
     display: flex; flex-direction: column;
     gap: 4px; padding: 4px;
-}
-.spritepath {
-    display: flex; flex-wrap: wrap;
-    gap: 3px;
-}
-.spritefiles {
-    display: grid; align-content: start;
-    gap: 3px; overflow: auto;
-}
-.spritegridview {grid-template-columns: repeat(auto-fit,minmax(min(108px,100%),1fr))}
-.spritecrumb, .spritefolder, .spritefile {
-    min-width: 0; overflow: hidden;
-    text-overflow: ellipsis; text-align: left;
-    border: 0; border-radius: 4px;
-    background: rgba(0,0,0,0.35); color: inherit;
-    padding: 3px 5px; cursor: url("/assets/images/cursors/link.cur"), pointer;
-}
-.spritecrumb {max-width: 100%}
-.spritecrumb:hover, .spritefolder:hover, .spritefile:hover, .spritefile[aria-pressed="true"] {background: rgba(0,0,0,0.5)}
-.spritefolder {color: #8feeff}
-.spritegridview :is(.spritefolder,.spritefile) {
-    text-align: center; overflow-wrap: anywhere;
-    min-height: 45px;
 }
 .spriteview {
     display: grid; place-items: center;
@@ -270,5 +263,6 @@ label {min-width: 0}
     width: 1.35em; height: 0.95em;
     vertical-align: middle; object-fit: contain;
 }
-.editorpage .translationlanguage {flex: 0 0 66px}
-.editorpage .translationlanguage .dropdownbutton {text-overflow: clip}
+.editorpage .translationlanguage {flex: 0 1 auto; max-width: 100%}
+.editorpage .translationlanguage .dropdownbutton {text-overflow: ellipsis}
+.stringflag {font-size: 0.8em}

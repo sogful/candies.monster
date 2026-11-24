@@ -21,7 +21,10 @@ export function resizablecolumns(table, initial) {
         const handle = document.createElement("button");
         handle.type = "button";
         handle.className = "columnhandle";
-        handle.title = "Resize " + heading.textContent + " column";
+        const label = document.createElement("span");
+        label.className = "columnname";
+        label.textContent = "Resize " + heading.textContent + " column";
+        handle.append(label);
         heading.append(handle);
         let drag;
         handle.addEventListener("pointerdown", event => {
@@ -41,4 +44,16 @@ export function resizablecolumns(table, initial) {
         });
     }
     apply();
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+export function overlayreserve(root) {
+    const footers = root.querySelectorAll(".panelfooter");
+    const setheight = footer => footer.parentElement.style.setProperty("--overlayheight", footer.offsetHeight + "px");
+    const resize = new ResizeObserver(entries => {
+        for (const {target} of entries) setheight(target);
+    });
+    for (const footer of footers) resize.observe(footer);
+    return () => footers.forEach(setheight);
 }

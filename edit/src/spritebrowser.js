@@ -1,18 +1,51 @@
-export function spritebrowser(root, choose, clearsearch) {
+export function spritebrowser(root, choose, clearsearch, modified = () => false) {
+    const kinds = [["image", "Textures"], ["audio", "Audio"], ["video", "Video"]];
+    const tabs = document.createElement("nav");
+    tabs.className = "mediatabs";
+    const controls = kinds.map(([kind, label]) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "buttonart mediatab";
+        button.textContent = label;
+        button.addEventListener("click", () => setcategory(kind));
+        return button;
+    });
+    tabs.append(...controls);
     const list = root.querySelector(".spritefiles");
-    const oldpath = root.querySelector(".spritepath");
-    if (oldpath) oldpath.hidden = true;
+    list.before(tabs);
     let items = [];
     let selected = -1;
     let query = "";
+    let category = "image";
+    const buttons = new Map();
 
     function folder() {
         return {folders: new Map(), files: []};
     }
 
+    function refresh() {
+        for (const [index, button] of buttons) button.classList.toggle("mediamodified", modified(items[index]));
+    }
+
+    function setcategory(kind) {
+        if (kind === category || !kinds.some(row => row[0] === kind)) return;
+        category = kind;
+        if (items[selected]?.kind !== category && selected !== -1) {
+            selected = -1;
+            choose(selected);
+        }
+        render();
+    }
+
     function render() {
+        for (const [index, [kind]] of kinds.entries()) {
+            controls[index].classList.toggle("gold", kind === category);
+            controls[index].setAttribute("aria-pressed", String(kind === category));
+        }
+        buttons.clear();
         const tree = folder();
         for (const [index, item] of items.entries()) {
+            if (item.kind !== category) continue;
             const path = item.label.replace(" / ", "/");
             if (query && !path.toLowerCase().includes(query)) continue;
             const segments = path.split("/");
@@ -54,6 +87,7 @@ export function spritebrowser(root, choose, clearsearch) {
                 button.textContent = filename;
                 button.title = path;
                 button.dataset.kind = item.kind;
+                buttons.set(index, button);
                 button.setAttribute("aria-pressed", String(index === selected));
                 button.addEventListener("click", () => {
                     selected = index;
@@ -66,18 +100,23 @@ export function spritebrowser(root, choose, clearsearch) {
             }
             parent.append(branch);
         }
+        refresh();
     }
 
     return {
-        load(files, index) {
+        load(files, index, kind) {
             items = files;
-            selected = files[index] ? Number(index) : -1;
+            category = kinds.some(row => row[0] === kind) ? kind
+                : files[index]?.kind ?? kinds.find(([entry]) => files.some(file => file.kind === entry))?.[0] ?? "image";
+            selected = files[index]?.kind === category ? Number(index) : -1;
             query = "";
             clearsearch();
             render();
         },
         search(value) {query = value.trim().toLowerCase(); render()},
-        view(mode) {list.classList.toggle("mediawide", mode === "grid")},
+        category() {return category},
+        setcategory,
+        refresh,
         selection() {return selected},
         clear() {
             items = [];

@@ -21,20 +21,21 @@ export function dropdown(select) {
 
     function content(control, option) {
         if (!option?.dataset.flag) {
-            control.textContent = option?.dataset.short || option?.textContent || "Choose an option";
+            control.textContent = option?.textContent || "Choose an option";
             return;
         }
         const image = document.createElement("img");
         image.className = "flagart";
-        image.alt = option.textContent;
+        image.alt = "";
         image.src = option.dataset.flag;
-        control.replaceChildren(image);
+        control.replaceChildren(image, document.createTextNode(" " + option.textContent));
     }
 
     function sync() {
         content(button, select.selectedOptions[0]);
         button.disabled = select.disabled || !select.options.length;
         button.title = select.selectedOptions[0]?.textContent || select.title;
+        button.classList.toggle("dropdownmodified", select.selectedOptions[0]?.hasAttribute("data-modified") ?? false);
     }
 
     function close(focus = false) {
@@ -78,6 +79,7 @@ export function dropdown(select) {
             item.className = "dropdownoption clickable";
             item.classList.toggle("dropdownsecondary", option.hasAttribute("data-secondary"));
             item.title = option.textContent;
+            item.classList.toggle("dropdownmodified", option.hasAttribute("data-modified"));
             content(item, option);
             item.disabled = option.disabled;
             item.setAttribute("role", "option");

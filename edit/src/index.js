@@ -10,7 +10,8 @@ import {packageheader} from "./header.js";
 import {clearlevel, renderlevel} from "./levelview.js";
 import {levelart, levelpicker} from "./levelpicker.js";
 import {spritebrowser} from "./spritebrowser.js";
-import {resizablecolumns} from "./columns.js";
+import {mediaview} from "./mediaview.js";
+import {overlayreserve, resizablecolumns} from "./columns.js";
 import {encodehintlevels} from "./hints.js";
 import {decodelegacyhint, encodelegacyhint, legacyhintname} from "./legacyhints.js";
 import {translation} from "./gamestrings.js";
@@ -42,7 +43,6 @@ let working = false;
 let report = [];
 let reportname = "";
 let resultpage = 0;
-let mediaview = "list";
 let stringmodel;
 let spriteurl = "";
 const pendingfiles = [];
@@ -58,8 +58,10 @@ const levelnav = levelpicker(find(".levelpicker"), level => {
         synccontrols();
     } else void run(() => drawlevel(level));
 });
-const spritefiles = spritebrowser(find(".spritebrowser"), () => void run(drawsprite), () => clearsearch(".filtersprites"));
-spritefiles.view(mediaview);
+const camera = mediaview(find(".spriteview"));
+const spritefiles = spritebrowser(find(".spritebrowser"), () => void run(drawsprite), () => clearsearch(".filtersprites"),
+    item => item.parts?.some(part => state?.session.replacements.has(replacementkey(part))));
+const refreshfooters = overlayreserve(find(".editorcontent"));
 resizablecolumns(find(".resulttable"), [16, 20, 64]);
 resizablecolumns(find(".stringtable"), [34, 66]);
 
@@ -120,6 +122,7 @@ async function run(task) {
         working = false;
         message();
         synccontrols();
+        refreshfooters();
         updateurl();
         if (pendingfiles.length) startopening(pendingfiles.splice(0));
     }
@@ -248,16 +251,19 @@ async function showtool(name, preferences = {}) {
     if (pages) pages.hidden = true;
     resultpage = 0;
     if (tool === "levels") {
-        const choice = levelnav.load(state.levels, state.pkg.metadata.package, preferences.level, state.boxart);
+        const choice = levelnav.load(state.levels, state.pkg.metadata.package, preferences.level, state.boxart, level => state.session.hintlevels.has(level.index) || state.session.replacements.has(replacementkey(level.item)));
         if (choice) await drawlevel(choice);
     } else if (tool === "stringsgame") {
         options(stringselect, distinctlabels(state.strings, stringlabel), preferences.strings);
+        for (const option of stringselect.options) {
+            const key = replacementkey(state.strings[Number(option.value)]);
+            option.toggleAttribute("data-modified", !!state.session.stringchanges.get(key)?.size);
+        }
         clearsearch(".filterstrings");
         await loadstrings(preferences.locale);
     } else if (tool === "sprites") {
         clearsearch(".filtersprites");
-        spritefiles.load(state.media, preferences.sprite);
-        setmediaview(preferences.view === "grid" ? "grid" : "list");
+        spritefiles.load(state.media, preferences.sprite, preferences.media);
         if (selectedsprite()) await drawsprite();
     } else {
         const labels = distinctlabels(state.symbols, symbollabel);
@@ -284,6 +290,7 @@ function pageitems(rows) {
     resultpage = Math.min(last, Math.max(0, resultpage));
     const pager = find(toolpanels[tool] + " .pages");
     pager.hidden = !last;
+    refreshfooters();
     pager.querySelector(".previous").disabled = resultpage === 0;
     pager.querySelector(".next").disabled = resultpage === last;
     pager.querySelector(".pagetext").textContent = (resultpage + 1) + " / " + (last + 1);
@@ -391,7 +398,13 @@ function changehints(data, level, replays) {
         data.records.splice(data.records.length - Number(!!incomplete), 0, record);
     } else record.replays = replays;
     state.session.hints.set(data.key, data.records);
+    markhint(level);
     synccontrols();
+}
+
+function markhint(level) {
+    state.session.hintlevels.add(level.index);
+    levelnav.refresh?.();
 }
 
 async function legacyreplays(level) {
@@ -425,6 +438,7 @@ async function drawlevel(level = levelnav.selection()) {
                 const source = legacy.entries[index];
                 if (!source) return;
                 state.session.replacements.set(replacementkey(source), encodelegacyhint(replays[index]));
+                markhint(level);
                 synccontrols();
             };
         } else if (data) {
@@ -478,14 +492,6 @@ async function flagurl(locale) {
     return state.flags.get(locale);
 }
 
-function flagtext(code) {
-    const regions = {en: "GB", es: "ES", ja: "JP", ko: "KR", zh: "CN", pt: "PT", br: "BR", cs: "CZ", uk: "UA", sv: "SE"};
-    if (!code) return "🌐";
-    const region = code.split(/[-_]/).at(-1);
-    const letters = (region === code ? regions[code] || code : region).toUpperCase();
-    return /^[A-Z]{2}$/.test(letters) ? String.fromCodePoint(...[...letters].map(char => 127397 + char.charCodeAt(0))) : code;
-}
-
 async function loadstrings(preferred) {
     const item = state.strings[Number(stringselect.value)];
     stringmodel = undefined;
@@ -501,6 +507,11 @@ async function loadstrings(preferred) {
         const text = await assettext(item, state.session.replacements);
         stringmodel = {key, model: translation(text, item.path), textformat: item.textformat};
     }
+    const {stringoriginals, stringchanges} = state.session;
+    if (!stringoriginals.has(key)) stringoriginals.set(key, stringmodel.model.rows.map(row => row.read()));
+    stringmodel.originals = stringoriginals.get(key);
+    stringmodel.changes = stringchanges.get(key) ?? new Set();
+    stringchanges.set(key, stringmodel.changes);
     const locales = stringmodel.model.locales;
     options(localeselect, locales.map(locale => [languagename(locale), locale]), preferred);
     const marker = find(".stringflag");
@@ -510,7 +521,6 @@ async function loadstrings(preferred) {
     const filelocale = /(?:^|\/)([\w-]+)\.lproj\//i.exec(item.path)?.[1] ?? "";
     for (const option of localeselect.options) {
         const locale = option.value || filelocale;
-        option.dataset.short = flagtext(locale);
         const url = await flagurl(locale);
         if (url) option.dataset.flag = url;
     }
@@ -523,7 +533,7 @@ async function loadstrings(preferred) {
             image.alt = marker.title;
             image.src = option.dataset.flag;
             marker.append(image);
-        } else marker.textContent = option.dataset.short;
+        } else marker.textContent = "(" + marker.title + ")";
     }
     resultpage = 0;
     renderstrings();
@@ -532,10 +542,10 @@ async function loadstrings(preferred) {
 function renderstrings() {
     if (!stringmodel) return;
     const query = find(".filterstrings").value.trim().toLowerCase();
-    const rows = stringmodel.model.rows.filter(row =>
-        row.locale === localeselect.value && (!query || row.key.toLowerCase().includes(query) || row.read().toLowerCase().includes(query)));
+    const rows = stringmodel.model.rows.map((entry, index) => ({entry, index})).filter(({entry}) =>
+        entry.locale === localeselect.value && (!query || entry.key.toLowerCase().includes(query) || entry.read().toLowerCase().includes(query)));
     const fragment = document.createDocumentFragment();
-    for (const entry of pageitems(rows)) {
+    for (const {entry, index} of pageitems(rows)) {
         const row = document.createElement("tr");
         const key = document.createElement("td");
         const value = document.createElement("td");
@@ -544,8 +554,14 @@ function renderstrings() {
         field.rows = 1;
         field.title = entry.key;
         field.value = entry.read();
+        row.classList.toggle("modifiedentry", stringmodel.changes.has(index));
         field.addEventListener("input", () => {
             entry.write(field.value);
+            const changed = field.value !== stringmodel.originals[index];
+            if (changed) stringmodel.changes.add(index);
+            else stringmodel.changes.delete(index);
+            row.classList.toggle("modifiedentry", changed);
+            stringselect.selectedOptions[0]?.toggleAttribute("data-modified", !!stringmodel.changes.size);
             state.session.strings.set(stringmodel.key, stringmodel);
             synccontrols();
         });
@@ -559,6 +575,7 @@ function renderstrings() {
 /*//////////////////////////////////////////////////////////////////////*/
 
 function clearsprite() {
+    camera.reset();
     if (spriteurl) URL.revokeObjectURL(spriteurl);
     spriteurl = "";
     for (const element of Object.values(mediaelements)) {
@@ -612,7 +629,7 @@ async function exportchanges() {
     hints.clear();
 }
 
-const viewkeys = ["tool", "level", "strings", "locale", "sprite", "symbols", "format", "view", "page", "search"];
+const viewkeys = ["tool", "level", "strings", "locale", "sprite", "symbols", "format", "media", "page", "search"];
 
 function urlpreferences() {
     const params = new URLSearchParams(location.search);
@@ -624,7 +641,7 @@ function savepreferences() {
     const search = find(toolpanels[tool] + " .editorsearch input");
     state.session.preferences = {
         tool, level: levelnav.selection()?.index, strings: stringselect.value, locale: localeselect.value,
-        sprite: spritefiles.selection(), symbols: filelist.value, format: formats.value, view: mediaview,
+        sprite: spritefiles.selection(), symbols: filelist.value, format: formats.value, media: spritefiles.category(),
         page: resultpage || undefined, search: search?.value
     };
 }
@@ -705,7 +722,7 @@ async function loadpackage(index) {
 function createfiles(files) {
     return files.map(file => ({
         file, metadata: {}, icon: null, preview: null, preferences: {}, replacements: new Map(),
-        strings: new Map(), hints: new Map(), saved: {metadata: "{}", icon: null, replacements: new Map()}
+        strings: new Map(), hints: new Map(), hintlevels: new Set(), stringoriginals: new Map(), stringchanges: new Map(), saved: {metadata: "{}", icon: null, replacements: new Map()}
     }));
 }
 
@@ -897,6 +914,7 @@ find(".levelinput").addEventListener("change", event => {
         const document = new DOMParser().parseFromString(xml, "application/xml");
         if (document.documentElement.localName !== "map") throw new Error("Choose a level XML file with a map element.");
         state.session.replacements.set(replacementkey(item), editasset(item, xml));
+        levelnav.refresh?.();
         await drawlevel();
     });
 });
@@ -911,19 +929,6 @@ for (const [control, event] of [[localeselect, "change"], [find(".filterstrings"
     control.addEventListener(event, () => {resultpage = 0; renderstrings()});
 }
 
-function setmediaview(mode) {
-    mediaview = mode;
-    spritefiles.view(mode);
-    for (const name of ["grid", "list"]) {
-        const control = find(".sprite" + name);
-        control.classList.toggle("gold", mode === name);
-        control.setAttribute("aria-pressed", String(mode === name));
-    }
-}
-for (const mode of ["grid", "list"]) {
-    find(".sprite" + mode).addEventListener("click", () => setmediaview(mode));
-}
-setmediaview(mediaview);
 find(".filtersprites").addEventListener("input", event => spritefiles.search(event.target.value));
 find(".importsprite").addEventListener("click", () => find(".spriteinput").click());
 find(".spriteinput").addEventListener("change", event => {
@@ -932,6 +937,7 @@ find(".spriteinput").addEventListener("change", event => {
     if (!file || selectedsprite()?.kind !== "image") return;
     void run(async () => {
         for (const [key, bytes] of await replacetexture(selectedsprite(), file)) state.session.replacements.set(key, bytes);
+        spritefiles.refresh();
         await drawsprite();
     });
 });
@@ -941,6 +947,7 @@ find(".exportsprite").addEventListener("click", () => void run(async () => {
 }));
 find(".resetsprite").addEventListener("click", () => void run(async () => {
     for (const part of selectedsprite().parts) state.session.replacements.delete(replacementkey(part));
+    spritefiles.refresh();
     await drawsprite();
 }));
 
