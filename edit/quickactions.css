@@ -1,0 +1,22 @@
+.headerquickslot {
+    grid-area: next; display: flex;
+    align-items: center; justify-content: end;
+    gap: 4px;
+}
+.editorheader:has(.headerquickslot) {
+    grid-template-areas: "icon app export close" "icon identifier identifier identifier" "previous platform next next";
+}
+.editorheader .headerquick {
+    white-space: nowrap; padding: 0 0.45em 0.13em;
+    min-height: 22px; font-size: 0.78em;
+}
+.quickactionmenu .membershipbutton {
+    width: min(255px,calc(100vw - 105px)); font-size: 0.92em;
+    padding-inline: 6px;
+}
+.editorexplosion {
+    position: fixed; inset: -18%;
+    width: 136%; height: 136%;
+    z-index: 2147483647; image-rendering: pixelated;
+    pointer-events: auto;
+}

@@ -3,12 +3,12 @@ function clock(seconds) {
     return Math.floor(time / 60) + ":" + String(time % 60).padStart(2, "0");
 }
 
-export function mediaplayer(root) {
+export function mediaplayer(root, {press, rotate}) {
     const find = selector => root.querySelector(selector);
     const controls = find(".mediacontrols");
     const play = find(".mediaplay");
     const playicon = play.querySelector("img");
-    const loop = find(".medialoop");
+    const rotation = find(".rotatevideo");
     const fullscreen = find(".mediafullscreen");
     const fullscreenicon = fullscreen.querySelector("img");
     const seek = find(".mediaseek");
@@ -34,13 +34,19 @@ export function mediaplayer(root) {
         const paused = active.paused || active.ended;
         playicon.src = paused ? "/assets/images/icons/play.svg" : "/assets/images/icons/pause.png";
         playicon.alt = paused ? "Play" : "Pause";
-        loop.setAttribute("aria-pressed", String(active.loop));
+    }
+
+    function size(item) {
+        if (item === active && item.videoWidth && item.videoHeight) {
+            root.style.setProperty("--media-ratio", item.videoWidth / item.videoHeight);
+        }
     }
 
     for (const item of root.querySelectorAll("audio,video")) {
         for (const name of ["loadedmetadata", "durationchange", "timeupdate", "play", "pause", "ended", "emptied"]) {
             item.addEventListener(name, () => {if (active === item) sync()});
         }
+        item.addEventListener("resize", () => size(item));
         item.addEventListener("error", () => {
             if (active === item && item.hasAttribute("src")) message("The browser could not play this file.");
         });
@@ -49,7 +55,10 @@ export function mediaplayer(root) {
     play.addEventListener("click", () => {
         const item = active;
         if (!item) return;
-        if (!item.paused) item.pause();
+        if (!item.paused && !item.ended) {
+            item.pause();
+            press();
+        }
         else {
             message();
             const source = item.src;
@@ -67,11 +76,7 @@ export function mediaplayer(root) {
         sync();
     });
 
-    loop.addEventListener("click", () => {
-        if (!active) return;
-        active.loop = !active.loop;
-        sync();
-    });
+    rotation.addEventListener("click", rotate);
 
     fullscreen.addEventListener("click", () => {
         const pending = document.fullscreenElement === root ? document.exitFullscreen() : root.requestFullscreen();
@@ -84,13 +89,19 @@ export function mediaplayer(root) {
     return {
         show(item) {
             active = item;
+            const video = item.tagName === "VIDEO";
             controls.hidden = false;
-            fullscreen.hidden = item.tagName !== "VIDEO" || !root.requestFullscreen;
+            root.classList.toggle("videopreview", video);
+            rotation.hidden = !video;
+            fullscreen.hidden = !video || !root.requestFullscreen;
+            size(item);
             sync();
         },
         clear() {
             active = undefined;
             controls.hidden = true;
+            root.classList.remove("videopreview");
+            root.style.removeProperty("--media-ratio");
             message();
             if (document.fullscreenElement === root) void document.exitFullscreen().catch(() => {});
         }

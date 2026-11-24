@@ -1,6 +1,6 @@
 let opened = null;
 
-export function dropdown(select) {
+export function dropdown(select, {menuclass, grid = false} = {}) {
     const root = document.createElement("span");
     root.className = "dropdown";
     const button = document.createElement("button");
@@ -69,8 +69,9 @@ export function dropdown(select) {
         const options = {signal: controller.signal};
         menu = document.createElement("div");
         menu.className = "dropdownmenu";
+        if (menuclass) menu.classList.add(menuclass);
         menu.setAttribute("role", "listbox");
-        menu.setAttribute("aria-label", button.getAttribute("aria-label"));
+        if (button.hasAttribute("aria-label")) menu.setAttribute("aria-label", button.getAttribute("aria-label"));
         menu.style.fontSize = getComputedStyle(button).fontSize;
         menu.style.fontFamily = getComputedStyle(button).fontFamily;
         for (const option of select.options) {
@@ -94,13 +95,18 @@ export function dropdown(select) {
         document.body.append(menu);
         button.setAttribute("aria-expanded", "true");
         position();
-        (menu.querySelector('[aria-selected="true"]') || menu.querySelector("button"))?.focus({preventScroll: true});
+        const selected = menu.querySelector('[aria-selected="true"]') || menu.querySelector("button");
+        selected?.focus({preventScroll: true});
+        if (grid) selected?.scrollIntoView({block: "nearest"});
         menu.addEventListener("keydown", event => {
             const items = [...menu.querySelectorAll("button:not(:disabled)")];
             const current = items.indexOf(document.activeElement);
+            const columns = grid ? getComputedStyle(menu).gridTemplateColumns.split(" ").length : 1;
             let index = -1;
-            if (event.key === "ArrowDown") index = (current + 1) % items.length;
-            if (event.key === "ArrowUp") index = (current + items.length - 1) % items.length;
+            if (event.key === "ArrowDown") index = (current + columns) % items.length;
+            if (event.key === "ArrowUp") index = (current + items.length - columns) % items.length;
+            if (grid && event.key === "ArrowRight") index = (current + 1) % items.length;
+            if (grid && event.key === "ArrowLeft") index = (current + items.length - 1) % items.length;
             if (event.key === "Home") index = 0;
             if (event.key === "End") index = items.length - 1;
             if (event.key === "Escape") {event.preventDefault(); event.stopPropagation(); close(true)}

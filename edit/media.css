@@ -3,44 +3,30 @@
     grid-template-columns: repeat(3,minmax(0,1fr)); gap: 2px;
 }
 .mediatabs .mediatab {
-    min-width: 0; min-height: 24px;
-    font-size: 0.68em; padding: 1px 2px 3px;
+    min-width: 0; min-height: 21px;
+    font-size: clamp(0.43em,2.25vw,0.63em); padding: 1px 0 2px;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .spritefiles {
     display: block; overflow: auto;
-    min-height: 0; padding: 0 3px;
-    font-size: 0.73em; line-height: 1.25;
+    min-height: 0; padding: 0 1px;
+    font-size: 0.62em; line-height: 1.14;
 }
 .spritefiles::after {
     content: ""; display: block;
     height: calc(var(--overlayheight,0px) + 2px);
 }
 .spritefiles .mediatree {
-    display: grid; grid-template-columns: repeat(auto-fill,minmax(min(100px,100%),1fr));
-    gap: 1px 3px; list-style: none;
-    margin: 0; padding: 0 0 0 9px;
+    margin: 0; padding: 0 0 0 4px;
+    list-style: none;
 }
 .spritefiles > .mediatree {padding-left: 0}
 .mediatree li {
-    position: relative; min-width: 0;
-    padding-left: 8px;
-}
-.mediatree li:has(> .spritefolder) {grid-column: 1 / -1}
-.mediatree li::before {
-    content: ""; position: absolute;
-    top: 0; bottom: -2px;
-    left: 0; border-left: 1px solid rgba(255,255,255,0.4);
-}
-.mediatree li:last-child::before {bottom: auto; height: 8px}
-.mediatree li::after {
-    content: ""; position: absolute;
-    top: 8px; left: 0;
-    width: 6px; border-top: 1px solid rgba(255,255,255,0.4);
+    min-width: 0; margin-bottom: 1px;
 }
 .mediatree .spritefolder, .mediatree .spritefile {
     display: block; width: 100%;
-    padding: 1px 4px; color: inherit;
+    padding: 1px 3px; color: inherit;
     overflow: hidden; text-overflow: ellipsis;
     white-space: nowrap; overflow-wrap: normal;
 }
@@ -55,12 +41,6 @@
 }
 .mediatree .spritefile:is(:hover,:focus-visible,[aria-pressed="true"]) {background: rgba(var(--fileink),0.5)}
 .mediatree .spritefile.mediamodified {--fileink: 34,24,14}
-.spriteaudio, .spritevideo {
-    width: 100%; max-width: 100%;
-}
-.spritevideo {
-    max-height: 100%; object-fit: contain;
-}
 .spriteview:has(.spriteimage:not([hidden]),.spritevideo:not([hidden])) {
     position: relative; overflow: hidden;
     cursor: grab; touch-action: none;
@@ -76,42 +56,91 @@
 .mediapreview {
     position: relative; display: grid;
     min-width: 0; min-height: 0;
+    grid-template-rows: minmax(0,1fr); container-type: size;
 }
 .mediapreview:fullscreen {background: #000}
+.mediapreview.videopreview {
+    --media-footer: var(--overlayheight,0px);
+    --media-bar: 32px;
+    --media-aspect: var(--media-ratio,1.7778);
+    --media-room: max(0px,100cqh - var(--media-footer) - var(--media-bar));
+    --media-width: min(100cqw,var(--media-room) * var(--media-aspect));
+    --media-height: calc(var(--media-width) / var(--media-aspect));
+    --media-frame-width: max(var(--media-width),min(100cqw,9em));
+}
+.mediapreview:fullscreen {--media-footer: 0px}
+.mediapreview.turnedvideo {--media-aspect: calc(1 / var(--media-ratio,1.7778))}
+.videopreview .spriteview {
+    grid-template-columns: minmax(0,1fr); grid-template-rows: minmax(0,1fr);
+    padding-bottom: calc(var(--media-footer) + var(--media-bar));
+}
+.videopreview .spriteview::before {
+    content: ""; grid-area: 1 / 1;
+    width: var(--media-frame-width); height: var(--media-height);
+    background: #000; pointer-events: none;
+}
+.videopreview .spritevideo {
+    grid-area: 1 / 1;
+    width: var(--media-width); height: var(--media-height);
+    object-fit: contain;
+}
+.turnedvideo .spritevideo {
+    width: var(--media-height); height: var(--media-width);
+}
 .mediacontrols {
-    position: absolute; z-index: 2;
-    inset: auto 5px calc(var(--overlayheight,0px) + 6px);
+    grid-area: 1 / 1; place-self: center;
+    z-index: 2; width: min(100%,30em);
+    box-sizing: border-box;
     display: flex; align-items: center;
-    gap: 4px; padding: 3px 5px;
+    gap: 3px; padding: 3px 5px;
     background: rgba(0,0,0,0.5); border-radius: 0.65em;
     font-family: var(--sitefont,"Good Dog"),sans-serif;
 }
-.mediapreview:fullscreen .mediacontrols {bottom: 6px}
+.mediapreview > .spriteview {grid-area: 1 / 1}
+.videopreview .mediacontrols {
+    position: absolute; place-self: start center;
+    top: calc((var(--media-room) + var(--media-height)) / 2);
+    width: var(--media-frame-width); height: var(--media-bar);
+    border-top-left-radius: 0; border-top-right-radius: 0;
+}
 .mediacontrols button {
     display: grid; place-items: center;
-    width: 27px; height: 27px;
+    width: 25px; height: 25px;
     flex: none; border: 0;
     padding: 3px; border-radius: 50%;
     background: transparent; cursor: url("/assets/images/cursors/link.cur"),pointer;
 }
 .mediacontrols button:hover, .mediacontrols button:focus-visible {background: rgba(255,255,255,0.16)}
-.mediacontrols button[aria-pressed="true"] {background: rgba(143,238,255,0.2)}
 .mediacontrols button img {width: 19px; height: 19px; object-fit: contain}
 .mediatime {
-    font-size: clamp(0.7rem,2.8vw,1.15rem); white-space: nowrap;
+    flex: 0 0 5.25em; min-width: 0;
+    text-align: center; overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: clamp(0.72rem,2.8vw,1rem); line-height: 1.5;
+    white-space: nowrap;
     -webkit-text-stroke: 0.13em #000; text-shadow: 0 0.13em #000;
     paint-order: stroke fill;
 }
 .mediaprogress {
     position: relative; display: block;
     height: 16px; flex: 1;
-    min-width: 24px;
+    min-width: 16px;
 }
 .mediaprogressbody {
-    display: block; height: 100%;
-    background: url("/assets/images/progress/leftbody.png") left center / 16px 16px no-repeat,
-        url("/assets/images/progress/rightbody.png") right center / 16px 16px no-repeat,
-        url("/assets/images/progress/body.png") center / 100% 16px no-repeat;
+    display: flex; height: 100%;
+    background: url("/assets/images/progress/body.png") center / auto 100% repeat-x content-box;
+    padding-inline: 16px;
+}
+.mediaprogressbody::before, .mediaprogressbody::after {
+    content: ""; position: absolute;
+    top: 0; width: min(50%,16px);
+    height: 100%; background: center / 100% 100% no-repeat;
+}
+.mediaprogressbody::before {
+    left: 0; background-image: url("/assets/images/progress/leftbody.png");
+}
+.mediaprogressbody::after {
+    right: 0; background-image: url("/assets/images/progress/rightbody.png");
 }
 .mediaprogressfill {
     position: absolute; inset: 2px auto 2px 2px;
@@ -121,7 +150,7 @@
 }
 .editorpage .mediaseek {
     position: absolute; inset: 0;
-    height: 100%; margin: 0;
+    width: 100%; height: 100%; margin: 0;
     opacity: 0; cursor: pointer;
 }
 .mediaprogress:focus-within {filter: brightness(1.25)}

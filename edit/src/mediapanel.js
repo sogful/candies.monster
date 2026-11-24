@@ -6,14 +6,13 @@ import {decodecaf, replacecaf} from "./caf.js";
 import {replacemp4} from "./video.js";
 import {previewmedia, readmedia, replacetexture, texturename} from "./sprites.js";
 
-export function mediapanel(root, {current, run, download, refresh}) {
+export function mediapanel(root, {current, run, download, refresh, press}) {
     const find = selector => root.querySelector(selector);
     const elements = {image: find(".spriteimage"), audio: find(".spriteaudio"), video: find(".spritevideo")};
     const camera = mediaview(find(".spriteview"));
-    const player = mediaplayer(find(".mediapreview"));
+    const player = mediaplayer(find(".mediapreview"), {press, rotate: camera.rotate});
     const framepicker = find(".splitpicker");
     const frameselect = find(".splitselect");
-    const rotate = find(".rotatevideo");
     const atlasbutton = find(".splitxml");
     const atlasinput = find(".splitxmlinput");
     const manual = new WeakMap();
@@ -46,7 +45,7 @@ export function mediapanel(root, {current, run, download, refresh}) {
         clearpreview();
         item = undefined;
         frames = [];
-        framepicker.hidden = rotate.hidden = reset.hidden = atlasbutton.hidden = true;
+        framepicker.hidden = reset.hidden = atlasbutton.hidden = true;
         frameselect.replaceChildren();
     }
 
@@ -78,7 +77,7 @@ export function mediapanel(root, {current, run, download, refresh}) {
         replace.disabled = working || !editable || !url;
         save.disabled = working || !url;
         reset.disabled = working;
-        rotate.disabled = atlasbutton.disabled = working;
+        atlasbutton.disabled = working;
         frameselect.disabled = working;
         fileinput.accept = iscaf() ? "audio/*,.caf" : ismp4() ? "video/mp4,.mp4" : "image/*";
     }
@@ -104,7 +103,6 @@ export function mediapanel(root, {current, run, download, refresh}) {
         if (element instanceof HTMLMediaElement) player.show(element);
         const {replacements} = current();
         reset.hidden = !item.parts.some(part => replacements.has(replacementkey(part)));
-        rotate.hidden = item.kind !== "video";
     }
 
     async function draw() {
@@ -136,7 +134,6 @@ export function mediapanel(root, {current, run, download, refresh}) {
     });
 
     frameselect.addEventListener("change", () => void run(preview));
-    rotate.addEventListener("click", () => camera.rotate());
     replace.addEventListener("click", () => fileinput.click());
     fileinput.addEventListener("change", () => {
         const file = fileinput.files[0];

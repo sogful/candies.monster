@@ -1,0 +1,132 @@
+import {popup} from "/src/js/browser/popup.js";
+import {openpackage, packageentries, readentry, replacementkey} from "./package.js";
+import {editasset, packageassets} from "./cuttherope.js";
+
+import {debugsymbols, readsymbols, symbolfiles} from "./symbolreports.js";
+
+function uniquesegment(name, used) {
+    let result = name;
+    let number = 2;
+    while (used.has(result.toLowerCase())) result = name + " (" + number++ + ")";
+    used.add(result.toLowerCase());
+    return result;
+}
+
+function entrypath(pkg, file) {
+    const part = pkg.parts[file.scope]?.name;
+    return part ? part + "/" + file.path : file.path;
+}
+
+async function stringbytes(file, session) {
+    const key = replacementkey(file);
+    const draft = session.strings.get(key);
+    if (draft) return editasset({...file, textformat: draft.textformat}, draft.model.serialize());
+    const restored = session.restoredstrings?.get(key);
+    if (restored) return editasset({...file, textformat: restored.textformat}, restored.text);
+    return session.replacements.get(key) ?? await readentry(file.entry);
+}
+
+const actions = [
+    ["strings", "Extract all strings", "No game strings were found."],
+    ["debug-symbols", "Extract debug symbols", "No debug symbols were found."],
+    ["symbols", "Extract all symbols", "No symbols were found."]
+];
+
+async function extract(mode, sessions, message, download) {
+    const zip = new globalThis.JSZip();
+    const folders = new Set();
+    const failures = [];
+    let count = 0;
+    for (const [index, session] of sessions.entries()) {
+        const name = session.file.name.replace(/[\\/:]/g, "_");
+        message("Extracting " + name + " (" + (index + 1) + " of " + sessions.length + ")");
+        const folder = uniquesegment(name, folders);
+        try {
+            const pkg = await openpackage(session.file);
+            const entries = packageentries(pkg);
+            const files = mode === "strings" ? packageassets(pkg, entries).filter(file => file.category === "stringsgame")
+                : symbolfiles(entries, pkg.metadata.executable);
+            for (const file of files) {
+                try {
+                    const path = folder + "/" + entrypath(pkg, file);
+                    if (mode === "strings") zip.file(path, await stringbytes(file, session));
+                    else {
+                        const reports = (await readsymbols(file)).filter(report =>
+                            report.entries.length && (mode !== "debug-symbols" || debugsymbols(report)));
+                        if (!reports.length) continue;
+                        zip.file(path + ".symbols.json", JSON.stringify({kind: "symbols", version: 1, reports}, null, 2));
+                    }
+                    count++;
+                } catch (error) {
+                    failures.push(name + "/" + entrypath(pkg, file) + " (" + error.message + ")");
+                }
+            }
+        } catch (error) {
+            failures.push(name + " (" + error.message + ")");
+        }
+    }
+    if (!count) {
+        const empty = actions.find(([kind]) => kind === mode)[2];
+        throw new Error(failures.length ? empty + " " + failures[0] : empty);
+    }
+    if (failures.length) zip.file("Skipped files.txt", failures.join("\n"));
+    message("Preparing download");
+    download(await zip.generateAsync({type: "blob", compression: "DEFLATE"}), mode + ".zip");
+}
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+const explosionart = "/assets/images/edit/explosion.gif";
+const explosionsound = "/assets/audio/edit/explosion.wav";
+
+async function explode(save, leave) {
+    await save();
+    const image = document.createElement("img");
+    image.className = "editorexplosion";
+    image.alt = "";
+    image.src = explosionart;
+    await image.decode();
+    document.body.append(image);
+    const sound = new Audio(explosionsound);
+    void sound.play().catch(() => {});
+    window.addEventListener("pagehide", () => {
+        image.remove();
+        sound.pause();
+    }, {once: true});
+    await new Promise(resolve => setTimeout(resolve, 750));
+    leave();
+}
+
+export function quickactions(header, {sessions, run, message, download, save, leave}) {
+    const slot = document.createElement("div");
+    slot.className = "headerquickslot";
+    const next = header.querySelector(".headernext");
+    const button = document.createElement("button");
+    button.className = "headerquick buttonart gold clickable";
+    button.type = "button";
+    button.textContent = "Quick actions";
+    button.setAttribute("aria-expanded", "false");
+    next.before(slot);
+    slot.append(button, next);
+
+    button.addEventListener("click", () => {
+        const menu = popup(button, "What would you like to do for all imported games?");
+        menu.dialog.classList.add("quickactionmenu");
+        for (const [label, action] of [
+            ...actions.map(([mode, label]) => [label, () => extract(mode, sessions(), message, download)]),
+            ["Destroy everything!!!", () => explode(save, leave)]
+        ]) {
+            const item = document.createElement("button");
+            item.className = "membershipbutton descbutton clickable";
+            item.type = "button";
+            item.textContent = label;
+            item.addEventListener("click", () => {
+                menu.close();
+                void run(action);
+            });
+            menu.actions.append(item);
+        }
+        menu.open();
+    });
+    return working => {button.disabled = working};
+}

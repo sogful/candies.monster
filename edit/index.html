@@ -23,6 +23,7 @@
 
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="quickactions.css">
     <link rel="stylesheet" href="levelview.css">
     <link rel="stylesheet" href="levelpicker.css">
     <link rel="stylesheet" href="media.css">
@@ -140,7 +141,6 @@
                                 <label class="controldropdown splitpicker" hidden><select class="splitselect" title="Sprite frame"></select></label>
                                 <button class="buttonart splitxml" type="button" hidden>Atlas XML</button>
                                 <input class="splitxmlinput" type="file" accept=".xml" hidden>
-                                <button class="buttonart rotatevideo" type="button" hidden>Rotate</button>
                             </div>
                             <div class="spritedata">
                                 <div class="spritebrowser">
@@ -160,7 +160,7 @@
                                             <span class="mediaprogressfill"></span>
                                             <input class="mediaseek" type="range" min="0" max="1000" value="0" title="Playback position">
                                         </label>
-                                        <button class="medialoop clickable" type="button" aria-pressed="false"><img src="/assets/images/icons/loop.png" alt="Loop" draggable="false"></button>
+                                        <button class="rotatevideo clickable" type="button" hidden><img src="/assets/images/icons/loop.png" alt="Rotate video" draggable="false"></button>
                                         <button class="mediafullscreen clickable" type="button"><img src="/assets/images/icons/fullscreen.png" alt="Fullscreen" draggable="false"></button>
                                     </div>
                                     <p class="mediaplayerror" role="status" hidden></p>

@@ -58,7 +58,7 @@ function sdkfield(name, original, value) {
     }
     input.value = value;
     label.append(caption, input);
-    const control = dropdown(input).querySelector(".dropdownbutton");
+    const control = dropdown(input, {menuclass: "headersdkmenu", grid: true}).querySelector(".dropdownbutton");
     control.removeAttribute("aria-label");
     control.title = fieldnames[name];
     return {label, input};
@@ -110,6 +110,7 @@ export function packageheader(root, {change, icon, reset, export: save, previous
     const nextbutton = root.querySelector(".headernext");
     const fields = new Map();
     let pkg;
+    let buildgroup;
     let iconurl = "";
     let canchangeicon = false;
 
@@ -130,6 +131,7 @@ export function packageheader(root, {change, icon, reset, export: save, previous
         canchangeicon = false;
         showicon(null);
         fields.clear();
+        buildgroup = undefined;
         app.replaceChildren();
         identifier.replaceChildren();
         platform.replaceChildren();
@@ -163,13 +165,17 @@ export function packageheader(root, {change, icon, reset, export: save, previous
         version.className = "headerversiongroup";
         add(version, "version", "Version");
         if ("build" in metadata || metadata.fields?.build) {
+            buildgroup = document.createElement("span");
+            buildgroup.className = "headerbuildgroup";
             const open = document.createElement("span");
             open.textContent = "(";
             const close = document.createElement("span");
             close.textContent = ")";
-            version.append(open);
-            add(version, "build", "Build");
-            version.append(close);
+            buildgroup.append(open);
+            add(buildgroup, "build", "Build");
+            buildgroup.append(close);
+            version.append(buildgroup);
+            refreshbuild();
         }
         app.append(version);
         add(identifier, "package", "Package identifier");
@@ -178,6 +184,12 @@ export function packageheader(root, {change, icon, reset, export: save, previous
         add(platform, "minimum");
         platform.hidden = !platform.childElementCount;
         sync({working: false, canexport: true});
+    }
+
+    function refreshbuild() {
+        if (!buildgroup) return;
+        const build = fields.get("build").input.value.trim();
+        buildgroup.hidden = !build || build === fields.get("version")?.input.value.trim();
     }
 
     function sync({working, canexport, previous: hasprevious, next: hasnext, multiple}) {
@@ -204,9 +216,12 @@ export function packageheader(root, {change, icon, reset, export: save, previous
     }
 
     root.addEventListener("input", event => {
-        if (event.target.matches(".headerfield input")) change();
+        if (!event.target.matches(".headerfield input")) return;
+        if (event.target.matches(".headerversion input")) refreshbuild();
+        change();
     });
     root.addEventListener("change", event => {
+        if (event.target.matches(".headerbuild input")) refreshbuild();
         if (event.target.matches(".headersdk select")) change();
     });
     pickicon.addEventListener("click", () => iconinput.click());

@@ -1,4 +1,4 @@
-import {languageflag} from "./flags.js";
+import {languageflag, languagename} from "./flags.js";
 import {distinctfiles, loadbatch, storebatch} from "./batch.js";
 import "/assets/static/js/buttons/index.js";
 import {dropdown} from "/assets/static/js/controls/dropdown.js";
@@ -7,6 +7,8 @@ import {exportpackage, openpackage, packageentries, packageicon, packageicons, r
 import {assetoutput, assettext, editasset, importasset, levelcatalog, packageassets, unitypackage} from "./cuttherope.js";
 import {readreport, reportblob} from "./reports.js";
 import {packageheader} from "./header.js";
+import {quickactions} from "./quickactions.js";
+import {debugsymbols, readsymbols, symbolfiles} from "./symbolreports.js";
 import {clearlevel, renderlevel} from "./levelview.js";
 import {levelart, levelpicker} from "./levelpicker.js";
 import {spritebrowser} from "./spritebrowser.js";
@@ -38,6 +40,7 @@ let current = -1;
 let state;
 let tool;
 let working = false;
+let departing = false;
 let report = [];
 let reportname = "";
 let resultpage = 0;
@@ -59,7 +62,7 @@ const spritefiles = spritebrowser(find(".spritebrowser"), () => void run(media.d
     item => item.parts?.some(part => state?.session.replacements.has(replacementkey(part))));
 const media = mediapanel(find(".spritepanel"), {
     current: () => ({selected: selectedsprite(), entries: state.files, replacements: state.session.replacements}),
-    run, download, refresh: () => spritefiles.refresh()
+    run, download, press, refresh: () => spritefiles.refresh()
 });
 const refreshfooters = overlayreserve(find(".editorcontent"));
 resizablecolumns(find(".resulttable"), [16, 20, 64]);
@@ -91,6 +94,18 @@ const header = packageheader(find(".editorheader"), {
         download(await packageicons(pkg, session.icon), pkg.file.name.replace(/\.[^.]+$/, "") + "-icons.zip");
     }),
     export: () => void run(exportchanges)
+});
+const syncquickactions = quickactions(find(".editorheader"), {
+    sessions: () => sessions, run, message, download,
+    save: async () => {
+        savepreferences();
+        try {await storebatch(sessions, current)}
+        catch {throw new Error("The browser could not save this batch for reload.")}
+    },
+    leave() {
+        departing = true;
+        location.assign("/");
+    }
 });
 
 /*//////////////////////////////////////////////////////////////////////*/
@@ -155,7 +170,7 @@ function availability(direction) {
 
 function unsaved(session) {
     const {saved, icon, replacements, strings, hints, metadata} = session;
-    return !!(strings.size || hints.size || icon !== saved.icon || JSON.stringify(metadata) !== saved.metadata
+    return !!(strings.size || session.restoredstrings.size || hints.size || icon !== saved.icon || JSON.stringify(metadata) !== saved.metadata
         || replacements.size !== saved.replacements.size
         || [...replacements].some(([key, value]) => saved.replacements.get(key) !== value));
 }
@@ -170,6 +185,7 @@ function synccontrols() {
     find(".importlevel").disabled = working || !shownlevel;
     find(".exportlevel").disabled = working || !shownlevel;
     media.sync(working);
+    syncquickactions(working);
     for (const control of document.querySelectorAll(".stringtable textarea")) control.readOnly = working;
     header.sync({
         working, canexport: !!state, multiple: current >= 0 && sessions.filter(session => !session.unreadable).length > 1,
@@ -194,22 +210,9 @@ function distinctlabels(items, label) {
     });
 }
 
-function sourcepriority(file, executable) {
-    if (/\.(?:debug|sym|dwarf)(?:\.zst)?$/i.test(file.path) || /\/(?:DWARF|Symbols)\//i.test(file.path)) return 0;
-    if (file.path === executable || /(?:^|\/)libctr[^/]*\.so$/i.test(file.path)) return 1;
-    if (/\.(?:so|dylib|macho)$/i.test(file.path)) return 2;
-    return 3;
-}
-
-function symbolfiles(files, executable) {
-    return files.filter(file => file.path === executable || /\.(?:so(?:\.\d+)?|dylib|macho|dex|debug|sym|map)$/i.test(file.path)
-        || /(?:^|\/)(?:SymbolMap(?:-32|-64)?|DWARF\/[^/]+|[^/]+\.framework\/[^/.]+)$/i.test(file.path))
-        .sort((a, b) => sourcepriority(a, executable) - sourcepriority(b, executable));
-}
-
 function reportpriority(item) {
     if (!item.entries.length) return 4;
-    if (/DWARF|STABS|Breakpad|debug/i.test(item.format)) return 0;
+    if (debugsymbols(item)) return 0;
     if (/\.symtab|nlist/i.test(item.format)) return 1;
     if (/\.dynsym|export/i.test(item.format)) return 2;
     return 3;
@@ -315,23 +318,7 @@ async function extracts(preferred) {
     const file = state.symbols[Number(filelist.value)];
     if (!file) return;
     message("Reading symbols");
-    const bytes = await readentry(file.entry);
-    const worker = new Worker(new URL("./analysis.js", import.meta.url), {type: "module"});
-    try {
-        const result = await new Promise((resolve, reject) => {
-            const timer = setTimeout(() => reject(new Error("Reading symbols took longer than 60 seconds.")), 60000);
-            worker.onmessage = ({data}) => {
-                clearTimeout(timer);
-                if (data.error) reject(new Error(data.error));
-                else resolve(data.result);
-            };
-            worker.onerror = event => {clearTimeout(timer); reject(new Error(event.message || "Could not read symbols."))};
-            worker.postMessage({kind: "symbols", bytes, filename: file.path}, [bytes.buffer]);
-        });
-        showreport(result, file.path.split("/").at(-1), preferred);
-    } finally {
-        worker.terminate();
-    }
+    showreport(await readsymbols(file), file.path.split("/").at(-1), preferred);
 }
 
 function showreport(reports, name, preferred) {
@@ -467,26 +454,9 @@ function stringlabel(item) {
     return group;
 }
 
-function languagename(code) {
-    if (!code) return "Default";
-    try {
-        return new Intl.DisplayNames(["en"], {type: "language"}).of(code === "br" ? "pt-BR" : code) || code;
-    } catch {return code}
-}
-
 function clearflags() {
-    for (const url of state?.flags.values() || []) if (url) URL.revokeObjectURL(url);
     find(".stringflag").replaceChildren();
     find(".stringflag").hidden = true;
-}
-
-async function flagurl(locale) {
-    if (!locale) return "";
-    if (!state.flags.has(locale)) {
-        const blob = await languageflag(locale, state.sprites, state.session.replacements).catch(() => null);
-        state.flags.set(locale, blob ? URL.createObjectURL(blob) : "");
-    }
-    return state.flags.get(locale);
 }
 
 async function loadstrings(preferred) {
@@ -501,8 +471,9 @@ async function loadstrings(preferred) {
     if (draft) {
         stringmodel = {...draft, key};
     } else {
-        const text = await assettext(item, state.session.replacements);
-        stringmodel = {key, model: translation(text, item.path), textformat: item.textformat};
+        const restored = state.session.restoredstrings.get(key);
+        const text = restored?.text ?? await assettext(item, state.session.replacements);
+        stringmodel = {key, model: translation(text, item.path), textformat: restored?.textformat ?? item.textformat};
     }
     const {stringoriginals, stringchanges} = state.session;
     if (!stringoriginals.has(key)) stringoriginals.set(key, stringmodel.model.rows.map(row => row.read()));
@@ -520,7 +491,7 @@ async function loadstrings(preferred) {
         ?? "";
     for (const option of localeselect.options) {
         const locale = option.value || filelocale;
-        const url = await flagurl(locale);
+        const url = languageflag(locale);
         if (url) option.dataset.flag = url;
     }
     if (!marker.hidden) {
@@ -562,6 +533,7 @@ function renderstrings() {
             row.classList.toggle("modifiedentry", changed);
             stringselect.selectedOptions[0]?.toggleAttribute("data-modified", !!stringmodel.changes.size);
             state.session.strings.set(stringmodel.key, stringmodel);
+            state.session.restoredstrings.delete(stringmodel.key);
             synccontrols();
         });
         value.append(field);
@@ -581,13 +553,16 @@ function selectedsprite() {
 
 async function exportchanges() {
     const {pkg, assets, session} = state;
-    const {metadata, icon, strings, hints} = session;
+    const {metadata, icon, strings, restoredstrings, hints} = session;
     const changes = new Map(session.replacements);
     for (const item of assets) {
         const key = replacementkey(item);
         if (strings.has(key)) {
             const draft = strings.get(key);
             changes.set(key, editasset({...item, textformat: draft.textformat}, draft.model.serialize()));
+        } else if (restoredstrings.has(key)) {
+            const draft = restoredstrings.get(key);
+            changes.set(key, editasset({...item, textformat: draft.textformat}, draft.text));
         }
         if (hints.has(key)) changes.set(key, encodehintlevels(hints.get(key)));
     }
@@ -598,6 +573,7 @@ async function exportchanges() {
     session.saved = {metadata: JSON.stringify(metadata), icon, replacements: new Map(changes)};
     session.replacements = changes;
     strings.clear();
+    restoredstrings.clear();
     hints.clear();
 }
 
@@ -645,7 +621,7 @@ function updateurl() {
 }
 
 function rememberbatch() {
-    return storebatch(sessions.map(session => session.file))
+    return storebatch(sessions, current)
         .catch(() => displayerror("The browser could not save this batch for reload."));
 }
 
@@ -669,7 +645,7 @@ async function loadpackage(index) {
         || /^cut the rope(?:\s*:\s*|\s+)(?:2|magic)(?:\b|$)/i.test(pkg.metadata.title || "");
     const originalicon = await packageicon(pkg).catch(() => null);
     state = {
-        pkg, session, assets, files, originalicon, hintcache: new Map(), flags: new Map(),
+        pkg, session, assets, files, originalicon, hintcache: new Map(),
         levels: hidelevels ? [] : await levelcatalog(assets), sprites: unity ? [] : textures(files, pkg),
         strings: assets.filter(item => item.category === "stringsgame").sort((a, b) => stringlabel(a).localeCompare(stringlabel(b))),
         symbols: unity ? [] : symbolfiles(files, pkg.metadata.executable),
@@ -679,7 +655,7 @@ async function loadpackage(index) {
         })
     };
     state.media = unity ? [] : mediaentries(files, pkg, state.sprites);
-    state.boxart = levelart(pkg.metadata.package, state.sprites, () => session.replacements);
+    state.boxart = levelart(pkg.metadata.package, state.sprites, () => session.replacements, files);
     current = index;
     editor.hidden = false;
     find(".intake").hidden = true;
@@ -706,7 +682,8 @@ async function loadpackage(index) {
 function createfiles(files) {
     return files.map(file => ({
         file, metadata: {}, icon: null, preview: null, preferences: {}, replacements: new Map(),
-        strings: new Map(), hints: new Map(), hintlevels: new Set(), stringoriginals: new Map(), stringchanges: new Map(), saved: {metadata: "{}", icon: null, replacements: new Map()}
+        strings: new Map(), restoredstrings: new Map(), hints: new Map(), hintlevels: new Set(),
+        stringoriginals: new Map(), stringchanges: new Map(), saved: {metadata: "{}", icon: null, replacements: new Map()}
     }));
 }
 
@@ -743,13 +720,15 @@ function startopening(files) {
 async function resumebatch() {
     const view = urlpreferences();
     const app = Number(new URLSearchParams(location.search).get("app"));
-    let files;
-    try {files = await loadbatch()}
+    let batch;
+    try {batch = await loadbatch()}
     catch {return}
-    if (!Array.isArray(files) || !files.length || working || state) return;
-    const index = Number.isInteger(app) && app > 0 && app <= files.length ? app - 1 : 0;
-    sessions = createfiles(files);
-    sessions[index].preferences = view;
+    const stored = Array.isArray(batch) ? createfiles(batch) : batch?.sessions?.map(session => ({...session, strings: new Map()}));
+    if (!stored?.length || working || state) return;
+    const index = Number.isInteger(app) && app > 0 && app <= stored.length ? app - 1
+        : !Object.keys(view).length && stored[batch?.active] ? batch.active : 0;
+    sessions = stored;
+    if (Object.keys(view).length) sessions[index].preferences = view;
     await run(async () => {
         try {await loadpackage(index)}
         catch (failure) {
@@ -835,13 +814,14 @@ back.addEventListener("click", event => {
 
 document.addEventListener("click", event => {
     const control = event.target.closest("button, a[href]");
-    if (control && control !== back && !control.disabled && control.getAttribute("aria-disabled") !== "true") press();
+    if (control && control !== back && !control.matches(".mediaplay") && !control.disabled && control.getAttribute("aria-disabled") !== "true") press();
 }, {capture: true});
 window.addEventListener("beforeunload", event => {
-    if (!sessions.some(unsaved)) return;
+    if (departing || !sessions.some(unsaved)) return;
     event.preventDefault();
     event.returnValue = true;
 });
+window.addEventListener("pageshow", () => {departing = false});
 
 picker.addEventListener("click", () => packageinput.click());
 packageinput.addEventListener("change", () => {

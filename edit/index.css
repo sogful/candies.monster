@@ -228,7 +228,7 @@ label {min-width: 0}
 
 .spritedata {
     display: grid; flex: 1;
-    grid-template-columns: minmax(140px,1fr) minmax(0,2fr);
+    grid-template-columns: minmax(0,clamp(86px,26%,250px)) minmax(0,1fr);
     min-height: 0; gap: 5px;
 }
 .spritebrowser, .spriteview {
@@ -237,7 +237,8 @@ label {min-width: 0}
 }
 .spritebrowser {
     display: flex; flex-direction: column;
-    gap: 4px; padding: 4px;
+    gap: 3px; padding: 3px;
+    min-width: 0;
 }
 .spriteview {
     display: grid; place-items: center;
@@ -252,10 +253,6 @@ label {min-width: 0}
     .controldropdown {flex: 1 1 120px}
     .panelfooter {grid-template-columns: minmax(0,1fr)}
     .panelfooter .pages, .panelfooter .panelactions {grid-column: 1}
-    .spritedata {
-        grid-template-columns: minmax(0,1fr);
-        grid-template-rows: minmax(65px,1fr) minmax(65px,1fr);
-    }
 }
 
 .flagart {

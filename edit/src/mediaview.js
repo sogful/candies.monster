@@ -15,6 +15,7 @@ export function mediaview(container) {
         container.style.setProperty("--media-y", y + "px");
         container.style.setProperty("--media-scale", String(scale));
         container.style.setProperty("--media-angle", angle + "deg");
+        container.parentElement.classList.toggle("turnedvideo", angle % 180 !== 0);
     }
 
     function reset() {

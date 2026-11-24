@@ -71,6 +71,10 @@
     min-width: 0; margin-inline-start: auto;
     gap: 1px;
 }
+.headerbuildgroup {
+    display: inline-flex; align-items: center;
+    min-width: 0; gap: 1px;
+}
 .headeridentifier {grid-area: identifier; min-width: 0}
 .headerplatform {
     grid-area: platform; display: flex;
@@ -113,8 +117,16 @@
     overflow: hidden; text-overflow: ellipsis;
 }
 .editorpage .editorheader .headersdk .dropdownbutton::after {right: 6px}
-.editorpage:has(.headersdk .dropdownbutton[aria-expanded="true"]) .dropdownmenu .dropdownoption {
-    padding: 2px 5px;
+.editorpage .headersdkmenu {
+    display: grid; grid-template-columns: repeat(5,minmax(0,1fr));
+    width: min(300px,calc(100vw - 16px)); gap: 0 1px;
+}
+.editorpage .headersdkmenu .dropdownoption {
+    padding: 1px 2px; line-height: 1;
+    text-align: center;
+}
+@media (max-width: 340px) {
+    .editorpage .headersdkmenu {grid-template-columns: repeat(4,minmax(0,1fr))}
 }
 
 @media (max-width: 560px) {

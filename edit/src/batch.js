@@ -26,8 +26,15 @@ export function loadbatch() {
     return batchrequest("readonly", store => store.get("last"));
 }
 
-export function storebatch(files) {
-    return batchrequest("readwrite", store => files.length ? store.put(files, "last") : store.delete("last"));
+export function storebatch(sessions, active) {
+    const snapshots = sessions.map(({strings, restoredstrings, ...session}) => {
+        const drafts = new Map(restoredstrings);
+        for (const [key, draft] of strings) {
+            drafts.set(key, {text: draft.model.serialize(), textformat: draft.textformat});
+        }
+        return {...session, restoredstrings: drafts};
+    });
+    return batchrequest("readwrite", store => snapshots.length ? store.put({sessions: snapshots, active}, "last") : store.delete("last"));
 }
 
 export async function distinctfiles(files, existing) {
