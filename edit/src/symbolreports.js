@@ -2,7 +2,7 @@ import {readentry} from "./package.js";
 
 export const debugsymbols = report => /DWARF|STABS|Breakpad|debug/i.test(report.format);
 
-function sourcepriority(file, executable) {
+export function sourcepriority(file, executable) {
     if (/\.(?:debug|sym|dwarf)(?:\.zst)?$/i.test(file.path) || /\/(?:DWARF|Symbols)\//i.test(file.path)) return 0;
     if (file.path === executable || /(?:^|\/)libctr[^/]*\.so$/i.test(file.path)) return 1;
     if (/\.(?:so|dylib|macho)$/i.test(file.path)) return 2;

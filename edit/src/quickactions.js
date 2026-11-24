@@ -79,25 +79,31 @@ async function extract(mode, sessions, message, download) {
 const explosionart = "/assets/images/edit/explosion.gif";
 const explosionsound = "/assets/audio/edit/explosion.wav";
 
-async function explode(save, leave) {
-    await save();
+async function explode(save, leave, sound) {
     const image = document.createElement("img");
     image.className = "editorexplosion";
     image.alt = "";
     image.src = explosionart;
-    await image.decode();
     document.body.append(image);
-    const sound = new Audio(explosionsound);
+    sound.currentTime = 0;
     void sound.play().catch(() => {});
-    window.addEventListener("pagehide", () => {
+    const cleanup = () => {
         image.remove();
         sound.pause();
-    }, {once: true});
-    await new Promise(resolve => setTimeout(resolve, 750));
+    };
+    try {
+        await Promise.all([save(), new Promise(resolve => setTimeout(resolve, 750))]);
+    } catch (error) {
+        cleanup();
+        throw error;
+    }
+    window.addEventListener("pagehide", cleanup, {once: true});
     leave();
 }
 
 export function quickactions(header, {sessions, run, message, download, save, leave}) {
+    const sound = new Audio(explosionsound);
+    sound.preload = "auto";
     const slot = document.createElement("div");
     slot.className = "headerquickslot";
     const next = header.querySelector(".headernext");
@@ -114,7 +120,7 @@ export function quickactions(header, {sessions, run, message, download, save, le
         menu.dialog.classList.add("quickactionmenu");
         for (const [label, action] of [
             ...actions.map(([mode, label]) => [label, () => extract(mode, sessions(), message, download)]),
-            ["Destroy everything!!!", () => explode(save, leave)]
+            ["Destroy everything!!!", () => explode(save, leave, sound)]
         ]) {
             const item = document.createElement("button");
             item.className = "membershipbutton descbutton clickable";

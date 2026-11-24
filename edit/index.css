@@ -161,6 +161,14 @@ label {min-width: 0}
 }
 .editorpage .editorsearch:focus-within {background: rgba(0,0,0,0.5)}
 .resultstatus, .status {margin: 2px 0; overflow-wrap: anywhere}
+.status {
+    position: fixed; inset: auto auto max(12px,env(safe-area-inset-bottom)) 50%;
+    translate: -50% 0; z-index: 10;
+    width: max-content; max-width: calc(100% - 18px);
+    padding: 0.25em 0.7em 0.35em; border-radius: 0.6em;
+    background: var(--panel); text-align: center;
+    pointer-events: none;
+}
 .status:empty, .resultstatus:empty {display: none}
 .error {
     margin: 4px 0 0; color: #ffbdab;

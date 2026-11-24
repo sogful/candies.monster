@@ -5,6 +5,8 @@ import {mediaview} from "./mediaview.js";
 import {decodecaf, replacecaf} from "./caf.js";
 import {replacemp4} from "./video.js";
 import {previewmedia, readmedia, replacetexture, texturename} from "./sprites.js";
+import {findtextureframes} from "./splitfinder.js";
+import {rendersplit, replacesplit} from "./spritesplits.js";
 
 export function mediapanel(root, {current, run, download, refresh, press}) {
     const find = selector => root.querySelector(selector);
@@ -13,16 +15,12 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
     const player = mediaplayer(find(".mediapreview"), {press, rotate: camera.rotate});
     const framepicker = find(".splitpicker");
     const frameselect = find(".splitselect");
-    const atlasbutton = find(".splitxml");
-    const atlasinput = find(".splitxmlinput");
-    const manual = new WeakMap();
     const fileinput = find(".spriteinput");
     const replace = find(".importsprite");
     const reset = find(".resetsprite");
     const save = find(".exportsprite");
     dropdown(frameselect);
     let item;
-    let splittools;
     let frames = [];
     let url = "";
 
@@ -45,14 +43,13 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
         clearpreview();
         item = undefined;
         frames = [];
-        framepicker.hidden = reset.hidden = atlasbutton.hidden = true;
+        framepicker.hidden = reset.hidden = true;
         frameselect.replaceChildren();
     }
 
     function setframes(found) {
         frames = found;
         framepicker.hidden = !frames.length;
-        atlasbutton.hidden = !!frames.length || !splittools || item?.kind !== "image";
         if (!frames.length) return;
         frameselect.replaceChildren(new Option("Entire texture", ""), ...frames.map((frame, index) =>
             new Option(frame.name || "Frame " + (index + 1), String(index))));
@@ -72,28 +69,27 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
     }
 
     function sync(working) {
-        const editable = item?.kind === "image" || iscaf() || ismp4();
+        const editable = item?.kind === "image" && !selectedframe()?.inferred || iscaf() || ismp4();
         replace.hidden = !editable;
         replace.disabled = working || !editable || !url;
         save.disabled = working || !url;
         reset.disabled = working;
-        atlasbutton.disabled = working;
         frameselect.disabled = working;
         fileinput.accept = iscaf() ? "audio/*,.caf" : ismp4() ? "video/mp4,.mp4" : "image/*";
     }
 
-    async function blob() {
+    async function blob(source) {
         const {replacements} = current();
         if (iscaf()) return new Blob([decodecaf(await readmedia(item, replacements))], {type: "audio/wav"});
-        const native = await previewmedia(item, replacements);
+        const native = source ?? await previewmedia(item, replacements);
         const frame = selectedframe();
-        return frame ? splittools.rendersplit(native, frame, replacements) : native;
+        return frame ? rendersplit(native, frame, replacements) : native;
     }
 
-    async function preview() {
+    async function preview(source) {
         clearpreview();
         if (!item) return;
-        const image = await blob();
+        const image = await blob(source);
         const element = elements[item.kind];
         element.title = item.label;
         if (item.kind === "image") element.alt = selectedframe()?.name || item.label;
@@ -107,31 +103,17 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
 
     async function draw() {
         const {selected, entries, replacements} = current();
+        let source;
         if (selected !== item) {
             clear();
             item = selected;
             if (item?.kind === "image") {
-                splittools ??= await import("./spritesplits.js").catch(() => null);
-                if (splittools) setframes(manual.get(item) ?? await splittools.findsplits(item, entries, replacements).catch(() => []));
+                source = await previewmedia(item, replacements);
+                setframes(await findtextureframes(item, entries, replacements, source).catch(() => []));
             }
         }
-        await preview();
+        await preview(source);
     }
-
-    atlasbutton.addEventListener("click", () => atlasinput.click());
-    atlasinput.addEventListener("change", () => {
-        const file = atlasinput.files[0];
-        atlasinput.value = "";
-        if (!file || !item || !splittools) return;
-        void run(async () => {
-            if (file.size > 1024 * 1024) throw new Error("Choose an atlas XML file smaller than 1 MB.");
-            const {entries, replacements} = current();
-            const found = await splittools.findsplits(item, entries, replacements, await file.text());
-            if (!found.length) throw new Error("The atlas XML has no matching frames for this texture.");
-            manual.set(item, found);
-            setframes(found);
-        });
-    });
 
     frameselect.addEventListener("change", () => void run(preview));
     replace.addEventListener("click", () => fileinput.click());
@@ -142,10 +124,11 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
         void run(async () => {
             const {replacements} = current();
             const frame = selectedframe();
+            if (frame?.inferred) return;
             if (iscaf()) replacements.set(replacementkey(item), await replacecaf(file, await readmedia(item)));
             else if (ismp4()) replacements.set(replacementkey(item), await replacemp4(file, await readmedia(item)));
             else {
-                const changes = frame ? await splittools.replacesplit(item, replacements, frame, file) : await replacetexture(item, file);
+                const changes = frame ? await replacesplit(item, replacements, frame, file) : await replacetexture(item, file);
                 for (const [key, bytes] of changes) replacements.set(key, bytes);
             }
             refresh();
@@ -157,7 +140,7 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
         if (!item) return;
         const frame = selectedframe();
         const name = texturename(item);
-        const framebase = frame?.name?.split(/[\\/]/).at(-1)?.replace(/\.[^.]+$/, "");
+        const framebase = frame?.inferred ? "" : frame?.name?.split(/[\\/]/).at(-1)?.replace(/\.[^.]+$/, "");
         const stem = name.replace(/\.[^.]+$/, "");
         const filename = iscaf() ? stem + ".wav" : frame ? (framebase || stem + "-" + (Number(frameselect.value) + 1)) + ".png" : name;
         download(await blob(), filename);

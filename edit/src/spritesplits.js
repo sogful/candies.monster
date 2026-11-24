@@ -3,6 +3,7 @@ import {readentry} from "./package.js";
 import {previewtexture, replacetexture} from "./sprites.js";
 
 const encoding = new TextDecoder();
+const wideencoding = new TextDecoder("utf-16le");
 const indexes = new WeakMap();
 const imagetype = /\.(?:raw(?:\.zst)?|jpe?g|png|webp)$/i;
 const maxlibrary = 48 * 1024 * 1024;
@@ -11,8 +12,12 @@ function readliteral(bytes, from, width, limit) {
     let result = "";
     for (let offset = from; offset + width <= bytes.length && offset - from < limit; offset += width) {
         let code = bytes[offset];
-        if (width === 4) code += bytes[offset + 1] * 256 + bytes[offset + 2] * 65536 + bytes[offset + 3] * 16777216;
-        if (!code) return width === 1 ? encoding.decode(bytes.subarray(from, offset)) : result;
+        if (width >= 2) code += bytes[offset + 1] * 256;
+        if (width === 4) code += bytes[offset + 2] * 65536 + bytes[offset + 3] * 16777216;
+        if (!code) {
+            if (width === 4) return result;
+            return (width === 1 ? encoding : wideencoding).decode(bytes.subarray(from, offset));
+        }
         if (width === 4 && code <= 0x10ffff) result += String.fromCodePoint(code);
         else if (width === 4) return "";
     }
@@ -21,13 +26,14 @@ function readliteral(bytes, from, width, limit) {
 
 function compiledatlases(bytes, index) {
     const marker = "<info";
-    for (const width of [1, 4]) {
+    for (const width of [1, 2, 4]) {
         for (let offset = 0; offset < bytes.length - marker.length * width; offset++) {
             if (bytes[offset] !== 60) continue;
             let matched = true;
             for (let char = 0; char < marker.length; char++) {
                 const at = offset + char * width;
-                if (bytes[at] !== marker.charCodeAt(char) || width === 4 && (bytes[at + 1] || bytes[at + 2] || bytes[at + 3])) {
+                if (bytes[at] !== marker.charCodeAt(char) || width >= 2 && bytes[at + 1] ||
+                    width === 4 && (bytes[at + 2] || bytes[at + 3])) {
                     matched = false;
                     break;
                 }
@@ -38,7 +44,7 @@ function compiledatlases(bytes, index) {
             while (previous >= offset - 4 * width && bytes[previous] === 0) previous -= width;
             const end = previous + width;
             while (previous >= 0 && end - previous <= 1024 && bytes[previous] >= 32 && bytes[previous] <= 126 &&
-                (width === 1 || !(bytes[previous + 1] || bytes[previous + 2] || bytes[previous + 3]))) previous -= width;
+                (width === 1 || !bytes[previous + 1]) && (width !== 4 || !(bytes[previous + 2] || bytes[previous + 3]))) previous -= width;
             const name = readliteral(bytes, previous + width, width, 1024).replaceAll("\\", "/").toLowerCase();
             if (!/^[a-z0-9_./ -]+$/i.test(name) || !imagetype.test(name)) continue;
             const xml = readliteral(bytes, offset, width, 512 * 1024);
@@ -67,6 +73,17 @@ function parseframes(xml, image) {
     const frames = quadparse(xml);
     if (frames.some(({x, y, w, h}) => ![x, y, w, h].every(Number.isSafeInteger) ||
         x < 0 || y < 0 || w < 0 || h < 0 || x + w > image.width || y + h > image.height)) return [];
+    const offsets = xml.match(/<offsets>\s*([^<]+)<\/offsets>/i)?.[1].split(/[\s,]+/).filter(Boolean).map(Number);
+    if (offsets?.length === frames.length * 2 && offsets.every(Number.isSafeInteger)) {
+        const sourcewidth = Number(xml.match(/<preCutWidth>\s*(\d+)\s*<\/preCutWidth>/i)?.[1]) || 0;
+        const sourceheight = Number(xml.match(/<preCutHeight>\s*(\d+)\s*<\/preCutHeight>/i)?.[1]) || 0;
+        for (const [index, frame] of frames.entries()) {
+            frame.xoffset = offsets[index * 2];
+            frame.yoffset = offsets[index * 2 + 1];
+            frame.sourcewidth = sourcewidth;
+            frame.sourceheight = sourceheight;
+        }
+    }
     return frames.filter(({w, h}) => w > 0 && h > 0);
 }
 
@@ -80,16 +97,16 @@ function atlaspath(path) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
-export async function findsplits(item, entries, replacements, sourcexml) {
+export async function findsplits(item, entries, replacements, atlasblob) {
     if (!item || !entries || !imagetype.test(item.path)) return [];
     const stem = texturestem(item.path);
     const sidecar = entries.find(entry => entry.scope === item.scope && entry.path.toLowerCase() === (stem + ".xml").toLowerCase());
-    let descriptions = sourcexml === undefined ? [] : [String(sourcexml)];
-    if (sourcexml === undefined && sidecar) {
+    let descriptions = [];
+    if (sidecar) {
         try {descriptions.push(await readentry(sidecar.entry, "string", 1024 * 1024))}
         catch {}
     }
-    if (sourcexml === undefined && !descriptions.some(xml => quadparse(xml).length)) {
+    if (!descriptions.some(xml => quadparse(xml).length)) {
         const path = atlaspath(item.path);
         const name = path.split("/").at(-1);
         const keys = new Set();
@@ -105,7 +122,7 @@ export async function findsplits(item, entries, replacements, sourcexml) {
     }
     if (!descriptions.length) return [];
     let image;
-    try {image = await createImageBitmap(await previewtexture(item, replacements))}
+    try {image = await createImageBitmap(atlasblob ?? await previewtexture(item, replacements))}
     catch {return []}
     const layouts = new Map();
     try {

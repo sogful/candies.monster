@@ -61,10 +61,7 @@ export function spritebrowser(root, choose, clearsearch, modified = () => false)
         const nodes = [{directory: tree, parent: list}];
         list.replaceChildren();
         list.scrollTop = 0;
-        if (!tree.files.length && !tree.folders.size) {
-            list.textContent = "No media found.";
-            return;
-        }
+        if (!tree.files.length && !tree.folders.size) return;
 
         for (const {directory, parent} of nodes) {
             const branch = document.createElement("ul");
@@ -73,7 +70,8 @@ export function spritebrowser(root, choose, clearsearch, modified = () => false)
                 const entry = document.createElement("li");
                 const label = document.createElement("span");
                 label.className = "spritefolder";
-                label.textContent = name + "/";
+                label.textContent = name;
+                label.title = name;
                 entry.append(label);
                 branch.append(entry);
                 nodes.push({directory: child, parent: entry});

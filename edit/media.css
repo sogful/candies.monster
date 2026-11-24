@@ -10,7 +10,7 @@
 .spritefiles {
     display: block; overflow: auto;
     min-height: 0; padding: 0 1px;
-    font-size: 0.62em; line-height: 1.14;
+    font-size: 0.62em; line-height: 1.05;
 }
 .spritefiles::after {
     content: ""; display: block;
@@ -22,16 +22,22 @@
 }
 .spritefiles > .mediatree {padding-left: 0}
 .mediatree li {
-    min-width: 0; margin-bottom: 1px;
+    min-width: 0;
 }
 .mediatree .spritefolder, .mediatree .spritefile {
     display: block; width: 100%;
-    padding: 1px 3px; color: inherit;
+    padding: 0 3px; color: inherit;
     overflow: hidden; text-overflow: ellipsis;
     white-space: nowrap; overflow-wrap: normal;
 }
 .mediatree .spritefolder, .mediatree .spritefolder:hover {
     background: transparent; cursor: inherit;
+}
+.mediatree .spritefolder::before {
+    content: ""; display: inline-block;
+    width: 0.9em; height: 0.9em;
+    margin-inline-end: 0.28em; vertical-align: -0.05em;
+    background: url("/edit/art/folder.svg") center/contain no-repeat;
 }
 .mediatree .spritefile {
     --fileink: 0,0,0;

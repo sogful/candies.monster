@@ -8,7 +8,7 @@ import {assetoutput, assettext, editasset, importasset, levelcatalog, packageass
 import {readreport, reportblob} from "./reports.js";
 import {packageheader} from "./header.js";
 import {quickactions} from "./quickactions.js";
-import {debugsymbols, readsymbols, symbolfiles} from "./symbolreports.js";
+import {debugsymbols, readsymbols, sourcepriority, symbolfiles} from "./symbolreports.js";
 import {clearlevel, renderlevel} from "./levelview.js";
 import {levelart, levelpicker} from "./levelpicker.js";
 import {spritebrowser} from "./spritebrowser.js";
@@ -229,7 +229,7 @@ function toolavailable(name) {
     if (!Object.hasOwn(toolpanels, name)) return false;
     return name === "levels" ? state.levels.length
         : name === "strings" ? state.strings.length
-        : name === "sprites" ? state.media.length : true;
+        : name === "sprites" ? state.media.length : state.symbols.length;
 }
 
 async function showtool(name, preferences = {}) {
@@ -661,9 +661,12 @@ async function loadpackage(index) {
     find(".intake").hidden = true;
     back.querySelector("img").alt = "Back to package selection";
     header.load(pkg, session.preview ?? originalicon, session.metadata, !!session.icon);
-    find(".editorbody").hidden = unity;
+    for (const button of toolbuttons) button.hidden = !toolavailable(button.dataset.tool);
+    const firsttool = toolbuttons.find(button => !button.hidden)?.dataset.tool;
+    find(".editorbody").hidden = !firsttool;
     find(".unitymessage").hidden = !unity;
-    if (unity) {
+    if (!firsttool) {
+        tool = undefined;
         levelnav.clear();
         clearlevel(levelview);
         spritefiles.clear();
@@ -673,9 +676,8 @@ async function loadpackage(index) {
         resetresults();
         return;
     }
-    for (const button of toolbuttons) button.hidden = !toolavailable(button.dataset.tool);
     const preferences = session.preferences;
-    const preferred = preferences.tool && toolavailable(preferences.tool) ? preferences.tool : toolbuttons.find(button => !button.hidden).dataset.tool;
+    const preferred = toolavailable(preferences.tool) ? preferences.tool : firsttool;
     await showtool(preferred, preferences);
 }
 
