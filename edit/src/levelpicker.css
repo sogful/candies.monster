@@ -4,7 +4,7 @@
     border-radius: 0.55em;
 }
 .levelpicker[data-view="boxes"] {
-    background: #ca8749 url("art/levels/menu.webp") center/cover;
+    background: #ca8749 url("../art/levels/menu.webp") center/cover;
 }
 .levelpicker[data-view="boxes"][data-game="experiments"] {
     background: #07385a url("/assets/images/bgs/experimentsmenu.webp") center/cover;
@@ -35,7 +35,7 @@
     inset: 50% auto auto calc((100% - var(--strip)) / 2);
     width: calc(var(--packsize) * 0.147); aspect-ratio: 97 / 620;
     translate: -100% -50%; pointer-events: none;
-    background: url("art/levels/slot.webp") center/contain no-repeat;
+    background: url("../art/levels/slot.webp") center/contain no-repeat;
 }
 .levelpickframes::after {
     inset-inline: auto calc((100% - var(--strip)) / 2);
