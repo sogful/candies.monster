@@ -57,7 +57,7 @@ export function startsearch(options) {
         const route = gameroute(record.game, record.index);
         const title = heading.querySelector(".gamename");
         title.firstChild.replaceWith(jump(record.name, route));
-        if (!match.description) heading.querySelector(".description")?.remove();
+        if (!match.description && !heading.querySelector(".descriptionsource")) heading.querySelector(".description")?.remove();
         const versions = document.createElement("div");
         versions.className = "packageversions searchversions";
         group.append(heading, versions);

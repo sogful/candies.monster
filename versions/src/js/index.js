@@ -71,6 +71,27 @@ function prepareplatform(platform) {
     const parsed = parsegamescsv(platform.text, platform.name === "android" && platform.layer !== "fangames");
     if (!parsed.games.length && platform.layer === "omnom") throw new Error(`No games in ${platform.url}`);
     platform.games = parsed.games.map(game => ({...game, layer: platform.layer, platform: platform.name}));
+    platform.cache = parsed.versionscache;
+    const placeholder = resolveiconpath("unknown/default");
+    platform.games.forEach(game => {
+        const key = game.verkey ?? game.package;
+        const keys = Array.isArray(key) ? key : [key];
+        const versions = keys.flatMap(value => platform.cache.get(value) || []);
+        const downloads = versions.flatMap(version => version.downloads);
+        if (platform.name === "other") game.platformicons = gameplatformicons(versions, game.system);
+        game.available = hasdownload(downloads);
+        const titles = [game.name].flat();
+        const packages = [game.package].flat();
+        const names = titles.map((title, index) =>
+            /^(?:unknown(?: game)?|\[unknown title\]|\?+)$/i.test(title) || title === packages[index] ? "[unknown title]" : title);
+        game.name = Array.isArray(game.name) ? names : names[0];
+        const icon = [game.icon].flat()[0];
+        if (names[0] === "[unknown title]" || !icon || icon === placeholder) game.importance = 0;
+        game.unknown = names.every(name => name === "[unknown title]") &&
+            !game.available && [game.icon].flat().every(icon => !icon || icon === placeholder);
+        if (game.unknown) game.icon = Array.isArray(game.icon) ? game.icon.map(() => placeholder) : placeholder;
+        game.circle = game.channel || gamecircle(game, downloads);
+    });
     platform.games.sort((first, second) => {
         const importance = second.importance - first.importance;
         if (importance) return importance;
@@ -79,16 +100,6 @@ function prepareplatform(platform) {
         return firstkey < secondkey ? -1 : firstkey > secondkey ? 1 : 0;
     });
     preparekeys(platform.games);
-    platform.cache = parsed.versionscache;
-    platform.games.forEach(game => {
-        const key = game.verkey ?? game.package;
-        const keys = Array.isArray(key) ? key : [key];
-        const versions = keys.flatMap(value => platform.cache.get(value) || []);
-        const downloads = versions.flatMap(version => version.downloads);
-        if (platform.name === "other") game.platformicons = gameplatformicons(versions, game.system);
-        game.available = hasdownload(downloads);
-        game.circle = game.channel || gamecircle(game, downloads);
-    });
     updatecounts(platform.layer, platform.name, platform.cache, platform.games);
     platform.text = null;
 }
@@ -127,6 +138,7 @@ function mountplatform(platform) {
             icon.className = "gameicon clickable";
             const key = game.verkey ?? game.package;
             icon.classList.toggle("unavailable", !game.available);
+            icon.classList.toggle("unknown", game.unknown);
             icon.dataset.gameid = Array.isArray(key) ? key[0] : key;
             icon.dataset.circle = game.circle;
             const image = document.createElement("img");
@@ -212,6 +224,17 @@ function updateicon(image, size) {
 
 function layoutplatform(platform) {
     if (!platform.nodes) return;
+    if (platform === activeplatform && !currentgame) {
+        let gutter = 0;
+        for (const button of [left, right]) {
+            if (!button.getClientRects().length) continue;
+            for (const part of [button, button.querySelector("span")]) {
+                const rect = part.getBoundingClientRect();
+                gutter = Math.max(gutter, button === left ? rect.right : window.innerWidth - rect.left);
+            }
+        }
+        platform.screen.style.setProperty("--platformgutter", `${Math.ceil(gutter + 5)}px`);
+    }
     const mobile = window.innerWidth <= 650;
     const bounds = platform.circle.getBoundingClientRect();
     const width = bounds.width || Math.min(window.innerWidth * 0.9, 800);
@@ -484,6 +507,10 @@ window.addEventListener("resize", schedulelayout);
 window.addEventListener("resize", () => layers.show(activeplatform.layer), {passive: true});
 const boundsobserver = new ResizeObserver(schedulelayout);
 platforms.forEach(platform => boundsobserver.observe(platform.circle));
+for (const button of [left, right]) {
+    boundsobserver.observe(button);
+    boundsobserver.observe(button.querySelector("span"));
+}
 
 async function restoreview(route) {
     const request = ++navigation;

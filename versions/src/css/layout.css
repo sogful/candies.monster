@@ -38,6 +38,22 @@
 
 .versionscreen.active {display: flex}
 
+.versionstatus.versionempty {
+    position: absolute; top: 50%; left: 50%;
+    width: calc(100% - 1.4em); padding: 0;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 0.5em;
+    transform: translate(-50%, -50%); pointer-events: none;
+    -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
+    text-shadow: 0 0.15em 0 #000;
+}
+.versionempty img {
+    width: min(160px, 45%); height: auto;
+    aspect-ratio: 1; object-fit: contain;
+}
+.gamename.unknowntitle {font-style: italic}
+.description .descriptionsource {color: #8feeff}
+
 @media (max-width: 650px) {
     .versionbackdrop {width: 100vw}
 
@@ -67,7 +83,8 @@
     flex-direction: column; align-items: center;
     justify-content: flex-start; box-sizing: border-box;
     overflow-y: auto; overflow-x: hidden;
-    height: 100dvh; padding: 48px 16px;
+    height: 100dvh; padding: 48px max(16px,var(--platformgutter,0px));
+    clip-path: inset(var(--layerpadding,56px) 0);
 }
 
 .gamecircle {
@@ -75,7 +92,7 @@
     height: var(--circleheight, 600px); min-height: 0;
     flex-shrink: 0; margin: auto 0;
 }
-.gamecircle.orbitcircle {width: min(100%, 1120px)}
+.gamecircle.orbitcircle {width: min(100%, 1400px)}
 
 .orbitlabel {
     position: absolute; display: block;
@@ -88,10 +105,10 @@
 /*//////////////////////////////////////////////////////////////////////*/
 
 @media (max-width: 650px) {
-    .gamescreen {padding-inline: 3.5em}
+    .gamescreen {padding-inline: max(16px,var(--platformgutter,2.75em))}
 
     .scrollnav {
-        justify-content: center; width: 2.7em;
+        justify-content: center; width: 2.2em;
     }
     .scrollnav span {
         position: absolute; top: 100%;

@@ -135,17 +135,18 @@ export function packageheader(game, index, pkg) {
     const name = document.createElement("div");
     name.className = "gamename";
     name.textContent = value("name");
+    name.classList.toggle("unknowntitle", name.textContent === "[unknown title]");
     shareheading(name, game, index);
     header.appendChild(name);
-    if (pkg != null && String(pkg).trim()) {
+    const internal = value("internal");
+    if (pkg || internal) {
         const identifier = document.createElement("div");
         identifier.className = "package";
-        identifier.textContent = pkg;
-        const internal = value("internal");
+        identifier.textContent = pkg || "";
         if (internal) {
             const alias = document.createElement("span");
             alias.className = "internalname";
-            alias.append(" (");
+            if (pkg) alias.append(" (");
             internal.split(" / ").forEach((entry, index) => {
                 if (index) alias.append(" / ");
                 const speculated = entry.endsWith("?");
@@ -158,16 +159,28 @@ export function packageheader(game, index, pkg) {
                     alias.append(mark);
                 }
             });
-            alias.append(")");
+            if (pkg) alias.append(")");
             identifier.append(alias);
         }
         header.appendChild(identifier);
     }
-    const summary = orbitdescription(value("description"), game.circle);
-    if (summary) {
+    const summary = game.available === false ? value("description") : orbitdescription(value("description"), game.circle);
+    const evidence = value("evidence");
+    const hassource = /^https?:\/\//i.test(evidence || "");
+    if (summary || hassource) {
         const description = document.createElement("div");
         description.className = "description";
         description.textContent = summary;
+        if (hassource) {
+            const source = document.createElement("a");
+            source.className = "descriptionsource clickable";
+            source.href = evidence;
+            source.target = "_blank";
+            source.rel = "noopener";
+            source.textContent = "(source)";
+            if (summary) description.append("\u00a0");
+            description.append(source);
+        }
         header.appendChild(description);
     }
     const strip = packageiconhtml(game, index);
@@ -299,8 +312,12 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
         if (!iscurrent(loadid)) return;
         if (!visible) {
             const empty = document.createElement("div");
-            empty.className = "versionstatus";
-            empty.textContent = "no versions for this game?! i usually add some, please report this to cv";
+            empty.className = "versionstatus versionempty";
+            const image = document.createElement("img");
+            image.src = "/assets/images/omnom/404/404.gif";
+            image.alt = "";
+            image.draggable = false;
+            empty.append(image, "no downloads available :(");
             list.appendChild(empty);
         }
         if (!shown) showversions(screen, loadid, alreadyshown, iscurrent, containerscroll);
