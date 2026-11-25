@@ -86,7 +86,7 @@ function prepareplatform(platform) {
             /^(?:unknown(?: game)?|\[unknown title\]|\?+)$/i.test(title) || title === packages[index] ? "[unknown title]" : title);
         game.name = Array.isArray(game.name) ? names : names[0];
         const icon = [game.icon].flat()[0];
-        if (names[0] === "[unknown title]" || !icon || icon === placeholder) game.importance = 0;
+        if (!game.available || names[0] === "[unknown title]" || !icon || icon === placeholder) game.importance = 0;
         game.unknown = names.every(name => name === "[unknown title]") &&
             !game.available && [game.icon].flat().every(icon => !icon || icon === placeholder);
         if (game.unknown) game.icon = Array.isArray(game.icon) ? game.icon.map(() => placeholder) : placeholder;
@@ -531,9 +531,11 @@ async function restoreview(route) {
             return;
         }
         let game = platform.games?.find(item => item.routekey === route.game);
-        if (route.version && !route.package) {
-            const migrated = platform.games?.find(item => item.legacyroute && item.legacyroute === route.game &&
-                versionsfor(platform.cache, item.verkey).some(version => version.version === route.version));
+        if (route.game && !route.package && (route.version || !game)) {
+            const matches = (platform.games || []).filter(item => item.legacyroute === route.game);
+            const migrated = route.version ? matches.find(item =>
+                versionsfor(platform.cache, item.verkey).some(version => version.version === route.version)) :
+                matches.length === 1 ? matches[0] : undefined;
             if (migrated) {
                 game = migrated;
                 route = {...route, game: game.routekey};

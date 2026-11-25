@@ -144,7 +144,14 @@ export function packorbits(games, width, height) {
     const groups = new Map(orbits.map(([key]) => [key, []]));
     games.forEach((game, index) => (groups.get(game.circle) || groups.get("primary")).push({game, index}));
     const packed = packlayout(games, groups, width, height);
-    if (packed.positions.every(position => position.size >= minimum)) return packed;
+    if (packed.positions.every(position => position.size >= minimum)) {
+        packed.positions = packed.positions.map((position, index) => {
+            if (games[index].available !== false) return position;
+            const inset = (position.size - minimum) / 2;
+            return {left: position.left + inset, top: position.top + inset, size: minimum};
+        });
+        return packed;
+    }
 
     const positions = new Array(games.length);
     const labels = [];
@@ -157,7 +164,8 @@ export function packorbits(games, width, height) {
             labels.push({key, left: Math.max(0, (width - labelwidth) / 2), top, width: Math.min(width, labelwidth), scale: 1});
             top += labelheight;
         }
-        const sizes = items.map(({index}) => Math.min(width, Math.max(minimum, packed.positions[index].size)));
+        const sizes = items.map(({game, index}) => game.available === false ? minimum :
+            Math.min(width, Math.max(minimum, packed.positions[index].size)));
         const gap = 4;
         const area = sizes.reduce((total, size) => total + (size + gap) ** 2, 0);
         const targetheight = Math.max(...sizes, area / (width * 0.75));
