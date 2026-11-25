@@ -2,6 +2,7 @@ game,package/version,icon,description/url,importance/details,gallery/architectur
 Cut the Rope (Windows),,ctr/windows,,10,route=cut-the-rope,,system=Windows,,,,,,,,,,,,,,,,,,,,,,,
 ,Windows Steam,,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Thing/CutTheRopeSteam.zip,,,144.1mb,,,delisted steam release,,,,,,,,,,,,,,,,,,,,,
 ,Windows 8 1.0.0,ctr/windows,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Windows8/CutTheRopeWindowsStore_ReleasePreview_Fix.zip,,x86 arm,60.7mb,,,windows 8 release preview fix,,,,,,,,,,,,,,,,,,,,,
+,,,https://archive.org/download/cut-the-rope-release-preview/CutTheRopeWindowsStore_ReleasePreview_Fix.zip,,x86 arm,60.7mb,archive,,windows 8 release preview fix,,,,,,,,,,,,,,,,,,,,,
 ,Windows 8.1 1.2.0,ctr/windows,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Windows8/CTRWin8Offline.zip,,x86,54.1mb,,,windows store offline patch,,,,,,,,,,,,,,,,,,,,,
 ,Windows 8 1.0.0,ctr/windows,https://www.mediafire.com/file/zefjdxqgv2p5fhf/ZeptoLabUKLimited.CutTheRope_1.0.0.23_neutral__sq9zxnwrk84pj.zip/file,,,57.3mb,,,release preview package,,,,,,,,,,,,,,,,,,,,,
 ,Windows Store 1.1–1.2,ctr/windows,https://archive.org/download/Win8AppxArchive/Original%20APPX/Games/ZeptoLabUKLimited.CutTheRope_sq9zxnwrk84pj.zip,,x86 arm,198.9mb,,,original store packages,,,,,,,,,,,,,,,,,,,,,
