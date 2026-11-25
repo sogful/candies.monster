@@ -16,6 +16,12 @@
     content: ""; display: block;
     height: calc(var(--overlayheight,0px) + 2px);
 }
+.spritebrowser:has(.extractpackagequads:not([hidden])) .spritefiles::after {height: 0}
+.spritebrowser .extractpackagequads {
+    flex: none; margin: auto 0 calc(var(--overlayheight,0px) + 2px);
+    padding-inline: 1px; font-size: 0.7em;
+    white-space: nowrap;
+}
 .spritefiles .mediatree {
     margin: 0; padding: 0 0 0 4px;
     list-style: none;

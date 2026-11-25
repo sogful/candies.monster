@@ -5,7 +5,7 @@ import {decodecaf, replacecaf} from "./caf.js";
 import {replacemp4} from "./video.js";
 import {previewmedia, readmedia, replacetexture, texturename} from "./sprites.js";
 import {findtextureframes} from "./splitfinder.js";
-import {rendersplit, replacesplit} from "./spritesplits.js";
+import {exportquads, rendersplit, replacesplit} from "./spritesplits.js";
 
 export function mediapanel(root, {current, run, download, refresh, press}) {
     const find = selector => root.querySelector(selector);
@@ -24,6 +24,8 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
     const replace = find(".importsprite");
     const reset = find(".resetsprite");
     const save = find(".exportsprite");
+    const packagequads = find(".extractpackagequads");
+    const texturequads = find(".extracttexturequads");
     const footer = find(".panelfooter");
     let item;
     let frames = [];
@@ -125,6 +127,9 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
         replace.hidden = !editable;
         replace.disabled = working || !editable || !url;
         save.disabled = working || !url;
+        packagequads.disabled = working;
+        texturequads.hidden = item?.kind !== "image";
+        texturequads.disabled = working;
         reset.disabled = working;
         outlines.disabled = working;
         framereplace.disabled = frameexport.disabled = working;
@@ -217,6 +222,15 @@ export function mediapanel(root, {current, run, download, refresh, press}) {
         const name = texturename(item);
         const filename = iscaf() ? name.replace(/\.[^.]+$/, ".wav") : name;
         download(atlas ?? await blob(), filename);
+    }));
+
+    packagequads.addEventListener("click", () => void run(() => {
+        const {entries, filename} = current();
+        return exportquads(entries, undefined, filename, download);
+    }));
+    texturequads.addEventListener("click", () => void run(() => {
+        const {entries} = current();
+        return exportquads(entries, item, texturename(item), download);
     }));
 
     reset.addEventListener("click", () => void run(async () => {

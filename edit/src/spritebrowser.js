@@ -12,6 +12,7 @@ export function spritebrowser(root, choose, clearsearch, modified = () => false)
     });
     tabs.append(...controls);
     const list = root.querySelector(".spritefiles");
+    const quads = root.querySelector(".extractpackagequads");
     list.before(tabs);
     let items = [];
     let selected = -1;
@@ -38,6 +39,7 @@ export function spritebrowser(root, choose, clearsearch, modified = () => false)
     }
 
     function render() {
+        quads.hidden = category !== "image";
         for (const [index, [kind]] of kinds.entries()) {
             controls[index].classList.toggle("gold", kind === category);
             controls[index].setAttribute("aria-pressed", String(kind === category));

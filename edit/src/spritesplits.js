@@ -5,6 +5,8 @@ import {previewtexture, replacetexture} from "./sprites.js";
 const encoding = new TextDecoder();
 const wideencoding = new TextDecoder("utf-16le");
 const indexes = new WeakMap();
+const nativeindexes = new WeakMap();
+const quadindexes = new WeakMap();
 const imagetype = /\.(?:raw(?:\.zst)?|jpe?g|png|webp)$/i;
 const maxlibrary = 48 * 1024 * 1024;
 
@@ -56,15 +58,30 @@ function compiledatlases(bytes, index) {
     }
 }
 
-async function atlasindex(entries) {
+function nativeindex(item) {
+    if (!nativeindexes.has(item.entry)) {
+        nativeindexes.set(item.entry, readentry(item.entry, "uint8array", maxlibrary).then(bytes => {
+            const index = new Map();
+            compiledatlases(bytes, index);
+            return index;
+        }).catch(() => new Map()));
+    }
+    return nativeindexes.get(item.entry);
+}
+
+async function atlasindex(entries, all = false) {
     const native = entries.filter(entry => entry.size <= maxlibrary &&
         (/^lib\/(?:x86(?:_64)?|arm64-v8a|armeabi(?:-v7a)?)\/lib(?:ctr[^/]*|timetravel)\.so$/i.test(entry.path) ||
             /^Payload\/([^/]+)\.app\/\1$/i.test(entry.path)));
     const index = new Map();
-    for (const item of native.slice(0, 4)) {
-        try {compiledatlases(await readentry(item.entry, "uint8array", maxlibrary), index)}
-        catch {}
-        if (index.size) break;
+    for (const item of all ? native : native.slice(0, 4)) {
+        const found = await nativeindex(item);
+        if (!all && found.size) return found;
+        for (const [path, descriptions] of found) {
+            const layouts = index.get(path) ?? new Set();
+            for (const xml of descriptions) layouts.add(xml);
+            index.set(path, layouts);
+        }
     }
     return index;
 }
@@ -95,6 +112,54 @@ function atlaspath(path) {
     return path.toLowerCase().replace(/^assets\/|^payload\/[^/]+\.app\//, "").replace(/\.zst$/, "");
 }
 
+function atlaskeys(item, entries) {
+    const path = atlaspath(item.path);
+    const name = path.split("/").at(-1);
+    const keys = new Set();
+    if (entries.filter(entry => atlaspath(entry.path) === path).length === 1) {
+        keys.add(path);
+        keys.add(item.path.toLowerCase().replace(/^assets\/|^payload\/[^/]+\.app\//, ""));
+    }
+    if (entries.filter(entry => atlaspath(entry.path).split("/").at(-1) === name).length === 1) keys.add(name);
+    return keys;
+}
+
+export async function binaryquads(entries, item) {
+    if (!quadindexes.has(entries)) quadindexes.set(entries, atlasindex(entries, true));
+    const index = await quadindexes.get(entries);
+    const keys = item ? atlaskeys(item, entries) : index.keys();
+    const files = [];
+    const names = new Set();
+    const selected = new Set();
+    for (const key of keys) {
+        const path = key.split("/").filter(part => part && part !== "." && part !== "..").join("/");
+        if (!path) continue;
+        let number = 1;
+        for (const xml of index.get(key) ?? []) {
+            if (item && selected.has(xml)) continue;
+            selected.add(xml);
+            let name = path + ".xml";
+            while (names.has(name)) name = path + "-" + ++number + ".xml";
+            names.add(name);
+            files.push({name, xml});
+        }
+    }
+    return files;
+}
+
+export async function exportquads(entries, item, filename, download) {
+    const files = await binaryquads(entries, item);
+    if (!files.length) throw new Error("No compiled quads were found.");
+    if (item && files.length === 1) {
+        const {name, xml} = files[0];
+        download(new Blob([xml], {type: "application/xml"}), name.split("/").at(-1));
+        return;
+    }
+    const zip = new globalThis.JSZip();
+    for (const {name, xml} of files) zip.file(name, xml);
+    download(await zip.generateAsync({type: "blob", compression: "DEFLATE"}), filename.replace(/\.[^.]+$/, "") + "-quads.zip");
+}
+
 /*//////////////////////////////////////////////////////////////////////*/
 
 export async function findsplits(item, entries, replacements, atlasblob) {
@@ -107,14 +172,7 @@ export async function findsplits(item, entries, replacements, atlasblob) {
         catch {}
     }
     if (!descriptions.some(xml => quadparse(xml).length)) {
-        const path = atlaspath(item.path);
-        const name = path.split("/").at(-1);
-        const keys = new Set();
-        if (entries.filter(entry => atlaspath(entry.path) === path).length === 1) {
-            keys.add(path);
-            keys.add(item.path.toLowerCase().replace(/^assets\/|^payload\/[^/]+\.app\//, ""));
-        }
-        if (entries.filter(entry => atlaspath(entry.path).split("/").at(-1) === name).length === 1) keys.add(name);
+        const keys = atlaskeys(item, entries);
         if (!keys.size) return [];
         if (!indexes.has(entries)) indexes.set(entries, atlasindex(entries));
         const index = await indexes.get(entries);

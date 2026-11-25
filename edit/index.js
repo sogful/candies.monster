@@ -62,7 +62,7 @@ const levelnav = levelpicker(find(".levelpicker"), level => {
 const spritefiles = spritebrowser(find(".spritebrowser"), () => void run(media.draw), () => clearsearch(".filtersprites"),
     item => item.parts?.some(part => state?.session.replacements.has(replacementkey(part))));
 const media = mediapanel(find(".spritepanel"), {
-    current: () => ({selected: selectedsprite(), entries: state.files, replacements: state.session.replacements}),
+    current: () => ({selected: selectedsprite(), entries: state.files, replacements: state.session.replacements, filename: state.pkg.file.name}),
     run, download, press, refresh: () => spritefiles.refresh()
 });
 const refreshfooters = overlayreserve(find(".editorcontent"));

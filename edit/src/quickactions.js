@@ -3,6 +3,7 @@ import {openpackage, packageentries, readentry, replacementkey} from "./package.
 import {editasset, packageassets} from "./cuttherope.js";
 
 import {debugsymbols, readsymbols, symbolfiles} from "./symbolreports.js";
+import {binaryquads} from "./spritesplits.js";
 
 function uniquesegment(name, used) {
     let result = name;
@@ -29,7 +30,8 @@ async function stringbytes(file, session) {
 const actions = [
     ["strings", "Extract all strings", "No game strings were found."],
     ["debug-symbols", "Extract debug symbols", "No debug symbols were found."],
-    ["symbols", "Extract all symbols", "No symbols were found."]
+    ["symbols", "Extract all symbols", "No symbols were found."],
+    ["quads", "Extract all quads", "No compiled quads were found."]
 ];
 const concurrentlimit = 160 * 1024 * 1024;
 
@@ -38,6 +40,7 @@ async function sources(session, prepared) {
     const entries = prepared?.entries ?? packageentries(pkg);
     return {
         pkg,
+        entries,
         strings: packageassets(pkg, entries).filter(file => file.category === "stringsgame"),
         symbols: symbolfiles(entries, pkg.metadata.executable)
     };
@@ -57,7 +60,13 @@ async function extract(mode, sessions, message, download, packageinfo) {
         message("Extracting " + name + " (" + (index + 1) + " of " + sessions.length + ")");
         const folder = uniquesegment(name, folders);
         try {
-            const {pkg, strings, symbols} = await sources(session, packageinfo(session));
+            const {pkg, entries, strings, symbols} = await sources(session, packageinfo(session));
+            if (mode === "quads") {
+                const quads = await binaryquads(entries);
+                for (const {name, xml} of quads) zip.file(folder + "/" + name, xml);
+                count += quads.length;
+                continue;
+            }
             const files = mode === "strings" ? strings : symbols;
             for (const file of files) {
                 try {
@@ -157,6 +166,8 @@ export function quickactions(header, {sessions, run, message, download, save, le
             if (result?.debug) counts["debug-symbols"]++;
         }
         cached.set(session, counts);
+        showcounts();
+        counts.quads = files && sessions().includes(session) ? (await binaryquads(files.entries).catch(() => [])).length : 0;
         showcounts();
     }
 
