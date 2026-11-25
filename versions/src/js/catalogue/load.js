@@ -103,6 +103,7 @@ function appendtogroup(basegame, entry, line) {
         basegame.verkey = [basegame.verkey];
         basegame.icon = [basegame.icon];
         basegame.description = [basegame.description];
+        basegame.internal = [basegame.internal];
         basegame.packageroutes = [""];
     }
     basegame.name.push(entry.name);
@@ -110,6 +111,7 @@ function appendtogroup(basegame, entry, line) {
     basegame.verkey.push(entry.verkey);
     basegame.icon.push(entry.icon);
     basegame.description.push(entry.description);
+    basegame.internal.push(entry.internal);
     basegame.packageroutes.push(entry.routekey);
     const extras = parsepackageiconcolumns(line, entry.package);
     if (!basegame.pkgIconsList) basegame.pkgIconsList = [];
@@ -167,10 +169,12 @@ function parsegamescsv(text, separateandroid = false) {
             const route = line.find((value, index) => index >= 5 && value.startsWith("route="));
             const legacy = line.find((value, index) => index >= 5 && value.startsWith("legacyroute="));
             const system = line.find((value, index) => index >= 5 && value.startsWith("system="));
+            const internal = line.find((value, index) => index >= 5 && value.startsWith("internal="));
             const entry = {
                 routekey: route?.slice(6).trim() || "",
                 legacyroute: legacy?.slice(12).trim() || "",
                 system: system?.slice(7).trim() || "",
+                internal: internal?.slice(9).trim() || "",
                 name: grouped ? c0.slice(2).trim() : c0,
                 package: pkg,
                 verkey: verkey,

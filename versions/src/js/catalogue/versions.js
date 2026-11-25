@@ -141,6 +141,26 @@ export function packageheader(game, index, pkg) {
         const identifier = document.createElement("div");
         identifier.className = "package";
         identifier.textContent = pkg;
+        const internal = value("internal");
+        if (internal) {
+            const alias = document.createElement("span");
+            alias.className = "internalname";
+            alias.append(" (");
+            internal.split(" / ").forEach((entry, index) => {
+                if (index) alias.append(" / ");
+                const speculated = entry.endsWith("?");
+                const code = speculated ? entry.slice(0, -1) : entry;
+                alias.append(code);
+                if (speculated) {
+                    const mark = document.createElement("sup");
+                    mark.textContent = "?";
+                    mark.title = `Zeptolab's BMS feeder doesn't return a package list for ${code}, this is merely speculation.`;
+                    alias.append(mark);
+                }
+            });
+            alias.append(")");
+            identifier.append(alias);
+        }
         header.appendChild(identifier);
     }
     const summary = orbitdescription(value("description"), game.circle);

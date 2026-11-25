@@ -210,6 +210,8 @@
 }
 
 .gamename, .package, .description {margin-left: -0.1em}
+.package .internalname {opacity: 0.5}
+.internalname sup {font-style: italic}
 
 .gamename, .package, .description, .versioninfo .details, .infopopup {
     user-select: text; -webkit-user-select: text;

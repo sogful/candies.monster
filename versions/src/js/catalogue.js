@@ -42,7 +42,7 @@ export function searchindex(platforms) {
                 const name = value("name");
                 const description = value("description");
                 const key = value("verkey") || pkg;
-                const heading = text([name, pkg, description]);
+                const heading = text([name, pkg, value("internal").replaceAll("?", ""), description]);
                 const versions = versionsfor(platform.cache, key).map(version => {
                     const common = text([heading, version.version, version.details]);
                     const downloads = version.downloads.map(download => ({download, text: text(Object.values(download)), flags: downloadflags(download)}));
