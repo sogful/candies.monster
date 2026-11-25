@@ -92,11 +92,12 @@ const scroller = document.querySelector(".sitenavigation");
 const items = [...scroller.querySelectorAll(".bignav .navlink:not([fun])")];
 
 function fitnavigation() {
+    if (document.documentElement.classList.contains("oldmode")) return;
     const blurb = scroller.querySelector(".resourceblurb");
     const footer = document.querySelector(".ctrhomefooter");
     for (const item of items) item.classList.remove("navcompact");
     scroller.classList.remove("navminimal");
-    const topbar = compact.matches && !document.documentElement.classList.contains("oldmode");
+    const topbar = compact.matches;
     blurb.hidden = topbar;
     footer.hidden = !topbar;
     const exceeds = () => compact.matches ? scroller.scrollWidth > scroller.clientWidth + 1 : scroller.scrollHeight > scroller.clientHeight + 1;

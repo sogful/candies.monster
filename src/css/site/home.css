@@ -327,19 +327,19 @@
     .smallnav .navlink {
         width: var(--navunit); height: var(--navunit);
     }
-    :not(.oldmode) .sitenavigation.navminimal {
+    html:not(.oldmode) .sitenavigation.navminimal {
         display: grid; grid-auto-flow: column;
         grid-template-rows: repeat(2,var(--navunit)); grid-auto-columns: minmax(0,var(--navunit));
         grid-template-columns: max-content;
         align-content: center; justify-content: start;
     }
-    :not(.oldmode) .navminimal .sidebarlogo {grid-row: span 2}
-    :not(.oldmode) .navminimal .navlink {
+    html:not(.oldmode) .navminimal .sidebarlogo {grid-row: span 2}
+    html:not(.oldmode) .navminimal .navlink {
         width: 100%; height: auto;
         aspect-ratio: 1;
     }
-    :not(.oldmode) .navminimal .bignav,
-    :not(.oldmode) .navminimal .smallnav {display: contents}
+    html:not(.oldmode) .navminimal .bignav,
+    html:not(.oldmode) .navminimal .smallnav {display: contents}
     .buttonlabel {display: none}
     html:not(.oldmode) .resourceblurb {display: none}
     html:not(.oldmode) .sidelinks {
