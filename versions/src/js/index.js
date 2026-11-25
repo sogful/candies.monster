@@ -533,8 +533,8 @@ async function restoreview(route) {
         let game = platform.games?.find(item => item.routekey === route.game);
         if (route.game && !route.package && (route.version || !game)) {
             const matches = (platform.games || []).filter(item => item.legacyroute === route.game);
-            const migrated = route.version ? matches.find(item =>
-                versionsfor(platform.cache, item.verkey).some(version => version.version === route.version)) :
+            const migrated = route.version ? matches.find(item => [item.verkey].flat().some(key =>
+                versionsfor(platform.cache, key).some(version => version.version === route.version))) :
                 matches.length === 1 ? matches[0] : undefined;
             if (migrated) {
                 game = migrated;
