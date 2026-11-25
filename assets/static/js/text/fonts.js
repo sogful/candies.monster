@@ -2,11 +2,10 @@
     const root = document.documentElement;
     const chromium = /(?:Chrome|Chromium|Edg|OPR)\//.test(navigator.userAgent);
     const safari = navigator.userAgent.match(/Version\/(\d+)\.(\d+).*Safari\//);
-    const legacy = !window.CSS || !CSS.supports("paint-order", "stroke fill") ||
+    const legacy = !window.CSS || !CSS.supports || !CSS.supports("paint-order", "stroke fill") ||
         chromium && !CSS.supports("field-sizing", "content") ||
         !chromium && safari && (Number(safari[1]) < 17 || Number(safari[1]) === 17 && Number(safari[2]) < 4);
     const sheets = new WeakMap();
-    const links = new WeakSet();
     let pending = false;
 
     const linkstyle = document.createElement("style");
@@ -39,7 +38,7 @@
         const color = style.getPropertyValue("-webkit-text-stroke-color") || "#000";
         const parts = shadows(width, color);
         const drop = style.textShadow;
-        if (drop && drop !== "none") parts.push(drop);
+        if (drop && !/^(none|inherit|initial|unset|revert|revert-layer)$/.test(drop)) parts.push(drop);
         return `${rule.selectorText} {\n` +
             `    paint-order: normal !important; -webkit-text-stroke: 0 !important;\n` +
             `    text-shadow: ${parts.join(",")} !important;\n}`;
@@ -51,8 +50,9 @@
             if (rule.styleSheet) {
                 try {
                     const content = rules(rule.styleSheet.cssRules);
-                    if (content) result.push(rule.media?.mediaText ? "@media " + rule.media.mediaText + " {\n" + content + "\n}" : content);
-                } catch {}
+                    const media = rule.media && rule.media.mediaText;
+                    if (content) result.push(media ? "@media " + media + " {\n" + content + "\n}" : content);
+                } catch (error) {}
             } else if (rule.cssRules && rule.cssRules.length) {
                 const content = rules(rule.cssRules);
                 if (content) result.push(`${rule.cssText.slice(0, rule.cssText.indexOf("{"))}{${content}}`);
@@ -67,9 +67,10 @@
     function refresh() {
         pending = false;
         for (const sheet of document.styleSheets) {
-            if (sheet.ownerNode && sheet.ownerNode.classList.contains("fontcompat")) continue;
+            const owner = sheet.ownerNode;
+            if (!owner || owner.classList.contains("fontcompat")) continue;
             let content;
-            try {content = rules(sheet.cssRules)} catch {continue}
+            try {content = rules(sheet.cssRules)} catch (error) {continue}
             const previous = sheets.get(sheet);
             if (previous && previous.content === content) continue;
             if (!content && !previous) continue;
@@ -79,20 +80,24 @@
             node.disabled = sheet.disabled;
             node.textContent = content;
             sheets.set(sheet, {node, content});
-            if (!node.parentNode) document.head.appendChild(node);
+            if (!node.parentNode) owner.parentNode.insertBefore(node, owner.nextSibling);
         }
     }
 
     function schedule() {
         if (pending) return;
         pending = true;
-        queueMicrotask(refresh);
+        Promise.resolve().then(refresh);
     }
 
     /*//////////////////////////////////////////////////////////////////////*/
 
     if (legacy) {
         root.classList.add("fontlegacy");
+        document.head.addEventListener("load", event => {
+            if (event.target.matches("link[rel=stylesheet]")) schedule();
+        }, true);
+        document.addEventListener("DOMContentLoaded", schedule, {once:true});
         refresh();
         new MutationObserver(records => {
             let changed = false;
@@ -101,10 +106,6 @@
                 for (const node of record.addedNodes) {
                     if (node.nodeType !== 1 || node.classList.contains("fontcompat")) continue;
                     if (node.matches("style,link[rel=stylesheet]")) changed = true;
-                    if (node.matches("link[rel=stylesheet]") && !links.has(node)) {
-                        links.add(node);
-                        node.addEventListener("load", schedule);
-                    }
                 }
                 if (record.target.nodeName === "STYLE") changed = true;
             }
