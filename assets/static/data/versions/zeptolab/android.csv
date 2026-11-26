@@ -642,6 +642,7 @@ King of Thieves,com.zeptolab.thieves.google,kingofthieves/classic,now published 
 ,,,https://mega.nz/folder/zzQTiBiK#v02kfCgOBDva5TXkbNeZbw/file/iz5SDC7A,,arm64-v8a,39.6mb,archive,,build 10600,,,,,,,,,,,,,,,,,,,,,
 + King of Thieves,com.zeptolab.thieves.tiertwo,kingofthieves/androidtiertwo26,tiertwo edition,7,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v2.6,kingofthieves/androidtiertwo26,https://mega.nz/folder/magDVR6Z#jrOwlHUDdImxG6945w6fqA/file/uWJWAb5Q,,armeabi-v7a,28.5mb,,,"drm removed, sdk 24, native symbols reported",,,,,,,,,,,,,,,,,,,,,
+,,,https://cdn.candies.monster/symbols/com.zeptolab.thieves.tiertwo/2.6-dynsym.zip,,armeabi-v7a,0.4mb,symbols,dynsym,,,,,,,,,,,,,,,,,,,,,,
 + King of Thieves,com.zeptolab.thieves.amazon,kingofthieves/androidtiertwo26,amazon appstore edition,7,internal=kt_free,,,,,,,,,,,,,,,,,,,,,,,,,
 ,v2.0,kingofthieves/androidtiertwo26,https://cdn.candies.monster/apks/com.zeptolab.thieves.amazon/2.0.apk,,"armeabi-v7a, x86",30.7mb,archive,,"drm removed, native symbols in apk (.dynsym)",,,,,,,,,,,,,,,,,,,,,
 ,,,https://cdn.candies.monster/apks/com.zeptolab.thieves.amazon/2.0-compat.apk,,"armeabi-v7a, x86",30.7mb,archive,,"android 15 startup fix, update required to play",,,,,,,,,,,,,,,,,,,,,
