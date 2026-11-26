@@ -1,5 +1,5 @@
 {
-  "version": "e423e58f60d5e8d8",
+  "version": "3135abb0e0272cab",
   "files": {
     "/assets/audio/oops.mp3": "f41edae4603c6e52",
     "/assets/audio/tap.mp3": "5e18bfae93fa03a0",
@@ -285,7 +285,7 @@
     "/assets/static/js/levels/conversion.js": "8e1a58b8dc56e3dc",
     "/assets/static/js/levels/repair.js": "b1f064e024c204f9",
     "/assets/static/js/text/emoji.js": "2fee7dc8794ab6c4",
-    "/assets/static/js/text/fonts.js": "3262f487c6bfc9ee",
+    "/assets/static/js/text/fonts.js": "0d626da4ee6e1d8d",
     "/index.html": "82d3f902136ccecc",
     "/preview/editor.html": "33aeb574b277fc85",
     "/preview/favicon.png": "270170a338f60474",
@@ -313,7 +313,7 @@
     "/src/css/browser/renderer.css": "51c8aad0223ef5db",
     "/src/css/site/documents.css": "68f08a10982a9e7d",
     "/src/css/site/effects.css": "6974865ff2b4beca",
-    "/src/css/site/home.css": "eb2982a65a462380",
+    "/src/css/site/home.css": "f947479b1bca787a",
     "/src/css/site/legacy.css": "437d845041205997",
     "/src/css/site/morestuff.css": "28fe7ed94b7ccd13",
     "/src/effects.js": "6729872f1097c209",
@@ -349,7 +349,7 @@
     "/src/js/browser/filters/index.js": "c45af79b58c8bf3a",
     "/src/js/browser/index.js": "3aaec4455e586657",
     "/src/js/browser/pages.js": "a2d43102ec8b0b4e",
-    "/src/js/browser/play/diagnostics.js": "a0fb6c4de3937099",
+    "/src/js/browser/play/diagnostics.js": "6b4d696b31a53746",
     "/src/js/browser/play/errors.js": "56dc609e976b2c0e",
     "/src/js/browser/play/index.js": "d12fb5567da54fa0",
     "/src/js/browser/play/loading.js": "e7b0ffdd2e0100b7",
@@ -376,7 +376,7 @@
     "/src/js/site/rope/index.js": "eb46d0403c0c5a5b",
     "/src/js/site/rope/motion.js": "ea0e66ae25cfc960",
     "/src/js/site/rope/physics.js": "a78057fac48ac1e2",
-    "/src/js/site/sidebar.js": "ecd1d165a61dfec2"
+    "/src/js/site/sidebar.js": "39ef18cf5de2b5a0"
   },
-  "bytes": 10227604
+  "bytes": 10228379
 }
