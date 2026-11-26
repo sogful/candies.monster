@@ -43,15 +43,26 @@ function hasdownload(downloads) {
     return (downloads || []).some(download => cleanvalue(download?.url) && !["symbols", "evidence"].includes(download.kind));
 }
 
+const iconbase = "/assets/images/icons/";
+
+function iconkey(value) {
+    if (value.startsWith("/") && !value.startsWith(`${iconbase}games/`) &&
+        !value.startsWith(`${iconbase}fangames/`)) return "";
+    return value.replace(/^\/?assets\/images\/icons\/(?:games\/)?/, "")
+        .replace(/^fan\//, "fangames/")
+        .replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
+}
+
+function iconfolder(key) {
+    return key.startsWith("fangames/") ? `${iconbase}${key}` : `${iconbase}games/${key}`;
+}
+
 function resolveiconpath(p, size = 64) {
     const value = cleanvalue(p);
     if (!value) return "";
     if (value.startsWith("http://") || value.startsWith("https://")) return value;
-    const base = "/assets/images/icons/games/";
-    if (value.startsWith("/") && !value.startsWith(base)) return value;
-    const relative = value.replace(/^\/?assets\/images\/icons\/games\//, "");
-    const key = relative.replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
-    return `${base}${key}/${size > 128.5 ? 256 : size > 64.5 ? 128 : 64}.webp`;
+    const key = iconkey(value);
+    return key ? `${iconfolder(key)}/${size > 128.5 ? 256 : size > 64.5 ? 128 : 64}.webp` : value;
 }
 
 function resolveiconsrcset(p, size = 64) {
@@ -62,11 +73,8 @@ function resolveiconsrcset(p, size = 64) {
 function resolverawiconpath(p) {
     const value = cleanvalue(p);
     if (!value || /^https?:\/\//i.test(value)) return value;
-    const base = "/assets/images/icons/games/";
-    if (value.startsWith("/") && !value.startsWith(base)) return value;
-    const relative = value.replace(/^\/?assets\/images\/icons\/games\//, "");
-    const key = relative.replace(/\/(?:64|128|256)\.webp$|\/raw\.(?:png|jpe?g|webp)$/i, "");
-    return `${base}${key}/raw.${rawicons[key] || "png"}`;
+    const key = iconkey(value);
+    return key ? `${iconfolder(key)}/raw.${rawicons[key] || "png"}` : value;
 }
 
 function resolveversionlabel(value) {
@@ -77,7 +85,8 @@ function resolveversionlabel(value) {
 function resolvepackageicon(pkg, filename) {
     const f = cleanvalue(filename);
     if (!f || !pkg) return "";
-    if (/\.(png|jpe?g|webp)$/i.test(f) && (f.startsWith("/assets/images/icons/games/") || /^https?:\/\//i.test(f))) return f;
+    if (/\.(png|jpe?g|webp)$/i.test(f) && (f.startsWith(`${iconbase}games/`) ||
+        f.startsWith(`${iconbase}fangames/`) || /^https?:\/\//i.test(f))) return f;
     return "";
 }
 
