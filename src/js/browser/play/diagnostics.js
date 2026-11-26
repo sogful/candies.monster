@@ -16,6 +16,10 @@ const reasons = [
     ["operation aborted", /^(?:the operation was aborted|the user aborted a request)\b/i]
 ];
 const knownreasons = new Set([...reasons.map(([label]) => label), "webgl unavailable", "webgl context lost", "asset request failed", "asset response invalid"]);
+const routinereasons = new Set([
+    "webgl unavailable", "webgl context lost", "webgl context creation failed",
+    "network fetch failed", "module load failed", "operation aborted"
+]);
 const fields = {
     phase: ["loading", "gameplay"],
     stage: ["runtime", "metadata", "images", "sounds"],
@@ -59,10 +63,18 @@ export function diagnostic(message, context = {}) {
 
 /*//////////////////////////////////////////////////////////////////////*/
 
+function reportable(detail) {
+    const [summary, ...lines] = detail.split("\n");
+    const reason = lines.find(line => line.startsWith("reason: "))?.slice(8);
+    if (summary.includes(" asset: ")) return true;
+    if (routinereasons.has(reason)) return false;
+    return Boolean(reason || lines.some(line => line.startsWith("at ") && !line.includes("/_framework/")));
+}
+
 export function reportcrash(message, context) {
     if (location.origin !== "https://candies.monster") return;
     const detail = diagnostic(message, context);
-    if (!detail || reported.has(detail) || reported.size >= 4) return;
+    if (!detail || !reportable(detail) || reported.has(detail) || reported.size >= 4) return;
     reported.add(detail);
     void fetch(endpoint, {
         method: "POST", body: detail, keepalive: true,

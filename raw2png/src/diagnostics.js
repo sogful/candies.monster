@@ -12,12 +12,13 @@ const reasons = [
     ["invalid pixel data length", /^(?:decompressed data exceeds|unexpected bytes after)/i],
     ["zstd decompression failed", /\bzstd\b|\bzstandard\b/i],
     ["invalid png data", /^(?:incomplete png chunk|invalid png row filter)/i],
-    ["worker timed out", /^conversion timed out/i],
-    ["worker failed", /^texture worker failed/i],
+    ["worker timed out", /^conversion (?:timed out|exceeded the 60-second time limit)/i],
+    ["worker failed", /^texture worker failed|\b(?:OffscreenCanvas|CompressionStream|DecompressionStream|createImageBitmap) is not (?:defined|a function)\b/i],
     ["zip support unavailable", /^could not load zip support/i],
     ["browser could not read input", /^(?:the requested file could not be read|could not read the file)/i]
 ];
 const summaries = new Set([...reasons.map(([label]) => label), "unexpected error"]);
+const reportable = new Set(["worker timed out", "worker failed", "zip support unavailable"]);
 
 export function rawdiagnostic(message) {
     const [title, stageline, reasonline, ...extra] = message.split("\n");
@@ -32,7 +33,8 @@ export function rawdiagnostic(message) {
 
 export function reporterror(stage, message) {
     if (location.origin !== "https://candies.monster") return;
-    const reason = reasons.find(([, pattern]) => pattern.test(message))?.[0] || "unexpected error";
+    const reason = reasons.find(([, pattern]) => pattern.test(message))?.[0];
+    if (!reportable.has(reason)) return;
     const detail = rawdiagnostic(`raw2png error\nstage: ${stage}\nreason: ${reason}`);
     if (!detail || reported.has(detail) || reported.size >= 4) return;
     reported.add(detail);

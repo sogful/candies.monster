@@ -2,7 +2,8 @@ import {readFileSync} from "node:fs";
 import vm from "node:vm";
 import test from "node:test";
 import assert from "node:assert/strict";
-import {diagnostic} from "../../../../src/js/browser/play/diagnostics.js";
+import {diagnostic, reportcrash} from "../../../../src/js/browser/play/diagnostics.js";
+import {reporterror} from "../../../../raw2png/src/diagnostics.js";
 
 const source = readFileSync(new URL("../overlay/src/CutTheRopeDX.Browser/wwwroot/previewerrors.js", import.meta.url), "utf8");
 
@@ -77,6 +78,38 @@ test("reports retain the stage, known reason and shipped code location", () => {
         "boot-error: System.InvalidOperationException asset: images/obj_bouncer.webp\nreason: asset preload failed");
 });
 
+
+/*//////////////////////////////////////////////////////////////////////*/
+
+test("only actionable DX and raw2png reports reach the webhook", t => {
+    const posts = [];
+    t.mock.method(globalThis, "fetch", async (url, request) => {posts.push([url, request.body])});
+    globalThis.location = {origin: "https://candies.monster"};
+    t.after(() => {delete globalThis.location});
+
+    const context = {phase: "loading", stage: "sounds", quality: "Medium"};
+    reportcrash("ctrdx-context-lost: simulation paused", context);
+    reportcrash("unsupported-error: WebGL unavailable", context);
+    reportcrash("boot-error: TypeError: Failed to fetch", context);
+    reportcrash("boot-error: TypeError: Failed to fetch dynamically imported module", context);
+    reportcrash("boot-error: Error\nat /preview/dx/dist/wwwroot/_framework/dotnet.js:4:4631", context);
+    reportcrash("ctrdx-frame-error: System.NullReferenceException", {phase: "gameplay"});
+    reporterror("selection", "No .raw, .raw.zst or .png textures found.");
+    reporterror("encoding png", "Unexpected error");
+    reporterror("decoding raw", "Incomplete Zstandard frame data.");
+    assert.equal(posts.length, 0);
+
+    reportcrash("boot-error: Error asset: sounds/sfx/transporter_move.ogg", context);
+    reportcrash("boot-error: Error asset: sounds/sfx/transporter_move.ogg", context);
+    reportcrash("ctrdx-frame-error: System.NullReferenceException\nat CutTheRopeDX.Core.Update", {phase: "gameplay"});
+    reporterror("decoding raw", "Conversion exceeded the 60-second time limit.");
+    reporterror("encoding png", "OffscreenCanvas is not defined");
+    assert.equal(posts.length, 4);
+    assert.match(posts[0][1], /asset: sounds\/sfx\/transporter_move\.ogg/);
+    assert.match(posts[1][1], /at CutTheRopeDX\.Core\.Update/);
+    assert.match(posts[2][1], /reason: worker timed out/);
+    assert.match(posts[3][1], /reason: worker failed/);
+});
 
 /*//////////////////////////////////////////////////////////////////////*/
 
