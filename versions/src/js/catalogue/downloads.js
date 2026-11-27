@@ -106,6 +106,9 @@ function renderdownloadbutton(download, version, description, game) {
     const source = magnet ? "Magnet link" : url?.hostname || "Download";
     const zeptoapp = download.flags?.split(/\s+/).includes("zeptoapp") ? "zeptoapp" : "";
     const symbols = download.kind === "symbols";
+    const variant = symbols ? "" : [download.note, download.label, description]
+        .map(value => value?.match(/(?:^|[,;/]\s*)(rc|dev|ptc)(?=$|[\s,;/])/i)?.[1].toLowerCase())
+        .find(Boolean);
     const implicit = implicitdownloadlabels(download, button, url);
     const notes = [zeptoapp, description, symbols ? "" : download.label, download.note]
         .map(value => downloadnote(value, game, symbols, implicit));
@@ -123,8 +126,9 @@ function renderdownloadbutton(download, version, description, game) {
     };
     const metadata = Object.entries(information).filter(([, value]) => value).map(([key, value]) => `data-download${key}="${downloadattribute(value)}"`).join(" ");
     const compact = secondarydownload(download, button) ? " smallsource" : "";
-    return `<a class="downloadbutton clickable${compact}" href="${downloadattribute(download.url)}"${magnet ? "" : ' target="_blank"'} rel="noopener" aria-label="${downloadattribute(`${source} ${version}`)}" aria-haspopup="dialog" ${metadata}>
+    return `<a class="downloadbutton clickable${compact}${variant ? " labeleddownload" : ""}" href="${downloadattribute(download.url)}"${magnet ? "" : ' target="_blank"'} rel="noopener" aria-label="${downloadattribute([source, version, variant].filter(Boolean).join(" "))}" aria-haspopup="dialog" ${metadata}>
         <img src="/assets/images/buttons/download/${downloadattribute(button)}" alt="" draggable="false" loading="lazy" decoding="async" width="24" height="24">
+        ${variant ? `<span class="downloadvariant">${variant}</span>` : ""}
     </a>`;
 }
 

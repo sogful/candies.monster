@@ -1,4 +1,5 @@
 import {versionsfor} from "./catalogue/versions.js";
+import {hasdownload} from "./catalogue/load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -24,13 +25,16 @@ function searchbranches(query) {
     return text([query]).trim().split(/\s+or\s+/).map(branch => {
         const terms = [];
         const flags = [];
+        const availability = [];
         for (const token of branch.split(/\s+/).filter(Boolean)) {
             const flag = token.match(/^is(teraleak|zeptoapp|unlocked):true$/);
+            const downloads = token.match(/^hasdownloads:(true|false)$/);
             if (flag) flags.push(flag[1]);
+            else if (downloads) availability.push(downloads[1] === "true");
             else terms.push(token);
         }
-        return {terms, flags};
-    }).filter(branch => branch.terms.length || branch.flags.length);
+        return {terms, flags, availability};
+    }).filter(branch => branch.terms.length || branch.flags.length || branch.availability.length);
 }
 
 export function searchindex(platforms) {
@@ -59,17 +63,21 @@ export function searchindex(platforms) {
 export function findresults(records, query) {
     const branches = searchbranches(query);
     const matches = (branch, value) => branch.terms.every(term => value.includes(term));
-    const headingmatches = value => branches.some(branch => !branch.flags.length && matches(branch, value));
+    const headingmatches = record => branches.some(branch => !branch.flags.length &&
+        (!branch.availability.length || !record.versions.length && branch.availability.every(value => !value)) &&
+        matches(branch, record.heading));
     const detailmatches = value => branches.some(branch => branch.terms.length && matches(branch, text([value])));
     const games = new Set();
     const results = [];
     for (const record of records) {
-        const heading = headingmatches(record.heading);
+        const heading = headingmatches(record);
         const versions = record.versions.flatMap(item => {
             let found = false;
             let all = false;
             const downloads = new Set();
+            const downloadable = hasdownload(item.version.downloads);
             for (const branch of branches) {
+                if (!branch.availability.every(value => value === downloadable)) continue;
                 if (!matches(branch, item.text)) continue;
                 const required = branch.terms.filter(term => !item.common.includes(term));
                 if (!branch.flags.length) {

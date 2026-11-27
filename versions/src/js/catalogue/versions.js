@@ -238,10 +238,10 @@ function versionempty() {
     const empty = document.createElement("div");
     empty.className = "versionstatus versionempty";
     const image = document.createElement("img");
-    image.src = "/assets/images/omnom/404/404.gif";
+    image.src = "/assets/images/omnom/404/sad-still.webp";
     image.alt = "";
     image.draggable = false;
-    empty.append(image, "no downloads available :(");
+    empty.append(image, "no versions available :(");
     return empty;
 }
 
@@ -317,7 +317,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
                 }
                 if (offset + 32 < section.versions.length) await new Promise(resolve => setTimeout(resolve, 0));
             }
-            if (grouped && section.versions.every(version => version.recordonly)) section.target.appendChild(versionempty());
+            if (grouped && !section.versions.length) section.target.appendChild(versionempty());
         }
         if (!iscurrent(loadid)) return;
         if (!grouped && !sections[0].versions.length) list.appendChild(versionempty());

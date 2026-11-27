@@ -255,16 +255,26 @@
 .versionidentity .versionicon {
     display: block; margin-right: 0;
 }
-.versionidentity .version {
+.versionidentity .version, .versionbuttons .downloadvariant {
     position: absolute; inset-inline: 2px;
-    bottom: -4px; cursor: text;
-    user-select: text; -webkit-user-select: text;
+    bottom: -4px;
     font-size: clamp(0.5em,calc(6em / var(--versionlength,1)),0.84em); line-height: 1;
     color: #fff; margin: 0;
     text-align: center; overflow-wrap: anywhere;
     -webkit-text-stroke: 0.175em #000; paint-order: stroke fill;
     text-shadow: 0 0.175em 0 #000;
     filter: drop-shadow(0 0 0.2em #000);
+}
+.versionidentity .version {
+    cursor: text; user-select: text;
+    -webkit-user-select: text;
+}
+.versionbuttons .labeleddownload {
+    position: relative; margin-bottom: 0.35em;
+}
+.versionbuttons .downloadvariant {
+    inset-inline: 0; white-space: nowrap;
+    pointer-events: none;
 }
 .otherrelease .versionidentity .version {
     font-size: clamp(0.52em,calc(4.6em / var(--versionlength)),0.76em);
