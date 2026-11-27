@@ -115,6 +115,7 @@ function appendtogroup(basegame, entry, line) {
         basegame.internal = [basegame.internal];
         basegame.evidence = [basegame.evidence];
         basegame.packageroutes = [""];
+        basegame.packagelegacyroutes = [""];
     }
     basegame.name.push(entry.name);
     basegame.package.push(entry.package);
@@ -124,6 +125,7 @@ function appendtogroup(basegame, entry, line) {
     basegame.internal.push(entry.internal);
     basegame.evidence.push(entry.evidence);
     basegame.packageroutes.push(entry.routekey);
+    basegame.packagelegacyroutes.push(entry.legacyroute);
     const extras = parsepackageiconcolumns(line, entry.package);
     if (!basegame.pkgIconsList) basegame.pkgIconsList = [];
     basegame.pkgIconsList.push(extras);
@@ -171,8 +173,9 @@ function parsegamescsv(text, separateandroid = false) {
             const grouped = c0.startsWith("+ ");
             const gameimp = parseInt(c4, 10);
             const pkg = c1;
-            const channel = separateandroid ? releasechannel(pkg, c3) : "";
+            let channel = separateandroid ? releasechannel(pkg, c3) : "";
             if (!grouped) family.clear();
+            if (grouped && gameimp === 0 && !family.has(channel)) channel = "";
             const base = family.get(channel);
             let verkey = pkg || `__empty_${r}`;
             if (bypackage.has(verkey)) verkey = `${verkey}#${r}`;

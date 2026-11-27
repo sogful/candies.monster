@@ -234,6 +234,17 @@ function showversions(screen, loadid, alreadyshown, iscurrent, containerscroll) 
     if (!alreadyshown) requestAnimationFrame(() => {if (iscurrent(loadid)) containerscroll()});
 }
 
+function versionempty() {
+    const empty = document.createElement("div");
+    empty.className = "versionstatus versionempty";
+    const image = document.createElement("img");
+    image.src = "/assets/images/omnom/404/404.gif";
+    image.alt = "";
+    image.draggable = false;
+    empty.append(image, "no downloads available :(");
+    return empty;
+}
+
 export async function loadversions(packages, game, loadid, alreadyshown, cache, iscurrent, containerscroll, screen) {
     if (!iscurrent(loadid)) return;
     const list = document.querySelector("#versionslist");
@@ -276,7 +287,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
         });
         if (grouped) {
             for (let index = 0; index + 1 < sections.length; index++) {
-                if (sections[index].versions.length !== 1 || sections[index + 1].versions.length !== 1) continue;
+                if (sections[index].versions.length > 1 || sections[index + 1].versions.length > 1) continue;
                 const first = sections[index].target.parentElement;
                 const second = sections[index + 1].target.parentElement;
                 const pair = document.createElement("div");
@@ -291,7 +302,6 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
         if (needslegacy && !legacyicons) {
             void loadlegacyicons().then(() => {if (iscurrent(loadid)) updatelegacyicons(list)});
         }
-        let visible = 0;
         let shown = false;
         for (const section of sections) {
             for (let offset = 0; offset < section.versions.length; offset += 32) {
@@ -299,7 +309,6 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
                 const batch = document.createDocumentFragment();
                 section.versions.slice(offset, offset + 32).forEach(version => {
                     batch.appendChild(versionpanel(version, section.fallback, packagelist.includes("com.zeptolab.ctr.ads"), game, section.index));
-                    visible++;
                 });
                 section.target.appendChild(batch);
                 if (!shown) {
@@ -308,18 +317,10 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
                 }
                 if (offset + 32 < section.versions.length) await new Promise(resolve => setTimeout(resolve, 0));
             }
+            if (grouped && section.versions.every(version => version.recordonly)) section.target.appendChild(versionempty());
         }
         if (!iscurrent(loadid)) return;
-        if (!visible) {
-            const empty = document.createElement("div");
-            empty.className = "versionstatus versionempty";
-            const image = document.createElement("img");
-            image.src = "/assets/images/omnom/404/404.gif";
-            image.alt = "";
-            image.draggable = false;
-            empty.append(image, "no downloads available :(");
-            list.appendChild(empty);
-        }
+        if (!grouped && !sections[0].versions.length) list.appendChild(versionempty());
         if (!shown) showversions(screen, loadid, alreadyshown, iscurrent, containerscroll);
         view.complete = true;
     } catch (error) {

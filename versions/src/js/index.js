@@ -531,6 +531,14 @@ async function restoreview(route) {
             return;
         }
         let game = platform.games?.find(item => item.routekey === route.game);
+        if (!game && route.game && !route.package) {
+            const migrated = platform.games?.find(item => item.packagelegacyroutes?.includes(route.game));
+            if (migrated) {
+                const index = migrated.packagelegacyroutes.indexOf(route.game);
+                game = migrated;
+                route = {...route, game: game.routekey, package: packagekey(game, index)};
+            }
+        }
         if (route.game && !route.package && (route.version || !game)) {
             const matches = (platform.games || []).filter(item => item.legacyroute === route.game);
             const migrated = route.version ? matches.find(item => [item.verkey].flat().some(key =>
@@ -546,9 +554,10 @@ async function restoreview(route) {
             if (satellite) game = satellite;
         }
         if (!game && route.game) {
-            game = platform.games?.find(item => (Array.isArray(item.package) ? item.package : [item.package]).includes(route.game));
+            const routeindex = item => [item.package].flat().findIndex((pkg, index) => pkg === route.game || packagekey(item, index) === route.game);
+            game = platform.games?.find(item => routeindex(item) >= 0);
             if (game) {
-                const index = (Array.isArray(game.package) ? game.package : [game.package]).indexOf(route.game);
+                const index = routeindex(game);
                 route = {...route, game: game.routekey, package: route.package || (index ? packagekey(game, index) : "")};
             }
         }

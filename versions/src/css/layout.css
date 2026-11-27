@@ -76,6 +76,12 @@
 .packagecolumn {min-width: 0}
 .packagepair .gameinfo {overflow-wrap: anywhere}
 .packagepair .packageversions {grid-template-columns: minmax(0, 1fr)}
+.packageversions .versionstatus.versionempty {
+    position: static; transform: none;
+    grid-column: 1 / -1; width: 100%;
+    font-size: 0.8em; padding: 0.35em 0;
+}
+.packageversions .versionempty img {width: min(60px, 45%)}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
