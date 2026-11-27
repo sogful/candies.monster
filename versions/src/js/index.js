@@ -127,6 +127,7 @@ function mountplatform(platform) {
     if (!platform.games) return;
     if (!platform.nodes) {
         const fragment = document.createDocumentFragment();
+        platform.circle.classList.toggle("orbitcircle", platform.games.some(game => game.circle !== "primary"));
         platform.nodes = platform.games.map((game, index) => {
             const icon = document.createElement("div");
             icon.className = "gameicon clickable";
@@ -235,25 +236,22 @@ function layoutplatform(platform) {
         }
         platform.screen.style.setProperty("--platformgutter", `${Math.ceil(gutter + 5)}px`);
     }
-    const nodes = platform.nodes.filter(node => {
-        node.hidden = !availability.checked && !elements.get(node).available;
-        return !node.hidden;
-    });
-    const circles = new Set(nodes.map(node => elements.get(node).circle));
-    for (const [key, label] of platform.orbitlabels) label.hidden = !circles.has(key);
-    platform.circle.classList.toggle("orbitcircle", [...circles].some(key => key !== "primary"));
-    platform.empty.hidden = nodes.length > 0;
-    if (!nodes.length) {
-        platform.stamp = null;
-        platform.circle.style.removeProperty("--circleheight");
-        return;
+    const nodes = [...platform.nodes];
+    const visiblecircles = new Set();
+    for (const node of nodes) {
+        const game = elements.get(node);
+        node.hidden = !availability.checked && !game.available;
+        if (!node.hidden) visiblecircles.add(game.circle);
     }
+    for (const [key, label] of platform.orbitlabels) label.hidden = !visiblecircles.has(key);
+    platform.empty.hidden = visiblecircles.size > 0;
+    if (!nodes.length) return;
     const mobile = window.innerWidth <= 650;
     const bounds = platform.circle.getBoundingClientRect();
     const width = bounds.width || Math.min(window.innerWidth * 0.9, 800);
     const style = getComputedStyle(platform.screen);
     const height = Math.max(1, platform.screen.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom));
-    const stamp = `${width},${height},${mobile},${availability.checked}`;
+    const stamp = `${width},${height},${mobile}`;
     if (platform.stamp === stamp) return;
     platform.stamp = stamp;
     if (mobile) nodes.sort((first, second) => Number(elements.get(second).available) - Number(elements.get(first).available));
@@ -621,7 +619,10 @@ search = startsearch({
     open: async route => {links.write(route); await restoreview(route)}
 });
 availability.addEventListener("change", () => {
-    platforms.forEach(layoutplatform);
+    for (const platform of platforms) {
+        if (platform === activeplatform && platform.nodes) mountplatform(platform);
+        else layoutplatform(platform);
+    }
     if (search.shown) void search.refresh();
     else if (!currentgame && readhash().game) void links.restore(true);
 });
