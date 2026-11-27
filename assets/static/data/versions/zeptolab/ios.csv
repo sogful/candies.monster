@@ -106,6 +106,8 @@ Monsters,com.zeptolab.monsters,pudding/classic,,8,route=com.zeptolab.monsters~Pu
 ,v1.3.0,pudding/ioshdv130,https://archive.org/download/app-id-244/Monsters%20HD%201.3.0.ipa,,,72.6mb,archive,,,,,,,,,,,,,,,,,,,,,,,
 + Pudding Monsters Free,,pudding/iosfree126,app store id 738387833,2,internal=monsters_free? / monsters_free_hd?,route=pudding-monsters-free,evidence=https://appstor.io/app/pudding-monsters-free,,,,,,,,,,,,,,,,,,,,,,,
 ,v1.2.6,pudding/iosfree126,,,,,,,,,,,,,,,,,,,,,,,,,,,,
++ 布丁怪兽,,pudding/iosyodo,"chinese edition (yodo1), app store id 944879802",2,route=pudding-monsters-yodo1-ios,evidence=https://appstor.io/app/app-944879802,,,,,,,,,,,,,,,,,,,,,,,,
+,v1.0.0,pudding/iosyodo,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 BagMasters,com.zeptolab.bagmasters,zeptoapp/bagmasters,,1,/assets/images/icons/games/zeptoapp/bagmasters/raw.png,/assets/images/icons/games/zeptoapp/bagmasters2/raw.png,,,,,,,,,,,,,,,,,,,,,,,,
 ,v0.0.1,,https://mega.nz/folder/mlIAiT7T#7TjqCDMrFqdwg0rrEpz25Q/file/mpI1CRQB,,,19.2mb,,,build 9,zeptoapp,,,,,,,,,,,,,,,,,,,,
 ,v0.0.1,,https://mega.nz/folder/mlIAiT7T#7TjqCDMrFqdwg0rrEpz25Q/file/atYVDBZB,,,20.4mb,,,build 12,zeptoapp,,,,,,,,,,,,,,,,,,,,
