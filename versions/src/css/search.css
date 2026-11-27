@@ -1,16 +1,40 @@
 .archivesearch, .versionhome, .searchresults, .archiveinfo {
     --archivecontrol: 36px; --archiveinset: 8px;
+    --availabilityheight: 24px;
 }
 
 .archivesearch {
     position: fixed; top: var(--archiveinset);
     left: calc(var(--archivecontrol) + 2 * var(--archiveinset)); z-index: 100000002;
-    display: flex; align-items: center;
     width: min(18rem, calc(50vw - var(--archivecontrol) - 3 * var(--archiveinset)));
+}
+
+.archivesearchfield {
+    display: flex; align-items: center;
     height: var(--archivecontrol); box-sizing: border-box;
     gap: 0.4em; padding: 0 0.55em;
     border-radius: 0.6em; background: rgba(0,0,0,0.5);
 }
+
+.archiveavailability {
+    display: inline-flex; align-items: center;
+    min-height: var(--availabilityheight); gap: 0.3em;
+    padding: 0 0.55em;
+    font-size: 0.85em; color: #fff;
+    -webkit-text-stroke: 0.15em #000; paint-order: stroke fill;
+    text-shadow: 0 0.12em 0 #000;
+}
+
+.archiveavailability input {
+    width: 20px; height: 20px;
+    flex: 0 0 20px; margin: 0;
+    padding: 0; border: 0;
+    -webkit-appearance: none; appearance: none;
+    background: url("/assets/images/buttons/unchecked.png") center / contain no-repeat;
+    cursor: inherit;
+}
+
+.archiveavailability input:checked {background-image: url("/assets/images/buttons/checked.png")}
 
 .archivesearch img {
     width: 1.1em; height: 1.1em;
@@ -56,6 +80,7 @@
 .gameopen .versionhome {display: none}
 
 .gameicon.searchdim {opacity: 0.25}
+.gameicon[hidden], .orbitlabel[hidden] {display: none}
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -140,10 +165,10 @@
     .archiveinfo .infopopup {top: calc(var(--archivecontrol) + 4px)}
 
     .searchresults {
-        width: 100vw; padding-top: calc(var(--archivecontrol) + 2 * var(--archiveinset));
+        width: 100vw; padding-top: calc(var(--archivecontrol) + var(--availabilityheight) + 2 * var(--archiveinset));
     }
 
-    .searchempty {top: calc(var(--archivecontrol) + 2 * var(--archiveinset))}
+    .searchempty {top: calc(var(--archivecontrol) + var(--availabilityheight) + 2 * var(--archiveinset))}
     .searchopen .gamepanels {visibility: hidden}
     .searchopen .versionbackdrop {width: 100vw}
 }

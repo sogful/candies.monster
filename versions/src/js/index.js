@@ -1,6 +1,6 @@
 import {parsegamescsv, hasdownload, resolveiconpath, resolveiconsrcset} from "./catalogue/load.js";
 import {loadcataloguedata} from "./catalogue/data.js";
-import {loadversions, versionsfor} from "./catalogue/versions.js";
+import {isdownloadbuttonvisible, loadversions, versionsfor} from "./catalogue/versions.js";
 import {gameplatformicons, platformbadges} from "./catalogue/platforms.js";
 import {orbits, packorbits} from "./packing.js";
 import {downloadflags} from "./catalogue.js";
@@ -20,6 +20,7 @@ const platforms = layers.groups.flatMap(group => group.platforms);
 const elements = new WeakMap();
 const left = document.querySelector(".scrollnav.left");
 const right = document.querySelector(".scrollnav.right");
+const availability = document.querySelector(".archiveavailability input");
 const landing = platforms.find(platform => platform.layer === "omnom" && platform.name === "android");
 let activeplatform = landing;
 let currentgame = null;
@@ -29,6 +30,7 @@ let navigation = 0;
 let scrolltarget = null;
 let search = null;
 
+availability.checked = false;
 document.body.classList.add("archivepage");
 document.querySelector(".loading")?.remove();
 layers.show(activeplatform.layer);
@@ -79,7 +81,7 @@ function prepareplatform(platform) {
         const versions = keys.flatMap(value => platform.cache.get(value) || []);
         const downloads = versions.flatMap(version => version.downloads);
         if (platform.name === "other") game.platformicons = gameplatformicons(versions, game.system);
-        game.available = hasdownload(downloads);
+        game.available = hasdownload(downloads.filter(isdownloadbuttonvisible));
         const titles = [game.name].flat();
         const packages = [game.package].flat();
         const names = titles.map((title, index) =>
@@ -124,15 +126,7 @@ function mountplatform(platform) {
     prepareplatform(platform);
     if (!platform.games) return;
     if (!platform.nodes) {
-        if (!platform.games.length) {
-            const empty = document.createElement("p");
-            empty.className = "layerempty";
-            empty.textContent = "no versions yet";
-            platform.circle.replaceChildren(empty);
-            return;
-        }
         const fragment = document.createDocumentFragment();
-        platform.circle.classList.toggle("orbitcircle", platform.games.some(game => game.circle !== "primary"));
         platform.nodes = platform.games.map((game, index) => {
             const icon = document.createElement("div");
             icon.className = "gameicon clickable";
@@ -169,12 +163,18 @@ function mountplatform(platform) {
             platform.orbitlabels.set(key, label);
             fragment.appendChild(label);
         }
+        const empty = document.createElement("p");
+        empty.className = "layerempty";
+        empty.textContent = "no versions yet";
+        platform.empty = empty;
+        fragment.appendChild(empty);
         platform.circle.replaceChildren(fragment);
         platform.circle.classList.remove("rendering");
     }
     layoutplatform(platform);
     if (platform === activeplatform) {
-        platform.nodes.forEach(node => updateicon(node.querySelector("img"), parseFloat(node.style.width)));
+        platform.nodes.filter(node => !node.hidden)
+            .forEach(node => updateicon(node.querySelector("img"), parseFloat(node.style.width)));
     }
 }
 
@@ -235,15 +235,27 @@ function layoutplatform(platform) {
         }
         platform.screen.style.setProperty("--platformgutter", `${Math.ceil(gutter + 5)}px`);
     }
+    const nodes = platform.nodes.filter(node => {
+        node.hidden = !availability.checked && !elements.get(node).available;
+        return !node.hidden;
+    });
+    const circles = new Set(nodes.map(node => elements.get(node).circle));
+    for (const [key, label] of platform.orbitlabels) label.hidden = !circles.has(key);
+    platform.circle.classList.toggle("orbitcircle", [...circles].some(key => key !== "primary"));
+    platform.empty.hidden = nodes.length > 0;
+    if (!nodes.length) {
+        platform.stamp = null;
+        platform.circle.style.removeProperty("--circleheight");
+        return;
+    }
     const mobile = window.innerWidth <= 650;
     const bounds = platform.circle.getBoundingClientRect();
     const width = bounds.width || Math.min(window.innerWidth * 0.9, 800);
     const style = getComputedStyle(platform.screen);
     const height = Math.max(1, platform.screen.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom));
-    const stamp = `${width},${height},${mobile}`;
+    const stamp = `${width},${height},${mobile},${availability.checked}`;
     if (platform.stamp === stamp) return;
     platform.stamp = stamp;
-    const nodes = [...platform.nodes];
     if (mobile) nodes.sort((first, second) => Number(elements.get(second).available) - Number(elements.get(first).available));
     nodes.forEach((node, index) => {
         if (platform.circle.children[index] !== node) platform.circle.insertBefore(node, platform.circle.children[index] || null);
@@ -314,6 +326,7 @@ function activateplatform(platform, scroll = true, write = true, animate = false
 }
 
 async function selectgame(game, write = true) {
+    if (!availability.checked && !game.available) return;
     search?.hide(false);
     if (write) {navigation++; document.documentElement.classList.remove("routepending"); links.write(gameroute(game))}
     const loadid = ++currentloadid;
@@ -323,7 +336,7 @@ async function selectgame(game, write = true) {
     document.body.classList.add("gameopen");
     const alreadyshown = document.querySelector("#versionscreen").classList.contains("active");
     const packages = Array.isArray(game.package) ? game.package : [game.package];
-    await loadversions(packages, game, loadid, alreadyshown, platform.cache, id => id === currentloadid, containerscroll, platform.screen);
+    await loadversions(packages, game, loadid, alreadyshown, platform.cache, id => id === currentloadid, containerscroll, platform.screen, availability.checked);
 }
 
 function goback(write = true) {
@@ -561,7 +574,7 @@ async function restoreview(route) {
                 route = {...route, game: game.routekey, package: route.package || (index ? packagekey(game, index) : "")};
             }
         }
-        if (game) {
+        if (game && (availability.checked || game.available)) {
             await selectgame(game, false);
             if (request !== navigation) return;
             containerscroll();
@@ -586,6 +599,7 @@ document.querySelector(".archiveinfo").addEventListener("toggle", event => {
 const links = startlinks(restoreview);
 search = startsearch({
     platforms,
+    showunavailable: () => availability.checked,
     selected: () => activeplatform.name,
     select: name => {
         activateplatform(getplatform(activeplatform.layer, name), false, false);
@@ -605,6 +619,11 @@ search = startsearch({
     },
     write: (query, replace) => links.write({platform: activeplatform.name, layer: activeplatform.layer, search: query}, replace),
     open: async route => {links.write(route); await restoreview(route)}
+});
+availability.addEventListener("change", () => {
+    platforms.forEach(layoutplatform);
+    if (search.shown) void search.refresh();
+    else if (!currentgame && readhash().game) void links.restore(true);
 });
 const initial = new URL(location.href);
 const prefill = initial.searchParams.get("search");

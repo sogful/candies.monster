@@ -23,7 +23,7 @@ function iconpixels(size) {
     return size * (window.devicePixelRatio || 1) * (window.visualViewport?.scale || 1);
 }
 
-function isdownloadbuttonvisible(download) {
+export function isdownloadbuttonvisible(download) {
     if (download.arch && download.size) {
         if (download.url.includes("cdn.candies.monster/leaks/") && !debugshowleaks) return false;
         if (download.url.includes("cdn.candies.monster/apks/") && !debugshowapks && download.kind !== "archive") return false;
@@ -75,14 +75,16 @@ export function versionsfor(cache, key) {
             }
         }
     }
-    const versions = Array.from(merged.values()).map(version => ({
-        ...version,
-        recordonly: !version.downloads?.length,
-        unavailable: !hasdownload(version.downloads),
-        downloads: uniquedownloads(version.downloads).filter(isdownloadbuttonvisible)
-            .sort((first, second) => Number(secondarydownload(first)) - Number(secondarydownload(second))),
-        order: version.version.replace(/^v/i, "").split(".").map(value => parseInt(value) || 0)
-    })).filter(version => version.downloads.length || version.recordonly);
+    const versions = Array.from(merged.values()).map(version => {
+        const downloads = uniquedownloads(version.downloads).filter(isdownloadbuttonvisible)
+            .sort((first, second) => Number(secondarydownload(first)) - Number(secondarydownload(second)));
+        return {
+            ...version, downloads,
+            recordonly: !version.downloads?.length,
+            unavailable: !hasdownload(downloads),
+            order: version.version.replace(/^v/i, "").split(".").map(value => parseInt(value) || 0)
+        };
+    }).filter(version => version.downloads.length || version.recordonly);
     versions.sort((first, second) => {
         for (let index = 0; index < Math.max(first.order.length, second.order.length); index++) {
             const difference = (second.order[index] || 0) - (first.order[index] || 0);
@@ -245,47 +247,48 @@ function versionempty() {
     return empty;
 }
 
-export async function loadversions(packages, game, loadid, alreadyshown, cache, iscurrent, containerscroll, screen) {
+export async function loadversions(packages, game, loadid, alreadyshown, cache, iscurrent, containerscroll, screen, showunavailable) {
     if (!iscurrent(loadid)) return;
     const list = document.querySelector("#versionslist");
     const info = document.querySelector("#gameinfo");
-    if (lastview?.game === game && lastview.cache === cache && lastview.complete) {
+    if (lastview?.game === game && lastview.cache === cache && lastview.showunavailable === showunavailable && lastview.complete) {
         updatelegacyicons(list);
         showversions(screen, loadid, alreadyshown, iscurrent, containerscroll);
         return;
     }
-    const view = {game, cache, complete: false};
+    const view = {game, cache, showunavailable, complete: false};
     lastview = view;
     try {
         const packagelist = Array.isArray(packages) ? packages : [packages];
-        const grouped = packagelist.length > 1;
+        const sections = packagelist.map((pkg, index) => {
+            const key = Array.isArray(game.verkey) ? game.verkey[index] ?? pkg : index === 0 ? game.verkey ?? pkg : pkg;
+            const versions = versionsfor(cache, key).filter(version => showunavailable || !version.unavailable);
+            const fallback = Array.isArray(game.icon) ? game.icon[index] || game.icon[0] : game.icon;
+            return {pkg, index, versions, fallback, target: list};
+        }).filter(section => showunavailable || section.versions.length);
+        const grouped = sections.length > 1;
         list.classList.toggle("multipackage", grouped);
         info.replaceChildren();
-        info.dataset.routepackage = packagekey(game);
+        info.dataset.routepackage = packagekey(game, sections[0]?.index);
         info.style.display = grouped ? "none" : "";
-        if (!grouped) {
-            const header = packageheader(game, 0, packagelist[0]);
+        if (sections.length === 1) {
+            const {index, pkg} = sections[0];
+            const header = packageheader(game, index, pkg);
             info.append(...header.childNodes);
         }
         list.replaceChildren();
         document.querySelector("#versionscreen").scrollTop = 0;
         const fragment = document.createDocumentFragment();
-        const sections = packagelist.map((pkg, index) => {
-            const key = Array.isArray(game.verkey) ? game.verkey[index] ?? pkg : index === 0 ? game.verkey ?? pkg : pkg;
-            const versions = versionsfor(cache, key);
-            let target = list;
-            if (grouped) {
+        if (grouped) {
+            for (const section of sections) {
                 const column = document.createElement("div");
                 column.className = "packagecolumn";
-                column.appendChild(packageheader(game, index, pkg));
-                target = document.createElement("div");
-                target.className = "packageversions";
-                column.appendChild(target);
+                column.appendChild(packageheader(game, section.index, section.pkg));
+                section.target = document.createElement("div");
+                section.target.className = "packageversions";
+                column.appendChild(section.target);
                 fragment.appendChild(column);
             }
-            return {pkg, index, versions, target, fallback: Array.isArray(game.icon) ? game.icon[index] || game.icon[0] : game.icon};
-        });
-        if (grouped) {
             for (let index = 0; index + 1 < sections.length; index++) {
                 if (sections[index].versions.length > 1 || sections[index + 1].versions.length > 1) continue;
                 const first = sections[index].target.parentElement;
@@ -320,7 +323,7 @@ export async function loadversions(packages, game, loadid, alreadyshown, cache, 
             if (grouped && !section.versions.length) section.target.appendChild(versionempty());
         }
         if (!iscurrent(loadid)) return;
-        if (!grouped && !sections[0].versions.length) list.appendChild(versionempty());
+        if (!grouped && !sections[0]?.versions.length) list.appendChild(versionempty());
         if (!shown) showversions(screen, loadid, alreadyshown, iscurrent, containerscroll);
         view.complete = true;
     } catch (error) {

@@ -1,5 +1,4 @@
 import {versionsfor} from "./catalogue/versions.js";
-import {hasdownload} from "./catalogue/load.js";
 
 /*//////////////////////////////////////////////////////////////////////*/
 
@@ -60,7 +59,7 @@ export function searchindex(platforms) {
     });
 }
 
-export function findresults(records, query) {
+export function findresults(records, query, showunavailable) {
     const branches = searchbranches(query);
     const matches = (branch, value) => branch.terms.every(term => value.includes(term));
     const headingmatches = record => branches.some(branch => !branch.flags.length &&
@@ -70,12 +69,14 @@ export function findresults(records, query) {
     const games = new Set();
     const results = [];
     for (const record of records) {
+        if (!showunavailable && !record.versions.some(item => !item.version.unavailable)) continue;
         const heading = headingmatches(record);
         const versions = record.versions.flatMap(item => {
+            const downloadable = !item.version.unavailable;
+            if (!showunavailable && !downloadable) return [];
             let found = false;
             let all = false;
             const downloads = new Set();
-            const downloadable = hasdownload(item.version.downloads);
             for (const branch of branches) {
                 if (!branch.availability.every(value => value === downloadable)) continue;
                 if (!matches(branch, item.text)) continue;

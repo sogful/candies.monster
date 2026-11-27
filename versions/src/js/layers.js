@@ -34,17 +34,17 @@ export function startlayers() {
     }
 
     function positionabove() {
-        if (above.hidden) {
-            viewport.style.removeProperty("--layerpadding");
+        const bar = search.getBoundingClientRect();
+        const padding = Math.max(56, Math.ceil(bar.bottom + 4));
+        const button = above.getBoundingClientRect();
+        if (!button.width) {
+            viewport.style.setProperty("--layerpadding", `${padding}px`);
             return;
         }
-        const button = above.getBoundingClientRect();
-        if (!button.width) return;
-        const bar = search.getBoundingClientRect();
         const overlap = bar.width && button.left < bar.right + 4 && button.right > bar.left - 4;
         const top = overlap ? Math.ceil(bar.bottom + 6) : 8;
         above.style.setProperty("--layeruptop", `${top}px`);
-        viewport.style.setProperty("--layerpadding", `${Math.max(56, top + button.height + 4)}px`);
+        viewport.style.setProperty("--layerpadding", `${Math.max(padding, top + button.height + 4)}px`);
     }
 
     window.addEventListener("resize", positionabove, {passive: true});

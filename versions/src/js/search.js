@@ -136,7 +136,7 @@ export function startsearch(options) {
         try {
             const ready = await options.ready();
             if (current !== request) return;
-            const found = findresults(searchindex(ready), query);
+            const found = findresults(searchindex(ready), query, options.showunavailable());
             dim(found.games);
             entries = found.results.flatMap(result => [
                 {...result, version: null},
@@ -207,6 +207,7 @@ export function startsearch(options) {
     }
     return {
         hide,
+        refresh: () => run(false),
         get shown() {return shown},
         restore: async value => {input.value = value; await run(false)}
     };
