@@ -189,7 +189,7 @@ function parsegamescsv(text, separateandroid = false) {
                 routekey: route?.slice(6).trim() || "",
                 legacyroute: legacy?.slice(12).trim() || "",
                 system: system?.slice(7).trim() || "",
-                internal: internal?.slice(9).trim() || "",
+                internal: internal?.slice(9).split(" / ").map(name => name.trim()).filter(name => name && !name.endsWith("?")).join(" / ") || "",
                 evidence: evidence?.slice(9).trim() || "",
                 name: grouped ? c0.slice(2).trim() : c0,
                 package: pkg,

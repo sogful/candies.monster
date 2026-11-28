@@ -149,18 +149,7 @@ export function packageheader(game, index, pkg) {
             const alias = document.createElement("span");
             alias.className = "internalname";
             if (pkg) alias.append(" (");
-            internal.split(" / ").forEach((entry, index) => {
-                if (index) alias.append(" / ");
-                const speculated = entry.endsWith("?");
-                const code = speculated ? entry.slice(0, -1) : entry;
-                alias.append(code);
-                if (speculated) {
-                    const mark = document.createElement("sup");
-                    mark.textContent = "?";
-                    mark.title = `Zeptolab's BMS feeder doesn't return a package list for ${code}, this is merely speculation.`;
-                    alias.append(mark);
-                }
-            });
+            alias.append(internal);
             if (pkg) alias.append(")");
             identifier.append(alias);
         }
