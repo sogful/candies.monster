@@ -114,7 +114,7 @@ function renderdownloadbutton(download, version, description, game) {
         .map(value => downloadnote(value, game, symbols, implicit));
     const note = [...new Set(notes.filter(Boolean))].join("\n");
     const other = game.platform === "other";
-    const warning = button === downloadbuttons.fallback && (other || !["store", "play"].includes(download.kind))
+    const warning = button === downloadbuttons.fallback && download.kind !== "store" && (other || download.kind !== "play")
         ? `this ${other ? "game" : "version"} is from a non-trusted source`
         : "";
     const information = {

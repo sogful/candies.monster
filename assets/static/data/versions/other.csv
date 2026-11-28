@@ -1,5 +1,6 @@
 game,package/version,icon,description/url,importance/details,gallery/architectures,gallery/size,gallery/kind,gallery/label,gallery/note,gallery11,gallery12,gallery13,gallery14,gallery15,gallery16,gallery17,gallery18,gallery19,gallery20,gallery21,gallery22,gallery23,gallery24,gallery25,gallery26,gallery27,gallery28,gallery29,gallery30,gallery31
 Cut the Rope (Windows),,ctr/windows,,10,route=cut-the-rope,,system=Windows,,,,,,,,,,,,,,,,,,,,,,,
+,Windows (Microsoft Store),,https://apps.microsoft.com/detail/9n7xc5cxdx0g,,,,store,microsoft store,Famobi release,,,,,,,,,,,,,,,,,,,,,
 ,Windows Steam,,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Thing/CutTheRopeSteam.zip,,,144.1mb,,,delisted steam release,,,,,,,,,,,,,,,,,,,,,
 ,Windows 8 1.0.0,ctr/windows,https://github.com/TheAwesomeBlue/ctrfiles/releases/download/Windows8/CutTheRopeWindowsStore_ReleasePreview_Fix.zip,,x86 arm,60.7mb,,,windows 8 release preview fix,,,,,,,,,,,,,,,,,,,,,
 ,,,https://archive.org/download/cut-the-rope-release-preview/CutTheRopeWindowsStore_ReleasePreview_Fix.zip,,x86 arm,60.7mb,archive,,windows 8 release preview fix,,,,,,,,,,,,,,,,,,,,,
